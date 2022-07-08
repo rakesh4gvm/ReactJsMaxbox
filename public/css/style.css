@@ -1,0 +1,436 @@
+body, html{
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.header-main{
+    background-color: #647AF7;
+}
+span.userpic { 
+    padding: 5ox;
+    overflow: hidden;
+    border-radius: 72px;
+    width: 53px;
+    height: 53px;
+    display: table;
+}
+.dropboxcard{
+    position: relative;
+}
+.userdropdown {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 30px #d8ddf9;
+    position: absolute;
+    right: 0;
+    display: none;
+    min-width: 460px;
+    z-index: 999;
+}
+.userdropdown.show{
+    display: block;
+}
+.bg-themehead {
+    padding: 30px;
+    background: #647af7;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.bg-themehead a, .bg-themehead a:hover{
+    color: #fff;
+    text-decoration: none;
+}
+.header-main .navbar { 
+    justify-content: space-between;
+}
+.selecter-m{
+    min-width: 250px;
+}
+.menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:focus, .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:hover {
+    color: #fff;
+    padding: 0 1.5rem 0 1rem;
+    font-size: 18px;
+}
+.menulist .dropdown{
+    margin-top: 12px;
+}
+.menulist .dropdown-toggle::after { 
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    margin-left: 10px;
+}
+.bodymain{
+    padding: 0 15px; 
+}
+.textbox-dek input{
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 50px;
+}
+.textbox-dek.serchdek input{
+    padding: 15px 15px 15px 50px;
+}
+.leftinbox {
+    text-align: left;
+    position: relative;
+    background-color: #fff;
+}
+.leftinbox .serchdek svg{
+    z-index: 1;
+}
+.serchdek input, .serchdek .MuiInputBase-root{
+    width: 100% !important;
+}
+.serchdek > div{
+    margin: 0 auto;
+}
+.MuiPaper-root.cardinboxlist {
+    border-bottom: 1px solid #E5E5E5;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+}
+.selectedstart{
+    color: #FFC107;
+}
+.MuiButtonBase-root.startselct {
+    padding: 0;
+    border: none;
+    background: transparent;
+    float: right;
+}
+.startselct .starone{
+    display: block;
+}
+.startselct .startwo{
+    display: none;
+}
+.startselct.Mui-selected .starone{
+    display: none;
+}
+.startselct.Mui-selected .startwo{
+    display: block;
+}
+.col.maxcontainerix {
+    max-width: 530px;
+}
+.rightinbox{
+    width: calc(100% - 530px);
+}
+.inboxuserpic {
+    background: #ccc;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 72px;
+    width: 63px;
+    height: 63px;
+    display: table;
+}
+.cardinboxlist h4{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 25px;
+    color: #616B77;
+    margin: 0;
+}
+.cardinboxlist h3{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px; 
+    color: #242424;
+    margin-top: 0;
+}
+.cardinboxlist p{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #616B77;
+}
+.cardinboxlist h6{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 21px; 
+    color: #616B77;
+    margin-bottom: 0;
+}
+.attachfile{
+    position: relative;
+}
+.attachfile input{
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.attachfile svg{
+    width: 40px;
+    height: auto;
+    fill: #CDCCCC;
+}
+.ja-center {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.ja-center > div{
+    display: flex;
+}
+.inboxnoti {
+    width: 80px;
+    height: 33px;
+    line-height: 33px;
+    background: #FA9766;
+    border-radius: 50px;
+    display: flex;
+    text-align: center;
+    color: #fff;
+    margin: 0 0 0 auto;
+}
+.inboxnoti svg.MuiSvgIcon-root {
+    background: #DC6529;
+    border-radius: 27px;
+    padding: 3px;
+    margin: 5px;
+}
+.title-h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 34px;
+    color: #000000;
+    margin: 0;
+}
+.listinbox {
+    max-height: calc(100vh - 310px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0 15px;
+}
+.inboxtype > div > div{
+    min-height: 55px;
+}
+.inboxtype > div > div {
+    min-height: 55px;
+    border-radius: 15px;
+    width: auto;
+    max-width: 240px;
+    border: 1px solid #E5E5E5;
+}
+.inboxtype > div > div + div { 
+    max-width: 240px;
+    width: 100%;
+}
+.MuiButton-root.iconbtn {
+    line-height: 55px;
+    background: #647AF7;
+    border-radius: 15px;
+    height: 55px;
+    width: 55px;
+    float: right;
+}
+.MuiButton-root.iconbtn:hover, .MuiButton-root.iconbtn:focus, .MuiButton-root.iconbtn:active{
+    background-color: #5267DB;
+}
+.inxtexteditor {
+    text-align: left;
+    padding: 30px;
+}
+.inxtexteditor h2{
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 41px; 
+    color: #242424;
+}
+.inxtexteditor p{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px; 
+    color: #616B77;
+}
+.inxtexteditor h6{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px; 
+    color: #616B77;
+    text-align: right;
+}
+.userlist h6{ 
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 30px; 
+    color: #242424;
+}
+.userlist h6{ 
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    color: #616B77;
+    text-align: left;
+}
+.iconlistinbox button.MuiButtonGroup-grouped {
+    min-width: 60px;
+    border-right: none !important;
+}
+.iconlistinbox button label {
+    font-size: 20px;
+    line-height: 20px;
+    margin-top: 4px;
+    color: #616B77;
+    margin-bottom: 0;
+}
+.bt-border{
+    border-bottom: 1px solid #E5E5E5;
+}
+.us-max-110{
+    width: 110px;
+    height: 110px;
+}
+.textdeclist li span .MuiTypography-body1{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px; 
+    color: #242424;
+}
+.textdeclist li span .MuiTypography-body2{
+    font-size: 14px;
+    line-height: 23px; 
+    color: #616B77;
+}
+.max-40 {
+    max-width: 30px;
+}
+.max-40 img {
+    width: 100%;
+    height: auto;
+}
+.selectorall {
+    padding: 15px;
+    max-width: 220px;
+    border: 1px solid #E5E5E5;
+    min-height: 55px;
+    border-radius: 15px;
+    width: 100%;
+    display: table;
+    color: #616B77;
+    text-decoration: none; 
+}
+.selectorall:hover{
+    color: #616B77;
+    text-decoration: none; 
+}
+.selectorall img{
+    margin-left: 40px;
+    float: right;
+}
+
+.userdropall {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 30px #d8ddf9;
+    position: absolute;
+    left: 0;
+    display: none;
+    min-width: 400px;
+    z-index: 999;
+} 
+
+.userdropall.show {
+    display: block;
+}
+.userdropall .bodyuserdop {
+    max-width: 100%;
+}
+.userdropall .droplistchec > div + div {  
+    position: absolute;
+    left: -46px;
+    right: auto;
+    transform: inherit;
+    top: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 40px;
+}
+.userdropall .droplistchec > div  {
+    padding-right: 0;
+    padding-left: 50px;
+    width: 100%;
+}
+.userdropall ul.MuiList-root {
+    max-width: 100%;
+}
+.scvar .MuiAvatar-circular {
+    border-radius: 5px;
+}
+.dropdec .dropdown-item img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+.dropdec a.dropdown-item{
+    padding: 0.6rem 1.5rem;
+    display: flex;
+}
+.notifimen {
+    width: 67px;
+    height: 30px;
+    background: #FEE6DA;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #F89665;
+    line-height: 30px;
+    text-align: center;
+    margin: -3px 0 0 auto;
+    transform: translate(10px, 0px);
+  }
+.notifimen svg {
+    width: 18px;
+    margin: 0px 1px 0 0;
+}
+
+
+
+@media screen and (max-width:990px){
+    .mobile-nav {
+        background-color: #212529;
+        position: absolute !important;
+        left: 0;
+        z-index: 99999;
+        width: 100%;
+        margin-top: 10px;
+        text-align: left;
+    }
+    .menulist .dropdown > a {
+        margin-top: 0;
+        padding: 0 30px 15px !important;
+        border-bottom: 1px solid #2b2f33;
+      }
+    .menulist .dropdown-toggle::after { 
+        position: absolute;
+        right: 40px;
+        top: 10px; 
+    }
+    .mobile-nav .dropdown-menu {
+        background: #212529;
+    }
+    .dropdec a.dropdown-item { 
+        color: #fff;
+    }
+    .dropdec .dropdown-item:focus, .dropdec .dropdown-item:hover { 
+        background-color: #181b1e;
+    }
+    .notifimen { 
+        transform: translate(-10px, 0px);
+      }
+}
