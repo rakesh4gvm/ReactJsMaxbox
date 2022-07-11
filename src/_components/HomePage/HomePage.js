@@ -30,7 +30,7 @@ return (
     <>
     <HeaderTop />  
     <div className='bodymain'>
-        <Row>
+        <Row className='mb-columfull'>
         <Col className='maxcontainerix'>
             <InboxList />  
         </Col>
@@ -39,20 +39,20 @@ return (
         <Col className='rightinbox'>
           <div className='inxtexteditor'>
             <Row className='bt-border pb-4 mb-4'>
-              <Col> 
+              <Col lg={6}> 
                 <Row className='userlist'>
-                    <Col>
+                    <Col xs={2}>
                       <span className="inboxuserpic">
                           <img src={inboxuser3} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col sm={10} className='p-0'> 
+                    <Col xs={10} className='p-0'> 
                       <h5>Chelsia Donald</h5>
                       <h6>Lenovo has a new policy</h6> 
                     </Col> 
                 </Row>
               </Col>
-              <Col Align="right"> 
+              <Col lg={6} Align="right"> 
                 <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
                 <Button>
                     <img src={iconleftright} />

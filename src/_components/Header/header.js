@@ -1,6 +1,6 @@
 import * as React from 'react';  
 import Select from 'react-select'
-import { Container, Form, Nav } from 'react-bootstrap';
+import { Col, Container, Form, Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'; 
 import Mlogo from "../../images/Logo.png";
@@ -192,6 +192,10 @@ export default function Header() {
                                                         </React.Fragment>
                                                     }
                                                     />
+                                                    <ul className='d-flex flexlist'> 
+                                                        <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
+                                                        <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li> 
+                                                    </ul>
                                                 </ListItem>
                                                 <Divider variant="inset" component="li" />
                                                 <ListItem alignItems="flex-start">
@@ -206,6 +210,10 @@ export default function Header() {
                                                         </React.Fragment>
                                                     }
                                                     />
+                                                    <ul className='d-flex flexlist'> 
+                                                        <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
+                                                        <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li> 
+                                                    </ul>
                                                 </ListItem>
                                                 <Divider variant="inset" component="li" />
                                                 <ListItem alignItems="flex-start">
@@ -220,6 +228,10 @@ export default function Header() {
                                                         </React.Fragment>
                                                     }
                                                     />
+                                                    <ul className='d-flex flexlist'> 
+                                                        <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
+                                                        <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li> 
+                                                    </ul>
                                                 </ListItem> 
                                                 <Divider variant="inset" component="li" /> 
                                                 <ListItem alignItems="flex-start">

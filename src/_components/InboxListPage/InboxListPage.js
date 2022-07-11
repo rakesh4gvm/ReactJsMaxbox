@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -30,6 +31,8 @@ import allusers from '../../images/all_users.svg';
 import iconlogout from '../../images/icon_logout.svg';
 import defaultuser from '../../images/avatar/defaultuser.jpg';
 import downarrow from '../../images/icon_downarrow.svg';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel'; 
 
 
 
@@ -141,225 +144,264 @@ return (
               </Col>
           </Row>
           <Row>
-              <Col sm={8}>
+              <Col xs={8}>
                   <div class="selecter-m inboxtype"> 
-                                    <a href="#" className="selectorall" onClick={addInboxClass}>
-                                      All <img src={downarrow} />
-                                    </a>
+                      <a href="#" className="selectorall" onClick={addInboxClass}>
+                        All <img src={downarrow} />
+                      </a>
 
-                                    <div className="userdropall" id="id_userboxlist"> 
-                                        <div className="bodyuserdop textdeclist">
-                                        <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                            {[0, 1, 2, 3, 4].map((value) => {
-                                              const labelId = `checkbox-list-secondary-label-${value}`;
-                                              return (
-                                                <ListItem className='droplistchec'
-                                                  key={value}
-                                                  secondaryAction={
-                                                    <Checkbox
-                                                      edge="end"
-                                                      onChange={handleToggle(value)}
-                                                      checked={checked.indexOf(value) !== -1}
-                                                      inputProps={{ 'aria-labelledby': labelId }}
-                                                    />
-                                                  }
-                                                  disablePadding
-                                                >
-                                                  <ListItemButton>
-                                                    <ListItemAvatar>
-                                                      {/* <Avatar
-                                                        alt={`Avatar n°${value + 1}`}
-                                                        src={`../../images/avatar/${value + 1}.jpg`}
-                                                      /> */}
-                                                       <ListItemAvatar className="scvar">
-                                                        <Avatar alt="Remy Sharp" src={inboxuser1} />
-                                                      </ListItemAvatar>
-                                                    </ListItemAvatar>
-                                                    <ListItemText
-                                                    primary="Brunch this weekend?"
-                                                    secondary={
-                                                        <React.Fragment>
-                                                          jennyoswald1998@gmail.com
-                                                        </React.Fragment>
-                                                    }
-                                                    />
-                                                  </ListItemButton>
-                                                </ListItem>
-                                              );
-                                            })}
-                                          </List>
- 
-                                        </div>
-                                    </div>  
+                      <div className="userdropall" id="id_userboxlist"> 
+                          <div className="bodyuserdop textdeclist">
+                          <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                              {[0, 1, 2, 3, 4].map((value) => {
+                                const labelId = `checkbox-list-secondary-label-${value}`;
+                                return (
+                                  <ListItem className='droplistchec'
+                                    key={value}
+                                    secondaryAction={
+                                      <Checkbox
+                                        edge="end"
+                                        onChange={handleToggle(value)}
+                                        checked={checked.indexOf(value) !== -1}
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                      />
+                                    }
+                                    disablePadding
+                                  >
+                                    <ListItemButton>
+                                      <ListItemAvatar>
+                                        {/* <Avatar
+                                          alt={`Avatar n°${value + 1}`}
+                                          src={`../../images/avatar/${value + 1}.jpg`}
+                                        /> */}
+                                          <ListItemAvatar className="scvar">
+                                          <Avatar alt="Remy Sharp" src={inboxuser1} />
+                                        </ListItemAvatar>
+                                      </ListItemAvatar>
+                                      <ListItemText
+                                      primary="Brunch this weekend?"
+                                      secondary={
+                                          <React.Fragment>
+                                            jennyoswald1998@gmail.com
+                                          </React.Fragment>
+                                      }
+                                      />
+                                    </ListItemButton>
+                                  </ListItem>
+                                );
+                              })}
+                            </List>
+
+                          </div>
+                      </div>  
                   </div>
               </Col>
-              <Col sm={4}>
+              <Col xs={2}>
                 <Button className='iconbtn' variant="contained" size="large">
                   <RefreshIcon />
                 </Button>
+                </Col>
+              <Col xs={2}>
+                <Button className='iconbtn' variant="contained" size="large">
+                  <DeleteIcon />
+                </Button>
               </Col>
+          </Row>
+          <Row>
+              <Col xs={12} className="mt-3">
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox defaultChecked />} label="Select All" /> 
+                </FormGroup>           
+              </Col> 
           </Row>
           </div>
 
-          <div className='listinbox mt-5'>
+          <div className='listinbox mt-3'>
+          <scrollbars>
             <Stack spacing={1} align="left">
-                <Item className='cardinboxlist'>
+            
+                <Item className='cardinboxlist px-0'>
                   <Row>
-                      <Col sm={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser1} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col sm={8}> 
-                        <h4>Chelsia Donald</h4>
-                        <h3>Lenovo has a new policy</h3> 
-                      </Col>
-                      <Col sm={2}> 
-                        <h6>8:56 PM</h6> 
-                        <ToggleButton className='startselct'
-                          value="check"
-                          selected={selected}
-                          onChange={() => {
-                            setSelected(!selected);
-                          }}
-                        >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </Col>
-                  </Row>
+                    <Col xs={1} className="pr-0">
+                        <FormControlLabel control={<Checkbox />} label="" /> 
+                    </Col>
+                    <Col xs={11} className="pr-0">   
+                      <Row> 
+                          <Col xs={2}>
+                            <span className="inboxuserpic">
+                                <img src={inboxuser1} width="55px" alt="" />
+                            </span>
+                          </Col>
+                          <Col xs={8}> 
+                            <h4>Chelsia Donald</h4>
+                            <h3>Lenovo has a new policy</h3> 
+                          </Col>
+                          <Col xs={2}> 
+                            <h6>8:56 PM</h6> 
+                            <ToggleButton className='startselct'
+                              value="check"
+                              selected={selected}
+                              onChange={() => {
+                                setSelected(!selected);
+                              }}
+                            >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Col>
+                      </Row>
+                      <Row>
+                        <Col xs={2} className='ja-center'>
+                            <div className='attachfile'>
+                              <input type="file" />
+                              <AttachFileIcon />
+                            </div>
+                        </Col>
+                        <Col xs={10}>
+                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                        </Col>
+                    </Row>
+                    </Col>
+                  </Row> 
+                </Item> 
+                
+                <Item className='cardinboxlist px-0'>
                   <Row>
-                      <Col sm={2} className='ja-center'>
-                          <div className='attachfile'>
-                            <input type="file" />
-                            <AttachFileIcon />
-                          </div>
-                      </Col>
-                      <Col sm={10}>
-                        <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                      </Col>
-                  </Row>
+                    <Col xs={1} className="pr-0">
+                        <FormControlLabel control={<Checkbox />} label="" /> 
+                    </Col>
+                    <Col xs={11} className="pr-0">   
+                      <Row> 
+                          <Col xs={2}>
+                            <span className="inboxuserpic">
+                                <img src={inboxuser2} width="55px" alt="" />
+                            </span>
+                          </Col>
+                          <Col xs={8}> 
+                            <h4>Chelsia Donald</h4>
+                            <h3>Lenovo has a new policy</h3> 
+                          </Col>
+                          <Col xs={2}> 
+                            <h6>8:56 PM</h6> 
+                            <ToggleButton className='startselct'
+                              value="check"
+                              selected={selected}
+                              onChange={() => {
+                                setSelected(!selected);
+                              }}
+                            >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Col>
+                      </Row>
+                      <Row>
+                        <Col xs={2} className='ja-center'>
+                            <div className='attachfile'>
+                              <input type="file" />
+                              <AttachFileIcon />
+                            </div>
+                        </Col>
+                        <Col xs={10}>
+                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                        </Col>
+                    </Row>
+                    </Col>
+                  </Row> 
                 </Item> 
 
-
-                <Item className='cardinboxlist'>
+                <Item className='cardinboxlist px-0'>
                   <Row>
-                      <Col sm={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser2} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col sm={8}> 
-                        <h4>Chelsia Donald</h4>
-                        <h3>Lenovo has a new policy</h3> 
-                      </Col>
-                      <Col sm={2}> 
-                        <h6>8:56 PM</h6> 
-                        <ToggleButton className='startselct'
-                          value="check"
-                          selected={selected}
-                          onChange={() => {
-                            setSelected(!selected);
-                          }}
-                        >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col sm={2} className='ja-center'>
-                          <div className='attachfile'>
-                            <input type="file" />
-                            <AttachFileIcon />
-                          </div>
-                      </Col>
-                      <Col sm={10}>
-                        <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                      </Col>
-                  </Row>
+                    <Col xs={1} className="pr-0">
+                        <FormControlLabel control={<Checkbox />} label="" /> 
+                    </Col>
+                    <Col xs={11} className="pr-0">   
+                      <Row> 
+                          <Col xs={2}>
+                            <span className="inboxuserpic">
+                                <img src={inboxuser3} width="55px" alt="" />
+                            </span>
+                          </Col>
+                          <Col xs={8}> 
+                            <h4>Chelsia Donald</h4>
+                            <h3>Lenovo has a new policy</h3> 
+                          </Col>
+                          <Col xs={2}> 
+                            <h6>8:56 PM</h6> 
+                            <ToggleButton className='startselct'
+                              value="check"
+                              selected={selected}
+                              onChange={() => {
+                                setSelected(!selected);
+                              }}
+                            >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Col>
+                      </Row>
+                      <Row>
+                        <Col xs={2} className='ja-center'>
+                            <div className='attachfile'>
+                              <input type="file" />
+                              <AttachFileIcon />
+                            </div>
+                        </Col>
+                        <Col xs={10}>
+                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                        </Col>
+                    </Row>
+                    </Col>
+                  </Row> 
                 </Item> 
-
-
-                <Item className='cardinboxlist'>
+ 
+                <Item className='cardinboxlist px-0'>
                   <Row>
-                      <Col sm={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser3} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col sm={8}> 
-                        <h4>Chelsia Donald</h4>
-                        <h3>Lenovo has a new policy</h3> 
-                      </Col>
-                      <Col sm={2}> 
-                        <h6>8:56 PM</h6> 
-                        <ToggleButton className='startselct'
-                          value="check"
-                          selected={selected}
-                          onChange={() => {
-                            setSelected(!selected);
-                          }}
-                        >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col sm={2} className='ja-center'>
-                          <div className='attachfile'>
-                            <input type="file" />
-                            <AttachFileIcon />
-                          </div>
-                      </Col>
-                      <Col sm={10}>
-                        <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                      </Col>
-                  </Row>
+                    <Col xs={1} className="pr-0">
+                        <FormControlLabel control={<Checkbox />} label="" /> 
+                    </Col>
+                    <Col xs={11} className="pr-0">   
+                      <Row> 
+                          <Col xs={2}>
+                            <span className="inboxuserpic">
+                                <img src={inboxuser4} width="55px" alt="" />
+                            </span>
+                          </Col>
+                          <Col xs={8}> 
+                            <h4>Chelsia Donald</h4>
+                            <h3>Lenovo has a new policy</h3> 
+                          </Col>
+                          <Col xs={2}> 
+                            <h6>8:56 PM</h6> 
+                            <ToggleButton className='startselct'
+                              value="check"
+                              selected={selected}
+                              onChange={() => {
+                                setSelected(!selected);
+                              }}
+                            >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Col>
+                      </Row>
+                      <Row>
+                        <Col xs={2} className='ja-center'>
+                            <div className='attachfile'>
+                              <input type="file" />
+                              <AttachFileIcon />
+                            </div>
+                        </Col>
+                        <Col xs={10}>
+                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                        </Col>
+                    </Row>
+                    </Col>
+                  </Row> 
                 </Item> 
-
-
-                <Item className='cardinboxlist'>
-                  <Row>
-                      <Col sm={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser4} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col sm={8}> 
-                        <h4>Chelsia Donald</h4>
-                        <h3>Lenovo has a new policy</h3> 
-                      </Col>
-                      <Col sm={2}> 
-                        <h6>8:56 PM</h6> 
-                        <ToggleButton className='startselct'
-                          value="check"
-                          selected={selected}
-                          onChange={() => {
-                            setSelected(!selected);
-                          }}
-                        >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col sm={2} className='ja-center'>
-                          <div className='attachfile'>
-                            <input type="file" />
-                            <AttachFileIcon />
-                          </div>
-                      </Col>
-                      <Col sm={10}>
-                        <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                      </Col>
-                  </Row>
-                </Item> 
-
                 
             </Stack> 
+            </scrollbars>
           </div>
 
 
