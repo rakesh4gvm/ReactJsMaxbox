@@ -300,11 +300,14 @@ span.userpic {
     text-align: left;
 }
 .iconlistinbox button.MuiButtonGroup-grouped {
-    min-width: 60px;
+    min-width: 48px;
     border-right: none !important;
 }
+.iconlistinbox button.MuiButtonGroup-grouped img {
+    width: 25px;
+}
 .iconlistinbox button label {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 20px;
     margin-top: 4px;
     color: #616B77;
@@ -450,7 +453,89 @@ ul.d-flex.flexlist {
 .maxcontainerix div .Mui-checked, 
 .maxcontainerix div .MuiCheckbox-indeterminate {
     color: #F89665;
+}
+.btn.btn-primary{
+    background: #647AF7;
+    box-shadow: 0px 4px 14px 6px #D8DEFD;
+    border-radius: 50px;
+    color: #fff;
+}
+.btn.largbtn{
+    padding: 15px 40px;
+}
+.btn.btn-primary:hover, .btn.btn-primary:focus, .btn.btn-primary:active{
+    background: #5267DB;
+}
+.composebody{
+    position: fixed;
+    bottom: 20px;
+    right: 20px; 
+    padding: 40px;
+}
+.usercompose {
+    background: #fff;
+    box-shadow: 0px 4px 59px #C4C4C4;
+    border-radius: 0px 15px 0px 0px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    max-width: 840px;
+    padding: 0;
+    display: none;
+}
+.usercompose.show{
+    display: block;
+}
+.hcompose{
+    background: #647AF7;
+    border-radius: 0px 15px 0px 0px;
+}
+.hcompose h4 {
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+    text-align: left;
+    margin: 10px auto;
   }
+.hcompose button{
+    min-width: 25px;
+}
+.hcompose .btn-group{
+    margin-top: 5px;
+}
+.subcompose{
+    border: 1px solid #E5E5E5;
+}
+.subcompose .input-clend{
+    width: 100%;
+    color: #616B77;
+    font-weight: 400;
+}
+.subcompose .input-clend::before,
+.subcompose .input-clend::after{
+    display: none;
+}
+.subcompose h6{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 26px; 
+    color: #242424;
+    margin: 0 auto;
+    line-height: 28px;
+}
+button.lable-btn {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    color: #242424;
+    text-transform: capitalize;
+}
+.smallbtn{
+    padding: 10px 15px;
+}
+
 
 @media screen and (max-width:990px){
     .mobile-nav {
@@ -497,5 +582,14 @@ ul.d-flex.flexlist {
     }
     .inboxuserpic img{ 
         width: 43px;
+    }
+}
+
+@media (min-width:991px) and (max-width:1400px){
+    .colsm12{
+        flex-direction: column;
+    }
+    .colsm12 > div{
+        width: 100%;
     }
 }

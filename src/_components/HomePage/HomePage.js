@@ -1,6 +1,7 @@
 import * as React from 'react'; 
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
+import Compose from '../ComposePage/ComposePage';
 
 import InboxList from '../InboxListPage/InboxListPage'
 import { styled, alpha } from '@mui/material/styles';
@@ -25,6 +26,16 @@ import iconmenu from '../../images/icon_menu.svg';
 
 export default function HomePage() {
     const [selected, setSelected] = React.useState(false);
+
+    const addShowCompose = () => {
+      const element = document.getElementById("UserCompose")
+      if(element.classList.contains("show")){
+        element.classList.remove("show");
+      }
+      else{
+        element.classList.add("show");
+      }
+    };
    
 return (
     <>
@@ -38,7 +49,7 @@ return (
 
         <Col className='rightinbox'>
           <div className='inxtexteditor'>
-            <Row className='bt-border pb-4 mb-4'>
+            <Row className='bt-border pb-4 mb-4 colsm12'>
               <Col lg={6}> 
                 <Row className='userlist'>
                     <Col xs={2}>
@@ -54,7 +65,7 @@ return (
               </Col>
               <Col lg={6} Align="right"> 
                 <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                <Button>
+                  <Button>
                     <img src={iconleftright} />
                   </Button>
                   <Button>
@@ -130,10 +141,10 @@ return (
 
           </div>
         
-        </Col>
-
+        </Col> 
       </Row> 
     </div>
+    <Compose />
     </>
     );
 }

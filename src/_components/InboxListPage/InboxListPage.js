@@ -236,7 +236,7 @@ return (
                             <h4>Chelsia Donald</h4>
                             <h3>Lenovo has a new policy</h3> 
                           </Col>
-                          <Col xs={2}> 
+                          <Col xs={2} className="pl-0"> 
                             <h6>8:56 PM</h6> 
                             <ToggleButton className='startselct'
                               value="check"
@@ -281,7 +281,7 @@ return (
                             <h4>Chelsia Donald</h4>
                             <h3>Lenovo has a new policy</h3> 
                           </Col>
-                          <Col xs={2}> 
+                          <Col xs={2} className="pl-0"> 
                             <h6>8:56 PM</h6> 
                             <ToggleButton className='startselct'
                               value="check"
@@ -326,7 +326,7 @@ return (
                             <h4>Chelsia Donald</h4>
                             <h3>Lenovo has a new policy</h3> 
                           </Col>
-                          <Col xs={2}> 
+                          <Col xs={2} className="pl-0"> 
                             <h6>8:56 PM</h6> 
                             <ToggleButton className='startselct'
                               value="check"
@@ -371,7 +371,7 @@ return (
                             <h4>Chelsia Donald</h4>
                             <h3>Lenovo has a new policy</h3> 
                           </Col>
-                          <Col xs={2}> 
+                          <Col xs={2} className="pl-0"> 
                             <h6>8:56 PM</h6> 
                             <ToggleButton className='startselct'
                               value="check"
