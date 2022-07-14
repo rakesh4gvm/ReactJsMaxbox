@@ -556,9 +556,14 @@ button.smallbtn, .ftcompose-btn button.smallbtn{
     border-top: 1px solid #E5E5E5;
     padding: 16px 0; 
 }
-.dropdown-item.active, .dropdown-item:active { 
+div .dropdown-item.active,
+div .dropdown-item:focus{ 
     background-color: #647af7;
-  }
+}
+div .dropdown-item.active img,
+div .dropdown-item:focus img {
+    filter: brightness(0) invert(1);
+}
 
 
 @media screen and (max-width:990px){
