@@ -471,6 +471,7 @@ ul.d-flex.flexlist {
     bottom: 20px;
     right: 20px; 
     padding: 40px;
+    z-index: 99;
 }
 .usercompose {
     background: #fff;
@@ -531,10 +532,33 @@ button.lable-btn {
     line-height: 22px;
     color: #242424;
     text-transform: capitalize;
+    border-radius: 72px;
 }
-.smallbtn{
-    padding: 10px 15px;
+button.smallbtn, .ftcompose-btn button.smallbtn{
+    padding: 6px 26px;
+    border-radius: 72px !important;
 }
+.ftcompose-btn button {
+    padding: 2px 10px;
+    min-width: auto;
+}
+.ftcompose-btn button img{
+    max-width: 25px;
+}
+.bodycompose textarea {
+    border: none;
+    outline: none;
+    min-height: 130px;
+    font-size: 16px;
+    resize: none;
+  }
+.ftcompose {
+    border-top: 1px solid #E5E5E5;
+    padding: 16px 0; 
+}
+.dropdown-item.active, .dropdown-item:active { 
+    background-color: #647af7;
+  }
 
 
 @media screen and (max-width:990px){

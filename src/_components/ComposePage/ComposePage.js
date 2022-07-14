@@ -13,9 +13,19 @@ import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg'; 
- 
+
+import icondelete from '../../images/icons/icon_delete.svg';
+import iconmenu from '../../images/icons/icon_menu.svg'; 
+
+
+import attachment from '../../images/icons/attachment.svg'; 
+import text_font from '../../images/icons/text_font.svg'; 
+import image_light from '../../images/icons/image_light.svg'; 
+import smiley_icons from '../../images/icons/smiley_icons.svg'; 
+import signature from '../../images/icons/signature.svg'; 
+import link_line from '../../images/icons/link_line.svg'; 
+import template from '../../images/icons/template.svg'; 
+
 
 export default function HomePage() {
     const [selected, setSelected] = React.useState(false);
@@ -81,30 +91,53 @@ return (
             </div>
 
             <div className='bodycompose'>
-              <TextareaAutosize className='w-100'
-                aria-label="minimum height"
-                minRows={3}
-                placeholder=" "
-                style={{ height: 300 }}
-              />
+            <Row className='px-3 py-2'>
+                <Col>
+                  <TextareaAutosize className='w-100'
+                    aria-label="minimum height"
+                    minRows={3}
+                    placeholder="" 
+                  />
+                </Col> 
+              </Row>
             </div>
 
-            <div className='ftcompose px-3 py-2'>
+            <div className='ftcompose px-3'>
               <Row className='px-3'>
-                  <Col>
-                    <ButtonGroup variant="text" aria-label="text button group">
+                  <Col xs={10} className='px-0'>
+                    <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
                       <Button variant="contained btn btn-primary smallbtn" onClick={addShowCompose}> Send</Button>
                       <Button>
-                        <img src={iconleftright} />
-                      </Button>
+                        <img src={text_font} />
+                      </Button> 
                       <Button>
-                        <label>56 / 100</label>
-                      </Button>
+                        <img src={attachment} />
+                      </Button> 
                       <Button>
-                        <img src={iconstar} />
-                      </Button>
+                        <img src={image_light} />
+                      </Button> 
                       <Button>
-                        <img src={icontimer} />
+                        <img src={smiley_icons} />
+                      </Button> 
+                      <Button>
+                        <img src={signature} />
+                      </Button> 
+                      <Button>
+                        <img src={link_line} />
+                      </Button> 
+                      <Button>
+                        <img src={template} />
+                      </Button>  
+                    </ButtonGroup>
+                  </Col> 
+
+                  <Col xs={2} className='px-0 text-right'>
+                    <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group"> 
+                      <Button>
+                        <img src={icondelete} />
+                      </Button> 
+                      <Button>
+                        <img src={iconmenu} />
                       </Button>  
                     </ButtonGroup>
                   </Col> 

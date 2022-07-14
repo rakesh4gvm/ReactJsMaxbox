@@ -85,17 +85,17 @@ export default function Header() {
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.3"><img src={drafts} />Drafts
+                                    <NavDropdown.Item href="#action/3.4"><img src={drafts} />Drafts
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.3"><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item href="#action/3.5"><img src={inbox} />Other Inbox
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.3"><img src={spam} />Spam
+                                    <NavDropdown.Item href="#action/3.6"><img src={spam} />Spam
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
@@ -103,13 +103,13 @@ export default function Header() {
                                 </NavDropdown>
 
                                 <NavDropdown title="Sent" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/3.1">
+                                    <NavDropdown.Item href="#action/4.1">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
                                             <NotificationsIcon /> 43
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.2"><img src={Sent} />All Sent Emails
+                                    <NavDropdown.Item href="#action/4.2"><img src={Sent} />All Sent Emails
                                     <div className="notifimen">
                                             <NotificationsIcon /> 245
                                         </div>
@@ -118,13 +118,13 @@ export default function Header() {
 
 
                                 <NavDropdown title="Templates" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/3.1">
+                                    <NavDropdown.Item href="#action/5.1">
                                         <img src={Objectroup} />Objections
                                         {/* <div className="notifimen">
                                             <NotificationsIcon /> 43
                                         </div> */}
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.2">
+                                    <NavDropdown.Item href="#action/5.2">
                                         <img src={Carbontem} />Templates
                                         {/* <div className="notifimen">
                                             <NotificationsIcon /> 245
@@ -133,13 +133,13 @@ export default function Header() {
                                 </NavDropdown>
 
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/3.1">
+                                    <NavDropdown.Item href="#action/6.1">
                                         <img src={Objectroup} />Objections
                                         {/* <div className="notifimen">
                                             <NotificationsIcon /> 43
                                         </div> */}
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.2">
+                                    <NavDropdown.Item href="#action/6.2">
                                         <img src={Carbontem} />Templates
                                         {/* <div className="notifimen">
                                             <NotificationsIcon /> 245

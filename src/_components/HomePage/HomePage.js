@@ -117,11 +117,11 @@ return (
             </Row>
 
             <Row>
-              <Col> 
+              <Col className='py-2'> 
                  <img src={inboximg1} />
               </Col>
 
-              <Col> 
+              <Col className='py-2'> 
                 <img src={inboximg2} />
               </Col>
               <Col>  
