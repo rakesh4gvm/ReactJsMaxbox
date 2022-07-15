@@ -8,7 +8,9 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import ButtonGroup from '@mui/material/ButtonGroup'; 
+import ButtonGroup from '@mui/material/ButtonGroup';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+
 import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser2 from '../../images/avatar/2.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
@@ -23,6 +25,7 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg'; 
+import replyall from '../../images/icons/reply_all.svg'; 
 
 export default function HomePage() {
     const [selected, setSelected] = React.useState(false);
@@ -59,7 +62,7 @@ return (
                     </Col>
                     <Col xs={10} className='p-0'> 
                       <h5>Chelsia Donald</h5>
-                      <h6>Lenovo has a new policy</h6> 
+                      <h6>to me <KeyboardArrowDownIcon /></h6> 
                     </Col> 
                 </Row>
               </Col>
@@ -129,15 +132,127 @@ return (
             </Row>
 
             <div className='d-flex mt-5 ml-2'>
-            <Row>
-              <Col sm={6} className='p-0'>
-                <a href='#' className='p-2'><img src={iconsarrow1} /></a>
+              <Row>
+                <Col sm={6} className='p-0'>
+                  <a href='#' className='p-2'><img src={iconsarrow1} /></a>
+                </Col>
+                <Col sm={6} className='p-0'>
+                <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+                </Col>
+              </Row>
+            </div>
+
+          </div>
+
+
+          <div className='replaybox'>
+            
+            <Row className='pb-4 mb-2 colsm12'>
+              <Col lg={6}> 
+                <Row className='userlist'>
+                    <Col xs={2}>
+                      <span className="inboxuserpic">
+                          <img src={inboxuser1} width="63px" alt="" />
+                      </span>
+                    </Col>
+                    <Col xs={10} className='p-0'> 
+                      <h5>Fanny Champair</h5>
+                      <h6>to me <KeyboardArrowDownIcon /></h6> 
+                    </Col> 
+                </Row>
               </Col>
-              <Col sm={6} className='p-0'>
-              <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+              <Col lg={6} Align="right">  
+                <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
+                  <Button>
+                    <label>21 Jun 2022, 13:15 (1 days ago)</label>
+                  </Button>
+                  <Button>
+                    <img src={iconstar} />
+                  </Button>
+                  <Button>
+                    <img src={iconsarrow2} />
+                  </Button>
+                  <Button>
+                    <img src={iconmenu} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row> 
+            
+            <Row> 
+              <Col> 
+                <p>
+                  Hi Yash, <br/>
+                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
+                  </p>
+                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
+                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
+                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
+                  <p>Thank You.</p>
               </Col>
             </Row>
+
+
+            <div className='replaybox'> 
+            <Row className='pb-4 mb-2 colsm12'>
+              <Col lg={6}> 
+                <Row className='userlist'>
+                    <Col xs={2}>
+                      <span className="inboxuserpic">
+                          <img src={inboxuser4} width="63px" alt="" />
+                      </span>
+                    </Col>
+                    <Col xs={10} className='p-0'> 
+                      <h5>Fanny Champair</h5>
+                      <h6>to me <KeyboardArrowDownIcon /></h6> 
+                    </Col> 
+                </Row>
+              </Col>
+              <Col lg={6} Align="right">  
+                <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
+                  <Button>
+                    <label>21 Jun 2022, 13:15 (1 days ago)</label>
+                  </Button>
+                  <Button>
+                    <img src={iconstar} />
+                  </Button>
+                  <Button>
+                    <img src={iconsarrow2} />
+                  </Button>
+                  <Button>
+                    <img src={iconmenu} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row> 
+            
+            <Row> 
+              <Col> 
+                <p>
+                  Hi Yash, <br/>
+                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
+                  </p>
+                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
+                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
+                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
+                  <p>Thank You.</p>
+              </Col>
+            </Row> 
+
+            <div className='d-flex mt-5 ml-2 replayallbox'>
+              <Row>
+                <Col xs={4} className='p-0'>
+                  <a href='#' className='p-2'><img src={iconsarrow1} /></a>
+                </Col>
+                <Col xs={4} className='p-0'>
+                  <a href='#' className='p-2'><img src={replyall} /></a>
+                </Col>
+                <Col xs={4} className='p-0'>
+                <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+                </Col>
+              </Row>
             </div>
+          </div>
 
           </div>
         

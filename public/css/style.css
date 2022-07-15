@@ -9,9 +9,17 @@ body, html{
 .right{
     float: right;
 }
-.header-main{
+/* .header-main{
     background-color: #647AF7;
-}
+} */
+.header-main {
+    background-color: #647AF7;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 999;
+  }
 span.userpic { 
     padding: 5ox;
     overflow: hidden;
@@ -71,6 +79,7 @@ span.userpic {
 }
 .bodymain{
     padding: 0 15px; 
+    margin-top: 70px;
 }
 .textbox-dek input{
     background: #FFFFFF;
@@ -123,17 +132,19 @@ span.userpic {
 }
 .col.maxcontainerix {
     max-width: 500px;
+    position: fixed;
 }
 .rightinbox{
     width: calc(100% - 530px);
+    margin-left: 500px;
 }
 .inboxuserpic {
     background: #ccc;
     padding: 0;
     overflow: hidden;
     border-radius: 72px;
-    width: 53px;
-    height: 53px;
+    width: 48px;
+    height: 48px;
     display: table;
   }
   .inboxuserpic img {
@@ -564,7 +575,14 @@ div .dropdown-item.active img,
 div .dropdown-item:focus img {
     filter: brightness(0) invert(1);
 }
-
+.replaybox {
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    padding: 15px;
+}
+.replayallbox img {
+    width: 30px;
+  }
 
 @media screen and (max-width:990px){
     .mobile-nav {
@@ -601,6 +619,7 @@ div .dropdown-item:focus img {
     .col.maxcontainerix {
         max-width: inherit;
         width: 100%;
+        position: relative;
     }
     .mb-columfull{
         flex-direction: column;
@@ -612,6 +631,12 @@ div .dropdown-item:focus img {
     .inboxuserpic img{ 
         width: 43px;
     }
+    .rightinbox{
+        margin-left: 0px;
+    }
+    div .dropdown-item img{
+        filter: brightness(0) invert(1);
+      }
 }
 
 @media (min-width:991px) and (max-width:1400px){
