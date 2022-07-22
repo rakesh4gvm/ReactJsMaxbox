@@ -12,6 +12,19 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { TextareaAutosize } from '@mui/material'; 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
+import Box from '@mui/material/Box'; 
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+
 import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser2 from '../../images/avatar/2.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
@@ -34,8 +47,23 @@ import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg'; 
 import link_line from '../../images/icons/link_line.svg'; 
 import google_drive from '../../images/icons/google_drive.svg'; 
+import Emailinbox from '../../images/email_inbox_img.png'; 
+import Emailcall from '../../images/email_call_img.png'; 
 
-export default function HomePage() {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+
+export default function HomePage({ children }) {
     const [selected, setSelected] = React.useState(false);
 
     const addShowCompose = () => {
@@ -47,10 +75,96 @@ export default function HomePage() {
         element.classList.add("show");
       }
     };
-   
+    const [open, setOpen] = React.useState(false);
+    const [openone, setOpenone] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const handleOpenOne = () => setOpenone(true);
+    const handleCloseOne = () => setOpenone(false);
+
+    const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+
+    const handleChange = (newValue) => {
+      setValue(newValue);
+    };
+
 return (
     <>
     <HeaderTop />  
+
+    <div>
+      
+      <Modal className="modal-pre"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+            Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure  for move this E-mail into Other Inbox ?
+            </Typography>  
+          </div>
+          <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium">
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium">
+                No
+              </Button>
+           </div>
+        </Box>
+      </Modal>
+
+
+      <Modal className="modal-pre"
+        open={openone}
+        onClose={handleCloseOne}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="modal-prein">
+          <div className='px-5 pt-5 text-center'>
+            <img src={Emailcall} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+            Follow Up Later
+            </Typography>
+          </div>
+          <div className='px-5 pb-5 text-left datepikclen'>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Choose date for follow up later.
+            </Typography>  
+            <div className="pt-3">
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Stack spacing={0}>
+                <DesktopDatePicker 
+                  inputFormat="MM/dd/yyyy"
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                /> 
+              </Stack>
+            </LocalizationProvider>
+            </div>
+          </div>
+          <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium">
+                Ok
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium">
+                Cancel
+              </Button>
+           </div>
+        </Box>
+      </Modal>
+
+    </div>
+
     <div className='bodymain'>
         <Row className='mb-columfull'>
         <Col className='maxcontainerix'>
@@ -61,9 +175,9 @@ return (
         <Col className='rightinbox'>
           <div className='inxtexteditor'>
             <Row className='bt-border pb-4 mb-4 colsm12'>
-              <Col lg={6}> 
+              <Col lg={6}>  
                 <Row className='userlist'>
-                    <Col xs={2}>
+                    <Col xs={2}> 
                       <span className="inboxuserpic">
                           <img src={inboxuser3} width="63px" alt="" />
                       </span>
@@ -76,10 +190,10 @@ return (
               </Col>
               <Col lg={6} Align="right"> 
                 <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                  <Button>
+                  <Button onClick={handleOpen}>
                     <img src={iconleftright} />
                   </Button>
-                  <Button>
+                  <Button onClick={handleOpenOne}>
                     <label>56 / 100</label>
                   </Button>
                   <Button>
@@ -264,12 +378,12 @@ return (
 
               <div className='user_editor mt-5'>
                 <Row className='userlist'>
-                    <Col>
+                    <Col className='fixwidleft'>
                       <span className="inboxuserpic">
                           <img src={inboxuser1} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={11} className='p-0'> 
+                    <Col className='fixwidright p-0'> 
                       <div className='editorboxcard'>
                         <Row className='edittoprow p-2'>
                             <Col className='d-flex hedtopedit'>

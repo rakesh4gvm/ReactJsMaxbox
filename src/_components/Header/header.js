@@ -1,4 +1,4 @@
-import * as React from 'react';  
+import React, { useRef, useEffect } from 'react';  
 import Select from 'react-select'
 import { Col, Container, Form, Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar'
@@ -42,6 +42,21 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' }
 ]
 
+function useOutsideAlerter(ref) {
+    useEffect(() => { 
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          const element = document.getElementById("id_userbox") 
+            element.classList.remove("show"); 
+        }
+      } 
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => { 
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+}
+
 const addShowClass = () => {
     const element = document.getElementById("id_userbox")
     if(element.classList.contains("show")){
@@ -53,7 +68,8 @@ const addShowClass = () => {
   };
 
 export default function Header() { 
-
+    const wrapperRef = useRef(null);
+    useOutsideAlerter(wrapperRef); 
   return (
       <>
         <header className='header-main'>
@@ -151,15 +167,18 @@ export default function Header() {
                                     <Select options={options} />
                                 </div>
 
-
-                                <div className="dropboxcard">
+ 
+                        </Nav>
+                        
+                        </Navbar.Collapse>
+                        <div className="dropboxcard ml-3">
                                     <a href="#" className="" onClick={addShowClass}>
                                         <span className="userpic">
                                             <img src={defaultuser} width="53px" alt="" />
                                         </span>
                                     </a>
 
-                                    <div className="userdropdown" id="id_userbox">
+                                    <div className="userdropdown" id="id_userbox" ref={wrapperRef}>
                                         <div className="bg-themehead">
                                         <span className="userpic us-max-110">
                                             <img src={defaultuser} width="110px" alt="" />
@@ -246,10 +265,6 @@ export default function Header() {
                                         </div>
                                     </div> 
                                 </div>
-                            
-                            
-                        </Nav>
-                        </Navbar.Collapse>
                     </div>
             </Navbar>
         </header>

@@ -61,6 +61,9 @@ span.userpic {
 .selecter-m{
     min-width: 250px;
 }
+.menulist {
+    display: flex;
+}
 .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:focus, .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:hover {
     color: #fff;
     padding: 0 1.5rem 0 1rem;
@@ -613,7 +616,69 @@ div .dropdown-item:focus img {
     outline: 0;
     resize: none;
 }
-
+button.btn-pre, button.btn-pre:hover {
+    background-color: #647AF7;
+    color: #fff;
+}
+button.btn-darkpre, button.btn-darkpre:hover {
+    background-color: #4E63DA;
+    color: #fff;
+}
+.btn-50 button {
+    width: 50%;
+    border-radius: 0;
+    padding: 11px 15px;
+}
+div.modal-prein {
+    padding: 0;
+    border-radius: 15px;
+    box-shadow: none;
+    border: none !important;
+    overflow: hidden;
+}
+.datepikclen .MuiOutlinedInput-root{
+    background-color: #F7F8FF;
+}
+.datepikclen fieldset{
+    top: 0;
+}
+.datepikclen fieldset legend{
+    display: none;
+}
+.css-bkrceb-MuiButtonBase-root-MuiPickersDay-root.Mui-selected { 
+    background-color: #647af7; 
+}
+.replaybox{
+    background-color: #F7F8FF;
+    
+}
+.replaybox .replaybox{
+    background-color: #FFFFFF;
+}
+.user_editor.mt-5 {
+    padding: 0 15px;
+}
+.col.fixwidleft {
+    max-width: 70px;
+}
+.col.fixwidright{
+    max-width: calc(100% - 70px);
+}
+.bodsetting{
+    background: #ccc;
+    color: #fff;
+}
+.imgupload {
+    width: 206px;
+    height: 206px;
+    background-color: #4E63DA;
+    margin: 0 auto;
+    border-radius: 150px;
+    border: 5px solid #FFFFFF;
+    box-shadow: 0px 4px 24px rgb(0 0 0 / 25%);
+    margin-bottom: -103px;
+    margin-top: 30px;
+}
 
 @media screen and (max-width:990px){
     .mobile-nav {
@@ -622,8 +687,9 @@ div .dropdown-item:focus img {
         left: 0;
         z-index: 99999;
         width: 100%;
-        margin-top: 10px;
+        margin-top: 60px;
         text-align: left;
+        padding-bottom: 20px;
     }
     .menulist .dropdown > a {
         margin-top: 0;

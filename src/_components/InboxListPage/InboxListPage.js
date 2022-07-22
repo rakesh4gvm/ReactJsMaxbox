@@ -1,4 +1,4 @@
-import * as React from 'react'; 
+import React, { useRef, useEffect } from 'react'; 
 import { Col, Row } from 'react-bootstrap';
  
 import Select from 'react-select'
@@ -35,7 +35,20 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel'; 
 
 
-
+function useOutsideAlerter(ref) {
+  useEffect(() => { 
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        const element = document.getElementById("id_userboxlist") 
+          element.classList.remove("show"); 
+      }
+    } 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => { 
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+}
 const addInboxClass = () => {
   const element = document.getElementById("id_userboxlist")
   if(element.classList.contains("show")){
@@ -113,7 +126,8 @@ export default function HomePage() {
 
         setChecked(newChecked);
       };
-      
+      const wrapperRef = useRef(null);
+      useOutsideAlerter(wrapperRef); 
 
 return (
     <> 
@@ -150,7 +164,7 @@ return (
                         All <img src={downarrow} />
                       </a>
 
-                      <div className="userdropall" id="id_userboxlist"> 
+                      <div className="userdropall" id="id_userboxlist" ref={wrapperRef}> 
                           <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                               {[0, 1, 2, 3, 4].map((value) => {

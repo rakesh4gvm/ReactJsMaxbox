@@ -1,4 +1,4 @@
-import * as React from 'react'; 
+import React, { useRef, useEffect } from 'react'; 
 import { ButtonGroup, Col, Row } from 'react-bootstrap';
  
 import Button from '@mui/material/Button';
@@ -26,9 +26,26 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg'; 
 import template from '../../images/icons/template.svg'; 
 
+function useOutsideAlerter(ref) {
+  useEffect(() => { 
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        const element = document.getElementById("UserCompose") 
+          element.classList.remove("show"); 
+      }
+    } 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => { 
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+}
+
 
 export default function HomePage() {
     const [selected, setSelected] = React.useState(false);
+    const wrapperRef = useRef(null);
+    useOutsideAlerter(wrapperRef); 
 
     const addShowCompose = () => {
       const element = document.getElementById("UserCompose")
@@ -37,7 +54,7 @@ export default function HomePage() {
       }
       else{
         element.classList.add("show");
-      }
+      } 
     };
    
 return (
@@ -46,7 +63,8 @@ return (
          
       <div className='composebody'> 
         <Button variant="contained btn btn-primary largbtn" onClick={addShowCompose}> + Compose</Button>
-        <div className="usercompose" id="UserCompose">
+
+        <div className="usercompose" id="UserCompose" ref={wrapperRef}>
             <div className='hcompose px-3'>
               <Row>
                 <Col><h4>New Message</h4></Col>
