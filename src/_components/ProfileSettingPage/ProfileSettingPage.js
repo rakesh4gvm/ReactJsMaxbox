@@ -1,54 +1,11 @@
 import * as React from 'react'; 
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
-import Compose from '../ComposePage/ComposePage';
+import Select from 'react-select' 
+import Button from '@mui/material/Button'; 
+import ButtonGroup from '@mui/material/ButtonGroup'; 
 
-import InboxList from '../InboxListPage/InboxListPage'
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import { TextareaAutosize } from '@mui/material'; 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
-import Box from '@mui/material/Box'; 
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-
-import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser2 from '../../images/avatar/2.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
-import inboxuser4 from '../../images/avatar/4.jpg';
-import inboximg1 from '../../images/inboximg1.jpg';
-import inboximg2 from '../../images/inboximg2.jpg';
-
-import iconleftright from '../../images/icon_left_right.svg';
-import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg'; 
-import replyall from '../../images/icons/reply_all.svg';
-import attachment from '../../images/icons/attachment.svg'; 
-import text_font from '../../images/icons/text_font.svg'; 
-import image_light from '../../images/icons/image_light.svg'; 
-import smiley_icons from '../../images/icons/smiley_icons.svg'; 
-import signature from '../../images/icons/signature.svg'; 
-import link_line from '../../images/icons/link_line.svg'; 
-import google_drive from '../../images/icons/google_drive.svg'; 
-import Emailinbox from '../../images/email_inbox_img.png'; 
-import Emailcall from '../../images/email_call_img.png'; 
+// import inboximg2 from '../../images/inboximg2.jpg';
 
 const style = {
   position: 'absolute',
@@ -61,6 +18,12 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const options = [
+  { value: 'v1', label: 'Country' },
+  { value: 'v2', label: 'Country 1' },
+  { value: 'v3', label: 'Country 2' }
+]
 
 
 export default function ProfileSettingPage({ children }) {
@@ -110,6 +73,66 @@ return (
             </div>
         </Col> 
       </Row> 
+
+      <div className='sm-container mt-5'>
+      <Row>
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='First Name' />
+            </div>
+        </Col> 
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='Last Name' />
+            </div>
+        </Col>
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='email' placeholder='Email' />
+            </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='Phone No.' />
+            </div>
+        </Col> 
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='Zip code' />
+            </div>
+        </Col>
+        <Col sm={4}> 
+            <div class="Select-box">
+                <Select options={options} />
+            </div>
+        </Col>
+      </Row> 
+      <Row>
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='Password' placeholder='Password' />
+            </div>
+        </Col> 
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='Password' placeholder='Confirm Password' />
+            </div>
+        </Col>
+        <Col> 
+        </Col>
+      </Row> 
+      </div>
+
+      <div className='btnprofile my-5'>
+        <ButtonGroup variant="text" aria-label="text button group">
+          <Button variant="contained btn btn-primary smallbtn"> Edit</Button>
+          <Button variant="contained btn btn-primary smallbtn mx-4"> Save</Button>
+          <Button variant="contained btn btn-orang smallbtn"> Cancel</Button>
+        </ButtonGroup>
+      </div>
+
     </div>
 
     </>

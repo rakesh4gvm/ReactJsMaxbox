@@ -80,9 +80,9 @@ span.userpic {
     transform: rotate(45deg);
     margin-left: 10px;
 }
-.bodymain{
-    padding: 0 15px; 
-    margin-top: 70px;
+.bodymain {
+    padding: 0 15px;
+    margin-top: 69px;
 }
 .textbox-dek input{
     background: #FFFFFF;
@@ -664,8 +664,8 @@ div.modal-prein {
 .col.fixwidright{
     max-width: calc(100% - 70px);
 }
-.bodsetting{
-    background: #ccc;
+.bodsetting {
+    background: #8193f9a3;
     color: #fff;
 }
 .imgupload {
@@ -679,6 +679,119 @@ div.modal-prein {
     margin-bottom: -103px;
     margin-top: 30px;
 }
+.input-box {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.input-box input {
+    border: 1px solid #E5E5E5;
+    border-radius: 15px;
+    width: 100%;
+    padding: 0 15px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 50px;
+    color: #616B77;
+}
+.sm-container{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.btnprofile{
+    margin: 0 auto;
+    display: table;
+}
+.btn.btn-orang{
+    background: #F89665;
+    color: #fff;
+}
+.btn.btn-orang:hover{
+    background: #DC6529;
+    color: #fff;
+}
+.btn.btn-orang.btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem #f8966540;
+}
+.btnprofile .css-1or64il-MuiButtonGroup-root .MuiButtonGroup-grouped {
+    min-width: 130px;
+}
+.Select-box > div > div {
+    margin: 15px auto;
+    min-height: 50px;
+    border-radius: 15px;
+    border-color: #E5E5E5;
+}
+.Select-box > div > div > div + div .css-1okebmr-indicatorSeparator{
+    display: none;
+}
+.tablename, td, th { 
+    font-family: 'Poppins';
+}
+.tablename thead tr th{
+    font-weight: 700; 
+    line-height: 22px; 
+    color: #616B77;
+}
+.tablename tbody tr td{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px; 
+    color: #616B77;
+}
+button.btn-success{
+    background-color: #5CC078;
+}
+button.btn-success:hover{
+    background-color: #44a760;
+}
+button.btn-cancel{
+    background-color: #FF8B8B;
+}
+button.btn-cancel{
+    background-color: #e07070;
+}
+.table-btn button {
+    width: auto;
+    border-radius: 72px !important;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #FFFFFF;
+    padding: 6px 15px;
+    margin: 0 4px;
+    font-family: 'Poppins';
+}
+Button.iconbtntable { 
+    line-height: 40px;
+    background: #647AF7;
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    float: right;
+    padding: 0;
+    min-width: auto;
+}
+Button.iconbtntable:hover, Button.iconbtntable:focus {
+    background: #5267DB;
+}
+Button.btnauthenticate {
+    background: #F89665;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    font-family: 'Poppins';
+    padding: 6px 15px;
+}
+Button.btnauthenticate:hover{
+    background: #d47748;
+}
+
+
 
 @media screen and (max-width:990px){
     .mobile-nav {
