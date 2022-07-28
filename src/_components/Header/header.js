@@ -85,33 +85,33 @@ export default function Header() {
                             <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec"> 
                                 <NavDropdown title="Inbox" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/3.1">
+                                    <NavDropdown.Item href="/UnansweredResponses">
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.2"><img src={menustart} />Starred
+                                    <NavDropdown.Item href="/Starred"><img src={menustart} />Starred
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.3"><img src={timermenu} />Follow Up Later
+                                    <NavDropdown.Item href="/FollowUpLater"><img src={timermenu} />Follow Up Later
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.4"><img src={drafts} />Drafts
+                                    <NavDropdown.Item href="/Drafts"><img src={drafts} />Drafts
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.5"><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item href="/"><img src={inbox} />Other Inbox
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="#action/3.6"><img src={spam} />Spam
+                                    <NavDropdown.Item href="/Spam"><img src={spam} />Spam
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>

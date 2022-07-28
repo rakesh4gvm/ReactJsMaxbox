@@ -63,7 +63,7 @@ const style = {
 };
 
 
-export default function HomePage({ children }) {
+export default function UnansweredResponsesPage({ children }) {
     const [selected, setSelected] = React.useState(false);
 
     const addShowCompose = () => {
@@ -91,80 +91,7 @@ export default function HomePage({ children }) {
 return (
     <>
     <HeaderTop />  
-
-    <div>
-      
-      <Modal className="modal-pre"
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} className="modal-prein">
-          <div className='p-5 text-center'>
-            <img src={Emailinbox} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-            Are you sure ?
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Are you sure  for move this E-mail into Other Inbox ?
-            </Typography>  
-          </div>
-          <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
-                No
-              </Button>
-           </div>
-        </Box>
-      </Modal>
-
-
-      <Modal className="modal-pre"
-        open={openone}
-        onClose={handleCloseOne}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} className="modal-prein">
-          <div className='px-5 pt-5 text-center'>
-            <img src={Emailcall} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-            Follow Up Later
-            </Typography>
-          </div>
-          <div className='px-5 pb-5 text-left datepikclen'>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Choose date for follow up later.
-            </Typography>  
-            <div className="pt-3">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={0}>
-                <DesktopDatePicker 
-                  inputFormat="MM/dd/yyyy"
-                  value={value}
-                  onChange={handleChange}
-                  renderInput={(params) => <TextField {...params} />}
-                /> 
-              </Stack>
-            </LocalizationProvider>
-            </div>
-          </div>
-          <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
-                Ok
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
-                Cancel
-              </Button>
-           </div>
-        </Box>
-      </Modal>
-
-    </div>
-
+  
     <div className='bodymain'>
         <Row className='mb-columfull'>
         <Col className='maxcontainerix'>

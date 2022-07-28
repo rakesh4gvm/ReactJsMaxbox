@@ -67,7 +67,7 @@ span.userpic {
 .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:focus, .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:hover {
     color: #fff;
     padding: 0 1.5rem 0 1rem;
-    font-size: 18px;
+    font-size: 16px;
 }
 .menulist .dropdown{
     margin-top: 12px;
@@ -83,6 +83,7 @@ span.userpic {
 .bodymain {
     padding: 0 15px;
     margin-top: 69px;
+    margin-bottom: 40px;
 }
 .textbox-dek input{
     background: #FFFFFF;
@@ -90,7 +91,7 @@ span.userpic {
     border-radius: 50px;
 }
 .textbox-dek.serchdek input{
-    padding: 15px 15px 15px 50px;
+    padding: 10px 15px 11px 50px;
 }
 .leftinbox {
     text-align: left;
@@ -134,12 +135,12 @@ span.userpic {
     display: block;
 }
 .col.maxcontainerix {
-    max-width: 500px;
+    max-width: 470px;
     position: fixed;
 }
 .rightinbox{
-    width: calc(100% - 530px);
-    margin-left: 500px;
+    width: calc(100% - 470px);
+    margin-left: 470px;
 }
 .inboxuserpic {
     background: #ccc;
@@ -156,7 +157,7 @@ span.userpic {
 .cardinboxlist h4{
     font-style: normal;
     font-weight: 300;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 25px;
     color: #616B77;
     margin: 0;
@@ -164,14 +165,14 @@ span.userpic {
 .cardinboxlist h3{
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 30px; 
     color: #242424;
     margin-top: 0;
 }
 .cardinboxlist p{
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 25px;
     color: #616B77;
 }
@@ -261,16 +262,17 @@ span.userpic {
     max-width: 240px;
     width: 100%;
 }
-.MuiButton-root.iconbtn {
-    line-height: 55px;
-    background: #647AF7; 
-    border-radius: 15px;
-    height: 55px;
-    width: 55px;
+Button.iconbtn {
+    line-height: 45px;
+    background: #647AF7;
+    border-radius: 10px;
+    height: 45px;
+    width: 45px;
     float: right;
     padding: 0;
     min-width: auto;
-  }
+    margin: 0 0 0 10px;
+}
 .MuiButton-root.iconbtn svg{
     width: 20px;
 }
@@ -283,26 +285,26 @@ span.userpic {
 }
 .inxtexteditor h2{
     font-weight: 500;
-    font-size: 25px;
+    font-size: 22px;
     line-height: 41px; 
     color: #242424;
 }
 .inxtexteditor p{
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 24px; 
     color: #616B77;
 }
 .inxtexteditor h6{
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 20px; 
     color: #616B77;
     text-align: right;
 }
 .userlist h6{ 
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 30px; 
     color: #242424;
 }
@@ -336,7 +338,7 @@ span.userpic {
 }
 .textdeclist li span .MuiTypography-body1{
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 30px; 
     color: #242424;
 }
@@ -353,15 +355,15 @@ span.userpic {
     height: auto;
 }
 .selectorall {
-    padding: 15px;
+    padding: 10px 15px;
     max-width: 220px;
     border: 1px solid #E5E5E5;
-    min-height: 55px;
+    min-height: 45px;
     border-radius: 15px;
     width: 100%;
     display: table;
     color: #616B77;
-    text-decoration: none; 
+    text-decoration: none;
 }
 .selectorall:hover{
     color: #616B77;
@@ -588,6 +590,19 @@ div .dropdown-item:focus img {
 .replayallbox img {
     width: 30px;
 }
+.replaybox h5 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: normal;
+    color: #242424;
+    margin-bottom: 0;
+}
+.replaybox p{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #616B77;
+}
 .editorboxcard {
     background: #FFFFFF;
     border: 1px solid #E5E5E5;
@@ -667,6 +682,8 @@ div.modal-prein {
 .bodsetting {
     background: #8193f9a3;
     color: #fff;
+    overflow: hidden;
+    position: relative;
 }
 .imgupload {
     width: 206px;
@@ -676,8 +693,8 @@ div.modal-prein {
     border-radius: 150px;
     border: 5px solid #FFFFFF;
     box-shadow: 0px 4px 24px rgb(0 0 0 / 25%);
-    margin-bottom: -103px;
-    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-top: -153px;
 }
 .input-box {
     margin-top: 15px;
@@ -725,6 +742,9 @@ div.modal-prein {
 .Select-box > div > div > div + div .css-1okebmr-indicatorSeparator{
     display: none;
 }
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root.tablename{
+    box-shadow: none;
+}
 .tablename, td, th { 
     font-family: 'Poppins';
 }
@@ -732,6 +752,7 @@ div.modal-prein {
     font-weight: 700; 
     line-height: 22px; 
     color: #616B77;
+    border-color: #E5E5E5;
 }
 .tablename tbody tr td{
     font-style: normal;
@@ -739,6 +760,7 @@ div.modal-prein {
     font-size: 15px;
     line-height: 22px; 
     color: #616B77;
+    border-color: #E5E5E5;
 }
 button.btn-success{
     background-color: #5CC078;
@@ -791,6 +813,60 @@ Button.btnauthenticate:hover{
     background: #d47748;
 }
 
+Button.btnaccount {
+    background: #7ED997;
+    box-shadow: 2px 28px 17px -2px rgb(230 225 223 / 76%);
+    border-radius: 50px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #FFFFFF;
+    padding: 13px 25px;
+    text-transform: capitalize;
+}
+Button.btnaccount:hover{
+    background: #7ED997;
+}
+.inxtexteditor h5 {
+    margin-bottom: 0;
+    font-size: 17px;
+}
+.page-dec ul li button{
+    background: #F7F8FF;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 0px;
+    border: none;
+    color: #616B77;
+}
+.page-dec ul li button.Mui-selected{
+    color: #647AF7;
+    background: #F7F8FF;
+}
+.footer-main{
+    background: #F5F5F5;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px; 
+    color: #616B77;
+    padding: 20px 40px;
+}
+.footer-main p{
+    margin-bottom: 0;
+    color: #616B77;
+}
+.footer-main a{
+    margin-bottom: 0;
+    color: #616B77;
+}
+.imgbgset {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
 
 
 @media screen and (max-width:990px){
@@ -847,9 +923,16 @@ Button.btnauthenticate:hover{
     div .dropdown-item img{
         filter: brightness(0) invert(1);
       }
+    .userdropdown { 
+        min-width: inherit; 
+    }
+    .footer-main .col-sm-6{
+        text-align: center;
+        margin: 5px auto;
+    }
 }
 
-@media (min-width:991px) and (max-width:1400px){
+@media (min-width:991px) and (max-width:1200px){
     .colsm12{
         flex-direction: column;
     }

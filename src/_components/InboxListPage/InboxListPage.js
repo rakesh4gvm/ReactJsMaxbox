@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'; 
-import { Col, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Row } from 'react-bootstrap';
  
 import Select from 'react-select'
 import { styled, alpha } from '@mui/material/styles';
@@ -210,15 +210,15 @@ return (
                       </div>  
                   </div>
               </Col>
-              <Col xs={2}>
-                <Button className='iconbtn' variant="contained" size="large">
-                  <RefreshIcon />
-                </Button>
-                </Col>
-              <Col xs={2}>
-                <Button className='iconbtn' variant="contained" size="large">
-                  <DeleteIcon />
-                </Button>
+              <Col xs={4} align='right'>
+                <ButtonGroup variant="text" aria-label="text button group">
+                  <Button className='iconbtn' variant="contained" size="large">
+                    <RefreshIcon />
+                  </Button> 
+                  <Button className='iconbtn' variant="contained" size="large">
+                    <DeleteIcon />
+                  </Button>
+                </ButtonGroup>
               </Col>
           </Row>
           <Row>

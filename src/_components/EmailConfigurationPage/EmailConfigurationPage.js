@@ -1,6 +1,7 @@
 import * as React from 'react'; 
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header'; 
+import FooterBottom from '../Footer/footer'; 
 
  
 import Table from '@mui/material/Table';
@@ -19,6 +20,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
+import BgProfile from '../../images/bg-profile.png';
 
 
  
@@ -38,15 +40,15 @@ const rows = [
 ];
 
 
-export default function ProfileSettingPage({ children }) {
+export default function EmailConfigurationPage({ children }) {
      
 
 return (
     <>
     <HeaderTop />  
  
-    <div className='bodymain'>
-      <Row className='bodsetting'>
+    <div className='bodymain'> 
+      <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
         <Col className='py-4'>
           <h5 className='my-0'>Email Configuration</h5> 
         </Col> 
@@ -55,9 +57,9 @@ return (
       
 
       <div className='sm-container mt-5'>
-          <Row>
-            <Col>
-                <Button className='btnauthenticate'>
+          <Row className='mb-5'>
+            <Col align="right">
+                <Button className='btnaccount'>
                   <AddIcon /> Add Account
                 </Button> 
             </Col>
@@ -110,7 +112,7 @@ return (
                   </Table>
                 </TableContainer>
 
-                <Stack className='my-4' spacing={2}> 
+                <Stack className='my-4 page-dec' spacing={2}> 
                   <Pagination count={3} variant="outlined" shape="rounded" />
                 </Stack>
             </Col>
@@ -118,6 +120,8 @@ return (
       </div>
 
     </div>
+
+    <FooterBottom />  
 
     </>
     );

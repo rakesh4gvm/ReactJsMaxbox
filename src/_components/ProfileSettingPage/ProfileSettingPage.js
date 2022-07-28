@@ -1,9 +1,11 @@
 import * as React from 'react'; 
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
+import FooterBottom from '../Footer/footer';
 import Select from 'react-select' 
 import Button from '@mui/material/Button'; 
 import ButtonGroup from '@mui/material/ButtonGroup'; 
+import BgProfile from '../../images/bg-profile.png';
 
 // import inboximg2 from '../../images/inboximg2.jpg';
 
@@ -56,17 +58,16 @@ return (
     <HeaderTop />  
  
     <div className='bodymain'>
-      <Row className='bodsetting'>
-        <Col className='text-center py-5'>
-          <h4>Profile Setting</h4>
-        
-          <div className='imgupload'> 
-          </div>
+      <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
+        <Col className='text-center py-5' style={{minHeight: '230px'}}>
+          <h4>Profile Setting</h4> 
         </Col> 
       </Row>  
      
       <Row className='text-center mt-5'>
         <Col>
+          <div className='imgupload'> 
+          </div>
           <div className='mt-4'>
               <h5>Yash Donald</h5>  
               <a>yashdonald@gmail.com</a>
@@ -134,6 +135,8 @@ return (
       </div>
 
     </div>
+
+    <FooterBottom />  
 
     </>
     );
