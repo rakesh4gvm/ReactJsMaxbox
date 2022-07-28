@@ -106,7 +106,7 @@ export default function Header() {
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item> 
-                                    <NavDropdown.Item href="/"><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item href="/OtherInbox"><img src={inbox} />Other Inbox
                                     <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
