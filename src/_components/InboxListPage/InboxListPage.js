@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react'; 
 import { ButtonGroup, Col, Row } from 'react-bootstrap';
- 
-import Select from 'react-select'
+import Axios from "axios";
+
+
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@mui/material/InputBase';
@@ -16,24 +17,20 @@ import StarIcon from '@material-ui/icons/Star';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import NotificationsIcon from '@material-ui/icons/Notifications';  
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser2 from '../../images/avatar/2.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
-import inboxuser4 from '../../images/avatar/4.jpg'; 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton'; 
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
-import allusers from '../../images/all_users.svg';
-import iconlogout from '../../images/icon_logout.svg';
-import defaultuser from '../../images/avatar/defaultuser.jpg';
 import downarrow from '../../images/icon_downarrow.svg';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel'; 
 
+
+import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
 
 function useOutsideAlerter(ref) {
   useEffect(() => { 
@@ -59,7 +56,57 @@ const addInboxClass = () => {
   }
 };
 
-export default function HomePage() {
+export default function HomePage({OpenMessageDetails},{isLoading}) {
+
+  const [InBoxList, SetInBoxList] = React.useState([]);
+
+  
+  const [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [search, setSearch] = React.useState("");
+  const [sortField, setsortField] = React.useState("FromName");
+  const [sortedBy, setsortedBy] = React.useState(1);
+  const [ClientID, setClientID] = React.useState(0);
+  const [UserID, setUserID] = React.useState(0);
+ 
+
+  useEffect(() => {
+    debugger;
+  var dd=isLoading
+    GetInBoxList ();
+  }, []);
+
+
+     const GetInBoxList = () => {
+      debugger;
+      var data = {
+        Page: page,
+        RowsPerPage: rowsPerPage,
+        sort: true,
+        Field: sortField,
+        Sortby: sortedBy,
+        Search: search,
+        ClientID: ClientID,
+        UserID: UserID,
+        
+      };
+      const responseapi = Axios({
+        url:CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+        method: "POST",
+        data: data,
+      });
+      responseapi.then((result) => {
+      
+        if(result.data.StatusMessage==ResponseMessage.SUCCESS)
+        {
+          SetInBoxList(result.data.PageData);
+        }
+        
+       
+      });
+    };
+
+    
     const [selected, setSelected] = React.useState(false);
 
     const [checked, setChecked] = React.useState([1]);
@@ -233,13 +280,15 @@ return (
           <div className='listinbox mt-3'>
           <scrollbars>
             <Stack spacing={1} align="left">
-            
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
+            {InBoxList.map((row) => (
+              
+               <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+               <Row>
+               <Col xs={1} className="pr-0">
                         <FormControlLabel control={<Checkbox />} label="" /> 
                     </Col>
-                    <Col xs={11} className="pr-0">   
+                </Row>
+                <Col xs={11} className="pr-0">   
                       <Row> 
                           <Col xs={2}>
                             <span className="inboxuserpic">
@@ -247,8 +296,8 @@ return (
                             </span>
                           </Col>
                           <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
+                            <h4>{row.FromEmail}</h4>
+                            <h3>{row.Subject}</h3> 
                           </Col>
                           <Col xs={2} className="pl-0"> 
                             <h6>8:56 PM</h6> 
@@ -272,149 +321,13 @@ return (
                             </div>
                         </Col>
                         <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                          <p>{row.Snippet}</p>
                         </Col>
                     </Row>
                     </Col>
-                  </Row> 
-                </Item> 
-                
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser2} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
-
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser3} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
- 
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser4} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
-                
-            </Stack> 
+                </Item>
+            ))}
+           </Stack> 
             </scrollbars>
           </div>
 
