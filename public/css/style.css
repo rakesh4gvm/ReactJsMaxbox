@@ -754,12 +754,13 @@ div.modal-prein {
     color: #616B77;
     border-color: #E5E5E5;
 }
-.tablename tbody tr td{
+.tablename tbody tr td {
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
-    line-height: 22px; 
+    line-height: 22px;
     color: #616B77;
+    white-space: nowrap;
     border-color: #E5E5E5;
 }
 button.btn-success{
@@ -867,6 +868,53 @@ Button.btnaccount:hover{
     left: 0;
     right: 0;
 }
+Button.btntemplateround {
+    background: #F89665;
+    border-radius: 72px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    font-family: 'Poppins';
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    min-width: inherit;
+}
+Button.btntemplateround:hover {
+    background: #d47748;
+}
+.tablebtnlist button.btn {
+    background: rgb(100, 122, 247);
+    width: 30px;
+    height: 30px;
+    line-height: 35px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    border-radius: 5px !important;
+    padding: 0;
+    min-width: inherit;
+}
+.tablebtnlist button svg,
+.tablebtnlist button img{
+    width: 17px;
+}
+.containermd {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.iconwhite, .iconwhite svg {
+    color: #fff;
+    width: 26px;
+    height: auto;
+}
+
+
+
+
+
+
 
 
 @media screen and (max-width:990px){

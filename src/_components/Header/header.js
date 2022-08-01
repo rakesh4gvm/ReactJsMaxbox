@@ -140,7 +140,7 @@ export default function Header() {
                                             <NotificationsIcon /> 43
                                         </div> */}
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/5.2">
+                                    <NavDropdown.Item href="/Templates">
                                         <img src={Carbontem} />Templates
                                         {/* <div className="notifimen">
                                             <NotificationsIcon /> 245
