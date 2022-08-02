@@ -56,7 +56,7 @@ const addInboxClass = () => {
   }
 };
 
-export default function HomePage({OpenMessageDetails},{isLoading}) {
+export default function HomePage({OpenMessageDetails}) {
 
   const [InBoxList, SetInBoxList] = React.useState([]);
 
@@ -71,12 +71,12 @@ export default function HomePage({OpenMessageDetails},{isLoading}) {
  
 
   useEffect(() => {
-    debugger;
-  var dd=isLoading
+
+
     GetInBoxList ();
   }, []);
 
-
+// Start Get InBoxList
      const GetInBoxList = () => {
       debugger;
       var data = {
@@ -105,7 +105,7 @@ export default function HomePage({OpenMessageDetails},{isLoading}) {
        
       });
     };
-
+// End Get InBoxList
     
     const [selected, setSelected] = React.useState(false);
 
