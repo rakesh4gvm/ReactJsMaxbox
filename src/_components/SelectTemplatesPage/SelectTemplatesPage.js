@@ -1,4 +1,4 @@
-import * as React from 'react'; 
+import React, { useRef, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header'; 
 import FooterBottom from '../Footer/footer'; 
@@ -17,6 +17,11 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button'; 
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Radio from '@mui/material/Radio';
+ 
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'; 
+import TemplateImg from '../../images/template_img.png';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
@@ -29,7 +34,17 @@ import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility'; 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
  
 function createData(TemplatesName, Templatescontent) {
   return { TemplatesName, Templatescontent };
@@ -46,6 +61,11 @@ const rows = [
 
 
 export default function SelectTemplatesPage({ children }) {
+  
+  const [open, setOpen] = React.useState(false); 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [selectedValue, setSelectedValue] = React.useState('a');
 
   const handleChange = (event) => {
@@ -54,7 +74,42 @@ export default function SelectTemplatesPage({ children }) {
 
 return (
     <>
+
+    
     <HeaderTop />  
+
+    
+    <div>
+
+    <Modal className="modal-pre"
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style} className="modal-prein">
+        <div className='p-5 text-center'>
+          <img src={TemplateImg} width="130" className='mb-4' />
+          <Typography id="modal-modal-title" variant="b" component="h6">
+          Are you sure for Use this <br/>Template?
+          </Typography>
+          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure  for move this E-mail into Other Inbox ?
+          </Typography> */}
+        </div>
+        <div className='d-flex btn-50'>
+          <Button className='btn btn-pre' variant="contained" size="medium">
+            Yes
+          </Button>
+          <Button className='btn btn-darkpre' variant="contained" size="medium">
+          Cancel
+          </Button>
+        </div>
+      </Box>
+    </Modal>
+
+ 
+    </div>
  
     <div className='bodymain'> 
       <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div> 
@@ -117,7 +172,7 @@ return (
                           </TableCell> 
                           <TableCell>
                             <ButtonGroup className='tablebtnlist' variant="text" aria-label="text button group">
-                              <Button variant="contained btn"><EditIcon /></Button>
+                              <Button variant="contained btn" onClick={handleOpen}><EditIcon /></Button>
                               {/* <Button variant="contained btn mx-2"><VisibilityIcon /></Button>
                               <Button variant="contained btn"><img src={DeleteIcon} /></Button> */}
                             </ButtonGroup>
