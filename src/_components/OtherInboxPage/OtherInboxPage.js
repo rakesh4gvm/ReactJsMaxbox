@@ -94,7 +94,7 @@ const addInboxClass = () => {
 };
 
 export default function OtherInboxPage() {
-  const [InBoxList, SetInBoxList] = React.useState([]);
+  const [InBoxList, setInBoxList] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
@@ -103,19 +103,19 @@ export default function OtherInboxPage() {
   const [ClientID, setClientID] = React.useState(0);
   const [UserID, setUserID] = React.useState(0);
 
-  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
+  const [OpenMessage, setOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, setDeletePopModel] = React.useState(false);
   const [AllDeletePopModel, setAllDeletePopModel] = React.useState(false);
   const [StarPopModel, setStarPopModel] = React.useState(false);
   const [StarSelected, setStarSelected] = React.useState(false);
   const [InboxChecked, setInboxChecked] = React.useState([]);
-
+  const [SelectAllCheckbox, setSelectAllCheckbox] = React.useState(false);
   useEffect(() => {
 
     GetInBoxList();
   }, [search]);
 
-
+  
   // Start Get InBoxList
   const GetInBoxList = () => {
     var data = {
@@ -138,7 +138,7 @@ export default function OtherInboxPage() {
 
       if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-        SetInBoxList(result.data.PageData);
+        setInBoxList(result.data.PageData);
         OpenMessageDetails(result.data.PageData[0]._id);
       }
     });
@@ -158,10 +158,10 @@ export default function OtherInboxPage() {
     });
     responseapi.then((result) => {
       if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(result.data.Data);
+        setOpenMessageDetails(result.data.Data);
       }
       else {
-        SetOpenMessageDetails('');
+        setOpenMessageDetails('');
       }
     });
 
@@ -178,7 +178,7 @@ export default function OtherInboxPage() {
 
   const DeleteMessage = (ID) => {
     if (ID != '') {
-      var DeleteArray=[]
+      var DeleteArray = []
       DeleteArray.push(ID)
       var data = {
         IDs: DeleteArray,
@@ -200,9 +200,9 @@ export default function OtherInboxPage() {
   }
   // End PopModel Open and Close And Delete Message
 
-  
- 
-// start Delete All Message 
+
+
+  // start Delete All Message 
   const OpenAllDeletePopModel = () => {
     if (InboxChecked.length > 0) {
       setAllDeletePopModel(true);
@@ -211,29 +211,29 @@ export default function OtherInboxPage() {
   const CloseAllDeletePopModel = () => {
     setAllDeletePopModel(false);
   }
+
   const DeleteAllMessage = () => {
     if (InboxChecked.length > 0) {
-        var data = {
-          IDs: InboxChecked,
-          LastUpdatedBy: -1
-        };
-        debugger;
-        const responseapi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
-          method: "POST",
-          data: data,
-        });
-        responseapi.then((result) => {
-          if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            CloseAllDeletePopModel();
-            OpenMessageDetails('')
-            GetInBoxList();
-          }
-        });
-      
+      var data = {
+        IDs: InboxChecked,
+        LastUpdatedBy: -1
+      };
+      const responseapi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: data,
+      });
+      responseapi.then((result) => {
+        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseAllDeletePopModel();
+          OpenMessageDetails('')
+          GetInBoxList();
+        }
+      });
+
     }
   }
-// End Delete All Message 
+  // End Delete All Message 
 
   // Start Update Star Message and model open and close
 
@@ -268,11 +268,10 @@ export default function OtherInboxPage() {
   }
   // End Update Star Message and model open and close
 
+  // Start CheckBox Code
   const InBoxCheckBox = (e) => {
-    debugger;
+
     var updatedList = [...InboxChecked];
-
-
     if (e.target.checked) {
       updatedList = [...InboxChecked, e.target.value];
     } else {
@@ -282,15 +281,16 @@ export default function OtherInboxPage() {
   }
 
   const SeleactAllInBoxCheckBox = (e) => {
-
     if (e.target.checked) {
-      setInboxChecked([InBoxList.map(item => item._id)]);
+      setSelectAllCheckbox(true);
+      setInboxChecked(InBoxList.map(item => item._id));
     } else {
+      setSelectAllCheckbox(false);
       setInboxChecked([]);
     }
 
   }
-
+  // End CheckBox Code
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
@@ -300,7 +300,11 @@ export default function OtherInboxPage() {
   // End Search
 
   const RefreshPage = () => {
+debugger;
+   setSelectAllCheckbox(false);
     setSearch('');
+    setInboxChecked([]);
+    
   }
 
 
@@ -545,7 +549,6 @@ export default function OtherInboxPage() {
       <div className='bodymain'>
         <Row className='mb-columfull'>
           <Col className='maxcontainerix'>
-            {/* <InboxList OpenMessageDetails={OpenMessageDetails}/> */}
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
@@ -636,7 +639,7 @@ export default function OtherInboxPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={false} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -645,15 +648,14 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {InBoxList.map((row, index) => (
+                    {InBoxList.map((row) => (
 
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
 
 
                         <Row>
                           <Col xs={1} className="pr-0">
-                            {/* defaultChecked={InboxChecked[index]?true:false} */}
-                            <FormControlLabel control={<Checkbox defaultChecked={InboxChecked[index] ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                            <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                           </Col>
                         </Row>
                         <Col xs={11} className="pr-0">
