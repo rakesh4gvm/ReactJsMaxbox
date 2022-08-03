@@ -3,7 +3,8 @@ import { ButtonGroup, Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import Compose from '../ComposePage/ComposePage';
 import Axios from "axios";
-
+import parse from "html-react-parser";
+import moment from "moment";
 import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/material';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'; 
@@ -25,6 +26,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton'; 
 import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import Avatar from '@mui/material/Avatar';
 import downarrow from '../../images/icon_downarrow.svg';
 import FormGroup from '@mui/material/FormGroup';
@@ -97,7 +101,7 @@ const style = {
 };
 
 
-export default function UnansweredResponsesPage({ OpenMessageDetails }) {
+export default function UnansweredResponsesPage() {
     const [selected, setSelected] = React.useState(false);
 
     const addShowCompose = () => {
@@ -117,32 +121,36 @@ export default function UnansweredResponsesPage({ OpenMessageDetails }) {
     const handleCloseOne = () => setOpenone(false);
 
     const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-
+    const [StarSelected, setStarSelected] = React.useState(false);
     const handleChange = (newValue) => {
       setValue(newValue);
     };
 
 
-    const [InBoxList, SetInBoxList] = React.useState([]);
-
+    const [UnansweredResponsesList, SetUnansweredResponsesList] = React.useState([]);
+    const [UnansweredResponsesChecked, setUnansweredResponsesChecked] = React.useState([]);
+    const [DeletePopModel, setDeletePopModel] = React.useState(false);
+    const [AllDeletePopModel, setAllDeletePopModel] = React.useState(false);
+    const [StarPopModel, setStarPopModel] = React.useState(false);
+    const [InboxChecked, setInboxChecked] = React.useState([]);
   
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
-  const [sortField, setsortField] = React.useState("FromName");
+  const [sortField, setsortField] = React.useState("FromEmail");
   const [sortedBy, setsortedBy] = React.useState(1);
   const [ClientID, setClientID] = React.useState(0);
   const [UserID, setUserID] = React.useState(0);
- 
+  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
 
   useEffect(() => {
 
 
-    GetInBoxList ();
+    GetUnansweredResponcesList ();
   }, []);
 
 // Start Get InBoxList
-     const GetInBoxList = () => {
+     const GetUnansweredResponcesList = () => {
       debugger;
       var data = {
         Page: page,
@@ -153,10 +161,10 @@ export default function UnansweredResponsesPage({ OpenMessageDetails }) {
         Search: search,
         ClientID: ClientID,
         UserID: UserID,
-        
+        PageName : "unanswered"
       };
       const responseapi = Axios({
-        url:CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+        url:CommonConstants.MOL_APIURL + "/inbox_option/ReceiveEmailHistoryGetByUserPage",
         method: "POST",
         data: data,
       });
@@ -164,7 +172,8 @@ export default function UnansweredResponsesPage({ OpenMessageDetails }) {
       
         if(result.data.StatusMessage==ResponseMessage.SUCCESS)
         {
-          SetInBoxList(result.data.PageData);
+          SetUnansweredResponsesList(result.data.PageData);
+          OpenMessageDetails(result.data.PageData[0]._id);
         }
         
        
@@ -173,6 +182,19 @@ export default function UnansweredResponsesPage({ OpenMessageDetails }) {
 // End Get InBoxList 
 
     const [checked, setChecked] = React.useState([1]);
+
+    const UnansweredResponcesCheckBox = (e) => {
+      debugger;
+      var updatedList = [...UnansweredResponsesChecked];
+  
+  
+      if (e.target.checked) {
+        updatedList = [...UnansweredResponsesChecked, e.target.value];
+      } else {
+        updatedList.splice(UnansweredResponsesChecked.indexOf(e.target.value), 1);
+      }
+      setUnansweredResponsesChecked(updatedList);
+    }
 
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -239,10 +261,92 @@ export default function UnansweredResponsesPage({ OpenMessageDetails }) {
       const wrapperRef = useRef(null);
       useOutsideAlerter(wrapperRef); 
 
+      const CloseDeletePopModel = () => {
+        setDeletePopModel(false);
+      }
+
+      
+
+      const DeleteMessage = (ID) => {
+        debugger
+        if (ID != '') {
+          var DeleteArray=[]
+          DeleteArray.push(ID)
+          var data = {
+            IDs: DeleteArray,
+            LastUpdatedBy: -1
+          };
+          const responseapi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+            method: "POST",
+            data: data,
+          });
+          responseapi.then((result) => {
+            if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              CloseDeletePopModel();
+              OpenMessageDetails('')
+              GetUnansweredResponcesList();
+            }
+          });
+        }
+      }
+      //Start Open Message Details
+  const OpenMessageDetails = (ID) => {
+
+    var data = {
+      _id: ID,
+    };
+    const responseapi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+      method: "POST",
+      data: data,
+    });
+    responseapi.then((result) => {
+      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetOpenMessageDetails(result.data.Data);
+      }
+      else {
+        SetOpenMessageDetails('');
+      }
+    });
+
+  };
+  //End Open Message Details
+
+  // start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    setDeletePopModel(true);
+  }
+
 return (
     <>
     <HeaderTop />  
-  
+    <Modal className="modal-pre"
+          open={DeletePopModel}
+          onClose={CloseDeletePopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to delete a email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
     <div className='bodymain'>
         <Row className='mb-columfull'>
         <Col className='maxcontainerix'>
@@ -253,7 +357,7 @@ return (
               <Col sm={3}>
                 <div className="inboxnoti">
                   <NotificationsIcon />
-                  235
+                  {UnansweredResponsesList.length}
                 </div>
               </Col>
           </Row>
@@ -348,11 +452,12 @@ return (
           <div className='listinbox mt-3'>
           <scrollbars>
             <Stack spacing={1} align="left">
-            
-                <Item className='cardinboxlist px-0'>
+            {UnansweredResponsesList.map((row, index) => (
+                <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                   <Row>
                     <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
+                    <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked[index] ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
+                        {/* <FormControlLabel control={<Checkbox />} label="" />  */}
                     </Col>
                     <Col xs={11} className="pr-0">   
                       <Row> 
@@ -362,22 +467,16 @@ return (
                             </span>
                           </Col>
                           <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
+                          <h4>{row.FromEmail}</h4>
+                              <h3>{row.Subject}</h3>
                           </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
+                          <Col xs={2} className="pl-0">
+                              <h6>{moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={StarSelected}>
+                                <StarBorderIcon className='starone' />
+                                <StarIcon className='selectedstart startwo' />
+                              </ToggleButton>
+                            </Col>
                       </Row>
                       <Row>
                         <Col xs={2} className='ja-center'>
@@ -387,147 +486,14 @@ return (
                             </div>
                         </Col>
                         <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
+                        <p>{row.Snippet}</p>
                         </Col>
                     </Row>
                     </Col>
                   </Row> 
                 </Item> 
-                
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser2} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
-
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser3} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
- 
-                <Item className='cardinboxlist px-0'>
-                  <Row>
-                    <Col xs={1} className="pr-0">
-                        <FormControlLabel control={<Checkbox />} label="" /> 
-                    </Col>
-                    <Col xs={11} className="pr-0">   
-                      <Row> 
-                          <Col xs={2}>
-                            <span className="inboxuserpic">
-                                <img src={inboxuser4} width="55px" alt="" />
-                            </span>
-                          </Col>
-                          <Col xs={8}> 
-                            <h4>Chelsia Donald</h4>
-                            <h3>Lenovo has a new policy</h3> 
-                          </Col>
-                          <Col xs={2} className="pl-0"> 
-                            <h6>8:56 PM</h6> 
-                            <ToggleButton className='startselct'
-                              value="check"
-                              selected={selected}
-                              onChange={() => {
-                                setSelected(!selected);
-                              }}
-                            >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={2} className='ja-center'>
-                            <div className='attachfile'>
-                              <input type="file" />
-                              <AttachFileIcon />
-                            </div>
-                        </Col>
-                        <Col xs={10}>
-                          <p>It is a long established facts that a reader will be distracted by is the readable content of a page when looking at its layout.</p>
-                        </Col>
-                    </Row>
-                    </Col>
-                  </Row> 
-                </Item> 
+            ))}
+               
                 
             </Stack> 
             </scrollbars>
@@ -549,7 +515,7 @@ return (
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'> 
-                      <h5>Chelsia Donald</h5>
+                    <h5>{OpenMessage.FromName}</h5>
                       <h6>to me <KeyboardArrowDownIcon /></h6> 
                     </Col> 
                 </Row>
@@ -574,7 +540,7 @@ return (
                   <Button>
                     <img src={iconsarrow1} />
                   </Button>
-                  <Button>
+                  <Button onClick={OpenDeletePopModel}>
                     <img src={icondelete} />
                   </Button>
                   <Button>
@@ -587,36 +553,17 @@ return (
 
             <Row className='mb-3'>
               <Col> 
-                  <h2>Reiciendis voluptatibus maiores </h2> 
+              <h2>{OpenMessage.Subject} </h2>
               </Col>
               <Col> 
-                  <h6>20 Jun 2022, 09:44 (2 days ago)</h6> 
+              <h6>{moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
               </Col>
             </Row>
 
             <Row>
               <Col> 
-                <p>
-                  Hi Yash, <br/>
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                  </p>
-                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                  <p>Thank You.</p>
+              {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                   </Col>
-            </Row>
-
-            <Row>
-              <Col className='py-2'> 
-                 <img src={inboximg1} />
-              </Col>
-
-              <Col className='py-2'> 
-                <img src={inboximg2} />
-              </Col>
-              <Col>  
-              </Col>
             </Row>
 
             <div className='d-flex mt-5 ml-2'>
@@ -631,194 +578,6 @@ return (
             </div>
 
           </div>
-
-
-          <div className='replaybox'>
-            
-            <Row className='pb-4 mb-2 colsm12'>
-              <Col lg={6}> 
-                <Row className='userlist'>
-                    <Col xs={2}>
-                      <span className="inboxuserpic">
-                          <img src={inboxuser1} width="63px" alt="" />
-                      </span>
-                    </Col>
-                    <Col xs={10} className='p-0'> 
-                      <h5>Fanny Champair</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6> 
-                    </Col> 
-                </Row>
-              </Col>
-              <Col lg={6} Align="right">  
-                <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
-                  <Button>
-                    <label>21 Jun 2022, 13:15 (1 days ago)</label>
-                  </Button>
-                  <Button>
-                    <img src={iconstar} />
-                  </Button>
-                  <Button>
-                    <img src={iconsarrow2} />
-                  </Button>
-                  <Button>
-                    <img src={iconmenu} />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row> 
-            
-            <Row> 
-              <Col> 
-                <p>
-                  Hi Yash, <br/>
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                  </p>
-                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                  <p>Thank You.</p>
-              </Col>
-            </Row>
-
-
-            <div className='replaybox'> 
-              <Row className='pb-4 mb-2 colsm12'>
-                <Col lg={6}> 
-                  <Row className='userlist'>
-                      <Col xs={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser4} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col xs={10} className='p-0'> 
-                        <h5>Fanny Champair</h5>
-                        <h6>to me <KeyboardArrowDownIcon /></h6> 
-                      </Col> 
-                  </Row>
-                </Col>
-                <Col lg={6} Align="right">  
-                  <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
-                    <Button>
-                      <label>21 Jun 2022, 13:15 (1 days ago)</label>
-                    </Button>
-                    <Button>
-                      <img src={iconstar} />
-                    </Button>
-                    <Button>
-                      <img src={iconsarrow2} />
-                    </Button>
-                    <Button>
-                      <img src={iconmenu} />
-                    </Button>
-                  </ButtonGroup>
-                </Col>
-              </Row> 
-              
-              <Row> 
-                <Col> 
-                  <p>
-                    Hi Yash, <br/>
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                    </p>
-                    <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                    <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                    <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                    <p>Thank You.</p>
-                </Col>
-              </Row> 
-
-              <div className='d-flex mt-5 ml-2 replayallbox'>
-                <Row>
-                  <Col xs={4} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow1} /></a>
-                  </Col>
-                  <Col xs={4} className='p-0'>
-                    <a href='#' className='p-2'><img src={replyall} /></a>
-                  </Col>
-                  <Col xs={4} className='p-0'>
-                  <a href='#' className='p-2'><img src={iconsarrow2} /></a>
-                  </Col>
-                </Row>
-              </div>
-            
-
-              <div className='user_editor mt-5'>
-                <Row className='userlist'>
-                    <Col className='fixwidleft'>
-                      <span className="inboxuserpic">
-                          <img src={inboxuser1} width="63px" alt="" />
-                      </span>
-                    </Col>
-                    <Col className='fixwidright p-0'> 
-                      <div className='editorboxcard'>
-                        <Row className='edittoprow p-2'>
-                            <Col className='d-flex hedtopedit'>
-                              <a href='#' className='p-1'><img src={iconsarrow2} /></a> 
-                              <h6><KeyboardArrowDownIcon /></h6> 
-                              <label>Barbara Buchhainan (barbarabuchhainan@gmail.com)</label>
-                            </Col> 
-                        </Row>
-                        <Row className='px-2'>
-                            <Col className='bodyeditor'>
-                              <TextareaAutosize className='w-100'
-                                aria-label="minimum height"
-                                minRows={3}
-                                placeholder="" 
-                              />
-                            </Col> 
-                        </Row>
-
-                        <div className='ftcompose px-3'>
-                          <Row className='px-3'>
-                              <Col xs={10} className='px-0'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                  <Button variant="contained btn btn-primary smallbtn"> Send</Button>
-                                  <Button>
-                                    <img src={text_font} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={attachment} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={image_light} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={smiley_icons} />
-                                  </Button>
-                                  <Button>
-                                    <img src={google_drive} />
-                                  </Button>  
-                                  <Button>
-                                    <img src={link_line} />
-                                  </Button>    
-                                  <Button>
-                                    <img src={signature} />
-                                  </Button>  
-                                </ButtonGroup>
-                              </Col>  
-
-                              <Col xs={2} className='px-0 text-right'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group"> 
-                                  <Button>
-                                    <img src={icondelete} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={iconmenu} />
-                                  </Button>  
-                                </ButtonGroup>
-                              </Col> 
-                          </Row> 
-                      </div> 
-
-                      </div>  
-                    </Col> 
-                </Row>
-              </div>
-          
-            </div>
-
-          </div>
-        
         </Col> 
       </Row> 
     </div>
