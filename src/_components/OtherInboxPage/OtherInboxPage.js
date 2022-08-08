@@ -1,13 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios";
-import parse from "html-react-parser";
-import moment from "moment";
-import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import HeaderTop from '../Header/header';
+import Moment from "moment";
 
-import Compose from '../ComposePage/ComposePage';
+import { styled, alpha } from '@mui/material/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputBase from '@mui/material/InputBase';
@@ -15,6 +10,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Box from '@mui/material/Box';
+import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -28,7 +24,6 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -39,6 +34,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
+
+import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -50,13 +47,13 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
-
+import { Col, Row } from 'react-bootstrap';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import parse from "html-react-parser";
+import HeaderTop from '../Header/header';
 
-
-
-const style = {
+const Style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -67,23 +64,21 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-
-function useOutsideAlerter(ref) {
+function UseOutSideAlerter(Ref) {
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        const element = document.getElementById("id_userboxlist")
-        element.classList.remove("show");
+    function HandleClickOutside(Event) {
+      if (Ref.current && !Ref.current.contains(Event.target)) {
+        const Element = document.getElementById("id_userboxlist")
+        Element.classList.remove("show");
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", HandleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", HandleClickOutside);
     };
-  }, [ref]);
+  }, [Ref]);
 }
-const addInboxClass = () => {
+const AddInboxClass = () => {
   const element = document.getElementById("id_userboxlist")
   if (element.classList.contains("show")) {
     element.classList.remove("show");
@@ -95,51 +90,99 @@ const addInboxClass = () => {
 
 export default function OtherInboxPage() {
   const [InBoxList, setInBoxList] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [search, setSearch] = React.useState("");
-  const [sortField, setsortField] = React.useState("FromName");
-  const [sortedBy, setsortedBy] = React.useState(1);
-  const [ClientID, setClientID] = React.useState(0);
-  const [UserID, setUserID] = React.useState(0);
+  const [Page, SetPage] = React.useState(1);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [SortField, SetSortField] = React.useState("FromName");
+  const [SortedBy, SetSortedBy] = React.useState(1);
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
+  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
+  const [StarPopModel, SetStarPopModel] = React.useState(false);
+  const [StarSelected, SetStarSelected] = React.useState(false);
+  const [InboxChecked, SetInboxChecked] = React.useState([]);
+  const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
+  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
+  const [Items, SetItems] = useState([])
+  const [ResultData, SetResultData] = useState([])
+  const [Open, SetOpen] = React.useState(false);
+  const [OpenOne, SetOpenOne] = React.useState(false);
+  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [Checked, SetChecked] = React.useState([1]);
 
-  const [OpenMessage, setOpenMessageDetails] = React.useState([]);
-  const [DeletePopModel, setDeletePopModel] = React.useState(false);
-  const [AllDeletePopModel, setAllDeletePopModel] = React.useState(false);
-  const [StarPopModel, setStarPopModel] = React.useState(false);
-  const [StarSelected, setStarSelected] = React.useState(false);
-  const [InboxChecked, setInboxChecked] = React.useState([]);
-  const [SelectAllCheckbox, setSelectAllCheckbox] = React.useState(false);
   useEffect(() => {
-
+    if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
+    GetClientID()
     GetInBoxList();
-  }, [search]);
+  }, [SearchInbox, ClientID, InBoxList?.length, Items]);
 
-  
+  const HandleOpen = () => SetOpen(true);
+  const HandleClose = () => SetOpen(false);
+  const HandleOpenOne = () => SetOpenOne(true);
+  const HandleCloseOne = () => SetOpenOne(false);
+
+  const handleChange = (NewValue) => {
+    SetValue(NewValue);
+  };
+
+  // Handle Dropdown List Checkbox
+  const HandleDropdownListCheckbox = (Item) => {
+    if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
+      const DropdownFilter = SelectedDropdownList.filter(sl => sl?._id !== Item?._id)
+      if (DropdownFilter.length > 0) {
+        SetItems(DropdownFilter)
+      }
+      SetSelectedDropdownList(DropdownFilter)
+    } else {
+      SetSelectedDropdownList([...SelectedDropdownList, Item])
+    }
+  }
+
+  // Get ClientID
+  const GetClientID = () => {
+    const ClientId = localStorage.getItem("ClientID")
+    SetClientID(JSON.parse(ClientId)?._id)
+  }
+
   // Start Get InBoxList
   const GetInBoxList = () => {
-    var data = {
-      Page: page,
-      RowsPerPage: rowsPerPage,
-      sort: true,
-      Field: sortField,
-      Sortby: sortedBy,
-      Search: search,
-      ClientID: ClientID,
-      UserID: UserID,
-
-    };
-    const responseapi = Axios({
+    let Data
+    if (Items?.length > 0) {
+      Data = {
+        Page: Page,
+        RowsPerPage: RowsPerPage,
+        sort: true,
+        Field: SortField,
+        Sortby: SortedBy,
+        Search: SearchInbox,
+        ClientID: ClientID,
+        UserID: UserID,
+        ID: Items?.map((s) => s._id)
+      };
+    } else {
+      Data = {
+        Page: Page,
+        RowsPerPage: RowsPerPage,
+        sort: true,
+        Field: SortField,
+        Sortby: SortedBy,
+        Search: SearchInbox,
+        ClientID: ClientID,
+        UserID: UserID,
+      };
+    }
+    const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
-      data: data,
+      data: Data,
     });
-    responseapi.then((result) => {
-
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
-        setInBoxList(result.data.PageData);
-        OpenMessageDetails(result.data.PageData[0]._id);
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        setInBoxList(Result.data.PageData);
+        SetResultData(Result.data.ResultObjData);
+        OpenMessageDetails(Result.data.PageData[0]._id);
       }
     });
   };
@@ -147,50 +190,47 @@ export default function OtherInboxPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID) => {
-
-    var data = {
+    var Data = {
       _id: ID,
     };
     const responseapi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
       method: "POST",
-      data: data,
+      data: Data,
     });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setOpenMessageDetails(result.data.Data);
+    responseapi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetOpenMessageDetails(Result.data.Data);
       }
       else {
-        setOpenMessageDetails('');
+        SetOpenMessageDetails('');
       }
     });
-
   };
   //End Open Message Details
 
   // start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {
-    setDeletePopModel(true);
+    SetDeletePopModel(true);
   }
   const CloseDeletePopModel = () => {
-    setDeletePopModel(false);
+    SetDeletePopModel(false);
   }
-
   const DeleteMessage = (ID) => {
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
-      var data = {
+      var Data = {
         IDs: DeleteArray,
         LastUpdatedBy: -1
       };
-      const responseapi = Axios({
+      const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
         method: "POST",
-        data: data,
+        data: Data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -200,65 +240,59 @@ export default function OtherInboxPage() {
   }
   // End PopModel Open and Close And Delete Message
 
-
-
-  // start Delete All Message 
+  // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
     if (InboxChecked.length > 0) {
-      setAllDeletePopModel(true);
+      SetAllDeletePopModel(true);
     }
   }
   const CloseAllDeletePopModel = () => {
-    setAllDeletePopModel(false);
+    SetAllDeletePopModel(false);
   }
-
   const DeleteAllMessage = () => {
     if (InboxChecked.length > 0) {
-      var data = {
+      var Data = {
         IDs: InboxChecked,
         LastUpdatedBy: -1
       };
       const responseapi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
         method: "POST",
-        data: data,
+        data: Data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      responseapi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
         }
       });
-
     }
   }
   // End Delete All Message 
 
   // Start Update Star Message and model open and close
-
   const OpenStarPopModel = () => {
-    setStarPopModel(true);
+    SetStarPopModel(true);
   }
   const CloseStarPopModel = () => {
-    setStarPopModel(false);
+    SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID) => {
-    debugger;
     if (ID != '') {
       //setSelected(true);
-      var data = {
+      var Data = {
         _id: ID,
         IsStarred: true,
         LastUpdatedBy: -1
       };
-      const responseapi = Axios({
+      const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
         method: "POST",
-        data: data,
+        data: Data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -270,63 +304,39 @@ export default function OtherInboxPage() {
 
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
-
-    var updatedList = [...InboxChecked];
+    var UpdatedList = [...InboxChecked];
     if (e.target.checked) {
-      updatedList = [...InboxChecked, e.target.value];
+      UpdatedList = [...InboxChecked, e.target.value];
     } else {
-      updatedList.splice(InboxChecked.indexOf(e.target.value), 1);
+      UpdatedList.splice(InboxChecked.indexOf(e.target.value), 1);
     }
-    setInboxChecked(updatedList);
+    SetInboxChecked(UpdatedList);
   }
-
   const SeleactAllInBoxCheckBox = (e) => {
     if (e.target.checked) {
-      setSelectAllCheckbox(true);
-      setInboxChecked(InBoxList.map(item => item._id));
+      SetSelectAllCheckbox(true);
+      SetInboxChecked(InBoxList.map(item => item._id));
     } else {
-      setSelectAllCheckbox(false);
-      setInboxChecked([]);
+      SetSelectAllCheckbox(false);
+      SetInboxChecked([]);
     }
 
   }
   // End CheckBox Code
+
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
-      setSearch(e.target.value)
+      SetSearchInbox(e.target.value)
     }
   }
   // End Search
 
   const RefreshPage = () => {
-debugger;
-   setSelectAllCheckbox(false);
-    setSearch('');
-    setInboxChecked([]);
-    
+    SetSelectAllCheckbox(false);
+    SetSearchInbox('');
+    SetInboxChecked([]);
   }
-
-
-  const [open, setOpen] = React.useState(false);
-  const [openone, setOpenone] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleOpenOne = () => setOpenone(true);
-  const handleCloseOne = () => setOpenone(false);
-
-
-
-
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-
-
-
-  const [checked, setChecked] = React.useState([1]);
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -367,40 +377,38 @@ debugger;
     },
   }));
 
-
   const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'left',
     color: theme.palette.text.secondary,
   }));
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
+  const HandleToggle = (Value) => () => {
+    const CurrentIndex = Checked.indexOf(Value);
+    const NewChecked = [...Checked];
+    if (CurrentIndex === -1) {
+      NewChecked.push(Value);
     } else {
-      newChecked.splice(currentIndex, 1);
+      NewChecked.splice(CurrentIndex, 1);
     }
-
-    setChecked(newChecked);
+    SetChecked(NewChecked);
   };
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
+
+  const WrapperRef = useRef(null);
+  UseOutSideAlerter(WrapperRef);
+
   return (
     <>
       <HeaderTop />
 
       <div>
-
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} className="modal-prein">
+          <Box sx={Style} className="modal-prein">
             <div className='p-5 text-center'>
               <img src={Emailinbox} width="130" className='mb-4' />
               <Typography id="modal-modal-title" variant="b" component="h6">
@@ -427,7 +435,7 @@ debugger;
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} className="modal-prein">
+          <Box sx={Style} className="modal-prein">
             <div className='p-5 text-center'>
               <img src={Emailinbox} width="130" className='mb-4' />
               <Typography id="modal-modal-title" variant="b" component="h6">
@@ -454,7 +462,7 @@ debugger;
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} className="modal-prein">
+          <Box sx={Style} className="modal-prein">
             <div className='p-5 text-center'>
               <img src={Emailinbox} width="130" className='mb-4' />
               <Typography id="modal-modal-title" variant="b" component="h6">
@@ -476,12 +484,12 @@ debugger;
         </Modal>
 
         <Modal className="modal-pre"
-          open={open}
-          onClose={handleClose}
+          open={Open}
+          onClose={HandleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} className="modal-prein">
+          <Box sx={Style} className="modal-prein">
             <div className='p-5 text-center'>
               <img src={Emailinbox} width="130" className='mb-4' />
               <Typography id="modal-modal-title" variant="b" component="h6">
@@ -504,12 +512,12 @@ debugger;
 
 
         <Modal className="modal-pre"
-          open={openone}
-          onClose={handleCloseOne}
+          open={OpenOne}
+          onClose={HandleCloseOne}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} className="modal-prein">
+          <Box sx={Style} className="modal-prein">
             <div className='px-5 pt-5 text-center'>
               <img src={Emailcall} width="130" className='mb-4' />
               <Typography id="modal-modal-title" variant="b" component="h6">
@@ -525,7 +533,7 @@ debugger;
                   <Stack spacing={0}>
                     <DesktopDatePicker
                       inputFormat="MM/dd/yyyy"
-                      value={value}
+                      value={Value}
                       onChange={handleChange}
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -556,7 +564,7 @@ debugger;
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {InBoxList.length}
+                      {SelectedDropdownList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -578,23 +586,25 @@ debugger;
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={addInboxClass}>
+                      <a href="#" className="selectorall" onClick={AddInboxClass}>
                         All <img src={downarrow} />
                       </a>
-
-                      <div className="userdropall" id="id_userboxlist" ref={wrapperRef}>
+                      <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {InBoxList.map((item) => {
+                            {ResultData?.map((item) => { // dropdown list
                               const labelId = `checkbox-list-secondary-label-${item._id}`;
                               return (
                                 <ListItem className='droplistchec'
                                   key={item._id}
                                   secondaryAction={
                                     <Checkbox
-                                      edge="end"
-                                      onChange={handleToggle(item._id)}
-                                      checked={checked.indexOf(item._id) !== -1}
+                                      // defaultChecked
+                                      // edge="end"
+                                      // onChange={handleToggle(item._id)}
+                                      // checked={checked.indexOf(item._id) !== -1}
+                                      onChange={() => HandleDropdownListCheckbox(item)}
+                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
                                       inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                   }
@@ -620,7 +630,6 @@ debugger;
                               );
                             })}
                           </List>
-
                         </div>
                       </div>
                     </div>
@@ -639,20 +648,16 @@ debugger;
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
               </div>
-
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {InBoxList.map((row) => (
-
+                    {SelectedDropdownList.map((row) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
-
-
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -670,7 +675,7 @@ debugger;
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                              <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
                               <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
@@ -694,12 +699,8 @@ debugger;
                   </Stack>
                 </scrollbars>
               </div>
-
-
             </div>
           </Col>
-
-
           <Col className='rightinbox'>
             <div className='inxtexteditor'>
               <Row className='bt-border pb-4 mb-4 colsm12'>
@@ -718,10 +719,10 @@ debugger;
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={handleOpen}>
+                    <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button>
-                    <Button onClick={handleOpenOne}>
+                    <Button onClick={HandleOpenOne}>
                       <label>56 / 100</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
@@ -745,28 +746,19 @@ debugger;
                   </ButtonGroup>
                 </Col>
               </Row>
-
-
               <Row className='mb-3'>
                 <Col>
                   <h2>{OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
                 </Col>
               </Row>
-
               <Row>
                 <Col>
-
-
                   {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-
                 </Col>
               </Row>
-
-
-
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
@@ -777,16 +769,13 @@ debugger;
                   </Col>
                 </Row>
               </div>
-
             </div>
-
-
-
-
           </Col>
         </Row>
       </div>
+
       <Compose />
+
     </>
   );
 }
