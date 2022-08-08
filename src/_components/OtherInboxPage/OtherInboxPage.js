@@ -1,8 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import Axios from "axios";
+import parse from "html-react-parser";
 import moment from "moment";
-
 import { styled, alpha } from '@mui/material/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import HeaderTop from '../Header/header';
+
+import Compose from '../ComposePage/ComposePage';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputBase from '@mui/material/InputBase';
@@ -10,7 +15,6 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Box from '@mui/material/Box';
-import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -24,6 +28,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -34,8 +39,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
-
-import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -47,11 +50,11 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
-import { Col, Row } from 'react-bootstrap';
+
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import parse from "html-react-parser";
-import HeaderTop from '../Header/header';
+
+
 
 const style = {
   position: 'absolute',
@@ -64,6 +67,8 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+
 function useOutsideAlerter(ref) {
   useEffect(() => {
     function handleClickOutside(event) {
@@ -105,72 +110,36 @@ export default function OtherInboxPage() {
   const [StarSelected, setStarSelected] = React.useState(false);
   const [InboxChecked, setInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, setSelectAllCheckbox] = React.useState(false);
-  const [selectedDropdownList, setSelectedDropdownList] = useState([]);
-  const [items, setItems] = useState([])
-  const [resultData, setResultData] = useState([])
-
   useEffect(() => {
-    if (InBoxList?.length > 0) setSelectedDropdownList(InBoxList)
-    GetClientID()
+
     GetInBoxList();
-  }, [search, ClientID, InBoxList?.length, items]);
+  }, [search]);
 
-  // Handle Dropdown List Checkbox
-  const handleDropdownListCheckbox = (item) => {
-    if (selectedDropdownList.some(sl => sl?._id === item?._id)) {
-      const DropdownFilter = selectedDropdownList.filter(sl => sl?._id !== item?._id)
-      if (DropdownFilter.length > 0) {
-        setItems(DropdownFilter)
-      }
-      setSelectedDropdownList(DropdownFilter)
-    } else {
-      setSelectedDropdownList([...selectedDropdownList, item])
-    }
-  }
-
-  // Get ClientID
-  const GetClientID = () => {
-    const clientId = localStorage.getItem("ClientID")
-    setClientID(JSON.parse(clientId)?._id)
-  }
-
+  
   // Start Get InBoxList
   const GetInBoxList = () => {
-    let Data
-    if (items?.length > 0) {
-      Data = {
-        Page: page,
-        RowsPerPage: rowsPerPage,
-        sort: true,
-        Field: sortField,
-        Sortby: sortedBy,
-        Search: search,
-        ClientID: ClientID,
-        UserID: UserID,
-        ID: items?.map((s) => s._id)
-      };
-    } else {
-      Data = {
-        Page: page,
-        RowsPerPage: rowsPerPage,
-        sort: true,
-        Field: sortField,
-        Sortby: sortedBy,
-        Search: search,
-        ClientID: ClientID,
-        UserID: UserID,
-      };
-    }
-    const ResponseApi = Axios({
+    var data = {
+      Page: page,
+      RowsPerPage: rowsPerPage,
+      sort: true,
+      Field: sortField,
+      Sortby: sortedBy,
+      Search: search,
+      ClientID: ClientID,
+      UserID: UserID,
+
+    };
+    const responseapi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
-      data: Data,
+      data: data,
     });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setInBoxList(Result.data.PageData);
-        setResultData(Result.data.ResultObjData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
+    responseapi.then((result) => {
+
+      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+
+        setInBoxList(result.data.PageData);
+        OpenMessageDetails(result.data.PageData[0]._id);
       }
     });
   };
@@ -178,22 +147,24 @@ export default function OtherInboxPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID) => {
-    var Data = {
+
+    var data = {
       _id: ID,
     };
     const responseapi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
       method: "POST",
-      data: Data,
+      data: data,
     });
-    responseapi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setOpenMessageDetails(Result.data.Data);
+    responseapi.then((result) => {
+      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        setOpenMessageDetails(result.data.Data);
       }
       else {
         setOpenMessageDetails('');
       }
     });
+
   };
   //End Open Message Details
 
@@ -204,6 +175,7 @@ export default function OtherInboxPage() {
   const CloseDeletePopModel = () => {
     setDeletePopModel(false);
   }
+
   const DeleteMessage = (ID) => {
     if (ID != '') {
       var DeleteArray = []
@@ -212,13 +184,13 @@ export default function OtherInboxPage() {
         IDs: DeleteArray,
         LastUpdatedBy: -1
       };
-      const ResponseApi = Axios({
+      const responseapi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
         method: "POST",
         data: data,
       });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      responseapi.then((result) => {
+        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -227,6 +199,8 @@ export default function OtherInboxPage() {
     }
   }
   // End PopModel Open and Close And Delete Message
+
+
 
   // start Delete All Message 
   const OpenAllDeletePopModel = () => {
@@ -237,6 +211,7 @@ export default function OtherInboxPage() {
   const CloseAllDeletePopModel = () => {
     setAllDeletePopModel(false);
   }
+
   const DeleteAllMessage = () => {
     if (InboxChecked.length > 0) {
       var data = {
@@ -248,18 +223,20 @@ export default function OtherInboxPage() {
         method: "POST",
         data: data,
       });
-      responseapi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      responseapi.then((result) => {
+        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
         }
       });
+
     }
   }
   // End Delete All Message 
 
   // Start Update Star Message and model open and close
+
   const OpenStarPopModel = () => {
     setStarPopModel(true);
   }
@@ -267,20 +244,21 @@ export default function OtherInboxPage() {
     setStarPopModel(false);
   }
   const UpdateStarMessage = (ID) => {
+    debugger;
     if (ID != '') {
       //setSelected(true);
-      var Data = {
+      var data = {
         _id: ID,
         IsStarred: true,
         LastUpdatedBy: -1
       };
-      const ResponseApi = Axios({
+      const responseapi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
         method: "POST",
-        data: Data,
+        data: data,
       });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      responseapi.then((result) => {
+        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -301,6 +279,7 @@ export default function OtherInboxPage() {
     }
     setInboxChecked(updatedList);
   }
+
   const SeleactAllInBoxCheckBox = (e) => {
     if (e.target.checked) {
       setSelectAllCheckbox(true);
@@ -312,7 +291,6 @@ export default function OtherInboxPage() {
 
   }
   // End CheckBox Code
-
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
@@ -322,10 +300,13 @@ export default function OtherInboxPage() {
   // End Search
 
   const RefreshPage = () => {
-    setSelectAllCheckbox(false);
+debugger;
+   setSelectAllCheckbox(false);
     setSearch('');
     setInboxChecked([]);
+    
   }
+
 
   const [open, setOpen] = React.useState(false);
   const [openone, setOpenone] = React.useState(false);
@@ -334,11 +315,16 @@ export default function OtherInboxPage() {
   const handleOpenOne = () => setOpenone(true);
   const handleCloseOne = () => setOpenone(false);
 
+
+
+
   const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
 
-  const handleChange = (NewValue) => {
-    setValue(NewValue);
+  const handleChange = (newValue) => {
+    setValue(newValue);
   };
+
+
 
   const [checked, setChecked] = React.useState([1]);
 
@@ -381,31 +367,33 @@ export default function OtherInboxPage() {
     },
   }));
 
+
   const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'left',
     color: theme.palette.text.secondary,
   }));
 
-  const handleToggle = (Value) => () => {
-    const currentIndex = checked.indexOf(Value);
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
+
     if (currentIndex === -1) {
-      newChecked.push(Value);
+      newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
+
     setChecked(newChecked);
   };
-
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
-
   return (
     <>
       <HeaderTop />
 
       <div>
+
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
@@ -568,7 +556,7 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {selectedDropdownList?.length}
+                      {InBoxList.length}
                     </div>
                   </Col>
                 </Row>
@@ -593,22 +581,20 @@ export default function OtherInboxPage() {
                       <a href="#" className="selectorall" onClick={addInboxClass}>
                         All <img src={downarrow} />
                       </a>
+
                       <div className="userdropall" id="id_userboxlist" ref={wrapperRef}>
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {resultData.map((item) => { // dropdown list
+                            {InBoxList.map((item) => {
                               const labelId = `checkbox-list-secondary-label-${item._id}`;
                               return (
                                 <ListItem className='droplistchec'
                                   key={item._id}
                                   secondaryAction={
                                     <Checkbox
-                                      // defaultChecked
-                                      // edge="end"
-                                      // onChange={handleToggle(item._id)}
-                                      // checked={checked.indexOf(item._id) !== -1}
-                                      onChange={() => handleDropdownListCheckbox(item)}
-                                      checked={selectedDropdownList?.some(sl => sl?._id === item?._id)}
+                                      edge="end"
+                                      onChange={handleToggle(item._id)}
+                                      checked={checked.indexOf(item._id) !== -1}
                                       inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                   }
@@ -634,6 +620,7 @@ export default function OtherInboxPage() {
                               );
                             })}
                           </List>
+
                         </div>
                       </div>
                     </div>
@@ -652,16 +639,20 @@ export default function OtherInboxPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
               </div>
+
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {selectedDropdownList.map((row) => (  // datalist
+                    {InBoxList.map((row) => (
+
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+
+
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -703,8 +694,12 @@ export default function OtherInboxPage() {
                   </Stack>
                 </scrollbars>
               </div>
+
+
             </div>
           </Col>
+
+
           <Col className='rightinbox'>
             <div className='inxtexteditor'>
               <Row className='bt-border pb-4 mb-4 colsm12'>
@@ -750,6 +745,8 @@ export default function OtherInboxPage() {
                   </ButtonGroup>
                 </Col>
               </Row>
+
+
               <Row className='mb-3'>
                 <Col>
                   <h2>{OpenMessage.Subject} </h2>
@@ -758,11 +755,18 @@ export default function OtherInboxPage() {
                   <h6>{moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
                 </Col>
               </Row>
+
               <Row>
                 <Col>
+
+
                   {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
+
                 </Col>
               </Row>
+
+
+
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
@@ -773,13 +777,16 @@ export default function OtherInboxPage() {
                   </Col>
                 </Row>
               </div>
+
             </div>
+
+
+
+
           </Col>
         </Row>
       </div>
-
       <Compose />
-
     </>
   );
 }
