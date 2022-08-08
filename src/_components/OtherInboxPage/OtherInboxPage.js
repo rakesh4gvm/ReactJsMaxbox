@@ -1,13 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Col, Row } from 'react-bootstrap';
 import Axios from "axios";
-import parse from "html-react-parser";
 import moment from "moment";
-import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import HeaderTop from '../Header/header';
 
-import Compose from '../ComposePage/ComposePage';
+import { styled, alpha } from '@mui/material/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputBase from '@mui/material/InputBase';
@@ -15,6 +10,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Box from '@mui/material/Box';
+import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -28,7 +24,6 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -39,6 +34,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
+
+import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -50,9 +47,11 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
-
+import { Col, Row } from 'react-bootstrap';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import parse from "html-react-parser";
+import HeaderTop from '../Header/header';
 
 const style = {
   position: 'absolute',
@@ -106,53 +105,72 @@ export default function OtherInboxPage() {
   const [StarSelected, setStarSelected] = React.useState(false);
   const [InboxChecked, setInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, setSelectAllCheckbox] = React.useState(false);
-  const [selected, setSelected] = useState([]);
+  const [selectedDropdownList, setSelectedDropdownList] = useState([]);
+  const [items, setItems] = useState([])
+  const [resultData, setResultData] = useState([])
 
   useEffect(() => {
-    if (InBoxList?.length > 0) setSelected(InBoxList)
-  }, [InBoxList?.length])
-
-  useEffect(() => {
-    getClientID()
+    if (InBoxList?.length > 0) setSelectedDropdownList(InBoxList)
+    GetClientID()
     GetInBoxList();
-  }, [search, ClientID]);
+  }, [search, ClientID, InBoxList?.length, items]);
 
-  const handleCheckbox = (item) => {
-    if (selected.some(sl => sl?._id === item?._id)) {
-      setSelected(selected.filter(sl => sl?._id !== item?._id))
+  // Handle Dropdown List Checkbox
+  const handleDropdownListCheckbox = (item) => {
+    if (selectedDropdownList.some(sl => sl?._id === item?._id)) {
+      const DropdownFilter = selectedDropdownList.filter(sl => sl?._id !== item?._id)
+      if (DropdownFilter.length > 0) {
+        setItems(DropdownFilter)
+      }
+      setSelectedDropdownList(DropdownFilter)
     } else {
-      setSelected([...selected, item])
+      setSelectedDropdownList([...selectedDropdownList, item])
     }
   }
 
-  const getClientID = () => {
+  // Get ClientID
+  const GetClientID = () => {
     const clientId = localStorage.getItem("ClientID")
     setClientID(JSON.parse(clientId)?._id)
   }
 
   // Start Get InBoxList
   const GetInBoxList = () => {
-    var data = {
-      Page: page,
-      RowsPerPage: rowsPerPage,
-      sort: true,
-      Field: sortField,
-      Sortby: sortedBy,
-      Search: search,
-      ClientID: ClientID,
-      UserID: UserID,
-    };
-    const responseapi = Axios({
+    let Data
+    if (items?.length > 0) {
+      Data = {
+        Page: page,
+        RowsPerPage: rowsPerPage,
+        sort: true,
+        Field: sortField,
+        Sortby: sortedBy,
+        Search: search,
+        ClientID: ClientID,
+        UserID: UserID,
+        ID: items?.map((s) => s._id)
+      };
+    } else {
+      Data = {
+        Page: page,
+        RowsPerPage: rowsPerPage,
+        sort: true,
+        Field: sortField,
+        Sortby: sortedBy,
+        Search: search,
+        ClientID: ClientID,
+        UserID: UserID,
+      };
+    }
+    const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
-      data: data,
+      data: Data,
     });
-    responseapi.then((result) => {
-
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
-        setInBoxList(result.data.PageData);
-        OpenMessageDetails(result.data.PageData[0]._id);
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        setInBoxList(Result.data.PageData);
+        setResultData(Result.data.ResultObjData);
+        OpenMessageDetails(Result.data.PageData[0]._id);
       }
     });
   };
@@ -160,24 +178,22 @@ export default function OtherInboxPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID) => {
-
-    var data = {
+    var Data = {
       _id: ID,
     };
     const responseapi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
       method: "POST",
-      data: data,
+      data: Data,
     });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setOpenMessageDetails(result.data.Data);
+    responseapi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        setOpenMessageDetails(Result.data.Data);
       }
       else {
         setOpenMessageDetails('');
       }
     });
-
   };
   //End Open Message Details
 
@@ -196,13 +212,13 @@ export default function OtherInboxPage() {
         IDs: DeleteArray,
         LastUpdatedBy: -1
       };
-      const responseapi = Axios({
+      const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
         method: "POST",
         data: data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -232,14 +248,13 @@ export default function OtherInboxPage() {
         method: "POST",
         data: data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      responseapi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
         }
       });
-
     }
   }
   // End Delete All Message 
@@ -252,21 +267,20 @@ export default function OtherInboxPage() {
     setStarPopModel(false);
   }
   const UpdateStarMessage = (ID) => {
-    debugger;
     if (ID != '') {
       //setSelected(true);
-      var data = {
+      var Data = {
         _id: ID,
         IsStarred: true,
         LastUpdatedBy: -1
       };
-      const responseapi = Axios({
+      const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
         method: "POST",
-        data: data,
+        data: Data,
       });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetInBoxList();
@@ -280,7 +294,6 @@ export default function OtherInboxPage() {
   const InBoxCheckBox = (e) => {
 
     var updatedList = [...InboxChecked];
-    console.log("updatedList======", updatedList)
     if (e.target.checked) {
       updatedList = [...InboxChecked, e.target.value];
     } else {
@@ -309,11 +322,9 @@ export default function OtherInboxPage() {
   // End Search
 
   const RefreshPage = () => {
-    debugger;
     setSelectAllCheckbox(false);
     setSearch('');
     setInboxChecked([]);
-
   }
 
   const [open, setOpen] = React.useState(false);
@@ -325,8 +336,8 @@ export default function OtherInboxPage() {
 
   const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
+  const handleChange = (NewValue) => {
+    setValue(NewValue);
   };
 
   const [checked, setChecked] = React.useState([1]);
@@ -370,29 +381,25 @@ export default function OtherInboxPage() {
     },
   }));
 
-
   const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'left',
     color: theme.palette.text.secondary,
   }));
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
+  const handleToggle = (Value) => () => {
+    const currentIndex = checked.indexOf(Value);
     const newChecked = [...checked];
-
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(Value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
     setChecked(newChecked);
   };
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
-
 
   return (
     <>
@@ -561,7 +568,7 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {InBoxList.length}
+                      {selectedDropdownList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -589,7 +596,7 @@ export default function OtherInboxPage() {
                       <div className="userdropall" id="id_userboxlist" ref={wrapperRef}>
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {InBoxList.map((item) => { // dropdown list
+                            {resultData.map((item) => { // dropdown list
                               const labelId = `checkbox-list-secondary-label-${item._id}`;
                               return (
                                 <ListItem className='droplistchec'
@@ -598,8 +605,10 @@ export default function OtherInboxPage() {
                                     <Checkbox
                                       // defaultChecked
                                       // edge="end"
-                                      onChange={() => handleCheckbox(item)}
-                                      checked={selected?.some(sl => sl?._id === item?._id)}
+                                      // onChange={handleToggle(item._id)}
+                                      // checked={checked.indexOf(item._id) !== -1}
+                                      onChange={() => handleDropdownListCheckbox(item)}
+                                      checked={selectedDropdownList?.some(sl => sl?._id === item?._id)}
                                       inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                   }
@@ -651,7 +660,7 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {selected.map((row) => (  // datalist
+                    {selectedDropdownList.map((row) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                         <Row>
                           <Col xs={1} className="pr-0">
