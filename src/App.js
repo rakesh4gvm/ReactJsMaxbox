@@ -13,6 +13,10 @@ import DraftsPage from '../src/_components/DraftsPage/DraftsPage';
 import SpamPage from '../src/_components/SpamPage/SpamPage';
 import TemplatesPage from '../src/_components/TemplatesPage/TemplatesPage';
 import SelectTemplatesPage from '../src/_components/SelectTemplatesPage/SelectTemplatesPage';
+import CreateTemplatesPage from '../src/_components/CreateTemplatesPage/CreateTemplatesPage';
+import CreateObjectionPage from '../src/_components/CreateObjectionPage/CreateObjectionPage';
+
+
 
 function App() {
   return (
@@ -29,6 +33,9 @@ function App() {
                 <Route exact path="/EmailConfiguration" component={EmailConfigurationPage} /> 
                 <Route exact path="/Templates" component={TemplatesPage} /> 
                 <Route exact path="/SelectTemplates" component={SelectTemplatesPage} /> 
+                <Route exact path="/CreateTemplates" component={CreateTemplatesPage} /> 
+                <Route exact path="/CreateObjection" component={CreateObjectionPage} /> 
+
                 <Redirect from="*" to="/" />
             </Switch>
         </Router>
