@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 
-import { styled, alpha } from '@mui/material/styles';
+
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -46,10 +46,10 @@ const Style = {
 
 export default function EmailConfigurationPage() {
 
-  const [EmailAccountList, SetEmailAccountList] = React.useState([]);
+  const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [EmailAccountList, SetEmailAccountList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
@@ -59,7 +59,7 @@ export default function EmailConfigurationPage() {
   useEffect(() => {
     CheckAccountAuthonicate()
     GetEmailAccountList  ()
-  }, []);
+  }, [ Page, RowsPerPage,SortedBy,SortField]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -76,12 +76,10 @@ export default function EmailConfigurationPage() {
         sort: true,
         Field: SortField,
         Sortby: SortedBy,
-        Search: SearchInbox,
+        Search: '',
         ClientID: "62da32ea6874d926c02a8472",
         UserID: "62e21451ee96f40bfc1ad497",
       };
-  
-      
   
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGet",
@@ -91,11 +89,30 @@ export default function EmailConfigurationPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetEmailAccountList(Result.data.PageData);
+        SetCountPage(Result.data.PageCount);
       }
     });
   };
-  // End Get InBoxList
+  // End Get EmailAccount
 
+    //change Page
+    const HandleChangePage = (Event, NewPage) => {
+      SetPage(NewPage);
+      GetEmailAccountList();
+    };
+
+     //SortData Page
+    const SortData = (Field) => {
+      SetSortField(Field);
+      if (SortedBy == 1) {
+        SetSortedBy(-1);
+      } else {
+        SetSortedBy(1);
+      }
+      GetEmailAccountList ()
+    }
+  
+    // start Authenticate email
   const AddEmailAccount = () => {
     var data = {
       ClientID: "62da32ea6874d926c02a8472",
@@ -125,10 +142,12 @@ export default function EmailConfigurationPage() {
     });
 
   }
+  // end Authenticate email
 
+  // start ReAuthenticate email
   const ReAuthenticate=(data)=>{
     const responseapi = Axios({
-      url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountUpdate",
+      url: CommonConstants.MOL_APIURL + "/email_account/ReAuthenticateEmailAccount",
       method: "POST",
       data: data
     });
@@ -148,6 +167,16 @@ export default function EmailConfigurationPage() {
       }
     });
 
+  }
+  // end ReAuthenticate email
+
+// start email account delete
+  const OpenEmailAccountDeletePopModel = (data) => {
+    SetEmailAccountDetails(data)
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
   }
 
   const EmailAccountDelete=(data)=>{
@@ -171,14 +200,8 @@ export default function EmailConfigurationPage() {
       }
     });
   }
+  // end email account delete
 
-  const OpenEmailAccountDeletePopModel = (data) => {
-    SetEmailAccountDetails(data)
-    SetDeletePopModel(true);
-  }
-  const CloseDeletePopModel = () => {
-    SetDeletePopModel(false);
-  }
   return (
     <>
       <HeaderTop />
@@ -233,9 +256,9 @@ export default function EmailConfigurationPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                    <TableCell align="right">First Name</TableCell>
-                      <TableCell align="right">Last Name</TableCell>
-                      <TableCell>Email</TableCell>
+                    <TableCell  onClick={() => {SortData("FirstName")}} align="right">First Name</TableCell>
+                      <TableCell onClick={() => {SortData("LastName")}} align="right">Last Name</TableCell>
+                      <TableCell onClick={() => {SortData("Email")}} >Email</TableCell>
                       <TableCell align="right">Working</TableCell>
                       <TableCell align="right"></TableCell>
                       <TableCell align="right">Action</TableCell>
@@ -271,7 +294,7 @@ export default function EmailConfigurationPage() {
               </TableContainer>
 
               <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={3} variant="outlined" shape="rounded" />
+                <Pagination count={CountPage}  onChange={HandleChangePage} variant="outlined" shape="rounded" />
               </Stack>
             </Col>
           </Row>
