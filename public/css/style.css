@@ -225,10 +225,11 @@ span.userpic {
 .title-h3 {
     font-style: normal;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 34px;
     color: #000000;
     margin: 0;
+    letter-spacing: normal;
 }
 
 .listinbox {
@@ -909,7 +910,29 @@ Button.btntemplateround:hover {
     width: 26px;
     height: auto;
 }
-
+.input-boxbg {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.input-boxbg label{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 34px; 
+    color: #616B77;
+}
+.input-boxbg input{
+    border: 1px solid #E5E5E5;
+    border-radius: 15px;
+    width: 100%;
+    padding: 0 15px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 50px;
+    color: #616B77;
+    background: #F7F8FF;
+    outline: 0;
+}
 
 
 
