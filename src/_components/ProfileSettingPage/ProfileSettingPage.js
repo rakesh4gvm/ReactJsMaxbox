@@ -1,21 +1,20 @@
-import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
+import React, { useState, useEffect } from 'react';
+import Axios from "axios"
+
 import { Select } from '@material-ui/core';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import BgProfile from '../../images/bg-profile.png';
-import Axios from "axios"
+import { MenuItem } from '@mui/material';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { useEffect } from 'react';
-import { useState } from 'react';
-
+import BgProfile from '../../images/bg-profile.png';
+import { Col, Row } from 'react-bootstrap';
+import HeaderTop from '../Header/header';
+import FooterBottom from '../Footer/footer';
 // import inboximg2 from '../../images/inboximg2.jpg';
 
-const style = {
+const Style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -27,16 +26,29 @@ const style = {
   p: 4,
 };
 
-const options = [
-  { value: 'v1', label: 'Country' },
-  { value: 'v2', label: 'Country 1' },
-  { value: 'v3', label: 'Country 2' }
-]
-
 export default function ProfileSettingPage({ children }) {
-  const [selected, setSelected] = React.useState(false);
+  const [Selected, SetSelected] = React.useState(false);
+  const [DropdownValue, SetDropdownValue] = useState()
+  const [Open, SetOPen] = React.useState(false);
+  const [OpneOne, SetOpenOne] = React.useState(false);
+  const [User, SetUser] = useState()
+  const [Country, SetCountry] = useState([])
+  const [SelectedCountryDropdown, setSelectedCountryDropdown] = useState(null);
+  const [Base64Image, SetBase64Image] = useState()
+  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
 
-  const addShowCompose = () => {
+  useEffect(() => {
+    GetUserList()
+    GetCountryList()
+  }, [DropdownValue])
+
+  const HandleOpen = () => SetOPen(true);
+  const HandleClose = () => SetOPen(false);
+  const HandleOpenOne = () => SetOpenOne(true);
+  const HandleCloseOne = () => SetOpenOne(false);
+
+  // Add Show Compose
+  const AddShowCompose = () => {
     const element = document.getElementById("UserCompose")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
@@ -45,71 +57,81 @@ export default function ProfileSettingPage({ children }) {
       element.classList.add("show");
     }
   };
-  const [open, setOpen] = React.useState(false);
-  const [openone, setOpenone] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleOpenOne = () => setOpenone(true);
-  const handleCloseOne = () => setOpenone(false);
 
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [user, setUser] = useState()
-  const [country, setCountry] = useState([])
-  const [SelectedCountryDropdown, setSelectedCountryDropdown] = useState(null);
-
+  // Select Country
   const SelectCountry = (e) => {
     setSelectedCountryDropdown(e.target.value)
   }
 
-  useEffect(() => {
-    getUserList()
-    getCountryList()
-  }, [])
-
-  const getUserList = () => {
-    const data = { UserID: "62da32ea6874d926c02a8472" }
-    const responseapi = Axios({
+  // Get Users List
+  const GetUserList = () => {
+    const Data = { UserID: "62f100397213b9323442a660" }
+    const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
       method: "POST",
-      data: data,
+      data: Data,
     });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setUser(result?.data?.Data)
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetUser(Result?.data?.Data)
+        SetDropdownValue(Result?.data?.Data?.CountryID?._id)
       }
     });
   }
 
-  const getCountryList = () => {
-    const responseapi = Axios({
+  // Get Country List
+  const GetCountryList = () => {
+    const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/CountryGet",
       method: "GET",
     });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setCountry(result?.data?.PageData)
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetCountry(Result?.data?.PageData)
       }
     });
   }
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
+  // Handle Change
+  const HandleChange = (NewValue) => {
+    SetValue(NewValue);
   };
 
-  const [checkEmail, setCheckEmail] = useState("")
-
-  const checkEmailExists = async (Email) => {
-    const data = { Email: Email }
-    const resApi = await Axios({
+  // Check Existing Email
+  const CheckEmailExists = async (Email) => {
+    const Data = { Email: Email }
+    const ResponseApi = await Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserEmailExist",
       method: "POST",
-      data: data,
+      data: Data,
     })
-
-    return resApi?.data.StatusMessage
+    return ResponseApi?.data.StatusMessage
   }
 
-  const updateUser = async () => {
+  // Upload Image
+  const UploadImage = async (e) => {
+    const File = e.target.files[0]
+    const Base64 = await ConvertBase64(File)
+    SetBase64Image(Base64)
+  }
+
+  // Convert image to base64
+  const ConvertBase64 = (File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(File)
+
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      }
+      fileReader.onerror = (Error) => {
+        reject(Error)
+      }
+    })
+  }
+
+  // Update User
+  const UpdateUser = async () => {
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
@@ -117,34 +139,35 @@ export default function ProfileSettingPage({ children }) {
     var ZipCode = document.getElementById("zip").value;
     var Password = document.getElementById("password").value;
 
-    var checkData = await checkEmailExists(Email)
+    var CheckData = await CheckEmailExists(Email)
 
-    let Country
+    let CountryId
     if (SelectedCountryDropdown === null) {
-      Country = user?.CountryID?._id
+      CountryId = User?.CountryID?._id
     }
     else {
-      Country = SelectedCountryDropdown
+      CountryId = SelectedCountryDropdown
     }
 
-    let data = {
-      UserID: "62da32ea6874d926c02a8472",
+    let Data = {
+      UserID: "62f100397213b9323442a660",
       FirstName: FirstName,
       LastName: LastName,
       Email: Email,
       PhoneNumber: PhoneNumber,
       ZipCode: ZipCode,
-      CountryID: Country,
+      CountryID: CountryId,
       Password: Password,
+      UserProfile: Base64Image
     }
 
-    if (checkData === "SUCCESS") {
+    if (CheckData === "SUCCESS") {
       Axios({
         url: CommonConstants.MOL_APIURL + "/user/UserUpdate",
         method: "POST",
-        data: data,
-      }).then((res) => {
-        return console.log("UserUpdate Succrsss======", res)
+        data: Data,
+      }).then((Result) => {
+        GetUserList()
       })
     }
   }
@@ -163,11 +186,12 @@ export default function ProfileSettingPage({ children }) {
 
         <Row className='text-center mt-5'>
           <Col>
-            <div className='imgupload'>
+            <div>
+              <img src={User?.UserImage} alt="img" />
             </div>
             <div className='mt-4'>
-              <h5>{user?.FirstName} {user?.LastName}</h5>
-              <a>{user?.Email}</a>
+              <h5>{User?.FirstName} {User?.LastName}</h5>
+              <a>{User?.Email}</a>
             </div>
           </Col>
         </Row>
@@ -176,41 +200,36 @@ export default function ProfileSettingPage({ children }) {
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={user?.FirstName} />
+                <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName} />
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={user?.LastName} />
+                <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} />
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='email' placeholder='Email' id='email' defaultValue={user?.Email} />
-                {checkEmail && (
-                  <span style={{ color: "red" }}>
-                    Email Already Exists.
-                  </span>
-                )}
+                <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} />
               </div>
             </Col>
           </Row>
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Phone No.' id='phone' defaultValue={user?.PhoneNumber} />
+                <input type='text' placeholder='Phone No.' id='phone' defaultValue={User?.PhoneNumber} />
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Zip code' id='zip' defaultValue={user?.ZipCode} />
+                <input type='text' placeholder='Zip code' id='zip' defaultValue={User?.ZipCode} />
               </div>
             </Col>
             <Col sm={4}>
-              <div class="Select-box">
-                <Select labelId="demo-simple-select-label" defaultdefaultValue={user?.CountryID?.CountryName} id="country" onChange={SelectCountry} >
-                  {country?.map((row) => (
-                    <option value={row?._id}>{row?.CountryName}</option>
+              <div>
+                <Select id="demo-simple-select-label" value={DropdownValue} fullWidth onChange={SelectCountry} >
+                  {Country?.map((row) => (
+                    <MenuItem value={row?._id}>{row?.CountryName}</MenuItem >
                   ))}
                 </Select>
               </div>
@@ -219,15 +238,18 @@ export default function ProfileSettingPage({ children }) {
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Password' id='password' defaultValue={user?.Password} />
+                <input type='Password' placeholder='Password' id='password' defaultValue={User?.Password} />
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={user?.Password} />
+                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} />
               </div>
             </Col>
-            <Col>
+            <Col sm={4}>
+              <div className='input-box'>
+                <input type='file' onChange={(e) => UploadImage(e)} />
+              </div>
             </Col>
           </Row>
         </div>
@@ -235,7 +257,7 @@ export default function ProfileSettingPage({ children }) {
         <div className='btnprofile my-5'>
           <ButtonGroup variant="text" aria-label="text button group">
             <Button variant="contained btn btn-primary smallbtn"> Edit</Button>
-            <Button variant="contained btn btn-primary smallbtn mx-4" onClick={updateUser}> Save</Button>
+            <Button variant="contained btn btn-primary smallbtn mx-4" onClick={UpdateUser}> Save</Button>
             <Button variant="contained btn btn-orang smallbtn"> Cancel</Button>
           </ButtonGroup>
         </div>
