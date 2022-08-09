@@ -56,10 +56,12 @@ export default function EmailConfigurationPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [EmailAccountDetails, SetEmailAccountDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [Email, SetEmail] = React.useState()
   useEffect(() => {
     CheckAccountAuthonicate()
-    GetEmailAccountList  ()
-  }, [ Page, RowsPerPage,SortedBy,SortField]);
+    GetEmailAccountList()
+    // GetEmailList()
+  }, [Page, RowsPerPage, SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -67,20 +69,20 @@ export default function EmailConfigurationPage() {
       var ResultMessage = atob(queryparamter.split('data=')[1]);
     }
   }
-// Start Get EmailAccount
+  // Start Get EmailAccount
   const GetEmailAccountList = () => {
     let Data
-      Data = {
-        Page: Page,
-        RowsPerPage: RowsPerPage,
-        sort: true,
-        Field: SortField,
-        Sortby: SortedBy,
-        Search: '',
-        ClientID: "62da32ea6874d926c02a8472",
-        UserID: "62e21451ee96f40bfc1ad497",
-      };
-  
+    Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: '',
+      ClientID: "62da32ea6874d926c02a8472",
+      UserID: "62e21451ee96f40bfc1ad497",
+    };
+
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGet",
       method: "POST",
@@ -95,24 +97,24 @@ export default function EmailConfigurationPage() {
   };
   // End Get EmailAccount
 
-    //change Page
-    const HandleChangePage = (Event, NewPage) => {
-      SetPage(NewPage);
-      GetEmailAccountList();
-    };
+  //change Page
+  const HandleChangePage = (Event, NewPage) => {
+    SetPage(NewPage);
+    GetEmailAccountList();
+  };
 
-     //SortData Page
-    const SortData = (Field) => {
-      SetSortField(Field);
-      if (SortedBy == 1) {
-        SetSortedBy(-1);
-      } else {
-        SetSortedBy(1);
-      }
-      GetEmailAccountList ()
+  //SortData Page
+  const SortData = (Field) => {
+    SetSortField(Field);
+    if (SortedBy == 1) {
+      SetSortedBy(-1);
+    } else {
+      SetSortedBy(1);
     }
-  
-    // start Authenticate email
+    GetEmailAccountList()
+  }
+
+  // start Authenticate email
   const AddEmailAccount = () => {
     var data = {
       ClientID: "62da32ea6874d926c02a8472",
@@ -145,7 +147,7 @@ export default function EmailConfigurationPage() {
   // end Authenticate email
 
   // start ReAuthenticate email
-  const ReAuthenticate=(data)=>{
+  const ReAuthenticate = (data) => {
     const responseapi = Axios({
       url: CommonConstants.MOL_APIURL + "/email_account/ReAuthenticateEmailAccount",
       method: "POST",
@@ -170,7 +172,7 @@ export default function EmailConfigurationPage() {
   }
   // end ReAuthenticate email
 
-// start email account delete
+  // start email account delete
   const OpenEmailAccountDeletePopModel = (data) => {
     SetEmailAccountDetails(data)
     SetDeletePopModel(true);
@@ -179,7 +181,7 @@ export default function EmailConfigurationPage() {
     SetDeletePopModel(false);
   }
 
-  const EmailAccountDelete=(data)=>{
+  const EmailAccountDelete = (data) => {
     var data = {
       ID: data._id
     };
@@ -193,8 +195,7 @@ export default function EmailConfigurationPage() {
         GetEmailAccountList()
         SetDeletePopModel(false);
       }
-      else
-      {
+      else {
         GetEmailAccountList()
         SetDeletePopModel(false);
       }
@@ -202,36 +203,75 @@ export default function EmailConfigurationPage() {
   }
   // end email account delete
 
+  // // Get Email List ID
+  // const GetEmailList = () => {
+  //   const Data = { ID: "62e216304561e63bc0f37f5b" }
+  //   const ResponseApi = Axios({
+  //     url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetByID",
+  //     method: "POST",
+  //     data: Data,
+  //   });
+  //   ResponseApi.then((Result) => {
+  //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+  //       SetEmail(Result.data.Data)
+  //     }
+  //   });
+  // }
+
+  // // Update Email
+  // const UpdateEmail = async () => {
+  //   var FirstName = document.getElementById("firstName").value;
+  //   var LastName = document.getElementById("lastName").value;
+  //   var Email = document.getElementById("email").value;
+  //   var RefreshToken = document.getElementById("refreshToken").value;
+  //   var IsWorking = document.getElementById("isWorking").value;
+
+  //   let Data = {
+  //     UserID: "62e216304561e63bc0f37f5b",
+  //     FirstName: FirstName,
+  //     LastName: LastName,
+  //     Email: Email,
+  //     RefreshToken: RefreshToken,
+  //     IsWorking: IsWorking,
+  //   }
+  //   Axios({
+  //     url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountUpdate",
+  //     method: "POST",
+  //     data: Data,
+  //   }).then((Result) => {
+  //   })
+  // }
+
   return (
     <>
       <HeaderTop />
 
       <Modal className="modal-pre"
-          open={DeletePopModel}
-          onClose={CloseDeletePopModel}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='p-5 text-center'>
-              <img src={Emailinbox} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Are you sure ?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a email.
-              </Typography>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { EmailAccountDelete(EmailAccountDetails); }}>
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
-                No
-              </Button>
-            </div>
-          </Box>
-        </Modal>
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email.
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { EmailAccountDelete(EmailAccountDetails); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
 
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
@@ -256,9 +296,9 @@ export default function EmailConfigurationPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                    <TableCell  onClick={() => {SortData("FirstName")}} align="right">First Name</TableCell>
-                      <TableCell onClick={() => {SortData("LastName")}} align="right">Last Name</TableCell>
-                      <TableCell onClick={() => {SortData("Email")}} >Email</TableCell>
+                      <TableCell onClick={() => { SortData("FirstName") }} align="right">First Name</TableCell>
+                      <TableCell onClick={() => { SortData("LastName") }} align="right">Last Name</TableCell>
+                      <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
                       <TableCell align="right">Working</TableCell>
                       <TableCell align="right"></TableCell>
                       <TableCell align="right">Action</TableCell>
@@ -266,24 +306,24 @@ export default function EmailConfigurationPage() {
                   </TableHead>
                   <TableBody>
                     {EmailAccountList.map((row) => (
-                      
+
                       <TableRow>
                         <TableCell align="right">{row.FirstName}</TableCell>
                         <TableCell align="right">{row.LastName}</TableCell>
                         <TableCell scope="row">{row.Email}</TableCell>
                         <TableCell align="right">
                           <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                          {row.IsWorking==true ?  <Button className='btn-success'>
+                            {row.IsWorking == true ? <Button className='btn-success'>
                               Yes
-                            </Button> :  <Button className='btn-success'>
+                            </Button> : <Button className='btn-success'>
                               NO
                             </Button>}
                           </ButtonGroup>
                         </TableCell>
-                       
-                        <TableCell align="right">{row.IsWorking==false ?  '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row) }><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button> }</TableCell>
+
+                        <TableCell align="right">{row.IsWorking == false ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
                         <TableCell align="right">
-                          <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row) }>
+                          <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
                             <img src={DeleteIcon} />
                           </Button>
                         </TableCell>
@@ -294,7 +334,7 @@ export default function EmailConfigurationPage() {
               </TableContainer>
 
               <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage}  onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
               </Stack>
             </Col>
           </Row>
