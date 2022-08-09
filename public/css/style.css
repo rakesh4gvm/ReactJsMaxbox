@@ -933,6 +933,21 @@ Button.btntemplateround:hover {
     background: #F7F8FF;
     outline: 0;
 }
+.sign-main { 
+    width: 100%;
+    min-height: calc(100vh - 0px);
+    position: relative; 
+    padding: 100px 15px 0; 
+}
+.bgsigner{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: calc(80vh - 0px);
+}
+.sign-main label{
+    color: #909092;
+}
 
 
 

@@ -15,7 +15,8 @@ import TemplatesPage from '../src/_components/TemplatesPage/TemplatesPage';
 import SelectTemplatesPage from '../src/_components/SelectTemplatesPage/SelectTemplatesPage';
 import CreateTemplatesPage from './_components/CreateTemplatesPage/CreateTemplatesPage';
 import CreateObjectionPage from '../src/_components/CreateObjectionPage/CreateObjectionPage';
-import LoginPage from '../src/_components/LoginPage/LoginPage';
+import RegisterPage from './_components/RegisterPage/RegisterPage';
+import LoginPage from './_components/LoginPage/LoginPage';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route exact path="/SelectTemplates" component={SelectTemplatesPage} />
                 <Route exact path="/CreateTemplates" component={CreateTemplatesPage} /> 
                 <Route exact path="/CreateObjection" component={CreateObjectionPage} /> 
+                <Route exact path="/Register" component={RegisterPage} /> 
                 <Route exact path="/Login" component={LoginPage} /> 
                 
                 <Redirect from="*" to="/" />

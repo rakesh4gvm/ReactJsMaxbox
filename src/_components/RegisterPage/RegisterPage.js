@@ -33,7 +33,7 @@ const options = [
 ]
 
 
-export default function LoginPage({ children }) {
+export default function RegisterPage({ children }) {
     const [selected, setSelected] = React.useState(false);
 
     const addShowCompose = () => {
@@ -67,8 +67,18 @@ return (
       <img className='bgsigner' src={BgSign} />
       
       <div className='sm-container pt-5'>
-      <h2>Login</h2>
-      <Row> 
+      <h2>Register</h2>
+      <Row>
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='First Name' />
+            </div>
+        </Col> 
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='text' placeholder='Last Name' />
+            </div>
+        </Col>
         <Col sm={4}>
             <div className='input-box'>
               <input type='email' placeholder='Email' />
@@ -80,43 +90,32 @@ return (
             <div className='input-box'>
               <input type='Password' placeholder='Password' />
             </div>
-        </Col>  
+        </Col> 
+        <Col sm={4}>
+            <div className='input-box'>
+              <input type='Password' placeholder='Confirm Password' />
+            </div>
+        </Col>
         <Col> 
         </Col>
       </Row> 
       <Row>
-        <Col sm={4}>
+        <Col sm={12}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" /> 
+            <FormControlLabel control={<Checkbox defaultChecked />} label="I agree to all the Terms & Privacy Policy." /> 
           </FormGroup>
-        </Col> 
-        <Col sm={4}>
-          <a href=''>Forgot Password?</a>
         </Col> 
       </Row> 
       </div>
 
-      <div className='sm-container my-4'>
-      <Row> 
-      <Col sm={4}>
-        <div className='btnprofile left'> 
+      <div className='sm-container'>
+        <div className='btnprofile my-5 left'> 
           <ButtonGroup variant="text" aria-label="text button group"> 
-            <Button variant="contained btn btn-primary smallbtn">Login</Button>
+            <Button variant="contained btn btn-primary smallbtn"> submit</Button>
             {/* <Button variant="contained btn btn-orang smallbtn"> Cancel</Button> */}
           </ButtonGroup> 
         </div>
-        </Col> 
-        </Row>
       </div>
-
-      <div className='sm-container'>
-        <Row> 
-          <Col sm={4}>
-          Not account At? <a href=''>Register</a> here. 
-          </Col> 
-        </Row>
-        </div>
-
       </div>
     </div>
 
