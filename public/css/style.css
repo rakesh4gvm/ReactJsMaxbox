@@ -61,6 +61,19 @@ span.userpic {
 .selecter-m{
     min-width: 250px;
 }
+.selecter-m .MuiInput-root{
+    width: 100%;
+}
+.selecter-m > .MuiInput-root::after,
+.selecter-m > .MuiInput-underline:before{
+    display: none;
+}
+.selecter-m .MuiInput-root .MuiSelect-selectMenu{
+    background-color: #fff;
+    line-height: 29px;
+    border-radius: 6px;
+    padding: 5px 15px;
+}
 .menulist {
     display: flex;
 }
@@ -948,9 +961,20 @@ Button.btntemplateround:hover {
 .sign-main label{
     color: #909092;
 }
-
-
-
+div#menu- {
+    margin-top: 41px;
+}
+.header-white{
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 999;
+}
+.header-white .navbar {
+    justify-content: space-between;
+}
 
 
 
