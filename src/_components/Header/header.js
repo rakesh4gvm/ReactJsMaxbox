@@ -188,7 +188,7 @@ export default function Header() {
                                     </NavDropdown.Item> 
                                 </NavDropdown>
 
-                                <div class="selecter-m mt-2 mx-4">
+                                <div class="selecter-m mx-4">
                                     {/* <Select  value={options.value}  options={options}   defaultValue={options[1]} /> */}
 
               

@@ -1,6 +1,6 @@
 import * as React from 'react'; 
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
+import MainHeader from '../MainHeader/MainHeader';
 import FooterBottom from '../Footer/footer';
 import Select from 'react-select' 
 import Button from '@mui/material/Button'; 
@@ -61,6 +61,7 @@ export default function LoginPage({ children }) {
 return (
     <>
     
+    <MainHeader />
  
     <div className='bodymain my-0 px-0'> 
       <div className='sign-main'>
@@ -112,7 +113,7 @@ return (
       <div className='sm-container'>
         <Row> 
           <Col sm={4}>
-          Not account At? <a href=''>Register</a> here. 
+          Not account At? <a href='/Register'>Register</a> here. 
           </Col> 
         </Row>
         </div>
