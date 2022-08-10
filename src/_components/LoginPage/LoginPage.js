@@ -113,7 +113,7 @@ return (
       <div className='sm-container'>
         <Row> 
           <Col sm={4}>
-          Not account At? <a href=''>Register</a> here. 
+          Not account At? <a href='/Register'>Register</a> here. 
           </Col> 
         </Row>
         </div>

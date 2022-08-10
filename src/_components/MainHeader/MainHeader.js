@@ -108,6 +108,7 @@ export default function Header() {
   return (
       <>
         <header className='header-white'>
+            <div className='sm-container'>
                 <Navbar expand="lg">
                         <div className='left'>
                             <Navbar.Brand href="#home">
@@ -137,7 +138,8 @@ export default function Header() {
                         </Nav> 
                         </Navbar.Collapse> 
                     </div>
-            </Navbar>
+                </Navbar>
+            </div>
         </header>
      </>
   );
