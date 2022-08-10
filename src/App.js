@@ -24,7 +24,7 @@ function App() {
     <div className="App">
        <Router history={history}>
             <Switch>
-                <Route exact path="/" component={OtherInboxPage} /> 
+                <Route exact path="/OtherInboxPage" component={OtherInboxPage} /> 
                 <Route exact path="/UnansweredResponses" component={UnansweredResponsesPage} /> 
                 <Route exact path="/Starred" component={StarredPage} /> 
                 <Route exact path="/FollowUpLater" component={FollowUpLaterPage} /> 
@@ -37,7 +37,7 @@ function App() {
                 <Route exact path="/CreateTemplates" component={CreateTemplatesPage} /> 
                 <Route exact path="/CreateObjection" component={CreateObjectionPage} /> 
                 <Route exact path="/Register" component={RegisterPage} /> 
-                <Route exact path="/Login" component={LoginPage} /> 
+                <Route exact path="/" component={LoginPage} /> 
                 
                 <Redirect from="*" to="/" />
             </Switch>

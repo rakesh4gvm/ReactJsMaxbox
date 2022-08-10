@@ -159,7 +159,10 @@ export default function OtherInboxPage() {
         Search: SearchInbox,
         ClientID: ClientID,
         UserID: UserID,
-        ID: Items?.map((s) => s._id)
+        IsInbox:false,
+        IsStarred:false,
+        IsFollowUp:false,
+       
       };
     } else {
       Data = {
@@ -171,6 +174,9 @@ export default function OtherInboxPage() {
         Search: SearchInbox,
         ClientID: ClientID,
         UserID: UserID,
+        IsInbox:false,
+        IsStarred:false,
+        IsFollowUp:false,
       };
     }
     const ResponseApi = Axios({
