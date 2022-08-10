@@ -104,19 +104,41 @@ export default function OtherInboxPage() {
   const [StarSelected, SetStarSelected] = React.useState(false);
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
   const [Items, SetItems] = useState([])
   const [ResultData, SetResultData] = useState([])
   const [Open, SetOpen] = React.useState(false);
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [Checked, SetChecked] = React.useState([1]);
+  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
 
   useEffect(() => {
     if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
     GetClientID()
     GetInBoxList();
-  }, [SearchInbox, ClientID, InBoxList?.length, Items]);
+  }, [SearchInbox, ClientID, InBoxList?.length]);
+
+  // Handle Change Dropdown List Manage by on React Js
+  const HandleDropdownListCheckbox = (item) => {
+    if (SelectedDropdownList.some(sl => sl?._id === item?._id)) {
+      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== item?._id))
+    } else {
+      SetSelectedDropdownList([...SelectedDropdownList, item])
+    }
+  }
+
+  // Handle Dropdown List Checkbox manage by BackenSide
+  // const HandleDropdownListCheckbox = (Item) => {
+  //   if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
+  //     const DropdownFilter = SelectedDropdownList.filter(sl => sl?._id !== Item?._id)
+  //     if (DropdownFilter.length > 0) {
+  //       SetItems(DropdownFilter)
+  //     }
+  //     SetSelectedDropdownList(DropdownFilter)
+  //   } else {
+  //     SetSelectedDropdownList([...SelectedDropdownList, Item])
+  //   }
+  // }
 
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
@@ -127,19 +149,6 @@ export default function OtherInboxPage() {
     SetValue(NewValue);
   };
 
-  // Handle Dropdown List Checkbox
-  const HandleDropdownListCheckbox = (Item) => {
-    if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
-      const DropdownFilter = SelectedDropdownList.filter(sl => sl?._id !== Item?._id)
-      if (DropdownFilter.length > 0) {
-        SetItems(DropdownFilter)
-      }
-      SetSelectedDropdownList(DropdownFilter)
-    } else {
-      SetSelectedDropdownList([...SelectedDropdownList, Item])
-    }
-  }
-
   // Get ClientID
   const GetClientID = () => {
     const ClientId = localStorage.getItem("ClientID")
@@ -148,37 +157,50 @@ export default function OtherInboxPage() {
 
   // Start Get InBoxList
   const GetInBoxList = () => {
-    let Data
-    if (Items?.length > 0) {
-      Data = {
-        Page: Page,
-        RowsPerPage: RowsPerPage,
-        sort: true,
-        Field: SortField,
-        Sortby: SortedBy,
-        Search: SearchInbox,
-        ClientID: ClientID,
-        UserID: UserID,
-        IsInbox:false,
-        IsStarred:false,
-        IsFollowUp:false,
-       
-      };
-    } else {
-      Data = {
-        Page: Page,
-        RowsPerPage: RowsPerPage,
-        sort: true,
-        Field: SortField,
-        Sortby: SortedBy,
-        Search: SearchInbox,
-        ClientID: ClientID,
-        UserID: UserID,
-        IsInbox:false,
-        IsStarred:false,
-        IsFollowUp:false,
-      };
-    }
+    // let Data
+    // if (Items?.length > 0) {
+    //   Data = {
+    //     Page: Page,
+    //     RowsPerPage: RowsPerPage,
+    //     sort: true,
+    //     Field: SortField,
+    //     Sortby: SortedBy,
+    //     Search: SearchInbox,
+    //     ClientID: ClientID,
+    //     UserID: UserID,
+    //     IsInbox: false,
+    //     IsStarred: false,
+    //     IsFollowUp: false,
+
+    //   };
+    // } else {
+    //   Data = {
+    //     Page: Page,
+    //     RowsPerPage: RowsPerPage,
+    //     sort: true,
+    //     Field: SortField,
+    //     Sortby: SortedBy,
+    //     Search: SearchInbox,
+    //     ClientID: ClientID,
+    //     UserID: UserID,
+    //     IsInbox: false,
+    //     IsStarred: false,
+    //     IsFollowUp: false,
+    //   };
+    // }
+    var Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+    };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
@@ -403,6 +425,9 @@ export default function OtherInboxPage() {
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
+  console.log("SelectedDropdownList====", SelectedDropdownList)
+
+
   return (
     <>
       <HeaderTop />
@@ -598,7 +623,7 @@ export default function OtherInboxPage() {
                       <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {ResultData?.map((item) => { // dropdown list
+                            {InBoxList?.map((item) => { // dropdown list
                               const labelId = `checkbox-list-secondary-label-${item._id}`;
                               return (
                                 <ListItem className='droplistchec'
@@ -662,7 +687,7 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {SelectedDropdownList.map((row) => (  // datalist
+                    {SelectedDropdownList?.map((row) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                         <Row>
                           <Col xs={1} className="pr-0">
