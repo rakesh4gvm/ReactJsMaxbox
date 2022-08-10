@@ -1,15 +1,10 @@
-
 import React, { useRef, useState, useEffect } from 'react';
-import { ButtonGroup, Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import Compose from '../ComposePage/ComposePage';
 import Axios from "axios";
-import parse from "html-react-parser";
-import moment from "moment";
+import Moment from "moment";
+
 import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/material';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -20,7 +15,6 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import inboxuser1 from '../../images/avatar/1.jpg';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -34,16 +28,19 @@ import Avatar from '@mui/material/Avatar';
 import downarrow from '../../images/icon_downarrow.svg';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 
+import { ButtonGroup, Col, Row } from 'react-bootstrap';
+import HeaderTop from '../Header/header';
+import Compose from '../ComposePage/ComposePage';
+import parse from "html-react-parser";
+import inboxuser1 from '../../images/avatar/1.jpg';
 import inboxuser2 from '../../images/avatar/2.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
 import inboxuser4 from '../../images/avatar/4.jpg';
 import inboximg1 from '../../images/inboximg1.jpg';
 import inboximg2 from '../../images/inboximg2.jpg';
-
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
@@ -61,11 +58,10 @@ import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
-
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 
-function useOutsideAlerter(ref) {
+function UseOutsideAlerter(ref) {
   useEffect(() => {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -79,7 +75,7 @@ function useOutsideAlerter(ref) {
     };
   }, [ref]);
 }
-const addInboxClass = () => {
+const AddInboxClass = () => {
   const element = document.getElementById("id_userboxlist")
   if (element.classList.contains("show")) {
     element.classList.remove("show");
@@ -88,7 +84,6 @@ const addInboxClass = () => {
     element.classList.add("show");
   }
 };
-
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -102,117 +97,274 @@ const Style = {
 };
 
 export default function UnansweredResponsesPage() {
-  const [selected, setSelected] = React.useState(false);
-
-  const addShowCompose = () => {
-    const element = document.getElementById("UserCompose")
-    if (element.classList.contains("show")) {
-      element.classList.remove("show");
-    }
-    else {
-      element.classList.add("show");
-    }
-  };
-  const [open, setOpen] = React.useState(false);
-  const [openone, setOpenone] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleOpenOne = () => setOpenone(true);
-  const handleCloseOne = () => setOpenone(false);
-
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [StarSelected, setStarSelected] = React.useState(false);
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-
-
-  const [ResultData, SetResultData] = useState([]);
   const [UnansweredResponsesList, SetUnansweredResponsesList] = React.useState([]);
   const [UnansweredResponsesChecked, setUnansweredResponsesChecked] = React.useState([]);
   const [DeletePopModel, setDeletePopModel] = React.useState(false);
   const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
   const [StarPopModel, SetStarPopModel] = React.useState(false);
-  // const [InboxChecked, SetInboxChecked] = React.useState([]);
-
   const [Items, SetItems] = useState([]);
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [SearchInbox, SetSearchInbox] = React.useState("");
-
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [search, setSearch] = React.useState("");
-  const [sortField, setsortField] = React.useState("FromEmail");
-  const [sortedBy, setsortedBy] = React.useState(1);
+  const [Page, setPage] = React.useState(1);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [SortField, SetsortField] = React.useState("FromEmail");
+  const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, setClientID] = React.useState(0);
   const [UserID, SetClientID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
-  const [checked, setChecked] = React.useState([1]);
+  const [Checked, SetChecked] = React.useState([1]);
+  const [Open, SetOpen] = React.useState(false);
+  const [OpenOne, SetOpneOne] = React.useState(false);
+  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
 
   useEffect(() => {
-
     if (UnansweredResponsesList?.length > 0) SetSelectedDropdownList(UnansweredResponsesList)
     GetClientID()
     GetUnansweredResponcesList();
   }, [SearchInbox, ClientID, UnansweredResponsesList?.length, Items]);
 
-  // Get ClientID
-  const GetClientID = () => {
-    const ClientId = localStorage.getItem("ClientID")
-    SetClientID(JSON.parse(ClientId)?._id)
-  }
+  const HandleOpen = () => SetOpen(true);
+  const HandleClose = () => SetOpen(false);
+  const HandleOpenOne = () => SetOpneOne(true);
+  const HandleCloseOne = () => SetOpneOne(false);
 
-  // Start Get UnansweredResponsesList
-  const GetUnansweredResponcesList = () => {
-    var data = {
-      Page: page,
-      RowsPerPage: rowsPerPage,
-      sort: true,
-      Field: sortField,
-      Sortby: sortedBy,
-      Search: SearchInbox,
-      ClientID: ClientID,
-      UserID: UserID,
-      PageName: "unanswered"
-    };
-    const responseapi = Axios({
-      url: CommonConstants.MOL_APIURL + "/inbox_option/ReceiveEmailHistoryGetByUserPage",
-      method: "POST",
-      data: data,
-    });
-    responseapi.then((result) => {
-
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetUnansweredResponsesList(result.data.PageData);
-        SetResultData(result.data.ResultObjData);
-        OpenMessageDetails(result.data.PageData[0]._id);
-      }
-
-
-    });
-  };
-  // End Get UnansweredResponsesList 
-
-
-
-
-
-  // Handle Dropdown List Checkbox
+  // Start Handle Dropdown List Checkbox
   const HandleDropdownListCheckbox = (Item) => {
-    console.log("Item=======", Item)
-
     if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
-      const DropdownFilter = SelectedDropdownList.filter(sl => sl?._id !== Item?._id)
-      if (DropdownFilter.length > 0) {
-        SetItems(DropdownFilter)
-      }
-      console.log("DropdownFilter=======", DropdownFilter)
-      SetSelectedDropdownList(DropdownFilter)
+      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== Item?._id))
     } else {
       SetSelectedDropdownList([...SelectedDropdownList, Item])
     }
   }
+  // End Handle Dropdown List Checkbox
+
+  // Start Add Show Compose
+  const AddShowCompose = () => {
+    const Element = document.getElementById("UserCompose")
+    if (Element.classList.contains("show")) {
+      Element.classList.remove("show");
+    }
+    else {
+      Element.classList.add("show");
+    }
+  };
+  // End Add Show Compose
+
+  // Start Handle Change
+  const HandleChange = (NewValue) => {
+    SetValue(NewValue);
+  };
+  // End Handle Change
+
+  // Start Get ClientID
+  const GetClientID = () => {
+    const ClientId = localStorage.getItem("ClientID")
+    SetClientID(JSON.parse(ClientId)?._id)
+  }
+  // End Get ClientID
+
+  // Start Get UnansweredResponsesList
+  const GetUnansweredResponcesList = () => {
+
+    let Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetUnansweredResponsesList(Result.data.PageData);
+        OpenMessageDetails(Result.data.PageData[0]._id);
+      }
+    });
+  };
+  // End Get UnansweredResponsesList 
+
+  // Start Handle Toggle
+  const HandleToggle = (Value) => () => {
+    const CurrentIndex = Checked.indexOf(Value);
+    const NewChecked = [...Checked];
+    if (CurrentIndex === -1) {
+      NewChecked.push(Value);
+    } else {
+      NewChecked.splice(CurrentIndex, 1);
+    }
+    SetChecked(NewChecked);
+  };
+  // End Handle Toggle
+
+  // Start Close Delete Pop
+  const CloseDeletePopModel = () => {
+    setDeletePopModel(false);
+  }
+  // End Close Delete Pop
+
+  // Start Delete Message
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          GetUnansweredResponcesList();
+        }
+      });
+    }
+  }
+  // End Delete Message
+
+  //Start Open Message Details
+  const OpenMessageDetails = (ID) => {
+    var Data = {
+      _id: ID,
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetOpenMessageDetails(Result.data.Data);
+      }
+      else {
+        SetOpenMessageDetails('');
+      }
+    });
+  };
+  //End Open Message Details
+
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    setDeletePopModel(true);
+  }
+  // End PopModel Open and Close and Delete Message
+
+  // Start Update Star Message and model open and close
+  const OpenStarPopModel = () => {
+    SetStarPopModel(true);
+  }
+  const CloseStarPopModel = () => {
+    SetStarPopModel(false);
+  }
+  const UpdateStarMessage = (ID) => {
+    if (ID != '') {
+      //setSelected(true);
+      var Data = {
+        _id: ID,
+        IsStarred: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseStarPopModel();
+          OpenMessageDetails('')
+          GetUnansweredResponcesList();
+        }
+      });
+    }
+  }
+  // End Update Star Message and model open and close
+
+  // Start CheckBox Code
+  const UnansweredResponcesCheckBox = (e) => {
+    var UpdatedList = [...UnansweredResponsesChecked];
+    if (e.target.checked) {
+      UpdatedList = [...UnansweredResponsesChecked, e.target.value];
+    } else {
+      UpdatedList.splice(UnansweredResponsesChecked.indexOf(e.target.value), 1);
+    }
+    setUnansweredResponsesChecked(UpdatedList);
+  }
+  const SeleactAllUnansweredResponsesCheckBox = (e) => {
+    if (e.target.checked) {
+      SetSelectAllCheckbox(true);
+      setUnansweredResponsesChecked(UnansweredResponsesList.map(item => item._id));
+    } else {
+      SetSelectAllCheckbox(false);
+      setUnansweredResponsesChecked([]);
+    }
+  }
+  // End CheckBox Code
+
+  // Start Delete All Message 
+  const OpenAllDeletePopModel = () => {
+    if (UnansweredResponsesChecked.length > 0) {
+      SetAllDeletePopModel(true);
+    }
+  }
+  const CloseAllDeletePopModel = () => {
+    SetAllDeletePopModel(false);
+  }
+  const DeleteAllMessage = () => {
+    if (UnansweredResponsesChecked.length > 0) {
+      var Data = {
+        IDs: UnansweredResponsesChecked,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseAllDeletePopModel();
+          OpenMessageDetails('')
+          GetUnansweredResponcesList();
+        }
+      });
+    }
+  }
+  // End Delete All Message 
+
+  // Start Search
+  const SearchBox = (e) => {
+    if (e.keyCode == 13) {
+      SetSearchInbox(e.target.value)
+    }
+  }
+  // End Search
+
+  // Start Page Refresh
+  const RefreshPage = () => {
+    SetSelectAllCheckbox(false);
+    SetSearchInbox('');
+    setUnansweredResponsesChecked([]);
+  }
+  // End Page Refresh
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -253,277 +405,99 @@ export default function UnansweredResponsesPage() {
     },
   }));
 
-  const options = [
-    { value: 'Primary', label: 'Primary' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
   const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'left',
     color: theme.palette.text.secondary,
   }));
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
-
-  const CloseDeletePopModel = () => {
-    setDeletePopModel(false);
-  }
-
-
-
-  const DeleteMessage = (ID) => {
-
-    if (ID != '') {
-      var DeleteArray = []
-      DeleteArray.push(ID)
-      var data = {
-        IDs: DeleteArray,
-        LastUpdatedBy: -1
-      };
-      const responseapi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
-        method: "POST",
-        data: data,
-      });
-      responseapi.then((result) => {
-        if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseDeletePopModel();
-          OpenMessageDetails('')
-          GetUnansweredResponcesList();
-        }
-      });
-    }
-  }
-  //Start Open Message Details
-  const OpenMessageDetails = (ID) => {
-
-    var data = {
-      _id: ID,
-    };
-    const responseapi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-      method: "POST",
-      data: data,
-    });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(result.data.Data);
-      }
-      else {
-        SetOpenMessageDetails('');
-      }
-    });
-
-  };
-  //End Open Message Details
-
-  // start PopModel Open and Close and Delete Message
-  const OpenDeletePopModel = () => {
-    setDeletePopModel(true);
-  }
-
-  // Start Update Star Message and model open and close
-  const OpenStarPopModel = () => {
-
-    SetStarPopModel(true);
-  }
-  const CloseStarPopModel = () => {
-
-    SetStarPopModel(false);
-  }
-  const UpdateStarMessage = (ID) => {
-
-    if (ID != '') {
-      //setSelected(true);
-      var Data = {
-        _id: ID,
-        IsStarred: true,
-        LastUpdatedBy: -1
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          GetUnansweredResponcesList();
-        }
-      });
-    }
-  }
-  // End Update Star Message and model open and close
-
-  // Start CheckBox Code
-
-
-  const UnansweredResponcesCheckBox = (e) => {
-    var updatedList = [...UnansweredResponsesChecked];
-    if (e.target.checked) {
-      updatedList = [...UnansweredResponsesChecked, e.target.value];
-    } else {
-      updatedList.splice(UnansweredResponsesChecked.indexOf(e.target.value), 1);
-    }
-    setUnansweredResponsesChecked(updatedList);
-  }
-  const SeleactAllUnansweredResponsesCheckBox = (e) => {
-    if (e.target.checked) {
-      SetSelectAllCheckbox(true);
-      setUnansweredResponsesChecked(UnansweredResponsesList.map(item => item._id));
-    } else {
-      SetSelectAllCheckbox(false);
-      setUnansweredResponsesChecked([]);
-    }
-
-  }
-
-  // End CheckBox Code
-
-
-  // Start Delete All Message 
-  const OpenAllDeletePopModel = () => {
-
-    if (UnansweredResponsesChecked.length > 0) {
-      SetAllDeletePopModel(true);
-    }
-  }
-  const CloseAllDeletePopModel = () => {
-    SetAllDeletePopModel(false);
-  }
-  const DeleteAllMessage = () => {
-    if (UnansweredResponsesChecked.length > 0) {
-      var Data = {
-        IDs: UnansweredResponsesChecked,
-        LastUpdatedBy: -1
-      };
-      const responseapi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
-        method: "POST",
-        data: Data,
-      });
-      responseapi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseAllDeletePopModel();
-          OpenMessageDetails('')
-          GetUnansweredResponcesList();
-        }
-      });
-    }
-  }
-  // End Delete All Message 
-  // Start Search
-  const SearchBox = (e) => {
-    if (e.keyCode == 13) {
-      SetSearchInbox(e.target.value)
-    }
-  }
-  // End Search
-  //Page Refresh
-  const RefreshPage = () => {
-    SetSelectAllCheckbox(false);
-    SetSearchInbox('');
-    setUnansweredResponsesChecked([]);
-    window.location.reload(true);
-  }
+  UseOutsideAlerter(wrapperRef);
 
   return (
     <>
       <HeaderTop />
-      <Modal className="modal-pre"
-        open={DeletePopModel}
-        onClose={CloseDeletePopModel}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={Style} className="modal-prein">
-          <div className='p-5 text-center'>
-            <img src={Emailinbox} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to delete a email.
-            </Typography>
-          </div>
-          <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
-              Yes
-            </Button>
-            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
-              No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-      <Modal className="modal-pre"
-        open={StarPopModel}
-        onClose={CloseStarPopModel}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={Style} className="modal-prein">
-          <div className='p-5 text-center'>
-            <img src={Emailinbox} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to Star a email.
-            </Typography>
-          </div>
-          <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
-              Yes
-            </Button>
-            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
-              No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
 
-      <Modal className="modal-pre"
-        open={AllDeletePopModel}
-        onClose={CloseAllDeletePopModel}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={Style} className="modal-prein">
-          <div className='p-5 text-center'>
-            <img src={Emailinbox} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to delete a all email.
-            </Typography>
-          </div>
-          <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteAllMessage(); }}>
-              Yes
-            </Button>
-            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseAllDeletePopModel(); }}>
-              No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+      <div>
+        <Modal className="modal-pre"
+          open={DeletePopModel}
+          onClose={CloseDeletePopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to delete a email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+        <Modal className="modal-pre"
+          open={StarPopModel}
+          onClose={CloseStarPopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to Star a email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+        <Modal className="modal-pre"
+          open={AllDeletePopModel}
+          onClose={CloseAllDeletePopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to delete a all email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteAllMessage(); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseAllDeletePopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </div>
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
@@ -535,7 +509,7 @@ export default function UnansweredResponsesPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {UnansweredResponsesList.length}
+                      {SelectedDropdownList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -557,14 +531,14 @@ export default function UnansweredResponsesPage() {
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={addInboxClass}>
+                      <a href="#" className="selectorall" onClick={AddInboxClass}>
                         All <img src={downarrow} />
                       </a>
 
                       <div className="userdropall" id="id_userboxlist">
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {ResultData?.map((item) => { // dropdown list
+                            {UnansweredResponsesList?.map((item) => { // dropdown list
 
                               const labelId = `checkbox-list-secondary-label-${item._id}`;
                               return (
@@ -574,7 +548,7 @@ export default function UnansweredResponsesPage() {
                                     <Checkbox
                                       // defaultChecked
                                       // edge="end"
-                                      // onChange={handleToggle(item._id)}
+                                      // onChange={HandleToggle(item._id)}
                                       // checked={checked.indexOf(item._id) !== -1}
                                       onChange={() => HandleDropdownListCheckbox(item)}
                                       checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
@@ -631,7 +605,7 @@ export default function UnansweredResponsesPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {UnansweredResponsesList.map((row, index) => (
+                    {SelectedDropdownList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -650,7 +624,7 @@ export default function UnansweredResponsesPage() {
                                 <h3>{row.Subject}</h3>
                               </Col>
                               <Col xs={2} className="pl-0">
-                                <h6>{moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                                <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
                                 <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                   <StarBorderIcon className='starone' />
                                   <StarIcon className='selectedstart startwo' />
@@ -701,10 +675,10 @@ export default function UnansweredResponsesPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={handleOpen}>
+                    <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button>
-                    <Button onClick={handleOpenOne}>
+                    <Button onClick={HandleOpenOne}>
                       <label>56 / 100</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
@@ -735,7 +709,7 @@ export default function UnansweredResponsesPage() {
                   <h2>{OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
                 </Col>
               </Row>
 
@@ -760,6 +734,7 @@ export default function UnansweredResponsesPage() {
           </Col>
         </Row>
       </div>
+
       <Compose />
     </>
   );
