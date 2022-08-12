@@ -809,6 +809,8 @@ Button.iconbtntable {
     float: right;
     padding: 0;
     min-width: auto;
+    color: #fff;
+    margin: 0 5px;
 }
 Button.iconbtntable:hover, Button.iconbtntable:focus {
     background: #5267DB;

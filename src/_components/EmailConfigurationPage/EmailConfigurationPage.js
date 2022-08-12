@@ -29,6 +29,7 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import EditIcon from '@material-ui/icons/Edit';
 
 var atob = require('atob');
 
@@ -336,6 +337,7 @@ export default function EmailConfigurationPage() {
 
                         <TableCell align="right">{row.IsWorking == false ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
                         <TableCell align="right">
+                          <Button className="iconbtntable"><EditIcon /></Button> 
                           <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
                             <img src={DeleteIcon} />
                           </Button>
