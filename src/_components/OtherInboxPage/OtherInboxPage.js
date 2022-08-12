@@ -52,6 +52,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
 import HeaderTop from '../Header/header';
+import { GetUserDetails } from "../../_helpers/Utility";
 
 const Style = {
   position: 'absolute',
@@ -89,7 +90,7 @@ const AddInboxClass = () => {
 };
 
 export default function OtherInboxPage() {
-  const [InBoxList, setInBoxList] = React.useState([]);
+  const [InBoxList, SetInBoxList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [SearchInbox, SetSearchInbox] = React.useState("");
@@ -104,8 +105,6 @@ export default function OtherInboxPage() {
   const [StarSelected, SetStarSelected] = React.useState(false);
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [Items, SetItems] = useState([])
-  const [ResultData, SetResultData] = useState([])
   const [Open, SetOpen] = React.useState(false);
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
@@ -113,10 +112,11 @@ export default function OtherInboxPage() {
   const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
 
   useEffect(() => {
-    if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
-    GetClientID()
+   
+    GetClientID();
     GetInBoxList();
-  }, [SearchInbox, ClientID, InBoxList?.length]);
+    if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
+  }, [SearchInbox, ClientID, InBoxList?.length,InboxChecked]);
 
   // Handle Change Dropdown List Manage by on React Js
   const HandleDropdownListCheckbox = (item) => {
@@ -127,18 +127,7 @@ export default function OtherInboxPage() {
     }
   }
 
-  // Handle Dropdown List Checkbox manage by BackenSide
-  // const HandleDropdownListCheckbox = (Item) => {
-  //   if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
-  //     const DropdownFilter = SelectedDropdownList.filter(sl => sl?._id !== Item?._id)
-  //     if (DropdownFilter.length > 0) {
-  //       SetItems(DropdownFilter)
-  //     }
-  //     SetSelectedDropdownList(DropdownFilter)
-  //   } else {
-  //     SetSelectedDropdownList([...SelectedDropdownList, Item])
-  //   }
-  // }
+ 
 
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
@@ -151,43 +140,15 @@ export default function OtherInboxPage() {
 
   // Get ClientID
   const GetClientID = () => {
-    const ClientId = localStorage.getItem("ClientID")
-    SetClientID(JSON.parse(ClientId)?._id)
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
   }
 
   // Start Get InBoxList
   const GetInBoxList = () => {
-    // let Data
-    // if (Items?.length > 0) {
-    //   Data = {
-    //     Page: Page,
-    //     RowsPerPage: RowsPerPage,
-    //     sort: true,
-    //     Field: SortField,
-    //     Sortby: SortedBy,
-    //     Search: SearchInbox,
-    //     ClientID: ClientID,
-    //     UserID: UserID,
-    //     IsInbox: false,
-    //     IsStarred: false,
-    //     IsFollowUp: false,
-
-    //   };
-    // } else {
-    //   Data = {
-    //     Page: Page,
-    //     RowsPerPage: RowsPerPage,
-    //     sort: true,
-    //     Field: SortField,
-    //     Sortby: SortedBy,
-    //     Search: SearchInbox,
-    //     ClientID: ClientID,
-    //     UserID: UserID,
-    //     IsInbox: false,
-    //     IsStarred: false,
-    //     IsFollowUp: false,
-    //   };
-    // }
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -208,9 +169,13 @@ export default function OtherInboxPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        setInBoxList(Result.data.PageData);
-        SetResultData(Result.data.ResultObjData);
+        SetInBoxList(Result.data.PageData);
         OpenMessageDetails(Result.data.PageData[0]._id);
+      }
+      else
+      {
+        SetInBoxList([]);
+        OpenMessageDetails([]);
       }
     });
   };
@@ -221,12 +186,12 @@ export default function OtherInboxPage() {
     var Data = {
       _id: ID,
     };
-    const responseapi = Axios({
+    const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
       method: "POST",
       data: Data,
     });
-    responseapi.then((Result) => {
+    ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetOpenMessageDetails(Result.data.Data);
       }
@@ -283,12 +248,12 @@ export default function OtherInboxPage() {
         IDs: InboxChecked,
         LastUpdatedBy: -1
       };
-      const responseapi = Axios({
+      const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
-      responseapi.then((Result) => {
+      ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')

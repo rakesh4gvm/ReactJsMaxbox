@@ -1,62 +1,51 @@
 import * as React from 'react'; 
+import Axios from "axios"
 import { Col, Row } from 'react-bootstrap';
+
 import MainHeader from '../MainHeader/MainHeader';
-import FooterBottom from '../Footer/footer';
-import Select from 'react-select' 
+
 import Button from '@mui/material/Button'; 
 import ButtonGroup from '@mui/material/ButtonGroup'; 
-import BgProfile from '../../images/bg-profile.png';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import BgSign from '../../images/sign-bg.png';
 
+import { history } from '../../_helpers/history';
+import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
 
-// import inboximg2 from '../../images/inboximg2.jpg';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-const options = [
-  { value: 'v1', label: 'Country' },
-  { value: 'v2', label: 'Country 1' },
-  { value: 'v3', label: 'Country 2' }
-]
 
 
 export default function LoginPage({ children }) {
-    const [selected, setSelected] = React.useState(false);
+  const Login=()=>{
+    var Email = document.getElementById("email").value;
+    var Password = document.getElementById("password").value;
 
-    const addShowCompose = () => {
-      const element = document.getElementById("UserCompose")
-      if(element.classList.contains("show")){
-        element.classList.remove("show");
+    const Data = { Email: Email, Password:Password}
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if(Result.data.Data.length>0)
+        {
+          var LoginDetails=Result.data.Data[0];
+          var ObjLoginData = {
+            "UserID": LoginDetails._id,
+            "Token":LoginDetails.Token,
+            "StaticToken" : Result.data.StaticToken
+          }
+         localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
+         history.push('/OtherInboxPage');
+        }
+        
       }
-      else{
-        element.classList.add("show");
-      }
-    };
-    const [open, setOpen] = React.useState(false);
-    const [openone, setOpenone] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const handleOpenOne = () => setOpenone(true);
-    const handleCloseOne = () => setOpenone(false);
-
-    const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-
-    const handleChange = (newValue) => {
-      setValue(newValue);
-    };
+    });
+   
+  }
 
 return (
     <>
@@ -72,14 +61,14 @@ return (
       <Row> 
         <Col sm={4}>
             <div className='input-box'>
-              <input type='email' placeholder='Email' />
+            <input type='email' placeholder='Email' id='email' name="email"/>
             </div>
         </Col>
       </Row> 
       <Row>
         <Col sm={4}>
             <div className='input-box'>
-              <input type='Password' placeholder='Password' />
+            <input type='Password' placeholder='Password' id='password' name="password" />
             </div>
         </Col>  
         <Col> 
@@ -88,7 +77,7 @@ return (
       <Row>
         <Col sm={4}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" /> 
+            <FormControlLabel control={<Checkbox  />} label="Remember me" /> 
           </FormGroup>
         </Col> 
         <Col sm={4}>
@@ -102,8 +91,8 @@ return (
       <Col sm={4}>
         <div className='btnprofile left'> 
           <ButtonGroup variant="text" aria-label="text button group"> 
-            <Button variant="contained btn btn-primary smallbtn">Login</Button>
-            {/* <Button variant="contained btn btn-orang smallbtn"> Cancel</Button> */}
+            <Button variant="contained btn btn-primary smallbtn" onClick={Login}>Login</Button>
+            
           </ButtonGroup> 
         </div>
         </Col> 

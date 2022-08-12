@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import Axios from "axios";
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
@@ -27,7 +28,7 @@ import BgProfile from '../../images/bg-profile.png';
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import Axios from "axios";
+import { GetUserDetails } from "../../_helpers/Utility";
 
 var atob = require('atob');
 
@@ -45,7 +46,7 @@ const Style = {
 
 
 export default function EmailConfigurationPage() {
-
+  //var ClientID='',UserID=''
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -58,10 +59,11 @@ export default function EmailConfigurationPage() {
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [Email, SetEmail] = React.useState()
   useEffect(() => {
+    GetClientID();
     CheckAccountAuthonicate()
     GetEmailAccountList()
     // GetEmailList()
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [Page, RowsPerPage, SortedBy, SortField,ClientID,UserID]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -69,6 +71,17 @@ export default function EmailConfigurationPage() {
       var ResultMessage = atob(queryparamter.split('data=')[1]);
     }
   }
+  const GetClientID = () => {
+    debugger;
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      // ClientID=UserDetails.ClientID;
+      // UserID=UserDetails.UserID;
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+  }
+
   // Start Get EmailAccount
   const GetEmailAccountList = () => {
     let Data
@@ -79,8 +92,8 @@ export default function EmailConfigurationPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: '',
-      ClientID: "62da32ea6874d926c02a8472",
-      UserID: "62e21451ee96f40bfc1ad497",
+      ClientID: ClientID,
+      UserID: UserID,
     };
 
     const ResponseApi = Axios({
@@ -117,8 +130,8 @@ export default function EmailConfigurationPage() {
   // start Authenticate email
   const AddEmailAccount = () => {
     var data = {
-      ClientID: "62da32ea6874d926c02a8472",
-      UserID: "62e21451ee96f40bfc1ad497",
+      ClientID:ClientID,
+      UserID: UserID,
 
     };
     const responseapi = Axios({

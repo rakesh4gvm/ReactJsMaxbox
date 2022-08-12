@@ -28,7 +28,7 @@ const Style = {
 
 export default function ProfileSettingPage({ children }) {
   const [Selected, SetSelected] = React.useState(false);
-  const [DropdownValue, SetDropdownValue] = useState()
+  const [DropdownValue, SetDropdownValue] = useState([])
   const [Open, SetOPen] = React.useState(false);
   const [OpneOne, SetOpenOne] = React.useState(false);
   const [User, SetUser] = useState()
@@ -40,6 +40,9 @@ export default function ProfileSettingPage({ children }) {
   useEffect(() => {
     GetUserList()
     GetCountryList()
+  }, [])
+  useEffect(() => {
+   
   }, [DropdownValue])
 
   const HandleOpen = () => SetOPen(true);
@@ -60,7 +63,8 @@ export default function ProfileSettingPage({ children }) {
 
   // Select Country
   const SelectCountry = (e) => {
-    setSelectedCountryDropdown(e.target.value)
+    debugger;
+    SetDropdownValue(e.target.value)
   }
 
   // Get Users List
@@ -227,11 +231,17 @@ export default function ProfileSettingPage({ children }) {
             </Col>
             <Col sm={4}>
               <div>
-                <Select id="demo-simple-select-label" value={DropdownValue} fullWidth onChange={SelectCountry} >
+              <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
+                                        {Country?.map((row) => (
+                                            <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
+                                        ))}
+                                    </Select>
+
+                {/* <Select id="demo-simple-select-label" value={DropdownValue} fullWidth onChange={SelectCountry} >
                   {Country?.map((row) => (
                     <MenuItem value={row?._id}>{row?.CountryName}</MenuItem >
                   ))}
-                </Select>
+                </Select> */}
               </div>
             </Col>
           </Row>
