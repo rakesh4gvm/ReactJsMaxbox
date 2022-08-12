@@ -17,6 +17,8 @@ import CreateTemplatesPage from './_components/CreateTemplatesPage/CreateTemplat
 import CreateObjectionPage from '../src/_components/CreateObjectionPage/CreateObjectionPage';
 import RegisterPage from './_components/RegisterPage/RegisterPage';
 import LoginPage from './_components/LoginPage/LoginPage';
+import EditEmailPage from './_components/EditEmailPage/EditEmailPage';
+import AddClientPage from './_components/AddClientPage/AddClientPage';
 
 
 function App() {
@@ -37,7 +39,10 @@ function App() {
                 <Route exact path="/CreateTemplates" component={CreateTemplatesPage} /> 
                 <Route exact path="/CreateObjection" component={CreateObjectionPage} /> 
                 <Route exact path="/Register" component={RegisterPage} /> 
+                <Route exact path="/EditEmail" component={EditEmailPage} /> 
+                <Route exact path="/AddClient" component={AddClientPage} /> 
                 <Route exact path="/" component={LoginPage} /> 
+
                 
                 <Redirect from="*" to="/" />
             </Switch>
