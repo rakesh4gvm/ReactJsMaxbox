@@ -24,7 +24,7 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
 import BgProfile from '../../images/bg-profile.png';
-
+import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -47,7 +47,6 @@ const Style = {
 
 
 export default function EmailConfigurationPage() {
-  //var ClientID='',UserID=''
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -63,21 +62,19 @@ export default function EmailConfigurationPage() {
     GetClientID();
     CheckAccountAuthonicate()
     GetEmailAccountList()
-    // GetEmailList()
+    
   }, [Page, RowsPerPage, SortedBy, SortField,ClientID,UserID]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
-      var ResultMessage = atob(queryparamter.split('data=')[1]);
+      var ResultMessage = (queryparamter.split('data=')[1]);
+      history.push("/EditEmail?data="+ResultMessage);
     }
   }
   const GetClientID = () => {
-    debugger;
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
-      // ClientID=UserDetails.ClientID;
-      // UserID=UserDetails.UserID;
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
@@ -143,14 +140,14 @@ export default function EmailConfigurationPage() {
     responseapi.then((result) => {
 
       if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        var AccountID = 0;
+        //var AccountID = 0;
         var loginHint = ''
         var scope = encodeURIComponent(CommonConstants.SCOPE);
         var redirect_uri_encode = encodeURIComponent(CommonConstants.REDIRECT_URL);
         var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
         var response_type = "code";
         var access_type = "offline";
-        var state = AccountID + "_" + encodeURIComponent(loginHint);
+        var state = null;
 
         var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
         window.location.href = Url;
@@ -160,6 +157,9 @@ export default function EmailConfigurationPage() {
   }
   // end Authenticate email
 
+  const EditEmailConfiguration=(ID)=>{
+    history.push("/EditEmail", ID);
+  }
   // start ReAuthenticate email
   const ReAuthenticate = (data) => {
     const responseapi = Axios({
@@ -176,7 +176,7 @@ export default function EmailConfigurationPage() {
         var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
         var response_type = "code";
         var access_type = "offline";
-        var state = AccountID + "_" + encodeURIComponent(loginHint);
+        var state ="emailaccountlistpage";
 
         var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
         window.location.href = Url;
@@ -217,44 +217,6 @@ export default function EmailConfigurationPage() {
   }
   // end email account delete
 
-  // // Get Email List ID
-  // const GetEmailList = () => {
-  //   const Data = { ID: "62e216304561e63bc0f37f5b" }
-  //   const ResponseApi = Axios({
-  //     url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetByID",
-  //     method: "POST",
-  //     data: Data,
-  //   });
-  //   ResponseApi.then((Result) => {
-  //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-  //       SetEmail(Result.data.Data)
-  //     }
-  //   });
-  // }
-
-  // // Update Email
-  // const UpdateEmail = async () => {
-  //   var FirstName = document.getElementById("firstName").value;
-  //   var LastName = document.getElementById("lastName").value;
-  //   var Email = document.getElementById("email").value;
-  //   var RefreshToken = document.getElementById("refreshToken").value;
-  //   var IsWorking = document.getElementById("isWorking").value;
-
-  //   let Data = {
-  //     UserID: "62e216304561e63bc0f37f5b",
-  //     FirstName: FirstName,
-  //     LastName: LastName,
-  //     Email: Email,
-  //     RefreshToken: RefreshToken,
-  //     IsWorking: IsWorking,
-  //   }
-  //   Axios({
-  //     url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountUpdate",
-  //     method: "POST",
-  //     data: Data,
-  //   }).then((Result) => {
-  //   })
-  // }
 
   return (
     <>
@@ -340,7 +302,7 @@ export default function EmailConfigurationPage() {
                           <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
                             <img src={DeleteIcon} />
                           </Button>
-                          <Button className="iconbtntable"><EditIcon /></Button> 
+                          <Button className="iconbtntable" onClick={()=>EditEmailConfiguration(row._id)}><EditIcon /></Button> 
                         </TableCell>
                       </TableRow>
                     ))}
