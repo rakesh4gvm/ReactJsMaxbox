@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from "axios"
 import { Col, Row } from 'react-bootstrap';
 
@@ -15,35 +15,64 @@ import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 
-const validateEmail = (setEmailError, email) => {
-  if (email === "") {
-    setEmailError("email cannot be blank");
-    return;
-  }
 
-  if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-    setEmailError("email is invalid");
-    return;
-  }
-
-  return true;
-};
 
 export default function LoginPage({ children }) {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [EmailError, setEmail] = useState("");
+  const [PasswordError, setPassword] = useState("");
+  const [UserPasswordError,setUserPassword]=useState("")
+  // FromValidation start
+  const FromValidation = () => {
+    var Isvalid = true;
+    var Email = document.getElementById("email").value;
+    var Password = document.getElementById("password").value;
 
-  const setEmailValue = (e) => {
-    setEmail(e.target.value);
+    if (Email === "") {
+      setEmail("Please enter email")
+      Isvalid = false
+    }
+    if (Password === "") {
+      setPassword("Please enter password")
+      Isvalid = false
+    }
+    return Isvalid;
+  }
+
+  const validateEmail = (email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      setEmail("Invalid email")
+      return false;
+    }
+    else {
+      setEmail("")
+    }
+    return true;
   };
-  const Login = (e) => {
-    const valid = validateEmail(setEmailError, email);
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (name == "email") {
+      if (value != "") {
+        validateEmail(value)
+      }
+    }
+    else if (name == "password") {
+      if (value != "") {
+        setPassword("")
+      }
+    }
+    setUserPassword('')
+  };
+
+  // FromValidation end
+
+  // Login method start
+  const Login = (e) => {
+    const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
 
     if (valid) {
-      setEmailError("");
       const Data = { Email: Email, Password: Password }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
@@ -63,13 +92,16 @@ export default function LoginPage({ children }) {
             localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
             history.push('/OtherInboxPage');
           }
+          else
+          {
+            setUserPassword("Please email and password does not match")
+          }
         }
       });
     }
 
-
   }
-
+// Login method start
   return (
     <>
 
@@ -82,10 +114,18 @@ export default function LoginPage({ children }) {
           <div className='sm-container pt-5'>
             <h2>Login</h2>
             <Row>
-              <Col sm={4}>
+            <Col sm={4}>
                 <div className='input-box'>
-                  <input type='email' placeholder='Email' id='email' name="email" onChange={setEmailValue} />
-                  {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+                {UserPasswordError && <p style={{ color: "red" }}>{UserPasswordError}</p>}
+                </div>
+              </Col>
+            </Row>
+            <Row>
+            <Col sm={4}>
+                <div className='input-box'>
+                  <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
+
+                  {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
 
                 </div>
               </Col>
@@ -93,7 +133,8 @@ export default function LoginPage({ children }) {
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='Password' placeholder='Password' id='password' name="password" />
+                  <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
+                  {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
                 </div>
               </Col>
               <Col>

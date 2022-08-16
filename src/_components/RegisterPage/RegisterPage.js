@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from "axios"
 
 import Button from '@mui/material/Button';
@@ -6,98 +6,171 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-
-import { CommonConstants } from "../../_constants/common.constants";
-import { ResponseMessage } from "../../_constants/response.message";
-import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import MainHeader from '../MainHeader/MainHeader';
-import FooterBottom from '../Footer/footer';
-import Select from 'react-select'
 import BgSign from '../../images/sign-bg.png';
 
+import { history } from '../../_helpers/history';
+import { ResponseMessage } from "../../_constants/response.message";
+import { CommonConstants } from "../../_constants/common.constants";
 
-// import inboximg2 from '../../images/inboximg2.jpg';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-const options = [
-  { value: 'v1', label: 'Country' },
-  { value: 'v2', label: 'Country 1' },
-  { value: 'v3', label: 'Country 2' }
-]
-
-export default function RegisterPage({ children }) {
+export default function RegisterPage() {
   const [FirstNameError, SetFirstNameError] = useState("");
   const [LastNameError, SetLastNameError] = useState("");
   const [EmailError, SetEmailError] = useState("");
   const [PasswordError, SetPasswordError] = useState("");
   const [ConfirmPasswordError, SetConfirmPasswordError] = useState("");
 
-  // Email Validation
-  const ValidateEmail = (FirstName, LastName, Email, Password, ConfirmPassword) => {
-    if (FirstName === "") {
-      SetFirstNameError("Please Enter First Name")
-    }
-    if (LastName === "") {
-      SetLastNameError("Please Enter Last Name")
-    }
-    if (Email === "") {
-      SetEmailError("Please Enter Email");
-    }
-    if (Password === "") {
-      SetPasswordError("Please Eneter Password");
-    }
-    if (ConfirmPassword === "") {
-      SetConfirmPasswordError("Please Eneter ConfirmPassword")
-    }
-    return true;
-  };
-
-  // Register User
-  const RegisterUser = async () => {
+  // FromValidation start
+  const FromValidation = () => {
+    var Isvalid = true;
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
     var ConfirmPassword = document.getElementById("confirmPassword").value;
 
-    const Valid = ValidateEmail(FirstName, LastName, Email, Password, ConfirmPassword);
+    if (FirstName === "") {
+      SetFirstNameError("Please enter first name")
+      Isvalid = false
+    }
+    if (LastName === "") {
+      SetLastNameError("Please enter last name")
+      Isvalid = false
+    }
+    if (Email === "") {
+      SetEmailError("Please enter email");
+      Isvalid = false
+    }
+    if (Password === "") {
+      SetPasswordError("Please enter password");
+      Isvalid = false
+    }
+    if (ConfirmPassword === "") {
+      SetConfirmPasswordError("Please enter confirmpassword")
+      Isvalid = false
+    }
+    return Isvalid;
+  };
 
-    const Data = {
-      FirstName: FirstName,
-      LastName: LastName,
-      Email: Email,
-      Password: Password,
+  const validateEmail = (email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      SetEmailError("Invalid email")
+      return false;
+    }
+    else {
+      CheckEmailExist();
+      //SetEmailError("")
+    }
+    return true;
+  };
+  const validateConfirmPassword = () => {
+    var Password = document.getElementById("password").value;
+    var ConfirmPassword = document.getElementById("confirmPassword").value;
+    if (Password !== ConfirmPassword) {
+      SetConfirmPasswordError("Confirmed password is not matching with password");
+      return false
+    }
+    else {
+      SetConfirmPasswordError('');
+    }
+    return true
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (name == "firstname") {
+      if (value != "") {
+        SetFirstNameError("")
+      }
+    }
+    else if (name == "lastname") {
+      if (value != "") {
+        SetLastNameError("")
+      }
+    }
+    else if (name == "email") {
+      if (value != "") {
+        validateEmail(value)
+      }
+    }
+    else if (name == "password") {
+      if (value != "") {
+        SetPasswordError("")
+        validateConfirmPassword()
+      }
     }
 
-    if (Valid) {
-      if (FirstName == "" || LastName == "" || Email == "" || Password == "" || ConfirmPassword !== Password) {
-        console.log("Error occurs")
-      } else {
-        Axios({
-          url: CommonConstants.MOL_APIURL + "/user/UserAdd",
-          method: "POST",
-          data: Data,
-        }).then((Result) => {
-          SetFirstNameError("")
-          SetLastNameError("")
-          SetEmailError("")
-          SetPasswordError("")
-          SetConfirmPasswordError("")
-          console.log("Result========", Result)
-        })
+    else if (name == "confirmPassword") {
+      if (value != "") {
+
+        validateConfirmPassword()
       }
+    }
+
+  };
+
+    // FromValidation end
+   
+    const CheckEmailExist = async () => {
+       var Email = document.getElementById("email").value;
+         const Data = {
+           Email: Email
+         }
+   
+         Axios({
+           url: CommonConstants.MOL_APIURL + "/user/UserEmailExist",
+           method: "POST",
+           data: Data,
+         }).then((Result) => {
+           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.Data > 0) {
+             SetEmailError("Email is already exists")
+            }
+            else
+            {
+              SetEmailError("")
+            }
+             
+           }
+           else
+           {
+            SetEmailError("")
+           }
+         })
+   
+       }
+     
+
+  // Register User
+  const RegisterUser = async () => {
+
+    const Valid = FromValidation();
+    if (Valid) {
+      var FirstName = document.getElementById("firstName").value;
+      var LastName = document.getElementById("lastName").value;
+      var Email = document.getElementById("email").value;
+      var Password = document.getElementById("password").value;
+      var ConfirmPassword = document.getElementById("confirmPassword").value;
+
+      const Data = {
+        FirstName: FirstName,
+        LastName: LastName,
+        Email: Email,
+        Password: Password,
+      }
+
+      Axios({
+        url: CommonConstants.MOL_APIURL + "/user/UserAdd",
+        method: "POST",
+        data: Data,
+      }).then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          history.push('/');
+        }
+      })
+
     }
   }
 
@@ -114,19 +187,19 @@ export default function RegisterPage({ children }) {
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='text' placeholder='First Name' id='firstName' name="firstName"  />
+                  <input type='text' placeholder='First Name' id='firstName' name="firstname" onChange={handleChange} />
                   {FirstNameError && <p style={{ color: "red" }}>{FirstNameError}</p>}
                 </div>
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='text' placeholder='Last Name' id='lastName' name="lastName" />
+                  <input type='text' placeholder='Last Name' id='lastName' name="lastname" onChange={handleChange} />
                   {LastNameError && <p style={{ color: "red" }}>{LastNameError}</p>}
                 </div>
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='email' placeholder='Email' id='email' name="email" />
+                  <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
                   {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
                 </div>
               </Col>
@@ -134,13 +207,13 @@ export default function RegisterPage({ children }) {
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='Password' placeholder='Password' id='password' name="password" />
+                  <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
                   {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
                 </div>
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='Password' placeholder='Confirm Password' id='confirmPassword' name="confirmPassword" />
+                  <input type='Password' placeholder='Confirm Password' id='confirmPassword' name="confirmPassword" onChange={handleChange} />
                   {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
                 </div>
               </Col>
@@ -160,7 +233,6 @@ export default function RegisterPage({ children }) {
             <div className='btnprofile my-5 left'>
               <ButtonGroup variant="text" aria-label="text button group">
                 <Button variant="contained btn btn-primary smallbtn" onClick={RegisterUser}> submit</Button>
-                {/* <Button variant="contained btn btn-orang smallbtn"> Cancel</Button> */}
               </ButtonGroup>
             </div>
           </div>
