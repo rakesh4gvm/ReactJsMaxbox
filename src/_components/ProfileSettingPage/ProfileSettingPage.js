@@ -13,61 +13,27 @@ import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 import { GetUserDetails } from "../../_helpers/Utility";
-// import inboximg2 from '../../images/inboximg2.jpg';
 
-const Style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-export default function ProfileSettingPage({ children }) {
-  const [Selected, SetSelected] = React.useState(false);
+export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
-  const [Open, SetOPen] = React.useState(false);
-  const [OpneOne, SetOpenOne] = React.useState(false);
   const [User, SetUser] = useState()
   const [Country, SetCountry] = useState([])
   const [SelectedCountryDropdown, setSelectedCountryDropdown] = useState(null);
   const [Base64Image, SetBase64Image] = useState()
-  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
+    GetClientID()
     GetUserList()
     GetCountryList()
-    GetClientID()
-  }, [])
+  }, [ClientID])
   useEffect(() => {
 
   }, [DropdownValue])
 
-  const HandleOpen = () => SetOPen(true);
-  const HandleClose = () => SetOPen(false);
-  const HandleOpenOne = () => SetOpenOne(true);
-  const HandleCloseOne = () => SetOpenOne(false);
-
-  // Add Show Compose
-  const AddShowCompose = () => {
-    const element = document.getElementById("UserCompose")
-    if (element.classList.contains("show")) {
-      element.classList.remove("show");
-    }
-    else {
-      element.classList.add("show");
-    }
-  };
-
   // Select Country
   const SelectCountry = (e) => {
-    debugger;
     SetDropdownValue(e.target.value)
   }
 
@@ -82,7 +48,7 @@ export default function ProfileSettingPage({ children }) {
 
   // Get Users List
   const GetUserList = () => {
-    const Data = { UserID: "62da32ea6874d926c02a8472" }
+    const Data = { UserID: UserID }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
       method: "POST",
@@ -108,11 +74,6 @@ export default function ProfileSettingPage({ children }) {
       }
     });
   }
-
-  // Handle Change
-  const HandleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
 
   // Check Existing Email
   const CheckEmailExists = async (Email) => {
@@ -167,7 +128,7 @@ export default function ProfileSettingPage({ children }) {
     }
 
     let Data = {
-      UserID: "62da32ea6874d926c02a8472",
+      UserID: UserID,
       FirstName: FirstName,
       LastName: LastName,
       Email: Email,
@@ -254,12 +215,6 @@ export default function ProfileSettingPage({ children }) {
                     <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
                   ))}
                 </Select>
-
-                {/* <Select id="demo-simple-select-label" value={DropdownValue} fullWidth onChange={SelectCountry} >
-                  {Country?.map((row) => (
-                    <MenuItem value={row?._id}>{row?.CountryName}</MenuItem >
-                  ))}
-                </Select> */}
               </div>
             </Col>
           </Row>
