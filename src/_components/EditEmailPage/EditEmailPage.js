@@ -22,6 +22,8 @@ import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 var atob = require('atob');
 
@@ -149,6 +151,8 @@ export default function EditEmailPage(props) {
       <HeaderTop />
 
       <div className='bodymain'>
+
+
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
             <h5 className='my-0'><a href='' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Email Configuration</h5>
@@ -157,6 +161,14 @@ export default function EditEmailPage(props) {
 
 
         <div className='sm-container mt-5'>
+        
+        <Stack sx={{ width: '100%' }} spacing={2}>
+          {/* <Alert severity="error">This is an error alert — check it out!</Alert>
+          <Alert severity="warning">This is a warning alert — check it out!</Alert>
+          <Alert severity="info">This is an info alert — check it out!</Alert> */}
+          <Alert severity="success">This is a success alert — check it out!</Alert>
+        </Stack>
+
           <Row>
             <Col>
               <Row>
