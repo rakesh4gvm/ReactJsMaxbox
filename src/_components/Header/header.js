@@ -39,7 +39,7 @@ import Carbontem from '../../images/icons/carbontem.svg';
 
 import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails, GetUserDetails ,Logout} from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
 
 
 function useOutsideAlerter(ref) {
@@ -73,6 +73,7 @@ export default function Header() {
 
     const [ClientDropdown, SetClientDropdown] = useState([])
     const [SelectedClient, SetSelectedClient] = useState([]);
+    const [UserImage, SetUserImage] = useState()
 
     useEffect(() => {
         GetClientDropdown()
@@ -89,6 +90,7 @@ export default function Header() {
         var Details = GetUserDetails();
         if (Details != null) {
             UserID = Details.UserID
+            SetUserImage(Details.UserImage)
         }
         var data = {
             UserID: UserID,
@@ -116,7 +118,7 @@ export default function Header() {
         });
     }
 
-    const SignOut=()=>{
+    const SignOut = () => {
         Logout();
     }
 
@@ -225,14 +227,14 @@ export default function Header() {
                         <div className="dropboxcard ml-3">
                             <a href="#" className="" onClick={addShowClass}>
                                 <span className="userpic">
-                                    <img src={defaultuser} width="53px" alt="" />
+                                    <img src={UserImage} width="53px" alt="" />
                                 </span>
                             </a>
 
                             <div className="userdropdown" id="id_userbox" ref={wrapperRef}>
                                 <div className="bg-themehead">
                                     <span className="userpic us-max-110">
-                                        <img src={defaultuser} width="110px" alt="" />
+                                        <img src={UserImage} width="110px" alt="" />
                                     </span>
                                     <div className="carduser_details">
                                         <h4>Yash Donald</h4>

@@ -12,6 +12,7 @@ import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
+import { GetUserDetails } from "../../_helpers/Utility";
 // import inboximg2 from '../../images/inboximg2.jpg';
 
 const Style = {
@@ -36,13 +37,16 @@ export default function ProfileSettingPage({ children }) {
   const [SelectedCountryDropdown, setSelectedCountryDropdown] = useState(null);
   const [Base64Image, SetBase64Image] = useState()
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
     GetUserList()
     GetCountryList()
+    GetClientID()
   }, [])
   useEffect(() => {
-   
+
   }, [DropdownValue])
 
   const HandleOpen = () => SetOPen(true);
@@ -67,9 +71,18 @@ export default function ProfileSettingPage({ children }) {
     SetDropdownValue(e.target.value)
   }
 
+  // Start Get ClientID
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+  }
+
   // Get Users List
   const GetUserList = () => {
-    const Data = { UserID: "62f100397213b9323442a660" }
+    const Data = { UserID: "62da32ea6874d926c02a8472" }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
       method: "POST",
@@ -154,7 +167,7 @@ export default function ProfileSettingPage({ children }) {
     }
 
     let Data = {
-      UserID: "62f100397213b9323442a660",
+      UserID: "62da32ea6874d926c02a8472",
       FirstName: FirstName,
       LastName: LastName,
       Email: Email,
@@ -171,7 +184,12 @@ export default function ProfileSettingPage({ children }) {
         method: "POST",
         data: Data,
       }).then((Result) => {
-        GetUserList()
+        if (Result.data.StatusMessage === "SUCCESS") {
+          const GetLoginData = localStorage.getItem("LoginData")
+          const Image = JSON.parse(GetLoginData)
+          Image.UserImage = Base64Image
+          localStorage.setItem("LoginData", JSON.stringify(Image))
+        }
       })
     }
   }
@@ -231,11 +249,11 @@ export default function ProfileSettingPage({ children }) {
             </Col>
             <Col sm={4}>
               <div>
-              <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
-                                        {Country?.map((row) => (
-                                            <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
-                                        ))}
-                                    </Select>
+                <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
+                  {Country?.map((row) => (
+                    <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
+                  ))}
+                </Select>
 
                 {/* <Select id="demo-simple-select-label" value={DropdownValue} fullWidth onChange={SelectCountry} >
                   {Country?.map((row) => (

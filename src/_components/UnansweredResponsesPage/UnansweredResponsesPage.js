@@ -60,6 +60,8 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import { GetUserDetails } from "../../_helpers/Utility";
+
 
 function UseOutsideAlerter(ref) {
   useEffect(() => {
@@ -111,8 +113,8 @@ export default function UnansweredResponsesPage() {
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [SortField, SetsortField] = React.useState("FromEmail");
   const [SortedBy, SetSortedBy] = React.useState(1);
-  const [ClientID, setClientID] = React.useState(0);
-  const [UserID, SetClientID] = React.useState(0);
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [Checked, SetChecked] = React.useState([1]);
   const [Open, SetOpen] = React.useState(false);
@@ -160,8 +162,11 @@ export default function UnansweredResponsesPage() {
 
   // Start Get ClientID
   const GetClientID = () => {
-    const ClientId = localStorage.getItem("ClientID")
-    SetClientID(JSON.parse(ClientId)?._id)
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
   }
   // End Get ClientID
 
