@@ -108,15 +108,14 @@ export default function OtherInboxPage() {
   const [Open, SetOpen] = React.useState(false);
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [Checked, SetChecked] = React.useState([1]);
   const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
 
   useEffect(() => {
-   
+
     GetClientID();
     GetInBoxList();
     if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
-  }, [SearchInbox, ClientID, InBoxList?.length,InboxChecked]);
+  }, [SearchInbox, ClientID, InBoxList?.length, InboxChecked]);
 
   // Handle Change Dropdown List Manage by on React Js
   const HandleDropdownListCheckbox = (item) => {
@@ -127,7 +126,7 @@ export default function OtherInboxPage() {
     }
   }
 
- 
+
 
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
@@ -158,7 +157,7 @@ export default function OtherInboxPage() {
       Search: SearchInbox,
       ClientID: ClientID,
       UserID: UserID,
-      IsInbox: false,
+      IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,
     };
@@ -169,11 +168,12 @@ export default function OtherInboxPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetInBoxList(Result.data.PageData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
+        if (Result.data.PageData.length > 0) {
+          SetInBoxList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+        }
       }
-      else
-      {
+      else {
         SetInBoxList([]);
         OpenMessageDetails([]);
       }
@@ -380,16 +380,7 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-  const HandleToggle = (Value) => () => {
-    const CurrentIndex = Checked.indexOf(Value);
-    const NewChecked = [...Checked];
-    if (CurrentIndex === -1) {
-      NewChecked.push(Value);
-    } else {
-      NewChecked.splice(CurrentIndex, 1);
-    }
-    SetChecked(NewChecked);
-  };
+  
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);

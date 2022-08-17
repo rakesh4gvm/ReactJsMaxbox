@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Mlogo from "../../images/Logo.png";
-import defaultuser from '../../images/avatar/defaultuser.jpg';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -21,8 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import allusers from '../../images/all_users.svg';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser2 from '../../images/avatar/2.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
+import defaultimage from '../../images/default.png';
 import iconlogout from '../../images/icon_logout.svg';
 
 import inbox from '../../images/icons/inbox.svg';
@@ -57,15 +55,6 @@ function useOutsideAlerter(ref) {
     }, [ref]);
 }
 
-const addShowClass = () => {
-    const element = document.getElementById("id_userbox")
-    if (element.classList.contains("show")) {
-        element.classList.remove("show");
-    }
-    else {
-        element.classList.add("show");
-    }
-};
 
 export default function Header() {
     const wrapperRef = useRef(null);
@@ -74,6 +63,7 @@ export default function Header() {
     const [ClientDropdown, SetClientDropdown] = useState([])
     const [SelectedClient, SetSelectedClient] = useState([]);
     const [UserImage, SetUserImage] = useState()
+    const [UserDetails, SetUserDetails] = useState();
 
     useEffect(() => {
         GetClientDropdown()
@@ -85,7 +75,7 @@ export default function Header() {
         window.location.reload(false);
     }
 
-    const GetClientDropdown = () => { 
+    const GetClientDropdown = () => {
         var UserID
         var Details = GetUserDetails();
         if (Details != null) {
@@ -117,6 +107,38 @@ export default function Header() {
         });
     }
 
+    const OpenPopupUserDetails = () => {
+        debugger;
+        var UserID
+        var Details = GetUserDetails();
+        if (Details != null) {
+            UserID = Details.UserID
+        }
+        var data = {
+            UserID: UserID,
+        }
+
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
+            method: "POST",
+            data: data,
+        });
+        ResponseApi.then((result) => {
+            if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                if (result.data.Data != null) {
+                    SetUserDetails(result.data.Data)
+                    const element = document.getElementById("id_userbox")
+                    if (element.classList.contains("show")) {
+                        element.classList.remove("show");
+                    }
+                    else {
+                        element.classList.add("show");
+                    }
+
+                }
+            }
+        });
+    }
     const SignOut = () => {
         Logout();
     }
@@ -139,18 +161,18 @@ export default function Header() {
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec">
                                 <NavDropdown title="Inbox" id="basic-nav-dropdown">
-                                    <NavDropdown.Item onClick={()=>OpenPage("/UnansweredResponses")}>
+                                    <NavDropdown.Item onClick={() => OpenPage("/UnansweredResponses")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={()=>OpenPage("/Starred")}><img src={menustart} />Starred
+                                    <NavDropdown.Item onClick={() => OpenPage("/Starred")}><img src={menustart} />Starred
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={()=>OpenPage("/FollowUpLater")}><img src={timermenu} />Follow Up Later
+                                    <NavDropdown.Item onClick={() => OpenPage("/FollowUpLater")}><img src={timermenu} />Follow Up Later
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
@@ -160,7 +182,7 @@ export default function Header() {
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={()=>OpenPage("/OtherInboxPage")}><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item onClick={() => OpenPage("/OtherInboxPage")}><img src={inbox} />Other Inbox
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
@@ -199,10 +221,10 @@ export default function Header() {
                                 </NavDropdown>
 
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                    <NavDropdown.Item onClick={()=>OpenPage("/EmailConfiguration")} >
+                                    <NavDropdown.Item onClick={() => OpenPage("/EmailConfiguration")} >
                                         <img src={Objectroup} />Email Configuration
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={()=>OpenPage("/ClientList")}>
+                                    <NavDropdown.Item onClick={() => OpenPage("/ClientList")}>
                                         <img src={Carbontem} />Client
                                     </NavDropdown.Item>
                                 </NavDropdown>
@@ -220,20 +242,20 @@ export default function Header() {
 
                         </Navbar.Collapse>
                         <div className="dropboxcard ml-3">
-                            <a href="#" className="" onClick={addShowClass}>
+                            <a href="#" className="" onClick={OpenPopupUserDetails}>
                                 <span className="userpic">
-                                    <img src={UserImage} width="53px" alt="" />
+                                    {UserImage !== undefined ? <img src={UserImage} width="50px" alt="" /> : <img src={defaultimage} width="50px" alt="" />}
                                 </span>
                             </a>
 
                             <div className="userdropdown" id="id_userbox" ref={wrapperRef}>
                                 <div className="bg-themehead">
                                     <span className="userpic us-max-110">
-                                        <img src={UserImage} width="110px" alt="" />
+                                        {UserImage !== undefined ? <img src={UserImage} width="110px" alt="" /> : <img src={defaultimage} width="110px" alt="" />}
                                     </span>
                                     <div className="carduser_details">
-                                        <h4>Yash Donald</h4>
-                                        <a href="">yashdonald@gmail.com</a>
+                                        <h4>{UserDetails != undefined ? UserDetails.FirstName + " " + UserDetails.LastName : ""}</h4>
+                                        <a href="">{UserDetails != undefined ? UserDetails.Email : ""}</a>
                                     </div>
                                 </div>
                                 <div className="bodyuserdop textdeclist">
