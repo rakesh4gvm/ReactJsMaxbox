@@ -8,6 +8,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
@@ -95,7 +96,13 @@ export default function EditClientPage(props) {
             method: "POST",
             data: Data,
         }).then((Result) => {
+            history.push("/ClientList");
         })
+    }
+
+    // Cancel Edit Client
+    const CancelEditCLient = () => {
+        history.push("/ClientList");
     }
 
     return (
@@ -145,7 +152,7 @@ export default function EditClientPage(props) {
                             <div className='btnprofile my-5 left'>
                                 <ButtonGroup variant="text" aria-label="text button group">
                                     <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateClient} > Save</Button>
-                                    <Button variant="contained btn btn-orang smallbtn"> Cancel</Button>
+                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditCLient}> Cancel</Button>
                                 </ButtonGroup>
                             </div>
                         </Col>

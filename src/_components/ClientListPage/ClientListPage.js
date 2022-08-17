@@ -102,7 +102,7 @@ export default function ClientListPage() {
     });
   };
 
-  // start PopModel Open and Close and Delete Message
+  // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = (ID) => {
     SetDeletePopModel(true);
     SetDeleteID(ID)
@@ -120,6 +120,8 @@ export default function ClientListPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
+      GetClientList()
+      SetDeletePopModel(false);
     });
   }
   // End Delete Message

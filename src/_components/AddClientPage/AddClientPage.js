@@ -14,13 +14,13 @@ import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/css/froala_style.css'; 
+import 'froala-editor/css/froala_style.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import Froalaeditor from 'froala-editor';
-import FroalaEditor from 'react-froala-wysiwyg'; 
+import FroalaEditor from 'react-froala-wysiwyg';
 
 export default function AddClientPage({ children }) {
-
+  const [ClientNameError, SetClientNameError] = useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Signature, SetSignature] = useState({
@@ -40,8 +40,8 @@ export default function AddClientPage({ children }) {
     }
   }
 
-   // Frola Editor Starts
-   Froalaeditor.RegisterCommand('Variable', {
+  // Frola Editor Starts
+  Froalaeditor.RegisterCommand('Variable', {
     title: 'Variable',
     type: 'dropdown',
     focus: false,
@@ -52,15 +52,15 @@ export default function AddClientPage({ children }) {
       'v2': 'Option 2'
     },
     callback: function (cmd, val) {
-      console.log (val);
+      console.log(val);
     },
     // Callback on refresh.
     refresh: function ($btn) {
-      console.log ('do refresh');
+      console.log('do refresh');
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log ('do refresh when show');
+      console.log('do refresh when show');
     }
   });
 
@@ -71,11 +71,11 @@ export default function AddClientPage({ children }) {
   //   toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
   //   shortcutsEnabled: ["insertTemplateButton"],
   // }
-  const config={
+  const config = {
     placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false, 
-    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html' ,'Variable'],
-}
+    charCounterCount: false,
+    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
+  }
   const HandleModelChange = (Model) => {
     SetSignature({
       Data: Model
@@ -96,21 +96,47 @@ export default function AddClientPage({ children }) {
     return ResponseApi?.data.StatusMessage
   }
 
+  // FromValidation Start
+  const FromValidation = () => {
+    var Isvalid = true;
+    var ClientName = document.getElementById("name").value;
+
+    if (ClientName === "") {
+      SetClientNameError("Please Enter Client Name")
+      Isvalid = false
+    }
+    return Isvalid;
+  };
+
+  const HandleChange = (e) => {
+    const { name, value } = e.target;
+    if (name == "name") {
+      if (value != "") {
+        SetClientNameError("")
+      }
+    }
+  };
+  // FromValidation End
+
+
   // Add Client
   const AddClient = async () => {
-    var ClientName = document.getElementById("name").value;
-    var BccEmail = document.getElementById("bccEmail").value;
 
-    const Data = {
-      Name: ClientName,
-      BccEmail: BccEmail,
-      SignatureText: Signature.Data,
-      UserID: UserID
-    }
+    const Valid = FromValidation();
+    if (Valid) {
 
-    var ExistsClient = await CheckExistClient(ClientName)
+      var ClientName = document.getElementById("name").value;
+      var BccEmail = document.getElementById("bccEmail").value;
 
-    if (ClientName != "" && ClientName != null && ClientName != "undefined") {
+      const Data = {
+        Name: ClientName,
+        BccEmail: BccEmail,
+        SignatureText: Signature.Data,
+        UserID: UserID
+      }
+
+      var ExistsClient = await CheckExistClient(ClientName)
+
       if (ExistsClient === ResponseMessage.SUCCESS) {
         Axios({
           url: CommonConstants.MOL_APIURL + "/client/ClientAdd",
@@ -121,13 +147,17 @@ export default function AddClientPage({ children }) {
             history.push("/ClientList");
           }
         })
-      } else {
-        console.log("ClientName Already Exists, Please Add Another Name")
       }
-    } else {
-      console.log("Client Name should not be blank!")
+      else {
+        SetClientNameError("ClientName Already Exists, Please Add Another Name")
+      }
     }
 
+  }
+
+  // Cancel Add Client
+  const CancelAddCLient = () => {
+    history.push("/ClientList");
   }
 
   return (
@@ -150,7 +180,8 @@ export default function AddClientPage({ children }) {
                 <Col sm={8}>
                 </Col>
                 <Col sm={8}>
-                  <input type='text' placeholder='Enter Client Name' name='name' id='name' />
+                  <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} />
+                  {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
                 </Col>
               </Row>
               <Row className='input-boxbg mt-5'>
@@ -181,7 +212,7 @@ export default function AddClientPage({ children }) {
               <div className='btnprofile my-5 left'>
                 <ButtonGroup variant="text" aria-label="text button group">
                   <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddClient} > Save</Button>
-                  <Button variant="contained btn btn-orang smallbtn"> Cancel</Button>
+                  <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddCLient}> Cancel</Button>
                 </ButtonGroup>
               </div>
             </Col>
