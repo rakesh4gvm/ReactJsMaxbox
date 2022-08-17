@@ -36,7 +36,7 @@ import Sent from '../../images/icons/sent.svg';
 import Objectroup from '../../images/icons/object-group.svg';
 import Carbontem from '../../images/icons/carbontem.svg';
 
-
+import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
@@ -86,6 +86,7 @@ export default function Header() {
     }
 
     const GetClientDropdown = () => {
+        debugger;
         var UserID
         var Details = GetUserDetails();
         if (Details != null) {
@@ -101,7 +102,6 @@ export default function Header() {
             data: data,
         });
         responseapi.then((result) => {
-
             if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 if (result.data.Data.length > 0) {
                     SetClientDropdown(result.data.Data);
@@ -121,6 +121,9 @@ export default function Header() {
     const SignOut = () => {
         Logout();
     }
+    const OpenPage = (PageName) => {
+        history.push(PageName);
+    }
 
     return (
         <>
@@ -137,18 +140,18 @@ export default function Header() {
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec">
                                 <NavDropdown title="Inbox" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="/UnansweredResponses">
+                                    <NavDropdown.Item onClick={()=>OpenPage("/UnansweredResponses")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/Starred"><img src={menustart} />Starred
+                                    <NavDropdown.Item onClick={()=>OpenPage("/Starred")}><img src={menustart} />Starred
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/FollowUpLater"><img src={timermenu} />Follow Up Later
+                                    <NavDropdown.Item onClick={()=>OpenPage("/FollowUpLater")}><img src={timermenu} />Follow Up Later
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
@@ -158,7 +161,7 @@ export default function Header() {
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/OtherInbox"><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item onClick={()=>OpenPage("/OtherInboxPage")}><img src={inbox} />Other Inbox
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>
@@ -197,27 +200,20 @@ export default function Header() {
                                 </NavDropdown>
 
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/6.1">
-                                        <img src={Objectroup} />Objections
+                                    <NavDropdown.Item onClick={()=>OpenPage("/EmailConfiguration")} >
+                                        <img src={Objectroup} />Email Configuration
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/6.2">
-                                        <img src={Carbontem} />Templates
+                                    <NavDropdown.Item onClick={()=>OpenPage("/ClientList")}>
+                                        <img src={Carbontem} />Client
                                     </NavDropdown.Item>
                                 </NavDropdown>
 
                                 <div class="selecter-m mx-4">
-                                    {/* <Select  value={options.value}  options={options}   defaultValue={options[1]} /> */}
-
-
-
-
                                     <Select labelId="demo-simple-select-label" id="clientid" value={SelectedClient} onChange={SelectClient} >
                                         {ClientDropdown?.map((row) => (
                                             <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
                                         ))}
                                     </Select>
-
-                                    {/* </FormControl> */}
                                 </div>
 
 
