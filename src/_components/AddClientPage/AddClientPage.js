@@ -13,10 +13,11 @@ import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
-import FroalaEditor from 'react-froala-wysiwyg';
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css'; 
+import 'froala-editor/js/plugins.pkgd.min.js';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg'; 
 
 export default function AddClientPage({ children }) {
 
@@ -39,13 +40,42 @@ export default function AddClientPage({ children }) {
     }
   }
 
+   // Frola Editor Starts
+   Froalaeditor.RegisterCommand('Variable', {
+    title: 'Variable',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: {
+      'v1': 'Option 1',
+      'v2': 'Option 2'
+    },
+    callback: function (cmd, val) {
+      console.log (val);
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log ('do refresh');
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log ('do refresh when show');
+    }
+  });
+
   // Frola Editor Starts
-  let Config = {
+  // let Config = {
+  //   placeholderText: 'Edit Your Content Here!',
+  //   charCounterCount: false,
+  //   toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
+  //   shortcutsEnabled: ["insertTemplateButton"],
+  // }
+  const config={
     placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
-    shortcutsEnabled: ["insertTemplateButton"],
-  }
+    charCounterCount: false, 
+    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html' ,'Variable'],
+}
   const HandleModelChange = (Model) => {
     SetSignature({
       Data: Model
@@ -139,7 +169,10 @@ export default function AddClientPage({ children }) {
                 </Col>
                 <Col sm={8}>
                 </Col>
-                <Col sm={12}><FroalaEditor tag='textarea' id="signature" config={Config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                <Col sm={12}>
+                  <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                  {/* <FroalaEditor config={config} /> */}
+                </Col>
               </Row>
             </Col>
           </Row>

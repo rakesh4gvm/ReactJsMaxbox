@@ -85,8 +85,7 @@ export default function Header() {
         window.location.reload(false);
     }
 
-    const GetClientDropdown = () => {
-        debugger;
+    const GetClientDropdown = () => { 
         var UserID
         var Details = GetUserDetails();
         if (Details != null) {

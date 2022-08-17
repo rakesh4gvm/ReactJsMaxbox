@@ -977,7 +977,9 @@ div#menu- {
 .header-white .navbar {
     justify-content: space-between;
 }
-
+button#Variable-1 {
+    padding: 0 25px 0 15px;
+}
 
 
 
