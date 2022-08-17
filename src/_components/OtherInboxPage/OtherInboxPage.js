@@ -227,6 +227,9 @@ export default function OtherInboxPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
+          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
+            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
+          }
         }
       });
     }
@@ -258,6 +261,7 @@ export default function OtherInboxPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
+          SetSelectedDropdownList(null);
         }
       });
     }
