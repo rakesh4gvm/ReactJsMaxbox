@@ -1,56 +1,60 @@
-import * as React from 'react'; 
-import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import Compose from '../ComposePage/ComposePage';
+import React, { useRef, useState, useEffect } from 'react';
+import Axios from "axios";
+import Moment from "moment";
 
-import InboxList from '../InboxListPage/InboxListPage'
 import { styled, alpha } from '@mui/material/styles';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { TextareaAutosize } from '@mui/material'; 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
-import Box from '@mui/material/Box'; 
+import Box from '@mui/material/Box';
+import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import downarrow from '../../images/icon_downarrow.svg';
+import Checkbox from '@mui/material/Checkbox';
+import Avatar from '@mui/material/Avatar';
 
+import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser2 from '../../images/avatar/2.jpg';
 import inboxuser3 from '../../images/avatar/3.jpg';
-import inboxuser4 from '../../images/avatar/4.jpg';
-import inboximg1 from '../../images/inboximg1.jpg';
-import inboximg2 from '../../images/inboximg2.jpg';
-
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg'; 
-import replyall from '../../images/icons/reply_all.svg';
-import attachment from '../../images/icons/attachment.svg'; 
-import text_font from '../../images/icons/text_font.svg'; 
-import image_light from '../../images/icons/image_light.svg'; 
-import smiley_icons from '../../images/icons/smiley_icons.svg'; 
-import signature from '../../images/icons/signature.svg'; 
-import link_line from '../../images/icons/link_line.svg'; 
-import google_drive from '../../images/icons/google_drive.svg'; 
-import Emailinbox from '../../images/email_inbox_img.png'; 
-import Emailcall from '../../images/email_call_img.png'; 
+import iconmenu from '../../images/icon_menu.svg';
+import Emailinbox from '../../images/email_inbox_img.png';
+import Emailcall from '../../images/email_call_img.png';
+import { Col, Row } from 'react-bootstrap';
+import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
+import parse from "html-react-parser";
+import HeaderTop from '../Header/header';
+import { GetUserDetails } from "../../_helpers/Utility";
 
-const style = {
+const Style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -61,329 +65,661 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-
-export default function StarredPage({ children }) {
-    const [selected, setSelected] = React.useState(false);
-
-    const addShowCompose = () => {
-      const element = document.getElementById("UserCompose")
-      if(element.classList.contains("show")){
-        element.classList.remove("show");
+function UseOutSideAlerter(Ref) {
+  useEffect(() => {
+    function HandleClickOutside(Event) {
+      if (Ref.current && !Ref.current.contains(Event.target)) {
+        const Element = document.getElementById("id_userboxlist")
+        Element.classList.remove("show");
       }
-      else{
-        element.classList.add("show");
+    }
+    document.addEventListener("mousedown", HandleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", HandleClickOutside);
+    };
+  }, [Ref]);
+}
+const AddStarredClass = () => {
+  const element = document.getElementById("id_userboxlist")
+  if (element.classList.contains("show")) {
+    element.classList.remove("show");
+  }
+  else {
+    element.classList.add("show");
+  }
+};
+
+export default function StarredPage() {
+  const [StarredList, SetStarredList] = React.useState([]);
+  const [Page, SetPage] = React.useState(1);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [SearchStarred, SetSearchStarred] = React.useState("");
+  const [SortField, SetSortField] = React.useState("FromName");
+  const [SortedBy, SetSortedBy] = React.useState(1);
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
+  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
+  const [StarredChecked, SetStarredChecked] = React.useState([]);
+  const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
+  const [Open, SetOpen] = React.useState(false);
+  const [OpenOne, SetOpenOne] = React.useState(false);
+  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [Checked, SetChecked] = React.useState([1]);
+  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
+
+  useEffect(() => {
+   
+    GetClientID();
+    GetStarredList();
+    if (StarredList?.length > 0) SetSelectedDropdownList(StarredList)
+  }, [SearchStarred, ClientID, StarredList?.length,StarredChecked]);
+
+  // Handle Change Dropdown List Manage by on React Js
+  const HandleDropdownListCheckbox = (item) => {
+    if (SelectedDropdownList.some(sl => sl?._id === item?._id)) {
+      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== item?._id))
+    } else {
+      SetSelectedDropdownList([...SelectedDropdownList, item])
+    }
+  }
+
+ 
+
+  const HandleOpen = () => SetOpen(true);
+  const HandleClose = () => SetOpen(false);
+  const HandleOpenOne = () => SetOpenOne(true);
+  const HandleCloseOne = () => SetOpenOne(false);
+
+  const handleChange = (NewValue) => {
+    SetValue(NewValue);
+  };
+
+  // Get ClientID
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+  }
+
+  // Start Get StarredList
+  const GetStarredList = () => {
+    var Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchStarred,
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: true,
+      IsFollowUp: false,
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetStarredList(Result.data.PageData);
+        OpenMessageDetails(Result.data.PageData[0]._id);
       }
+      else
+      {
+        SetStarredList([]);
+        OpenMessageDetails([]);
+      }
+    });
+  };
+  // End Get StarredList
+
+  //Start Open Message Details
+  const OpenMessageDetails = (ID) => {
+    var Data = {
+      _id: ID,
     };
-    const [open, setOpen] = React.useState(false);
-    const [openone, setOpenone] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const handleOpenOne = () => setOpenone(true);
-    const handleCloseOne = () => setOpenone(false);
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetOpenMessageDetails(Result.data.Data);
+      }
+      else {
+        SetOpenMessageDetails('');
+      }
+    });
+  };
+  //End Open Message Details
 
-    const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  // start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          GetStarredList();
+          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
+            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
+          }
+        }
+      });
+    }
+  }
+  // End PopModel Open and Close And Delete Message
 
-    const handleChange = (newValue) => {
-      setValue(newValue);
-    };
+  // Start Delete All Message 
+  const OpenAllDeletePopModel = () => {
+    if (StarredChecked.length > 0) {
+      SetAllDeletePopModel(true);
+    }
+  }
+  const CloseAllDeletePopModel = () => {
+    SetAllDeletePopModel(false);
+  }
+  const DeleteAllMessage = () => {
+    if (StarredChecked.length > 0) {
+      var Data = {
+        IDs: StarredChecked,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseAllDeletePopModel();
+          OpenMessageDetails('')
+          GetStarredList();
+          SetSelectedDropdownList(null);
+        }
+      });
+    }
+  }
+  // End Delete All Message 
 
-return (
+ 
+
+  // Start CheckBox Code
+  const StarredCheckBox = (e) => {
+    var UpdatedList = [...StarredChecked];
+    if (e.target.checked) {
+      UpdatedList = [...StarredChecked, e.target.value];
+    } else {
+      UpdatedList.splice(StarredChecked.indexOf(e.target.value), 1);
+    }
+    SetStarredChecked(UpdatedList);
+  }
+  const SeleactAllInBoxCheckBox = (e) => {
+    if (e.target.checked) {
+      SetSelectAllCheckbox(true);
+      SetStarredChecked(StarredList.map(item => item._id));
+    } else {
+      SetSelectAllCheckbox(false);
+      SetStarredChecked([]);
+    }
+
+  }
+  // End CheckBox Code
+
+  // Start Search
+  const SearchBox = (e) => {
+    if (e.keyCode == 13) {
+      SetSearchStarred(e.target.value)
+    }
+  }
+  // End Search
+
+  const RefreshPage = () => {
+    SetSelectAllCheckbox(false);
+    SetSearchStarred('');
+    SetStarredChecked([]);
+    GetStarredList();
+  }
+
+  const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  }));
+
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: '20ch',
+      },
+    },
+  }));
+
+  const Item = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(1),
+    textAlign: 'left',
+    color: theme.palette.text.secondary,
+  }));
+
+  const HandleToggle = (Value) => () => {
+    const CurrentIndex = Checked.indexOf(Value);
+    const NewChecked = [...Checked];
+    if (CurrentIndex === -1) {
+      NewChecked.push(Value);
+    } else {
+      NewChecked.splice(CurrentIndex, 1);
+    }
+    SetChecked(NewChecked);
+  };
+
+  const WrapperRef = useRef(null);
+  UseOutSideAlerter(WrapperRef);
+
+
+
+  return (
     <>
-    <HeaderTop />  
-  
-    <div className='bodymain'>
-        <Row className='mb-columfull'>
-        <Col className='maxcontainerix'>
-            <InboxList />  
-        </Col>
+      <HeaderTop />
 
-
-        <Col className='rightinbox'>
-          <div className='inxtexteditor'>
-            <Row className='bt-border pb-4 mb-4 colsm12'>
-              <Col lg={6}>  
-                <Row className='userlist'>
-                    <Col xs={2}> 
-                      <span className="inboxuserpic">
-                          <img src={inboxuser3} width="63px" alt="" />
-                      </span>
-                    </Col>
-                    <Col xs={10} className='p-0'> 
-                      <h5>Chelsia Donald</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6> 
-                    </Col> 
-                </Row>
-              </Col>
-              <Col lg={6} Align="right"> 
-                <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                  <Button onClick={handleOpen}>
-                    <img src={iconleftright} />
-                  </Button>
-                  <Button onClick={handleOpenOne}>
-                    <label>56 / 100</label>
-                  </Button>
-                  <Button>
-                    <img src={iconstar} />
-                  </Button>
-                  <Button>
-                    <img src={icontimer} />
-                  </Button> 
-                  <Button>
-                    <img src={iconsarrow2} />
-                  </Button>
-                  <Button>
-                    <img src={iconsarrow1} />
-                  </Button>
-                  <Button>
-                    <img src={icondelete} />
-                  </Button>
-                  <Button>
-                    <img src={iconmenu} />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row>
-
-
-            <Row className='mb-3'>
-              <Col> 
-                  <h2>Reiciendis voluptatibus maiores </h2> 
-              </Col>
-              <Col> 
-                  <h6>20 Jun 2022, 09:44 (2 days ago)</h6> 
-              </Col>
-            </Row>
-
-            <Row>
-              <Col> 
-                <p>
-                  Hi Yash, <br/>
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                  </p>
-                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                  <p>Thank You.</p>
-                  </Col>
-            </Row>
-
-            <Row>
-              <Col className='py-2'> 
-                 <img src={inboximg1} />
-              </Col>
-
-              <Col className='py-2'> 
-                <img src={inboximg2} />
-              </Col>
-              <Col>  
-              </Col>
-            </Row>
-
-            <div className='d-flex mt-5 ml-2'>
-              <Row>
-                <Col sm={6} className='p-0'>
-                  <a href='#' className='p-2'><img src={iconsarrow1} /></a>
-                </Col>
-                <Col sm={6} className='p-0'>
-                <a href='#' className='p-2'><img src={iconsarrow2} /></a>
-                </Col>
-              </Row>
+      <div>
+        <Modal className="modal-pre"
+          open={DeletePopModel}
+          onClose={CloseDeletePopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to delete a email.
+              </Typography>
             </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
 
-          </div>
+        <Modal className="modal-pre"
+          open={AllDeletePopModel}
+          onClose={CloseAllDeletePopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to delete a all email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteAllMessage(); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseAllDeletePopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+
+       
+
+        <Modal className="modal-pre"
+          open={Open}
+          onClose={HandleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Are you sure  for move this E-mail into Starred ?
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium">
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium">
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
 
 
-          <div className='replaybox'>
-            
-            <Row className='pb-4 mb-2 colsm12'>
-              <Col lg={6}> 
-                <Row className='userlist'>
+        <Modal className="modal-pre"
+          open={OpenOne}
+          onClose={HandleCloseOne}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='px-5 pt-5 text-center'>
+              <img src={Emailcall} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Follow Up Later
+              </Typography>
+            </div>
+            <div className='px-5 pb-5 text-left datepikclen'>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Choose date for follow up later.
+              </Typography>
+              <div className="pt-3">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={0}>
+                    <DesktopDatePicker
+                      inputFormat="MM/dd/yyyy"
+                      value={Value}
+                      onChange={handleChange}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </div>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium">
+                Ok
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium">
+                Cancel
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+
+      </div>
+
+      <div className='bodymain'>
+        <Row className='mb-columfull'>
+          <Col className='maxcontainerix'>
+            <div className='px-0 py-4 leftinbox'>
+              <div className='px-3'>
+                <Row>
+                  <Col sm={9}> <h3 className='title-h3'>Starred</h3> </Col>
+                  <Col sm={3}>
+                    <div className="inboxnoti">
+                      <NotificationsIcon />
+                      {SelectedDropdownList?.length}
+                    </div>
+                  </Col>
+                </Row>
+                <Row className='my-3'>
+                  <Col>
+                    <div className='textbox-dek serchdek'>
+                      <Search onKeyUp={(e) => SearchBox(e, this)}>
+                        <SearchIconWrapper>
+                          <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                          placeholder="Search…"
+                          inputProps={{ 'aria-label': 'search' }}
+                        />
+                      </Search>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={8}>
+                    <div class="selecter-m inboxtype">
+                      <a href="#" className="selectorall" onClick={AddStarredClass}>
+                        All <img src={downarrow} />
+                      </a>
+                      <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
+                        <div className="bodyuserdop textdeclist">
+                          <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                            {StarredList?.map((item) => { // dropdown list
+                              const labelId = `checkbox-list-secondary-label-${item._id}`;
+                              return (
+                                <ListItem className='droplistchec'
+                                  key={item._id}
+                                  secondaryAction={
+                                    <Checkbox
+                                      // defaultChecked
+                                      // edge="end"
+                                      // onChange={handleToggle(item._id)}
+                                      // checked={checked.indexOf(item._id) !== -1}
+                                      onChange={() => HandleDropdownListCheckbox(item)}
+                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
+                                      inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                  }
+                                  disablePadding
+                                >
+                                  <ListItemButton>
+                                    <ListItemAvatar>
+
+                                      <ListItemAvatar className="scvar">
+                                        <Avatar alt="Remy Sharp" src={inboxuser1} />
+                                      </ListItemAvatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                      primary={item.FromName}
+                                      secondary={
+                                        <React.Fragment>
+                                          {item.FromEmail}
+                                        </React.Fragment>
+                                      }
+                                    />
+                                  </ListItemButton>
+                                </ListItem>
+                              );
+                            })}
+                          </List>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col xs={4} align='right'>
+                    <ButtonGroup variant="text" aria-label="text button group">
+                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
+                        <RefreshIcon />
+                      </Button>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel}>
+                        <DeleteIcon />
+                      </Button>
+                    </ButtonGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} className="mt-3">
+                    <FormGroup>
+                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </div>
+              <div className='listinbox mt-3'>
+                <scrollbars>
+                  <Stack spacing={1} align="left">
+                    {SelectedDropdownList?.map((row) => (  // datalist
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+                        <Row>
+                          <Col xs={1} className="pr-0">
+                            <FormControlLabel control={<Checkbox defaultChecked={StarredChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={StarredCheckBox} />} label="" />
+                          </Col>
+                        </Row>
+                        <Col xs={11} className="pr-0">
+                          <Row>
+                            <Col xs={2}>
+                              <span className="inboxuserpic">
+                                <img src={inboxuser1} width="55px" alt="" />
+                              </span>
+                            </Col>
+                            <Col xs={8}>
+                              <h4>{row.FromEmail}</h4>
+                              <h3>{row.Subject}</h3>
+                            </Col>
+                            <Col xs={2} className="pl-0">
+                              <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                              {/* <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                                <StarBorderIcon className='starone' />
+                                <StarIcon className='selectedstart startwo' />
+                              </ToggleButton> */}
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col xs={2} className='ja-center'>
+                              <div className='attachfile'>
+                                <input type="file" />
+                                <AttachFileIcon />
+                              </div>
+                            </Col>
+                            <Col xs={10}>
+                              <p>{row.Snippet}</p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Item>
+                    ))}
+                  </Stack>
+                </scrollbars>
+              </div>
+            </div>
+          </Col>
+          <Col className='rightinbox'>
+            <div className='inxtexteditor'>
+              <Row className='bt-border pb-4 mb-4 colsm12'>
+                <Col lg={6}>
+                  <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                          <img src={inboxuser1} width="63px" alt="" />
+                        <img src={inboxuser3} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'> 
-                      <h5>Fanny Champair</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6> 
-                    </Col> 
-                </Row>
-              </Col>
-              <Col lg={6} Align="right">  
-                <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
-                  <Button>
-                    <label>21 Jun 2022, 13:15 (1 days ago)</label>
-                  </Button>
-                  <Button>
-                    <img src={iconstar} />
-                  </Button>
-                  <Button>
-                    <img src={iconsarrow2} />
-                  </Button>
-                  <Button>
-                    <img src={iconmenu} />
-                  </Button>
-                </ButtonGroup>
-              </Col>
-            </Row> 
-            
-            <Row> 
-              <Col> 
-                <p>
-                  Hi Yash, <br/>
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                  </p>
-                  <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                  <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                  <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                  <p>Thank You.</p>
-              </Col>
-            </Row>
-
-
-            <div className='replaybox'> 
-              <Row className='pb-4 mb-2 colsm12'>
-                <Col lg={6}> 
-                  <Row className='userlist'>
-                      <Col xs={2}>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser4} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col xs={10} className='p-0'> 
-                        <h5>Fanny Champair</h5>
-                        <h6>to me <KeyboardArrowDownIcon /></h6> 
-                      </Col> 
+                    <Col xs={10} className='p-0'>
+                      <h5>{OpenMessage.FromName}</h5>
+                      <h6>to me <KeyboardArrowDownIcon /></h6>
+                    </Col>
                   </Row>
                 </Col>
-                <Col lg={6} Align="right">  
-                  <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group"> 
-                    <Button>
-                      <label>21 Jun 2022, 13:15 (1 days ago)</label>
+                <Col lg={6} Align="right">
+                  <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
+                    <Button onClick={HandleOpen}>
+                      <img src={iconleftright} />
                     </Button>
-                    <Button>
+                    <Button onClick={HandleOpenOne}>
+                      <label>56 / 100</label>
+                    </Button>
+                    {/* <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
+                    </Button> */}
+                    <Button>
+                      <img src={icontimer} />
                     </Button>
                     <Button>
                       <img src={iconsarrow2} />
                     </Button>
                     <Button>
+                      <img src={iconsarrow1} />
+                    </Button>
+                    {<Button onClick={OpenDeletePopModel}>
+                      <img src={icondelete} />
+                    </Button>}
+                    <Button>
                       <img src={iconmenu} />
                     </Button>
                   </ButtonGroup>
                 </Col>
-              </Row> 
-              
-              <Row> 
-                <Col> 
-                  <p>
-                    Hi Yash, <br/>
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet faucibus odio. Duis id venenatis dui. Donec hendrerit imperdiet euismod. Praesent ullamcorper mollis massa, a dapibus eros mattis eget. Sed ornare vestibulum libero, vitae hendrerit tellus condimentum sollicitudin. Donec molestie eros ut sagittis porta.
-                    </p>
-                    <p>Proin mi mauris, ultrices sed pellentesque ut, suscipit sit amet neque. Vivamus porta leo sed urna feugiat, sed gravida dui luctus. Nam sit amet ligula quis lectus condimentum malesuada. Nunc posuere molestie urna ac semper. </p>
-                    <p>Ut elementum sapien et porttitor porta. Nunc at mollis est, finibus luctus sem. Curabitur semper molestie tortor quis condimentum. </p>
-                    <p>Curabitur ac feugiat libero. Fusce ut lectus quis mi rutrum blandit sit amet sit amet elit. </p>
-                    <p>Thank You.</p>
+              </Row>
+              <Row className='mb-3'>
+                <Col>
+                  <h2>{OpenMessage.Subject} </h2>
                 </Col>
-              </Row> 
-
-              <div className='d-flex mt-5 ml-2 replayallbox'>
+                <Col>
+                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
+                </Col>
+              </Row>
+              <div className='d-flex mt-5 ml-2'>
                 <Row>
-                  <Col xs={4} className='p-0'>
+                  <Col sm={6} className='p-0'>
                     <a href='#' className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
-                  <Col xs={4} className='p-0'>
-                    <a href='#' className='p-2'><img src={replyall} /></a>
-                  </Col>
-                  <Col xs={4} className='p-0'>
-                  <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+                  <Col sm={6} className='p-0'>
+                    <a href='#' className='p-2'><img src={iconsarrow2} /></a>
                   </Col>
                 </Row>
               </div>
-            
-
-              <div className='user_editor mt-5'>
-                <Row className='userlist'>
-                    <Col className='fixwidleft'>
-                      <span className="inboxuserpic">
-                          <img src={inboxuser1} width="63px" alt="" />
-                      </span>
-                    </Col>
-                    <Col className='fixwidright p-0'> 
-                      <div className='editorboxcard'>
-                        <Row className='edittoprow p-2'>
-                            <Col className='d-flex hedtopedit'>
-                              <a href='#' className='p-1'><img src={iconsarrow2} /></a> 
-                              <h6><KeyboardArrowDownIcon /></h6> 
-                              <label>Barbara Buchhainan (barbarabuchhainan@gmail.com)</label>
-                            </Col> 
-                        </Row>
-                        <Row className='px-2'>
-                            <Col className='bodyeditor'>
-                              <TextareaAutosize className='w-100'
-                                aria-label="minimum height"
-                                minRows={3}
-                                placeholder="" 
-                              />
-                            </Col> 
-                        </Row>
-
-                        <div className='ftcompose px-3'>
-                          <Row className='px-3'>
-                              <Col xs={10} className='px-0'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                  <Button variant="contained btn btn-primary smallbtn"> Send</Button>
-                                  <Button>
-                                    <img src={text_font} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={attachment} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={image_light} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={smiley_icons} />
-                                  </Button>
-                                  <Button>
-                                    <img src={google_drive} />
-                                  </Button>  
-                                  <Button>
-                                    <img src={link_line} />
-                                  </Button>    
-                                  <Button>
-                                    <img src={signature} />
-                                  </Button>  
-                                </ButtonGroup>
-                              </Col>  
-
-                              <Col xs={2} className='px-0 text-right'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group"> 
-                                  <Button>
-                                    <img src={icondelete} />
-                                  </Button> 
-                                  <Button>
-                                    <img src={iconmenu} />
-                                  </Button>  
-                                </ButtonGroup>
-                              </Col> 
-                          </Row> 
-                      </div> 
-
-                      </div>  
-                    </Col> 
-                </Row>
-              </div>
-          
             </div>
+          </Col>
+        </Row>
+      </div>
 
-          </div>
-        
-        </Col> 
-      </Row> 
-    </div>
-    <Compose />
+      <Compose />
+
     </>
-    );
+  );
 }
