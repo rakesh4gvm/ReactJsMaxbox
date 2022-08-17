@@ -98,7 +98,7 @@ export default function RegisterPage() {
     else if (name == "password") {
       if (value != "") {
         SetPasswordError("")
-        validateConfirmPassword()
+        //validateConfirmPassword()
       }
     }
 

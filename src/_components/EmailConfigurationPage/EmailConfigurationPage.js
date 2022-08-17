@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import Axios from "axios";
+
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
-
-
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -57,7 +57,9 @@ export default function EmailConfigurationPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [EmailAccountDetails, SetEmailAccountDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
-  const [Email, SetEmail] = React.useState()
+  const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(false);
+  const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(false);
+  const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   useEffect(() => {
     GetClientID();
     CheckAccountAuthonicate()
@@ -66,10 +68,30 @@ export default function EmailConfigurationPage() {
   }, [Page, RowsPerPage, SortedBy, SortField,ClientID,UserID]);
 
   const CheckAccountAuthonicate = () => {
+    debugger;
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);
-      history.push("/EditEmail?data="+ResultMessage);
+      var pagename=atob(ResultMessage);
+      if(pagename !="UPDATE SUCCESS" && pagename !="SUCCESS" && pagename != "Email Already Authenticated" && pagename!="ERROR")
+      {
+        history.push("/EditEmail?data="+ResultMessage);
+      }
+      else
+      {
+        if(pagename=="UPDATE SUCCESS" || pagename=="SUCCESS")
+        {
+          SetIsEmailAuthSucess(true)
+        }
+        else if(pagename = "Email Already Authenticated")
+        {
+          SetIsEmailAuthExist(true)
+        }
+        else{
+          SetIsEmailAuthFail(true)
+        }
+      }
+      
     }
   }
   const GetClientID = () => {
@@ -162,13 +184,6 @@ export default function EmailConfigurationPage() {
   }
   // start ReAuthenticate email
   const ReAuthenticate = (data) => {
-    const responseapi = Axios({
-      url: CommonConstants.MOL_APIURL + "/email_account/ReAuthenticateEmailAccount",
-      method: "POST",
-      data: data
-    });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
         var AccountID = data._id;
         var loginHint = data.Email;
         var scope = encodeURIComponent(CommonConstants.SCOPE);
@@ -176,13 +191,10 @@ export default function EmailConfigurationPage() {
         var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
         var response_type = "code";
         var access_type = "offline";
-        var state ="emailaccountlistpage";
+        var state ="emailaccountlistpage"+"AccountID"+AccountID;
 
         var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
         window.location.href = Url;
-      }
-    });
-
   }
   // end ReAuthenticate email
 
@@ -255,7 +267,11 @@ export default function EmailConfigurationPage() {
             <h5 className='my-0'>Email Configuration</h5>
           </Col>
         </Row>
-
+        <Stack sx={{ width: '100%' }} spacing={2}>
+          {IsEmailAuthSucess==true?<Alert severity="success" onClose={() => {SetIsEmailAuthSucess(false)}}>   <strong> Well done!</strong> Authentication of your account is done.</Alert>:""}
+          {IsEmailAuthFail==true?<Alert severity="error" onClose={() => { SetIsEmailAuthFail(false);}}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert>:""}
+          {IsEmailAuthExist==true?<Alert severity="info" onClose={() => { SetIsEmailAuthExist(false);}}> <strong>Oops!</strong> Email already exist, please try again with other email!</Alert>:""}
+        </Stack>
 
 
         <div className='sm-container mt-5'>

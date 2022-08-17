@@ -67,7 +67,7 @@ export default function LoginPage({ children }) {
   // FromValidation end
 
   // Login method start
-  const Login = (e) => {
+  const Login = () => {
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
@@ -100,6 +100,10 @@ export default function LoginPage({ children }) {
       });
     }
 
+  }
+
+  const Register=()=>{
+    history.push('/Register');
   }
 // Login method start
   return (
@@ -168,7 +172,7 @@ export default function LoginPage({ children }) {
           <div className='sm-container'>
             <Row>
               <Col sm={4}>
-                Not account At? <a href='/Register'>Register</a> here.
+                Not account At? <a href='#'onClick={Register}>Register</a> here.
               </Col>
             </Row>
           </div>

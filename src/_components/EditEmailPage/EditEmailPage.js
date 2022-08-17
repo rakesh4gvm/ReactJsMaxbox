@@ -1,29 +1,25 @@
 import React, { useRef, useEffect } from 'react';
 import Axios from "axios";
-import ReactDOM from 'react-dom';
+
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
-import Select from 'react-select'
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import BgProfile from '../../images/bg-profile.png';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
 
-import inboximg2 from '../../images/inboximg2.jpg';
-import 'froala-editor/js/froala_editor.pkgd.min.js';
 
-// Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+
 
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
+
 
 var atob = require('atob');
 
@@ -32,6 +28,9 @@ export default function EditEmailPage(props) {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Refreshtoken, SetRefreshtoken] = React.useState(0);
+  const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(0);
+  const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(0);
+  
   var Isworking =false;
   useEffect(() => {
     const ID = props.location.state;
@@ -44,7 +43,6 @@ export default function EditEmailPage(props) {
   }, []);
 
   useEffect(() => {
-
   }, [ClientID, UserID,Isworking]);
 
   const CheckAccountAuthonicate = () => {
@@ -55,6 +53,15 @@ export default function EditEmailPage(props) {
       var AccountID = (ResultRefreshtoken.split("=editpageupdate_")[1])
       SetRefreshtoken(Refreshtoken);
       Isworking=true;
+      if(Refreshtoken!='')
+      {
+        SetIsEmailAuthSucess(true)
+      }
+      else
+      {
+        SetIsEmailAuthFail(true)
+      }
+      
       EditEmailConfiguration(AccountID)
     }
   }
@@ -89,14 +96,12 @@ export default function EditEmailPage(props) {
   const Cancle = () => {
     history.push("/EmailConfiguration");
   }
+
   // // Update Email
   const UpdateEmailConfiguration = () => {
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
-    // var RefreshToken = document.getElementById("refreshToken").value;
-    // var IsWorking = document.getElementById("isWorking").value;
-
     let Data = {
       ID: EditEmailConfigurationDetails._id,
       UserID: UserID,
@@ -121,13 +126,6 @@ export default function EditEmailPage(props) {
 
   // start ReAuthenticate email
   const ReAuthenticate = (data) => {
-    // const responseapi = Axios({
-    //   url: CommonConstants.MOL_APIURL + "/email_account/ReAuthenticateEmailAccount",
-    //   method: "POST",
-    //   data: data
-    // });
-    // responseapi.then((result) => {
-    //   if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
     var AccountID = data._id;
     var loginHint = data.Email;
     var scope = encodeURIComponent(CommonConstants.SCOPE);
@@ -139,9 +137,6 @@ export default function EditEmailPage(props) {
 
     var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
     window.location.href = Url;
-    //}
-    //  });
-
   }
   // end ReAuthenticate email
 
@@ -163,10 +158,8 @@ export default function EditEmailPage(props) {
         <div className='sm-container mt-5'>
         
         <Stack sx={{ width: '100%' }} spacing={2}>
-          {/* <Alert severity="error">This is an error alert — check it out!</Alert>
-          <Alert severity="warning">This is a warning alert — check it out!</Alert>
-          <Alert severity="info">This is an info alert — check it out!</Alert> */}
-          <Alert severity="success">This is a success alert — check it out!</Alert>
+          {IsEmailAuthSucess==true?<Alert severity="success" onClose={() => {SetIsEmailAuthSucess(false)}}>   <strong> Well done!</strong> Authentication of your account is done.</Alert>:""}
+          {IsEmailAuthFail==true?<Alert severity="error" onClose={() => { SetIsEmailAuthFail(false);}}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert>:""}
         </Stack>
 
           <Row>
