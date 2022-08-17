@@ -1,9 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import Axios from "axios";
-import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
-
 
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
@@ -18,11 +14,9 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
-import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
 import BgProfile from '../../images/bg-profile.png';
 import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
@@ -30,8 +24,9 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
-
-var atob = require('atob');
+import { Col, Row } from 'react-bootstrap';
+import HeaderTop from '../Header/header';
+import FooterBottom from '../Footer/footer';
 
 const Style = {
   position: 'absolute',
@@ -45,33 +40,35 @@ const Style = {
   p: 4,
 };
 
-
 export default function ClientListPage() {
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [EmailAccountList, SetEmailAccountList] = React.useState([]);
+  const [ClientList, SetClientList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
-  const [EmailAccountDetails, SetEmailAccountDetails] = React.useState([]);
+  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
-  const [Email, SetEmail] = React.useState()
+  const [DeleteID, SetDeleteID] = React.useState()
+
   useEffect(() => {
     GetClientID();
     CheckAccountAuthonicate()
-    GetEmailAccountList()
-    
-  }, [Page, RowsPerPage, SortedBy, SortField,ClientID,UserID]);
+    GetClientList()
+  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
 
+  // Check Authinticate
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);
-      history.push("/EditEmail?data="+ResultMessage);
+      history.push("/EditEmail?data=" + ResultMessage);
     }
   }
+
+  // Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
@@ -80,8 +77,8 @@ export default function ClientListPage() {
     }
   }
 
-  // Start Get EmailAccount
-  const GetEmailAccountList = () => {
+  // Start Get Client List
+  const GetClientList = () => {
     let Data
     Data = {
       Page: Page,
@@ -95,50 +92,97 @@ export default function ClientListPage() {
     };
 
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGet",
+      url: CommonConstants.MOL_APIURL + "/client/ClientGet",
       method: "POST",
       data: Data,
     });
     ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetEmailAccountList(Result.data.PageData);
-        SetCountPage(Result.data.PageCount);
-      }
+      SetClientList(Result.data.PageData);
+      SetCountPage(Result.data.PageCount);
     });
   };
-  // End Get EmailAccount
 
-  //change Page
+  // start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = (ID) => {
+    console.log("ID--------", ID)
+    SetDeletePopModel(true);
+    SetDeleteID(ID)
+  }
+  console.log("DeleteID--------", DeleteID)
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteClient = () => {
+    const Data = {
+      ID: DeleteID
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/ClientDelete",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+    });
+  }
+  // End Delete Message
+
+  //Change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetEmailAccountList();
+    GetClientList();
   };
 
-  //SortData Page
-  const SortData = (Field) => {
-    SetSortField(Field);
-    if (SortedBy == 1) {
-      SetSortedBy(-1);
-    } else {
-      SetSortedBy(1);
-    }
-    GetEmailAccountList()
+  // Edit CLient
+  const EditClient = (ID) => {
+    history.push("/EditClient", ID);
   }
- 
+
+  // Add CLient
+  const AddClient = () => {
+    history.push("/AddClient");
+  }
 
   return (
     <>
-      <HeaderTop /> 
+      <HeaderTop />
+
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              You want to Delete Client
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteClient(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
             <h5 className='my-0'>Client</h5>
           </Col>
-        </Row> 
+        </Row>
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
             <Col align="right">
-              <Button className='btnaccount'>
+              <Button className='btnaccount' onClick={AddClient}>
                 <AddIcon /> Add Client
               </Button>
             </Col>
@@ -149,23 +193,22 @@ export default function ClientListPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Name</TableCell> 
-                      <TableCell>BCC Email</TableCell> 
+                      <TableCell>Name</TableCell>
+                      <TableCell>BCC Email</TableCell>
                       <TableCell align="right">Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {EmailAccountList.map((row) => (
-
+                    {ClientList?.map((row) => (
                       <TableRow>
-                        <TableCell>{row.FirstName}</TableCell> 
-                        <TableCell scope="row">{row.Email}</TableCell> 
+                        <TableCell>{row.Name}</TableCell>
+                        <TableCell scope="row">{row.BccEmail}</TableCell>
 
-                        <TableCell align="right"> 
-                          <Button className='iconbtntable'>
+                        <TableCell align="right">
+                          <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
                             <img src={DeleteIcon} />
                           </Button>
-                          <Button className="iconbtntable"><EditIcon /></Button> 
+                          <Button className="iconbtntable" onClick={() => EditClient(row._id)}><EditIcon /></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -179,11 +222,8 @@ export default function ClientListPage() {
             </Col>
           </Row>
         </div>
-
       </div>
-
       <FooterBottom />
-
     </>
   );
 }
