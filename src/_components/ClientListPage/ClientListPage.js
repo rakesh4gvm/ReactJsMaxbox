@@ -104,11 +104,9 @@ export default function ClientListPage() {
 
   // start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = (ID) => {
-    console.log("ID--------", ID)
     SetDeletePopModel(true);
     SetDeleteID(ID)
   }
-  console.log("DeleteID--------", DeleteID)
   const CloseDeletePopModel = () => {
     SetDeletePopModel(false);
   }

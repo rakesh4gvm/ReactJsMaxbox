@@ -6,7 +6,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
@@ -51,8 +53,21 @@ export default function AddClientPage({ children }) {
   }
   // Frola Editor Ends
 
+  // Check Client Exists
+  const CheckExistClient = async (ClientName) => {
+
+    var Data = { Name: ClientName }
+
+    const ResponseApi = await Axios({
+      url: CommonConstants.MOL_APIURL + "/client/ClientExists",
+      method: "POST",
+      data: Data,
+    })
+    return ResponseApi?.data.StatusMessage
+  }
+
   // Add Client
-  const AddClient = () => {
+  const AddClient = async () => {
     var ClientName = document.getElementById("name").value;
     var BccEmail = document.getElementById("bccEmail").value;
 
@@ -63,12 +78,26 @@ export default function AddClientPage({ children }) {
       UserID: UserID
     }
 
-    Axios({
-      url: CommonConstants.MOL_APIURL + "/client/ClientAdd",
-      method: "POST",
-      data: Data,
-    }).then((Result) => {
-    })
+    var ExistsClient = await CheckExistClient(ClientName)
+
+    if (ClientName != "" && ClientName != null && ClientName != "undefined") {
+      if (ExistsClient === ResponseMessage.SUCCESS) {
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/client/ClientAdd",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+            history.push("/ClientList");
+          }
+        })
+      } else {
+        console.log("ClientName Already Exists, Please Add Another Name")
+      }
+    } else {
+      console.log("Client Name should not be blank!")
+    }
+
   }
 
   return (
