@@ -150,6 +150,8 @@ export default function FollowUpLaterPage() {
 
   // Start Get FollowUpLaterList
   const GetFollowUpLaterList = () => {
+   
+   
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -331,7 +333,7 @@ export default function FollowUpLaterPage() {
     debugger
     if (e.keyCode == 13) {
       SetSearchFollowUpLater(e.target.value)
-      // GetFollowUpLaterList();
+      
     }
   }
   // End Search
