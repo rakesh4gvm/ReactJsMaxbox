@@ -13,6 +13,7 @@ import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 import { GetUserDetails } from "../../_helpers/Utility";
+import Cameraicons from '../../images/icons/icons-camera.svg';
 
 export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
@@ -169,9 +170,15 @@ export default function ProfileSettingPage() {
 
         <Row className='text-center mt-5'>
           <Col>
-            <div>
-              <img src={User?.UserImage} alt="img" />
+          <div className='imguploadmain'>
+            <div className='imgupload'>
+              <img src={User?.UserImage} alt="img" /> 
             </div>
+            <div className='uploadedimg'>
+               <img src={Cameraicons} width="20px" />
+                <input type='file' onChange={(e) => UploadImage(e)} />
+              </div>
+          </div>
             <div className='mt-4'>
               <h5>{User?.FirstName} {User?.LastName}</h5>
               <a>{User?.Email}</a>
@@ -209,7 +216,7 @@ export default function ProfileSettingPage() {
               </div>
             </Col>
             <Col sm={4}>
-              <div>
+              <div className='select-box'>
                 <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
                   {Country?.map((row) => (
                     <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
@@ -230,9 +237,9 @@ export default function ProfileSettingPage() {
               </div>
             </Col>
             <Col sm={4}>
-              <div className='input-box'>
+              {/* <div className='input-box'>
                 <input type='file' onChange={(e) => UploadImage(e)} />
-              </div>
+              </div> */}
             </Col>
           </Row>
         </div>
