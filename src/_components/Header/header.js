@@ -119,14 +119,15 @@ export default function Header() {
         }
 
         const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
+            url: CommonConstants.MOL_APIURL + "/user/AccountUserDetailsGetByID",
             method: "POST",
             data: data,
         });
         ResponseApi.then((result) => {
+            debugger;
             if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                if (result.data.Data != null) {
-                    SetUserDetails(result.data.Data)
+                if (result.data.Data.length >0) {
+                    SetUserDetails(result.data.Data[0])
                     const element = document.getElementById("id_userbox")
                     if (element.classList.contains("show")) {
                         element.classList.remove("show");
@@ -254,7 +255,7 @@ export default function Header() {
                                         {UserImage !== undefined ? <img src={UserImage} width="110px" alt="" /> : <img src={defaultimage} width="110px" alt="" />}
                                     </span>
                                     <div className="carduser_details">
-                                        <h4>{UserDetails != undefined ? UserDetails.FirstName + " " + UserDetails.LastName : ""}</h4>
+                                        <h4>{UserDetails!= undefined ? UserDetails.FirstName + " " + UserDetails.LastName : ""}</h4>
                                         <a href="">{UserDetails != undefined ? UserDetails.Email : ""}</a>
                                     </div>
                                 </div>
@@ -268,16 +269,19 @@ export default function Header() {
                                                 <h5>All User</h5>
                                             </div>
                                         </ListItem>
+                                      
                                         <Divider variant="inset" component="li" />
+                                        {UserDetails == undefined?"": UserDetails.EmailAccount.map((row) => (
+
                                         <ListItem alignItems="flex-start">
                                             <ListItemAvatar>
-                                                <Avatar alt="Remy Sharp" src={inboxuser1} />
+                                                <Avatar alt="Remy Sharp" />
                                             </ListItemAvatar>
                                             <ListItemText
-                                                primary="Brunch this weekend?"
+                                                primary={row.FirstName +" "+ row.LastName}
                                                 secondary={
                                                     <React.Fragment>
-                                                        jennyoswald1998@gmail.com
+                                                       {row.Email}
                                                     </React.Fragment>
                                                 }
                                             />
@@ -286,6 +290,7 @@ export default function Header() {
                                                 <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li>
                                             </ul>
                                         </ListItem>
+                                                ))} 
                                         {/* <Divider variant="inset" component="li" />
                                         <ListItem alignItems="flex-start">
                                             <ListItemAvatar>

@@ -115,7 +115,8 @@ export default function OtherInboxPage() {
     GetClientID();
     GetInBoxList();
     if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
-  }, [SearchInbox, ClientID, InBoxList?.length, InboxChecked]);
+  }, [SearchInbox,ClientID, InBoxList?.length, InboxChecked]);
+
 
   // Handle Change Dropdown List Manage by on React Js
   const HandleDropdownListCheckbox = (item) => {
@@ -160,6 +161,8 @@ export default function OtherInboxPage() {
       IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,
+      IsSpam:false,
+      IsOtherInbox:false
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -567,6 +570,7 @@ export default function OtherInboxPage() {
                           <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
+                        defaultValue={SearchInbox}
                           placeholder="Search…"
                           inputProps={{ 'aria-label': 'search' }}
                         />
