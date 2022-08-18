@@ -79,15 +79,7 @@ function UseOutSideAlerter(Ref) {
     };
   }, [Ref]);
 }
-const AddInboxClass = () => {
-  const element = document.getElementById("id_userboxlist")
-  if (element.classList.contains("show")) {
-    element.classList.remove("show");
-  }
-  else {
-    element.classList.add("show");
-  }
-};
+
 
 export default function OtherInboxPage() {
   const [InBoxList, SetInBoxList] = React.useState([]);
@@ -108,24 +100,16 @@ export default function OtherInboxPage() {
   const [Open, SetOpen] = React.useState(false);
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
-
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([]);
   useEffect(() => {
 
     GetClientID();
     GetInBoxList();
-    if (InBoxList?.length > 0) SetSelectedDropdownList(InBoxList)
-  }, [SearchInbox,ClientID, InBoxList?.length, InboxChecked]);
+  }, [SearchInbox, ClientID,  InboxChecked]);
 
-
-  // Handle Change Dropdown List Manage by on React Js
-  const HandleDropdownListCheckbox = (item) => {
-    if (SelectedDropdownList.some(sl => sl?._id === item?._id)) {
-      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== item?._id))
-    } else {
-      SetSelectedDropdownList([...SelectedDropdownList, item])
-    }
-  }
+  useEffect(() => {
+}, [FromEmailDropdownListChecked]);
 
 
 
@@ -161,8 +145,9 @@ export default function OtherInboxPage() {
       IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,
-      IsSpam:false,
-      IsOtherInbox:false
+      IsSpam: false,
+      IsOtherInbox: false,
+      FromEmail:FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -230,9 +215,6 @@ export default function OtherInboxPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
-          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
-            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
-          }
         }
       });
     }
@@ -264,7 +246,6 @@ export default function OtherInboxPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList();
-          SetSelectedDropdownList(null);
         }
       });
     }
@@ -332,6 +313,73 @@ export default function OtherInboxPage() {
   }
   // End Search
 
+ 
+  const FromEmailList = () => {
+    if(FromEmailDropdownListChecked.length==0)
+    {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID,
+        IsInbox: true,
+        IsStarred: false,
+        IsFollowUp: false,
+        IsSpam: false,
+        IsOtherInbox: false
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            debugger;
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("id_userboxlist")
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
+            }
+            else {
+              element.classList.add("show");
+            }
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+  
+        }
+      });
+    }
+    else
+    {
+      const element = document.getElementById("id_userboxlist")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+
+    }
+   
+  }
+
+  // Handle Change Dropdown List Manage by on React Js
+  const FromEmailDropdownListCheckbox = (e) => {
+    var UpdatedList = [...FromEmailDropdownListChecked];
+    if (e.target.checked) {
+      UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+    } else {
+      UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+    }
+    SetFromEmailDropdownListChecked(UpdatedList);
+    GetInBoxList();
+ }
+
+
   const RefreshPage = () => {
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
@@ -383,7 +431,7 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-  
+
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
@@ -558,7 +606,7 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {SelectedDropdownList?.length}
+                      {InBoxList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -570,7 +618,7 @@ export default function OtherInboxPage() {
                           <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
-                        defaultValue={SearchInbox}
+                          defaultValue={SearchInbox}
                           placeholder="Search…"
                           inputProps={{ 'aria-label': 'search' }}
                         />
@@ -581,44 +629,33 @@ export default function OtherInboxPage() {
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={AddInboxClass}>
+                      <a href="#" className="selectorall" onClick={FromEmailList}>
                         All <img src={downarrow} />
                       </a>
                       <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
+
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {InBoxList?.map((item) => { // dropdown list
-                              const labelId = `checkbox-list-secondary-label-${item._id}`;
+                            {FromEmailDropdownList?.map((item, index) => {
+                              const labelId = `checkbox-list-secondary-label-${index}`;
                               return (
                                 <ListItem className='droplistchec'
-                                  key={item._id}
+                                  key={index}
                                   secondaryAction={
-                                    <Checkbox
-                                      // defaultChecked
-                                      // edge="end"
-                                      // onChange={handleToggle(item._id)}
-                                      // checked={checked.indexOf(item._id) !== -1}
-                                      onChange={() => HandleDropdownListCheckbox(item)}
-                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
-                                      inputProps={{ 'aria-labelledby': labelId }}
-                                    />
+                                    <Checkbox onChange={FromEmailDropdownListCheckbox}
+                                      value={item._id}
+                                      checked={FromEmailDropdownListChecked?.find(x => x === item?._id)}
+                                      inputProps={{ 'aria-labelledby': labelId }} />
                                   }
                                   disablePadding
                                 >
                                   <ListItemButton>
                                     <ListItemAvatar>
-
                                       <ListItemAvatar className="scvar">
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText
-                                      primary={item.FromName}
-                                      secondary={
-                                        <React.Fragment>
-                                          {item.FromEmail}
-                                        </React.Fragment>
-                                      }
+                                    <ListItemText primary={item.FromName} secondary={<React.Fragment>{item.FromEmail}</React.Fragment>}
                                     />
                                   </ListItemButton>
                                 </ListItem>
@@ -651,7 +688,7 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {SelectedDropdownList?.map((row) => (  // datalist
+                    {InBoxList?.map((row) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                         <Row>
                           <Col xs={1} className="pr-0">
