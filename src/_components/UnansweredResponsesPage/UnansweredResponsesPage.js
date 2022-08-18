@@ -185,6 +185,8 @@ export default function UnansweredResponsesPage() {
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
+      IsOtherInbox : false,
+      IsSpam : false
     };
 
     const ResponseApi = Axios({

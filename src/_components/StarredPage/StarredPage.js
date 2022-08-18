@@ -159,6 +159,8 @@ export default function StarredPage() {
       IsInbox: false,
       IsStarred: true,
       IsFollowUp: false,
+      IsOtherInbox : false,
+      IsSpam : false
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
