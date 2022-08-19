@@ -1,7 +1,23 @@
-import React, { useRef, useEffect } from 'react'; 
-import { ButtonGroup, Col, Row } from 'react-bootstrap';
+import React, { useState, useEffect ,useRef} from 'react';
+import Axios from "axios"
  
 import Button from '@mui/material/Button';
+
+
+
+
+
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
+import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
+import { GetUserDetails } from "../../_helpers/Utility";
+import { history } from "../../_helpers";
+import BgProfile from '../../images/bg-profile.png';
+import { Col, Row } from 'react-bootstrap';
+import HeaderTop from '../Header/header';
+import FooterBottom from '../Footer/footer';
 
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
@@ -44,11 +60,21 @@ function useOutsideAlerter(ref) {
 
 export default function HomePage() {
     const [selected, setSelected] = React.useState(false);
+    const [DraftTemplateToError, SetDraftTemplateToError] = useState("");
+    const [DraftTemplateSubjectError, SetDraftTemplateSubjectError] = useState("");
+    const [DraftTemplateBodyError, SetDraftTemplateBodyError] = useState("");
+    const [ClientID, SetClientID] = React.useState(0);
+    const [UserID, SetUserID] = React.useState(0);
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef); 
 
     const addShowCompose = () => {
       const element = document.getElementById("UserCompose")
+      //null textbox
+      var To = document.getElementById("To").value= "";
+      var Subject = document.getElementById("Subject").value= "";
+      var Body = document.getElementById("Body").value= "";
+
       if(element.classList.contains("show")){
         element.classList.remove("show");
       }
@@ -56,7 +82,69 @@ export default function HomePage() {
         element.classList.add("show");
       } 
     };
+
+    
+  useEffect(() => {
+    GetClientID()
+  }, [ClientID])
+
+  // Get Client ID
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+  }
+
+    // Add DraftTemplate
+  const AddDraftTemplate = async () => {
+
+    // const Valid = FromValidation();
+    // if (Valid) {
+
+      var To = document.getElementById("To").value;
+      var Subject = document.getElementById("Subject").value;
+      var Body = document.getElementById("Body").value;
+
+      const Data = {
+        MailTo: To,
+        Subject: Subject,
+        Body: Body,
+        UserID: UserID,
+        ClientID : ClientID,
+        CreatedBy : 1
+      }
+
+    debugger
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateAdd",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+            addShowCompose();
+          }
+        })
+      
+    // }
+
+  }
+
    
+  // FromValidation Start
+  // const FromValidation = () => {
+  //   var Isvalid = true;
+  //   var ClientName = document.getElementById("name").value;
+
+  //   if (ClientName === "") {
+  //     SetDraftTemplateToError("Please Enter To")
+  //     Isvalid = false
+  //   }
+    
+  //   return Isvalid;
+  // };
+
 return (
     <>
      
@@ -89,7 +177,8 @@ return (
                     <h6>To :</h6>
                   </Col>
                   <Col xs={9} className="px-0">
-                    <Input className='input-clend' />
+                    <Input className='input-clend' id='To' />
+                    
                   </Col>
                   <Col xs={2} className='col text-right d-flex'>
                     <Button className='lable-btn'>Cc</Button>
@@ -103,7 +192,7 @@ return (
                     <h6>Subject :</h6>
                   </Col>
                   <Col xs={11} className="px-0">
-                    <Input className='input-clend' />
+                    <Input className='input-clend'  id='Subject'/>
                   </Col> 
               </Row>
             </div>
@@ -111,7 +200,7 @@ return (
             <div className='bodycompose'>
             <Row className='px-3 py-2'>
                 <Col>
-                  <TextareaAutosize className='w-100'
+                  <TextareaAutosize className='w-100' id='Body'
                     aria-label="minimum height"
                     minRows={3}
                     placeholder="" 
@@ -124,7 +213,7 @@ return (
               <Row className='px-3'>
                   <Col xs={10} className='px-0'>
                     <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                      <Button variant="contained btn btn-primary smallbtn" onClick={addShowCompose}> Send</Button>
+                      <Button variant="contained btn btn-primary smallbtn" onClick={AddDraftTemplate}> Save</Button>
                       <Button>
                         <img src={text_font} />
                       </Button> 
