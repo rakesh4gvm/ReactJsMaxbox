@@ -98,8 +98,8 @@ export default function OtherInboxPage() {
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [Open, SetOpen] = React.useState(false);
-  const [OpenOne, SetOpenOne] = React.useState(false);
-  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   useEffect(() => {
@@ -109,17 +109,10 @@ export default function OtherInboxPage() {
   }, [SearchInbox, ClientID,  InboxChecked,FromEmailDropdownListChecked]);
 
 
-
-
-
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
-  const HandleOpenOne = () => SetOpenOne(true);
-  const HandleCloseOne = () => SetOpenOne(false);
-
-  const handleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
+ 
+  
 
   // Get ClientID
   const GetClientID = () => {
@@ -287,6 +280,42 @@ export default function OtherInboxPage() {
   }
   // End Update Star Message and model open and close
 
+  // Followup Message
+  const OpenFollowupPopModel = () =>
+  {
+    SetFollowupPopModel(true);
+  } 
+  const CloseFollowupPopModel = () =>
+  {
+    SetFollowupPopModel(false);
+  } 
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
+  const UpdateFollowupMessage=(ID)=>{
+    if (ID != '') {
+      var Data = {
+        ID: ID,
+        IsFollowUp:true,
+        FollowupDate:FollowupDate,
+        IsOtherInbox: false,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseFollowupPopModel();
+          OpenMessageDetails('')
+          GetInBoxList();
+        }
+      });
+    }
+  }
+// End Followup Message
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
     var UpdatedList = [...InboxChecked];
@@ -564,8 +593,8 @@ export default function OtherInboxPage() {
 
 
         <Modal className="modal-pre"
-          open={OpenOne}
-          onClose={HandleCloseOne}
+          open={FollowupPopModel}
+          onClose={CloseFollowupPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -583,10 +612,10 @@ export default function OtherInboxPage() {
               <div className="pt-3">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack spacing={0}>
-                    <DesktopDatePicker
+                    <DesktopDatePicker 
                       inputFormat="MM/dd/yyyy"
-                      value={Value}
-                      onChange={handleChange}
+                      value={FollowupDate}
+                      onChange={SelectFollowupDate}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </Stack>
@@ -594,10 +623,10 @@ export default function OtherInboxPage() {
               </div>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
                 Ok
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
                 Cancel
               </Button>
             </div>
@@ -764,13 +793,13 @@ export default function OtherInboxPage() {
                     <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button>
-                    <Button onClick={HandleOpenOne}>
+                    <Button>
                       <label>56 / 100</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
                     </Button>
-                    <Button>
+                    <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
                     </Button>
                     <Button>
