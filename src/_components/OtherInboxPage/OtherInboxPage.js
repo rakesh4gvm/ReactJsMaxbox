@@ -79,7 +79,7 @@ function UseOutSideAlerter(Ref) {
     };
   }, [Ref]);
 }
-
+localStorage.setItem("DropdownCheckData", 'Refresh');
 
 export default function OtherInboxPage() {
   const [InBoxList, SetInBoxList] = React.useState([]);
@@ -101,15 +101,14 @@ export default function OtherInboxPage() {
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
-  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([]);
+  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   useEffect(() => {
 
     GetClientID();
     GetInBoxList();
-  }, [SearchInbox, ClientID,  InboxChecked]);
+  }, [SearchInbox, ClientID,  InboxChecked,FromEmailDropdownListChecked]);
 
-  useEffect(() => {
-}, [FromEmailDropdownListChecked]);
+
 
 
 
@@ -147,7 +146,7 @@ export default function OtherInboxPage() {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: false,
-      FromEmail:FromEmailDropdownListChecked
+      AccountIDs:FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -159,6 +158,11 @@ export default function OtherInboxPage() {
         if (Result.data.PageData.length > 0) {
           SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
+        }
+        else
+        {
+          SetInBoxList([]);
+          OpenMessageDetails([]);
         }
       }
       else {
@@ -315,7 +319,8 @@ export default function OtherInboxPage() {
 
  
   const FromEmailList = () => {
-    if(FromEmailDropdownListChecked.length==0)
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if(ResultData=="Refresh")
     {
       var Data = {
         ClientID: ClientID,
@@ -334,10 +339,10 @@ export default function OtherInboxPage() {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.PageData.length > 0) {
-            debugger;
             SetFromEmailDropdownListChecked()
             SetFromEmailDropdownList(Result.data.PageData);
             SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
             const element = document.getElementById("id_userboxlist")
             if (element.classList.contains("show")) {
               element.classList.remove("show");
@@ -355,6 +360,7 @@ export default function OtherInboxPage() {
     }
     else
     {
+     
       const element = document.getElementById("id_userboxlist")
       if (element.classList.contains("show")) {
         element.classList.remove("show");
@@ -362,21 +368,23 @@ export default function OtherInboxPage() {
       else {
         element.classList.add("show");
       }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
 
     }
-   
   }
 
   // Handle Change Dropdown List Manage by on React Js
   const FromEmailDropdownListCheckbox = (e) => {
+    localStorage.removeItem("DropdownCheckData");
+  
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
     }
+    localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
-    GetInBoxList();
  }
 
 
@@ -384,6 +392,8 @@ export default function OtherInboxPage() {
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetInboxChecked([]);
+    SetFromEmailDropdownListChecked([-1])
+    localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
   const Search = styled('div')(({ theme }) => ({
@@ -655,7 +665,7 @@ export default function OtherInboxPage() {
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary={item.FromName} secondary={<React.Fragment>{item.FromEmail}</React.Fragment>}
+                                    <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>}
                                     />
                                   </ListItemButton>
                                 </ListItem>
@@ -745,7 +755,7 @@ export default function OtherInboxPage() {
                     </Col>
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage.FromName}</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6>
+                      <h6>{OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
