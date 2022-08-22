@@ -201,13 +201,13 @@ export default function Header() {
                                     </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Sent" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/4.1">
+                                    <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
                                             <NotificationsIcon /> 43
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/4.2"><img src={Sent} />All Sent Emails
+                                    <NavDropdown.Item href="/AllSentEmails"><img src={Sent} />All Sent Emails
                                         <div className="notifimen">
                                             <NotificationsIcon /> 245
                                         </div>

@@ -21,6 +21,8 @@ import EditEmailPage from './_components/EditEmailPage/EditEmailPage';
 import ClientListPage from './_components/ClientListPage/ClientListPage';
 import AddClientPage from './_components/AddClientPage/AddClientPage';
 import EditClientPage from './_components/EditClientPage/EditClientPage';
+import UnansweredRepliesPage from './_components/UnansweredRepliesPage/UnansweredRepliesPage';
+import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage';
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
           <Route exact path="/Spam" component={SpamPage} />
           <Route exact path="/ProfileSetting" component={ProfileSettingPage} />
           <Route exact path="/EmailConfiguration" component={EmailConfigurationPage} />
+          <Route exact path="/UnansweredReplies" component={UnansweredRepliesPage} />
+          <Route exact path="/AllSentEmails" component={AllSentEmailsPage} />
           <Route exact path="/Templates" component={TemplatesPage} />
           <Route exact path="/SelectTemplates" component={SelectTemplatesPage} />
           <Route exact path="/CreateTemplates" component={CreateTemplatesPage} />
