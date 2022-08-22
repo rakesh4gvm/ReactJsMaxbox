@@ -149,6 +149,7 @@ export default function OtherInboxPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
+          debugger;
           SetInBoxList(Result.data.PageData);
           
           OpenMessageDetails(Result.data.PageData[0]._id);
@@ -753,7 +754,7 @@ export default function OtherInboxPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                              <h6>{Moment(OpenMessage.MessageDatetime).format("LT")}</h6>
                               <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
@@ -829,7 +830,7 @@ export default function OtherInboxPage() {
                   <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
                 </Col>
                 <Col>
-                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{OpenMessage == 0 ?'':Moment(OpenMessage.MessageDatetime).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>
