@@ -92,7 +92,7 @@ export default function LoginPage({ children }) {
             }
             localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
             SetClientID(LoginDetails._id,LoginDetails.UserImage);
-            window.location.href=CommonConstants.HomePage;
+           
           //  history.push('/OtherInboxPage');
           }
           else
@@ -106,7 +106,7 @@ export default function LoginPage({ children }) {
   }
 
 
-  const SetClientID = (UserID,UserImage) => {
+  const SetClientID = (UserID) => {
     var Data = {
         UserID: UserID
     }
@@ -119,7 +119,16 @@ export default function LoginPage({ children }) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             if (Result.data.Data.length > 0) {
                     UpdateUserDetails((Result.data.Data[0].ClientID))
+                    window.location.href=CommonConstants.HomePage;
                 }
+                else
+                {
+                  window.location.href=CommonConstants.HomePage;
+                }
+            }
+            else
+            {
+              window.location.href=CommonConstants.HomePage;
             }
           
         
