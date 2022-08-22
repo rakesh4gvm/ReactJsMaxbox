@@ -12,6 +12,10 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Box from '@mui/material/Box';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Modal from '@mui/material/Modal';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -20,10 +24,6 @@ import ToggleButton from '@mui/material/ToggleButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -107,34 +107,21 @@ export default function StarredPage() {
   const [OpenOne, SetOpenOne] = React.useState(false);
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [Checked, SetChecked] = React.useState([1]);
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [InboxChecked, SetInboxChecked] = React.useState([]);
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
+
 
   useEffect(() => {
-   
     GetClientID();
     GetStarredList();
-    if (StarredList?.length > 0) SetSelectedDropdownList(StarredList)
-  }, [SearchStarred, ClientID, StarredList?.length,StarredChecked]);
-
-  // Handle Change Dropdown List Manage by on React Js
-  const HandleDropdownListCheckbox = (item) => {
-    if (SelectedDropdownList.some(sl => sl?._id === item?._id)) {
-      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== item?._id))
-    } else {
-      SetSelectedDropdownList([...SelectedDropdownList, item])
-    }
-  }
-
- 
+  }, [SearchStarred, ClientID, InboxChecked, FromEmailDropdownListChecked]);
 
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
   const HandleOpenOne = () => SetOpenOne(true);
-  const HandleCloseOne = () => SetOpenOne(false);
-
-  const handleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
 
   // Get ClientID
   const GetClientID = () => {
@@ -159,8 +146,9 @@ export default function StarredPage() {
       IsInbox: false,
       IsStarred: true,
       IsFollowUp: false,
-      IsOtherInbox : false,
-      IsSpam : false
+      IsOtherInbox: false,
+      IsSpam: false,
+      AccountIDs: FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -169,11 +157,15 @@ export default function StarredPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetStarredList(Result.data.PageData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
+        if (Result.data.PageData.length > 0) {
+          SetStarredList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+        } else {
+          SetStarredList([]);
+          OpenMessageDetails('');
+        }
       }
-      else
-      {
+      else {
         SetStarredList([]);
         OpenMessageDetails([]);
       }
@@ -183,26 +175,30 @@ export default function StarredPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID) => {
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data);
-      }
-      else {
-        SetOpenMessageDetails('');
-      }
-    });
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetOpenMessageDetails(Result.data.Data);
+        }
+        else {
+          SetOpenMessageDetails('');
+        }
+      });
+    } else {
+      SetOpenMessageDetails([]);
+    }
   };
   //End Open Message Details
 
-  // start PopModel Open and Close and Delete Message
+  // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {
     SetDeletePopModel(true);
   }
@@ -227,9 +223,6 @@ export default function StarredPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetStarredList();
-          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
-            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
-          }
         }
       });
     }
@@ -261,14 +254,46 @@ export default function StarredPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetStarredList();
-          SetSelectedDropdownList(null);
         }
       });
     }
   }
   // End Delete All Message 
 
- 
+  // Followup Message
+  const OpenFollowupPopModel = () => {
+    SetFollowupPopModel(true);
+  }
+  const CloseFollowupPopModel = () => {
+    SetFollowupPopModel(false);
+  }
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
+  const UpdateFollowupMessage = (ID) => {
+    if (ID != '') {
+      var Data = {
+        ID: ID,
+        IsFollowUp: true,
+        FollowupDate: FollowupDate,
+        IsOtherInbox: false,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseFollowupPopModel();
+          OpenMessageDetails('')
+          GetStarredList();
+        }
+      });
+    }
+  }
+  // End Followup Message
 
   // Start CheckBox Code
   const StarredCheckBox = (e) => {
@@ -278,19 +303,72 @@ export default function StarredPage() {
     } else {
       UpdatedList.splice(StarredChecked.indexOf(e.target.value), 1);
     }
-    SetStarredChecked(UpdatedList);
+    SetInboxChecked(UpdatedList);
   }
   const SeleactAllInBoxCheckBox = (e) => {
     if (e.target.checked) {
       SetSelectAllCheckbox(true);
-      SetStarredChecked(StarredList.map(item => item._id));
+      SetInboxChecked(StarredList.map(item => item._id));
     } else {
       SetSelectAllCheckbox(false);
-      SetStarredChecked([]);
+      SetInboxChecked([]);
     }
-
   }
   // End CheckBox Code
+
+  // Start From Email List
+  const FromEmailList = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID,
+        IsInbox: false,
+        IsStarred: true,
+        IsFollowUp: false,
+        IsSpam: false,
+        IsOtherInbox: false
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("id_userboxlist")
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
+            }
+            else {
+              element.classList.add("show");
+            }
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+      const element = document.getElementById("id_userboxlist")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+  // End From Email List
 
   // Start Search
   const SearchBox = (e) => {
@@ -300,12 +378,31 @@ export default function StarredPage() {
   }
   // End Search
 
+  // Start Email Dropdown Checkbox List
+  const FromEmailDropdownListCheckbox = (e) => {
+    localStorage.removeItem("DropdownCheckData");
+    var UpdatedList = [...FromEmailDropdownListChecked];
+
+    if (e.target.checked) {
+      UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+    } else {
+      UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+    }
+    localStorage.setItem("DropdownCheckData", UpdatedList);
+    SetFromEmailDropdownListChecked(UpdatedList);
+  }
+  // End Email Dropdown Checkbox List
+
+  // Start Refresh Page
   const RefreshPage = () => {
     SetSelectAllCheckbox(false);
     SetSearchStarred('');
-    SetStarredChecked([]);
-    GetStarredList();
+    SetInboxChecked([]);
+    SetFromEmailDropdownListChecked([-1])
+    localStorage.setItem("DropdownCheckData", 'Refresh');
+
   }
+  // End Refresh Page
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -352,21 +449,8 @@ export default function StarredPage() {
     color: theme.palette.text.secondary,
   }));
 
-  const HandleToggle = (Value) => () => {
-    const CurrentIndex = Checked.indexOf(Value);
-    const NewChecked = [...Checked];
-    if (CurrentIndex === -1) {
-      NewChecked.push(Value);
-    } else {
-      NewChecked.splice(CurrentIndex, 1);
-    }
-    SetChecked(NewChecked);
-  };
-
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
-
-
 
   return (
     <>
@@ -427,8 +511,6 @@ export default function StarredPage() {
           </Box>
         </Modal>
 
-       
-
         <Modal className="modal-pre"
           open={Open}
           onClose={HandleClose}
@@ -456,10 +538,9 @@ export default function StarredPage() {
           </Box>
         </Modal>
 
-
         <Modal className="modal-pre"
-          open={OpenOne}
-          onClose={HandleCloseOne}
+          open={FollowupPopModel}
+          onClose={CloseFollowupPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -479,8 +560,8 @@ export default function StarredPage() {
                   <Stack spacing={0}>
                     <DesktopDatePicker
                       inputFormat="MM/dd/yyyy"
-                      value={Value}
-                      onChange={handleChange}
+                      value={FollowupDate}
+                      onChange={SelectFollowupDate}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </Stack>
@@ -488,10 +569,10 @@ export default function StarredPage() {
               </div>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }} >
                 Ok
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
                 Cancel
               </Button>
             </div>
@@ -510,7 +591,7 @@ export default function StarredPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {SelectedDropdownList?.length}
+                      {StarredList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -532,25 +613,22 @@ export default function StarredPage() {
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={AddStarredClass}>
+                      <a href="#" className="selectorall" onClick={FromEmailList}>
                         All <img src={downarrow} />
                       </a>
                       <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {StarredList?.map((item) => { // dropdown list
-                              const labelId = `checkbox-list-secondary-label-${item._id}`;
+                            {FromEmailDropdownList?.map((item, index) => { // dropdown list
+                              const labelId = `checkbox-list-secondary-label-${index}`;
                               return (
                                 <ListItem className='droplistchec'
-                                  key={item._id}
+                                  key={index}
                                   secondaryAction={
                                     <Checkbox
-                                      // defaultChecked
-                                      // edge="end"
-                                      // onChange={handleToggle(item._id)}
-                                      // checked={checked.indexOf(item._id) !== -1}
-                                      onChange={() => HandleDropdownListCheckbox(item)}
-                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
+                                      onChange={FromEmailDropdownListCheckbox}
+                                      value={item._id}
+                                      checked={FromEmailDropdownListChecked?.find(x => x === item?._id)}
                                       inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                   }
@@ -563,14 +641,7 @@ export default function StarredPage() {
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText
-                                      primary={item.FromName}
-                                      secondary={
-                                        <React.Fragment>
-                                          {item.FromEmail}
-                                        </React.Fragment>
-                                      }
-                                    />
+                                    <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>} />
                                   </ListItemButton>
                                 </ListItem>
                               );
@@ -602,7 +673,7 @@ export default function StarredPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {SelectedDropdownList?.map((row) => (  // datalist
+                    {StarredList?.map((row) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -674,7 +745,7 @@ export default function StarredPage() {
                     {/* <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
                     </Button> */}
-                    <Button>
+                    <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
                     </Button>
                     <Button>

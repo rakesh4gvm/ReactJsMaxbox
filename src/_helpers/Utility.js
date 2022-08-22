@@ -32,14 +32,23 @@ export function UpdateUserDetails(ClientID) {
 }
 export function Logout() {
     localStorage.removeItem("LoginData");
-    window.location.href=CommonConstants.LoginPage;
-   // history.push('/');
+    window.location.href = CommonConstants.LoginPage;
+    // history.push('/');
 }
 
 
 export function SaveClientDetails(ClientID) {
     const data = { _id: ClientID }
     return localStorage.setItem("ClientID", JSON.stringify(data));
+}
+
+export function EditorVariableNames() {
+    const VariableName = {
+        'First Name': 'First Name',
+        'Last Name': 'Last Name',
+        'Email': 'Email',
+    }
+    return VariableName
 }
 
 

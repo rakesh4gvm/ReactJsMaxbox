@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
@@ -47,12 +47,10 @@ export default function AddClientPage({ children }) {
     focus: false,
     undo: false,
     refreshAfterCallback: true,
-    options: {
-      'v1': 'Option 1',
-      'v2': 'Option 2'
-    },
+    options: EditorVariableNames(),
     callback: function (cmd, val) {
-      console.log(val);
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
     },
     // Callback on refresh.
     refresh: function ($btn) {
