@@ -150,17 +150,18 @@ export default function OtherInboxPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetInBoxList(Result.data.PageData);
+          
           OpenMessageDetails(Result.data.PageData[0]._id);
         }
         else
         {
           SetInBoxList([]);
-          OpenMessageDetails([]);
+          OpenMessageDetails('');
         }
       }
       else {
         SetInBoxList([]);
-        OpenMessageDetails([]);
+        OpenMessageDetails('');
       }
     });
   };
@@ -168,6 +169,7 @@ export default function OtherInboxPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID) => {
+    if (ID != '') {
     var Data = {
       _id: ID,
     };
@@ -178,12 +180,17 @@ export default function OtherInboxPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data);
+        SetOpenMessageDetails(Result.data.Data[0]);
       }
       else {
-        SetOpenMessageDetails('');
+        SetOpenMessageDetails([]);
       }
     });
+  }
+  else
+  {
+    SetOpenMessageDetails([]);
+  }
   };
   //End Open Message Details
 
@@ -783,8 +790,8 @@ export default function OtherInboxPage() {
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
+                      <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
@@ -819,7 +826,7 @@ export default function OtherInboxPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage.Subject} </h2>
+                  <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
                 </Col>
                 <Col>
                   <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
