@@ -1,5 +1,5 @@
 import { history } from '../_helpers';
-
+import { CommonConstants } from "../_constants/common.constants";
 export function GetUserDetails() {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
     if (ObjLoginData && ObjLoginData != null) {
@@ -9,6 +9,15 @@ export function GetUserDetails() {
     }
 }
 
+export function CheckLocalStorage() {
+    debugger;
+    let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
+    if (ObjLoginData && ObjLoginData != null) {
+        return true;
+    } else {
+        return false;
+    }
+}
 export function UpdateUserDetails(ClientID) {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
 
@@ -23,7 +32,8 @@ export function UpdateUserDetails(ClientID) {
 }
 export function Logout() {
     localStorage.removeItem("LoginData");
-    history.push('/');
+    window.location.href=CommonConstants.LoginPage;
+   // history.push('/');
 }
 
 

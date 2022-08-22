@@ -137,6 +137,16 @@ export default function Header() {
                         Element.classList.add("show");
                     }
                 }
+                else
+                {
+                    const Element = document.getElementById("id_userbox")
+                    if (Element.classList.contains("show")) {
+                        Element.classList.remove("show");
+                    }
+                    else {
+                        Element.classList.add("show");
+                    }
+                }
             }
         });
     }

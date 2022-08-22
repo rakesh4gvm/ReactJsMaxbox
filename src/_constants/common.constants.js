@@ -14,6 +14,11 @@ const SCOPE="https://mail.google.com https://www.googleapis.com/auth/userinfo.pr
 const REDIRECT_URL="http://localhost:3000/email_account/AuthCallback"
 // redirect url end
 
+// redirect url start
+const HomePage="http://localhost:3001/OtherInboxPage"
+const LoginPage="http://localhost:3001"
+// redirect url end
+
 
 export const CommonConstants = {
     MOL_APIURL: database,
@@ -21,6 +26,8 @@ export const CommonConstants = {
     CLIENT_KEY:CLIENT_KEY,
     SCOPE:SCOPE,
     REDIRECT_URL:REDIRECT_URL,
+    HomePage:HomePage,
+    LoginPage:LoginPage,
     Title:' | MaxBox', //Title of page
     show_rows:[10,20,50,100],  //For rows show in table
 

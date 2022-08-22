@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, {  useState } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../src/_helpers/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -23,11 +23,16 @@ import AddClientPage from './_components/AddClientPage/AddClientPage';
 import EditClientPage from './_components/EditClientPage/EditClientPage';
 import UnansweredRepliesPage from './_components/UnansweredRepliesPage/UnansweredRepliesPage';
 import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage';
+import HeaderTop from './_components/Header/header';
+import { CheckLocalStorage } from "./_helpers/Utility";
 
 
 function App() {
+  const [isAuth, setIsAuth] = useState(CheckLocalStorage());
+
   return (
     <div className="App">
+       {window.location.pathname != '/' && isAuth==true ? <HeaderTop/>:null}
       <Router history={history}>
         <Switch>
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />

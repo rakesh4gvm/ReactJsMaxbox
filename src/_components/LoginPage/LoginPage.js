@@ -14,6 +14,7 @@ import BgSign from '../../images/sign-bg.png';
 import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import { UpdateUserDetails} from '../../_helpers/Utility'
 
 
 
@@ -90,7 +91,9 @@ export default function LoginPage({ children }) {
               "UserImage": LoginDetails.UserImage
             }
             localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
-            history.push('/OtherInboxPage');
+            SetClientID(LoginDetails._id,LoginDetails.UserImage);
+            window.location.href=CommonConstants.HomePage;
+          //  history.push('/OtherInboxPage');
           }
           else
           {
@@ -101,6 +104,27 @@ export default function LoginPage({ children }) {
     }
 
   }
+
+
+  const SetClientID = (UserID,UserImage) => {
+    var Data = {
+        UserID: UserID
+    }
+    const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+        method: "POST",
+        data: Data,
+    });
+    ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.Data.length > 0) {
+                    UpdateUserDetails((Result.data.Data[0].ClientID))
+                }
+            }
+          
+        
+    });
+}
 
   const Register=()=>{
     history.push('/Register');

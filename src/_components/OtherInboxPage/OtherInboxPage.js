@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios";
 import Moment from "moment";
+import parse from "html-react-parser";
 
 import { styled, alpha } from '@mui/material/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -37,7 +38,6 @@ import Avatar from '@mui/material/Avatar';
 
 import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
@@ -48,9 +48,11 @@ import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
+import defaultimage from '../../images/default.png';
+
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import parse from "html-react-parser";
+
 import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
 
@@ -102,6 +104,7 @@ export default function OtherInboxPage() {
   const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
+  const [MailNumber, SetMailNumber] = React.useState(1);
   useEffect(() => {
 
     GetClientID();
@@ -149,10 +152,9 @@ export default function OtherInboxPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          debugger;
           SetInBoxList(Result.data.PageData);
-          
           OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
         }
         else
         {
@@ -169,8 +171,10 @@ export default function OtherInboxPage() {
   // End Get InBoxList
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID) => {
+  const OpenMessageDetails = (ID,index) => {
+    
     if (ID != '') {
+      SetMailNumber(index + 1)
     var Data = {
       _id: ID,
     };
@@ -488,7 +492,7 @@ export default function OtherInboxPage() {
 
   return (
     <>
-      <HeaderTop />
+      {/* <HeaderTop /> */}
 
       <div>
         <Modal className="modal-pre"
@@ -735,8 +739,8 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {InBoxList?.map((row) => (  // datalist
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+                    {InBoxList?.map((row,index) => (  // datalist
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -746,7 +750,7 @@ export default function OtherInboxPage() {
                           <Row>
                             <Col xs={2}>
                               <span className="inboxuserpic">
-                                <img src={inboxuser1} width="55px" alt="" />
+                                <img src={defaultimage} width="55px" alt="" />
                               </span>
                             </Col>
                             <Col xs={8}>
@@ -754,7 +758,7 @@ export default function OtherInboxPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(OpenMessage.MessageDatetime).format("LT")}</h6>
+                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
                               <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
@@ -787,7 +791,7 @@ export default function OtherInboxPage() {
                   <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                        <img src={inboxuser3} width="63px" alt="" />
+                        <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
@@ -802,7 +806,7 @@ export default function OtherInboxPage() {
                       <img src={iconleftright} />
                     </Button>
                     <Button>
-                      <label>56 / 100</label>
+                      <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
