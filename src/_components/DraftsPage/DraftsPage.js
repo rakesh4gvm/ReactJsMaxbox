@@ -102,6 +102,7 @@ export default function OtherInboxPage() {
   const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([]);
+  const [MailNumber, SetMailNumber] = React.useState(1);
   useEffect(() => {
 
     GetClientID();
@@ -131,6 +132,21 @@ export default function OtherInboxPage() {
     }
   }
 
+  const addShowCompose = () => {
+    const element = document.getElementById("UserCompose")
+    //null textbox
+    var To = document.getElementById("To").value= "";
+    var Subject = document.getElementById("Subject").value= "";
+    var Body = document.getElementById("Body").value= "";
+
+    if(element.classList.contains("show")){
+      element.classList.remove("show");
+    }
+    else{
+      element.classList.add("show");
+    } 
+  };
+
   // Start Get InBoxList
   const GetInBoxList = () => {
     var Data = {
@@ -159,8 +175,7 @@ export default function OtherInboxPage() {
         if (Result.data.PageData.length > 0) {
           SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
-
-          console.log(Result.data);
+          SetMailNumber(1)
         }
       }
       else {
@@ -172,7 +187,9 @@ export default function OtherInboxPage() {
   // End Get InBoxList
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID) => {
+  const OpenMessageDetails = (ID,index) => {
+    if (ID != '') {
+      SetMailNumber(index + 1)}
     var Data = {
       _id: ID,
     };
@@ -201,7 +218,7 @@ export default function OtherInboxPage() {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
-    debugger
+    
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -692,8 +709,8 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {InBoxList?.map((row) => (  // datalist
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+                    {InBoxList?.map((row,index) => (  // datalist
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -759,7 +776,7 @@ export default function OtherInboxPage() {
                       <img src={iconleftright} />
                     </Button>
                     <Button onClick={HandleOpenOne}>
-                      <label>56 / 100</label>
+                    <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
                     
                     {<Button onClick={OpenDeletePopModel}>
@@ -800,7 +817,6 @@ export default function OtherInboxPage() {
       </div>
 
       <Compose />
-
     </>
   );
 }
