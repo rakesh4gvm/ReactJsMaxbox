@@ -10,7 +10,6 @@ export function GetUserDetails() {
 }
 
 export function CheckLocalStorage() {
-    debugger;
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
     if (ObjLoginData && ObjLoginData != null) {
         return true;

@@ -217,7 +217,7 @@ export default function Header() {
                                             <NotificationsIcon /> 43
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/AllSentEmails"><img src={Sent} />All Sent Emails
+                                    <NavDropdown.Item onClick={() => OpenPage("/AllSentEmails")}><img src={Sent} />All Sent Emails
                                         <div className="notifimen">
                                             <NotificationsIcon /> 245
                                         </div>
@@ -317,43 +317,7 @@ export default function Header() {
                                                 </ul>
                                             </ListItem>
                                         ))}
-                                        {/* <Divider variant="inset" component="li" />
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <Avatar alt="Travis Howard" src={inboxuser2} />
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Summer BBQ"
-                                                secondary={
-                                                    <React.Fragment>
-                                                        bryanEdwalds@gmail.com
-                                                    </React.Fragment>
-                                                }
-                                            />
-                                            <ul className='d-flex flexlist'>
-                                                <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
-                                                <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li>
-                                            </ul>
-                                        </ListItem>
-                                        <Divider variant="inset" component="li" />
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <Avatar alt="Cindy Baker" src={inboxuser3} />
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Oui Oui"
-                                                secondary={
-                                                    <React.Fragment>
-                                                        sallyrobbins@gmail.com
-                                                    </React.Fragment>
-                                                }
-                                            />
-                                            <ul className='d-flex flexlist'>
-                                                <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
-                                                <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li>
-                                            </ul>
-                                        </ListItem>
-                                        <Divider variant="inset" component="li" /> */}
+                                       
                                         <ListItem alignItems="flex-start" >
                                             <ListItemAvatar>
                                                 <Avatar alt="Remy Sharp" src={iconlogout} className='max-40' />
