@@ -201,6 +201,7 @@ export default function OtherInboxPage() {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
+    debugger
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -209,7 +210,7 @@ export default function OtherInboxPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateDelete",
         method: "POST",
         data: Data,
       });
@@ -240,7 +241,7 @@ export default function OtherInboxPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateDelete",
         method: "POST",
         data: Data,
       });
