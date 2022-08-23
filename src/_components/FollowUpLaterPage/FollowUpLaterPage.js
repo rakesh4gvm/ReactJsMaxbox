@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios";
 import Moment from "moment";
+import parse from "html-react-parser";
 
 import { styled, alpha } from '@mui/material/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -21,6 +22,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -37,7 +39,6 @@ import Avatar from '@mui/material/Avatar';
 
 import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
@@ -48,10 +49,9 @@ import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
+import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import parse from "html-react-parser";
-import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
 
 const Style = {
@@ -79,22 +79,14 @@ function UseOutSideAlerter(Ref) {
     };
   }, [Ref]);
 }
-const AddFollowUpLaterClass = () => {
-  const element = document.getElementById("id_userboxlist")
-  if (element.classList.contains("show")) {
-    element.classList.remove("show");
-  }
-  else {
-    element.classList.add("show");
-  }
-};
+localStorage.setItem("DropdownCheckData", 'Refresh');
 
-export default function FollowUpLaterPage() {
-  const [FollowUpLaterList, SetFollowUpLaterList] = React.useState([]);
+export default function FollowUpLetterPage() {
+  const [InBoxList, SetInBoxList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [SearchFollowUpLater, SetSearchFollowUpLater] = React.useState("");
-  const [SortField, SetSortField] = React.useState("ToEmail");
+  const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
@@ -106,38 +98,22 @@ export default function FollowUpLaterPage() {
   const [FollowUpLaterChecked, SetFollowUpLaterChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [Open, SetOpen] = React.useState(false);
-  const [OpenOne, SetOpenOne] = React.useState(false);
-  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [Checked, SetChecked] = React.useState([1]);
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
-
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
+  const [MailNumber, SetMailNumber] = React.useState(1);
   useEffect(() => {
-   
+
     GetClientID();
-    GetFollowUpLaterList();
-    if (FollowUpLaterList?.length > 0) SetSelectedDropdownList(FollowUpLaterList)
-  }, [SearchFollowUpLater, ClientID, FollowUpLaterList?.length,FollowUpLaterChecked]);
+    GetFollowUpLetterList();
+  }, [SearchInbox, ClientID, FollowUpLaterChecked, FromEmailDropdownListChecked]);
 
-  // Handle Change Dropdown List Manage by on React Js
-  const HandleDropdownListCheckbox = (item) => {
-    
-    if (SelectedDropdownList.some(sl => sl?._id === item?._id)) {
-      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== item?._id))
-    } else {
-      SetSelectedDropdownList([...SelectedDropdownList, item])
-    }
-  }
-
- 
 
   const HandleOpen = () => SetOpen(true);
   const HandleClose = () => SetOpen(false);
-  const HandleOpenOne = () => SetOpenOne(true);
-  const HandleCloseOne = () => SetOpenOne(false);
 
-  const handleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
+
 
   // Get ClientID
   const GetClientID = () => {
@@ -148,24 +124,23 @@ export default function FollowUpLaterPage() {
     }
   }
 
-  // Start Get FollowUpLaterList
-  const GetFollowUpLaterList = () => {
-   
-   
+  // Start Get Follow Up Letter List
+  const GetFollowUpLetterList = () => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
-      Search: SearchFollowUpLater,
+      Search: SearchInbox,
       ClientID: ClientID,
       UserID: UserID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: true,
-      IsOtherInbox : false,
-      IsSpam : false
+      IsSpam: false,
+      IsOtherInbox: false,
+      AccountIDs: FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -174,40 +149,53 @@ export default function FollowUpLaterPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetFollowUpLaterList(Result.data.PageData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
+        if (Result.data.PageData.length > 0) {
+          SetInBoxList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
+        }
+        else {
+          SetInBoxList([]);
+          OpenMessageDetails('');
+        }
       }
-      else
-      {
-        SetFollowUpLaterList([]);
-        OpenMessageDetails([]);
+      else {
+        SetInBoxList([]);
+        OpenMessageDetails('');
       }
     });
   };
-  // End Get FollowUpLaterList
+  // End Get Follow Up Letter List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID) => {
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data);
-      }
-      else {
-        SetOpenMessageDetails('');
-      }
-    });
+  const OpenMessageDetails = (ID, index) => {
+
+    if (ID != '') {
+      SetMailNumber(index + 1)
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetOpenMessageDetails(Result.data.Data[0]);
+        }
+        else {
+          SetOpenMessageDetails([]);
+        }
+      });
+    }
+    else {
+      SetOpenMessageDetails([]);
+    }
   };
   //End Open Message Details
 
-  // start PopModel Open and Close and Delete Message
+  // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {
     SetDeletePopModel(true);
   }
@@ -231,10 +219,7 @@ export default function FollowUpLaterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLaterList();
-          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
-            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
-          }
+          GetFollowUpLetterList();
         }
       });
     }
@@ -265,8 +250,7 @@ export default function FollowUpLaterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLaterList();
-          SetSelectedDropdownList(null);
+          GetFollowUpLetterList();
         }
       });
     }
@@ -297,19 +281,50 @@ export default function FollowUpLaterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetFollowUpLaterList();
-          if (SelectedDropdownList.some(sl => sl?._id === ID)) {
-            SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== ID))
-          }
-          
+          GetFollowUpLetterList();
         }
       });
     }
   }
   // End Update Star Message and model open and close
 
+  // Followup Message
+  const OpenFollowupPopModel = () => {
+    SetFollowupPopModel(true);
+  }
+  const CloseFollowupPopModel = () => {
+    SetFollowupPopModel(false);
+  }
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
+  const UpdateFollowupMessage = (ID) => {
+    if (ID != '') {
+      var Data = {
+        ID: ID,
+        IsFollowUp: true,
+        FollowupDate: FollowupDate,
+        IsOtherInbox: false,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseFollowupPopModel();
+          OpenMessageDetails('')
+          GetFollowUpLetterList();
+        }
+      });
+    }
+  }
+  // End Followup Message
+
   // Start CheckBox Code
-  const FollowUpLaterCheckBox = (e) => {
+  const InBoxCheckBox = (e) => {
     var UpdatedList = [...FollowUpLaterChecked];
     if (e.target.checked) {
       UpdatedList = [...FollowUpLaterChecked, e.target.value];
@@ -321,7 +336,7 @@ export default function FollowUpLaterPage() {
   const SeleactAllInBoxCheckBox = (e) => {
     if (e.target.checked) {
       SetSelectAllCheckbox(true);
-      SetFollowUpLaterChecked(FollowUpLaterList.map(item => item._id));
+      SetFollowUpLaterChecked(InBoxList.map(item => item._id));
     } else {
       SetSelectAllCheckbox(false);
       SetFollowUpLaterChecked([]);
@@ -332,18 +347,87 @@ export default function FollowUpLaterPage() {
 
   // Start Search
   const SearchBox = (e) => {
-    debugger
     if (e.keyCode == 13) {
-      SetSearchFollowUpLater(e.target.value)
-      
+      SetSearchInbox(e.target.value)
     }
   }
   // End Search
 
+  // From Email List
+  const FromEmailList = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID,
+        IsInbox: false,
+        IsStarred: false,
+        IsFollowUp: true,
+        IsSpam: false,
+        IsOtherInbox: false
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("id_userboxlist")
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
+            }
+            else {
+              element.classList.add("show");
+            }
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+
+      const element = document.getElementById("id_userboxlist")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+
+  // Handle Change Dropdown List Manage by on React Js
+  const FromEmailDropdownListCheckbox = (e) => {
+    localStorage.removeItem("DropdownCheckData");
+
+    var UpdatedList = [...FromEmailDropdownListChecked];
+    if (e.target.checked) {
+      UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+    } else {
+      UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+    }
+    localStorage.setItem("DropdownCheckData", UpdatedList);
+    SetFromEmailDropdownListChecked(UpdatedList);
+  }
+
+  // Refresh Page
   const RefreshPage = () => {
     SetSelectAllCheckbox(false);
-    SetSearchFollowUpLater('');
+    SetSearchInbox('');
     SetFollowUpLaterChecked([]);
+    SetFromEmailDropdownListChecked([-1])
+    localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
   const Search = styled('div')(({ theme }) => ({
@@ -391,26 +475,11 @@ export default function FollowUpLaterPage() {
     color: theme.palette.text.secondary,
   }));
 
-  const HandleToggle = (Value) => () => {
-    const CurrentIndex = Checked.indexOf(Value);
-    const NewChecked = [...Checked];
-    if (CurrentIndex === -1) {
-      NewChecked.push(Value);
-    } else {
-      NewChecked.splice(CurrentIndex, 1);
-    }
-    SetChecked(NewChecked);
-  };
-
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
-
-
   return (
     <>
-      <HeaderTop />
-
       <div>
         <Modal className="modal-pre"
           open={DeletePopModel}
@@ -506,7 +575,7 @@ export default function FollowUpLaterPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure  for move this E-mail into Other Follow Up Later ?
+                Are you sure  for move this E-mail into Other Inbox ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -520,10 +589,9 @@ export default function FollowUpLaterPage() {
           </Box>
         </Modal>
 
-
         <Modal className="modal-pre"
-          open={OpenOne}
-          onClose={HandleCloseOne}
+          open={FollowupPopModel}
+          onClose={CloseFollowupPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -543,8 +611,8 @@ export default function FollowUpLaterPage() {
                   <Stack spacing={0}>
                     <DesktopDatePicker
                       inputFormat="MM/dd/yyyy"
-                      value={Value}
-                      onChange={handleChange}
+                      value={FollowupDate}
+                      onChange={SelectFollowupDate}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </Stack>
@@ -552,16 +620,15 @@ export default function FollowUpLaterPage() {
               </div>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
                 Ok
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
                 Cancel
               </Button>
             </div>
           </Box>
         </Modal>
-
       </div>
 
       <div className='bodymain'>
@@ -570,11 +637,11 @@ export default function FollowUpLaterPage() {
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Follow Up Later</h3> </Col>
+                  <Col sm={9}> <h3 className='title-h3'>Other Inbox</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {SelectedDropdownList?.length}
+                      {InBoxList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -586,6 +653,7 @@ export default function FollowUpLaterPage() {
                           <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
+                          defaultValue={SearchInbox}
                           placeholder="Search…"
                           inputProps={{ 'aria-label': 'search' }}
                         />
@@ -596,44 +664,33 @@ export default function FollowUpLaterPage() {
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={AddFollowUpLaterClass}>
+                      <a href="#" className="selectorall" onClick={FromEmailList}>
                         All <img src={downarrow} />
                       </a>
                       <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
+
                           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {FollowUpLaterList?.map((item) => { // dropdown list
-                              const labelId = `checkbox-list-secondary-label-${item._id}`;
+                            {FromEmailDropdownList?.map((item, index) => {
+                              const labelId = `checkbox-list-secondary-label-${index}`;
                               return (
                                 <ListItem className='droplistchec'
-                                  key={item._id}
+                                  key={index}
                                   secondaryAction={
-                                    <Checkbox
-                                      // defaultChecked
-                                      // edge="end"
-                                      // onChange={handleToggle(item._id)}
-                                      // checked={checked.indexOf(item._id) !== -1}
-                                      onChange={() => HandleDropdownListCheckbox(item)}
-                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
-                                      inputProps={{ 'aria-labelledby': labelId }}
-                                    />
+                                    <Checkbox onChange={FromEmailDropdownListCheckbox}
+                                      value={item._id}
+                                      checked={FromEmailDropdownListChecked?.find(x => x === item?._id)}
+                                      inputProps={{ 'aria-labelledby': labelId }} />
                                   }
                                   disablePadding
                                 >
                                   <ListItemButton>
                                     <ListItemAvatar>
-
                                       <ListItemAvatar className="scvar">
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText
-                                      primary={item.FromName}
-                                      secondary={
-                                        <React.Fragment>
-                                          {item.FromEmail}
-                                        </React.Fragment>
-                                      }
+                                    <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>}
                                     />
                                   </ListItemButton>
                                 </ListItem>
@@ -666,18 +723,18 @@ export default function FollowUpLaterPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {SelectedDropdownList?.map((row) => (  // datalist
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+                    {InBoxList?.map((row, index) => (  // datalist
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
-                            <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={FollowUpLaterCheckBox} />} label="" />
+                            <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                           </Col>
                         </Row>
                         <Col xs={11} className="pr-0">
                           <Row>
                             <Col xs={2}>
                               <span className="inboxuserpic">
-                                <img src={inboxuser1} width="55px" alt="" />
+                                <img src={defaultimage} width="55px" alt="" />
                               </span>
                             </Col>
                             <Col xs={8}>
@@ -685,7 +742,7 @@ export default function FollowUpLaterPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
+                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
                               <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
@@ -718,12 +775,12 @@ export default function FollowUpLaterPage() {
                   <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                        <img src={inboxuser3} width="63px" alt="" />
+                        <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage.FromName}</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
@@ -732,13 +789,13 @@ export default function FollowUpLaterPage() {
                     <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button>
-                    <Button onClick={HandleOpenOne}>
-                      <label>56 / 100</label>
+                    <Button>
+                      <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
                     </Button>
-                    <Button>
+                    <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
                     </Button>
                     <Button>
@@ -758,10 +815,10 @@ export default function FollowUpLaterPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage.Subject} </h2>
+                  <h2>{OpenMessage == 0 ? '' : OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>
