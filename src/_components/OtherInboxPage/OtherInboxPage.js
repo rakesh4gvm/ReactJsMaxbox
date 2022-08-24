@@ -99,7 +99,6 @@ export default function OtherInboxPage() {
   const [StarSelected, SetStarSelected] = React.useState(false);
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [Open, SetOpen] = React.useState(false);
   const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
   const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
@@ -112,11 +111,7 @@ export default function OtherInboxPage() {
   }, [SearchInbox, ClientID,  InboxChecked,FromEmailDropdownListChecked]);
 
 
-  const HandleOpen = () => SetOpen(true);
-  const HandleClose = () => SetOpen(false);
- 
   
-
   // Get ClientID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
@@ -137,11 +132,11 @@ export default function OtherInboxPage() {
       Search: SearchInbox,
       ClientID: ClientID,
       UserID: UserID,
-      IsInbox: true,
+      IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
       IsSpam: false,
-      IsOtherInbox: false,
+      IsOtherInbox: true,
       AccountIDs:FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
@@ -366,14 +361,9 @@ export default function OtherInboxPage() {
       var Data = {
         ClientID: ClientID,
         UserID: UserID,
-        IsInbox: true,
-        IsStarred: false,
-        IsFollowUp: false,
-        IsSpam: false,
-        IsOtherInbox: false
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -576,35 +566,7 @@ export default function OtherInboxPage() {
           </Box>
         </Modal>
 
-        <Modal className="modal-pre"
-          open={Open}
-          onClose={HandleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='p-5 text-center'>
-              <img src={Emailinbox} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Are you sure ?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure  for move this E-mail into Other Inbox ?
-              </Typography>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
-                No
-              </Button>
-            </div>
-          </Box>
-        </Modal>
-
-
-        <Modal className="modal-pre"
+             <Modal className="modal-pre"
           open={FollowupPopModel}
           onClose={CloseFollowupPopModel}
           aria-labelledby="modal-modal-title"
@@ -802,9 +764,9 @@ export default function OtherInboxPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
+                    {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button>
+                    </Button> */}
                     <Button>
                       <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>

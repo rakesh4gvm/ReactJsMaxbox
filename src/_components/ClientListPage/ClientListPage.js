@@ -25,8 +25,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
+
 
 const Style = {
   position: 'absolute',
@@ -97,8 +96,14 @@ export default function ClientListPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
-      SetClientList(Result.data.PageData);
-      SetCountPage(Result.data.PageCount);
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetClientList(Result.data.PageData);
+        SetCountPage(Result.data.PageCount);
+      }
+      else {
+        SetClientList([])
+        SetCountPage(0)
+      }
     });
   };
 
@@ -120,8 +125,14 @@ export default function ClientListPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
-      GetClientList()
-      SetDeletePopModel(false);
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        GetClientList()
+        SetDeletePopModel(false);
+      }
+      else {
+        GetClientList()
+        SetDeletePopModel(false);
+      }
     });
   }
   // End Delete Message
@@ -144,7 +155,7 @@ export default function ClientListPage() {
 
   return (
     <>
-      <HeaderTop />
+
 
       <Modal className="modal-pre"
         open={DeletePopModel}
@@ -223,7 +234,7 @@ export default function ClientListPage() {
           </Row>
         </div>
       </div>
-      <FooterBottom />
+
     </>
   );
 }

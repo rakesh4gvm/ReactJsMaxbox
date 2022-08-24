@@ -45,6 +45,7 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
+import inbox from '../../images/inbox.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
@@ -102,6 +103,7 @@ export default function SpamPage() {
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
 
   useEffect(() => {
     GetClientID();
@@ -322,6 +324,41 @@ export default function SpamPage() {
   }
   // End Followup Message
 
+  // Start Other inbox Message and model open and close
+  const OpenOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(true);
+  }
+  const CloseOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(false);
+  }
+
+  const UpdateOtherInbox =(ID)=>{
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsOtherInbox: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseOtherInboxPopModel();
+          OpenMessageDetails('')
+          GetSpamList();
+        }
+        else
+        {
+          CloseOtherInboxPopModel();
+        }
+      });
+    }
+  }
+// End Other inbox  Message and model open and close
+
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
     var UpdatedList = [...SpamChecked];
@@ -358,15 +395,10 @@ export default function SpamPage() {
     if (ResultData == "Refresh") {
       var Data = {
         ClientID: ClientID,
-        UserID: UserID,
-        IsInbox: false,
-        IsStarred: false,
-        IsFollowUp: false,
-        IsSpam: true,
-        IsOtherInbox: false
+        UserID: UserID
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -563,8 +595,8 @@ export default function SpamPage() {
         </Modal>
 
         <Modal className="modal-pre"
-          open={Open}
-          onClose={HandleClose}
+          open={OtherInboxPopModel}
+          onClose={CloseOtherInboxPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -579,10 +611,10 @@ export default function SpamPage() {
               </Typography>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateOtherInbox(OpenMessage._id); }}>
                 Yes
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseOtherInboxPopModel(); }}>
                 No
               </Button>
             </div>
@@ -637,7 +669,7 @@ export default function SpamPage() {
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Other Inbox</h3> </Col>
+                  <Col sm={9}> <h3 className='title-h3'>Spam</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -797,6 +829,9 @@ export default function SpamPage() {
                     </Button>
                     <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
+                    </Button>
+                    <Button onClick={OpenOtherInboxPopModel}>
+                      <img src={inbox} />
                     </Button>
                     <Button>
                       <img src={iconsarrow2} />

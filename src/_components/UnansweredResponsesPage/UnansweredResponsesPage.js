@@ -41,6 +41,7 @@ import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
 import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/inbox.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
@@ -94,22 +95,20 @@ export default function UnansweredResponsesPage() {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
-  const [Open, SetOpen] = React.useState(false);
-  const [OpenOne, SetOpneOne] = React.useState(false);
   const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
   const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [UnansweredResponsesChecked, SetUnansweredResponsesChecked] = React.useState([]);
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
 
   useEffect(() => {
     GetClientID()
     GetUnansweredResponcesList();
   }, [SearchInbox, ClientID, UnansweredResponsesChecked, FromEmailDropdownListChecked]);
 
-  const HandleOpen = () => SetOpen(true);
-  const HandleOpenOne = () => SetOpneOne(true);
+
 
   // Start Get ClientID
   const GetClientID = () => {
@@ -284,6 +283,41 @@ export default function UnansweredResponsesPage() {
   }
   // End Update Star Message and model open and close
 
+  // Start Other inbox Message and model open and close
+  const OpenOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(true);
+  }
+  const CloseOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(false);
+  }
+
+  const UpdateOtherInbox =(ID)=>{
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsOtherInbox: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseOtherInboxPopModel();
+          OpenMessageDetails('')
+          GetUnansweredResponcesList();
+        }
+        else
+        {
+          CloseOtherInboxPopModel();
+        }
+      });
+    }
+  }
+// End Other inbox  Message and model open and close
+
   // Followup Message
   const OpenFollowupPopModel = () => {
     SetFollowupPopModel(true);
@@ -300,7 +334,7 @@ export default function UnansweredResponsesPage() {
         ID: ID,
         IsFollowUp: true,
         FollowupDate: FollowupDate,
-        IsOtherInbox: false,
+        IsInbox: false,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
@@ -354,15 +388,10 @@ export default function UnansweredResponsesPage() {
     if (ResultData == "Refresh") {
       var Data = {
         ClientID: ClientID,
-        UserID: UserID,
-        IsInbox: true,
-        IsStarred: false,
-        IsFollowUp: false,
-        IsSpam: false,
-        IsOtherInbox: false
+        UserID: UserID
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -599,6 +628,33 @@ export default function UnansweredResponsesPage() {
             </div>
           </Box>
         </Modal>
+
+        <Modal className="modal-pre"
+          open={OtherInboxPopModel}
+          onClose={CloseOtherInboxPopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Are you sure  for move this E-mail into Other Inbox ?
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateOtherInbox(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseOtherInboxPopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
       </div>
 
       <div className='bodymain'>
@@ -607,7 +663,7 @@ export default function UnansweredResponsesPage() {
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Other Inbox</h3> </Col>
+                  <Col sm={9}> <h3 className='title-h3'>Unanswered Responses</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -756,9 +812,9 @@ export default function UnansweredResponsesPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
+                    {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button>
+                    </Button> */}
                     <Button>
                       <label>{MailNumber} / {UnansweredResponsesList.length}</label>
                     </Button>
@@ -768,6 +824,10 @@ export default function UnansweredResponsesPage() {
                     <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
                     </Button>
+                    <Button onClick={OpenOtherInboxPopModel}>
+                      <img src={inbox} />
+                    </Button>
+                    
                     <Button>
                       <img src={iconsarrow2} />
                     </Button>
@@ -814,353 +874,6 @@ export default function UnansweredResponsesPage() {
       <Compose />
 
     </>
-    // <>
-    //   <HeaderTop />
-
-    //   <div>
-
-    //     <Modal className="modal-pre"
-    //       open={DeletePopModel}
-    //       onClose={CloseDeletePopModel}
-    //       aria-labelledby="modal-modal-title"
-    //       aria-describedby="modal-modal-description"
-    //     >
-    //       <Box sx={Style} className="modal-prein">
-    //         <div className='p-5 text-center'>
-    //           <img src={Emailinbox} width="130" className='mb-4' />
-    //           <Typography id="modal-modal-title" variant="b" component="h6">
-    //             Are you sure ?
-    //           </Typography>
-    //           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-    //             you want to delete a email.
-    //           </Typography>
-    //         </div>
-    //         <div className='d-flex btn-50'>
-    //           <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
-    //             Yes
-    //           </Button>
-    //           <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
-    //             No
-    //           </Button>
-    //         </div>
-    //       </Box>
-    //     </Modal>
-
-    //     <Modal className="modal-pre"
-    //       open={StarPopModel}
-    //       onClose={CloseStarPopModel}
-    //       aria-labelledby="modal-modal-title"
-    //       aria-describedby="modal-modal-description"
-    //     >
-    //       <Box sx={Style} className="modal-prein">
-    //         <div className='p-5 text-center'>
-    //           <img src={Emailinbox} width="130" className='mb-4' />
-    //           <Typography id="modal-modal-title" variant="b" component="h6">
-    //             Are you sure ?
-    //           </Typography>
-    //           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-    //             you want to Star a email.
-    //           </Typography>
-    //         </div>
-    //         <div className='d-flex btn-50'>
-    //           <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
-    //             Yes
-    //           </Button>
-    //           <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
-    //             No
-    //           </Button>
-    //         </div>
-    //       </Box>
-    //     </Modal>
-
-    //     <Modal className="modal-pre"
-    //       open={AllDeletePopModel}
-    //       onClose={CloseAllDeletePopModel}
-    //       aria-labelledby="modal-modal-title"
-    //       aria-describedby="modal-modal-description"
-    //     >
-    //       <Box sx={Style} className="modal-prein">
-    //         <div className='p-5 text-center'>
-    //           <img src={Emailinbox} width="130" className='mb-4' />
-    //           <Typography id="modal-modal-title" variant="b" component="h6">
-    //             Are you sure ?
-    //           </Typography>
-    //           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-    //             you want to delete a all email.
-    //           </Typography>
-    //         </div>
-    //         <div className='d-flex btn-50'>
-    //           <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteAllMessage(); }}>
-    //             Yes
-    //           </Button>
-    //           <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseAllDeletePopModel(); }}>
-    //             No
-    //           </Button>
-    //         </div>
-    //       </Box>
-    //     </Modal>
-
-    //     <Modal className="modal-pre"
-    //       open={FollowupPopModel}
-    //       onClose={CloseFollowupPopModel}
-    //       aria-labelledby="modal-modal-title"
-    //       aria-describedby="modal-modal-description"
-    //     >
-    //       <Box sx={Style} className="modal-prein">
-    //         <div className='px-5 pt-5 text-center'>
-    //           <img src={Emailcall} width="130" className='mb-4' />
-    //           <Typography id="modal-modal-title" variant="b" component="h6">
-    //             Follow Up Later
-    //           </Typography>
-    //         </div>
-    //         <div className='px-5 pb-5 text-left datepikclen'>
-    //           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-    //             Choose date for follow up later.
-    //           </Typography>
-    //           <div className="pt-3">
-    //             <LocalizationProvider dateAdapter={AdapterDateFns}>
-    //               <Stack spacing={0}>
-    //                 <DesktopDatePicker
-    //                   inputFormat="MM/dd/yyyy"
-    //                   value={FollowupDate}
-    //                   onChange={SelectFollowupDate}
-    //                   renderInput={(params) => <TextField {...params} />}
-    //                 />
-    //               </Stack>
-    //             </LocalizationProvider>
-    //           </div>
-    //         </div>
-    //         <div className='d-flex btn-50'>
-    //           <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
-    //             Ok
-    //           </Button>
-    //           <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
-    //             Cancel
-    //           </Button>
-    //         </div>
-    //       </Box>
-    //     </Modal>
-    //   </div>
-
-    //   <div className='bodymain'>
-    //     <Row className='mb-columfull'>
-    //       <Col className='maxcontainerix'>
-    //         <div className='px-0 py-4 leftinbox'>
-    //           <div className='px-3'>
-    //             <Row>
-    //               <Col sm={9}> <h3 className='title-h3'>Unanswered Responces</h3> </Col>
-    //               <Col sm={3}>
-    //                 <div className="inboxnoti">
-    //                   <NotificationsIcon />
-    //                   {UnansweredResponsesList?.length}
-    //                 </div>
-    //               </Col>
-    //             </Row>
-    //             <Row className='my-3'>
-    //               <Col>
-    //                 <div className='textbox-dek serchdek'>
-    //                   <Search onKeyUp={(e) => SearchBox(e, this)}>
-    //                     <SearchIconWrapper>
-    //                       <SearchIcon />
-    //                     </SearchIconWrapper>
-    //                     <StyledInputBase
-    //                       placeholder="Search…"
-    //                       inputProps={{ 'aria-label': 'search' }}
-    //                     />
-    //                   </Search>
-    //                 </div>
-    //               </Col>
-    //             </Row>
-    //             <Row>
-    //               <Col xs={8}>
-    //                 <div class="selecter-m inboxtype">
-    //                   <a href="#" className="selectorall" onClick={FromEmailList}>
-    //                     All <img src={downarrow} />
-    //                   </a>
-    //                   <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
-    //                     <div className="bodyuserdop textdeclist">
-    //                       <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-    //                         {FromEmailDropdownList?.map((item, index) => { // dropdown list
-    //                           const labelId = `checkbox-list-secondary-label-${index}`;
-    //                           return (
-    //                             <ListItem className='droplistchec'
-    //                               key={index}
-    //                               secondaryAction={
-    //                                 <Checkbox onChange={FromEmailDropdownListCheckbox}
-    //                                   value={item._id}
-    //                                   checked={FromEmailDropdownListChecked?.find(x => x === item?._id)}
-    //                                   inputProps={{ 'aria-labelledby': labelId }}
-    //                                 />
-    //                               }
-    //                               disablePadding
-    //                             >
-    //                               <ListItemButton>
-    //                                 <ListItemAvatar>
-    //                                   <ListItemAvatar className="scvar">
-    //                                     <Avatar alt="Remy Sharp" src={inboxuser1} />
-    //                                   </ListItemAvatar>
-    //                                 </ListItemAvatar>
-    //                                 <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>} />
-    //                               </ListItemButton>
-    //                             </ListItem>
-    //                           );
-    //                         })}
-    //                       </List>
-    //                     </div>
-    //                   </div>
-    //                 </div>
-    //               </Col>
-    //               <Col xs={4} align='right'>
-    //                 <ButtonGroup variant="text" aria-label="text button group">
-    //                   <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
-    //                     <RefreshIcon />
-    //                   </Button>
-    //                   <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel}>
-    //                     <DeleteIcon />
-    //                   </Button>
-    //                 </ButtonGroup>
-    //               </Col>
-    //             </Row>
-    //             <Row>
-    //               <Col xs={12} className="mt-3">
-    //                 <FormGroup>
-    //                   <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllUnansweredResponsesCheckBox} />} label="Select All" />
-    //                 </FormGroup>
-    //               </Col>
-    //             </Row>
-    //           </div>
-
-    //           <div className='listinbox mt-3'>
-    //             <scrollbars>
-    //               <Stack spacing={1} align="left">
-    //                 {UnansweredResponsesList?.map((row, index) => (
-    //                   <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-    //                     <Row>
-    //                       <Col xs={1} className="pr-0">
-    //                         <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
-    //                       </Col>
-    //                       <Col xs={11} className="pr-0">
-    //                         <Row>
-    //                           <Col xs={2}>
-    //                             <span className="inboxuserpic">
-    //                               <img src={defaultimage} width="55px" alt="" />
-    //                             </span>
-    //                           </Col>
-    //                           <Col xs={8}>
-    //                             <h4>{row.FromEmail}</h4>
-    //                             <h3>{row.Subject}</h3>
-    //                           </Col>
-    //                           <Col xs={2} className="pl-0">
-    //                             <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
-    //                             <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
-    //                               <StarBorderIcon className='starone' />
-    //                               <StarIcon className='selectedstart startwo' />
-    //                             </ToggleButton>
-    //                           </Col>
-    //                         </Row>
-    //                         <Row>
-    //                           <Col xs={2} className='ja-center'>
-    //                             <div className='attachfile'>
-    //                               <input type="file" />
-    //                               <AttachFileIcon />
-    //                             </div>
-    //                           </Col>
-    //                           <Col xs={10}>
-    //                             <p>{row.Snippet}</p>
-    //                           </Col>
-    //                         </Row>
-    //                       </Col>
-    //                     </Row>
-    //                   </Item>
-    //                 ))}
-    //               </Stack>
-    //             </scrollbars>
-    //           </div>
-
-
-    //         </div>
-    //       </Col>
-
-
-    //       <Col className='rightinbox'>
-    //         <div className='inxtexteditor'>
-    //           <Row className='bt-border pb-4 mb-4 colsm12'>
-    //             <Col lg={6}>
-    //               <Row className='userlist'>
-    //                 <Col xs={2}>
-    //                   <span className="inboxuserpic">
-    //                     <img src={defaultimage} width="63px" alt="" />
-    //                   </span>
-    //                 </Col>
-    //                 <Col xs={10} className='p-0'>
-    //                   <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-    //                   <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //             <Col lg={6} Align="right">
-    //               <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-    //                 <Button onClick={HandleOpen}>
-    //                   <img src={iconleftright} />
-    //                 </Button>
-    //                 <Button onClick={HandleOpenOne}>
-    //                   <label>{MailNumber} / {UnansweredResponsesList.length}</label>
-    //                 </Button>
-    //                 <Button onClick={OpenStarPopModel}>
-    //                   <img src={iconstar} />
-    //                 </Button>
-    //                 <Button onClick={OpenFollowupPopModel}>
-    //                   <img src={icontimer} />
-    //                 </Button>
-    //                 <Button>
-    //                   <img src={iconsarrow2} />
-    //                 </Button>
-    //                 <Button>
-    //                   <img src={iconsarrow1} />
-    //                 </Button>
-    //                 <Button onClick={OpenDeletePopModel}>
-    //                   <img src={icondelete} />
-    //                 </Button>
-    //                 <Button>
-    //                   <img src={iconmenu} />
-    //                 </Button>
-    //               </ButtonGroup>
-    //             </Col>
-    //           </Row>
-
-
-    //           <Row className='mb-3'>
-    //             <Col>
-    //               <h2>{OpenMessage.Subject} </h2>
-    //             </Col>
-    //             <Col>
-    //               <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</h6>
-    //             </Col>
-    //           </Row>
-
-    //           <Row>
-    //             <Col>
-    //               {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-    //             </Col>
-    //           </Row>
-
-    //           <div className='d-flex mt-5 ml-2'>
-    //             <Row>
-    //               <Col sm={6} className='p-0'>
-    //                 <a href='#' className='p-2'><img src={iconsarrow1} /></a>
-    //               </Col>
-    //               <Col sm={6} className='p-0'>
-    //                 <a href='#' className='p-2'><img src={iconsarrow2} /></a>
-    //               </Col>
-    //             </Row>
-    //           </div>
-
-    //         </div>
-    //       </Col>
-    //     </Row>
-    //   </div>
-
-    //   <Compose />
-    // </>
+   
   );
 }

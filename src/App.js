@@ -24,6 +24,7 @@ import EditClientPage from './_components/EditClientPage/EditClientPage';
 import UnansweredRepliesPage from './_components/UnansweredRepliesPage/UnansweredRepliesPage';
 import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage';
 import HeaderTop from './_components/Header/header';
+import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
 
 
@@ -33,6 +34,7 @@ function App() {
   return (
     <div className="App">
        {window.location.pathname != '/' && isAuth==true ? <HeaderTop/>:null}
+       
       <Router history={history}>
         <Switch>
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
@@ -55,11 +57,18 @@ function App() {
           <Route exact path="/AddClient" component={AddClientPage} />
           <Route exact path="/EditClient" component={EditClientPage} />
           <Route exact path="/" component={LoginPage} />
-
+         
 
           <Redirect from="*" to="/" />
+         
         </Switch>
+        {/* {(window.location.pathname == '/ClientList' || 
+          window.location.pathname == '/AddClient' ||
+          window.location.pathname == '/EditClient' ||
+          window.location.pathname == '/EmailConfiguration' ||
+          window.location.pathname == '/EditEmail') && isAuth==true ? <FooterBottom/>:null} */}
       </Router>
+      
     </div>
   );
 }

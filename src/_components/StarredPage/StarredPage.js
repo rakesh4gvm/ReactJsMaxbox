@@ -37,6 +37,7 @@ import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/inbox.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
@@ -90,21 +91,17 @@ export default function StarredPage() {
   const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
   const [StarredChecked, SetStarredChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [Open, SetOpen] = React.useState(false);
   const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
   const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   useEffect(() => {
 
     GetClientID();
     GetStarredList();
   }, [SearchInbox, ClientID, StarredChecked, FromEmailDropdownListChecked]);
-
-
-  const HandleOpen = () => SetOpen(true);
-  const HandleClose = () => SetOpen(false);
 
 
 
@@ -219,6 +216,42 @@ export default function StarredPage() {
   }
   // End PopModel Open and Close And Delete Message
 
+    // Start Other inbox Message and model open and close
+    const OpenOtherInboxPopModel = () => {
+      SetOtherInboxPopModel(true);
+    }
+    const CloseOtherInboxPopModel = () => {
+      SetOtherInboxPopModel(false);
+    }
+  
+    const UpdateOtherInbox =(ID)=>{
+      if (ID != '') {
+        var Data = {
+          _id: ID,
+          IsOtherInbox: true,
+          LastUpdatedBy: -1
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            CloseOtherInboxPopModel();
+            OpenMessageDetails('')
+            GetStarredList();
+          }
+          else
+          {
+            CloseOtherInboxPopModel();
+          }
+        });
+      }
+    }
+  // End Other inbox  Message and model open and close
+
+  
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
     if (StarredChecked.length > 0) {
@@ -322,14 +355,9 @@ export default function StarredPage() {
       var Data = {
         ClientID: ClientID,
         UserID: UserID,
-        IsInbox: false,
-        IsStarred: true,
-        IsFollowUp: false,
-        IsSpam: false,
-        IsOtherInbox: false
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -498,8 +526,8 @@ export default function StarredPage() {
         </Modal>
 
         <Modal className="modal-pre"
-          open={Open}
-          onClose={HandleClose}
+          open={OtherInboxPopModel}
+          onClose={CloseOtherInboxPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -510,14 +538,14 @@ export default function StarredPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure  for move this E-mail into Starred ?
+                Are you sure  for move this E-mail into Other Inbox ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateOtherInbox(OpenMessage._id); }}>
                 Yes
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseOtherInboxPopModel(); }}>
                 No
               </Button>
             </div>
@@ -717,14 +745,17 @@ export default function StarredPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
+                    {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button>
+                    </Button> */}
                     <Button>
                       <label>{MailNumber} / {StarredList.length}</label>
                     </Button>
                     <Button onClick={OpenFollowupPopModel}>
                       <img src={icontimer} />
+                    </Button>
+                    <Button onClick={OpenOtherInboxPopModel}>
+                      <img src={inbox} />
                     </Button>
                     <Button>
                       <img src={iconsarrow2} />

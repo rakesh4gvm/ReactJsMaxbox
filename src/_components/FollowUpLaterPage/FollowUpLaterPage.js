@@ -41,7 +41,7 @@ import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/inbox.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
@@ -97,9 +97,7 @@ export default function FollowUpLetterPage() {
   const [StarSelected, SetStarSelected] = React.useState(false);
   const [FollowUpLaterChecked, SetFollowUpLaterChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [Open, SetOpen] = React.useState(false);
-  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
-  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
@@ -108,11 +106,6 @@ export default function FollowUpLetterPage() {
     GetClientID();
     GetFollowUpLetterList();
   }, [SearchInbox, ClientID, FollowUpLaterChecked, FromEmailDropdownListChecked]);
-
-
-  const HandleOpen = () => SetOpen(true);
-  const HandleClose = () => SetOpen(false);
-
 
 
   // Get ClientID
@@ -288,35 +281,34 @@ export default function FollowUpLetterPage() {
   }
   // End Update Star Message and model open and close
 
-  // Followup Message
-  const OpenFollowupPopModel = () => {
-    SetFollowupPopModel(true);
+  // Other Inbox Model Message
+  const OpenOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(true);
   }
-  const CloseFollowupPopModel = () => {
-    SetFollowupPopModel(false);
+  const CloseOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(false);
   }
-  const SelectFollowupDate = (NewValue) => {
-    SetFollowupDate(NewValue);
-  };
-  const UpdateFollowupMessage = (ID) => {
+  const UpdateOtherInbox =(ID)=>{
     if (ID != '') {
       var Data = {
-        ID: ID,
-        IsFollowUp: true,
-        FollowupDate: FollowupDate,
-        IsOtherInbox: false,
+        _id: ID,
+        IsOtherInbox: true,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
         method: "POST",
         data: Data,
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseFollowupPopModel();
+          CloseOtherInboxPopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList();
+        }
+        else
+        {
+          CloseOtherInboxPopModel();
         }
       });
     }
@@ -359,15 +351,10 @@ export default function FollowUpLetterPage() {
     if (ResultData == "Refresh") {
       var Data = {
         ClientID: ClientID,
-        UserID: UserID,
-        IsInbox: false,
-        IsStarred: false,
-        IsFollowUp: true,
-        IsSpam: false,
-        IsOtherInbox: false
+        UserID: UserID
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -563,8 +550,8 @@ export default function FollowUpLetterPage() {
         </Modal>
 
         <Modal className="modal-pre"
-          open={Open}
-          onClose={HandleClose}
+          open={OtherInboxPopModel}
+          onClose={CloseOtherInboxPopModel}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -579,56 +566,17 @@ export default function FollowUpLetterPage() {
               </Typography>
             </div>
             <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateOtherInbox(OpenMessage._id); }}>
                 Yes
               </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseOtherInboxPopModel(); }}>
                 No
               </Button>
             </div>
           </Box>
         </Modal>
 
-        <Modal className="modal-pre"
-          open={FollowupPopModel}
-          onClose={CloseFollowupPopModel}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='px-5 pt-5 text-center'>
-              <img src={Emailcall} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Follow Up Later
-              </Typography>
-            </div>
-            <div className='px-5 pb-5 text-left datepikclen'>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Choose date for follow up later.
-              </Typography>
-              <div className="pt-3">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack spacing={0}>
-                    <DesktopDatePicker
-                      inputFormat="MM/dd/yyyy"
-                      value={FollowupDate}
-                      onChange={SelectFollowupDate}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </div>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
-                Ok
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
-                Cancel
-              </Button>
-            </div>
-          </Box>
-        </Modal>
+      
       </div>
 
       <div className='bodymain'>
@@ -637,7 +585,7 @@ export default function FollowUpLetterPage() {
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Other Inbox</h3> </Col>
+                  <Col sm={9}> <h3 className='title-h3'>Follow Up Later</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -786,17 +734,17 @@ export default function FollowUpLetterPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
+                    {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button>
+                    </Button> */}
                     <Button>
                       <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
                     </Button>
-                    <Button onClick={OpenFollowupPopModel}>
-                      <img src={icontimer} />
+                    <Button onClick={OpenOtherInboxPopModel}>
+                      <img src={inbox} />
                     </Button>
                     <Button>
                       <img src={iconsarrow2} />
