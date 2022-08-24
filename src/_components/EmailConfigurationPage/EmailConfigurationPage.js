@@ -2,8 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import Axios from "axios";
 
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
@@ -64,34 +62,29 @@ export default function EmailConfigurationPage() {
     GetClientID();
     CheckAccountAuthonicate()
     GetEmailAccountList()
-    
-  }, [Page, RowsPerPage, SortedBy, SortField,ClientID,UserID]);
+
+  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
 
   const CheckAccountAuthonicate = () => {
-    debugger;
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);
-      var pagename=atob(ResultMessage);
-      if(pagename !="UPDATE SUCCESS" && pagename !="SUCCESS" && pagename != "Email Already Authenticated" && pagename!="ERROR")
-      {
-        history.push("/EditEmail?data="+ResultMessage);
+      var pagename = atob(ResultMessage);
+      if (pagename != "UPDATE SUCCESS" && pagename != "SUCCESS" && pagename != "Email Already Authenticated" && pagename != "ERROR") {
+        history.push("/EditEmail?data=" + ResultMessage);
       }
-      else
-      {
-        if(pagename=="UPDATE SUCCESS" || pagename=="SUCCESS")
-        {
+      else {
+        if (pagename == "UPDATE SUCCESS" || pagename == "SUCCESS") {
           SetIsEmailAuthSucess(true)
         }
-        else if(pagename = "Email Already Authenticated")
-        {
+        else if (pagename = "Email Already Authenticated") {
           SetIsEmailAuthExist(true)
         }
-        else{
+        else {
           SetIsEmailAuthFail(true)
         }
       }
-      
+
     }
   }
   const GetClientID = () => {
@@ -150,7 +143,7 @@ export default function EmailConfigurationPage() {
   // start Authenticate email
   const AddEmailAccount = () => {
     var data = {
-      ClientID:ClientID,
+      ClientID: ClientID,
       UserID: UserID,
 
     };
@@ -179,22 +172,22 @@ export default function EmailConfigurationPage() {
   }
   // end Authenticate email
 
-  const EditEmailConfiguration=(ID)=>{
+  const EditEmailConfiguration = (ID) => {
     history.push("/EditEmail", ID);
   }
   // start ReAuthenticate email
   const ReAuthenticate = (data) => {
-        var AccountID = data._id;
-        var loginHint = data.Email;
-        var scope = encodeURIComponent(CommonConstants.SCOPE);
-        var redirect_uri_encode = encodeURIComponent(CommonConstants.REDIRECT_URL);
-        var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
-        var response_type = "code";
-        var access_type = "offline";
-        var state ="emailaccountlistpage"+"AccountID"+AccountID;
+    var AccountID = data._id;
+    var loginHint = data.Email;
+    var scope = encodeURIComponent(CommonConstants.SCOPE);
+    var redirect_uri_encode = encodeURIComponent(CommonConstants.REDIRECT_URL);
+    var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
+    var response_type = "code";
+    var access_type = "offline";
+    var state = "emailaccountlistpage" + "AccountID" + AccountID;
 
-        var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
-        window.location.href = Url;
+    var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
+    window.location.href = Url;
   }
   // end ReAuthenticate email
 
@@ -232,7 +225,6 @@ export default function EmailConfigurationPage() {
 
   return (
     <>
-      <HeaderTop />
 
       <Modal className="modal-pre"
         open={DeletePopModel}
@@ -268,9 +260,9 @@ export default function EmailConfigurationPage() {
           </Col>
         </Row>
         <Stack sx={{ width: '100%' }} spacing={2}>
-          {IsEmailAuthSucess==true?<Alert severity="success" onClose={() => {SetIsEmailAuthSucess(false)}}>   <strong> Well done!</strong> Authentication of your account is done.</Alert>:""}
-          {IsEmailAuthFail==true?<Alert severity="error" onClose={() => { SetIsEmailAuthFail(false);}}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert>:""}
-          {IsEmailAuthExist==true?<Alert severity="info" onClose={() => { SetIsEmailAuthExist(false);}}> <strong>Oops!</strong> Email already exist, please try again with other email!</Alert>:""}
+          {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
+          {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
+          {IsEmailAuthExist == true ? <Alert severity="info" onClose={() => { SetIsEmailAuthExist(false); }}> <strong>Oops!</strong> Email already exist, please try again with other email!</Alert> : ""}
         </Stack>
 
 
@@ -314,11 +306,11 @@ export default function EmailConfigurationPage() {
                         </TableCell>
 
                         <TableCell align="right">{row.IsWorking == true ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
-                        <TableCell> 
+                        <TableCell>
                           <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
                             <img src={DeleteIcon} />
                           </Button>
-                          <Button className="iconbtntable" onClick={()=>EditEmailConfiguration(row._id)}><EditIcon /></Button> 
+                          <Button className="iconbtntable" onClick={() => EditEmailConfiguration(row._id)}><EditIcon /></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -335,7 +327,6 @@ export default function EmailConfigurationPage() {
 
       </div>
 
-      <FooterBottom />
 
     </>
   );

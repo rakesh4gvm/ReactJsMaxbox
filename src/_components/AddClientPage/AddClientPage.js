@@ -11,8 +11,6 @@ import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
@@ -62,13 +60,7 @@ export default function AddClientPage({ children }) {
     }
   });
 
-  // Frola Editor Starts
-  // let Config = {
-  //   placeholderText: 'Edit Your Content Here!',
-  //   charCounterCount: false,
-  //   toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
-  //   shortcutsEnabled: ["insertTemplateButton"],
-  // }
+  
   const config = {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
@@ -160,7 +152,7 @@ export default function AddClientPage({ children }) {
 
   return (
     <>
-      <HeaderTop />
+     
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
@@ -217,7 +209,7 @@ export default function AddClientPage({ children }) {
           </Row>
         </div>
       </div>
-      <FooterBottom />
+      
     </>
   );
 }

@@ -11,8 +11,7 @@ import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
+
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -135,7 +134,7 @@ export default function EditClientPage(props) {
 
     return (
         <>
-            <HeaderTop />
+           
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
@@ -187,7 +186,7 @@ export default function EditClientPage(props) {
                     </Row>
                 </div>
             </div>
-            <FooterBottom />
+           
         </>
     );
 }

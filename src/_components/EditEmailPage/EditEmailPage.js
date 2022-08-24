@@ -4,8 +4,6 @@ import Axios from "axios";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import BgProfile from '../../images/bg-profile.png';
@@ -143,7 +141,7 @@ export default function EditEmailPage(props) {
 
   return (
     <>
-      <HeaderTop />
+     
 
       <div className='bodymain'>
 
@@ -208,7 +206,7 @@ export default function EditEmailPage(props) {
 
       </div>
 
-      <FooterBottom />
+     
 
     </>
   );
