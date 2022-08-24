@@ -8,7 +8,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Box from '@mui/material/Box';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@mui/material/Typography';
@@ -16,42 +15,21 @@ import Modal from '@mui/material/Modal';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Paper from '@mui/material/Paper';
-import ToggleButton from '@mui/material/ToggleButton';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarIcon from '@material-ui/icons/Star';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
 
 import Compose from '../ComposePage/ComposePage';
-import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
-import iconleftright from '../../images/icon_left_right.svg';
-import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
-import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
-import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
 
@@ -66,6 +44,7 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+
 function UseOutSideAlerter(Ref) {
   useEffect(() => {
     function HandleClickOutside(Event) {
@@ -81,8 +60,7 @@ function UseOutSideAlerter(Ref) {
   }, [Ref]);
 }
 
-
-export default function OtherInboxPage() {
+export default function DraftsPage() {
   const [DraftList, SetDraftList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -97,16 +75,11 @@ export default function OtherInboxPage() {
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [MailNumber, SetMailNumber] = React.useState(1);
-  useEffect(() => {
 
+  useEffect(() => {
     GetClientID();
     GetDraftList();
-  }, [SearchInbox, ClientID,  InboxChecked]);
-
-
-
-
-
+  }, [SearchInbox, ClientID, InboxChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -116,21 +89,6 @@ export default function OtherInboxPage() {
       SetUserID(UserDetails.UserID);
     }
   }
-
-  const addShowCompose = () => {
-    const element = document.getElementById("UserCompose")
-    //null textbox
-    var To = document.getElementById("To").value= "";
-    var Subject = document.getElementById("Subject").value= "";
-    var Body = document.getElementById("Body").value= "";
-
-    if(element.classList.contains("show")){
-      element.classList.remove("show");
-    }
-    else{
-      element.classList.add("show");
-    } 
-  };
 
   // Start Get Draft List
   const GetDraftList = () => {
@@ -156,7 +114,7 @@ export default function OtherInboxPage() {
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
-        else{
+        else {
           SetDraftList([]);
           OpenMessageDetails('');
         }
@@ -170,9 +128,10 @@ export default function OtherInboxPage() {
   // End Get Draft List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID,index) => {
+  const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
-      SetMailNumber(index + 1)}
+      SetMailNumber(index + 1)
+    }
     var Data = {
       _id: ID,
     };
@@ -184,7 +143,7 @@ export default function OtherInboxPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetOpenMessageDetails(Result.data.Data);
-        
+
       }
       else {
         SetOpenMessageDetails('');
@@ -193,7 +152,7 @@ export default function OtherInboxPage() {
   };
   //End Open Message Details
 
-  // start PopModel Open and Close and Delete Message
+  // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {
     SetDeletePopModel(true);
   }
@@ -201,7 +160,6 @@ export default function OtherInboxPage() {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
-    
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -256,8 +214,6 @@ export default function OtherInboxPage() {
   }
   // End Delete All Message 
 
-  
-
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
     var UpdatedList = [...InboxChecked];
@@ -276,7 +232,6 @@ export default function OtherInboxPage() {
       SetSelectAllCheckbox(false);
       SetInboxChecked([]);
     }
-
   }
   // End CheckBox Code
 
@@ -288,9 +243,7 @@ export default function OtherInboxPage() {
   }
   // End Search
 
- 
-
-
+  // Refresh Page
   const RefreshPage = () => {
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
@@ -342,17 +295,11 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-
-
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
-
-
   return (
     <>
-     
-
       <div>
         <Modal className="modal-pre"
           open={DeletePopModel}
@@ -503,8 +450,8 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {DraftList?.map((row,index) => (  // datalist
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
+                    {DraftList?.map((row, index) => (  // datalist
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -523,7 +470,7 @@ export default function OtherInboxPage() {
                             </Col>
                             <Col xs={2} className="pl-0">
                               <h6>{Moment(row.CreatedDate).format("LT")}</h6>
-                              
+
                             </Col>
                           </Row>
                           <Row>
@@ -569,7 +516,7 @@ export default function OtherInboxPage() {
                     <Button>
                       <label>{MailNumber} / {DraftList.length}</label>
                     </Button>
-                   
+
                     <Button>
                       <img src={iconsarrow2} />
                     </Button>
@@ -587,10 +534,10 @@ export default function OtherInboxPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
+                  <h2>{OpenMessage == 0 ? '' : OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{OpenMessage == 0 ?'':Moment(OpenMessage.CreatedDate).format("LLL")}</h6>
+                  <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.CreatedDate).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>
@@ -613,10 +560,10 @@ export default function OtherInboxPage() {
         </Row>
       </div>
 
-      <Compose />
+      <Compose GetDraftList={GetDraftList} />
 
     </>
   );
 
- 
+
 }
