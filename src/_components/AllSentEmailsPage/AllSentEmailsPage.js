@@ -21,10 +21,6 @@ import ToggleButton from '@mui/material/ToggleButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -38,22 +34,16 @@ import Avatar from '@mui/material/Avatar';
 
 import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
-import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
-
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-
-import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
 
 const Style = {
@@ -83,7 +73,7 @@ function UseOutSideAlerter(Ref) {
 }
 localStorage.setItem("DropdownCheckData", 'Refresh');
 
-export default function OtherInboxPage() {
+export default function AllSentEnailsPage() {
   const [AllSentEmailsList, SetAllSentEmailsList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(100);
@@ -101,17 +91,12 @@ export default function OtherInboxPage() {
   const [EmailDropdownList, SetEmailDropdownList] = useState([]);
   const [EmailDropdownListChecked, SetEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
-  
+
   useEffect(() => {
 
     GetClientID();
     GetAllSentEmailsList();
-  }, [SearchSent, ClientID,  SentMailsChecked,EmailDropdownListChecked]);
-
-
-
- 
-  
+  }, [SearchSent, ClientID, SentMailsChecked, EmailDropdownListChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -134,7 +119,7 @@ export default function OtherInboxPage() {
       Search: SearchSent,
       ClientID: ClientID,
       UserID: UserID,
-      AccountIDs:EmailDropdownListChecked
+      AccountIDs: EmailDropdownListChecked
     };
 
     const ResponseApi = Axios({
@@ -145,12 +130,11 @@ export default function OtherInboxPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-        SetAllSentEmailsList(Result.data.PageData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
-        SetMailNumber(1)
+          SetAllSentEmailsList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
         }
-        else
-        {
+        else {
           SetAllSentEmailsList([]);
           OpenMessageDetails('');
         }
@@ -161,35 +145,33 @@ export default function OtherInboxPage() {
       }
     });
   };
- 
+
   // End Get All SentEmails List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID,index) => {
-    debugger;
+  const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data[0]);
-      }
-      else {
-        SetOpenMessageDetails([]);
-      }
-    });
-  }
-  else
-  {
-    SetOpenMessageDetails([]);
-  }
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetOpenMessageDetails(Result.data.Data[0]);
+        }
+        else {
+          SetOpenMessageDetails([]);
+        }
+      });
+    }
+    else {
+      SetOpenMessageDetails([]);
+    }
   };
   //End Open Message Details
 
@@ -209,7 +191,7 @@ export default function OtherInboxPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/sent_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -315,11 +297,10 @@ export default function OtherInboxPage() {
   }
   // End Search
 
- 
+
   const FromEmailList = () => {
     var ResultData = (localStorage.getItem('DropdownCheckData'));
-    if(ResultData=="Refresh")
-    {
+    if (ResultData == "Refresh") {
       var Data = {
         ClientID: ClientID,
         UserID: UserID,
@@ -347,13 +328,12 @@ export default function OtherInboxPage() {
         }
         else {
           SetEmailDropdownList([]);
-  
+
         }
       });
     }
-    else
-    {
-     
+    else {
+
       const element = document.getElementById("id_userboxlist")
       if (element.classList.contains("show")) {
         element.classList.remove("show");
@@ -369,7 +349,7 @@ export default function OtherInboxPage() {
   // Handle Change Dropdown List Manage by on React Js
   const EmailDropdownListCheckbox = (e) => {
     localStorage.removeItem("DropdownCheckData");
-  
+
     var UpdatedList = [...EmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...EmailDropdownListChecked, e.target.value];
@@ -378,7 +358,7 @@ export default function OtherInboxPage() {
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetEmailDropdownListChecked(UpdatedList);
- }
+  }
 
 
   const RefreshPage = () => {
@@ -444,8 +424,8 @@ export default function OtherInboxPage() {
 
   return (
     <>
-      
-    <div>
+
+      <div>
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
@@ -527,9 +507,9 @@ export default function OtherInboxPage() {
           </Box>
         </Modal>
 
-      
 
-       
+
+
 
       </div>
 
@@ -625,8 +605,8 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {AllSentEmailsList?.map((row,index) => (  
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
+                    {AllSentEmailsList?.map((row, index) => (
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={SentMailsChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -645,7 +625,7 @@ export default function OtherInboxPage() {
                             </Col>
                             <Col xs={2} className="pl-0">
                               <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id, row.IsStarred)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -681,14 +661,14 @@ export default function OtherInboxPage() {
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage == 0 ? '' :OpenMessage.EmailAccount.FirstName}</h5>
-                      <h6>{OpenMessage == 0 ? '': OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    
+
                     <Button>
                       <label>{MailNumber} / {AllSentEmailsList.length}</label>
                     </Button>
@@ -712,10 +692,10 @@ export default function OtherInboxPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
+                  <h2>{OpenMessage == 0 ? '' : OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{OpenMessage == 0 ?'':Moment(OpenMessage.MailSentDatetime).format("LLL")}</h6>
+                  <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>

@@ -1,91 +1,52 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios";
 import Moment from "moment";
+import parse from "html-react-parser";
 
-import Button from '@mui/material/Button';
-import { TextareaAutosize } from '@mui/material';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Stack from '@mui/material/Stack';
+import InputBase from '@mui/material/InputBase';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import Box from '@mui/material/Box';
+import SearchIcon from '@material-ui/icons/Search';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
-import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Avatar from '@mui/material/Avatar';
-import downarrow from '../../images/icon_downarrow.svg';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
+import downarrow from '../../images/icon_downarrow.svg';
+import Checkbox from '@mui/material/Checkbox';
+import Avatar from '@mui/material/Avatar';
 
-import { ButtonGroup, Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
 import Compose from '../ComposePage/ComposePage';
-import parse from "html-react-parser";
 import inboxuser1 from '../../images/avatar/1.jpg';
-import inboxuser2 from '../../images/avatar/2.jpg';
-import inboxuser3 from '../../images/avatar/3.jpg';
-import inboxuser4 from '../../images/avatar/4.jpg';
-import inboximg1 from '../../images/inboximg1.jpg';
-import inboximg2 from '../../images/inboximg2.jpg';
-import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
-import replyall from '../../images/icons/reply_all.svg';
-import attachment from '../../images/icons/attachment.svg';
-import text_font from '../../images/icons/text_font.svg';
-import image_light from '../../images/icons/image_light.svg';
-import smiley_icons from '../../images/icons/smiley_icons.svg';
-import signature from '../../images/icons/signature.svg';
-import link_line from '../../images/icons/link_line.svg';
-import google_drive from '../../images/icons/google_drive.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
+import { Col, Row } from 'react-bootstrap';
+import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 
-
-function UseOutsideAlerter(ref) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        const element = document.getElementById("id_userboxlist")
-        element.classList.remove("show");
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-}
-const AddInboxClass = () => {
-  const element = document.getElementById("id_userboxlist")
-  if (element.classList.contains("show")) {
-    element.classList.remove("show");
-  }
-  else {
-    element.classList.add("show");
-  }
-};
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -97,70 +58,48 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+function UseOutSideAlerter(Ref) {
+  useEffect(() => {
+    function HandleClickOutside(Event) {
+      if (Ref.current && !Ref.current.contains(Event.target)) {
+        const Element = document.getElementById("id_userboxlist")
+        Element.classList.remove("show");
+      }
+    }
+    document.addEventListener("mousedown", HandleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", HandleClickOutside);
+    };
+  }, [Ref]);
+}
+localStorage.setItem("DropdownCheckData", 'Refresh');
 
 export default function UnansweredRepliesPage() {
-  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [StarSelected, setStarSelected] = React.useState(false);
-  const [UnansweredRepliesList, SetUnansweredRepliesList] = React.useState([]);
-  const [UnansweredRepliesChecked, setUnansweredRepliesChecked] = React.useState([]);
-  const [DeletePopModel, setDeletePopModel] = React.useState(false);
-  const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
-  const [StarPopModel, SetStarPopModel] = React.useState(false);
-  const [Items, SetItems] = useState([]);
-  const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [SearchInbox, SetSearchInbox] = React.useState("");
-  const [Page, setPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [SortField, SetsortField] = React.useState("FromEmail");
+  const [AllUnansweredRepliesList, SetAllUnanswereRepliesList] = React.useState([]);
+  const [Page, SetPage] = React.useState(1);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(100);
+  const [SearchSent, SetSearchSent] = React.useState("");
+  const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
-  const [Checked, SetChecked] = React.useState([1]);
-  const [Open, SetOpen] = React.useState(false);
-  const [OpenOne, SetOpneOne] = React.useState(false);
-  const [SelectedDropdownList, SetSelectedDropdownList] = useState([]);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
+  const [StarPopModel, SetStarPopModel] = React.useState(false);
+  const [SentMailsChecked, SetSentMailsChecked] = React.useState([]);
+  const [UnansweredRepliesChecked, SetUansweredRepliesChecked] = React.useState([]);
+  const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
+  const [EmailDropdownList, SetEmailDropdownList] = useState([]);
+  const [EmailDropdownListChecked, SetEmailDropdownListChecked] = React.useState([-1]);
+  const [MailNumber, SetMailNumber] = React.useState(1);
 
   useEffect(() => {
-    if (UnansweredRepliesList?.length > 0) SetSelectedDropdownList(UnansweredRepliesList)
-    GetClientID()
-    GetUnansweredResponcesList();
-  }, [SearchInbox, ClientID, UnansweredRepliesList?.length, Items]);
+    GetClientID();
+    GetAllUnanswereRepliesList();
+  }, [SearchSent, ClientID, UnansweredRepliesChecked, EmailDropdownListChecked]);
 
-  const HandleOpen = () => SetOpen(true);
-  const HandleClose = () => SetOpen(false);
-  const HandleOpenOne = () => SetOpneOne(true);
-  const HandleCloseOne = () => SetOpneOne(false);
-
-  // Start Handle Dropdown List Checkbox
-  const HandleDropdownListCheckbox = (Item) => {
-    if (SelectedDropdownList.some(sl => sl?._id === Item?._id)) {
-      SetSelectedDropdownList(SelectedDropdownList.filter(sl => sl?._id !== Item?._id))
-    } else {
-      SetSelectedDropdownList([...SelectedDropdownList, Item])
-    }
-  }
-  // End Handle Dropdown List Checkbox
-
-  // Start Add Show Compose
-  const AddShowCompose = () => {
-    const Element = document.getElementById("UserCompose")
-    if (Element.classList.contains("show")) {
-      Element.classList.remove("show");
-    }
-    else {
-      Element.classList.add("show");
-    }
-  };
-  // End Add Show Compose
-
-  // Start Handle Change
-  const HandleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
-  // End Handle Change
-
-  // Start Get ClientID
+  // Get ClientID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
@@ -168,10 +107,9 @@ export default function UnansweredRepliesPage() {
       SetUserID(UserDetails.UserID);
     }
   }
-  // End Get ClientID
 
-  // Start Get UnansweredRepliesList
-  const GetUnansweredResponcesList = () => {
+  // Start Get All Unanswered Replies List
+  const GetAllUnanswereRepliesList = () => {
 
     let Data = {
       Page: Page,
@@ -179,50 +117,71 @@ export default function UnansweredRepliesPage() {
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
-      Search: SearchInbox,
+      Search: SearchSent,
       ClientID: ClientID,
       UserID: UserID,
-      IsInbox: false,
-      IsStarred: false,
-      IsFollowUp: false,
-      IsOtherInbox : false,
-      IsSpam : false
+      AccountIDs: EmailDropdownListChecked
     };
 
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/UnansweredReplies",
       method: "POST",
       data: Data,
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetUnansweredRepliesList(Result.data.PageData);
-        OpenMessageDetails(Result.data.PageData[0]._id);
+        if (Result.data.PageData.length > 0) {
+          SetAllUnanswereRepliesList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
+        }
+        else {
+          SetAllUnanswereRepliesList([]);
+          OpenMessageDetails('');
+        }
+      }
+      else {
+        SetAllUnanswereRepliesList([]);
+        OpenMessageDetails('');
       }
     });
   };
-  // End Get UnansweredRepliesList 
+  // End Get All Unanswered Replies List
 
-  // Start Handle Toggle
-  const HandleToggle = (Value) => () => {
-    const CurrentIndex = Checked.indexOf(Value);
-    const NewChecked = [...Checked];
-    if (CurrentIndex === -1) {
-      NewChecked.push(Value);
-    } else {
-      NewChecked.splice(CurrentIndex, 1);
+  //Start Open Message Details
+  const OpenMessageDetails = (ID, Index) => {
+    if (ID != '') {
+      SetMailNumber(Index + 1)
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetOpenMessageDetails(Result.data.Data[0]);
+        }
+        else {
+          SetOpenMessageDetails([]);
+        }
+      });
     }
-    SetChecked(NewChecked);
+    else {
+      SetOpenMessageDetails([]);
+    }
   };
-  // End Handle Toggle
+  //End Open Message Details
 
-  // Start Close Delete Pop
-  const CloseDeletePopModel = () => {
-    setDeletePopModel(false);
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
   }
-  // End Close Delete Pop
-
-  // Start Delete Message
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
   const DeleteMessage = (ID) => {
     if (ID != '') {
       var DeleteArray = []
@@ -232,7 +191,7 @@ export default function UnansweredRepliesPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -240,91 +199,12 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList();
+          GetAllUnanswereRepliesList();
         }
       });
     }
   }
-  // End Delete Message
-
-  //Start Open Message Details
-  const OpenMessageDetails = (ID) => {
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data);
-      }
-      else {
-        SetOpenMessageDetails('');
-      }
-    });
-  };
-  //End Open Message Details
-
-  // Start PopModel Open and Close and Delete Message
-  const OpenDeletePopModel = () => {
-    setDeletePopModel(true);
-  }
-  // End PopModel Open and Close and Delete Message
-
-  // Start Update Star Message and model open and close
-  const OpenStarPopModel = () => {
-    SetStarPopModel(true);
-  }
-  const CloseStarPopModel = () => {
-    SetStarPopModel(false);
-  }
-  const UpdateStarMessage = (ID) => {
-    if (ID != '') {
-      //setSelected(true);
-      var Data = {
-        _id: ID,
-        IsStarred: true,
-        LastUpdatedBy: -1
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          GetUnansweredResponcesList();
-        }
-      });
-    }
-  }
-  // End Update Star Message and model open and close
-
-  // Start CheckBox Code
-  const UnansweredResponcesCheckBox = (e) => {
-    var UpdatedList = [...UnansweredRepliesChecked];
-    if (e.target.checked) {
-      UpdatedList = [...UnansweredRepliesChecked, e.target.value];
-    } else {
-      UpdatedList.splice(UnansweredRepliesChecked.indexOf(e.target.value), 1);
-    }
-    setUnansweredRepliesChecked(UpdatedList);
-  }
-  const SeleactAllUnansweredRepliesCheckBox = (e) => {
-    if (e.target.checked) {
-      SetSelectAllCheckbox(true);
-      setUnansweredRepliesChecked(UnansweredRepliesList.map(item => item._id));
-    } else {
-      SetSelectAllCheckbox(false);
-      setUnansweredRepliesChecked([]);
-    }
-  }
-  // End CheckBox Code
+  // End PopModel Open and Close And Delete Message
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
@@ -342,7 +222,7 @@ export default function UnansweredRepliesPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -350,28 +230,144 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList();
+          GetAllUnanswereRepliesList();
         }
       });
     }
   }
   // End Delete All Message 
 
+  // Start Update Star Message and model open and close
+  const OpenStarPopModel = () => {
+    SetStarPopModel(true);
+  }
+  const CloseStarPopModel = () => {
+    SetStarPopModel(false);
+  }
+  const UpdateStarMessage = (ID) => {
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsStarred: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryStatusUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseStarPopModel();
+          OpenMessageDetails('')
+          GetAllUnanswereRepliesList();
+        }
+      });
+    }
+  }
+  // End Update Star Message and model open and close
+
+  // Start CheckBox Code
+  const InBoxCheckBox = (e) => {
+    var UpdatedList = [...UnansweredRepliesChecked];
+    if (e.target.checked) {
+      UpdatedList = [...UnansweredRepliesChecked, e.target.value];
+    } else {
+      UpdatedList.splice(UnansweredRepliesChecked.indexOf(e.target.value), 1);
+    }
+    SetUansweredRepliesChecked(UpdatedList);
+  }
+  const SeleactAllSentMailCheckBox = (e) => {
+    if (e.target.checked) {
+      SetSelectAllCheckbox(true);
+      SetUansweredRepliesChecked(AllUnansweredRepliesList.map(item => item._id));
+    } else {
+      SetSelectAllCheckbox(false);
+      SetUansweredRepliesChecked([]);
+    }
+
+  }
+  // End CheckBox Code
+
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
-      SetSearchInbox(e.target.value)
+      SetSearchSent(e.target.value)
     }
   }
   // End Search
 
-  // Start Page Refresh
+  // Get From Email List
+  const FromEmailList = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetEmailDropdownListChecked()
+            SetEmailDropdownList(Result.data.PageData);
+            SetEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("id_userboxlist")
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
+            }
+            else {
+              element.classList.add("show");
+            }
+          }
+        }
+        else {
+          SetEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+
+      const element = document.getElementById("id_userboxlist")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+      SetEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+
+  // Handle Change Dropdown List Manage by on React Js
+  const EmailDropdownListCheckbox = (e) => {
+    localStorage.removeItem("DropdownCheckData");
+
+    var UpdatedList = [...EmailDropdownListChecked];
+    if (e.target.checked) {
+      UpdatedList = [...EmailDropdownListChecked, e.target.value];
+    } else {
+      UpdatedList.splice(EmailDropdownListChecked.indexOf(e.target.value), 1);
+    }
+    localStorage.setItem("DropdownCheckData", UpdatedList);
+    SetEmailDropdownListChecked(UpdatedList);
+  }
+
+  // Refresh Page
   const RefreshPage = () => {
     SetSelectAllCheckbox(false);
-    SetSearchInbox('');
-    setUnansweredRepliesChecked([]);
+    SetSearchSent('');
+    SetUansweredRepliesChecked([]);
+    SetEmailDropdownListChecked([-1])
+    localStorage.setItem("DropdownCheckData", 'Refresh');
   }
-  // End Page Refresh
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -418,12 +414,11 @@ export default function UnansweredRepliesPage() {
     color: theme.palette.text.secondary,
   }));
 
-  const wrapperRef = useRef(null);
-  UseOutsideAlerter(wrapperRef);
+  const WrapperRef = useRef(null);
+  UseOutSideAlerter(WrapperRef);
 
   return (
     <>
-      <HeaderTop />
 
       <div>
         <Modal className="modal-pre"
@@ -452,32 +447,7 @@ export default function UnansweredRepliesPage() {
             </div>
           </Box>
         </Modal>
-        <Modal className="modal-pre"
-          open={StarPopModel}
-          onClose={CloseStarPopModel}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='p-5 text-center'>
-              <img src={Emailinbox} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Are you sure ?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
-              </Typography>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
-                No
-              </Button>
-            </div>
-          </Box>
-        </Modal>
+
         <Modal className="modal-pre"
           open={AllDeletePopModel}
           onClose={CloseAllDeletePopModel}
@@ -504,6 +474,33 @@ export default function UnansweredRepliesPage() {
             </div>
           </Box>
         </Modal>
+
+        <Modal className="modal-pre"
+          open={StarPopModel}
+          onClose={CloseStarPopModel}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={Style} className="modal-prein">
+            <div className='p-5 text-center'>
+              <img src={Emailinbox} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Are you sure ?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                you want to Star a email.
+              </Typography>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+                Yes
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+                No
+              </Button>
+            </div>
+          </Box>
+        </Modal>
       </div>
 
       <div className='bodymain'>
@@ -516,7 +513,7 @@ export default function UnansweredRepliesPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {SelectedDropdownList?.length}
+                      {AllUnansweredRepliesList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -528,6 +525,7 @@ export default function UnansweredRepliesPage() {
                           <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
+                          defaultValue={SearchSent}
                           placeholder="Search…"
                           inputProps={{ 'aria-label': 'search' }}
                         />
@@ -538,53 +536,39 @@ export default function UnansweredRepliesPage() {
                 <Row>
                   <Col xs={8}>
                     <div class="selecter-m inboxtype">
-                      <a href="#" className="selectorall" onClick={AddInboxClass}>
+                      <a href="#" className="selectorall" onClick={FromEmailList}>
                         All <img src={downarrow} />
                       </a>
-
-                      <div className="userdropall" id="id_userboxlist">
+                      <div className="userdropall" id="id_userboxlist" ref={WrapperRef}>
                         <div className="bodyuserdop textdeclist">
-                          <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {UnansweredRepliesList?.map((item) => { // dropdown list
 
-                              const labelId = `checkbox-list-secondary-label-${item._id}`;
+                          <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                            {EmailDropdownList?.map((item, index) => {
+                              const labelId = `checkbox-list-secondary-label-${index}`;
                               return (
                                 <ListItem className='droplistchec'
-                                  key={item._id}
+                                  key={index}
                                   secondaryAction={
-                                    <Checkbox
-                                      // defaultChecked
-                                      // edge="end"
-                                      // onChange={HandleToggle(item._id)}
-                                      // checked={checked.indexOf(item._id) !== -1}
-                                      onChange={() => HandleDropdownListCheckbox(item)}
-                                      checked={SelectedDropdownList?.some(sl => sl?._id === item?._id)}
-                                      inputProps={{ 'aria-labelledby': labelId }}
-                                    />
+                                    <Checkbox onChange={EmailDropdownListCheckbox}
+                                      value={item._id}
+                                      checked={EmailDropdownListChecked?.find(x => x === item?._id)}
+                                      inputProps={{ 'aria-labelledby': labelId }} />
                                   }
                                   disablePadding
                                 >
                                   <ListItemButton>
                                     <ListItemAvatar>
-
                                       <ListItemAvatar className="scvar">
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText
-                                      primary={item.FromName}
-                                      secondary={
-                                        <React.Fragment>
-                                          {item.FromEmail}
-                                        </React.Fragment>
-                                      }
+                                    <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>}
                                     />
                                   </ListItemButton>
                                 </ListItem>
                               );
                             })}
                           </List>
-
                         </div>
                       </div>
                     </div>
@@ -603,67 +587,59 @@ export default function UnansweredRepliesPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllUnansweredRepliesCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllSentMailCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
               </div>
-
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {SelectedDropdownList?.map((row, index) => (
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id)}>
+                    {AllUnansweredRepliesList?.map((row, index) => (
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
-                            <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
-                            {/* <FormControlLabel control={<Checkbox />} label="" />  */}
-                          </Col>
-                          <Col xs={11} className="pr-0">
-                            <Row>
-                              <Col xs={2}>
-                                <span className="inboxuserpic">
-                                  <img src={inboxuser1} width="55px" alt="" />
-                                </span>
-                              </Col>
-                              <Col xs={8}>
-                                <h4>{row.FromEmail}</h4>
-                                <h3>{row.Subject}</h3>
-                              </Col>
-                              <Col xs={2} className="pl-0">
-                                <h6>{Moment(new Date(row.MessageDatetime).toDateString()).format("h:mm a")}</h6>
-                                <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
-                                  <StarBorderIcon className='starone' />
-                                  <StarIcon className='selectedstart startwo' />
-                                </ToggleButton>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col xs={2} className='ja-center'>
-                                <div className='attachfile'>
-                                  <input type="file" />
-                                  <AttachFileIcon />
-                                </div>
-                              </Col>
-                              <Col xs={10}>
-                                <p>{row.Snippet}</p>
-                              </Col>
-                            </Row>
+                            <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                           </Col>
                         </Row>
+                        <Col xs={11} className="pr-0">
+                          <Row>
+                            <Col xs={2}>
+                              <span className="inboxuserpic">
+                                <img src={defaultimage} width="55px" alt="" />
+                              </span>
+                            </Col>
+                            <Col xs={8}>
+                              <h4>{row.FromEmail}</h4>
+                              <h3>{row.Subject}</h3>
+                            </Col>
+                            <Col xs={2} className="pl-0">
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                <StarBorderIcon className='starone' />
+                                <StarIcon className='selectedstart startwo' />
+                              </ToggleButton>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col xs={2} className='ja-center'>
+                              <div className='attachfile'>
+                                <input type="file" />
+                                <AttachFileIcon />
+                              </div>
+                            </Col>
+                            <Col xs={10}>
+                              <p>{row.Snippet}</p>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Item>
                     ))}
-
-
                   </Stack>
                 </scrollbars>
               </div>
-
-
             </div>
           </Col>
-
-
           <Col className='rightinbox'>
             <div className='inxtexteditor'>
               <Row className='bt-border pb-4 mb-4 colsm12'>
@@ -671,28 +647,23 @@ export default function UnansweredRepliesPage() {
                   <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                        <img src={inboxuser3} width="63px" alt="" />
+                        <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage.FromName}</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
-                      <img src={iconleftright} />
-                    </Button>
-                    <Button onClick={HandleOpenOne}>
-                      <label>56 / 100</label>
+
+                    <Button>
+                      <label>{MailNumber} / {AllUnansweredRepliesList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
-                    </Button>
-                    <Button>
-                      <img src={icontimer} />
                     </Button>
                     <Button>
                       <img src={iconsarrow2} />
@@ -700,32 +671,28 @@ export default function UnansweredRepliesPage() {
                     <Button>
                       <img src={iconsarrow1} />
                     </Button>
-                    <Button onClick={OpenDeletePopModel}>
+                    {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
-                    </Button>
+                    </Button>}
                     <Button>
                       <img src={iconmenu} />
                     </Button>
                   </ButtonGroup>
                 </Col>
               </Row>
-
-
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage.Subject} </h2>
+                  <h2>{OpenMessage == 0 ? '' : OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{Moment(new Date(OpenMessage.MessageDatetime).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("LLL")}</h6>
                 </Col>
               </Row>
-
               <Row>
                 <Col>
                   {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                 </Col>
               </Row>
-
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
@@ -736,13 +703,13 @@ export default function UnansweredRepliesPage() {
                   </Col>
                 </Row>
               </div>
-
             </div>
           </Col>
         </Row>
       </div>
 
       <Compose />
+
     </>
   );
 }
