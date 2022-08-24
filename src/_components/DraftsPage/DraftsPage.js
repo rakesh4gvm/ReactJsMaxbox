@@ -327,7 +327,7 @@ export default function OtherInboxPage() {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.PageData.length > 0) {
-            debugger;
+            
             SetFromEmailDropdownListChecked()
             SetFromEmailDropdownList(Result.data.PageData);
             SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
@@ -595,7 +595,7 @@ export default function OtherInboxPage() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={8}>
+                  {/* <Col xs={8}>
                     <div class="selecter-m inboxtype">
                       <a href="#" className="selectorall" onClick={FromEmailList}>
                         All <img src={downarrow} />
@@ -633,7 +633,7 @@ export default function OtherInboxPage() {
                         </div>
                       </div>
                     </div>
-                  </Col>
+                  </Col> */}
                   <Col xs={4} align='right'>
                     <ButtonGroup variant="text" aria-label="text button group">
                       <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
@@ -719,9 +719,9 @@ export default function OtherInboxPage() {
                 </Col>
                 <Col lg={6} Align="right">
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
+                    {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button>
+                    </Button> */}
                     <Button onClick={HandleOpenOne}>
                     <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
