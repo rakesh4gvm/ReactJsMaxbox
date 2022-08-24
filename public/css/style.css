@@ -90,7 +90,7 @@ span.userpic img {
     font-size: 16px;
 }
 .menulist .dropdown{
-    margin-top: 12px;
+    margin-top: 7px;
 }
 .menulist .dropdown-toggle::after { 
     border: solid #fff;
@@ -226,15 +226,17 @@ span.userpic img {
     display: flex;
 }
 .inboxnoti {
-    width: 80px;
-    height: 33px;
-    line-height: 33px;
+    width: auto;
+    height: auto;
     background: #FA9766;
     border-radius: 50px;
-    display: flex;
+    display: inline-flex;
     text-align: center;
     color: #fff;
-    margin: 0 0 0 auto;
+    margin: 0;
+    padding: 0px 10px 0 5px;
+    line-height: 35px;
+    float: right;
 }
 .inboxnoti svg.MuiSvgIcon-root {
     background: #DC6529;
@@ -267,17 +269,14 @@ span.userpic img {
 ::-webkit-scrollbar-thumb {
     background: #C4C4C4;
     border-radius: 10px;
-}
-
-.inboxtype > div > div{
-    min-height: 55px;
-}
+} 
 .inboxtype > div > div {
     min-height: 55px;
     border-radius: 15px;
     width: auto;
     max-width: 240px;
     border: 1px solid #E5E5E5;
+    overflow: hidden;
 }
 .inboxtype > div > div + div { 
     max-width: 240px;
@@ -286,7 +285,7 @@ span.userpic img {
 Button.iconbtn {
     line-height: 45px;
     background: #647AF7;
-    border-radius: 10px;
+    border-radius: 10px !important;
     height: 45px;
     width: 45px;
     float: right;
@@ -399,7 +398,7 @@ Button.iconbtn {
     background: #FFFFFF;
     box-shadow: 0px 4px 30px #d8ddf9;
     position: absolute;
-    left: 0;
+    /* left: 0; */
     display: none;
     min-width: 400px;
     z-index: 999;
@@ -410,6 +409,16 @@ Button.iconbtn {
 }
 .userdropall .bodyuserdop {
     max-width: 100%;
+}
+.bodyuserdop ul li{
+    cursor: pointer;
+}
+.bodyuserdop ul li:hover {
+    background: #f7f7f7;
+}
+.inboxtype .userdropall ul {
+    max-height: 197px;
+    overflow-y: auto;
 }
 .userdropall .droplistchec > div + div {  
     position: absolute;
@@ -1039,8 +1048,23 @@ div#menu- {
 button#Variable-1 {
     padding: 0 25px 0 15px;
 }
-
-
+.menulist .selecter-m{
+    position: relative;
+}
+.erorr-msg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+div.erorr-msg > * > * {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+    margin: 0;  
+}
 
 @media screen and (max-width:990px){
     .mobile-nav {

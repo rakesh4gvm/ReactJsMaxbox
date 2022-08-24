@@ -256,7 +256,7 @@ export default function Header() {
                                                     <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
                                                 ))}
                                             </Select>
-                                            <div >
+                                            <div className='erorr-msg'>
                                                 {
                                                     Show && <Stack sx={{ width: '100%' }} spacing={2}>
                                                         <Alert severity="error">   <strong> Sorry!</strong> No Client To Display</Alert>
