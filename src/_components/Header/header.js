@@ -194,7 +194,7 @@ export default function Header() {
                                             <NotificationsIcon /> 235
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/Drafts"><img src={drafts} />Drafts
+                                    <NavDropdown.Item  onClick={() => OpenPage("/Drafts")}><img src={drafts} />Drafts
                                         <div className="notifimen">
                                             <NotificationsIcon /> 235
                                         </div>

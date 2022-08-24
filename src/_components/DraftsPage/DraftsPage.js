@@ -83,7 +83,7 @@ function UseOutSideAlerter(Ref) {
 
 
 export default function OtherInboxPage() {
-  const [InBoxList, SetInBoxList] = React.useState([]);
+  const [DraftList, SetDraftList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [SearchInbox, SetSearchInbox] = React.useState("");
@@ -94,35 +94,19 @@ export default function OtherInboxPage() {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [AllDeletePopModel, SetAllDeletePopModel] = React.useState(false);
-  const [StarPopModel, SetStarPopModel] = React.useState(false);
-  const [StarSelected, SetStarSelected] = React.useState(false);
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
-  const [Open, SetOpen] = React.useState(false);
-  const [OpenOne, SetOpenOne] = React.useState(false);
-  const [Value, SetValue] = React.useState(new Date('2014-08-18T21:11:54'));
-  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
-  const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   useEffect(() => {
 
     GetClientID();
-    GetInBoxList();
+    GetDraftList();
   }, [SearchInbox, ClientID,  InboxChecked]);
 
-  useEffect(() => {
-}, [FromEmailDropdownListChecked]);
 
 
 
-  const HandleOpen = () => SetOpen(true);
-  const HandleClose = () => SetOpen(false);
-  const HandleOpenOne = () => SetOpenOne(true);
-  const HandleCloseOne = () => SetOpenOne(false);
 
-  const handleChange = (NewValue) => {
-    SetValue(NewValue);
-  };
 
   // Get ClientID
   const GetClientID = () => {
@@ -148,8 +132,8 @@ export default function OtherInboxPage() {
     } 
   };
 
-  // Start Get InBoxList
-  const GetInBoxList = () => {
+  // Start Get Draft List
+  const GetDraftList = () => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -159,12 +143,6 @@ export default function OtherInboxPage() {
       Search: SearchInbox,
       ClientID: ClientID,
       UserID: UserID,
-      // IsInbox: true,
-      // IsStarred: false,
-      // IsFollowUp: false,
-      // IsSpam: false,
-      // IsOtherInbox: false,
-      // FromEmail:FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateGet",
@@ -174,18 +152,22 @@ export default function OtherInboxPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetInBoxList(Result.data.PageData);
+          SetDraftList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
+        else{
+          SetDraftList([]);
+          OpenMessageDetails('');
+        }
       }
       else {
-        SetInBoxList([]);
-        OpenMessageDetails([]);
+        SetDraftList([]);
+        OpenMessageDetails('');
       }
     });
   };
-  // End Get InBoxList
+  // End Get Draft List
 
   //Start Open Message Details
   const OpenMessageDetails = (ID,index) => {
@@ -236,7 +218,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetDraftList();
         }
       });
     }
@@ -267,7 +249,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetDraftList();
         }
       });
     }
@@ -289,7 +271,7 @@ export default function OtherInboxPage() {
   const SeleactAllInBoxCheckBox = (e) => {
     if (e.target.checked) {
       SetSelectAllCheckbox(true);
-      SetInboxChecked(InBoxList.map(item => item._id));
+      SetInboxChecked(DraftList.map(item => item._id));
     } else {
       SetSelectAllCheckbox(false);
       SetInboxChecked([]);
@@ -307,70 +289,6 @@ export default function OtherInboxPage() {
   // End Search
 
  
-  const FromEmailList = () => {
-    if(FromEmailDropdownListChecked.length==0)
-    {
-      var Data = {
-        ClientID: ClientID,
-        UserID: UserID,
-        IsInbox: true,
-        IsStarred: false,
-        IsFollowUp: false,
-        IsSpam: false,
-        IsOtherInbox: false
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FromEmailHistoryGet",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (Result.data.PageData.length > 0) {
-            
-            SetFromEmailDropdownListChecked()
-            SetFromEmailDropdownList(Result.data.PageData);
-            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-            const element = document.getElementById("id_userboxlist")
-            if (element.classList.contains("show")) {
-              element.classList.remove("show");
-            }
-            else {
-              element.classList.add("show");
-            }
-          }
-        }
-        else {
-          SetFromEmailDropdownList([]);
-  
-        }
-      });
-    }
-    else
-    {
-      const element = document.getElementById("id_userboxlist")
-      if (element.classList.contains("show")) {
-        element.classList.remove("show");
-      }
-      else {
-        element.classList.add("show");
-      }
-
-    }
-   
-  }
-
-  // Handle Change Dropdown List Manage by on React Js
-  const FromEmailDropdownListCheckbox = (e) => {
-    var UpdatedList = [...FromEmailDropdownListChecked];
-    if (e.target.checked) {
-      UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
-    } else {
-      UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
-    }
-    SetFromEmailDropdownListChecked(UpdatedList);
-    GetInBoxList();
- }
 
 
   const RefreshPage = () => {
@@ -431,10 +349,9 @@ export default function OtherInboxPage() {
 
 
 
-
   return (
     <>
-      <HeaderTop />
+     
 
       <div>
         <Modal className="modal-pre"
@@ -491,76 +408,6 @@ export default function OtherInboxPage() {
           </Box>
         </Modal>
 
-        
-
-        <Modal className="modal-pre"
-          open={Open}
-          onClose={HandleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='p-5 text-center'>
-              <img src={Emailinbox} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Are you sure ?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure  for move this E-mail into Drafts?
-              </Typography>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
-                No
-              </Button>
-            </div>
-          </Box>
-        </Modal>
-
-
-        <Modal className="modal-pre"
-          open={OpenOne}
-          onClose={HandleCloseOne}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='px-5 pt-5 text-center'>
-              <img src={Emailcall} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Follow Up Later
-              </Typography>
-            </div>
-            <div className='px-5 pb-5 text-left datepikclen'>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Choose date for follow up later.
-              </Typography>
-              <div className="pt-3">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack spacing={0}>
-                    <DesktopDatePicker
-                      inputFormat="MM/dd/yyyy"
-                      value={Value}
-                      onChange={handleChange}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </div>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium">
-                Ok
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium">
-                Cancel
-              </Button>
-            </div>
-          </Box>
-        </Modal>
 
       </div>
 
@@ -570,11 +417,11 @@ export default function OtherInboxPage() {
             <div className='px-0 py-4 leftinbox'>
               <div className='px-3'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Drafts</h3> </Col>
+                  <Col sm={9}> <h3 className='title-h3'>Draft</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {InBoxList?.length}
+                      {DraftList?.length}
                     </div>
                   </Col>
                 </Row>
@@ -623,7 +470,7 @@ export default function OtherInboxPage() {
                                         <Avatar alt="Remy Sharp" src={inboxuser1} />
                                       </ListItemAvatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary={item.MailTo} secondary={<React.Fragment>{item.MailTo}</React.Fragment>}
+                                    <ListItemText primary={item.FirstName} secondary={<React.Fragment>{item.Email}</React.Fragment>}
                                     />
                                   </ListItemButton>
                                 </ListItem>
@@ -656,7 +503,7 @@ export default function OtherInboxPage() {
               <div className='listinbox mt-3'>
                 <scrollbars>
                   <Stack spacing={1} align="left">
-                    {InBoxList?.map((row,index) => (  // datalist
+                    {DraftList?.map((row,index) => (  // datalist
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -667,7 +514,7 @@ export default function OtherInboxPage() {
                           <Row>
                             <Col xs={2}>
                               <span className="inboxuserpic">
-                              <img src={defaultimage} width="55px" alt="" />
+                                <img src={defaultimage} width="55px" alt="" />
                               </span>
                             </Col>
                             <Col xs={8}>
@@ -675,11 +522,8 @@ export default function OtherInboxPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(new Date(row.CreatedDate).toDateString()).format("h:mm a")}</h6>
-                              {/* <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
-                                <StarBorderIcon className='starone' />
-                                <StarIcon className='selectedstart startwo' />
-                              </ToggleButton> */}
+                              <h6>{Moment(row.CreatedDate).format("LT")}</h6>
+                              
                             </Col>
                           </Row>
                           <Row>
@@ -708,12 +552,12 @@ export default function OtherInboxPage() {
                   <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                      <img src={defaultimage} width="63px" alt="" />
+                        <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage.Subject}</h5>
-                      <h6>to me <KeyboardArrowDownIcon /></h6>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.MailTo}</h5>
+                      {/* <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
                     </Col>
                   </Row>
                 </Col>
@@ -722,10 +566,16 @@ export default function OtherInboxPage() {
                     {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button> */}
-                    <Button onClick={HandleOpenOne}>
-                    <label>{MailNumber} / {InBoxList.length}</label>
+                    <Button>
+                      <label>{MailNumber} / {DraftList.length}</label>
                     </Button>
-                    
+                   
+                    <Button>
+                      <img src={iconsarrow2} />
+                    </Button>
+                    <Button>
+                      <img src={iconsarrow1} />
+                    </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
                     </Button>}
@@ -737,10 +587,10 @@ export default function OtherInboxPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage.Subject} </h2>
+                  <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
                 </Col>
                 <Col>
-                  <h6>{Moment(new Date(OpenMessage.CreatedDate).toDateString()).format("MMMM Do YYYY, h:mm:ss a")}</h6>
+                  <h6>{OpenMessage == 0 ?'':Moment(OpenMessage.CreatedDate).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>
@@ -764,6 +614,9 @@ export default function OtherInboxPage() {
       </div>
 
       <Compose />
+
     </>
   );
+
+ 
 }

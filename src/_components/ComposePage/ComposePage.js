@@ -3,32 +3,17 @@ import Axios from "axios"
  
 import Button from '@mui/material/Button';
 
-
-
-
-
 import ButtonGroup from '@mui/material/ButtonGroup';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
-import BgProfile from '../../images/bg-profile.png';
-import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
-import FooterBottom from '../Footer/footer';
 
+import { Col, Row } from 'react-bootstrap';
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
 import { Input, TextareaAutosize } from '@mui/material';
-
-import iconleftright from '../../images/icon_left_right.svg';
-import iconstar from '../../images/icon_star.svg';
-import icontimer from '../../images/icon_timer.svg';
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
 
 import icondelete from '../../images/icons/icon_delete.svg';
 import iconmenu from '../../images/icons/icon_menu.svg'; 
@@ -58,23 +43,15 @@ function useOutsideAlerter(ref) {
 }
 
 
-export default function HomePage() {
-    const [selected, setSelected] = React.useState(false);
-    const [DraftTemplateToError, SetDraftTemplateToError] = useState("");
-    const [DraftTemplateSubjectError, SetDraftTemplateSubjectError] = useState("");
-    const [DraftTemplateBodyError, SetDraftTemplateBodyError] = useState("");
+export default function ComposePage() {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef); 
 
-    const addShowCompose = () => {
+    const OpenCompose = () => {
       const element = document.getElementById("UserCompose")
-      //null textbox
-      var To = document.getElementById("To").value= "";
-      var Subject = document.getElementById("Subject").value= "";
-      var Body = document.getElementById("Body").value= "";
-
+     
       if(element.classList.contains("show")){
         element.classList.remove("show");
       }
@@ -100,9 +77,6 @@ export default function HomePage() {
     // Add DraftTemplate
   const AddDraftTemplate = async () => {
 
-    // const Valid = FromValidation();
-    // if (Valid) {
-
       var To = document.getElementById("To").value;
       var Subject = document.getElementById("Subject").value;
       var Body = document.getElementById("Body").value;
@@ -116,14 +90,13 @@ export default function HomePage() {
         CreatedBy : 1
       }
 
-    debugger
         Axios({
           url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateAdd",
           method: "POST",
           data: Data,
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-            addShowCompose();
+            OpenCompose();
           }
         })
       
@@ -131,26 +104,14 @@ export default function HomePage() {
 
   }
 
-   
-  // FromValidation Start
-  // const FromValidation = () => {
-  //   var Isvalid = true;
-  //   var ClientName = document.getElementById("name").value;
 
-  //   if (ClientName === "") {
-  //     SetDraftTemplateToError("Please Enter To")
-  //     Isvalid = false
-  //   }
-    
-  //   return Isvalid;
-  // };
 
 return (
     <>
      
          
       <div className='composebody'> 
-        <Button variant="contained btn btn-primary largbtn" onClick={addShowCompose}> + Compose</Button>
+        <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
 
         <div className="usercompose" id="UserCompose" ref={wrapperRef}>
             <div className='hcompose px-3'>
@@ -164,7 +125,7 @@ return (
                     <Button>
                       <img src={Maximize} />
                     </Button>
-                    <Button onClick={addShowCompose}>
+                    <Button onClick={OpenCompose}>
                       <img src={Close} />
                     </Button>
                   </ButtonGroup> 
