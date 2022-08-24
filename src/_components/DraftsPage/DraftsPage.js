@@ -53,6 +53,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
 import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
+import defaultimage from '../../images/default.png';
 
 const Style = {
   position: 'absolute',
@@ -273,36 +274,7 @@ export default function OtherInboxPage() {
   }
   // End Delete All Message 
 
-  // Start Update Star Message and model open and close
-  const OpenStarPopModel = () => {
-    SetStarPopModel(true);
-  }
-  const CloseStarPopModel = () => {
-    SetStarPopModel(false);
-  }
-  const UpdateStarMessage = (ID) => {
-    if (ID != '') {
-      //setSelected(true);
-      var Data = {
-        _id: ID,
-        IsStarred: true,
-        LastUpdatedBy: -1
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          GetInBoxList();
-        }
-      });
-    }
-  }
-  // End Update Star Message and model open and close
+  
 
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
@@ -519,32 +491,7 @@ export default function OtherInboxPage() {
           </Box>
         </Modal>
 
-        <Modal className="modal-pre"
-          open={StarPopModel}
-          onClose={CloseStarPopModel}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={Style} className="modal-prein">
-            <div className='p-5 text-center'>
-              <img src={Emailinbox} width="130" className='mb-4' />
-              <Typography id="modal-modal-title" variant="b" component="h6">
-                Are you sure ?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
-              </Typography>
-            </div>
-            <div className='d-flex btn-50'>
-              <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
-                Yes
-              </Button>
-              <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
-                No
-              </Button>
-            </div>
-          </Box>
-        </Modal>
+        
 
         <Modal className="modal-pre"
           open={Open}
@@ -720,19 +667,19 @@ export default function OtherInboxPage() {
                           <Row>
                             <Col xs={2}>
                               <span className="inboxuserpic">
-                                <img src={inboxuser1} width="55px" alt="" />
+                              <img src={defaultimage} width="55px" alt="" />
                               </span>
                             </Col>
                             <Col xs={8}>
-                              <h4>{row.Subject}</h4>
+                              <h4>{row.MailTo}</h4>
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
                               <h6>{Moment(new Date(row.CreatedDate).toDateString()).format("h:mm a")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                              {/* <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
-                              </ToggleButton>
+                              </ToggleButton> */}
                             </Col>
                           </Row>
                           <Row>
@@ -761,7 +708,7 @@ export default function OtherInboxPage() {
                   <Row className='userlist'>
                     <Col xs={2}>
                       <span className="inboxuserpic">
-                        <img src={inboxuser3} width="63px" alt="" />
+                      <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
