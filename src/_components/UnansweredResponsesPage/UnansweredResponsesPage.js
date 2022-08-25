@@ -35,7 +35,7 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 
 import { ButtonGroup, Col, Row } from 'react-bootstrap';
-import Compose from '../ComposePage/ComposePage';
+import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
 import parse from "html-react-parser";
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -291,7 +291,7 @@ export default function UnansweredResponsesPage() {
     SetOtherInboxPopModel(false);
   }
 
-  const UpdateOtherInbox =(ID)=>{
+  const UpdateOtherInbox = (ID) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -309,14 +309,13 @@ export default function UnansweredResponsesPage() {
           OpenMessageDetails('')
           GetUnansweredResponcesList();
         }
-        else
-        {
+        else {
           CloseOtherInboxPopModel();
         }
       });
     }
   }
-// End Other inbox  Message and model open and close
+  // End Other inbox  Message and model open and close
 
   // Followup Message
   const OpenFollowupPopModel = () => {
@@ -827,7 +826,7 @@ export default function UnansweredResponsesPage() {
                     <Button onClick={OpenOtherInboxPopModel}>
                       <img src={inbox} />
                     </Button>
-                    
+
                     <Button>
                       <img src={iconsarrow2} />
                     </Button>
@@ -871,9 +870,8 @@ export default function UnansweredResponsesPage() {
         </Row>
       </div>
 
-      <Compose />
-
+      <UnansweredResponsesComposePage GetUnansweredResponsesList={GetUnansweredResponcesList} />
     </>
-   
+
   );
 }
