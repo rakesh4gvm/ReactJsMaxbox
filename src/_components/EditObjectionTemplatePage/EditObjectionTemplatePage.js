@@ -18,11 +18,11 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
-export default function EditTemplatesPage(props) {
+export default function EditObjectionTemplatePage(props) {
 
     const [ClientID, SetClientID] = React.useState(0);
     const [SubjectError, SetSubjectError] = useState("");
-    const [TemplateIDDetails, SetTemplateIDDetails] = useState([])
+    const [ObjectionTemplateIDDetails, SetObjectionTemplateIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
     const [Body, SetBody] = useState({
         Data: ""
@@ -31,7 +31,7 @@ export default function EditTemplatesPage(props) {
     useEffect(() => {
         const ID = props.location.state;
         if (ID != "" && ID != null && ID != "undefined") {
-            GetTemplateByID(ID)
+            GetObjectionTemplateByID(ID)
         }
         GetClientID()
     }, [])
@@ -50,45 +50,24 @@ export default function EditTemplatesPage(props) {
     }
 
 
-    // Get Template By ID
-    const GetTemplateByID = (ID) => {
+    // Get Objection Template By ID
+    const GetObjectionTemplateByID = (ID) => {
         const Data = {
             ID: ID
         }
         Axios({
-            url: CommonConstants.MOL_APIURL + "/templates/TemplateGetByID",
+            url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetByID",
             method: "POST",
             data: Data,
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                SetTemplateIDDetails(Result?.data?.Data)
+                SetObjectionTemplateIDDetails(Result?.data?.Data)
                 SetBody({ Data: Result?.data?.Data[0]?.BodyText })
             }
         })
     }
 
-    // Frola Editor Starts
-    // Froalaeditor.RegisterCommand('Variable', {
-    //     title: 'Variable',
-    //     type: 'dropdown',
-    //     focus: false,
-    //     undo: false,
-    //     refreshAfterCallback: true,
-    //     // options: EditorVariableNames(),
-    //     callback: function (cmd, val) {
-    //         var editorInstance = this;
-    //         editorInstance.html.insert("{" + val + "}");
-    //     },
-    //     // Callback on refresh.
-    //     refresh: function ($btn) {
-    //         console.log('do refresh');
-    //     },
-    //     // Callback on dropdown show.
-    //     refreshOnShow: function ($btn, $dropdown) {
-    //         console.log('do refresh when show');
-    //     }
 
-    // });
 
     const config = {
         placeholderText: 'Edit Your Content Here!',
@@ -102,27 +81,27 @@ export default function EditTemplatesPage(props) {
     }
     // Frola Editor Ends
 
-    // Template Update
-    const UpdateTemplate = async () => {
+    // Objection Template Update
+    const UpdateObjectionTemplate = async () => {
         var Subject = document.getElementById("subject").value;
         const Valid = FromValidation();
         if (Valid) {
         const Data = {
-            ID: TemplateIDDetails[0]._id,
+            ID: ObjectionTemplateIDDetails[0]._id,
             Subject: Subject,
             BodyText: Body.Data,
             LastUpdatedBy: 1
         }
        
-        var ExistsTemplates = await CheckExistTemplates(Subject);
+        var ExistsTemplates = await CheckExistObjectionTemplate(Subject);
   
         if (ExistsTemplates === ResponseMessage.SUCCESS) {
         Axios({
-            url: CommonConstants.MOL_APIURL + "/templates/TemplateUpdate",
+            url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateUpdate",
             method: "POST",
             data: Data,
         }).then((Result) => {
-            history.push("/Templates");
+            history.push("/ObjectionTemplate");
         })
     }
     else {
@@ -131,22 +110,22 @@ export default function EditTemplatesPage(props) {
     }
     }
 
-      // Check Template Exists
-  const CheckExistTemplates = async (Subject) => {
+      // Check Objection Template Exists
+  const CheckExistObjectionTemplate = async (Subject) => {
     
-    var Data = { Subject: Subject,ClientID:ClientID,TemplatesID: TemplateIDDetails[0].TemplatesID }
-    debugger
+    var Data = { Subject: Subject,ClientID:ClientID,ObjectionTemplateID: ObjectionTemplateIDDetails[0].ObjectionTemplateID }
+    
     const ResponseApi = await Axios({
-      url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
+      url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateExists",
       method: "POST",
       data: Data,
     })
     return ResponseApi?.data.StatusMessage
   }
 
-    // Cancel Edit Template
-    const CancelEditTemplate = () => {
-        history.push("/Templates");
+    // Cancel Edit Objection Template
+    const CancelEditObjectionTemplate = () => {
+        history.push("/ObjectionTemplate");
     }
 
        // FromValidation Start
@@ -167,7 +146,7 @@ export default function EditTemplatesPage(props) {
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
-                        <h5 className='my-0'><a href='/Templates' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Template</h5>
+                        <h5 className='my-0'><a href='/ObjectionTemplate' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
                     </Col>
                 </Row>
                 <div className='sm-container mt-5'>
@@ -179,7 +158,7 @@ export default function EditTemplatesPage(props) {
                                 </Col>
                                 
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={TemplateIDDetails[0]?.Subject} />
+                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={ObjectionTemplateIDDetails[0]?.Subject} />
                                     {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                                 </Col>
                             </Row>
@@ -199,8 +178,8 @@ export default function EditTemplatesPage(props) {
                         <Col>
                             <div className='btnprofile my-5 left'>
                                 <ButtonGroup variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateTemplate} > Save</Button>
-                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditTemplate}> Cancel</Button>
+                                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateObjectionTemplate} > Save</Button>
+                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditObjectionTemplate}> Cancel</Button>
                                 </ButtonGroup>
                             </div>
                         </Col>

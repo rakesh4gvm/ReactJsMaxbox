@@ -12,9 +12,11 @@ import FollowUpLaterPage from '../src/_components/FollowUpLaterPage/FollowUpLate
 import DraftsPage from '../src/_components/DraftsPage/DraftsPage';
 import SpamPage from '../src/_components/SpamPage/SpamPage';
 import TemplatesPage from '../src/_components/TemplatesPage/TemplatesPage';
+import ObjectionTemplatePage from '../src/_components/ObjectionTemplatePage/ObjectionTemplatePage';
 import SelectTemplatesPage from '../src/_components/SelectTemplatesPage/SelectTemplatesPage';
 import CreateTemplatesPage from './_components/CreateTemplatesPage/CreateTemplatesPage';
 import CreateObjectionPage from '../src/_components/CreateObjectionPage/CreateObjectionPage';
+import EditObjectionTemplatePage from '../src/_components/EditObjectionTemplatePage/EditObjectionTemplatePage';
 import RegisterPage from './_components/RegisterPage/RegisterPage';
 import LoginPage from './_components/LoginPage/LoginPage';
 import EditEmailPage from './_components/EditEmailPage/EditEmailPage';
@@ -49,9 +51,11 @@ function App() {
           <Route exact path="/UnansweredReplies" component={UnansweredRepliesPage} />
           <Route exact path="/AllSentEmails" component={AllSentEmailsPage} />
           <Route exact path="/Templates" component={TemplatesPage} />
+          <Route exact path="/ObjectionTemplate" component={ObjectionTemplatePage} />
           <Route exact path="/SelectTemplates" component={SelectTemplatesPage} />
           <Route exact path="/CreateTemplates" component={CreateTemplatesPage} />
           <Route exact path="/CreateObjection" component={CreateObjectionPage} />
+          <Route exact path="/EditObjectionTemplate" component={EditObjectionTemplatePage} />
           <Route exact path="/Register" component={RegisterPage} />
           <Route exact path="/EditEmail" component={EditEmailPage} />
           <Route exact path="/ClientList" component={ClientListPage} />

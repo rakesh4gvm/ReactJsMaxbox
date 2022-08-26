@@ -224,10 +224,10 @@ export default function Header() {
                                     </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Templates" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#action/5.1">
+                                    <NavDropdown.Item onClick={() => OpenPage("/ObjectionTemplate")}>
                                         <img src={Objectroup} />Objections
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item href="/Templates">
+                                    <NavDropdown.Item onClick={() => OpenPage("/Templates")}>
                                         <img src={Carbontem} />Templates
                                     </NavDropdown.Item>
                                 </NavDropdown>

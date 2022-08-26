@@ -106,7 +106,7 @@ export default function CreateTemplatesPage({ children }) {
   const FromValidation = () => {
     var Isvalid = true;
     var Subject = document.getElementById("subject").value;
-debugger
+
     if (Subject === "") {
       SetSubjectError("Please Enter Subject")
       Isvalid = false
@@ -165,7 +165,7 @@ debugger
     history.push("/Templates");
   }
   
-      // Check Client Exists
+      // Check Template Exists
   const CheckExistTemplates = async (Subject) => {
     debugger
     var Data = { Subject: Subject,ClientID:ClientID }
