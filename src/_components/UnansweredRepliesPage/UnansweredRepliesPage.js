@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Axios from "axios";
 import Moment from "moment";
 import parse from "html-react-parser";
@@ -46,6 +46,7 @@ import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -77,7 +78,7 @@ localStorage.setItem("DropdownCheckData", 'Refresh');
 export default function UnansweredRepliesPage() {
   const [AllUnansweredRepliesList, SetAllUnanswereRepliesList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(100);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [SearchSent, SetSearchSent] = React.useState("");
   const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
@@ -97,7 +98,7 @@ export default function UnansweredRepliesPage() {
   useEffect(() => {
     GetClientID();
     GetAllUnanswereRepliesList();
-  }, [SearchSent, ClientID, UnansweredRepliesChecked, EmailDropdownListChecked]);
+  }, [SearchSent, ClientID, UnansweredRepliesChecked, EmailDropdownListChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -110,7 +111,6 @@ export default function UnansweredRepliesPage() {
 
   // Start Get All Unanswered Replies List
   const GetAllUnanswereRepliesList = () => {
-
     let Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -128,10 +128,11 @@ export default function UnansweredRepliesPage() {
       method: "POST",
       data: Data,
     });
+
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllUnanswereRepliesList(Result.data.PageData);
+          SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -369,6 +370,11 @@ export default function UnansweredRepliesPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+  };
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -592,8 +598,15 @@ export default function UnansweredRepliesPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+
+              <div id="scrollableDiv" style={{ height: 300, overflow: "auto" }}>
+                <InfiniteScroll
+                  dataLength={AllUnansweredRepliesList.length}
+                  next={FetchMoreData}
+                  hasMore={true}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                >
                   <Stack spacing={1} align="left">
                     {AllUnansweredRepliesList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
@@ -636,7 +649,59 @@ export default function UnansweredRepliesPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
+              </div>
+              
+              <div className='listinbox mt-3'>
+                <div className="list">
+                  <div className="list-inner" >
+
+                  </div>
+                </div>
+                {/* <scrollbars>
+                  <Stack spacing={1} align="left">
+                    {AllUnansweredRepliesList?.map((row, index) => (
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
+                        <Row>
+                          <Col xs={1} className="pr-0">
+                            <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                          </Col>
+                        </Row>
+                        <Col xs={11} className="pr-0">
+                          <Row>
+                            <Col xs={2}>
+                              <span className="inboxuserpic">
+                                <img src={defaultimage} width="55px" alt="" />
+                              </span>
+                            </Col>
+                            <Col xs={8}>
+                              <h4>{row.FromEmail}</h4>
+                              <h3>{row.Subject}</h3>
+                            </Col>
+                            <Col xs={2} className="pl-0">
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                <StarBorderIcon className='starone' />
+                                <StarIcon className='selectedstart startwo' />
+                              </ToggleButton>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col xs={2} className='ja-center'>
+                              <div className='attachfile'>
+                                <input type="file" />
+                                <AttachFileIcon />
+                              </div>
+                            </Col>
+                            <Col xs={10}>
+                              <p>{row.Snippet}</p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Item>
+                    ))}
+                  </Stack>
+                </scrollbars> */}
               </div>
             </div>
           </Col>
