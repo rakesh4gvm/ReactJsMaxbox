@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import Axios from "axios";
-
+import parse from "html-react-parser";
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -39,7 +39,7 @@ const Style = {
   p: 4,
 };
 
-export default function ClientListPage() {
+export default function TemplatesListPage() {
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -76,7 +76,7 @@ export default function ClientListPage() {
     }
   }
 
-  // Start Get Client List
+  // Start Get Template List
   const GetTemplateList = () => {
     let Data
     Data = {
@@ -115,12 +115,12 @@ export default function ClientListPage() {
   const CloseDeletePopModel = () => {
     SetDeletePopModel(false);
   }
-  const DeleteClient = () => {
+  const DeleteTemplate = () => {
     const Data = {
       ID: DeleteID
     }
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/client/ClientDelete",
+      url: CommonConstants.MOL_APIURL + "/templates/TemplateDelete",
       method: "POST",
       data: Data,
     });
@@ -143,14 +143,14 @@ export default function ClientListPage() {
     GetTemplateList();
   };
 
-  // Edit CLient
-  const EditClient = (ID) => {
-    history.push("/EditClient", ID);
+  // Edit Template
+  const EditTemplate = (ID) => {
+    history.push("/EditTemplates", ID);
   }
 
-  // Add CLient
-  const AddClient = () => {
-    history.push("/AddClient");
+  // Add Template
+  const AddTemplate = () => {
+    history.push("/CreateTemplates");
   }
 
   return (
@@ -174,7 +174,7 @@ export default function ClientListPage() {
             </Typography>
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteClient(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteTemplate(OpenMessage._id); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
@@ -193,7 +193,7 @@ export default function ClientListPage() {
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
             <Col align="right">
-              <Button className='btnaccount' onClick={AddClient}>
+              <Button className='btnaccount' onClick={AddTemplate}>
                 <AddIcon /> Create Templates
               </Button>
             </Col>
@@ -201,11 +201,12 @@ export default function ClientListPage() {
           <Row>
             <Col>
               <TableContainer className='tablename' component={Paper}>
+           
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Subject</TableCell>
-                      {/* <TableCell>BCC Email</TableCell> */}
+                      <TableCell>Body</TableCell>
                       <TableCell align="right">Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -213,18 +214,19 @@ export default function ClientListPage() {
                     {TemplateList?.map((row) => (
                       <TableRow>
                         <TableCell>{row.Subject}</TableCell>
-                        {/* <TableCell scope="row">{row.BccEmail}</TableCell> */}
+                        <TableCell>  { parse( row.BodyText)}   </TableCell>
 
                         <TableCell align="right">
                           <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
                             <img src={DeleteIcon} />
                           </Button>
-                          <Button className="iconbtntable" onClick={() => EditClient(row._id)}><EditIcon /></Button>
+                          <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+               
               </TableContainer>
 
               <Stack className='my-4 page-dec' spacing={2}>

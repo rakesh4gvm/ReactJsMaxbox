@@ -26,6 +26,7 @@ import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage
 import HeaderTop from './_components/Header/header';
 import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
+import EditTemplatesPage from './_components/EditTemplatesPage/EditTemplatesPage';
 
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
           <Route exact path="/ClientList" component={ClientListPage} />
           <Route exact path="/AddClient" component={AddClientPage} />
           <Route exact path="/EditClient" component={EditClientPage} />
+          <Route exact path="/EditTemplates" component={EditTemplatesPage} />
           <Route exact path="/" component={LoginPage} />
          
 
