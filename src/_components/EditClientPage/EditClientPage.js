@@ -19,7 +19,7 @@ import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
 export default function EditClientPage(props) {
-
+    const [ClientNameError, SetClientNameError] = useState("");
     const [ClientID, SetClientID] = React.useState(0);
     const [ClientIDDetails, SetClientIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
@@ -87,13 +87,7 @@ export default function EditClientPage(props) {
         }
 
     });
-    // Frola Editor Starts
-    // let Config = {
-    //   placeholderText: 'Edit Your Content Here!',
-    //   charCounterCount: false,
-    //   toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
-    //   shortcutsEnabled: ["insertTemplateButton"],
-    // }
+
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
@@ -106,25 +100,72 @@ export default function EditClientPage(props) {
     }
     // Frola Editor Ends
 
-    // Client Update
-    const UpdateClient = () => {
-        var ClientName = document.getElementById("name").value;
-        var BccEmail = document.getElementById("bccEmail").value;
+    // Check Client Exists
+    const CheckExistClient = async (ClientName) => {
 
-        const Data = {
-            ID: ClientIDDetails[0]._id,
-            Name: ClientName,
-            BccEmail: BccEmail,
-            SignatureText: Signature.Data,
-        }
+        var Data = { Name: ClientName, ClientID: ClientIDDetails[0].ClientID }
 
-        Axios({
-            url: CommonConstants.MOL_APIURL + "/client/ClientUpdate",
+        const ResponseApi = await Axios({
+            url: CommonConstants.MOL_APIURL + "/client/ClientExists",
             method: "POST",
             data: Data,
-        }).then((Result) => {
-            history.push("/ClientList");
         })
+        return ResponseApi?.data.StatusMessage
+    }
+
+    // FromValidation Start
+    const FromValidation = () => {
+        var Isvalid = true;
+        var ClientName = document.getElementById("name").value;
+
+        if (ClientName === "") {
+            SetClientNameError("Please Enter Client Name")
+            Isvalid = false
+        }
+        return Isvalid;
+    };
+
+    const HandleChange = (e) => {
+        const { name, value } = e.target;
+        if (name == "name") {
+            if (value != "") {
+                SetClientNameError("")
+            }
+        }
+    };
+    // FromValidation End
+
+    // Client Update
+    const UpdateClient = async () => {
+        const Valid = FromValidation();
+        if (Valid) {
+            var ClientName = document.getElementById("name").value;
+            var BccEmail = document.getElementById("bccEmail").value;
+
+            const Data = {
+                ID: ClientIDDetails[0]._id,
+                Name: ClientName,
+                BccEmail: BccEmail,
+                SignatureText: Signature.Data,
+            }
+
+            var ExistsClient = await CheckExistClient(ClientName)
+
+            if (ExistsClient === ResponseMessage.SUCCESS) {
+                Axios({
+                    url: CommonConstants.MOL_APIURL + "/client/ClientUpdate",
+                    method: "POST",
+                    data: Data,
+                }).then((Result) => {
+                    if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                        history.push("/ClientList");
+                    }
+                })
+            } else {
+                SetClientNameError("ClientName Already Exists, Please Add Another Name")
+            }
+        }
+
     }
 
     // Cancel Edit Client
@@ -134,7 +175,7 @@ export default function EditClientPage(props) {
 
     return (
         <>
-           
+
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
@@ -151,7 +192,8 @@ export default function EditClientPage(props) {
                                 <Col sm={8}>
                                 </Col>
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter Client Name' name='name' id='name' defaultValue={ClientIDDetails[0]?.Name} />
+                                    <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.Name} />
+                                    {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
                                 </Col>
                             </Row>
                             <Row className='input-boxbg mt-5'>
@@ -186,7 +228,7 @@ export default function EditClientPage(props) {
                     </Row>
                 </div>
             </div>
-           
+
         </>
     );
 }
