@@ -21,6 +21,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 export default function EditTemplatesPage(props) {
 
     const [ClientID, SetClientID] = React.useState(0);
+    const [SubjectError, SetSubjectError] = useState("");
     const [TemplateIDDetails, SetTemplateIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
     const [Body, SetBody] = useState({
@@ -47,6 +48,7 @@ export default function EditTemplatesPage(props) {
             SetUserID(UserDetails.UserID);
         }
     }
+
 
     // Get Template By ID
     const GetTemplateByID = (ID) => {
@@ -101,15 +103,20 @@ export default function EditTemplatesPage(props) {
     // Frola Editor Ends
 
     // Template Update
-    const UpdateTemplate = () => {
+    const UpdateTemplate = async () => {
         var Subject = document.getElementById("subject").value;
+        const Valid = FromValidation();
+        if (Valid) {
         const Data = {
             ID: TemplateIDDetails[0]._id,
             Subject: Subject,
             BodyText: Body.Data,
             LastUpdatedBy: 1
         }
-
+       
+        var ExistsTemplates = await CheckExistTemplates(Subject);
+  
+        if (ExistsTemplates === ResponseMessage.SUCCESS) {
         Axios({
             url: CommonConstants.MOL_APIURL + "/templates/TemplateUpdate",
             method: "POST",
@@ -118,11 +125,41 @@ export default function EditTemplatesPage(props) {
             history.push("/Templates");
         })
     }
+    else {
+        SetSubjectError("Subject Already Exists, Please Add Another Subject")
+      }
+    }
+    }
+
+      // Check Template Exists
+  const CheckExistTemplates = async (Subject) => {
+    
+    var Data = { Subject: Subject,ClientID:ClientID,TemplatesID: TemplateIDDetails[0].TemplatesID }
+    debugger
+    const ResponseApi = await Axios({
+      url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
+      method: "POST",
+      data: Data,
+    })
+    return ResponseApi?.data.StatusMessage
+  }
 
     // Cancel Edit Template
     const CancelEditTemplate = () => {
         history.push("/Templates");
     }
+
+       // FromValidation Start
+  const FromValidation = () => {
+    var Isvalid = true;
+    var Subject = document.getElementById("subject").value;
+
+    if (Subject === "") {
+      SetSubjectError("Please Enter Subject")
+      Isvalid = false
+    }
+    return Isvalid;
+  };
 
     return (
         <>
@@ -144,6 +181,7 @@ export default function EditTemplatesPage(props) {
                                 </Col>
                                 <Col sm={8}>
                                     <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={TemplateIDDetails[0]?.Subject} />
+                                    {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                                 </Col>
                             </Row>
                            
