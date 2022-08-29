@@ -44,20 +44,22 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, ToggleButton } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { TextareaAutosize } from '@mui/material';
-import text_font from '../../images/icons/text_font.svg'; 
-import attachment from '../../images/icons/attachment.svg'; 
-import image_light from '../../images/icons/image_light.svg'; 
-import smiley_icons from '../../images/icons/smiley_icons.svg'; 
-import signature from '../../images/icons/signature.svg'; 
-import link_line from '../../images/icons/link_line.svg'; 
-import google_drive from '../../images/icons/google_drive.svg'; 
+import text_font from '../../images/icons/text_font.svg';
+import attachment from '../../images/icons/attachment.svg';
+import image_light from '../../images/icons/image_light.svg';
+import smiley_icons from '../../images/icons/smiley_icons.svg';
+import signature from '../../images/icons/signature.svg';
+import link_line from '../../images/icons/link_line.svg';
+import google_drive from '../../images/icons/google_drive.svg';
+
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -69,6 +71,7 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+
 function UseOutSideAlerter(Ref) {
   useEffect(() => {
     function HandleClickOutside(Event) {
@@ -106,13 +109,17 @@ export default function StarredPage() {
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
   useEffect(() => {
 
     GetClientID();
     GetStarredList();
-  }, [SearchInbox, ClientID, StarredChecked, FromEmailDropdownListChecked]);
 
-
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchInbox, ClientID, StarredChecked, FromEmailDropdownListChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -148,8 +155,9 @@ export default function StarredPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetStarredList(Result.data.PageData);
+          SetStarredList([...StarredList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -226,42 +234,41 @@ export default function StarredPage() {
   }
   // End PopModel Open and Close And Delete Message
 
-    // Start Other inbox Message and model open and close
-    const OpenOtherInboxPopModel = () => {
-      SetOtherInboxPopModel(true);
+  // Start Other inbox Message and model open and close
+  const OpenOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(true);
+  }
+  const CloseOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(false);
+  }
+
+  const UpdateOtherInbox = (ID) => {
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsOtherInbox: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          CloseOtherInboxPopModel();
+          OpenMessageDetails('')
+          GetStarredList();
+        }
+        else {
+          CloseOtherInboxPopModel();
+        }
+      });
     }
-    const CloseOtherInboxPopModel = () => {
-      SetOtherInboxPopModel(false);
-    }
-  
-    const UpdateOtherInbox =(ID)=>{
-      if (ID != '') {
-        var Data = {
-          _id: ID,
-          IsOtherInbox: true,
-          LastUpdatedBy: -1
-        };
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            CloseOtherInboxPopModel();
-            OpenMessageDetails('')
-            GetStarredList();
-          }
-          else
-          {
-            CloseOtherInboxPopModel();
-          }
-        });
-      }
-    }
+  }
   // End Other inbox  Message and model open and close
 
-  
+
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
     if (StarredChecked.length > 0) {
@@ -430,56 +437,69 @@ export default function StarredPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
-  
-  const ReplyPopModel=(ObjMailsData)=>{
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetStarredList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+
+  };
+
+
+
+  const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
-      if(ObjMailsData !='')
-      {
-        var ToEmail = ObjMailsData.FromName +" ("+  ObjMailsData.FromEmail +")";
-        document.getElementById("lblreplytoemail").innerHTML=ToEmail
-        document.getElementById("lblreplytoemail").value=ToEmail
+      if (ObjMailsData != '') {
+        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        document.getElementById("lblreplytoemail").innerHTML = ToEmail
+        document.getElementById("lblreplytoemail").value = ToEmail
       }
     }
-    
+
   }
 
-  const ReplyPopModelClose=()=>{
+  const ReplyPopModelClose = () => {
     const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
+    element[0].classList.add("d-none");
   }
 
-  const ReplySendMail=(ObjMailData)=>{
-   var ToEmail=ObjMailData.FromEmail;
-   var ToName=ObjMailData.FromName
-   var ID=ObjMailData._id
-   var Subject=ObjMailData.Subject;
-   var Body= document.getElementById("replybody").value;
+  const ReplySendMail = (ObjMailData) => {
+    var ToEmail = ObjMailData.FromEmail;
+    var ToName = ObjMailData.FromName
+    var ID = ObjMailData._id
+    var Subject = ObjMailData.Subject;
+    var Body = document.getElementById("replybody").value;
 
-   var Data = {
-    ToEmail: ToEmail,
-    ToName: ToName,
-    ID:ID,
-    Subject:Subject,
-    Body:Body
-  };
-  const ResponseApi = Axios({
-    url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
-    method: "POST",
-    data: Data,
-  });
-  ResponseApi.then((Result) => {
-    if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-       ReplyPopModelClose();
-    }
-    else
-    {
-      ReplyPopModelClose();
-    }
-    
-  });
-  } 
+    var Data = {
+      ToEmail: ToEmail,
+      ToName: ToName,
+      ID: ID,
+      Subject: Subject,
+      Body: Body
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        ReplyPopModelClose();
+      }
+      else {
+        ReplyPopModelClose();
+      }
+
+    });
+  }
+
+
+
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -541,21 +561,21 @@ export default function StarredPage() {
       IsOtherInbox: false,
     }
     Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
-        method: "POST",
-        data: Data,
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
     }).then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          debugger
-          if(Result.data.TotalCount >=0){
-            SetTotalCount(Result.data.TotalCount);
-          }else{
-            SetTotalCount(0);
-          }
-          
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
         }
+
+      }
     })
-}
+  }
 
 
   return (
@@ -773,10 +793,21 @@ export default function StarredPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={StarredList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {StarredList?.map((row, index) => (  // datalist
+                    {StarredList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -795,7 +826,7 @@ export default function StarredPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
                             </Col>
                           </Row>
                           <Row>
@@ -813,7 +844,7 @@ export default function StarredPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>
@@ -881,83 +912,83 @@ export default function StarredPage() {
                     <a className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a  onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                   </Col>
                 </Row>
               </div>
               <div className='user_editor d-none mt-5'>
-                  <Row className='userlist'>
-                      <Col className='fixwidleft'>
-                        <span className="inboxuserpic">
-                            <img src={inboxuser1} width="63px" alt="" />
-                        </span>
-                      </Col>
-                      <Col className='fixwidright p-0'> 
-                        <div className='editorboxcard'>
-                          <Row className='edittoprow p-2'>
-                              <Col className='d-flex hedtopedit'>
-                                <a href='#' className='p-1'><img src={iconsarrow2} /></a> 
-                                <h6><KeyboardArrowDownIcon /></h6> 
-                                <label id='lblreplytoemail'></label>
-                              </Col> 
-                          </Row>
-                          <Row className='px-2'>
-                              <Col className='bodyeditor'>
-                                <TextareaAutosize className='w-100'
-                                  aria-label="minimum height"
-                                  minRows={3}
-                                  placeholder="" 
-                                  id='replybody'
-                                />
-                              </Col> 
-                          </Row>
-  
-                          <div className='ftcompose px-3'>
-                            <Row className='px-3'>
-                                <Col xs={10} className='px-0'>
-                                  <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn"  onClick={() => ReplySendMail(OpenMessage)}> Send</Button>
-                                    <Button>
-                                      <img src={text_font} />
-                                    </Button> 
-                                    <Button>
-                                      <img src={attachment} />
-                                    </Button> 
-                                    <Button>
-                                      <img src={image_light} />
-                                    </Button> 
-                                    <Button>
-                                      <img src={smiley_icons} />
-                                    </Button>
-                                    <Button>
-                                      <img src={google_drive} />
-                                    </Button>  
-                                    <Button>
-                                      <img src={link_line} />
-                                    </Button>    
-                                    <Button>
-                                      <img src={signature} />
-                                    </Button>  
-                                  </ButtonGroup>
-                                </Col>  
-  
-                                <Col xs={2} className='px-0 text-right'>
-                                  <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group"> 
-                                    <Button onClick={() => ReplyPopModelClose()}>
-                                      <img src={icondelete} />
-                                    </Button> 
-                                    <Button>
-                                      <img src={iconmenu} />
-                                    </Button>  
-                                  </ButtonGroup>
-                                </Col> 
-                            </Row> 
-                        </div> 
-  
-                        </div>  
-                      </Col> 
-                  </Row>
-                </div>
+                <Row className='userlist'>
+                  <Col className='fixwidleft'>
+                    <span className="inboxuserpic">
+                      <img src={inboxuser1} width="63px" alt="" />
+                    </span>
+                  </Col>
+                  <Col className='fixwidright p-0'>
+                    <div className='editorboxcard'>
+                      <Row className='edittoprow p-2'>
+                        <Col className='d-flex hedtopedit'>
+                          <a href='#' className='p-1'><img src={iconsarrow2} /></a>
+                          <h6><KeyboardArrowDownIcon /></h6>
+                          <label id='lblreplytoemail'></label>
+                        </Col>
+                      </Row>
+                      <Row className='px-2'>
+                        <Col className='bodyeditor'>
+                          <TextareaAutosize className='w-100'
+                            aria-label="minimum height"
+                            minRows={3}
+                            placeholder=""
+                            id='replybody'
+                          />
+                        </Col>
+                      </Row>
+
+                      <div className='ftcompose px-3'>
+                        <Row className='px-3'>
+                          <Col xs={10} className='px-0'>
+                            <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                              <Button variant="contained btn btn-primary smallbtn" onClick={() => ReplySendMail(OpenMessage)}> Send</Button>
+                              <Button>
+                                <img src={text_font} />
+                              </Button>
+                              <Button>
+                                <img src={attachment} />
+                              </Button>
+                              <Button>
+                                <img src={image_light} />
+                              </Button>
+                              <Button>
+                                <img src={smiley_icons} />
+                              </Button>
+                              <Button>
+                                <img src={google_drive} />
+                              </Button>
+                              <Button>
+                                <img src={link_line} />
+                              </Button>
+                              <Button>
+                                <img src={signature} />
+                              </Button>
+                            </ButtonGroup>
+                          </Col>
+
+                          <Col xs={2} className='px-0 text-right'>
+                            <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                              <Button onClick={() => ReplyPopModelClose()}>
+                                <img src={icondelete} />
+                              </Button>
+                              <Button>
+                                <img src={iconmenu} />
+                              </Button>
+                            </ButtonGroup>
+                          </Col>
+                        </Row>
+                      </div>
+
+                    </div>
+                  </Col>
+                </Row>
+              </div>
 
             </div>
           </Col>

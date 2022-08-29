@@ -53,6 +53,7 @@ import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -105,11 +106,16 @@ export default function SpamPage() {
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
     GetClientID();
     GetSpamList();
-  }, [SearchInbox, ClientID, SpamChecked, FromEmailDropdownListChecked]);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchInbox, ClientID, SpamChecked, FromEmailDropdownListChecked, Page]);
 
 
   const HandleOpen = () => SetOpen(true);
@@ -151,8 +157,9 @@ export default function SpamPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetSpamList(Result.data.PageData);
+          SetSpamList([...SpamList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -334,7 +341,7 @@ export default function SpamPage() {
     SetOtherInboxPopModel(false);
   }
 
-  const UpdateOtherInbox =(ID)=>{
+  const UpdateOtherInbox = (ID) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -352,14 +359,13 @@ export default function SpamPage() {
           OpenMessageDetails('')
           GetSpamList();
         }
-        else
-        {
+        else {
           CloseOtherInboxPopModel();
         }
       });
     }
   }
-// End Other inbox  Message and model open and close
+  // End Other inbox  Message and model open and close
 
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
@@ -464,8 +470,18 @@ export default function SpamPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
-   // Get Total Total Record Count
-   const GetTotalRecordCount = () => {
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetSpamList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+  }
+
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
     const Data = {
       ClientID: ClientID,
       UserID: UserID,
@@ -476,21 +492,21 @@ export default function SpamPage() {
       IsOtherInbox: false,
     }
     Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
-        method: "POST",
-        data: Data,
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
     }).then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          debugger
-          if(Result.data.TotalCount >=0){
-            SetTotalCount(Result.data.TotalCount);
-          }else{
-            SetTotalCount(0);
-          }
-          
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
         }
+
+      }
     })
-}
+  }
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -540,7 +556,7 @@ export default function SpamPage() {
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
-  
+
 
   return (
     <>
@@ -784,10 +800,21 @@ export default function SpamPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={SpamList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {SpamList?.map((row, index) => (  // datalist
+                    {SpamList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -806,8 +833,8 @@ export default function SpamPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -828,7 +855,7 @@ export default function SpamPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>

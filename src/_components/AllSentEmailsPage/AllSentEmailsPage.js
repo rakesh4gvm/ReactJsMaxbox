@@ -45,6 +45,7 @@ import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -57,6 +58,7 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+
 function UseOutSideAlerter(Ref) {
   useEffect(() => {
     function HandleClickOutside(Event) {
@@ -76,7 +78,7 @@ localStorage.setItem("DropdownCheckData", 'Refresh');
 export default function AllSentEnailsPage() {
   const [AllSentEmailsList, SetAllSentEmailsList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(100);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [SearchSent, SetSearchSent] = React.useState("");
   const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
@@ -91,12 +93,17 @@ export default function AllSentEnailsPage() {
   const [EmailDropdownList, SetEmailDropdownList] = useState([]);
   const [EmailDropdownListChecked, SetEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
 
     GetClientID();
     GetAllSentEmailsList();
-  }, [SearchSent, ClientID, SentMailsChecked, EmailDropdownListChecked]);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchSent, ClientID, SentMailsChecked, EmailDropdownListChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -129,8 +136,9 @@ export default function AllSentEnailsPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetAllSentEmailsList(Result.data.PageData);
+          SetAllSentEmailsList([...AllSentEmailsList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -369,6 +377,16 @@ export default function AllSentEnailsPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetAllSentEmailsList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+  };
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -602,8 +620,19 @@ export default function AllSentEnailsPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={AllSentEmailsList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
                     {AllSentEmailsList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
@@ -625,7 +654,7 @@ export default function AllSentEnailsPage() {
                             </Col>
                             <Col xs={2} className="pl-0">
                               <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id, row.IsStarred)}>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -646,7 +675,7 @@ export default function AllSentEnailsPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>

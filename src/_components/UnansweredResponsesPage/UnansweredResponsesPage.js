@@ -52,6 +52,7 @@ import Emailcall from '../../images/email_call_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -102,12 +103,15 @@ export default function UnansweredResponsesPage() {
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
+
 
   useEffect(() => {
     GetClientID()
     GetUnansweredResponcesList();
-  }, [SearchInbox, ClientID, UnansweredResponsesChecked, FromEmailDropdownListChecked]);
 
+  }, [SearchInbox, ClientID, UnansweredResponsesChecked, FromEmailDropdownListChecked, Page]);
 
 
   // Start Get ClientID
@@ -147,12 +151,13 @@ export default function UnansweredResponsesPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetUnansweredResponsesList(Result.data.PageData);
+          SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         } else {
-          SetUnansweredResponsesList([]);
+          SetUnansweredResponsesList([...UnansweredResponsesList]);
           OpenMessageDetails('');
         }
       } else {
@@ -443,6 +448,16 @@ export default function UnansweredResponsesPage() {
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
   }
+
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetUnansweredResponcesList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+  };
 
   // Start Page Refresh
   const RefreshPage = () => {
@@ -745,10 +760,21 @@ export default function UnansweredResponsesPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={UnansweredResponsesList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {UnansweredResponsesList?.map((row, index) => (  // datalist
+                    {UnansweredResponsesList.length > 1 && UnansweredResponsesList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -767,8 +793,8 @@ export default function UnansweredResponsesPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -789,7 +815,7 @@ export default function UnansweredResponsesPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>

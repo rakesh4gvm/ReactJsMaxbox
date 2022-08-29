@@ -32,6 +32,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
 import { GetUserDetails } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -75,11 +76,16 @@ export default function DraftsPage() {
   const [InboxChecked, SetInboxChecked] = React.useState([]);
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
     GetClientID();
     GetDraftList();
-  }, [SearchInbox, ClientID, InboxChecked]);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchInbox, ClientID, InboxChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -109,8 +115,9 @@ export default function DraftsPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetDraftList(Result.data.PageData);
+          SetDraftList([...DraftList, Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -249,6 +256,17 @@ export default function DraftsPage() {
     SetSearchInbox('');
     SetInboxChecked([]);
   }
+
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetDraftList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+
+  };
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -447,10 +465,21 @@ export default function DraftsPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={DraftList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {DraftList?.map((row, index) => (  // datalist
+                    {DraftList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -465,12 +494,11 @@ export default function DraftsPage() {
                               </span>
                             </Col>
                             <Col xs={8}>
-                              <h4>{row.MailTo}</h4>
+                              <h4>{row.FromEmail}</h4>
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.CreatedDate).format("LT")}</h6>
-
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
                             </Col>
                           </Row>
                           <Row>
@@ -481,14 +509,14 @@ export default function DraftsPage() {
                               </div>
                             </Col>
                             <Col xs={10}>
-                              <p>{row.Body}</p>
+                              <p>{row.Snippet}</p>
                             </Col>
                           </Row>
                         </Col>
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>

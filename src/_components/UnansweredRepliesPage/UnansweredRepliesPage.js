@@ -94,6 +94,8 @@ export default function UnansweredRepliesPage() {
   const [EmailDropdownList, SetEmailDropdownList] = useState([]);
   const [EmailDropdownListChecked, SetEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
     GetClientID();
@@ -131,13 +133,15 @@ export default function UnansweredRepliesPage() {
 
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
           SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
         else {
-          SetAllUnanswereRepliesList([]);
+          SetAllUnanswereRepliesList([...AllUnansweredRepliesList]);
+          SetHasMore(false)
           OpenMessageDetails('');
         }
       }
@@ -372,7 +376,13 @@ export default function UnansweredRepliesPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
+
     SetPage(Page + 1);
+    await GetAllUnanswereRepliesList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
   };
 
   const Search = styled('div')(({ theme }) => ({
@@ -599,16 +609,21 @@ export default function UnansweredRepliesPage() {
                 </Row>
               </div>
 
-              <div id="scrollableDiv" class="listinbox mt-3"> 
+              <div id="scrollableDiv" class="listinbox mt-3">
                 <InfiniteScroll
                   dataLength={AllUnansweredRepliesList.length}
                   next={FetchMoreData}
-                  hasMore={true}
+                  hasMore={HasMore}
                   loader={<h4>Loading...</h4>}
                   scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
                 >
                   <Stack spacing={1} align="left">
-                    {AllUnansweredRepliesList?.map((row, index) => (
+                    {AllUnansweredRepliesList.length > 1 && AllUnansweredRepliesList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -651,53 +666,6 @@ export default function UnansweredRepliesPage() {
                   </Stack>
                 </InfiniteScroll>
               </div>
-              
-             {/* <div className='listinbox mt-3'> 
-                 <scrollbars>
-                  <Stack spacing={1} align="left">
-                    {AllUnansweredRepliesList?.map((row, index) => (
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-                        <Row>
-                          <Col xs={1} className="pr-0">
-                            <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
-                          </Col>
-                        </Row>
-                        <Col xs={11} className="pr-0">
-                          <Row>
-                            <Col xs={2}>
-                              <span className="inboxuserpic">
-                                <img src={defaultimage} width="55px" alt="" />
-                              </span>
-                            </Col>
-                            <Col xs={8}>
-                              <h4>{row.FromEmail}</h4>
-                              <h3>{row.Subject}</h3>
-                            </Col>
-                            <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                <StarBorderIcon className='starone' />
-                                <StarIcon className='selectedstart startwo' />
-                              </ToggleButton>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col xs={2} className='ja-center'>
-                              <div className='attachfile'>
-                                <input type="file" />
-                                <AttachFileIcon />
-                              </div>
-                            </Col>
-                            <Col xs={10}>
-                              <p>{row.Snippet}</p>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Item>
-                    ))}
-                  </Stack>
-                </scrollbars> 
-              </div>*/}
             </div>
           </Col>
           <Col className='rightinbox'>

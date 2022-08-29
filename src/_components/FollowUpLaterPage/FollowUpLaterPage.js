@@ -53,6 +53,7 @@ import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Style = {
   position: 'absolute',
@@ -102,11 +103,19 @@ export default function FollowUpLetterPage() {
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
+
   useEffect(() => {
 
     GetClientID();
     GetFollowUpLetterList();
-  }, [SearchInbox, ClientID, FollowUpLaterChecked, FromEmailDropdownListChecked]);
+
+
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchInbox, ClientID, FollowUpLaterChecked, FromEmailDropdownListChecked, Page]);
 
 
   // Get ClientID
@@ -143,8 +152,9 @@ export default function FollowUpLetterPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetInBoxList(Result.data.PageData);
+          SetInBoxList([...InBoxList, Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -290,7 +300,7 @@ export default function FollowUpLetterPage() {
   const CloseOtherInboxPopModel = () => {
     SetOtherInboxPopModel(false);
   }
-  const UpdateOtherInbox =(ID)=>{
+  const UpdateOtherInbox = (ID) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -308,8 +318,7 @@ export default function FollowUpLetterPage() {
           OpenMessageDetails('')
           GetFollowUpLetterList();
         }
-        else
-        {
+        else {
           CloseOtherInboxPopModel();
         }
       });
@@ -419,32 +428,42 @@ export default function FollowUpLetterPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
-     // Get Total Total Record Count
-     const GetTotalRecordCount = () => {
-      const Data = {
-        ClientID: ClientID,
-        UserID: UserID,
-        IsInbox: false,
-        IsStarred: false,
-        IsFollowUp: true,
-        IsSpam: false,
-        IsOtherInbox: false,
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetFollowUpLetterList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+  };
+
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: true,
+      IsSpam: false,
+      IsOtherInbox: false,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
       }
-      Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
-          method: "POST",
-          data: Data,
-      }).then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            debugger
-            if(Result.data.TotalCount >=0){
-              SetTotalCount(Result.data.TotalCount);
-            }else{
-              SetTotalCount(0);
-            }
-            
-          }
-      })
+    })
   }
 
   const Search = styled('div')(({ theme }) => ({
@@ -606,7 +625,7 @@ export default function FollowUpLetterPage() {
           </Box>
         </Modal>
 
-      
+
       </div>
 
       <div className='bodymain'>
@@ -698,10 +717,21 @@ export default function FollowUpLetterPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={InBoxList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {InBoxList?.map((row, index) => (  // datalist
+                    {InBoxList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
@@ -720,8 +750,8 @@ export default function FollowUpLetterPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -742,7 +772,7 @@ export default function FollowUpLetterPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>

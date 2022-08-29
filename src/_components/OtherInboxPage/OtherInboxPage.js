@@ -55,6 +55,8 @@ import { ResponseMessage } from "../../_constants/response.message";
 
 import HeaderTop from '../Header/header';
 import { GetUserDetails } from "../../_helpers/Utility";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const Style = {
   position: 'absolute',
@@ -105,14 +107,20 @@ export default function OtherInboxPage() {
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [ResponseData, SetResponseData] = useState([])
+  const [HasMore, SetHasMore] = useState(true)
   useEffect(() => {
 
     GetClientID();
     GetInBoxList();
-  }, [SearchInbox, ClientID,  InboxChecked,FromEmailDropdownListChecked]);
+
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
+  }, [SearchInbox, ClientID, InboxChecked, FromEmailDropdownListChecked, Page]);
 
 
-  
+
   // Get ClientID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
@@ -138,7 +146,7 @@ export default function OtherInboxPage() {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: true,
-      AccountIDs:FromEmailDropdownListChecked
+      AccountIDs: FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -147,14 +155,13 @@ export default function OtherInboxPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetInBoxList(Result.data.PageData);
+          SetInBoxList([...InBoxList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
-         
         }
-        else
-        {
+        else {
           SetInBoxList([]);
           OpenMessageDetails('');
         }
@@ -169,31 +176,30 @@ export default function OtherInboxPage() {
   // End Get InBoxList
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID,index) => {
-    
+  const OpenMessageDetails = (ID, index) => {
+
     if (ID != '') {
       SetMailNumber(index + 1)
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data[0]);
-      }
-      else {
-        SetOpenMessageDetails([]);
-      }
-    });
-  }
-  else
-  {
-    SetOpenMessageDetails([]);
-  }
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetOpenMessageDetails(Result.data.Data[0]);
+        }
+        else {
+          SetOpenMessageDetails([]);
+        }
+      });
+    }
+    else {
+      SetOpenMessageDetails([]);
+    }
   };
   //End Open Message Details
 
@@ -291,23 +297,21 @@ export default function OtherInboxPage() {
   // End Update Star Message and model open and close
 
   // Followup Message
-  const OpenFollowupPopModel = () =>
-  {
+  const OpenFollowupPopModel = () => {
     SetFollowupPopModel(true);
-  } 
-  const CloseFollowupPopModel = () =>
-  {
+  }
+  const CloseFollowupPopModel = () => {
     SetFollowupPopModel(false);
-  } 
+  }
   const SelectFollowupDate = (NewValue) => {
     SetFollowupDate(NewValue);
   };
-  const UpdateFollowupMessage=(ID)=>{
+  const UpdateFollowupMessage = (ID) => {
     if (ID != '') {
       var Data = {
         ID: ID,
-        IsFollowUp:true,
-        FollowupDate:FollowupDate,
+        IsFollowUp: true,
+        FollowupDate: FollowupDate,
         IsOtherInbox: false,
         LastUpdatedBy: -1
       };
@@ -325,7 +329,7 @@ export default function OtherInboxPage() {
       });
     }
   }
-// End Followup Message
+  // End Followup Message
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
     var UpdatedList = [...InboxChecked];
@@ -356,11 +360,10 @@ export default function OtherInboxPage() {
   }
   // End Search
 
- 
+
   const FromEmailList = () => {
     var ResultData = (localStorage.getItem('DropdownCheckData'));
-    if(ResultData=="Refresh")
-    {
+    if (ResultData == "Refresh") {
       var Data = {
         ClientID: ClientID,
         UserID: UserID,
@@ -388,13 +391,12 @@ export default function OtherInboxPage() {
         }
         else {
           SetFromEmailDropdownList([]);
-  
+
         }
       });
     }
-    else
-    {
-     
+    else {
+
       const element = document.getElementById("id_userboxlist")
       if (element.classList.contains("show")) {
         element.classList.remove("show");
@@ -410,7 +412,7 @@ export default function OtherInboxPage() {
   // Handle Change Dropdown List Manage by on React Js
   const FromEmailDropdownListCheckbox = (e) => {
     localStorage.removeItem("DropdownCheckData");
-  
+
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
@@ -419,7 +421,7 @@ export default function OtherInboxPage() {
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
- }
+  }
 
 
   const RefreshPage = () => {
@@ -429,6 +431,16 @@ export default function OtherInboxPage() {
     SetFromEmailDropdownListChecked([-1])
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
+
+  // Fetch More Data
+  const FetchMoreData = async () => {
+    SetPage(Page + 1);
+    await GetInBoxList()
+
+    if (ResponseData.length === 0) {
+      SetHasMore(false)
+    }
+  };
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -475,8 +487,8 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-   // Get Total Total Record Count
-   const GetTotalRecordCount = () => {
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
     const Data = {
       ClientID: ClientID,
       UserID: UserID,
@@ -487,27 +499,24 @@ export default function OtherInboxPage() {
       IsOtherInbox: true,
     }
     Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
-        method: "POST",
-        data: Data,
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
     }).then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          debugger
-          if(Result.data.TotalCount >=0){
-            SetTotalCount(Result.data.TotalCount);
-          }else{
-            SetTotalCount(0);
-          }
-          
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
         }
-    })
-}
 
+      }
+    })
+  }
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
-
-
 
 
   return (
@@ -596,7 +605,7 @@ export default function OtherInboxPage() {
           </Box>
         </Modal>
 
-             <Modal className="modal-pre"
+        <Modal className="modal-pre"
           open={FollowupPopModel}
           onClose={CloseFollowupPopModel}
           aria-labelledby="modal-modal-title"
@@ -616,7 +625,7 @@ export default function OtherInboxPage() {
               <div className="pt-3">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack spacing={0}>
-                    <DesktopDatePicker 
+                    <DesktopDatePicker
                       inputFormat="MM/dd/yyyy"
                       value={FollowupDate}
                       onChange={SelectFollowupDate}
@@ -728,11 +737,22 @@ export default function OtherInboxPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='listinbox mt-3'>
-                <scrollbars>
+              <div id="scrollableDiv" class="listinbox mt-3">
+                <InfiniteScroll
+                  dataLength={InBoxList.length}
+                  next={FetchMoreData}
+                  hasMore={HasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollableTarget="scrollableDiv"
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }
+                >
                   <Stack spacing={1} align="left">
-                    {InBoxList?.map((row,index) => (  // datalist
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id,index)}>
+                    {InBoxList?.map((row, index) => (
+                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                         <Row>
                           <Col xs={1} className="pr-0">
                             <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
@@ -750,8 +770,8 @@ export default function OtherInboxPage() {
                               <h3>{row.Subject}</h3>
                             </Col>
                             <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MessageDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={StarSelected} onClick={() => UpdateStarMessage(row._id)}>
+                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
@@ -772,7 +792,7 @@ export default function OtherInboxPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars>
+                </InfiniteScroll>
               </div>
             </div>
           </Col>
@@ -788,7 +808,7 @@ export default function OtherInboxPage() {
                     </Col>
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
                 </Col>
@@ -823,10 +843,10 @@ export default function OtherInboxPage() {
               </Row>
               <Row className='mb-3'>
                 <Col>
-                  <h2>{OpenMessage == 0 ?'':OpenMessage.Subject } </h2>
+                  <h2>{OpenMessage == 0 ? '' : OpenMessage.Subject} </h2>
                 </Col>
                 <Col>
-                  <h6>{OpenMessage == 0 ?'':Moment(OpenMessage.MessageDatetime).format("LLL")}</h6>
+                  <h6>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</h6>
                 </Col>
               </Row>
               <Row>
