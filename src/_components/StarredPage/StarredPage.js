@@ -105,6 +105,7 @@ export default function StarredPage() {
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
+  const [TotalCount, SetTotalCount] = React.useState(0);
   useEffect(() => {
 
     GetClientID();
@@ -156,6 +157,7 @@ export default function StarredPage() {
           SetStarredList([]);
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       }
       else {
         SetStarredList([]);
@@ -527,6 +529,35 @@ export default function StarredPage() {
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: true,
+      IsFollowUp: false,
+      IsSpam: false,
+      IsOtherInbox: false,
+    }
+    Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+        method: "POST",
+        data: Data,
+    }).then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          debugger
+          if(Result.data.TotalCount >=0){
+            SetTotalCount(Result.data.TotalCount);
+          }else{
+            SetTotalCount(0);
+          }
+          
+        }
+    })
+}
+
+
   return (
     <>
       <div>
@@ -663,7 +694,7 @@ export default function StarredPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {StarredList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>

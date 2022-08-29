@@ -104,6 +104,7 @@ export default function OtherInboxPage() {
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [FromEmailDropdownListChecked, SetFromEmailDropdownListChecked] = React.useState([-1]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [TotalCount, SetTotalCount] = React.useState(0);
   useEffect(() => {
 
     GetClientID();
@@ -150,12 +151,14 @@ export default function OtherInboxPage() {
           SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+         
         }
         else
         {
           SetInBoxList([]);
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       }
       else {
         SetInBoxList([]);
@@ -472,6 +475,33 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
+   // Get Total Total Record Count
+   const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsSpam: false,
+      IsOtherInbox: true,
+    }
+    Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+        method: "POST",
+        data: Data,
+    }).then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          debugger
+          if(Result.data.TotalCount >=0){
+            SetTotalCount(Result.data.TotalCount);
+          }else{
+            SetTotalCount(0);
+          }
+          
+        }
+    })
+}
 
 
   const WrapperRef = useRef(null);
@@ -619,7 +649,7 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {InBoxList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>
