@@ -599,7 +599,7 @@ export default function UnansweredRepliesPage() {
                 </Row>
               </div>
 
-              <div id="scrollableDiv" style={{ height: 300, overflow: "auto" }}>
+              <div id="scrollableDiv" class="listinbox mt-3"> 
                 <InfiniteScroll
                   dataLength={AllUnansweredRepliesList.length}
                   next={FetchMoreData}
@@ -652,13 +652,8 @@ export default function UnansweredRepliesPage() {
                 </InfiniteScroll>
               </div>
               
-              <div className='listinbox mt-3'>
-                <div className="list">
-                  <div className="list-inner" >
-
-                  </div>
-                </div>
-                {/* <scrollbars>
+             {/* <div className='listinbox mt-3'> 
+                 <scrollbars>
                   <Stack spacing={1} align="left">
                     {AllUnansweredRepliesList?.map((row, index) => (
                       <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
@@ -701,8 +696,8 @@ export default function UnansweredRepliesPage() {
                       </Item>
                     ))}
                   </Stack>
-                </scrollbars> */}
-              </div>
+                </scrollbars> 
+              </div>*/}
             </div>
           </Col>
           <Col className='rightinbox'>
