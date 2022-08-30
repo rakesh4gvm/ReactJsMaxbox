@@ -77,6 +77,7 @@ export default function DraftsPage() {
   const [SelectAllCheckbox, SetSelectAllCheckbox] = React.useState(false);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [ResponseData, SetResponseData] = useState([])
+  const [TotalCount, SetTotalCount] = React.useState(0);
   const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
@@ -98,6 +99,7 @@ export default function DraftsPage() {
 
   // Start Get Draft List
   const GetDraftList = () => {
+    debugger
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -125,6 +127,7 @@ export default function DraftsPage() {
           SetDraftList([]);
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       }
       else {
         SetDraftList([]);
@@ -257,6 +260,30 @@ export default function DraftsPage() {
     SetInboxChecked([]);
   }
 
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    debugger
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/draft_template/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
+      }
+    })
+  }
+
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
@@ -386,7 +413,7 @@ export default function DraftsPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {DraftList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>

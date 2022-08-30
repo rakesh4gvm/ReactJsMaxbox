@@ -432,6 +432,34 @@ export default function OtherInboxPage() {
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsSpam: false,
+      IsOtherInbox: true,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
+      }
+    })
+  }
+
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
@@ -487,33 +515,7 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-  // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
-    const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
-      IsInbox: false,
-      IsStarred: false,
-      IsFollowUp: false,
-      IsSpam: false,
-      IsOtherInbox: true,
-    }
-    Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
-      method: "POST",
-      data: Data,
-    }).then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
-        if (Result.data.TotalCount >= 0) {
-          SetTotalCount(Result.data.TotalCount);
-        } else {
-          SetTotalCount(0);
-        }
-
-      }
-    })
-  }
+  
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
