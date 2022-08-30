@@ -119,7 +119,7 @@ export default function DraftsPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetDraftList([...DraftList, Result.data.PageData]);
+          SetDraftList([...DraftList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -535,8 +535,8 @@ export default function DraftsPage() {
                                   </span>
                                 </Col>
                                 <Col xs={8}>
-                                  <h4>{row.FromEmail}</h4>
-                                  <h3>{row.Subject}</h3>
+                                  <h4>{row.Subject}</h4>
+                                  <h3>{row.Body}</h3>
                                 </Col>
                                 <Col xs={2} className="pl-0">
                                   <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
