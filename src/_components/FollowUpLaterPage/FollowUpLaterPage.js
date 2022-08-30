@@ -107,11 +107,8 @@ export default function FollowUpLetterPage() {
   const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
-
     GetClientID();
     GetFollowUpLetterList();
-
-
     if (ResponseData.length <= 10) {
       SetHasMore(false)
     }
@@ -159,7 +156,7 @@ export default function FollowUpLetterPage() {
           SetMailNumber(1)
         }
         else {
-          SetInBoxList([]);
+          SetInBoxList([...InBoxList]);
           OpenMessageDetails('');
         }
         GetTotalRecordCount();
@@ -717,63 +714,79 @@ export default function FollowUpLetterPage() {
                   </Col>
                 </Row>
               </div>
-              <div id="scrollableDiv" class="listinbox mt-3">
-                <InfiniteScroll
-                  dataLength={InBoxList.length}
-                  next={FetchMoreData}
-                  hasMore={HasMore}
-                  loader={<h4>Loading...</h4>}
-                  scrollableTarget="scrollableDiv"
-                  endMessage={
-                    <p style={{ textAlign: "center" }}>
-                      <b>Yay! You have seen it all</b>
-                    </p>
-                  }
-                >
-                  <Stack spacing={1} align="left">
-                    {InBoxList?.map((row, index) => (
-                      <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-                        <Row>
-                          <Col xs={1} className="pr-0">
-                            <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
-                          </Col>
-                        </Row>
-                        <Col xs={11} className="pr-0">
-                          <Row>
-                            <Col xs={2}>
-                              <span className="inboxuserpic">
-                                <img src={defaultimage} width="55px" alt="" />
-                              </span>
+              {
+                InBoxList.length === 0
+                  ?
+                  <div id="scrollableDiv" class="listinbox mt-3">
+                    <InfiniteScroll
+                      dataLength={InBoxList.length}
+                      next={FetchMoreData}
+                      hasMore={false}
+                      loader={<h4></h4>}
+                      scrollableTarget="scrollableDiv"
+                    >
+                    </InfiniteScroll>
+                  </div>
+                  :
+                  <div id="scrollableDiv" class="listinbox mt-3">
+                    <InfiniteScroll
+                      dataLength={InBoxList.length}
+                      next={FetchMoreData}
+                      hasMore={HasMore}
+                      loader={<h4>Loading...</h4>}
+                      scrollableTarget="scrollableDiv"
+                      endMessage={
+                        <p style={{ textAlign: "center" }}>
+                          <b>Yay! You have seen it all</b>
+                        </p>
+                      }
+                    >
+                      <Stack spacing={1} align="left">
+                        {InBoxList?.map((row, index) => (
+                          <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
+                            <Row>
+                              <Col xs={1} className="pr-0">
+                                <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                              </Col>
+                            </Row>
+                            <Col xs={11} className="pr-0">
+                              <Row>
+                                <Col xs={2}>
+                                  <span className="inboxuserpic">
+                                    <img src={defaultimage} width="55px" alt="" />
+                                  </span>
+                                </Col>
+                                <Col xs={8}>
+                                  <h4>{row.FromEmail}</h4>
+                                  <h3>{row.Subject}</h3>
+                                </Col>
+                                <Col xs={2} className="pl-0">
+                                  <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                  <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                    <StarBorderIcon className='starone' />
+                                    <StarIcon className='selectedstart startwo' />
+                                  </ToggleButton>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col xs={2} className='ja-center'>
+                                  <div className='attachfile'>
+                                    <input type="file" />
+                                    <AttachFileIcon />
+                                  </div>
+                                </Col>
+                                <Col xs={10}>
+                                  <p>{row.Snippet}</p>
+                                </Col>
+                              </Row>
                             </Col>
-                            <Col xs={8}>
-                              <h4>{row.FromEmail}</h4>
-                              <h3>{row.Subject}</h3>
-                            </Col>
-                            <Col xs={2} className="pl-0">
-                              <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                              <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                <StarBorderIcon className='starone' />
-                                <StarIcon className='selectedstart startwo' />
-                              </ToggleButton>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col xs={2} className='ja-center'>
-                              <div className='attachfile'>
-                                <input type="file" />
-                                <AttachFileIcon />
-                              </div>
-                            </Col>
-                            <Col xs={10}>
-                              <p>{row.Snippet}</p>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Item>
-                    ))}
-                  </Stack>
-                </InfiniteScroll>
-              </div>
+                          </Item>
+                        ))}
+                      </Stack>
+                    </InfiniteScroll>
+                  </div>
+              }
+
             </div>
           </Col>
           <Col className='rightinbox'>
