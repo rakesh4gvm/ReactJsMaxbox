@@ -95,6 +95,7 @@ export default function AllSentEnailsPage() {
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
+  const [TotalCount, SetTotalCount] = React.useState(0);
 
   useEffect(() => {
     GetClientID();
@@ -146,6 +147,7 @@ export default function AllSentEnailsPage() {
           SetAllSentEmailsList([...AllSentEmailsList]);
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       }
       else {
         SetAllSentEmailsList([]);
@@ -387,6 +389,30 @@ export default function AllSentEnailsPage() {
       SetHasMore(false)
     }
   };
+
+    // Get Total Total Record Count
+    const GetTotalRecordCount = () => {
+      const Data = {
+        ClientID: ClientID,
+        UserID: UserID,
+        
+      }
+      Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
+        method: "POST",
+        data: Data,
+      }).then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          debugger
+          if (Result.data.TotalCount >= 0) {
+            SetTotalCount(Result.data.TotalCount);
+          } else {
+            SetTotalCount(0);
+          }
+  
+        }
+      })
+    }
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',

@@ -96,6 +96,7 @@ export default function UnansweredRepliesPage() {
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
+  const [TotalCount, SetTotalCount] = React.useState(0);
 
   useEffect(() => {
     GetClientID();
@@ -148,6 +149,7 @@ export default function UnansweredRepliesPage() {
           SetHasMore(false)
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       }
       else {
         SetAllUnanswereRepliesList([]);
@@ -380,7 +382,7 @@ export default function UnansweredRepliesPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
-    debugger
+    
     SetPage(Page + 1);
     await GetAllUnanswereRepliesList()
 
@@ -388,6 +390,30 @@ export default function UnansweredRepliesPage() {
       SetHasMore(false)
     }
   };
+
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
+      }
+    })
+  }
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
