@@ -105,7 +105,7 @@ export default function UnansweredResponsesPage() {
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
-
+  const [TotalCount, SetTotalCount] = React.useState(0);
 
   useEffect(() => {
     GetClientID()
@@ -160,6 +160,7 @@ export default function UnansweredResponsesPage() {
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           OpenMessageDetails('');
         }
+        GetTotalRecordCount();
       } else {
         SetUnansweredResponsesList([]);
         OpenMessageDetails('');
@@ -469,6 +470,35 @@ export default function UnansweredResponsesPage() {
   }
   // End Page Refresh
 
+  // Get Total Total Record Count
+  const GetTotalRecordCount = () => {
+    const Data = {
+      ClientID: ClientID,
+      UserID: UserID,
+      IsInbox: true,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsOtherInbox: false,
+      IsSpam: false,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
+      }
+    })
+  }
+
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -681,7 +711,7 @@ export default function UnansweredResponsesPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {UnansweredResponsesList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>
