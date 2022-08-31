@@ -74,6 +74,7 @@ import google_drive from '../../images/icons/google_drive.svg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
 
 toast.configure();
 const Style = {
@@ -465,7 +466,6 @@ export default function OtherInboxPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -502,33 +502,33 @@ export default function OtherInboxPage() {
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
 
-    
-    if(Body == ""){
+
+    if (Body == "") {
       toast.error("Please Enter Body");
-    }else{
+    } else {
 
-    var Data = {
-      ToEmail: ToEmail,
-      ToName: ToName,
-      ID: ID,
-      Subject: Subject,
-      Body: Body
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        ReplyPopModelClose();
-      }
-      else {
-        ReplyPopModelClose();
-      }
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: ToName,
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          ReplyPopModelClose();
+        }
+        else {
+          ReplyPopModelClose();
+        }
 
-    });
-  }
+      });
+    }
   }
 
 
@@ -949,7 +949,7 @@ export default function OtherInboxPage() {
                     <a href='#' className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}  /></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                   </Col>
                 </Row>
               </div>
@@ -1031,8 +1031,7 @@ export default function OtherInboxPage() {
         </Row>
       </div>
 
-      <Compose />
-
+      <OtherInboxComposePage GetInBoxList={GetInBoxList} />
     </>
   );
 }
