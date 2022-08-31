@@ -59,6 +59,11 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -471,6 +476,10 @@ export default function StarredPage() {
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
 
+    if(Body == ""){
+      toast.error("Please Enter Body");}
+      else{
+
     var Data = {
       ToEmail: ToEmail,
       ToName: ToName,
@@ -491,7 +500,7 @@ export default function StarredPage() {
         ReplyPopModelClose();
       }
 
-    });
+    });}
   }
 
 
