@@ -20,7 +20,21 @@ import image_light from '../../images/icons/image_light.svg';
 import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
-import template from '../../images/icons/template.svg';
+import template from '../../images/icons/template.svg'; import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+const Style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -89,30 +103,35 @@ export default function StarredComposePage({ GetStarredList }) {
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
 
-        const Data = {
-            ToEmail: ToEmail,
-            Body: Body,
-            Subject: Subject,
-            UserID: UserID,
-            ClientID: ClientID,
-            IsUnansweredResponsesMail: false,
-            IsStarredMail: true,
-            IsFollowUpLaterMail: false,
-            CreatedBy: 1
-        }
+        if (ToEmail == "" || Subject == "" || Body == "") {
+            toast.error("All Fields are Mandatory!");
+        } else {
 
-        Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
-            method: "POST",
-            data: Data,
-        }).then((Result) => {
-            if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                OpenCompose();
-                CloseCompose()
-                GetStarredList()
-                SetState({ To: "", Subject: "", Body: "" })
+            const Data = {
+                ToEmail: ToEmail,
+                Body: Body,
+                Subject: Subject,
+                UserID: UserID,
+                ClientID: ClientID,
+                IsUnansweredResponsesMail: false,
+                IsStarredMail: true,
+                IsFollowUpLaterMail: false,
+                CreatedBy: 1
             }
-        })
+
+            Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
+                method: "POST",
+                data: Data,
+            }).then((Result) => {
+                if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                    OpenCompose();
+                    CloseCompose()
+                    GetStarredList()
+                    SetState({ To: "", Subject: "", Body: "" })
+                }
+            })
+        }
     }
 
     const WrapperRef = useRef(null);
