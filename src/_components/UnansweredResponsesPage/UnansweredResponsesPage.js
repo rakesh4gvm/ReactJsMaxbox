@@ -489,7 +489,6 @@ export default function UnansweredResponsesPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {

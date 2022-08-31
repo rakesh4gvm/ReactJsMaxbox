@@ -84,8 +84,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         SetState({ ...State, [e.target.name]: e.target.value })
     }
 
-    // Add DraftTemplate
-    const AddDraftTemplate = async () => {
+    // Sent Mail
+    const SentMail = async () => {
 
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
@@ -93,11 +93,10 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
         const Data = {
             ToEmail: ToEmail,
+            Body: TextBody,
             Subject: Subject,
-            TextBody: TextBody,
             UserID: UserID,
             ClientID: ClientID,
-            IsOtherInboxMail: false,
             IsUnansweredResponsesMail: true,
             IsStarredMail: false,
             IsFollowUpLaterMail: false,
@@ -105,7 +104,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
 
         Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryMailAdd",
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
             method: "POST",
             data: Data,
         }).then((Result) => {
@@ -189,7 +188,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                         <Row className='px-3'>
                             <Col xs={10} className='px-0'>
                                 <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn" onClick={AddDraftTemplate}> Save</Button>
+                                    <Button variant="contained btn btn-primary smallbtn" onClick={SentMail}> Save</Button>
                                     <Button>
                                         <img src={text_font} />
                                     </Button>
