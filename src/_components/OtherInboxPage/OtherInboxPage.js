@@ -39,6 +39,9 @@ import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 
+
+
+
 import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -69,6 +72,10 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -495,10 +502,9 @@ export default function OtherInboxPage() {
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
 
-    debugger
+    
     if(Body == ""){
-      <Alert severity="error">   <strong> Sorry!</strong> No Client To Display</Alert>
-      return
+      toast.error("Please Enter Body");
     }else{
 
     var Data = {

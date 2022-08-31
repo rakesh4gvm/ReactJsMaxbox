@@ -3,6 +3,7 @@ import Axios from "axios";
 import Moment from "moment";
 import parse from "html-react-parser";
 
+import { Alert, Stack2 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -63,6 +64,11 @@ import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const Style = {
   position: 'absolute',
@@ -542,7 +548,10 @@ export default function SpamPage() {
     var ID = ObjMailData._id
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
-
+    debugger
+    if(Body == ""){
+      toast.error("Please Enter Body");
+    }else{
     var Data = {
       ToEmail: ToEmail,
       ToName: ToName,
@@ -563,7 +572,7 @@ export default function SpamPage() {
         ReplyPopModelClose();
       }
 
-    });
+    });}
   }
 
 
