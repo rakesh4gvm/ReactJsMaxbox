@@ -55,6 +55,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
+import FollowUpLaterComposePage from '../FollowUpLaterComposePage/FollowUpLaterComposePage';
 
 import { TextareaAutosize } from '@mui/material';
 import text_font from '../../images/icons/text_font.svg';
@@ -466,7 +467,6 @@ export default function FollowUpLetterPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -502,31 +502,31 @@ export default function FollowUpLetterPage() {
     var ID = ObjMailData._id
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
-    if(Body == ""){
+    if (Body == "") {
       toast.error("Please Enter Body");
-    }else{
-    var Data = {
-      ToEmail: ToEmail,
-      ToName: ToName,
-      ID: ID,
-      Subject: Subject,
-      Body: Body
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        ReplyPopModelClose();
-      }
-      else {
-        ReplyPopModelClose();
-      }
+    } else {
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: ToName,
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          ReplyPopModelClose();
+        }
+        else {
+          ReplyPopModelClose();
+        }
 
-    });
-  }
+      });
+    }
   }
 
 
@@ -1002,7 +1002,7 @@ export default function FollowUpLetterPage() {
         </Row>
       </div>
 
-      <Compose />
+      <FollowUpLaterComposePage GetFollowUpLaterList={GetFollowUpLetterList} />
 
     </>
   );

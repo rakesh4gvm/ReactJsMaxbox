@@ -32,10 +32,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
+import { TextareaAutosize } from '@mui/material';
 
-import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
-import iconleftright from '../../images/icon_left_right.svg';
 import icontimer from '../../images/icon_timer.svg';
 import inbox from '../../images/inbox.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
@@ -50,8 +49,8 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
+import StarredComposePage from '../StarredComposePage/StarredComposePage';
 
-import { TextareaAutosize } from '@mui/material';
 import text_font from '../../images/icons/text_font.svg';
 import attachment from '../../images/icons/attachment.svg';
 import image_light from '../../images/icons/image_light.svg';
@@ -563,7 +562,6 @@ export default function StarredPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -1008,8 +1006,7 @@ export default function StarredPage() {
         </Row>
       </div>
 
-      {/* <Compose /> */}
-
+      <StarredComposePage GetStarredList={GetStarredList} />
     </>
   );
 }
