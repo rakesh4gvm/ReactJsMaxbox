@@ -54,6 +54,21 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { TextareaAutosize } from '@mui/material';
+import text_font from '../../images/icons/text_font.svg';
+import attachment from '../../images/icons/attachment.svg';
+import image_light from '../../images/icons/image_light.svg';
+import smiley_icons from '../../images/icons/smiley_icons.svg';
+import signature from '../../images/icons/signature.svg';
+import link_line from '../../images/icons/link_line.svg';
+import google_drive from '../../images/icons/google_drive.svg';
+
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -499,6 +514,63 @@ export default function UnansweredResponsesPage() {
     })
   }
 
+  
+  const ReplyPopModel = (ObjMailsData) => {
+    const element = document.getElementsByClassName("user_editor")
+    document.getElementById("replybody").value = "";
+    if (element[0].classList.contains("d-none")) {
+      element[0].classList.remove("d-none");
+      if (ObjMailsData != '') {
+        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        document.getElementById("lblreplytoemail").innerHTML = ToEmail
+        document.getElementById("lblreplytoemail").value = ToEmail
+      }
+    }
+
+  }
+
+  const ReplyPopModelClose = () => {
+    const element = document.getElementsByClassName("user_editor")
+    element[0].classList.add("d-none");
+  }
+
+  const ReplySendMail = (ObjMailData) => {
+    var ToEmail = ObjMailData.FromEmail;
+    var ToName = ObjMailData.FromName
+    var ID = ObjMailData._id
+    var Subject = ObjMailData.Subject;
+    var Body = document.getElementById("replybody").value;
+
+    
+    if(Body == ""){
+      toast.error("Please Enter Body");
+    }else{
+
+    var Data = {
+      ToEmail: ToEmail,
+      ToName: ToName,
+      ID: ID,
+      Subject: Subject,
+      Body: Body
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        ReplyPopModelClose();
+      }
+      else {
+        ReplyPopModelClose();
+      }
+
+    });
+  }
+  }
+
+
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -934,10 +1006,83 @@ export default function UnansweredResponsesPage() {
                     <a href='#' className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+                  <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}  /></a>
                   </Col>
                 </Row>
               </div>
+              <div className='user_editor d-none mt-5'>
+                  <Row className='userlist'>
+                    <Col className='fixwidleft'>
+                      <span className="inboxuserpic">
+                        <img src={inboxuser1} width="63px" alt="" />
+                      </span>
+                    </Col>
+                    <Col className='fixwidright p-0'>
+                      <div className='editorboxcard'>
+                        <Row className='edittoprow p-2'>
+                          <Col className='d-flex hedtopedit'>
+                            <a href='#' className='p-1'><img src={iconsarrow2} /></a>
+                            <h6><KeyboardArrowDownIcon /></h6>
+                            <label id='lblreplytoemail'></label>
+                          </Col>
+                        </Row>
+                        <Row className='px-2'>
+                          <Col className='bodyeditor'>
+                            <TextareaAutosize className='w-100'
+                              aria-label="minimum height"
+                              minRows={3}
+                              placeholder=""
+                              id='replybody'
+                            />
+                          </Col>
+                        </Row>
+
+                        <div className='ftcompose px-3'>
+                          <Row className='px-3'>
+                            <Col xs={10} className='px-0'>
+                              <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                                <Button variant="contained btn btn-primary smallbtn" onClick={() => ReplySendMail(OpenMessage)}> Send</Button>
+                                <Button>
+                                  <img src={text_font} />
+                                </Button>
+                                <Button>
+                                  <img src={attachment} />
+                                </Button>
+                                <Button>
+                                  <img src={image_light} />
+                                </Button>
+                                <Button>
+                                  <img src={smiley_icons} />
+                                </Button>
+                                <Button>
+                                  <img src={google_drive} />
+                                </Button>
+                                <Button>
+                                  <img src={link_line} />
+                                </Button>
+                                <Button>
+                                  <img src={signature} />
+                                </Button>
+                              </ButtonGroup>
+                            </Col>
+
+                            <Col xs={2} className='px-0 text-right'>
+                              <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                                <Button onClick={() => ReplyPopModelClose()}>
+                                  <img src={icondelete} />
+                                </Button>
+                                <Button>
+                                  <img src={iconmenu} />
+                                </Button>
+                              </ButtonGroup>
+                            </Col>
+                          </Row>
+                        </div>
+
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
             </div>
           </Col>
         </Row>
