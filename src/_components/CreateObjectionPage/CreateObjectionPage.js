@@ -139,7 +139,7 @@ export default function CreateObjectionTemplatePage({ children }) {
           ClientID: ClientID,
           CreatedBy: 1
         }
-        debugger
+        
         var ExistsObjectionTemplate = await CheckExistObjectionTemplate(Subject)
   
         if (ExistsObjectionTemplate === ResponseMessage.SUCCESS) {
