@@ -20,7 +20,8 @@ import image_light from '../../images/icons/image_light.svg';
 import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
-import template from '../../images/icons/template.svg'; import { toast } from "react-toastify";
+import template from '../../images/icons/template.svg';
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
@@ -96,6 +97,16 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         SetState({ ...State, [e.target.name]: e.target.value })
     }
 
+    // Validate Email
+    const ValidateEmail = (Email) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
     // Sent Mail
     const SentMail = async () => {
 
@@ -103,34 +114,40 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
 
+        const IsEmailValid = ValidateEmail(ToEmail)
+
         if (ToEmail == "" || Subject == "" || Body == "") {
             toast.error("All Fields are Mandatory!");
         } else {
 
-            const Data = {
-                ToEmail: ToEmail,
-                Body: Body,
-                Subject: Subject,
-                UserID: UserID,
-                ClientID: ClientID,
-                IsUnansweredResponsesMail: true,
-                IsStarredMail: false,
-                IsFollowUpLaterMail: false,
-                CreatedBy: 1
-            }
-
-            Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
-                method: "POST",
-                data: Data,
-            }).then((Result) => {
-                if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    OpenCompose();
-                    CloseCompose()
-                    GetInBoxList()
-                    SetState({ To: "", Subject: "", Body: "" })
+            if (IsEmailValid) {
+                const Data = {
+                    ToEmail: ToEmail,
+                    Body: Body,
+                    Subject: Subject,
+                    UserID: UserID,
+                    ClientID: ClientID,
+                    IsUnansweredResponsesMail: true,
+                    IsStarredMail: false,
+                    IsFollowUpLaterMail: false,
+                    CreatedBy: 1
                 }
-            })
+
+                Axios({
+                    url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
+                    method: "POST",
+                    data: Data,
+                }).then((Result) => {
+                    if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                        OpenCompose();
+                        CloseCompose()
+                        GetInBoxList()
+                        SetState({ To: "", Subject: "", Body: "" })
+                    }
+                })
+            } else {
+                toast.error("Please Enter Valid Email!")
+            }
         }
     }
 
