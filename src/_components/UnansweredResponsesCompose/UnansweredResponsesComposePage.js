@@ -6,8 +6,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
-import MenuItem from '@mui/material/MenuItem'; 
-import Select from '@mui/material/Select'; 
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 import { Col, Row } from 'react-bootstrap';
 import Close from '../../images/icons/w-close.svg';
@@ -57,6 +57,8 @@ function useOutsideAlerter(ref) {
 export default function UnansweredResponsesComposePage({ GetUnansweredResponsesList }) {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
+    const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
+    const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
     const [State, SetState] = useState({
         To: "",
         Subject: "",
@@ -65,7 +67,26 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     useEffect(() => {
         GetClientID()
+        GetEmailAccountUsers()
     }, [ClientID])
+
+    const GetEmailAccountUsers = () => {
+        const Data = {
+            ClientID: ClientID,
+            UserID: UserID,
+        }
+
+        Axios({
+            url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                SetEmailAccountUsers(Result.data.PageData)
+            }
+        })
+    }
+    console.log("EmailAccountUsers=====", EmailAccountUsers)
 
     // Open Compose
     const OpenCompose = () => {
@@ -111,6 +132,13 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     };
 
+
+    const SelectEmailAccountUser = (e) => {
+        SetSelectedEmailAccountUser(e.target.value)
+    }
+
+    const SelectedUser = EmailAccountUsers.find(o => o._id === SelectedEmailAccountUser)
+
     // Sent Mail
     const SentMail = async () => {
 
@@ -128,6 +156,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    FromEmail: SelectedUser.Email,
+                    RefreshToken: SelectedUser.RefreshToken,
                     UserID: UserID,
                     ClientID: ClientID,
                     IsUnansweredResponsesMail: true,
@@ -158,6 +188,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     useOutsideAlerter(WrapperRef);
     const [age, setAge] = React.useState('');
 
+
+
     return (
         <>
             <div className='composebody'>
@@ -186,23 +218,27 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                             <Col xs={2} className="px-0 pt-1">
                                 <h6>Email Account :</h6>
                             </Col>
-                            <Col xs={10} className="px-1"> 
-                                <div className='comse-select'> 
+                            <Col xs={10} className="px-1">
+                                <div className='comse-select'>
                                     <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={age}
-                                        label="Age"> 
-                                        <MenuItem value="">
-                                        <em>None</em>
+                                        value={SelectedEmailAccountUser}
+                                        onChange={SelectEmailAccountUser}
+                                    >
+                                        {
+                                            EmailAccountUsers.map((row) => (
+                                                <MenuItem value={row?._id}>{row?.Email}</MenuItem>
+                                            ))
+                                        }
+                                        {/* <MenuItem value="">
+                                            <em>None</em>
                                         </MenuItem>
                                         <MenuItem value={10} selected>Ten</MenuItem>
                                         <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem> */}
                                     </Select>
                                 </div>
 
-                            </Col> 
+                            </Col>
                         </Row>
                     </div>
                     <div className='subcompose px-3 py-2'>
