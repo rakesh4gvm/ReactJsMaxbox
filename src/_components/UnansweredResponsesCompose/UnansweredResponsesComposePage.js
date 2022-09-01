@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Axios from "axios"
+import Axios from "axios" 
+ 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem'; 
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -38,18 +42,18 @@ const Style = {
 };
 
 function useOutsideAlerter(ref) {
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                const element = document.getElementById("UserCompose")
-                element.classList.remove("show");
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [ref]);
+    // useEffect(() => {
+    //     function handleClickOutside(event) {
+    //         if (ref.current && !ref.current.contains(event.target)) {
+    //             const element = document.getElementById("UserCompose")
+    //             element.classList.remove("show");
+    //         }
+    //     }
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [ref]);
 }
 
 export default function UnansweredResponsesComposePage({ GetUnansweredResponsesList }) {
@@ -139,6 +143,12 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
 
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setAge(event.target.value);
+    };
+
     return (
         <>
             <div className='composebody'>
@@ -160,6 +170,31 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                     </Button>
                                 </ButtonGroup>
                             </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose px-3 py-2'>
+                        <Row className='px-3'>
+                            <Col xs={2} className="px-0 pt-1">
+                                <h6>Email Account :</h6>
+                            </Col>
+                            <Col xs={10} className="px-1"> 
+                                <div className='comse-select'> 
+                                    <Select
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={age}
+                                        label="Age"
+                                        onChange={handleChange}> 
+                                        <MenuItem value="">
+                                        <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={10} selected>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </div>
+
+                            </Col> 
                         </Row>
                     </div>
                     <div className='subcompose px-3 py-2'>

@@ -595,11 +595,12 @@ button.smallbtn, .ftcompose-btn button.smallbtn{
 .bodycompose textarea {
     border: none;
     outline: none;
-    min-height: 130px;
+    min-height: 140px;
     font-size: 16px;
     resize: none;
+    height: auto !important;
     max-height: 50vh;
-  }
+}
 .ftcompose {
     border-top: 1px solid #E5E5E5;
     padding: 16px 0; 
@@ -1031,9 +1032,9 @@ Button.btntemplateround:hover {
 .sign-main label{
     color: #909092;
 }
-div#menu- {
+/* div#menu- {
     margin-top: 41px;
-}
+} */
 .header-white{
     background-color: #fff;
     position: fixed;
@@ -1064,6 +1065,16 @@ div.erorr-msg > * > * {
     line-height: 20px;
     width: 100%;
     margin: 0;  
+}
+.comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{ 
+    padding: 8.5px 17px;
+    min-width: 430px;
+}
+.comse-select div fieldset legend{ 
+    display: none;
+}
+.comse-select div fieldset{ 
+    top: -1px;
 }
 
 @media screen and (max-width:990px){
