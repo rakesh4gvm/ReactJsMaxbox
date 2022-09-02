@@ -19,6 +19,8 @@ import CreateObjectionPage from '../src/_components/CreateObjectionPage/CreateOb
 import EditObjectionTemplatePage from '../src/_components/EditObjectionTemplatePage/EditObjectionTemplatePage';
 import RegisterPage from './_components/RegisterPage/RegisterPage';
 import LoginPage from './_components/LoginPage/LoginPage';
+import ForgetpasswordPage from './_components/ForgetpasswordPage/ForgetpasswordPage';
+import ConfirmpasswordPage from './_components/ConfirmpasswordPage/ConfirmpasswordPage';
 import EditEmailPage from './_components/EditEmailPage/EditEmailPage';
 import ClientListPage from './_components/ClientListPage/ClientListPage';
 import AddClientPage from './_components/AddClientPage/AddClientPage';
@@ -62,6 +64,8 @@ function App() {
           <Route exact path="/AddClient" component={AddClientPage} />
           <Route exact path="/EditClient" component={EditClientPage} />
           <Route exact path="/EditTemplates" component={EditTemplatesPage} />
+          <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
+          <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
           <Route exact path="/" component={LoginPage} />
          
 

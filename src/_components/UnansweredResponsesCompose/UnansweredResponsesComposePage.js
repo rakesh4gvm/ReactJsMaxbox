@@ -64,6 +64,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         Subject: "",
         Body: ""
     })
+    const [Ccflag, SetCcflag] = useState(false); 
+    const [Bccflag, SetBccflag] = useState(false); 
 
     useEffect(() => {
         GetClientID()
@@ -107,6 +109,31 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         element.classList.remove("show");
 
     }
+
+    
+    // Open cc
+    const OpenCc = () => {
+        if(Ccflag == false){
+           document.getElementById("Cc").style.display = 'block'
+           SetCcflag(true);
+        }
+        else {
+            document.getElementById("Cc").style.display = 'none'
+            SetCcflag(false);
+        } 
+    };
+    // Open bcc
+    const OpenBcc = () => {
+        if(Bccflag == false){
+           document.getElementById("Bcc").style.display = 'block'
+           SetBccflag(true);
+        }
+        else {
+            document.getElementById("Bcc").style.display = 'none'
+            SetBccflag(false);
+        } 
+    };
+ 
 
     // Get Client ID
     const GetClientID = () => {
@@ -173,7 +200,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                         OpenCompose();
-                        CloseCompose()
+                        CloseCompose() 
                         GetUnansweredResponsesList()
                         SetState({ To: "", Subject: "", Body: "" })
                     }
@@ -251,8 +278,28 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
                             </Col>
                             <Col xs={2} className='col text-right d-flex'>
-                                <Button className='lable-btn'>Cc</Button>
-                                <Button className='lable-btn'>Bcc</Button>
+                                <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
+                                <Button className='lable-btn' onClick={OpenBcc}>Bcc</Button>
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose cc px-3 py-2' id='Cc'>
+                        <Row className='px-3'>
+                            <Col xs={1} className="px-0">
+                                <h6>Cc :</h6>
+                            </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Subject' name='Cc' />
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose bcc px-3 py-2' id='Bcc'>
+                        <Row className='px-3'>
+                            <Col xs={1} className="px-0">
+                                <h6>Bcc :</h6>
+                            </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Subject' name='Bcc' />
                             </Col>
                         </Row>
                     </div>

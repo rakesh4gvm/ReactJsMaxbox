@@ -1076,6 +1076,9 @@ div.erorr-msg > * > * {
 .comse-select div fieldset{ 
     top: -1px;
 }
+.cc, .bcc{
+    display: none;
+} 
 
 @media screen and (max-width:990px){
     .mobile-nav {
