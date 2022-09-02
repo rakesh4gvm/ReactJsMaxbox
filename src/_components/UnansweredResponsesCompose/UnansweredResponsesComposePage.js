@@ -62,10 +62,12 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [State, SetState] = useState({
         To: "",
         Subject: "",
-        Body: ""
+        Body: "",
+        CC: "",
+        BCC: ""
     })
-    const [Ccflag, SetCcflag] = useState(false); 
-    const [Bccflag, SetBccflag] = useState(false); 
+    const [Ccflag, SetCcflag] = useState(false);
+    const [Bccflag, SetBccflag] = useState(false);
 
     useEffect(() => {
         GetClientID()
@@ -110,30 +112,30 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     }
 
-    
+
     // Open cc
     const OpenCc = () => {
-        if(Ccflag == false){
-           document.getElementById("Cc").style.display = 'block'
-           SetCcflag(true);
+        if (Ccflag == false) {
+            document.getElementById("Cc").style.display = 'block'
+            SetCcflag(true);
         }
         else {
             document.getElementById("Cc").style.display = 'none'
             SetCcflag(false);
-        } 
+        }
     };
     // Open bcc
     const OpenBcc = () => {
-        if(Bccflag == false){
-           document.getElementById("Bcc").style.display = 'block'
-           SetBccflag(true);
+        if (Bccflag == false) {
+            document.getElementById("Bcc").style.display = 'block'
+            SetBccflag(true);
         }
         else {
             document.getElementById("Bcc").style.display = 'none'
             SetBccflag(false);
-        } 
+        }
     };
- 
+
 
     // Get Client ID
     const GetClientID = () => {
@@ -150,8 +152,11 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     }
 
     // Validate Email
-    const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+    const ValidateEmail = (Email, CC, BCC) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)
+            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(CC)
+            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(BCC)
+        ) {
             return false;
         }
         else {
@@ -164,7 +169,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     }
 
     const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
-    console.log("SelectedUser======", SelectedUser)
 
     // Sent Mail
     const SentMail = async () => {
@@ -172,10 +176,12 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
+        var CC = document.getElementById("CC").value;
+        var BCC = document.getElementById("BCC").value;
 
-        const IsEmailValid = ValidateEmail(ToEmail)
+        const IsEmailValid = ValidateEmail(ToEmail, CC, BCC)
 
-        if (ToEmail == "" || Subject == "" || Body == "" || SelectedUser == undefined) {
+        if (ToEmail == "" || Subject == "" || Body == "" || CC == "" || BCC == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
         } else {
             if (IsEmailValid) {
@@ -183,6 +189,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    CC: CC,
+                    BCC: BCC,
                     FromEmail: SelectedUser.Email,
                     RefreshToken: SelectedUser.RefreshToken,
                     UserID: UserID,
@@ -199,9 +207,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                         OpenCompose();
-                        CloseCompose() 
+                        CloseCompose()
                         GetUnansweredResponsesList()
-                        SetState({ To: "", Subject: "", Body: "" })
+                        SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
                     }
                 })
             } else {
@@ -280,7 +288,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 <h6>Cc :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Cc' />
+                                <Input className='input-clend' id='CC' name='Cc' />
                             </Col>
                         </Row>
                     </div>
@@ -290,7 +298,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 <h6>Bcc :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Bcc' />
+                                <Input className='input-clend' id='BCC' name='Bcc' />
                             </Col>
                         </Row>
                     </div>

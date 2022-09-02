@@ -62,8 +62,12 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
     const [State, SetState] = useState({
         To: "",
         Subject: "",
-        Body: ""
+        Body: "",
+        CC: "",
+        BCC: ""
     })
+    const [Ccflag, SetCcflag] = useState(false);
+    const [Bccflag, SetBccflag] = useState(false);
 
     useEffect(() => {
         GetClientID()
@@ -105,6 +109,29 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         element.classList.remove("show");
     }
 
+    // Open cc
+    const OpenCc = () => {
+        if (Ccflag == false) {
+            document.getElementById("Cc").style.display = 'block'
+            SetCcflag(true);
+        }
+        else {
+            document.getElementById("Cc").style.display = 'none'
+            SetCcflag(false);
+        }
+    };
+    // Open bcc
+    const OpenBcc = () => {
+        if (Bccflag == false) {
+            document.getElementById("Bcc").style.display = 'block'
+            SetBccflag(true);
+        }
+        else {
+            document.getElementById("Bcc").style.display = 'none'
+            SetBccflag(false);
+        }
+    };
+
     // Get Client ID
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
@@ -120,8 +147,10 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
     }
 
     // Validate Email
-    const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+    const ValidateEmail = (Email, CC, BCC) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)
+            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(CC)
+            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(BCC)) {
             return false;
         }
         else {
@@ -141,10 +170,12 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
+        var CC = document.getElementById("CC").value;
+        var BCC = document.getElementById("BCC").value;
 
-        const IsEmailValid = ValidateEmail(ToEmail)
+        const IsEmailValid = ValidateEmail(ToEmail, CC, BCC)
 
-        if (ToEmail == "" || Subject == "" || Body == "" || SelectedUser == undefined) {
+        if (ToEmail == "" || Subject == "" || Body == "" || CC == "" || BCC == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!")
         } else {
             if (IsEmailValid) {
@@ -152,6 +183,8 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    CC: CC,
+                    BCC: BCC,
                     FromEmail: SelectedUser.Email,
                     RefreshToken: SelectedUser.RefreshToken,
                     UserID: UserID,
@@ -170,7 +203,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                         OpenCompose();
                         CloseCompose()
                         GetFollowUpLaterList()
-                        SetState({ To: "", Subject: "", Body: "" })
+                        SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
                     }
                 })
             } else {
@@ -236,8 +269,28 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
 
                             </Col>
                             <Col xs={2} className='col text-right d-flex'>
-                                <Button className='lable-btn'>Cc</Button>
-                                <Button className='lable-btn'>Bcc</Button>
+                                <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
+                                <Button className='lable-btn' onClick={OpenBcc}>Bcc</Button>
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose cc px-3 py-2' id='Cc'>
+                        <Row className='px-3'>
+                            <Col xs={1} className="px-0">
+                                <h6>Cc :</h6>
+                            </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='CC' name='Cc' />
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose bcc px-3 py-2' id='Bcc'>
+                        <Row className='px-3'>
+                            <Col xs={1} className="px-0">
+                                <h6>Bcc :</h6>
+                            </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='BCC' name='Bcc' />
                             </Col>
                         </Row>
                     </div>
