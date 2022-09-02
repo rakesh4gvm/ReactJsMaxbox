@@ -6,6 +6,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 import { Col, Row } from 'react-bootstrap';
 import Close from '../../images/icons/w-close.svg';
@@ -38,23 +40,25 @@ const Style = {
 };
 
 function useOutsideAlerter(ref) {
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                const element = document.getElementById("UserCompose")
-                element.classList.remove("show");
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [ref]);
+    // useEffect(() => {
+    //     function handleClickOutside(event) {
+    //         if (ref.current && !ref.current.contains(event.target)) {
+    //             const element = document.getElementById("UserCompose")
+    //             element.classList.remove("show");
+    //         }
+    //     }
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [ref]);
 }
 
 export default function OtherInboxComposePage({ GetInBoxList }) {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
+    const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
+    const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
     const [State, SetState] = useState({
         To: "",
         Subject: "",
@@ -63,7 +67,26 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
     useEffect(() => {
         GetClientID()
+        GetEmailAccountUsers()
     }, [ClientID])
+
+
+    // Get All Email Account Users
+    const GetEmailAccountUsers = () => {
+        const Data = {
+            ClientID: ClientID,
+            UserID: UserID,
+        }
+        Axios({
+            url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                SetEmailAccountUsers(Result.data.PageData)
+            }
+        })
+    }
 
     // Open Compose
     const OpenCompose = () => {
@@ -107,6 +130,13 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         }
     };
 
+    // Selected User Drop down
+    const SelectEmailAccountUser = (e) => {
+        SetSelectedEmailAccountUser(e.target.value)
+    }
+
+    const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
+
     // Sent Mail
     const SentMail = async () => {
 
@@ -116,7 +146,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
         const IsEmailValid = ValidateEmail(ToEmail)
 
-        if (ToEmail == "" || Subject == "" || Body == "") {
+        if (ToEmail == "" || Subject == "" || Body == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
         } else {
 
@@ -125,6 +155,8 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    FromEmail: SelectedUser.Email,
+                    RefreshToken: SelectedUser.RefreshToken,
                     UserID: UserID,
                     ClientID: ClientID,
                     IsUnansweredResponsesMail: true,
@@ -151,6 +183,8 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         }
     }
 
+
+
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
 
@@ -174,6 +208,27 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                                         <img src={Close} />
                                     </Button>
                                 </ButtonGroup>
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='subcompose px-3 py-2'>
+                        <Row className='px-3'>
+                            <Col xs={2} className="px-0 pt-1">
+                                <h6>Email Account :</h6>
+                            </Col>
+                            <Col xs={10} className="px-1">
+                                <div className='comse-select'>
+                                    <Select
+                                        value={SelectedEmailAccountUser}
+                                        onChange={SelectEmailAccountUser}
+                                    >
+                                        {
+                                            EmailAccountUsers.map((row) => (
+                                                <MenuItem value={row?.AccountID}>{row?.Email}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </div>
                             </Col>
                         </Row>
                     </div>

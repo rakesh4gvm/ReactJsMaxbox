@@ -72,6 +72,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         GetEmailAccountUsers()
     }, [ClientID])
 
+    // Get All Email Account Users
     const GetEmailAccountUsers = () => {
         const Data = {
             ClientID: ClientID,
@@ -88,7 +89,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             }
         })
     }
-    console.log("EmailAccountUsers=====", EmailAccountUsers)
 
     // Open Compose
     const OpenCompose = () => {
@@ -159,12 +159,12 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     };
 
-
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
     }
 
-    const SelectedUser = EmailAccountUsers.find(o => o._id === SelectedEmailAccountUser)
+    const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
+    console.log("SelectedUser======", SelectedUser)
 
     // Sent Mail
     const SentMail = async () => {
@@ -175,7 +175,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
         const IsEmailValid = ValidateEmail(ToEmail)
 
-        if (ToEmail == "" || Subject == "" || Body == "") {
+        if (ToEmail == "" || Subject == "" || Body == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
         } else {
             if (IsEmailValid) {
@@ -192,7 +192,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     IsFollowUpLaterMail: false,
                     CreatedBy: 1
                 }
-
                 Axios({
                     url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
                     method: "POST",
@@ -214,8 +213,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
     const [age, setAge] = React.useState('');
-
-
 
     return (
         <>
@@ -253,15 +250,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                     >
                                         {
                                             EmailAccountUsers.map((row) => (
-                                                <MenuItem value={row?._id}>{row?.Email}</MenuItem>
+                                                <MenuItem value={row?.AccountID}>{row?.Email}</MenuItem>
                                             ))
                                         }
-                                        {/* <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={10} selected>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem> */}
                                     </Select>
                                 </div>
 
