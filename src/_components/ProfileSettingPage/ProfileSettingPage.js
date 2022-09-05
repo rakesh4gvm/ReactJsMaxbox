@@ -14,6 +14,10 @@ import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 import { GetUserDetails } from "../../_helpers/Utility";
 import Cameraicons from '../../images/icons/icons-camera.svg';
+ 
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel'; 
+import Switch from '@mui/material/Switch';
 
 export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
@@ -236,10 +240,18 @@ export default function ProfileSettingPage() {
                 <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} />
               </div>
             </Col>
+            <Col sm={4}> 
+            </Col>
+          </Row>
+          <Row>
             <Col sm={4}>
-              {/* <div className='input-box'>
-                <input type='file' onChange={(e) => UploadImage(e)} />
-              </div> */}
+              <div className='input-box'>  
+                  <FormControlLabel control={<Switch defaultChecked />} label="Two way factor" />  
+              </div> 
+            </Col>
+            <Col sm={4}> 
+            </Col>
+            <Col sm={4}> 
             </Col>
           </Row>
         </div>

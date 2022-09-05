@@ -1079,6 +1079,21 @@ div.erorr-msg > * > * {
 .cc, .bcc{
     display: none;
 } 
+.code-inputbox{
+    display: inline-flex;
+}
+.code-inputbox input {
+    width: 45px;
+    margin: 0 5px;
+    min-height: 65px;
+    border-radius: 5px;
+    background: #f6f6f6;
+    border: 1px solid #D2D2D2;
+    text-align: center;
+}
+.imglogos{
+    width: 200px;
+}
 
 @media screen and (max-width:990px){
     .mobile-nav {

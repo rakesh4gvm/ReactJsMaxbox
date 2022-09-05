@@ -31,6 +31,7 @@ import HeaderTop from './_components/Header/header';
 import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
 import EditTemplatesPage from './_components/EditTemplatesPage/EditTemplatesPage';
+import OTPConfirmPage from './_components/OTPConfirmPage/OTPConfirmPage';
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
           <Route exact path="/EditTemplates" component={EditTemplatesPage} />
           <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
           <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
+          <Route exact path="/OTPConfirm" component={OTPConfirmPage} />
           <Route exact path="/" component={LoginPage} />
          
 
