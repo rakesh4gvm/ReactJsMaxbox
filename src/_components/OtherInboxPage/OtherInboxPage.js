@@ -561,40 +561,60 @@ const ForwardPopModel = (ObjMailsData) => {
   }
 
   const ForwardSendMail = (ObjMailData) => {
-    var ToEmail = ObjMailData.FromEmail;
-    var ToName = ObjMailData.FromName
+    
+    var ToEmail = document.getElementById("to").value;
+    // var ToName = ObjMailData.FromName
     var ID = ObjMailData._id
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybodyfrwd").value;
 
+    const IsEmailValid = ValidateEmail(ToEmail)
 
     if (Body == "") {
       toast.error("Please Enter Body");
-    } else {
-
+    }else if(ToEmail == ""){
+      toast.error("Please Enter Email")
+    }
+    
+    else {
+      if (IsEmailValid) {
       var Data = {
         ToEmail: ToEmail,
-        ToName: ToName,
+        ToName: "",
         ID: ID,
         Subject: Subject,
         Body: Body
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
         method: "POST",
         data: Data,
       });
       ResponseApi.then((Result) => {
+        debugger
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          ReplyPopModelClose();
+          ForwardPopModelClose();
         }
         else {
-          ReplyPopModelClose();
+          ForwardPopModelClose();
         }
 
       });
+    }else{
+      toast.error("Please Enter Valid Email");
     }
   }
+  }
+
+      // Validate Email
+      const ValidateEmail = (Email) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
 
 
   // Fetch More Data
