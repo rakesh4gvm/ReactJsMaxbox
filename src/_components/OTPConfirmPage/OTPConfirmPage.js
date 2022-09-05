@@ -35,7 +35,10 @@ export default function OTPConfirmPage({ children }) {
     }
     return Isvalid;
   }
- 
+  useEffect(() => {
+    
+  }, );
+
   
   return (
     <>
