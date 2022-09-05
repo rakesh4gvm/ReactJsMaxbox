@@ -539,7 +539,7 @@ export default function OtherInboxPage() {
 const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
     document.getElementById("replybodyfrwd").value = "";
-
+    document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");
 

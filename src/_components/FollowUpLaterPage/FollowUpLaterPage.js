@@ -480,6 +480,11 @@ export default function FollowUpLetterPage() {
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
     document.getElementById("replybody").value = "";
+
+
+    const elementreply = document.getElementsByClassName("user_editor_frwd")
+    elementreply[0].classList.add("d-none");
+
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
@@ -529,6 +534,85 @@ export default function FollowUpLetterPage() {
     }
   }
 
+  const ForwardPopModel = (ObjMailsData) => {
+    const element = document.getElementsByClassName("user_editor_frwd")
+    document.getElementById("replybodyfrwd").value = "";
+    document.getElementById("to").value = "";
+    const elementreply = document.getElementsByClassName("user_editor")
+    elementreply[0].classList.add("d-none");
+
+    if (element[0].classList.contains("d-none")) {
+      element[0].classList.remove("d-none");
+      if (ObjMailsData != '') {
+        
+        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        document.getElementById("lblreplytoemailfrwd").innerHTML = ToEmail
+        document.getElementById("lblreplytoemailfrwd").value = ToEmail
+      }
+    }
+
+  }
+
+  const ForwardPopModelClose = () => {
+    const element = document.getElementsByClassName("user_editor_frwd")
+    element[0].classList.add("d-none");
+  }
+
+  const ForwardSendMail = (ObjMailData) => {
+    
+    var ToEmail = document.getElementById("to").value;
+    // var ToName = ObjMailData.FromName
+    var ID = ObjMailData._id
+    var Subject = ObjMailData.Subject;
+    var Body = document.getElementById("replybodyfrwd").value;
+
+    const IsEmailValid = ValidateEmail(ToEmail)
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    }else if(ToEmail == ""){
+      toast.error("Please Enter Email")
+    }
+    
+    else {
+      if (IsEmailValid) {
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: "",
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        debugger
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          ForwardPopModelClose();
+        }
+        else {
+          ForwardPopModelClose();
+        }
+
+      });
+    }else{
+      toast.error("Please Enter Valid Email");
+    }
+  }
+  }
+
+      // Validate Email
+      const ValidateEmail = (Email) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -917,7 +1001,7 @@ export default function FollowUpLetterPage() {
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow1} /></a>
+                  <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
                     <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
@@ -983,6 +1067,81 @@ export default function FollowUpLetterPage() {
                           <Col xs={2} className='px-0 text-right'>
                             <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
                               <Button onClick={() => ReplyPopModelClose()}>
+                                <img src={icondelete} />
+                              </Button>
+                              <Button>
+                                <img src={iconmenu} />
+                              </Button>
+                            </ButtonGroup>
+                          </Col>
+                        </Row>
+                      </div>
+
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+              <div className='user_editor_frwd  d-none mt-5'>
+                <Row className='userlist'>
+                  <Col className='fixwidleft'>
+                    <span className="inboxuserpic">
+                      <img src={inboxuser1} width="63px" alt="" />
+                    </span>
+                  </Col>
+                  <Col className='fixwidright p-0'>
+                    <div className='editorboxcard'>
+                      <Row className='edittoprow p-2'>
+                        <Col className='d-flex hedtopedit'>
+                          <a href='#' className='p-1'><img src={iconsarrow1} /></a>
+                          <h6><KeyboardArrowDownIcon /></h6>
+                          {/* <label id='lblreplytoemailfrwd'></label> */}
+                          {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
+                          <input type='text'  name='to' id='to' />
+                        </Col>
+                      </Row>
+                      <Row className='px-2'>
+                        <Col className='bodyeditor'>
+                          <TextareaAutosize className='w-100'
+                            aria-label="minimum height"
+                            minRows={3}
+                            placeholder=""
+                            id='replybodyfrwd'
+                          />
+                        </Col>
+                      </Row>
+
+                      <div className='ftcompose px-3'>
+                        <Row className='px-3'>
+                          <Col xs={10} className='px-0'>
+                            <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                              <Button variant="contained btn btn-primary smallbtn" onClick={() => ForwardSendMail(OpenMessage)}> Forward</Button>
+                              <Button>
+                                <img src={text_font} />
+                              </Button>
+                              <Button>
+                                <img src={attachment} />
+                              </Button>
+                              <Button>
+                                <img src={image_light} />
+                              </Button>
+                              <Button>
+                                <img src={smiley_icons} />
+                              </Button>
+                              <Button>
+                                <img src={google_drive} />
+                              </Button>
+                              <Button>
+                                <img src={link_line} />
+                              </Button>
+                              <Button>
+                                <img src={signature} />
+                              </Button>
+                            </ButtonGroup>
+                          </Col>
+
+                          <Col xs={2} className='px-0 text-right'>
+                            <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
+                              <Button onClick={() => ForwardPopModelClose()}>
                                 <img src={icondelete} />
                               </Button>
                               <Button>

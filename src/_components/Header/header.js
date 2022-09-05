@@ -282,7 +282,7 @@ export default function Header() {
                                     </span>
                                     <div className="carduser_details">
                                         <h4>{UserDetails != undefined ? UserDetails.FirstName + " " + UserDetails.LastName : ""}</h4>
-                                        <a href="">{UserDetails != undefined ? UserDetails.Email : ""}</a>
+                                        <a href="/ProfileSetting">{UserDetails != undefined ? UserDetails.Email : ""}</a>
                                     </div>
                                 </div>
                                 <div className="bodyuserdop textdeclist">
