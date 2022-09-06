@@ -1129,7 +1129,7 @@ const ForwardPopModel = (ObjMailsData) => {
                           <h6><KeyboardArrowDownIcon /></h6>
                           {/* <label id='lblreplytoemailfrwd'></label> */}
                           {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
-                          <input type='text'  name='to' id='to' />
+                          <input className='border-none' type='text'  name='to' id='to' />
                         </Col>
                       </Row>
                       <Row className='px-2'>
