@@ -184,7 +184,7 @@ export default function LoginPage({ children }) {
                 </FormGroup>
               </Col>
               <Col sm={4}>
-                <a href=''>Forgot Password?</a>
+                <a href='/Forgetpassword'>Forgot Password?</a>
               </Col>
             </Row>
           </div>

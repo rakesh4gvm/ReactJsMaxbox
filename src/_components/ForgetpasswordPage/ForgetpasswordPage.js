@@ -6,40 +6,67 @@ import MainHeader from '../MainHeader/MainHeader';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import BgSign from '../../images/sign-bg.png';
 
-import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails} from '../../_helpers/Utility'
+var CryptoJS = require("crypto-js");
 
+export default function ForgetpasswordPage() {
 
+  const [EmailSuccess, SetEmailSuccess] = useState("");
+  const [EmailError, SetEmailError] = useState("");
 
-export default function ForgetpasswordPage({ children }) {
-  const [EmailError, setEmail] = useState("");
-  const [PasswordError, setPassword] = useState("");
-  const [UserPasswordError,setUserPassword]=useState("")
-  // FromValidation start
-  const FromValidation = () => {
-    var Isvalid = true;
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      SetEmailError("Invalid email")
+      return false;
+    }
+    else {
+      SetEmailError("")
+    }
+    return true;
+  };
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    if (name == "email") {
+      if (value != "") {
+        ValidateEmail(value)
+      }
+    }
+
+  };
+
+  const SubmitMail = async () => {
+
     var Email = document.getElementById("email").value;
-    var Password = document.getElementById("password").value;
+    var Tmp_Token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    var Token = CryptoJS.MD5(Tmp_Token).toString();
 
-    if (Email === "") {
-      setEmail("Please enter email")
-      Isvalid = false
+    if (Email == "") {
+      SetEmailError("Please Enter Email!")
+    } else {
+
+      var Data = {
+        Email: Email,
+        Token: Token
+      };
+
+      Axios({
+        url: CommonConstants.MOL_APIURL + "/user/ForgotPassword",
+        method: "POST",
+        data: Data,
+      }).then((Result) => {
+        if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+          SetEmailSuccess("Email Sent Successfully!")
+        }
+      })
     }
-    if (Password === "") {
-      setPassword("Please enter password")
-      Isvalid = false
-    }
-    return Isvalid;
   }
- 
-  
+
+
   return (
     <>
 
@@ -53,19 +80,26 @@ export default function ForgetpasswordPage({ children }) {
             <h2 class="pt-5">Forgot Password?</h2>
             <p>Enter your email to reset your password</p>
             <Row>
-            <Col sm={4}>
+              <Col sm={4}>
                 <div className='input-box'>
-                {UserPasswordError && <p style={{ color: "red" }}>{UserPasswordError}</p>}
+                  {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
                 </div>
               </Col>
             </Row>
             <Row>
-            <Col sm={4}>
+              <Col sm={4}>
                 <div className='input-box'>
-                  <input type='email' placeholder='Email' id='email' name="email"/> 
+                  {EmailSuccess && <p style={{ color: "green" }}>{EmailSuccess}</p>}
                 </div>
               </Col>
-            </Row>  
+            </Row>
+            <Row>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
+                </div>
+              </Col>
+            </Row>
           </div>
 
           <div className='sm-container my-4'>
@@ -73,13 +107,13 @@ export default function ForgetpasswordPage({ children }) {
               <Col sm={4}>
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
-                    <Button variant="contained btn btn-primary smallbtn">Request</Button>
-                    <Button variant="contained btn smallbtn">Cancel</Button> 
+                    <Button variant="contained btn btn-primary smallbtn" onClick={SubmitMail}>Request</Button>
+                    <Button variant="contained btn smallbtn">Cancel</Button>
                   </ButtonGroup>
                 </div>
               </Col>
             </Row>
-          </div>   
+          </div>
         </div>
       </div>
 
