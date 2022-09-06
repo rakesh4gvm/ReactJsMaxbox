@@ -25,6 +25,7 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
+import Iconsedit from '../../images/icons/icons-edit.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import { Col, Row } from 'react-bootstrap';
 import { CommonConstants } from "../../_constants/common.constants";
@@ -540,6 +541,7 @@ export default function DraftsPage() {
                                 </Col>
                                 <Col xs={2} className="pl-0">
                                   <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                  <h5 className='draftext'>Draft</h5>
                                 </Col>
                               </Row>
                               <Row>
@@ -593,6 +595,9 @@ export default function DraftsPage() {
                     </Button>
                     <Button>
                       <img src={iconsarrow1} />
+                    </Button>
+                    <Button>
+                      <img src={Iconsedit} />
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
