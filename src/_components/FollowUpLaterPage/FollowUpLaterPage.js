@@ -971,10 +971,10 @@ export default function FollowUpLetterPage() {
                       <img src={inbox} />
                     </Button>
                     <Button>
-                      <img src={iconsarrow2} />
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}  /></a>
                     </Button>
                     <Button>
-                      <img src={iconsarrow1} />
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
@@ -1096,7 +1096,7 @@ export default function FollowUpLetterPage() {
                           <h6><KeyboardArrowDownIcon /></h6>
                           {/* <label id='lblreplytoemailfrwd'></label> */}
                           {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
-                          <input type='text'  name='to' id='to' />
+                          <input type='text' className='border-none' placeholder ='To' name='to' id='to' />
                         </Col>
                       </Row>
                       <Row className='px-2'>
