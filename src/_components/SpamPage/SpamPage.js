@@ -526,6 +526,10 @@ export default function SpamPage() {
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
     document.getElementById("replybody").value = "";
+
+    const elementreply = document.getElementsByClassName("user_editor_frwd")
+    elementreply[0].classList.add("d-none");
+    
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
@@ -1055,10 +1059,10 @@ export default function SpamPage() {
                       <img src={inbox} />
                     </Button>
                     <Button>
-                      <img src={iconsarrow2} />
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                     </Button>
                     <Button>
-                      <img src={iconsarrow1} />
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
