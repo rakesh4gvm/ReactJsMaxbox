@@ -65,6 +65,8 @@ export default function AddClientPage({ children }) {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    imageUploadRemoteUrls: false
   }
   const HandleModelChange = (Model) => {
     SetSignature({
