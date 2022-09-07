@@ -54,9 +54,9 @@ export default function ClientListPage() {
 
   useEffect(() => {
     GetClientID();
-    CheckAccountAuthonicate()
-    GetClientList()
-  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
+    // CheckAccountAuthonicate()
+    // GetClientList()
+  }, [Page, RowsPerPage, SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -74,10 +74,12 @@ export default function ClientListPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    CheckAccountAuthonicate()
+    GetClientList(UserDetails.ClientID,UserDetails.UserID)
   }
 
   // Start Get Client List
-  const GetClientList = () => {
+  const GetClientList = (CID,UID) => {
     let Data
     Data = {
       Page: Page,
@@ -86,8 +88,8 @@ export default function ClientListPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: '',
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
     };
 
     const ResponseApi = Axios({
@@ -126,11 +128,11 @@ export default function ClientListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetClientList()
+        GetClientList(ClientID,UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetClientList()
+        GetClientList(ClientID,UserID)
         SetDeletePopModel(false);
       }
     });
@@ -140,7 +142,7 @@ export default function ClientListPage() {
   //Change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetClientList();
+    GetClientList(ClientID,UserID);
   };
 
   // Edit CLient
