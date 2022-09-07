@@ -126,11 +126,11 @@ export default function SpamPage() {
 
   useEffect(() => {
     GetClientID();
-    GetSpamList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchInbox, ClientID, SpamChecked, FromEmailDropdownListChecked, Page]);
+    // GetSpamList();
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
+  }, [SearchInbox, SpamChecked, FromEmailDropdownListChecked, Page]);
 
 
   const HandleOpen = () => SetOpen(true);
@@ -145,10 +145,14 @@ export default function SpamPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetSpamList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get Spam List
-  const GetSpamList = () => {
+  const GetSpamList = (CID,UID) => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -156,8 +160,8 @@ export default function SpamPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
@@ -244,7 +248,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList();
+          GetSpamList(ClientID,UserID);
         }
       });
     }
@@ -275,7 +279,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList();
+          GetSpamList(ClientID,UserID);
         }
       });
     }
@@ -306,7 +310,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetSpamList();
+          GetSpamList(ClientID,UserID);
         }
       });
     }
@@ -341,7 +345,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetSpamList();
+          GetSpamList(ClientID,UserID);
         }
       });
     }
@@ -372,7 +376,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetSpamList();
+          GetSpamList(ClientID,UserID);
         }
         else {
           CloseOtherInboxPopModel();
@@ -488,7 +492,7 @@ export default function SpamPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetSpamList()
+    await GetSpamList(ClientID,UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -512,7 +516,7 @@ export default function SpamPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
+        
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -529,7 +533,7 @@ export default function SpamPage() {
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
-    
+
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
@@ -552,31 +556,32 @@ export default function SpamPage() {
     var ID = ObjMailData._id
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
-    debugger
-    if(Body == ""){
+    
+    if (Body == "") {
       toast.error("Please Enter Body");
-    }else{
-    var Data = {
-      ToEmail: ToEmail,
-      ToName: ToName,
-      ID: ID,
-      Subject: Subject,
-      Body: Body
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        ReplyPopModelClose();
-      }
-      else {
-        ReplyPopModelClose();
-      }
+    } else {
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: ToName,
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          ReplyPopModelClose();
+        }
+        else {
+          ReplyPopModelClose();
+        }
 
-    });}
+      });
+    }
   }
 
   const ForwardPopModel = (ObjMailsData) => {
@@ -589,7 +594,7 @@ export default function SpamPage() {
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
-        
+
         var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
         document.getElementById("lblreplytoemailfrwd").innerHTML = ToEmail
         document.getElementById("lblreplytoemailfrwd").value = ToEmail
@@ -604,7 +609,7 @@ export default function SpamPage() {
   }
 
   const ForwardSendMail = (ObjMailData) => {
-    
+
     var ToEmail = document.getElementById("to").value;
     // var ToName = ObjMailData.FromName
     var ID = ObjMailData._id
@@ -615,49 +620,49 @@ export default function SpamPage() {
 
     if (Body == "") {
       toast.error("Please Enter Body");
-    }else if(ToEmail == ""){
+    } else if (ToEmail == "") {
       toast.error("Please Enter Email")
     }
-    
+
     else {
       if (IsEmailValid) {
-      var Data = {
-        ToEmail: ToEmail,
-        ToName: "",
-        ID: ID,
-        Subject: Subject,
-        Body: Body
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        debugger
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          ForwardPopModelClose();
-        }
-        else {
-          ForwardPopModelClose();
-        }
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: Body
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            ForwardPopModelClose();
+          }
+          else {
+            ForwardPopModelClose();
+          }
 
-      });
-    }else{
-      toast.error("Please Enter Valid Email");
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
     }
   }
-  }
 
-      // Validate Email
-      const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
+  // Validate Email
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -1059,10 +1064,10 @@ export default function SpamPage() {
                       <img src={inbox} />
                     </Button>
                     <Button>
-                    <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                     </Button>
                     <Button>
-                    <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
@@ -1089,10 +1094,10 @@ export default function SpamPage() {
               <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                  <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                  <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                   </Col>
                 </Row>
               </div>
@@ -1185,7 +1190,7 @@ export default function SpamPage() {
                           <h6><KeyboardArrowDownIcon /></h6>
                           {/* <label id='lblreplytoemailfrwd'></label> */}
                           {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
-                          <input type='text'  name='to' id='to' />
+                          <input type='text' name='to' id='to' />
                         </Col>
                       </Row>
                       <Row className='px-2'>

@@ -130,11 +130,11 @@ export default function OtherInboxPage() {
   const [HasMore, SetHasMore] = useState(true)
   useEffect(() => {
     GetClientID();
-    GetInBoxList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchInbox, ClientID, InboxChecked, FromEmailDropdownListChecked, Page]);
+    // GetInBoxList();
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
+  }, [SearchInbox, InboxChecked, FromEmailDropdownListChecked, Page]);
 
 
 
@@ -145,10 +145,14 @@ export default function OtherInboxPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetInBoxList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get InBoxList
-  const GetInBoxList = () => {
+  const GetInBoxList = (CID, UID) => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -156,8 +160,8 @@ export default function OtherInboxPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
@@ -244,7 +248,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetInBoxList(ClientID, UserID);
         }
       });
     }
@@ -275,7 +279,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetInBoxList(ClientID, UserID);
         }
       });
     }
@@ -306,7 +310,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetInBoxList(ClientID, UserID);
         }
       });
     }
@@ -341,7 +345,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetInBoxList();
+          GetInBoxList(ClientID, UserID);
         }
       });
     }
@@ -536,7 +540,7 @@ export default function OtherInboxPage() {
   }
 
 
-const ForwardPopModel = (ObjMailsData) => {
+  const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
     document.getElementById("replybodyfrwd").value = "";
     document.getElementById("to").value = "";
@@ -546,7 +550,7 @@ const ForwardPopModel = (ObjMailsData) => {
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
-        
+
         var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
         document.getElementById("lblreplytoemailfrwd").innerHTML = ToEmail
         document.getElementById("lblreplytoemailfrwd").value = ToEmail
@@ -561,7 +565,7 @@ const ForwardPopModel = (ObjMailsData) => {
   }
 
   const ForwardSendMail = (ObjMailData) => {
-    
+
     var ToEmail = document.getElementById("to").value;
     // var ToName = ObjMailData.FromName
     var ID = ObjMailData._id
@@ -572,55 +576,55 @@ const ForwardPopModel = (ObjMailsData) => {
 
     if (Body == "") {
       toast.error("Please Enter Body");
-    }else if(ToEmail == ""){
+    } else if (ToEmail == "") {
       toast.error("Please Enter Email")
     }
-    
+
     else {
       if (IsEmailValid) {
-      var Data = {
-        ToEmail: ToEmail,
-        ToName: "",
-        ID: ID,
-        Subject: Subject,
-        Body: Body
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        debugger
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          ForwardPopModelClose();
-        }
-        else {
-          ForwardPopModelClose();
-        }
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: Body
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          debugger
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            ForwardPopModelClose();
+          }
+          else {
+            ForwardPopModelClose();
+          }
 
-      });
-    }else{
-      toast.error("Please Enter Valid Email");
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
     }
   }
-  }
 
-      // Validate Email
-      const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
+  // Validate Email
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
 
 
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetInBoxList()
+    await GetInBoxList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -672,10 +676,10 @@ const ForwardPopModel = (ObjMailsData) => {
     color: theme.palette.text.secondary,
   }));
 
- // Handle State Change
-//  const HandleChange = (e) => {
-//   SetState({ ...State, [e.target.name]: e.target.value })
-// }
+  // Handle State Change
+  //  const HandleChange = (e) => {
+  //   SetState({ ...State, [e.target.name]: e.target.value })
+  // }
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
@@ -1034,7 +1038,7 @@ const ForwardPopModel = (ObjMailsData) => {
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                  <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
                     <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
@@ -1129,7 +1133,7 @@ const ForwardPopModel = (ObjMailsData) => {
                           <h6><KeyboardArrowDownIcon /></h6>
                           {/* <label id='lblreplytoemailfrwd'></label> */}
                           {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
-                          <input className='border-none' type='text'  name='to' id='to' />
+                          <input className='border-none' type='text' name='to' id='to' />
                         </Col>
                       </Row>
                       <Row className='px-2'>

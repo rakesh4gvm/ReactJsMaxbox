@@ -123,11 +123,11 @@ export default function FollowUpLetterPage() {
 
   useEffect(() => {
     GetClientID();
-    GetFollowUpLetterList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchInbox, ClientID, FollowUpLaterChecked, FromEmailDropdownListChecked, Page]);
+    // GetFollowUpLetterList();
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
+  }, [SearchInbox, FollowUpLaterChecked, FromEmailDropdownListChecked, Page]);
 
 
   // Get ClientID
@@ -137,10 +137,14 @@ export default function FollowUpLetterPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetFollowUpLetterList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get Follow Up Letter List
-  const GetFollowUpLetterList = () => {
+  const GetFollowUpLetterList = (CID, UID) => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -148,8 +152,8 @@ export default function FollowUpLetterPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: true,
@@ -236,7 +240,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList();
+          GetFollowUpLetterList(ClientID, UserID);
         }
       });
     }
@@ -267,7 +271,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList();
+          GetFollowUpLetterList(ClientID, UserID);
         }
       });
     }
@@ -298,7 +302,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList();
+          GetFollowUpLetterList(ClientID, UserID);
         }
       });
     }
@@ -328,7 +332,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList();
+          GetFollowUpLetterList(ClientID, UserID);
         }
         else {
           CloseOtherInboxPopModel();
@@ -443,7 +447,7 @@ export default function FollowUpLetterPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetFollowUpLetterList()
+    await GetFollowUpLetterList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -544,7 +548,7 @@ export default function FollowUpLetterPage() {
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
-        
+
         var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
         document.getElementById("lblreplytoemailfrwd").innerHTML = ToEmail
         document.getElementById("lblreplytoemailfrwd").value = ToEmail
@@ -559,7 +563,7 @@ export default function FollowUpLetterPage() {
   }
 
   const ForwardSendMail = (ObjMailData) => {
-    
+
     var ToEmail = document.getElementById("to").value;
     // var ToName = ObjMailData.FromName
     var ID = ObjMailData._id
@@ -570,49 +574,49 @@ export default function FollowUpLetterPage() {
 
     if (Body == "") {
       toast.error("Please Enter Body");
-    }else if(ToEmail == ""){
+    } else if (ToEmail == "") {
       toast.error("Please Enter Email")
     }
-    
+
     else {
       if (IsEmailValid) {
-      var Data = {
-        ToEmail: ToEmail,
-        ToName: "",
-        ID: ID,
-        Subject: Subject,
-        Body: Body
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        debugger
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          ForwardPopModelClose();
-        }
-        else {
-          ForwardPopModelClose();
-        }
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: Body
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          debugger
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            ForwardPopModelClose();
+          }
+          else {
+            ForwardPopModelClose();
+          }
 
-      });
-    }else{
-      toast.error("Please Enter Valid Email");
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
     }
   }
-  }
 
-      // Validate Email
-      const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
+  // Validate Email
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -971,10 +975,10 @@ export default function FollowUpLetterPage() {
                       <img src={inbox} />
                     </Button>
                     <Button>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}  /></a>
+                      <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                     </Button>
                     <Button>
-                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                      <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
@@ -1001,7 +1005,7 @@ export default function FollowUpLetterPage() {
               <div className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                  <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
                     <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
@@ -1096,7 +1100,7 @@ export default function FollowUpLetterPage() {
                           <h6><KeyboardArrowDownIcon /></h6>
                           {/* <label id='lblreplytoemailfrwd'></label> */}
                           {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
-                          <input type='text' className='border-none' placeholder ='To' name='to' id='to' />
+                          <input type='text' className='border-none' placeholder='To' name='to' id='to' />
                         </Col>
                       </Row>
                       <Row className='px-2'>

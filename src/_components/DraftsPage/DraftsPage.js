@@ -83,11 +83,11 @@ export default function DraftsPage() {
 
   useEffect(() => {
     GetClientID();
-    GetDraftList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchInbox, ClientID, InboxChecked, Page]);
+    // GetDraftList();
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
+  }, [SearchInbox, InboxChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -96,11 +96,15 @@ export default function DraftsPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetDraftList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get Draft List
-  const GetDraftList = () => {
-    debugger
+  const GetDraftList = (CID, UID) => {
+
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -108,8 +112,8 @@ export default function DraftsPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateGet",
@@ -187,7 +191,7 @@ export default function DraftsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetDraftList();
+          GetDraftList(ClientID, UserID);
         }
       });
     }
@@ -218,7 +222,7 @@ export default function DraftsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetDraftList();
+          GetDraftList(ClientID, UserID);
         }
       });
     }
@@ -263,7 +267,7 @@ export default function DraftsPage() {
 
   // Get Total Total Record Count
   const GetTotalRecordCount = () => {
-    debugger
+
     const Data = {
       ClientID: ClientID,
       UserID: UserID
@@ -274,7 +278,7 @@ export default function DraftsPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
+
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -288,7 +292,7 @@ export default function DraftsPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetDraftList()
+    await GetDraftList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)

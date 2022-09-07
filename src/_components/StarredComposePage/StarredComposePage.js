@@ -70,14 +70,23 @@ export default function StarredComposePage({ GetStarredList }) {
 
     useEffect(() => {
         GetClientID()
-        GetEmailAccountUsers()
-    }, [ClientID])
+    }, [])
+
+    // Get Client ID
+    const GetClientID = () => {
+        var UserDetails = GetUserDetails();
+        if (UserDetails != null) {
+            SetClientID(UserDetails.ClientID);
+            SetUserID(UserDetails.UserID);
+        }
+        GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
+    }
 
     // Get All Email Account Users
-    const GetEmailAccountUsers = () => {
+    const GetEmailAccountUsers = (CID, UID) => {
         const Data = {
-            ClientID: ClientID,
-            UserID: UserID,
+            ClientID: CID,
+            UserID: UID,
         }
         Axios({
             url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
@@ -131,14 +140,7 @@ export default function StarredComposePage({ GetStarredList }) {
         }
     };
 
-    // Get Client ID
-    const GetClientID = () => {
-        var UserDetails = GetUserDetails();
-        if (UserDetails != null) {
-            SetClientID(UserDetails.ClientID);
-            SetUserID(UserDetails.UserID);
-        }
-    }
+
 
     // Handle State Change
     const HandleChange = (e) => {

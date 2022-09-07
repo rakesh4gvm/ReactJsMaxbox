@@ -62,14 +62,14 @@ export default function Header() {
 
     useEffect(() => {
         GetClientID()
-        GetAllTotalCount()
+        // GetAllTotalCount()
         const TimeID = setTimeout(() => {
             SetShow(false)
         }, 3000)
         return () => {
             clearTimeout(TimeID)
         }
-    }, [ClientID]);
+    }, []);
 
     // Get ClientID
     const GetClientID = () => {
@@ -78,12 +78,13 @@ export default function Header() {
             SetClientID(UserDetails.ClientID);
             SetUserID(UserDetails.UserID);
         }
+        GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
     }
 
-    const GetAllTotalCount = () => {
+    const GetAllTotalCount = (CID,UID) => {
         const Data = {
-            ClientID: ClientID,
-            UserID: UserID,
+            ClientID: CID,
+            UserID: UID,
         }
         const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/AllTotalRecords",
