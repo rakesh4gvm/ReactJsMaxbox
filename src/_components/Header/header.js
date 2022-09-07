@@ -56,15 +56,47 @@ export default function Header() {
     const [UserImage, SetUserImage] = useState()
     const [UserDetails, SetUserDetails] = useState();
     const [Show, SetShow] = useState(true)
+    const [ClientID, SetClientID] = React.useState(0);
+    const [UserID, SetUserID] = React.useState(0);
+    const [AllTotalRecords, SetAllTotalRecords] = useState()
 
     useEffect(() => {
+        GetClientID()
+        GetAllTotalCount()
         const TimeID = setTimeout(() => {
             SetShow(false)
         }, 3000)
         return () => {
             clearTimeout(TimeID)
         }
-    }, []);
+    }, [ClientID]);
+
+    // Get ClientID
+    const GetClientID = () => {
+        var UserDetails = GetUserDetails();
+        if (UserDetails != null) {
+            SetClientID(UserDetails.ClientID);
+            SetUserID(UserDetails.UserID);
+        }
+    }
+
+    const GetAllTotalCount = () => {
+        const Data = {
+            ClientID: ClientID,
+            UserID: UserID,
+        }
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AllTotalRecords",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetAllTotalRecords(Result.data)
+            }
+        });
+    }
+    console.log("AllTotalRecords=======", AllTotalRecords)
 
     useEffect(() => {
         GetClientDropdown()
@@ -137,8 +169,7 @@ export default function Header() {
                         Element.classList.add("show");
                     }
                 }
-                else
-                {
+                else {
                     const Element = document.getElementById("id_userbox")
                     if (Element.classList.contains("show")) {
                         Element.classList.remove("show");
@@ -181,32 +212,32 @@ export default function Header() {
                                     <NavDropdown.Item onClick={() => OpenPage("/UnansweredResponses")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllUnansweredResponsesCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/Starred")}><img src={menustart} />Starred
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllStarredCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/FollowUpLater")}><img src={timermenu} />Follow Up Later
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllFollowUpLaterCount}
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item  onClick={() => OpenPage("/Drafts")}><img src={drafts} />Drafts
+                                    <NavDropdown.Item onClick={() => OpenPage("/Drafts")}><img src={drafts} />Drafts
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllDraftCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/OtherInboxPage")}><img src={inbox} />Other Inbox
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllOtherInboxCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/Spam")} ><img src={spam} />Spam
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 235
+                                            <NotificationsIcon /> {AllTotalRecords?.AllSpamCount}
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
@@ -317,7 +348,7 @@ export default function Header() {
                                                 </ul>
                                             </ListItem>
                                         ))}
-                                       
+
                                         <ListItem alignItems="flex-start" >
                                             <ListItemAvatar>
                                                 <Avatar alt="Remy Sharp" src={iconlogout} className='max-40' />
