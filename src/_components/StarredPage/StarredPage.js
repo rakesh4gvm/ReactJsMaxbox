@@ -117,10 +117,6 @@ export default function StarredPage() {
   const [HasMore, SetHasMore] = useState(true)
   useEffect(() => {
     GetClientID();
-    // GetStarredList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, StarredChecked, FromEmailDropdownListChecked, Page]);
 
   // Get ClientID
@@ -171,7 +167,7 @@ export default function StarredPage() {
           SetStarredList([...StarredList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetStarredList([]);
@@ -646,10 +642,10 @@ export default function StarredPage() {
   UseOutSideAlerter(WrapperRef);
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: true,
       IsFollowUp: false,

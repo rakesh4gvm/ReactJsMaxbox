@@ -83,10 +83,6 @@ export default function DraftsPage() {
 
   useEffect(() => {
     GetClientID();
-    // GetDraftList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, InboxChecked, Page]);
 
   // Get ClientID
@@ -132,7 +128,7 @@ export default function DraftsPage() {
           SetDraftList([...DraftList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetDraftList([]);
@@ -266,11 +262,11 @@ export default function DraftsPage() {
   }
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
 
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID
+      ClientID: CID,
+      UserID: UID
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/draft_template/TotalRecordCount",

@@ -62,7 +62,6 @@ export default function Header() {
 
     useEffect(() => {
         GetClientID()
-        // GetAllTotalCount()
         const TimeID = setTimeout(() => {
             SetShow(false)
         }, 3000)
@@ -81,7 +80,7 @@ export default function Header() {
         GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
     }
 
-    const GetAllTotalCount = (CID,UID) => {
+    const GetAllTotalCount = (CID, UID) => {
         const Data = {
             ClientID: CID,
             UserID: UID,
@@ -97,7 +96,6 @@ export default function Header() {
             }
         });
     }
-    console.log("AllTotalRecords=======", AllTotalRecords)
 
     useEffect(() => {
         GetClientDropdown()
@@ -246,12 +244,12 @@ export default function Header() {
                                     <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 43
+                                            <NotificationsIcon /> {AllTotalRecords?.AllSentEmailsCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/AllSentEmails")}><img src={Sent} />All Sent Emails
                                         <div className="notifimen">
-                                            <NotificationsIcon /> 245
+                                            <NotificationsIcon /> {AllTotalRecords?.AllSentEmailsCount}
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>

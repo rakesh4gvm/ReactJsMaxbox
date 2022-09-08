@@ -100,11 +100,7 @@ export default function UnansweredRepliesPage() {
 
   useEffect(() => {
     GetClientID();
-    GetAllUnanswereRepliesList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchSent, ClientID, UnansweredRepliesChecked, EmailDropdownListChecked, Page]);
+  }, [SearchSent, UnansweredRepliesChecked, EmailDropdownListChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -113,10 +109,14 @@ export default function UnansweredRepliesPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetAllUnanswereRepliesList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get All Unanswered Replies List
-  const GetAllUnanswereRepliesList = () => {
+  const GetAllUnanswereRepliesList = (CID, UID) => {
     let Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -124,8 +124,8 @@ export default function UnansweredRepliesPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchSent,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       AccountIDs: EmailDropdownListChecked
     };
 
@@ -149,7 +149,7 @@ export default function UnansweredRepliesPage() {
           SetHasMore(false)
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetAllUnanswereRepliesList([]);
@@ -210,7 +210,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList();
+          GetAllUnanswereRepliesList(ClientID, UserID);
         }
       });
     }
@@ -241,7 +241,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList();
+          GetAllUnanswereRepliesList(ClientID, UserID);
         }
       });
     }
@@ -271,7 +271,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList();
+          GetAllUnanswereRepliesList(ClientID, UserID);
         }
       });
     }
@@ -382,9 +382,9 @@ export default function UnansweredRepliesPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
-    
+
     SetPage(Page + 1);
-    await GetAllUnanswereRepliesList()
+    await GetAllUnanswereRepliesList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -392,11 +392,11 @@ export default function UnansweredRepliesPage() {
   };
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
-      
+      ClientID: CID,
+      UserID: UID,
+
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
@@ -404,7 +404,6 @@ export default function UnansweredRepliesPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {

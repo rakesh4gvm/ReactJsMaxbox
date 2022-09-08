@@ -99,11 +99,7 @@ export default function AllSentEnailsPage() {
 
   useEffect(() => {
     GetClientID();
-    GetAllSentEmailsList();
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
-  }, [SearchSent, ClientID, SentMailsChecked, EmailDropdownListChecked, Page]);
+  }, [SearchSent, SentMailsChecked, EmailDropdownListChecked, Page]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -112,10 +108,14 @@ export default function AllSentEnailsPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetAllSentEmailsList(UserDetails.ClientID, UserDetails.UserID);
+    if (ResponseData.length <= 10) {
+      SetHasMore(false)
+    }
   }
 
   // Start Get All SentEmails List
-  const GetAllSentEmailsList = () => {
+  const GetAllSentEmailsList = (CID, UID) => {
 
     let Data = {
       Page: Page,
@@ -124,8 +124,8 @@ export default function AllSentEnailsPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchSent,
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       AccountIDs: EmailDropdownListChecked
     };
 
@@ -147,7 +147,7 @@ export default function AllSentEnailsPage() {
           SetAllSentEmailsList([...AllSentEmailsList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetAllSentEmailsList([]);
@@ -209,7 +209,7 @@ export default function AllSentEnailsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetAllSentEmailsList();
+          GetAllSentEmailsList(ClientID, UserID);
         }
       });
     }
@@ -240,7 +240,7 @@ export default function AllSentEnailsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetAllSentEmailsList();
+          GetAllSentEmailsList(ClientID, UserID);
         }
       });
     }
@@ -270,7 +270,7 @@ export default function AllSentEnailsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetAllSentEmailsList();
+          GetAllSentEmailsList(ClientID, UserID);
         }
       });
     }
@@ -381,38 +381,37 @@ export default function AllSentEnailsPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
-    debugger
     SetPage(Page + 1);
-    await GetAllSentEmailsList()
+    await GetAllSentEmailsList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
     }
   };
 
-    // Get Total Total Record Count
-    const GetTotalRecordCount = () => {
-      const Data = {
-        ClientID: ClientID,
-        UserID: UserID,
-        
-      }
-      Axios({
-        url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
-        method: "POST",
-        data: Data,
-      }).then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          debugger
-          if (Result.data.TotalCount >= 0) {
-            SetTotalCount(Result.data.TotalCount);
-          } else {
-            SetTotalCount(0);
-          }
-  
-        }
-      })
+  // Get Total Total Record Count
+  const GetTotalRecordCount = (CID, UID) => {
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+
     }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
+        } else {
+          SetTotalCount(0);
+        }
+
+      }
+    })
+  }
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',

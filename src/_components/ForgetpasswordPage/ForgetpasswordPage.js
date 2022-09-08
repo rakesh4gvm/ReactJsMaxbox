@@ -59,8 +59,10 @@ export default function ForgetpasswordPage() {
         method: "POST",
         data: Data,
       }).then((Result) => {
-        if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+        if (Result.data.Data > 0) {
           SetEmailSuccess("Email Sent Successfully!")
+        } else {
+          SetEmailError("Email not found!")
         }
       })
     }

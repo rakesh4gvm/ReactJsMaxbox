@@ -123,10 +123,6 @@ export default function FollowUpLetterPage() {
 
   useEffect(() => {
     GetClientID();
-    // GetFollowUpLetterList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, FollowUpLaterChecked, FromEmailDropdownListChecked, Page]);
 
 
@@ -178,7 +174,7 @@ export default function FollowUpLetterPage() {
           SetInBoxList([...InBoxList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetInBoxList([]);
@@ -455,10 +451,10 @@ export default function FollowUpLetterPage() {
   };
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: true,

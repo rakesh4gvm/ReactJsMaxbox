@@ -126,10 +126,6 @@ export default function SpamPage() {
 
   useEffect(() => {
     GetClientID();
-    // GetSpamList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, SpamChecked, FromEmailDropdownListChecked, Page]);
 
 
@@ -152,7 +148,7 @@ export default function SpamPage() {
   }
 
   // Start Get Spam List
-  const GetSpamList = (CID,UID) => {
+  const GetSpamList = (CID, UID) => {
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -186,7 +182,7 @@ export default function SpamPage() {
           SetSpamList([...SpamList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetSpamList([]);
@@ -248,7 +244,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID,UserID);
+          GetSpamList(ClientID, UserID);
         }
       });
     }
@@ -279,7 +275,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID,UserID);
+          GetSpamList(ClientID, UserID);
         }
       });
     }
@@ -310,7 +306,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID,UserID);
+          GetSpamList(ClientID, UserID);
         }
       });
     }
@@ -345,7 +341,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID,UserID);
+          GetSpamList(ClientID, UserID);
         }
       });
     }
@@ -376,7 +372,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID,UserID);
+          GetSpamList(ClientID, UserID);
         }
         else {
           CloseOtherInboxPopModel();
@@ -492,7 +488,7 @@ export default function SpamPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetSpamList(ClientID,UserID)
+    await GetSpamList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -500,10 +496,10 @@ export default function SpamPage() {
   }
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
@@ -516,7 +512,7 @@ export default function SpamPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        
+
         if (Result.data.TotalCount >= 0) {
           SetTotalCount(Result.data.TotalCount);
         } else {
@@ -556,7 +552,7 @@ export default function SpamPage() {
     var ID = ObjMailData._id
     var Subject = ObjMailData.Subject;
     var Body = document.getElementById("replybody").value;
-    
+
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
@@ -639,7 +635,7 @@ export default function SpamPage() {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          
+
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             ForwardPopModelClose();
           }

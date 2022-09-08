@@ -124,10 +124,6 @@ export default function UnansweredResponsesPage() {
 
   useEffect(() => {
     GetClientID()
-    // GetUnansweredResponcesList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, UnansweredResponsesChecked, FromEmailDropdownListChecked, Page]);
 
 
@@ -181,7 +177,7 @@ export default function UnansweredResponsesPage() {
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID,UID);
       } else {
         SetUnansweredResponsesList([]);
         OpenMessageDetails('');
@@ -492,10 +488,10 @@ export default function UnansweredResponsesPage() {
   // End Page Refresh
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID,UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,

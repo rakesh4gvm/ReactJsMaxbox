@@ -130,10 +130,6 @@ export default function OtherInboxPage() {
   const [HasMore, SetHasMore] = useState(true)
   useEffect(() => {
     GetClientID();
-    // GetInBoxList();
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
   }, [SearchInbox, InboxChecked, FromEmailDropdownListChecked, Page]);
 
 
@@ -186,7 +182,7 @@ export default function OtherInboxPage() {
           SetInBoxList([...InBoxList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount();
+        GetTotalRecordCount(CID, UID);
       }
       else {
         SetInBoxList([]);
@@ -454,10 +450,10 @@ export default function OtherInboxPage() {
   }
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = () => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
