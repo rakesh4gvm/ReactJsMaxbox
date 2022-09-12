@@ -142,9 +142,9 @@ export default function OtherInboxPage() {
       SetUserID(UserDetails.UserID);
     }
     GetInBoxList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
 
   // Start Get InBoxList
@@ -175,6 +175,49 @@ export default function OtherInboxPage() {
         SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
           SetInBoxList([...InBoxList, ...Result.data.PageData]);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
+        }
+        else {
+          SetInBoxList([...InBoxList]);
+          OpenMessageDetails('');
+        }
+        GetTotalRecordCount(CID, UID);
+      }
+      else {
+        SetInBoxList([]);
+        OpenMessageDetails('');
+      }
+    });
+  };
+
+  const GetUpdatedOtherInboxList = (CID, UID) => {
+    var Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
+      ClientID: CID,
+      UserID: UID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsSpam: false,
+      IsOtherInbox: true,
+      AccountIDs: FromEmailDropdownListChecked
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
+        if (Result.data.PageData.length > 0) {
+          SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -341,7 +384,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID);
+          GetUpdatedOtherInboxList(ClientID, UserID);
         }
       });
     }

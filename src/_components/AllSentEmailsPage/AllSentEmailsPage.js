@@ -109,9 +109,9 @@ export default function AllSentEnailsPage() {
       SetUserID(UserDetails.UserID);
     }
     GetAllSentEmailsList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
 
   // Start Get All SentEmails List
@@ -159,7 +159,7 @@ export default function AllSentEnailsPage() {
   // End Get All SentEmails List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = async (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -170,12 +170,12 @@ export default function AllSentEnailsPage() {
         method: "POST",
         data: Data,
       });
-      ResponseApi.then((Result) => {
+      await ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           SetOpenMessageDetails(Result.data.Data[0]);
         }
         else {
-          SetOpenMessageDetails([]);
+          SetOpenMessageDetails('');
         }
       });
     }
@@ -562,7 +562,7 @@ export default function AllSentEnailsPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {AllSentEmailsList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>
@@ -669,7 +669,7 @@ export default function AllSentEnailsPage() {
                       }
                     >
                       <Stack spacing={1} align="left">
-                        {AllSentEmailsList?.map((row, index) => (
+                        {AllSentEmailsList.length > 1 && AllSentEmailsList?.map((row, index) => (
                           <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                             <Row>
                               <Col xs={1} className="pr-0">

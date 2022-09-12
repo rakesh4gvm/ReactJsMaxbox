@@ -110,9 +110,9 @@ export default function UnansweredRepliesPage() {
       SetUserID(UserDetails.UserID);
     }
     GetAllUnanswereRepliesList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData?.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
 
   // Start Get All Unanswered Replies List
@@ -160,7 +160,7 @@ export default function UnansweredRepliesPage() {
   // End Get All Unanswered Replies List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, Index) => {
+  const OpenMessageDetails = async (ID, Index) => {
     if (ID != '') {
       SetMailNumber(Index + 1)
       var Data = {
@@ -171,12 +171,12 @@ export default function UnansweredRepliesPage() {
         method: "POST",
         data: Data,
       });
-      ResponseApi.then((Result) => {
+      await ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           SetOpenMessageDetails(Result.data.Data[0]);
         }
         else {
-          SetOpenMessageDetails([]);
+          SetOpenMessageDetails('');
         }
       });
     }
@@ -382,11 +382,11 @@ export default function UnansweredRepliesPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
-
+    
     SetPage(Page + 1);
     await GetAllUnanswereRepliesList(ClientID, UserID)
 
-    if (ResponseData.length === 0) {
+    if (ResponseData?.length === 0) {
       SetHasMore(false)
     }
   };
@@ -558,7 +558,7 @@ export default function UnansweredRepliesPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {AllUnansweredRepliesList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>
@@ -638,11 +638,11 @@ export default function UnansweredRepliesPage() {
                 </Row>
               </div>
               {
-                AllUnansweredRepliesList.length === 0
+                AllUnansweredRepliesList?.length === 0
                   ?
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
-                      dataLength={AllUnansweredRepliesList.length}
+                      dataLength={AllUnansweredRepliesList?.length}
                       next={FetchMoreData}
                       hasMore={false}
                       loader={<h4></h4>}
@@ -653,7 +653,7 @@ export default function UnansweredRepliesPage() {
                   :
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
-                      dataLength={AllUnansweredRepliesList.length}
+                      dataLength={AllUnansweredRepliesList?.length}
                       next={FetchMoreData}
                       hasMore={HasMore}
                       loader={<h4>Loading...</h4>}
@@ -665,7 +665,7 @@ export default function UnansweredRepliesPage() {
                       }
                     >
                       <Stack spacing={1} align="left">
-                        {AllUnansweredRepliesList?.map((row, index) => (
+                        {AllUnansweredRepliesList?.length > 1 && AllUnansweredRepliesList?.map((row, index) => (
                           <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                             <Row>
                               <Col xs={1} className="pr-0">
@@ -721,8 +721,8 @@ export default function UnansweredRepliesPage() {
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
+                    <Col xs={10} className='p-0'><h5>
+                      {OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
                       <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6>
                     </Col>
                   </Row>
@@ -731,7 +731,7 @@ export default function UnansweredRepliesPage() {
                   <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
 
                     <Button>
-                      <label>{MailNumber} / {AllUnansweredRepliesList.length}</label>
+                      <label>{MailNumber} / {AllUnansweredRepliesList?.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />

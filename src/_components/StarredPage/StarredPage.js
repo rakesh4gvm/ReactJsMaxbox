@@ -127,9 +127,9 @@ export default function StarredPage() {
       SetUserID(UserDetails.UserID);
     }
     GetStarredList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
 
   // Start Get Starred List

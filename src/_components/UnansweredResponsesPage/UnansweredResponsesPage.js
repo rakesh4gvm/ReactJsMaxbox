@@ -135,14 +135,14 @@ export default function UnansweredResponsesPage() {
       SetUserID(UserDetails.UserID);
     }
     GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
   // End Get ClientID
 
   // Start Get UnansweredResponsesList
-  const GetUnansweredResponcesList = (CID,UID) => {
+  const GetUnansweredResponcesList = (CID, UID) => {
 
     let Data = {
       Page: Page,
@@ -177,7 +177,7 @@ export default function UnansweredResponsesPage() {
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           OpenMessageDetails('');
         }
-        GetTotalRecordCount(CID,UID);
+        GetTotalRecordCount(CID, UID);
       } else {
         SetUnansweredResponsesList([]);
         OpenMessageDetails('');
@@ -185,6 +185,49 @@ export default function UnansweredResponsesPage() {
     });
   };
   // End Get UnansweredResponsesList
+
+  const GetUpdatedUnansweredResponsesList = (CID, UID) => {
+
+    let Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
+      ClientID: CID,
+      UserID: UID,
+      IsInbox: true,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsOtherInbox: false,
+      IsSpam: false,
+      AccountIDs: FromEmailDropdownListChecked
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
+        if (Result.data.PageData.length > 0) {
+          SetUnansweredResponsesList(Result.data.PageData);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
+        } else {
+          SetUnansweredResponsesList([...UnansweredResponsesList]);
+          OpenMessageDetails('');
+        }
+        GetTotalRecordCount(CID, UID);
+      } else {
+        SetUnansweredResponsesList([]);
+        OpenMessageDetails('');
+      }
+    });
+  };
 
   //Start Open Message Details
   const OpenMessageDetails = (ID, Index) => {
@@ -237,7 +280,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID,UserID);
+          GetUnansweredResponcesList(ClientID, UserID);
         }
       });
     }
@@ -268,7 +311,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID,UserID);
+          GetUnansweredResponcesList(ClientID, UserID);
         }
       });
     }
@@ -299,7 +342,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID,UserID);
+          GetUpdatedUnansweredResponsesList(ClientID, UserID);
         }
       });
     }
@@ -330,7 +373,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID,UserID);
+          GetUnansweredResponcesList(ClientID, UserID);
         }
         else {
           CloseOtherInboxPopModel();
@@ -368,7 +411,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID,UserID);
+          GetUnansweredResponcesList(ClientID, UserID);
         }
       });
     }
@@ -470,7 +513,7 @@ export default function UnansweredResponsesPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetUnansweredResponcesList(ClientID,UserID)
+    await GetUnansweredResponcesList(ClientID, UserID)
 
     if (ResponseData.length === 0) {
       SetHasMore(false)
@@ -488,7 +531,7 @@ export default function UnansweredResponsesPage() {
   // End Page Refresh
 
   // Get Total Total Record Count
-  const GetTotalRecordCount = (CID,UID) => {
+  const GetTotalRecordCount = (CID, UID) => {
     const Data = {
       ClientID: CID,
       UserID: UID,
@@ -947,11 +990,11 @@ export default function UnansweredResponsesPage() {
                 </Row>
               </div>
               {
-                UnansweredResponsesList.length === 0
+                UnansweredResponsesList?.length === 0
                   ?
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
-                      dataLength={UnansweredResponsesList.length}
+                      dataLength={UnansweredResponsesList?.length}
                       next={FetchMoreData}
                       hasMore={false}
                       loader={<h4></h4>}
@@ -962,7 +1005,7 @@ export default function UnansweredResponsesPage() {
                   :
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
-                      dataLength={UnansweredResponsesList.length}
+                      dataLength={UnansweredResponsesList?.length}
                       next={FetchMoreData}
                       hasMore={HasMore}
                       loader={<h4>Loading...</h4>}
@@ -974,7 +1017,7 @@ export default function UnansweredResponsesPage() {
                       }
                     >
                       <Stack spacing={1} align="left">
-                        {UnansweredResponsesList.length > 1 && UnansweredResponsesList?.map((row, index) => (
+                        {UnansweredResponsesList?.length > 1 && UnansweredResponsesList?.map((row, index) => (
                           <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                             <Row>
                               <Col xs={1} className="pr-0">

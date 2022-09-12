@@ -142,9 +142,9 @@ export default function SpamPage() {
       SetUserID(UserDetails.UserID);
     }
     GetSpamList(UserDetails.ClientID, UserDetails.UserID);
-    if (ResponseData.length <= 10) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // }
   }
 
   // Start Get Spam List
@@ -175,6 +175,49 @@ export default function SpamPage() {
         SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
           SetSpamList([...SpamList, ...Result.data.PageData]);
+          OpenMessageDetails(Result.data.PageData[0]._id);
+          SetMailNumber(1)
+        }
+        else {
+          SetSpamList([...SpamList]);
+          OpenMessageDetails('');
+        }
+        GetTotalRecordCount(CID, UID);
+      }
+      else {
+        SetSpamList([]);
+        OpenMessageDetails('');
+      }
+    });
+  };
+
+  const GetUpdatedSpamList = (CID, UID) => {
+    var Data = {
+      Page: Page,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
+      ClientID: CID,
+      UserID: UID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsSpam: true,
+      IsOtherInbox: false,
+      AccountIDs: FromEmailDropdownListChecked
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetResponseData(Result.data.PageData)
+        if (Result.data.PageData.length > 0) {
+          SetSpamList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
@@ -306,7 +349,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID);
+          GetUpdatedSpamList(ClientID, UserID);
         }
       });
     }
