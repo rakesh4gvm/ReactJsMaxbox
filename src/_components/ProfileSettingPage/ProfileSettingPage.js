@@ -16,7 +16,7 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import Cameraicons from '../../images/icons/icons-camera.svg';
  
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel'; 
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 export default function ProfileSettingPage() {
@@ -27,6 +27,7 @@ export default function ProfileSettingPage() {
   const [Base64Image, SetBase64Image] = useState()
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [Checked, SetChecked] = React.useState();
 
   useEffect(() => {
     GetClientID()
@@ -53,7 +54,6 @@ export default function ProfileSettingPage() {
 
   // Get Users List
   const GetUserList = () => {
-    debugger
     const Data = { UserID: UserID }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserGetByID",
@@ -64,6 +64,7 @@ export default function ProfileSettingPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetUser(Result?.data?.Data)
         SetDropdownValue(Result?.data?.Data?.CountryID?._id)
+        SetChecked(Result?.data?.Data?.TwoWayFactor)
       }
     });
   }
@@ -114,6 +115,11 @@ export default function ProfileSettingPage() {
     })
   }
 
+  // Handle Two Way Factor
+  const HandleTwoWayFactor = (event) => {
+    SetChecked(event.target.checked);
+  };
+
   // Update User
   const UpdateUser = async () => {
     var FirstName = document.getElementById("firstName").value;
@@ -142,7 +148,8 @@ export default function ProfileSettingPage() {
       ZipCode: ZipCode,
       CountryID: CountryId,
       Password: Password,
-      UserProfile: Base64Image
+      UserProfile: Base64Image,
+      TwoWayFactor: Checked
     }
 
     if (CheckData === "SUCCESS") {
@@ -175,15 +182,15 @@ export default function ProfileSettingPage() {
 
         <Row className='text-center mt-5'>
           <Col>
-          <div className='imguploadmain'>
-            <div className='imgupload'>
-              <img src={User?.UserImage} alt="img" /> 
-            </div>
-            <div className='uploadedimg'>
-               <img src={Cameraicons} width="20px" />
+            <div className='imguploadmain'>
+              <div className='imgupload'>
+                <img src={User?.UserImage} alt="img" />
+              </div>
+              <div className='uploadedimg'>
+                <img src={Cameraicons} width="20px" />
                 <input type='file' onChange={(e) => UploadImage(e)} />
               </div>
-          </div>
+            </div>
             <div className='mt-4'>
               <h5>{User?.FirstName} {User?.LastName}</h5>
               <a>{User?.Email}</a>
@@ -241,18 +248,25 @@ export default function ProfileSettingPage() {
                 <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} />
               </div>
             </Col>
-            <Col sm={4}> 
+            <Col sm={4}>
             </Col>
           </Row>
           <Row>
             <Col sm={4}>
-              <div className='input-box'>  
-                  <FormControlLabel control={<Switch defaultChecked />} label="Two way factor" />  
-              </div> 
+              <div className='input-box'>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={Checked}
+                      onChange={HandleTwoWayFactor}
+                    />
+                  }
+                  label="Two way factor" />
+              </div>
             </Col>
-            <Col sm={4}> 
+            <Col sm={4}>
             </Col>
-            <Col sm={4}> 
+            <Col sm={4}>
             </Col>
           </Row>
         </div>

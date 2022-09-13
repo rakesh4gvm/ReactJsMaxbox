@@ -14,14 +14,14 @@ import BgSign from '../../images/sign-bg.png';
 import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails} from '../../_helpers/Utility'
+import { UpdateUserDetails } from '../../_helpers/Utility'
 
 
 
 export default function LoginPage({ children }) {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
-  const [UserPasswordError,setUserPassword]=useState("")
+  const [UserPasswordError, setUserPassword] = useState("")
   // FromValidation start
   const FromValidation = () => {
     var Isvalid = true;
@@ -67,78 +67,106 @@ export default function LoginPage({ children }) {
 
   // FromValidation end
 
+  const GetDataByEmail = async () => {
+    var Email = document.getElementById("email").value;
+    const Data = { Email: Email }
+    const ResponseApi = await Axios({
+      url: CommonConstants.MOL_APIURL + "/user/UserGetByEmail",
+      method: "POST",
+      data: Data,
+    })
+    if (ResponseApi?.data.StatusMessage === ResponseMessage.SUCCESS) {
+      return ResponseApi?.data?.Data?.TwoWayFactor
+    }
+  }
+
   // Login method start
-  const Login = () => {
+  const Login = async () => {
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
-
     if (valid) {
-      const Data = { Email: Email, Password: Password }
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (Result.data.Data.length > 0) {
-            var LoginDetails = Result.data.Data[0];
-            var ObjLoginData = {
-              "UserID": LoginDetails._id,
-              "Token": LoginDetails.Token,
-              "StaticToken": Result.data.StaticToken,
-              "UserImage": LoginDetails.UserImage
-            }
-            localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
-            SetClientID(LoginDetails._id,LoginDetails.UserImage);
-           
-          //  history.push('/OtherInboxPage');
-          }
-          else
-          {
-            setUserPassword("Please email and password does not match")
-          }
-        }
-      });
-    }
 
+      const IsTwoWayFactor = await GetDataByEmail()
+
+      if (IsTwoWayFactor) {
+        const Data = {
+          Email: "shubham4gvm@gmail.com",
+          RefreshToken: "1//0glDzxLwcDST6CgYIARAAGBASNwF-L9Ir4NbOqnMZAeobQiLzXHslV7l0U_I4L7NxvJdnj4tOQTtqfSF60jjQ-JpsUSCcw2T83oE"
+        }
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            history.push('/OTPConfirm');
+          }
+        })
+      } else {
+        const Data = { Email: Email, Password: Password }
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.Data.length > 0) {
+              var LoginDetails = Result.data.Data[0];
+              var ObjLoginData = {
+                "UserID": LoginDetails._id,
+                "Token": LoginDetails.Token,
+                "StaticToken": Result.data.StaticToken,
+                "UserImage": LoginDetails.UserImage
+              }
+              localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
+              SetClientID(LoginDetails._id, LoginDetails.UserImage);
+
+              //  history.push('/OtherInboxPage');
+            }
+            else {
+              setUserPassword("Please email and password does not match")
+            }
+          }
+        });
+      }
+    }
   }
 
 
   const SetClientID = (UserID) => {
     var Data = {
-        UserID: UserID
+      UserID: UserID
     }
     const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
-        method: "POST",
-        data: Data,
+      url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+      method: "POST",
+      data: Data,
     });
     ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.Data.length > 0) {
-                    UpdateUserDetails((Result.data.Data[0].ClientID))
-                    window.location.href=CommonConstants.HomePage;
-                }
-                else
-                {
-                  window.location.href=CommonConstants.HomePage;
-                }
-            }
-            else
-            {
-              window.location.href=CommonConstants.HomePage;
-            }
-          
-        
-    });
-}
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.Data.length > 0) {
+          UpdateUserDetails((Result.data.Data[0].ClientID))
+          window.location.href = CommonConstants.HomePage;
+        }
+        else {
+          window.location.href = CommonConstants.HomePage;
+        }
+      }
+      else {
+        window.location.href = CommonConstants.HomePage;
+      }
 
-  const Register=()=>{
+
+    });
+  }
+
+  const Register = () => {
     history.push('/Register');
   }
-// Login method start
+  // Login method start
   return (
     <>
 
@@ -151,14 +179,14 @@ export default function LoginPage({ children }) {
           <div className='sm-container pt-5'>
             <h2>Login</h2>
             <Row>
-            <Col sm={4}>
+              <Col sm={4}>
                 <div className='input-box'>
-                {UserPasswordError && <p style={{ color: "red" }}>{UserPasswordError}</p>}
+                  {UserPasswordError && <p style={{ color: "red" }}>{UserPasswordError}</p>}
                 </div>
               </Col>
             </Row>
             <Row>
-            <Col sm={4}>
+              <Col sm={4}>
                 <div className='input-box'>
                   <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
 
@@ -205,7 +233,7 @@ export default function LoginPage({ children }) {
           <div className='sm-container'>
             <Row>
               <Col sm={4}>
-                Not account At? <a href='#'onClick={Register}>Register</a> here.
+                Not account At? <a href='#' onClick={Register}>Register</a> here.
               </Col>
             </Row>
           </div>

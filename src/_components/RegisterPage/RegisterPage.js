@@ -6,6 +6,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Switch from '@mui/material/Switch';
 import { Col, Row } from 'react-bootstrap';
 import MainHeader from '../MainHeader/MainHeader';
 import BgSign from '../../images/sign-bg.png';
@@ -21,6 +22,7 @@ export default function RegisterPage() {
   const [EmailError, SetEmailError] = useState("");
   const [PasswordError, SetPasswordError] = useState("");
   const [ConfirmPasswordError, SetConfirmPasswordError] = useState("");
+  const [Checked, SetChecked] = React.useState(false);
 
   // FromValidation start
   const FromValidation = () => {
@@ -110,38 +112,39 @@ export default function RegisterPage() {
     }
 
   };
+  // FromValidation end
 
-    // FromValidation end
-   
-    const CheckEmailExist = async () => {
-       var Email = document.getElementById("email").value;
-         const Data = {
-           Email: Email
-         }
-   
-         Axios({
-           url: CommonConstants.MOL_APIURL + "/user/UserEmailExist",
-           method: "POST",
-           data: Data,
-         }).then((Result) => {
-           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.Data > 0) {
-             SetEmailError("Email is already exists")
-            }
-            else
-            {
-              SetEmailError("")
-            }
-             
-           }
-           else
-           {
-            SetEmailError("")
-           }
-         })
-   
-       }
-     
+  const CheckEmailExist = async () => {
+    var Email = document.getElementById("email").value;
+    const Data = {
+      Email: Email
+    }
+
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/user/UserEmailExist",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.Data > 0) {
+          SetEmailError("Email is already exists")
+        }
+        else {
+          SetEmailError("")
+        }
+
+      }
+      else {
+        SetEmailError("")
+      }
+    })
+
+  }
+
+  // Handle Two Way Factor
+  const HandleTwoWayFactor = (event) => {
+    SetChecked(event.target.checked);
+  };
 
   // Register User
   const RegisterUser = async () => {
@@ -159,6 +162,7 @@ export default function RegisterPage() {
         LastName: LastName,
         Email: Email,
         Password: Password,
+        TwoWayFactor: Checked
       }
 
       Axios({
@@ -217,7 +221,19 @@ export default function RegisterPage() {
                   {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
                 </div>
               </Col>
-              <Col>
+
+              <Col sm={4}>
+                <div className='input-box'>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={Checked}
+                        onChange={HandleTwoWayFactor}
+                      />
+                    }
+                    label="Two way factor" />
+                </div>
+
               </Col>
             </Row>
             <Row>
