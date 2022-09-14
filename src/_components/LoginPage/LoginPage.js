@@ -18,10 +18,11 @@ import { UpdateUserDetails } from '../../_helpers/Utility'
 
 
 
-export default function LoginPage({ children }) {
+export default function LoginPage() {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
+ 
   // FromValidation start
   const FromValidation = () => {
     var Isvalid = true;
@@ -79,7 +80,6 @@ export default function LoginPage({ children }) {
       return ResponseApi?.data?.Data?.TwoWayFactor
     }
   }
-
   // Login method start
   const Login = async () => {
     const valid = FromValidation();
@@ -91,7 +91,8 @@ export default function LoginPage({ children }) {
 
       if (IsTwoWayFactor) {
         const Data = {
-          Email: "shubham4gvm@gmail.com",
+          Email: Email,
+          ToEmail: "shubham4gvm@gmail.com",
           RefreshToken: "1//0glDzxLwcDST6CgYIARAAGBASNwF-L9Ir4NbOqnMZAeobQiLzXHslV7l0U_I4L7NxvJdnj4tOQTtqfSF60jjQ-JpsUSCcw2T83oE"
         }
         const ResponseApi = Axios({
@@ -101,7 +102,10 @@ export default function LoginPage({ children }) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            history.push('/OTPConfirm');
+            history.push({
+              pathname: '/OTPConfirm',
+              state: { Email: Email, Password: Password }
+            });
           }
         })
       } else {
