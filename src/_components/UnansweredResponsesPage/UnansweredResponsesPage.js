@@ -63,6 +63,15 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 
+  
+import { EditorVariableNames } from "../../_helpers/Utility";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -80,6 +89,8 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+
+
 function UseOutsideAlerter(Ref) {
   useEffect(() => {
     function handleClickOutside(event) {
@@ -121,6 +132,10 @@ export default function UnansweredResponsesPage() {
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [Signature, SetSignature] = useState({
+    Data: ""
+  })
+  
 
   useEffect(() => {
     GetClientID()
@@ -746,6 +761,82 @@ export default function UnansweredResponsesPage() {
   const WrapperRef = useRef(null);
   UseOutsideAlerter(WrapperRef);
 
+
+  // Frola Editor Starts
+  Froalaeditor.RegisterCommand('Send', {
+    colorsButtons: ["colorsBack", "|", "-"], 
+  }); 
+  Froalaeditor.RegisterCommand('Delete', {  
+      colorsButtons: ["colorsBack", "|", "-"],
+      align: 'right',
+      buttonsVisible: 2, 
+      title: 'Delete',
+  }); 
+  Froalaeditor.RegisterCommand('Sendoption', {
+      colorsButtons: ["colorsBack", "|", "-"],
+      title: '',
+      type: 'dropdown',
+      focus: false,
+      undo: false,
+      refreshAfterCallback: true,
+      options: EditorVariableNames(),
+      callback: function (cmd, val) {
+          var editorInstance = this;
+          editorInstance.html.insert("{" + val + "}");
+      },
+      // Callback on refresh.
+      refresh: function ($btn) {
+          console.log('do refresh');
+      },
+      // Callback on dropdown show.
+      refreshOnShow: function ($btn, $dropdown) {
+          console.log('do refresh when show');
+      }
+  });
+
+  Froalaeditor.RegisterCommand('moreMisc', {   
+      title: '',
+      type: 'dropdown',
+      focus: false,
+      undo: false,
+      refreshAfterCallback: true,
+      options: EditorVariableNames(),
+      callback: function (cmd, val) {
+          var editorInstance = this;
+          editorInstance.html.insert("{" + val + "}");
+      },
+      // Callback on refresh.
+      refresh: function ($btn) {
+          console.log('do refresh');
+      },
+      // Callback on dropdown show.
+      refreshOnShow: function ($btn, $dropdown) {
+          console.log('do refresh when show');
+      }
+  });
+
+  // Check Client Exists
+
+  const config = {
+      placeholderText: 'Edit Your Content Here!',
+      charCounterCount: false,
+      toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'],['Delete', 'moreMisc']], 
+      imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+      imageUploadRemoteUrls: false, 
+      
+  }
+  const HandleModelChange = (Model) => {
+      SetSignature({
+          Data: Model
+      });
+  }
+
+  var editor = new FroalaEditor('.send', {}, function () { 
+      editor.button.buildList(); 
+  }) 
+  // Frola Editor Ends
+
+
   return (
 
     <>
@@ -1152,7 +1243,19 @@ export default function UnansweredResponsesPage() {
                           <label id='lblreplytoemail'></label>
                         </Col>
                       </Row>
-                      <Row className='px-2'>
+
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div id='replybody' className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> 
+                                </div>
+                            </Col>
+                        </Row>
+                      </div>
+
+                      {/* <Row className='px-2'>
                         <Col className='bodyeditor'>
                           <TextareaAutosize className='w-100'
                             aria-label="minimum height"
@@ -1161,9 +1264,10 @@ export default function UnansweredResponsesPage() {
                             id='replybody'
                           />
                         </Col>
-                      </Row>
+                      </Row> */}
 
-                      <div className='ftcompose px-3'>
+
+                      {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                           <Col xs={10} className='px-0'>
                             <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -1203,7 +1307,7 @@ export default function UnansweredResponsesPage() {
                             </ButtonGroup>
                           </Col>
                         </Row>
-                      </div>
+                      </div> */}
 
                     </div>
                   </Col>
@@ -1227,7 +1331,18 @@ export default function UnansweredResponsesPage() {
                           <input type='text' className='border-none' placeholder='To' name='to' id='to' />
                         </Col>
                       </Row>
-                      <Row className='px-2'>
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div id='replybodyfrwd' className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> 
+                                </div>
+                            </Col>
+                        </Row>
+                      </div>
+
+                      {/* <Row className='px-2'>
                         <Col className='bodyeditor'>
                           <TextareaAutosize className='w-100'
                             aria-label="minimum height"
@@ -1236,9 +1351,9 @@ export default function UnansweredResponsesPage() {
                             id='replybodyfrwd'
                           />
                         </Col>
-                      </Row>
+                      </Row> */}
 
-                      <div className='ftcompose px-3'>
+                      {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                           <Col xs={10} className='px-0'>
                             <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -1278,7 +1393,7 @@ export default function UnansweredResponsesPage() {
                             </ButtonGroup>
                           </Col>
                         </Row>
-                      </div>
+                      </div> */}
 
                     </div>
                   </Col>
