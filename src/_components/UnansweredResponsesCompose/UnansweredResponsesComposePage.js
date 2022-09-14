@@ -4,10 +4,12 @@ import Axios from "axios"
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
-import { ResponseMessage } from "../../_constants/response.message";
+import { ResponseMessage } from "../../_constants/response.message";  
 import { GetUserDetails } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+
+import { EditorVariableNames } from "../../_helpers/Utility";
 
 import { Col, Row } from 'react-bootstrap';
 import Close from '../../images/icons/w-close.svg';
@@ -25,6 +27,12 @@ import link_line from '../../images/icons/link_line.svg';
 import template from '../../images/icons/template.svg';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
 
 toast.configure();
 const Style = {
@@ -68,6 +76,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     })
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
+    const [Signature, SetSignature] = useState({
+        Data: ""
+    })
 
     useEffect(() => {
         GetClientID()
@@ -220,6 +231,82 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     }
 
+    // Frola Editor Starts
+    Froalaeditor.RegisterCommand('Send', {
+        colorsButtons: ["colorsBack", "|", "-"], 
+    }); 
+     Froalaeditor.RegisterCommand('Delete', {  
+        colorsButtons: ["colorsBack", "|", "-"],
+        align: 'right',
+        buttonsVisible: 2, 
+        title: 'Delete',
+    }); 
+    Froalaeditor.RegisterCommand('Sendoption', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+
+    Froalaeditor.RegisterCommand('moreMisc', {   
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+
+    // Check Client Exists
+
+    const config = {
+        placeholderText: 'Edit Your Content Here!',
+        charCounterCount: false,
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'],['Delete', 'moreMisc']], 
+        imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+        imageUploadRemoteUrls: false, 
+        
+    }
+    const HandleModelChange = (Model) => {
+        SetSignature({
+            Data: Model
+        });
+    }
+    
+    var editor = new FroalaEditor('.send', {}, function () { 
+        editor.button.buildList(); 
+    }) 
+    // Frola Editor Ends
+
+    
+    
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
     const [age, setAge] = React.useState('');
@@ -316,6 +403,16 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     </div>
 
                     <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> 
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+
+                    {/* <div className='bodycompose'>
                         <Row className='px-3 py-2'>
                             <Col>
                                 <TextareaAutosize className='w-100' id='Body'
@@ -328,9 +425,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 />
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
 
-                    <div className='ftcompose px-3'>
+                    {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                             <Col xs={10} className='px-0'>
                                 <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -370,7 +467,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 </ButtonGroup>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

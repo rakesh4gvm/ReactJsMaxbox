@@ -1103,7 +1103,86 @@ div.erorr-msg > * > * {
     line-height: 24px;
     color: #FC3737;
 }
-
+.FroalaEditor {
+    border-radius: 10px;
+    background: #FFF;
+    /* border: 1px solid #CCCCCC; */
+}
+.FroalaEditor .fr-toolbar .fr-btn-grp { 
+    margin: 0 auto; 
+    padding: 0 20px;
+}
+.FroalaEditor .fr-toolbar .fr-btn-grp + .fr-btn-grp.fr-float-left{
+    float: right;
+}
+.FroalaEditor .fr-toolbar.fr-top {
+    top: auto !important;
+    bottom: 0% !important;
+    border: 0;
+    border-radius: 10px;
+    background: #FFF;
+    position: absolute;
+    border-top: 1px solid #E5E5E5;
+    padding: 16px 0;
+    z-index: 99;
+    width: 100%;
+}
+.FroalaEditor .fr-toolbar.fr-top .fr-newline{
+    display: none;
+}
+.FroalaEditor .fr-box.fr-basic .fr-wrapper { 
+    border: none; 
+    height: 300px;
+}
+.FroalaEditor .fr-sticky-dummy {
+    display: none !important;
+}
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1 {
+    background-color: #647AF7;
+    box-shadow: 0px 4px 14px 6px #d8defd;
+    color: #fff;
+    padding: 6px 40px 6px 20px;
+    border-radius: 72px !important;
+    margin-right: 10px;
+}
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1 {
+    background-color: #647AF7;
+    color: #fff;
+    width: 30px;
+    position: absolute;
+    margin-left: -46px;
+    content: " ";
+    border-radius: 109px;
+    padding-left: 30px;
+    overflow: hidden;
+}
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1::after {
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-135deg);
+    background-color: #647AF7;
+    position: absolute;
+    top: 17px;
+    left: 8px;
+}
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1{
+    top: calc(-100% + -15px) !important;
+}
+.FroalaEditor .fr-toolbar .fr-command.fr-btn svg path{
+    fill: #616B77;
+}
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-1 {
+    background-image: url(/static/media/icon_delete.05d1efcfa6a990b87bfccb92eda2431c.svg);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    padding-top: 40px;
+    vertical-align: text-bottom;
+    overflow: hidden;
+    width: 42px;
+    background-position: center;
+}
 @media screen and (max-width:990px){
     .mobile-nav {
         background-color: #212529;
