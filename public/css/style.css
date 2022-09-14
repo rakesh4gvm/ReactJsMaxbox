@@ -1167,8 +1167,18 @@ div.erorr-msg > * > * {
     top: 17px;
     left: 8px;
 }
-.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1{
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1 {
     top: calc(-100% + -15px) !important;
+}
+.FroalaEditor .fr-toolbar .fr-popup {
+    transform: translate(0px, -100%);
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: -50px !important;
+}
+.FroalaEditor .fr-popup .fr-icon-container {
+    min-width: auto;
+    overflow: initial;
 }
 .FroalaEditor .fr-toolbar .fr-command.fr-btn svg path{
     fill: #616B77;
