@@ -1138,7 +1138,8 @@ div.erorr-msg > * > * {
     display: none !important;
 }
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-2 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-3 {
     background-color: #647AF7;
     box-shadow: 0px 4px 14px 6px #d8defd;
     color: #fff;
@@ -1147,7 +1148,8 @@ div.erorr-msg > * > * {
     margin-right: 10px;
 }
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3 {
     background-color: #647AF7;
     color: #fff;
     width: 30px;
@@ -1159,7 +1161,8 @@ div.erorr-msg > * > * {
     overflow: hidden;
 }
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1::after,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2::after {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3::after {
     border: solid #fff;
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -1171,7 +1174,8 @@ div.erorr-msg > * > * {
     left: 8px;
 }
 .FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1,
-.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-2, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-2 {
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-2, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-2,
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-3, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-3 {
     top: calc(-100% + -15px) !important;
 }
 .FroalaEditor .fr-toolbar .fr-popup {
@@ -1188,7 +1192,8 @@ div.erorr-msg > * > * {
     fill: #616B77;
 }
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-1,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-2 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-3 {
     background-image: url(/static/media/icon_delete.05d1efcfa6a990b87bfccb92eda2431c.svg);
     background-size: 24px;
     background-repeat: no-repeat;
