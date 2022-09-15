@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from "axios"
 import { Col, Row } from 'react-bootstrap';
 
@@ -10,12 +10,18 @@ import BgSign from '../../images/sign-bg.png';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import { UpdateUserDetails } from '../../_helpers/Utility'
 
 export default function OTPConfirmPage(props) {
 
   const [OTPErrorMessage, SetOTPErrorMessage] = useState("")
   const [User, SetUser] = useState()
 
+  useEffect(() => {
+    GetUser()
+  }, [])
+
+  // Get User
   const GetUser = () => {
     const Data = { Email: props.location.state.Email }
     Axios({
@@ -29,20 +35,21 @@ export default function OTPConfirmPage(props) {
     })
   }
 
+  // Verify User
   const VerifyUser = () => {
-    GetUser()
+    // GetUser()
 
-    var one = document.getElementById("one").value;
-    var two = document.getElementById("two").value;
-    var three = document.getElementById("three").value;
-    var four = document.getElementById("four").value;
-    var five = document.getElementById("five").value;
-    var six = document.getElementById("six").value;
+    var One = document.getElementById("one").value;
+    var Two = document.getElementById("two").value;
+    var Three = document.getElementById("three").value;
+    var Four = document.getElementById("four").value;
+    var Five = document.getElementById("five").value;
+    var Six = document.getElementById("six").value;
 
-    const Result = one + two + three + four + five + six
+    const Result = One + Two + Three + Four + Five + Six
 
-    if (one == "" || two == "" || three == "" || four == "" || five == "" || six == "") {
-      SetOTPErrorMessage("All Fields are Mandatory!")
+    if (One == "" || Two == "" || Three == "" || Four == "" || Five == "" || Six == "") {
+      SetOTPErrorMessage("Please Enter Your Verification Code!")
     } else {
       if (User?.OneTimePassword === parseInt(Result)) {
         const Data = { Email: props.location.state.Email, Password: props.location.state.Password }
@@ -52,7 +59,6 @@ export default function OTPConfirmPage(props) {
           data: Data,
         });
         ResponseApi.then((Result) => {
-
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             SetOTPErrorMessage("")
             if (Result.data.Data.length > 0) {
@@ -64,6 +70,7 @@ export default function OTPConfirmPage(props) {
                 "UserImage": LoginDetails.UserImage
               }
               localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
+              SetClientID(LoginDetails._id, LoginDetails.UserImage);
             }
           }
         });
@@ -71,6 +78,32 @@ export default function OTPConfirmPage(props) {
         SetOTPErrorMessage("Invalid OTP")
       }
     }
+  }
+
+  // Set Client ID
+  const SetClientID = (UserID) => {
+    var Data = {
+      UserID: UserID
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.Data.length > 0) {
+          UpdateUserDetails((Result.data.Data[0].ClientID))
+          window.location.href = CommonConstants.HomePage;
+        }
+        else {
+          window.location.href = CommonConstants.HomePage;
+        }
+      }
+      else {
+        window.location.href = CommonConstants.HomePage;
+      }
+    });
   }
 
   return (
@@ -121,9 +154,6 @@ export default function OTPConfirmPage(props) {
           </div>
         </div>
       </div>
-
-
-
     </>
   );
 }
