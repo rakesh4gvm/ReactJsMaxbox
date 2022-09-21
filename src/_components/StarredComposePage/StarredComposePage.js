@@ -22,8 +22,17 @@ import image_light from '../../images/icons/image_light.svg';
 import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
-import template from '../../images/icons/template.svg'; import { toast } from "react-toastify";
+import template from '../../images/icons/template.svg';
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { EditorVariableNames } from "../../_helpers/Utility";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
 
 toast.configure();
 const Style = {
@@ -67,6 +76,14 @@ export default function StarredComposePage({ GetStarredList }) {
     })
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
+    const [Signature, SetSignature] = useState({
+        Data: ""
+    })
+    const [Value, SetValue] = useState({
+        FirstName: "",
+        LastName: "",
+        Email: ""
+    })
 
     useEffect(() => {
         GetClientID()
@@ -140,8 +157,6 @@ export default function StarredComposePage({ GetStarredList }) {
         }
     };
 
-
-
     // Handle State Change
     const HandleChange = (e) => {
         SetState({ ...State, [e.target.name]: e.target.value })
@@ -165,9 +180,8 @@ export default function StarredComposePage({ GetStarredList }) {
 
     const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
 
-    // Sent Mail
+    // Sent Mail Starts
     const SentMail = async () => {
-
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
@@ -184,10 +198,13 @@ export default function StarredComposePage({ GetStarredList }) {
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    SignatureText: Signature.Data,
                     CC: CC,
                     BCC: BCC,
                     FromEmail: SelectedUser.Email,
                     RefreshToken: SelectedUser.RefreshToken,
+                    FirstName: SelectedUser.FirstName,
+                    LastName: SelectedUser.LastName,
                     UserID: UserID,
                     ClientID: ClientID,
                     IsUnansweredResponsesMail: false,
@@ -205,6 +222,8 @@ export default function StarredComposePage({ GetStarredList }) {
                         CloseCompose()
                         GetStarredList()
                         SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
+                    } else {
+                        toast.error(Result?.data?.Message);
                     }
                 })
             } else {
@@ -212,6 +231,78 @@ export default function StarredComposePage({ GetStarredList }) {
             }
         }
     }
+    // Sent Mail Ends
+
+    // Frola Editor Starts
+    Froalaeditor.RegisterCommand('Send', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        callback: SentMail
+    });
+    Froalaeditor.RegisterCommand('Delete', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        align: 'right',
+        buttonsVisible: 2,
+        title: 'Delete',
+    });
+    Froalaeditor.RegisterCommand('Sendoption', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            SetValue(val)
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+    Froalaeditor.RegisterCommand('moreMisc', {
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+    // Check Client Exists
+    const config = {
+        placeholderText: 'Edit Your Content Here!',
+        charCounterCount: false,
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+        imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+        imageUploadRemoteUrls: false,
+    }
+    const HandleModelChange = (Model) => {
+        SetSignature({
+            Data: Model
+        });
+    }
+    var editor = new FroalaEditor('.send', {}, function () {
+        editor.button.buildList();
+    })
+    // Frola Editor Ends
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
@@ -303,10 +394,23 @@ export default function StarredComposePage({ GetStarredList }) {
                             <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
                             </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Body' name='Body' value={State.Subject} onChange={HandleChange} />
+                            </Col>
                         </Row>
                     </div>
 
                     <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+
+                    {/* <div className='bodycompose'>
                         <Row className='px-3 py-2'>
                             <Col>
                                 <TextareaAutosize className='w-100' id='Body'
@@ -319,9 +423,9 @@ export default function StarredComposePage({ GetStarredList }) {
                                 />
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
 
-                    <div className='ftcompose px-3'>
+                    {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                             <Col xs={10} className='px-0'>
                                 <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -361,7 +465,7 @@ export default function StarredComposePage({ GetStarredList }) {
                                 </ButtonGroup>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

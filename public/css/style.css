@@ -1,14 +1,18 @@
-body, html{
+body,
+html {
     font-family: 'Poppins', sans-serif;
     padding: 0;
     margin: 0;
 }
-.left{
+
+.left {
     float: left;
 }
-.right{
+
+.right {
     float: right;
 }
+
 /* .header-main{
     background-color: #647AF7;
 } */
@@ -19,8 +23,9 @@ body, html{
     right: 0;
     left: 0;
     z-index: 999;
-  }
-span.userpic {  
+}
+
+span.userpic {
     overflow: hidden;
     border-radius: 72px;
     width: 53px;
@@ -28,6 +33,7 @@ span.userpic {
     display: table;
     position: relative;
 }
+
 span.userpic img {
     width: auto;
     position: absolute;
@@ -35,9 +41,11 @@ span.userpic img {
     right: 0;
     height: 100%;
 }
-.dropboxcard{
+
+.dropboxcard {
     position: relative;
 }
+
 .userdropdown {
     background: #FFFFFF;
     box-shadow: 0px 4px 30px #d8ddf9;
@@ -47,9 +55,11 @@ span.userpic img {
     min-width: 460px;
     z-index: 999;
 }
-.userdropdown.show{
+
+.userdropdown.show {
     display: block;
 }
+
 .bg-themehead {
     padding: 30px;
     background: #647af7;
@@ -58,41 +68,55 @@ span.userpic img {
     flex-direction: column;
     align-items: center;
 }
-.bg-themehead a, .bg-themehead a:hover{
+
+.bg-themehead a,
+.bg-themehead a:hover {
     color: #fff;
     text-decoration: none;
 }
-.header-main .navbar { 
+
+.header-main .navbar {
     justify-content: space-between;
 }
-.selecter-m{
+
+.selecter-m {
     min-width: 250px;
 }
-.selecter-m .MuiInput-root{
+
+.selecter-m .MuiInput-root {
     width: 100%;
 }
-.selecter-m > .MuiInput-root::after,
-.selecter-m > .MuiInput-underline:before{
+
+.selecter-m>.MuiInput-root::after,
+.selecter-m>.MuiInput-underline:before {
     display: none;
 }
-.selecter-m .MuiInput-root .MuiSelect-selectMenu{
+
+.selecter-m .MuiInput-root .MuiSelect-selectMenu {
     background-color: #fff;
     line-height: 29px;
     border-radius: 6px;
     padding: 5px 15px;
 }
+
 .menulist {
     display: flex;
 }
-.menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:focus, .menulist .nav-item.dropdown > a, .menulist .nav-item.dropdown > a:hover {
+
+.menulist .nav-item.dropdown>a,
+.menulist .nav-item.dropdown>a:focus,
+.menulist .nav-item.dropdown>a,
+.menulist .nav-item.dropdown>a:hover {
     color: #fff;
     padding: 0 1.5rem 0 1rem;
     font-size: 16px;
 }
-.menulist .dropdown{
+
+.menulist .dropdown {
     margin-top: 7px;
 }
-.menulist .dropdown-toggle::after { 
+
+.menulist .dropdown-toggle::after {
     border: solid #fff;
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -100,68 +124,86 @@ span.userpic img {
     transform: rotate(45deg);
     margin-left: 10px;
 }
+
 .bodymain {
     padding: 0 15px;
     margin-top: 69px;
     margin-bottom: 40px;
 }
-.textbox-dek input{
+
+.textbox-dek input {
     background: #FFFFFF;
     border: 1px solid #E5E5E5;
     border-radius: 50px;
 }
-.textbox-dek.serchdek input{
+
+.textbox-dek.serchdek input {
     padding: 10px 15px 11px 50px;
 }
+
 .leftinbox {
     text-align: left;
     position: relative;
     background-color: #fff;
 }
-.leftinbox .serchdek svg{
+
+.leftinbox .serchdek svg {
     z-index: 1;
 }
-.serchdek input, .serchdek .MuiInputBase-root{
+
+.serchdek input,
+.serchdek .MuiInputBase-root {
     width: 100% !important;
 }
-.serchdek > div{
+
+.serchdek>div {
     margin: 0 auto;
 }
+
 .MuiPaper-root.cardinboxlist {
     border-bottom: 1px solid #E5E5E5;
     box-shadow: none;
     background: transparent;
     border-radius: 0;
 }
-.selectedstart{
+
+.selectedstart {
     color: #FFC107;
 }
+
 .MuiButtonBase-root.startselct {
     padding: 0;
     border: none;
     background: transparent;
     float: right;
 }
-.startselct .starone{
+
+.startselct .starone {
     display: block;
 }
-.startselct .startwo{
+
+.startselct .startwo {
     display: none;
 }
-.startselct.Mui-selected .starone{
+
+.startselct.Mui-selected .starone {
     display: none;
 }
-.startselct.Mui-selected .startwo{
+
+.startselct.Mui-selected .startwo {
     display: block;
 }
+
 .col.maxcontainerix {
     max-width: 470px;
     position: fixed;
 }
-.rightinbox{
+
+.rightinbox {
     width: calc(100% - 470px);
     margin-left: 470px;
 }
+
 .inboxuserpic {
     background: #ccc;
     padding: 0;
@@ -170,11 +212,13 @@ span.userpic img {
     width: 48px;
     height: 48px;
     display: table;
-  }
-  .inboxuserpic img {
+}
+
+.inboxuserpic img {
     width: 100%;
-  }
-.cardinboxlist h4{
+}
+
+.cardinboxlist h4 {
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -182,49 +226,58 @@ span.userpic img {
     color: #616B77;
     margin: 0;
 }
-.cardinboxlist h3{
+
+.cardinboxlist h3 {
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
-    line-height: 30px; 
+    line-height: 30px;
     color: #242424;
     margin-top: 0;
 }
-.cardinboxlist p{
+
+.cardinboxlist p {
     font-weight: 400;
     font-size: 14px;
     line-height: 25px;
     color: #616B77;
 }
-.cardinboxlist h6{
+
+.cardinboxlist h6 {
     font-weight: 400;
     font-size: 13px;
-    line-height: 21px; 
+    line-height: 21px;
     color: #616B77;
     margin-bottom: 0;
 }
-.attachfile{
+
+.attachfile {
     position: relative;
 }
-.attachfile input{
+
+.attachfile input {
     opacity: 0;
     width: 100%;
     height: 100%;
     position: absolute;
 }
-.attachfile svg{
+
+.attachfile svg {
     width: 40px;
     height: auto;
     fill: #CDCCCC;
 }
+
 .ja-center {
     display: flex;
     align-content: center;
     justify-content: center;
 }
-.ja-center > div{
+
+.ja-center>div {
     display: flex;
 }
+
 .inboxnoti {
     width: auto;
     height: auto;
@@ -238,12 +291,14 @@ span.userpic img {
     line-height: 35px;
     float: right;
 }
+
 .inboxnoti svg.MuiSvgIcon-root {
     background: #DC6529;
     border-radius: 27px;
     padding: 3px;
     margin: 5px;
 }
+
 .title-h3 {
     font-style: normal;
     font-weight: 600;
@@ -259,7 +314,8 @@ span.userpic img {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0 15px;
-} 
+}
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 6px;
@@ -269,8 +325,9 @@ span.userpic img {
 ::-webkit-scrollbar-thumb {
     background: #C4C4C4;
     border-radius: 10px;
-} 
-.inboxtype > div > div {
+}
+
+.inboxtype>div>div {
     min-height: 55px;
     border-radius: 15px;
     width: auto;
@@ -278,10 +335,12 @@ span.userpic img {
     border: 1px solid #E5E5E5;
     overflow: hidden;
 }
-.inboxtype > div > div + div { 
+
+.inboxtype>div>div+div {
     max-width: 240px;
     width: 100%;
 }
+
 Button.iconbtn {
     line-height: 45px;
     background: #647AF7;
@@ -293,55 +352,68 @@ Button.iconbtn {
     min-width: auto;
     margin: 0 0 0 10px;
 }
-.MuiButton-root.iconbtn svg{
+
+.MuiButton-root.iconbtn svg {
     width: 20px;
 }
-.MuiButton-root.iconbtn:hover, .MuiButton-root.iconbtn:focus, .MuiButton-root.iconbtn:active{
+
+.MuiButton-root.iconbtn:hover,
+.MuiButton-root.iconbtn:focus,
+.MuiButton-root.iconbtn:active {
     background-color: #5267DB;
 }
+
 .inxtexteditor {
     text-align: left;
     padding: 30px;
 }
-.inxtexteditor h2{
+
+.inxtexteditor h2 {
     font-weight: 500;
     font-size: 22px;
-    line-height: 41px; 
+    line-height: 41px;
     color: #242424;
 }
-.inxtexteditor p{
+
+.inxtexteditor p {
     font-weight: 400;
     font-size: 14px;
-    line-height: 24px; 
+    line-height: 24px;
     color: #616B77;
 }
-.inxtexteditor h6{
+
+.inxtexteditor h6 {
     font-weight: 400;
     font-size: 14px;
-    line-height: 20px; 
+    line-height: 20px;
     color: #616B77;
     text-align: right;
 }
-.userlist h6{ 
+
+.userlist h6 {
     font-weight: 600;
     font-size: 16px;
-    line-height: 30px; 
+    line-height: 30px;
     color: #242424;
 }
-.userlist h6{ 
+
+.userlist h6 {
     font-weight: 400;
     font-size: 15px;
     line-height: 20px;
     color: #616B77;
     text-align: left;
 }
+
 .iconlistinbox button.MuiButtonGroup-grouped {
     min-width: 48px;
     border-right: none !important;
 }
+
 .iconlistinbox button.MuiButtonGroup-grouped img {
     width: 25px;
 }
+
 .iconlistinbox button label {
     font-size: 16px;
     line-height: 20px;
@@ -349,31 +421,38 @@ Button.iconbtn {
     color: #616B77;
     margin-bottom: 0;
 }
-.bt-border{
+
+.bt-border {
     border-bottom: 1px solid #E5E5E5;
 }
-.us-max-110{
+
+.us-max-110 {
     width: 110px;
     height: 110px;
 }
-.textdeclist li span .MuiTypography-body1{
+
+.textdeclist li span .MuiTypography-body1 {
     font-weight: 500;
     font-size: 16px;
-    line-height: 30px; 
+    line-height: 30px;
     color: #242424;
 }
-.textdeclist li span .MuiTypography-body2{
+
+.textdeclist li span .MuiTypography-body2 {
     font-size: 14px;
-    line-height: 23px; 
+    line-height: 23px;
     color: #616B77;
 }
+
 .max-40 {
     max-width: 30px;
 }
+
 .max-40 img {
     width: 100%;
     height: auto;
 }
+
 .selectorall {
     padding: 10px 15px;
     max-width: 220px;
@@ -385,11 +464,13 @@ Button.iconbtn {
     color: #616B77;
     text-decoration: none;
 }
-.selectorall:hover{
+
+.selectorall:hover {
     color: #616B77;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.selectorall img{
+
+.selectorall img {
     margin-left: 40px;
     float: right;
 }
@@ -402,25 +483,30 @@ Button.iconbtn {
     display: none;
     min-width: 400px;
     z-index: 999;
-} 
+}
 
 .userdropall.show {
     display: block;
 }
+
 .userdropall .bodyuserdop {
     max-width: 100%;
 }
-.bodyuserdop ul li{
+
+.bodyuserdop ul li {
     cursor: pointer;
 }
+
 .bodyuserdop ul li:hover {
     background: #f7f7f7;
 }
+
 .inboxtype .userdropall ul {
     max-height: 197px;
     overflow-y: auto;
 }
-.userdropall .droplistchec > div + div {  
+
+.userdropall .droplistchec>div+div {
     position: absolute;
     left: -46px;
     right: auto;
@@ -430,26 +516,32 @@ Button.iconbtn {
     line-height: 60px;
     width: 40px;
 }
-.userdropall .droplistchec > div  {
+
+.userdropall .droplistchec>div {
     padding-right: 0;
     padding-left: 50px;
     width: 100%;
 }
+
 .userdropall ul.MuiList-root {
     max-width: 100%;
 }
+
 .scvar .MuiAvatar-circular {
     border-radius: 5px;
 }
+
 .dropdec .dropdown-item img {
     width: 25px;
     height: 25px;
     margin-right: 10px;
 }
-.dropdec a.dropdown-item{
+
+.dropdec a.dropdown-item {
     padding: 0.6rem 1.5rem;
     display: flex;
 }
+
 .notifimen {
     width: 67px;
     height: 30px;
@@ -462,19 +554,23 @@ Button.iconbtn {
     text-align: center;
     margin: -3px 0 0 auto;
     transform: translate(10px, 0px);
-  }
+}
+
 .notifimen svg {
     width: 18px;
     margin: 0px 1px 0 0;
 }
+
 ul.d-flex.flexlist {
     float: right;
-  }
-.flexlist li{
+}
+
+.flexlist li {
     padding: 15px 10px;
     list-style: none;
     position: relative;
 }
+
 .flexlist li span {
     width: 22px;
     height: 22px;
@@ -486,39 +582,50 @@ ul.d-flex.flexlist {
     top: 0px;
     right: -6px;
     color: #fff;
-  }
-.orange{
+}
+
+.orange {
     background: #F89665;
 }
-.blue{
+
+.blue {
     background: #647AF7;
 }
-.textdeclist > .MuiList-root {
+
+.textdeclist>.MuiList-root {
     max-width: inherit;
 }
-.maxcontainerix div .Mui-checked, 
+
+.maxcontainerix div .Mui-checked,
 .maxcontainerix div .MuiCheckbox-indeterminate {
     color: #F89665;
 }
-.btn.btn-primary{
+
+.btn.btn-primary {
     background: #647AF7;
     box-shadow: 0px 4px 14px 6px #D8DEFD;
     border-radius: 50px;
     color: #fff;
 }
-.btn.largbtn{
+
+.btn.largbtn {
     padding: 15px 40px;
 }
-.btn.btn-primary:hover, .btn.btn-primary:focus, .btn.btn-primary:active{
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active {
     background: #5267DB;
 }
-.composebody{
+
+.composebody {
     position: fixed;
     bottom: 20px;
-    right: 20px; 
+    right: 20px;
     padding: 40px;
     z-index: 99;
 }
+
 .usercompose {
     background: #fff;
     box-shadow: 0px 4px 59px #C4C4C4;
@@ -531,13 +638,16 @@ ul.d-flex.flexlist {
     padding: 0;
     display: none;
 }
-.usercompose.show{
+
+.usercompose.show {
     display: block;
 }
-.hcompose{
+
+.hcompose {
     background: #647AF7;
     border-radius: 0px 15px 0px 0px;
 }
+
 .hcompose h4 {
     color: #fff;
     font-weight: 600;
@@ -545,33 +655,40 @@ ul.d-flex.flexlist {
     line-height: 28px;
     text-align: left;
     margin: 10px auto;
-  }
-.hcompose button{
+}
+
+.hcompose button {
     min-width: 25px;
 }
-.hcompose .btn-group{
+
+.hcompose .btn-group {
     margin-top: 5px;
 }
-.subcompose{
+
+.subcompose {
     border: 1px solid #E5E5E5;
 }
-.subcompose .input-clend{
+
+.subcompose .input-clend {
     width: 100%;
     color: #616B77;
     font-weight: 400;
 }
+
 .subcompose .input-clend::before,
-.subcompose .input-clend::after{
+.subcompose .input-clend::after {
     display: none;
 }
-.subcompose h6{
+
+.subcompose h6 {
     font-weight: 400;
     font-size: 15px;
-    line-height: 26px; 
+    line-height: 26px;
     color: #242424;
     margin: 0 auto;
     line-height: 28px;
 }
+
 button.lable-btn {
     font-weight: 400;
     font-size: 15px;
@@ -580,18 +697,23 @@ button.lable-btn {
     text-transform: capitalize;
     border-radius: 72px;
 }
-button.smallbtn, .ftcompose-btn button.smallbtn{
+
+button.smallbtn,
+.ftcompose-btn button.smallbtn {
     padding: 6px 26px;
     border-radius: 72px !important;
 }
+
 .ftcompose-btn button {
     padding: 2px 10px;
     min-width: auto;
     border-right: none !important;
 }
-.ftcompose-btn button img{
+
+.ftcompose-btn button img {
     max-width: 25px;
 }
+
 .bodycompose textarea {
     border: none;
     outline: none;
@@ -601,26 +723,32 @@ button.smallbtn, .ftcompose-btn button.smallbtn{
     height: auto !important;
     max-height: 50vh;
 }
+
 .ftcompose {
     border-top: 1px solid #E5E5E5;
-    padding: 16px 0; 
+    padding: 16px 0;
 }
+
 div .dropdown-item.active,
-div .dropdown-item:focus{ 
+div .dropdown-item:focus {
     background-color: #647af7;
 }
+
 div .dropdown-item.active img,
 div .dropdown-item:focus img {
     filter: brightness(0) invert(1);
 }
+
 .replaybox {
     background: #FFFFFF;
     border: 1px solid #E5E5E5;
     padding: 15px;
 }
+
 .replayallbox img {
     width: 30px;
 }
+
 .replaybox h5 {
     font-weight: 500;
     font-size: 16px;
@@ -628,53 +756,67 @@ div .dropdown-item:focus img {
     color: #242424;
     margin-bottom: 0;
 }
-.replaybox p{
+
+.replaybox p {
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     color: #616B77;
 }
+
 .editorboxcard {
     background: #FFFFFF;
     border: 1px solid #E5E5E5;
     box-shadow: 5px 5px 20px #d9d9d9;
     border-radius: 5px;
 }
+
 .hedtopedit {
-    display: flex; 
+    display: flex;
     align-items: center;
 }
-.hedtopedit h6, .userlist .hedtopedit h6 {
+
+.hedtopedit h6,
+.userlist .hedtopedit h6 {
     font-size: 15px;
     margin-right: 7px;
     margin-bottom: 0;
 }
-.hedtopedit label{
+
+.hedtopedit label {
     font-size: 15px;
     margin: 0;
 }
-.hedtopedit img{
+
+.hedtopedit img {
     width: 25px;
 }
+
 .bodyeditor textarea {
     border: none;
     padding: 15px 0;
     outline: 0;
     resize: none;
 }
-button.btn-pre, button.btn-pre:hover {
+
+button.btn-pre,
+button.btn-pre:hover {
     background-color: #647AF7;
     color: #fff;
 }
-button.btn-darkpre, button.btn-darkpre:hover {
+
+button.btn-darkpre,
+button.btn-darkpre:hover {
     background-color: #4E63DA;
     color: #fff;
 }
+
 .btn-50 button {
     width: 50%;
     border-radius: 0;
     padding: 11px 15px;
 }
+
 div.modal-prein {
     padding: 0;
     border-radius: 15px;
@@ -682,45 +824,57 @@ div.modal-prein {
     border: none !important;
     overflow: hidden;
 }
-.datepikclen .MuiOutlinedInput-root{
+
+.datepikclen .MuiOutlinedInput-root {
     background-color: #F7F8FF;
 }
-.datepikclen fieldset{
+
+.datepikclen fieldset {
     top: 0;
 }
-.datepikclen fieldset legend{
+
+.datepikclen fieldset legend {
     display: none;
 }
-.css-bkrceb-MuiButtonBase-root-MuiPickersDay-root.Mui-selected { 
-    background-color: #647af7; 
+
+.css-bkrceb-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+    background-color: #647af7;
 }
-.replaybox{
+
+.replaybox {
     background-color: #F7F8FF;
-    
+
 }
-.replaybox .replaybox{
+
+.replaybox .replaybox {
     background-color: #FFFFFF;
 }
+
 .user_editor.mt-5 {
     padding: 0 15px;
 }
+
 .col.fixwidleft {
     max-width: 70px;
 }
-.col.fixwidright{
+
+.col.fixwidright {
     max-width: calc(100% - 70px);
 }
+
 .bodsetting {
     background: #8193f9a3;
     color: #fff;
     overflow: hidden;
     position: relative;
 }
+
 .imguploadmain {
     position: relative;
     display: table;
     margin: 0 auto 30px;
 }
+
 .imgupload {
     width: 206px;
     height: 206px;
@@ -728,13 +882,14 @@ div.modal-prein {
     margin: 0 auto;
     border-radius: 150px;
     border: 5px solid #FFFFFF;
-    box-shadow: 0px 4px 24px rgb(0 0 0 / 25%); 
+    box-shadow: 0px 4px 24px rgb(0 0 0 / 25%);
     margin-top: -153px;
     overflow: hidden;
     display: inline-block;
     position: relative;
     text-align: center;
 }
+
 .imgupload img {
     width: auto;
     height: 100%;
@@ -744,6 +899,7 @@ div.modal-prein {
     left: 50%;
     position: absolute;
 }
+
 .uploadedimg {
     width: 45px;
     height: 45px;
@@ -754,6 +910,7 @@ div.modal-prein {
     right: 10px;
     line-height: 42px;
 }
+
 .uploadedimg input {
     opacity: 0;
     width: 100%;
@@ -763,10 +920,12 @@ div.modal-prein {
     left: 0;
     z-index: 1;
 }
+
 .input-box {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
 .input-box input {
     border: 1px solid #E5E5E5;
     border-radius: 15px;
@@ -777,11 +936,13 @@ div.modal-prein {
     line-height: 50px;
     color: #616B77;
 }
-.select-box{
+
+.select-box {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-.select-box > .MuiInputBase-root {
+
+.select-box>.MuiInputBase-root {
     border: 1px solid #E5E5E5;
     min-height: 45px;
     border-radius: 15px;
@@ -790,53 +951,68 @@ div.modal-prein {
     padding: 9px 15px;
     text-decoration: none;
 }
-.select-box > .MuiInputBase-root::before {
+
+.select-box>.MuiInputBase-root::before {
     display: none;
 }
-.sm-container{
+
+.sm-container {
     max-width: 1000px;
     margin: 0 auto;
 }
-.btnprofile{
+
+.btnprofile {
     margin: 0 auto;
     display: table;
 }
-.btn.btn-orang{
+
+.btn.btn-orang {
     background: #F89665;
     color: #fff;
 }
-.btn.btn-orang:hover{
+
+.btn.btn-orang:hover {
     background: #DC6529;
     color: #fff;
 }
+
 .btn.btn-orang.btn:focus {
     outline: 0;
     box-shadow: 0 0 0 0.2rem #f8966540;
 }
+
 .btnprofile .css-1or64il-MuiButtonGroup-root .MuiButtonGroup-grouped {
     min-width: 130px;
 }
-.Select-box > div > div {
+
+.Select-box>div>div {
     margin: 15px auto;
     min-height: 50px;
     border-radius: 15px;
     border-color: #E5E5E5;
 }
-.Select-box > div > div > div + div .css-1okebmr-indicatorSeparator{
+
+.Select-box>div>div>div+div .css-1okebmr-indicatorSeparator {
     display: none;
 }
-.css-11xur9t-MuiPaper-root-MuiTableContainer-root.tablename{
+
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root.tablename {
     box-shadow: none;
 }
-.tablename, td, th { 
+
+.tablename,
+td,
+th {
     font-family: 'Poppins';
 }
-.tablename thead tr th{
-    font-weight: 700; 
-    line-height: 22px; 
+
+.tablename thead tr th {
+    font-weight: 700;
+    line-height: 22px;
     color: #616B77;
     border-color: #E5E5E5;
 }
+
 .tablename tbody tr td {
     font-style: normal;
     font-weight: 400;
@@ -846,18 +1022,23 @@ div.modal-prein {
     white-space: nowrap;
     border-color: #E5E5E5;
 }
-button.btn-success{
+
+button.btn-success {
     background-color: #5CC078;
 }
-button.btn-success:hover{
+
+button.btn-success:hover {
     background-color: #44a760;
 }
-button.btn-cancel{
+
+button.btn-cancel {
     background-color: #FF8B8B;
 }
-button.btn-cancel{
+
+button.btn-cancel {
     background-color: #e07070;
 }
+
 .table-btn button {
     width: auto;
     border-radius: 72px !important;
@@ -869,7 +1050,8 @@ button.btn-cancel{
     margin: 0 4px;
     font-family: 'Poppins';
 }
-Button.iconbtntable { 
+
+Button.iconbtntable {
     line-height: 40px;
     background: #647AF7;
     border-radius: 5px;
@@ -881,9 +1063,12 @@ Button.iconbtntable {
     color: #fff;
     margin: 0 5px;
 }
-Button.iconbtntable:hover, Button.iconbtntable:focus {
+
+Button.iconbtntable:hover,
+Button.iconbtntable:focus {
     background: #5267DB;
 }
+
 Button.btnauthenticate {
     background: #F89665;
     border-radius: 5px;
@@ -895,7 +1080,8 @@ Button.btnauthenticate {
     font-family: 'Poppins';
     padding: 6px 15px;
 }
-Button.btnauthenticate:hover{
+
+Button.btnauthenticate:hover {
     background: #d47748;
 }
 
@@ -911,14 +1097,17 @@ Button.btnaccount {
     padding: 13px 25px;
     text-transform: capitalize;
 }
-Button.btnaccount:hover{
+
+Button.btnaccount:hover {
     background: #7ED997;
 }
+
 .inxtexteditor h5 {
     margin-bottom: 0;
     font-size: 17px;
 }
-.page-dec ul li button{
+
+.page-dec ul li button {
     background: #F7F8FF;
     border-radius: 3px;
     font-weight: 600;
@@ -927,32 +1116,38 @@ Button.btnaccount:hover{
     border: none;
     color: #616B77;
 }
-.page-dec ul li button.Mui-selected{
+
+.page-dec ul li button.Mui-selected {
     color: #647AF7;
     background: #F7F8FF;
 }
-.footer-main{
+
+.footer-main {
     background: #F5F5F5;
     font-weight: 400;
     font-size: 14px;
-    line-height: 20px; 
+    line-height: 20px;
     color: #616B77;
     padding: 20px 40px;
 }
-.footer-main p{
+
+.footer-main p {
     margin-bottom: 0;
     color: #616B77;
 }
-.footer-main a{
+
+.footer-main a {
     margin-bottom: 0;
     color: #616B77;
 }
+
 .imgbgset {
     width: 100%;
     position: absolute;
     left: 0;
     right: 0;
 }
+
 Button.btntemplateround {
     background: #F89665;
     border-radius: 72px;
@@ -967,9 +1162,11 @@ Button.btntemplateround {
     height: 50px;
     min-width: inherit;
 }
+
 Button.btntemplateround:hover {
     background: #d47748;
 }
+
 .tablebtnlist button.btn {
     background: rgb(100, 122, 247);
     width: 30px;
@@ -981,31 +1178,38 @@ Button.btntemplateround:hover {
     padding: 0;
     min-width: inherit;
 }
+
 .tablebtnlist button svg,
-.tablebtnlist button img{
+.tablebtnlist button img {
     width: 17px;
 }
+
 .containermd {
     margin: 0 auto;
     max-width: 1200px;
 }
-.iconwhite, .iconwhite svg {
+
+.iconwhite,
+.iconwhite svg {
     color: #fff;
     width: 26px;
     height: auto;
 }
+
 .input-boxbg {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-.input-boxbg label{
+
+.input-boxbg label {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 34px; 
+    line-height: 34px;
     color: #616B77;
 }
-.input-boxbg input{
+
+.input-boxbg input {
     border: 1px solid #E5E5E5;
     border-radius: 15px;
     width: 100%;
@@ -1017,25 +1221,29 @@ Button.btntemplateround:hover {
     background: #F7F8FF;
     outline: 0;
 }
-.sign-main { 
+
+.sign-main {
     width: 100%;
     min-height: calc(100vh - 0px);
-    position: relative; 
-    padding: 65px 15px 0; 
+    position: relative;
+    padding: 65px 15px 0;
 }
-.bgsigner{
+
+.bgsigner {
     position: absolute;
     right: 0;
     bottom: 0;
     height: calc(80vh - 0px);
 }
-.sign-main label{
+
+.sign-main label {
     color: #909092;
 }
+
 /* div#menu- {
     margin-top: 41px;
 } */
-.header-white{
+.header-white {
     background-color: #fff;
     position: fixed;
     top: 0;
@@ -1043,45 +1251,57 @@ Button.btntemplateround:hover {
     left: 0;
     z-index: 999;
 }
+
 .header-white .navbar {
     justify-content: space-between;
 }
+
 button#Variable-1 {
     padding: 0 25px 0 15px;
 }
-.menulist .selecter-m{
+
+.menulist .selecter-m {
     position: relative;
 }
+
 .erorr-msg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
 }
-div.erorr-msg > * > * {
+
+div.erorr-msg>*>* {
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 14px;
     line-height: 20px;
     width: 100%;
-    margin: 0;  
+    margin: 0;
 }
-.comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{ 
+
+.comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
     padding: 8.5px 17px;
     min-width: 430px;
 }
-.comse-select div fieldset legend{ 
+
+.comse-select div fieldset legend {
     display: none;
 }
-.comse-select div fieldset{ 
+
+.comse-select div fieldset {
     top: -1px;
 }
-.cc, .bcc{
+
+.cc,
+.bcc {
     display: none;
-} 
-.code-inputbox{
+}
+
+.code-inputbox {
     display: inline-flex;
 }
+
 .code-inputbox input {
     width: 45px;
     margin: 0 5px;
@@ -1091,30 +1311,37 @@ div.erorr-msg > * > * {
     border: 1px solid #D2D2D2;
     text-align: center;
 }
-.imglogos{
+
+.imglogos {
     width: 200px;
 }
+
 .border-none {
     border: none;
     outline: 0;
 }
+
 .draftext {
     font-size: 16px;
     line-height: 24px;
     color: #FC3737;
 }
+
 .FroalaEditor {
     border-radius: 10px;
     background: #FFF;
     /* border: 1px solid #CCCCCC; */
 }
-.FroalaEditor .fr-toolbar .fr-btn-grp { 
-    margin: 0 auto; 
+
+.FroalaEditor .fr-toolbar .fr-btn-grp {
+    margin: 0 auto;
     padding: 0 20px;
 }
-.FroalaEditor .fr-toolbar .fr-btn-grp + .fr-btn-grp.fr-float-left{
+
+.FroalaEditor .fr-toolbar .fr-btn-grp+.fr-btn-grp.fr-float-left {
     float: right;
 }
+
 .FroalaEditor .fr-toolbar.fr-top {
     top: auto !important;
     bottom: 0% !important;
@@ -1127,16 +1354,20 @@ div.erorr-msg > * > * {
     z-index: 99;
     width: 100%;
 }
-.FroalaEditor .fr-toolbar.fr-top .fr-newline{
+
+.FroalaEditor .fr-toolbar.fr-top .fr-newline {
     display: none;
 }
-.FroalaEditor .fr-box.fr-basic .fr-wrapper { 
-    border: none; 
+
+.FroalaEditor .fr-box.fr-basic .fr-wrapper {
+    border: none;
     height: 300px;
 }
+
 .FroalaEditor .fr-sticky-dummy {
     display: none !important;
 }
+
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-2,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-3 {
@@ -1147,9 +1378,13 @@ div.erorr-msg > * > * {
     border-radius: 72px !important;
     margin-right: 10px;
 }
+
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-1,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3 {
     background-color: #647AF7;
     color: #fff;
     width: 30px;
@@ -1160,9 +1395,13 @@ div.erorr-msg > * > * {
     padding-left: 30px;
     overflow: hidden;
 }
+
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1::after,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2::after,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3::after {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-1::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-2::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3::after {
     border: solid #fff;
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -1173,24 +1412,35 @@ div.erorr-msg > * > * {
     top: 17px;
     left: 8px;
 }
-.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1,
-.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-2, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-2,
-.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-3, .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-3 {
+
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-1,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-1,
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-2,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-2,
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-3,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-3, 
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-1,
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-2,
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-3 {
     top: calc(-100% + -15px) !important;
 }
+
 .FroalaEditor .fr-toolbar .fr-popup {
     transform: translate(0px, -100%);
     max-height: 160px;
     overflow-y: auto;
     margin-top: -50px !important;
 }
+
 .FroalaEditor .fr-popup .fr-icon-container {
     min-width: auto;
     overflow: initial;
 }
-.FroalaEditor .fr-toolbar .fr-command.fr-btn svg path{
+
+.FroalaEditor .fr-toolbar .fr-command.fr-btn svg path {
     fill: #616B77;
 }
+
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-2,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-3 {
@@ -1205,7 +1455,7 @@ div.erorr-msg > * > * {
 }
 
 
-@media screen and (max-width:990px){
+@media screen and (max-width:990px) {
     .mobile-nav {
         background-color: #212529;
         position: absolute !important;
@@ -1216,63 +1466,79 @@ div.erorr-msg > * > * {
         text-align: left;
         padding-bottom: 20px;
     }
-    .menulist .dropdown > a {
+
+    .menulist .dropdown>a {
         margin-top: 0;
         padding: 0 30px 15px !important;
         border-bottom: 1px solid #2b2f33;
-      }
-    .menulist .dropdown-toggle::after { 
+    }
+
+    .menulist .dropdown-toggle::after {
         position: absolute;
         right: 40px;
-        top: 10px; 
+        top: 10px;
     }
+
     .mobile-nav .dropdown-menu {
         background: #212529;
     }
-    .dropdec a.dropdown-item { 
+
+    .dropdec a.dropdown-item {
         color: #fff;
     }
-    .dropdec .dropdown-item:focus, .dropdec .dropdown-item:hover { 
+
+    .dropdec .dropdown-item:focus,
+    .dropdec .dropdown-item:hover {
         background-color: #181b1e;
     }
-    .notifimen { 
+
+    .notifimen {
         transform: translate(-10px, 0px);
     }
+
     .col.maxcontainerix {
         max-width: inherit;
         width: 100%;
         position: relative;
     }
-    .mb-columfull{
+
+    .mb-columfull {
         flex-direction: column;
     }
-    .inboxuserpic { 
+
+    .inboxuserpic {
         width: 43px;
-        height: 43px; 
+        height: 43px;
     }
-    .inboxuserpic img{ 
+
+    .inboxuserpic img {
         width: 43px;
     }
-    .rightinbox{
+
+    .rightinbox {
         margin-left: 0px;
     }
-    div .dropdown-item img{
+
+    div .dropdown-item img {
         filter: brightness(0) invert(1);
-      }
-    .userdropdown { 
-        min-width: inherit; 
     }
-    .footer-main .col-sm-6{
+
+    .userdropdown {
+        min-width: inherit;
+    }
+
+    .footer-main .col-sm-6 {
         text-align: center;
         margin: 5px auto;
     }
 }
 
-@media (min-width:991px) and (max-width:1200px){
-    .colsm12{
+@media (min-width:991px) and (max-width:1200px) {
+    .colsm12 {
         flex-direction: column;
     }
-    .colsm12 > div{
+
+    .colsm12>div {
         width: 100%;
     }
 }

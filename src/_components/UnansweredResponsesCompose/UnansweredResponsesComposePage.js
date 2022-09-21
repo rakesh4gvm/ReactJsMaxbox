@@ -4,7 +4,7 @@ import Axios from "axios"
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
-import { ResponseMessage } from "../../_constants/response.message";  
+import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -131,8 +131,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         element.classList.remove("show");
 
     }
-
-
     // Open cc
     const OpenCc = () => {
         if (Ccflag == false) {
@@ -155,9 +153,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             SetBccflag(false);
         }
     };
-
-
-
 
     // Handle State Change
     const HandleChange = (e) => {
@@ -185,7 +180,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     // Sent Mail
     const SentMail = async () => {
-
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var Body = document.getElementById("Body").value;
@@ -202,10 +196,13 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    SignatureText: Signature.Data,
                     CC: CC,
                     BCC: BCC,
                     FromEmail: SelectedUser.Email,
                     RefreshToken: SelectedUser.RefreshToken,
+                    FirstName: SelectedUser.FirstName,
+                    LastName: SelectedUser.LastName,
                     UserID: UserID,
                     ClientID: ClientID,
                     IsUnansweredResponsesMail: true,
@@ -223,6 +220,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                         CloseCompose()
                         GetUnansweredResponsesList()
                         SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
+                    } else {
+                        toast.error(Result?.data?.Message);
                     }
                 })
             } else {
@@ -231,16 +230,77 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     }
 
+    const [Value, SetValue] = useState({
+        FirstName: "",
+        LastName: "",
+        Email: ""
+    })
+
+    const Send = () => {
+        debugger
+
+        let editor = new Froalaeditor('div#FroalaEditor', {}, function () {
+            console.log("Save===", editor.html.get())
+        });
+
+        console.log("Value====", Value)
+        console.log("SelectedUser.FirstName====", SelectedUser.FirstName)
+        console.log("SelectedUser.LastName====", SelectedUser.LastName)
+        console.log("SelectedUser.Email====", SelectedUser.Email)
+
+        let FirstName
+        let LastName
+        let Email
+
+        if (Value === "First Name") {
+            FirstName = SelectedUser.FirstName
+        }
+
+        if (Value === "Last Name") {
+            LastName = SelectedUser.LastName
+        }
+
+        if (Value === "Email") {
+            Email = SelectedUser.Email
+        }
+
+
+        var ToEmail = document.getElementById("To").value;
+        var Subject = document.getElementById("Subject").value;
+        var Body = document.getElementById("Body").value;
+        var CC = document.getElementById("CC").value;
+        var BCC = document.getElementById("BCC").value;
+
+        const Data = {
+            FirstName: FirstName,
+            LastName: LastName,
+            Email: Email,
+            ToEmail: ToEmail,
+            Body: Body,
+            Subject: Subject,
+            CC: CC,
+            BCC: BCC,
+            FromEmail: SelectedUser.Email,
+            RefreshToken: SelectedUser.RefreshToken,
+            UserID: UserID,
+            ClientID: ClientID,
+            IsUnansweredResponsesMail: true,
+            IsStarredMail: false,
+            IsFollowUpLaterMail: false,
+            CreatedBy: 1
+        }
+    }
     // Frola Editor Starts
     Froalaeditor.RegisterCommand('Send', {
-        colorsButtons: ["colorsBack", "|", "-"], 
-    }); 
-     Froalaeditor.RegisterCommand('Delete', {  
+        colorsButtons: ["colorsBack", "|", "-"],
+        callback: SentMail
+    });
+    Froalaeditor.RegisterCommand('Delete', {
         colorsButtons: ["colorsBack", "|", "-"],
         align: 'right',
-        buttonsVisible: 2, 
+        buttonsVisible: 2,
         title: 'Delete',
-    }); 
+    });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
         title: '',
@@ -250,6 +310,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         refreshAfterCallback: true,
         options: EditorVariableNames(),
         callback: function (cmd, val) {
+            SetValue(val)
             var editorInstance = this;
             editorInstance.html.insert("{" + val + "}");
         },
@@ -262,8 +323,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             console.log('do refresh when show');
         }
     });
-
-    Froalaeditor.RegisterCommand('moreMisc', {   
+    Froalaeditor.RegisterCommand('moreMisc', {
         title: '',
         type: 'dropdown',
         focus: false,
@@ -283,30 +343,24 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             console.log('do refresh when show');
         }
     });
-
     // Check Client Exists
-
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'],['Delete', 'moreMisc']], 
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
-        imageUploadRemoteUrls: false, 
-        
+        imageUploadRemoteUrls: false,
     }
     const HandleModelChange = (Model) => {
         SetSignature({
             Data: Model
         });
     }
-    
-    var editor = new FroalaEditor('.send', {}, function () { 
-        editor.button.buildList(); 
-    }) 
+    var editor = new FroalaEditor('.send', {}, function () {
+        editor.button.buildList();
+    })
     // Frola Editor Ends
 
-    
-    
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
     const [age, setAge] = React.useState('');
@@ -399,6 +453,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                             <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
                             </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Body' name='Body' value={State.Subject} onChange={HandleChange} />
+                            </Col>
                         </Row>
                     </div>
 
@@ -406,7 +463,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                         <Row className='pt-2'>
                             <Col>
                                 <div className='FroalaEditor'>
-                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> 
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
                                 </div>
                             </Col>
                         </Row>

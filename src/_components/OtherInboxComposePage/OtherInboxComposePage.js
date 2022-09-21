@@ -26,6 +26,14 @@ import template from '../../images/icons/template.svg';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { EditorVariableNames } from "../../_helpers/Utility";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+
 toast.configure();
 const Style = {
     position: 'absolute',
@@ -68,6 +76,14 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
     })
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
+    const [Signature, SetSignature] = useState({
+        Data: ""
+    })
+    const [Value, SetValue] = useState({
+        FirstName: "",
+        LastName: "",
+        Email: ""
+    })
 
     useEffect(() => {
         GetClientID()
@@ -141,8 +157,6 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         }
     };
 
-
-
     // Handle State Change
     const HandleChange = (e) => {
         SetState({ ...State, [e.target.name]: e.target.value })
@@ -167,7 +181,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
     const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
 
-    // Sent Mail
+    // Sent Mail Starts
     const SentMail = async () => {
 
         var ToEmail = document.getElementById("To").value;
@@ -187,10 +201,13 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                     ToEmail: ToEmail,
                     Body: Body,
                     Subject: Subject,
+                    SignatureText: Signature.Data,
                     CC: CC,
                     BCC: BCC,
                     FromEmail: SelectedUser.Email,
                     RefreshToken: SelectedUser.RefreshToken,
+                    FirstName: SelectedUser.FirstName,
+                    LastName: SelectedUser.LastName,
                     UserID: UserID,
                     ClientID: ClientID,
                     IsUnansweredResponsesMail: true,
@@ -209,6 +226,8 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                         CloseCompose()
                         GetInBoxList()
                         SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
+                    } else {
+                        toast.error(Result?.data?.Message);
                     }
                 })
             } else {
@@ -216,8 +235,78 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
             }
         }
     }
+    // Sent Mail Ends
 
-
+    // Frola Editor Starts
+    Froalaeditor.RegisterCommand('Send', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        callback: SentMail
+    });
+    Froalaeditor.RegisterCommand('Delete', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        align: 'right',
+        buttonsVisible: 2,
+        title: 'Delete',
+    });
+    Froalaeditor.RegisterCommand('Sendoption', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            SetValue(val)
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+    Froalaeditor.RegisterCommand('moreMisc', {
+        title: '',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        refreshAfterCallback: true,
+        options: EditorVariableNames(),
+        callback: function (cmd, val) {
+            var editorInstance = this;
+            editorInstance.html.insert("{" + val + "}");
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+            console.log('do refresh');
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+            console.log('do refresh when show');
+        }
+    });
+    // Check Client Exists
+    const config = {
+        placeholderText: 'Edit Your Content Here!',
+        charCounterCount: false,
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+        imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+        imageUploadRemoteUrls: false,
+    }
+    const HandleModelChange = (Model) => {
+        SetSignature({
+            Data: Model
+        });
+    }
+    var editor = new FroalaEditor('.send', {}, function () {
+        editor.button.buildList();
+    })
+    // Frola Editor Ends
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
@@ -309,10 +398,23 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                             <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
                             </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Body' name='Body' value={State.Subject} onChange={HandleChange} />
+                            </Col>
                         </Row>
                     </div>
 
                     <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+
+                    {/* <div className='bodycompose'>
                         <Row className='px-3 py-2'>
                             <Col>
                                 <TextareaAutosize className='w-100' id='Body'
@@ -325,9 +427,9 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                                 />
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
 
-                    <div className='ftcompose px-3'>
+                    {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                             <Col xs={10} className='px-0'>
                                 <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -367,7 +469,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                                 </ButtonGroup>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

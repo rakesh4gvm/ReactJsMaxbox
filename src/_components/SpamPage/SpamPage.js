@@ -65,6 +65,14 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 
+import { EditorVariableNames } from "../../_helpers/Utility";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -123,6 +131,12 @@ export default function SpamPage() {
   const [TotalCount, SetTotalCount] = React.useState(0);
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
+  const [Signature, SetSignature] = useState({
+    Data: ""
+  })
+  const [ForwardSignature, SetForwardSignature] = useState({
+    Data: ""
+  })
 
   useEffect(() => {
     GetClientID();
@@ -589,12 +603,13 @@ export default function SpamPage() {
     element[0].classList.add("d-none");
   }
 
-  const ReplySendMail = (ObjMailData) => {
-    var ToEmail = ObjMailData.FromEmail;
-    var ToName = ObjMailData.FromName
-    var ID = ObjMailData._id
-    var Subject = ObjMailData.Subject;
-    var Body = document.getElementById("replybody").value;
+  // Reply Send Mail Starts
+  const ReplySendMail = () => {
+    var ToEmail = OpenMessage.FromEmail;
+    var ToName = OpenMessage.FromName
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = Signature?.Data
 
     if (Body == "") {
       toast.error("Please Enter Body");
@@ -613,15 +628,85 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetSignature({ Data: "" })
           ReplyPopModelClose();
         }
         else {
           ReplyPopModelClose();
         }
-
       });
     }
   }
+  // Reply Send Mail Ends
+
+  // Send Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('SendReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ReplySendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log('do refresh');
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  // Check Client Exists
+  const config = {
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    imageUploadRemoteUrls: false,
+  }
+  const HandleModelChange = (Model) => {
+    SetSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Send Reply Frola Editor Ends
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
@@ -647,13 +732,23 @@ export default function SpamPage() {
     element[0].classList.add("d-none");
   }
 
-  const ForwardSendMail = (ObjMailData) => {
+  // Validate Email
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
+
+  // Forward Send Mail Starts
+  const ForwardSendMail = () => {
 
     var ToEmail = document.getElementById("to").value;
-    // var ToName = ObjMailData.FromName
-    var ID = ObjMailData._id
-    var Subject = ObjMailData.Subject;
-    var Body = document.getElementById("replybodyfrwd").value;
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = ForwardSignature?.Data
 
     const IsEmailValid = ValidateEmail(ToEmail)
 
@@ -678,30 +773,89 @@ export default function SpamPage() {
           data: Data,
         });
         ResponseApi.then((Result) => {
-
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            SetForwardSignature({ Data: "" })
             ForwardPopModelClose();
           }
           else {
             ForwardPopModelClose();
           }
-
         });
       } else {
         toast.error("Please Enter Valid Email");
       }
     }
   }
+  // Forward Send Mail Ends
 
-  // Validate Email
-  const ValidateEmail = (Email) => {
-    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
-      return false;
+  // Forward  Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('ForwardReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ForwardSendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
     }
-    else {
-      return true;
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log('do refresh');
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
     }
-  };
+  });
+  // Check Client Exists
+  const forwardconfig = {
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    imageUploadRemoteUrls: false,
+  }
+  const ForwardHandleModelChange = (Model) => {
+    SetForwardSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Forward  Reply Frola Editor Ends
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -750,8 +904,6 @@ export default function SpamPage() {
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
-
-
 
   return (
     <>
@@ -1156,7 +1308,18 @@ export default function SpamPage() {
                           <label id='lblreplytoemail'></label>
                         </Col>
                       </Row>
-                      <Row className='px-2'>
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                          <Col>
+                            <div id='replybody' className='FroalaEditor'>
+                              <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+
+                      {/* <Row className='px-2'>
                         <Col className='bodyeditor'>
                           <TextareaAutosize className='w-100'
                             aria-label="minimum height"
@@ -1165,9 +1328,9 @@ export default function SpamPage() {
                             id='replybody'
                           />
                         </Col>
-                      </Row>
+                      </Row> */}
 
-                      <div className='ftcompose px-3'>
+                      {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                           <Col xs={10} className='px-0'>
                             <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -1207,7 +1370,7 @@ export default function SpamPage() {
                             </ButtonGroup>
                           </Col>
                         </Row>
-                      </div>
+                      </div> */}
 
                     </div>
                   </Col>
@@ -1232,7 +1395,18 @@ export default function SpamPage() {
                           <input type='text' name='to' id='to' />
                         </Col>
                       </Row>
-                      <Row className='px-2'>
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                          <Col>
+                            <div id='replybodyfrwd' className='FroalaEditor'>
+                              <FroalaEditor tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+
+                      {/* <Row className='px-2'>
                         <Col className='bodyeditor'>
                           <TextareaAutosize className='w-100'
                             aria-label="minimum height"
@@ -1241,9 +1415,9 @@ export default function SpamPage() {
                             id='replybodyfrwd'
                           />
                         </Col>
-                      </Row>
+                      </Row> */}
 
-                      <div className='ftcompose px-3'>
+                      {/* <div className='ftcompose px-3'>
                         <Row className='px-3'>
                           <Col xs={10} className='px-0'>
                             <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
@@ -1283,7 +1457,7 @@ export default function SpamPage() {
                             </ButtonGroup>
                           </Col>
                         </Row>
-                      </div>
+                      </div> */}
 
                     </div>
                   </Col>
