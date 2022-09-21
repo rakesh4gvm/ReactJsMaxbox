@@ -1361,7 +1361,9 @@ div.erorr-msg>*>* {
 
 .FroalaEditor .fr-box.fr-basic .fr-wrapper {
     border: none;
-    height: 300px;
+    height: 270px;
+    margin-bottom: 50px;
+    overflow-y: auto;
 }
 
 .FroalaEditor .fr-sticky-dummy {
