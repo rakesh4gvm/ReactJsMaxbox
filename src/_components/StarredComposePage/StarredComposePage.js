@@ -184,19 +184,19 @@ export default function StarredComposePage({ GetStarredList }) {
     const SentMail = async () => {
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
-        var Body = document.getElementById("Body").value;
+        // var Body = document.getElementById("Body").value;
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
 
         const ValidEmail = ValidateEmail(ToEmail, CC, BCC)
 
-        if (ToEmail == "" || Subject == "" || Body == "" || CC == "" || BCC == "" || SelectedUser == undefined) {
+        if (ToEmail == "" || Subject == "" || Signature.Data == "" || CC == "" || BCC == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
         } else {
             if (ValidEmail) {
                 const Data = {
                     ToEmail: ToEmail,
-                    Body: Body,
+                    // Body: Body,
                     Subject: Subject,
                     SignatureText: Signature.Data,
                     CC: CC,
@@ -395,9 +395,9 @@ export default function StarredComposePage({ GetStarredList }) {
                             <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
                             </Col>
-                            <Col xs={11} className="px-0">
+                            {/* <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Body' name='Body' value={State.Subject} onChange={HandleChange} />
-                            </Col>
+                            </Col> */}
                         </Row>
                     </div>
 
