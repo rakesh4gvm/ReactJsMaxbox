@@ -191,8 +191,14 @@ export default function UnansweredResponsesPage() {
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         } else {
+
           SetUnansweredResponsesList([...UnansweredResponsesList]);
-          OpenMessageDetails('');
+          if (UnansweredResponsesList && UnansweredResponsesList?.length > 1) {
+            let LastElemet = UnansweredResponsesList?.slice(-1)
+            OpenMessageDetails(LastElemet[0]?._id, 0);
+          } else {
+            OpenMessageDetails('')
+          }
         }
         GetTotalRecordCount(CID, UID);
       } else {
@@ -295,6 +301,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.error("Mail Deleted Successfully!")
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID);
@@ -657,6 +664,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success("Mail Send Successfully!");
           ReplyPopModelClose();
           SetSignature({ Data: "" })
         }
@@ -768,6 +776,7 @@ export default function UnansweredResponsesPage() {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success("Mail Send Successfully!");
             ForwardPopModelClose();
             SetForwardSignature({ Data: "" })
           }
@@ -1239,7 +1248,7 @@ export default function UnansweredResponsesPage() {
                       <img src={iconleftright} />
                     </Button> */}
                     <Button>
-                      <label>{MailNumber} / {UnansweredResponsesList.length}</label>
+                      <label>{MailNumber} / {UnansweredResponsesList?.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
                       <img src={iconstar} />
