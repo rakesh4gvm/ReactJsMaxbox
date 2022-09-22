@@ -163,10 +163,28 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
     }
 
     // Validate Email
-    const ValidateEmail = (Email, CC, BCC) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)
-            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(CC)
-            || !/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(BCC)) {
+    const ValidateEmail = (Email) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
+    // Validate CC Email
+    const ValidateCC = (CC) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(CC)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
+    // Validate BCC Email
+    const ValidateBCC = (BCC) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(BCC)) {
             return false;
         }
         else {
@@ -190,49 +208,48 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
 
-        const IsEmailValid = ValidateEmail(ToEmail, CC, BCC)
+        const ValidToEmail = ValidateEmail(ToEmail)
+        const ValidCCEmail = ValidateCC(CC)
+        const ValidBCCEmail = ValidateBCC(BCC)
 
-        if (ToEmail == "" || Subject == "" || Signature.Data == "" || CC == "" || BCC == "" || SelectedUser == undefined) {
+        if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
+        } else if (!ValidToEmail || (!ValidCCEmail && CC) || (!ValidBCCEmail && BCC)) {
+            toast.error("Please enter valid email");
         } else {
-
-            if (IsEmailValid) {
-                const Data = {
-                    ToEmail: ToEmail,
-                    // Body: Body,
-                    Subject: Subject,
-                    SignatureText: Signature.Data,
-                    CC: CC,
-                    BCC: BCC,
-                    FromEmail: SelectedUser.Email,
-                    RefreshToken: SelectedUser.RefreshToken,
-                    FirstName: SelectedUser.FirstName,
-                    LastName: SelectedUser.LastName,
-                    UserID: UserID,
-                    ClientID: ClientID,
-                    IsUnansweredResponsesMail: true,
-                    IsStarredMail: false,
-                    IsFollowUpLaterMail: false,
-                    CreatedBy: 1
-                }
-
-                Axios({
-                    url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
-                    method: "POST",
-                    data: Data,
-                }).then((Result) => {
-                    if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        OpenCompose();
-                        CloseCompose()
-                        GetInBoxList()
-                        SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
-                    } else {
-                        toast.error(Result?.data?.Message);
-                    }
-                })
-            } else {
-                toast.error("Please Enter Valid Email!")
+            const Data = {
+                ToEmail: ToEmail,
+                // Body: Body,
+                Subject: Subject,
+                SignatureText: Signature.Data,
+                CC: CC,
+                BCC: BCC,
+                FromEmail: SelectedUser.Email,
+                RefreshToken: SelectedUser.RefreshToken,
+                FirstName: SelectedUser.FirstName,
+                LastName: SelectedUser.LastName,
+                UserID: UserID,
+                ClientID: ClientID,
+                IsUnansweredResponsesMail: true,
+                IsStarredMail: false,
+                IsFollowUpLaterMail: false,
+                CreatedBy: 1
             }
+            Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
+                method: "POST",
+                data: Data,
+            }).then((Result) => {
+                if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                    toast.success("Mail Send Successfully!");
+                    OpenCompose();
+                    CloseCompose()
+                    GetInBoxList()
+                    SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
+                } else {
+                    toast.error(Result?.data?.Message);
+                }
+            })
         }
     }
     // Sent Mail Ends
