@@ -126,7 +126,12 @@ export default function DraftsPage() {
         }
         else {
           SetDraftList([...DraftList]);
-          OpenMessageDetails('');
+          if (DraftList && DraftList?.length > 1) {
+            let LastElement = DraftList?.slice(-1)
+            OpenMessageDetails(LastElement[0]?._id, 0);
+          } else {
+            OpenMessageDetails('');
+          }
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -494,11 +499,10 @@ export default function DraftsPage() {
                 </Row>
               </div>
               {
-                DraftList.length === 0
-                  ?
+                DraftList?.length === 0 ?
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
-                      dataLength={DraftList.length}
+                      dataLength={DraftList?.length}
                       next={FetchMoreData}
                       hasMore={false}
                       loader={<h4></h4>}
@@ -507,60 +511,117 @@ export default function DraftsPage() {
                     </InfiniteScroll>
                   </div>
                   :
-                  <div id="scrollableDiv" class="listinbox mt-3">
-                    <InfiniteScroll
-                      dataLength={DraftList.length}
-                      next={FetchMoreData}
-                      hasMore={HasMore}
-                      loader={<h4>Loading...</h4>}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p style={{ textAlign: "center" }}>
-                          <b>Yay! You have seen it all</b>
-                        </p>
-                      }
-                    >
-                      <Stack spacing={1} align="left">
-                        {DraftList?.map((row, index) => (
-                          <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-                            <Row>
-                              <Col xs={1} className="pr-0">
-                                <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                  DraftList?.length <= 9
+                    ?
+                    <div id="scrollableDiv" class="listinbox mt-3">
+                      <InfiniteScroll
+                        dataLength={DraftList?.length}
+                        next={FetchMoreData}
+                        hasMore={false}
+                        loader={<h4></h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {DraftList?.length >= 1 && DraftList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
+                              <Row>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                                </Col>
+                              </Row>
+                              <Col xs={11} className="pr-0">
+                                <Row>
+                                  <Col xs={2}>
+                                    <span className="inboxuserpic">
+                                      <img src={defaultimage} width="55px" alt="" />
+                                    </span>
+                                  </Col>
+                                  <Col xs={8}>
+                                    <h4>{row.Subject}</h4>
+                                    <h3>{row.Body}</h3>
+                                  </Col>
+                                  <Col xs={2} className="pl-0">
+                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    <h5 className='draftext'>Draft</h5>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col xs={2} className='ja-center'>
+                                    <div className='attachfile'>
+                                      <input type="file" />
+                                      <AttachFileIcon />
+                                    </div>
+                                  </Col>
+                                  <Col xs={10}>
+                                    <p>{row.Snippet}</p>
+                                  </Col>
+                                </Row>
                               </Col>
-                            </Row>
-                            <Col xs={11} className="pr-0">
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
+                    :
+                    <div id="scrollableDiv" class="listinbox mt-3">
+                      <InfiniteScroll
+                        dataLength={DraftList?.length}
+                        next={FetchMoreData}
+                        hasMore={HasMore}
+                        loader={<h4>Loading...</h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {DraftList?.length > 1 && DraftList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                               <Row>
-                                <Col xs={2}>
-                                  <span className="inboxuserpic">
-                                    <img src={defaultimage} width="55px" alt="" />
-                                  </span>
-                                </Col>
-                                <Col xs={8}>
-                                  <h4>{row.Subject}</h4>
-                                  <h3>{row.Body}</h3>
-                                </Col>
-                                <Col xs={2} className="pl-0">
-                                  <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                  <h5 className='draftext'>Draft</h5>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                               </Row>
-                              <Row>
-                                <Col xs={2} className='ja-center'>
-                                  <div className='attachfile'>
-                                    <input type="file" />
-                                    <AttachFileIcon />
-                                  </div>
-                                </Col>
-                                <Col xs={10}>
-                                  <p>{row.Snippet}</p>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Item>
-                        ))}
-                      </Stack>
-                    </InfiniteScroll>
-                  </div>
+                              <Col xs={11} className="pr-0">
+                                <Row>
+                                  <Col xs={2}>
+                                    <span className="inboxuserpic">
+                                      <img src={defaultimage} width="55px" alt="" />
+                                    </span>
+                                  </Col>
+                                  <Col xs={8}>
+                                    <h4>{row.Subject}</h4>
+                                    <h3>{row.Body}</h3>
+                                  </Col>
+                                  <Col xs={2} className="pl-0">
+                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    <h5 className='draftext'>Draft</h5>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col xs={2} className='ja-center'>
+                                    <div className='attachfile'>
+                                      <input type="file" />
+                                      <AttachFileIcon />
+                                    </div>
+                                  </Col>
+                                  <Col xs={10}>
+                                    <p>{row.Snippet}</p>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
               }
 
             </div>

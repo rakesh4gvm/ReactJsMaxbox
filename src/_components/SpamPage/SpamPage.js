@@ -194,7 +194,12 @@ export default function SpamPage() {
         }
         else {
           SetSpamList([...SpamList]);
-          OpenMessageDetails('');
+          if (SpamList && SpamList?.length > 1) {
+            let LastElement = SpamList?.slice(-1)
+            OpenMessageDetails(LastElement[0]?._id, 0);
+          } else {
+            OpenMessageDetails('');
+          }
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -1148,8 +1153,7 @@ export default function SpamPage() {
                 </Row>
               </div>
               {
-                SpamList.length === 0
-                  ?
+                SpamList?.length === 0 ?
                   <div id="scrollableDiv" class="listinbox mt-3">
                     <InfiniteScroll
                       dataLength={SpamList.length}
@@ -1161,63 +1165,123 @@ export default function SpamPage() {
                     </InfiniteScroll>
                   </div>
                   :
-                  <div id="scrollableDiv" class="listinbox mt-3">
-                    <InfiniteScroll
-                      dataLength={SpamList.length}
-                      next={FetchMoreData}
-                      hasMore={HasMore}
-                      loader={<h4>Loading...</h4>}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p style={{ textAlign: "center" }}>
-                          <b>Yay! You have seen it all</b>
-                        </p>
-                      }
-                    >
-                      <Stack spacing={1} align="left">
-                        {SpamList?.map((row, index) => (
-                          <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-                            <Row>
-                              <Col xs={1} className="pr-0">
-                                <FormControlLabel control={<Checkbox defaultChecked={SpamChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                  SpamList?.length <= 9
+                    ?
+                    <div id="scrollableDiv" class="listinbox mt-3">
+                      <InfiniteScroll
+                        dataLength={SpamList?.length}
+                        next={FetchMoreData}
+                        hasMore={false}
+                        loader={<h4></h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {SpamList?.length >= 1 && SpamList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
+                              <Row>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={SpamChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
+                                </Col>
+                              </Row>
+                              <Col xs={11} className="pr-0">
+                                <Row>
+                                  <Col xs={2}>
+                                    <span className="inboxuserpic">
+                                      <img src={defaultimage} width="55px" alt="" />
+                                    </span>
+                                  </Col>
+                                  <Col xs={8}>
+                                    <h4>{row.FromEmail}</h4>
+                                    <h3>{row.Subject}</h3>
+                                  </Col>
+                                  <Col xs={2} className="pl-0">
+                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      <StarBorderIcon className='starone' />
+                                      <StarIcon className='selectedstart startwo' />
+                                    </ToggleButton>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col xs={2} className='ja-center'>
+                                    <div className='attachfile'>
+                                      <input type="file" />
+                                      <AttachFileIcon />
+                                    </div>
+                                  </Col>
+                                  <Col xs={10}>
+                                    <p>{row.Snippet}</p>
+                                  </Col>
+                                </Row>
                               </Col>
-                            </Row>
-                            <Col xs={11} className="pr-0">
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
+                    :
+                    <div id="scrollableDiv" class="listinbox mt-3">
+                      <InfiniteScroll
+                        dataLength={SpamList?.length}
+                        next={FetchMoreData}
+                        hasMore={HasMore}
+                        loader={<h4>Loading...</h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {SpamList?.length > 1 && SpamList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                               <Row>
-                                <Col xs={2}>
-                                  <span className="inboxuserpic">
-                                    <img src={defaultimage} width="55px" alt="" />
-                                  </span>
-                                </Col>
-                                <Col xs={8}>
-                                  <h4>{row.FromEmail}</h4>
-                                  <h3>{row.Subject}</h3>
-                                </Col>
-                                <Col xs={2} className="pl-0">
-                                  <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                  <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                    <StarBorderIcon className='starone' />
-                                    <StarIcon className='selectedstart startwo' />
-                                  </ToggleButton>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={SpamChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                               </Row>
-                              <Row>
-                                <Col xs={2} className='ja-center'>
-                                  <div className='attachfile'>
-                                    <input type="file" />
-                                    <AttachFileIcon />
-                                  </div>
-                                </Col>
-                                <Col xs={10}>
-                                  <p>{row.Snippet}</p>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Item>
-                        ))}
-                      </Stack>
-                    </InfiniteScroll>
-                  </div>
+                              <Col xs={11} className="pr-0">
+                                <Row>
+                                  <Col xs={2}>
+                                    <span className="inboxuserpic">
+                                      <img src={defaultimage} width="55px" alt="" />
+                                    </span>
+                                  </Col>
+                                  <Col xs={8}>
+                                    <h4>{row.FromEmail}</h4>
+                                    <h3>{row.Subject}</h3>
+                                  </Col>
+                                  <Col xs={2} className="pl-0">
+                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      <StarBorderIcon className='starone' />
+                                      <StarIcon className='selectedstart startwo' />
+                                    </ToggleButton>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col xs={2} className='ja-center'>
+                                    <div className='attachfile'>
+                                      <input type="file" />
+                                      <AttachFileIcon />
+                                    </div>
+                                  </Col>
+                                  <Col xs={10}>
+                                    <p>{row.Snippet}</p>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
               }
             </div>
           </Col>

@@ -26,6 +26,10 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const Style = {
   position: 'absolute',
@@ -75,11 +79,11 @@ export default function ClientListPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetClientList(UserDetails.ClientID,UserDetails.UserID)
+    GetClientList(UserDetails.ClientID, UserDetails.UserID)
   }
 
   // Start Get Client List
-  const GetClientList = (CID,UID) => {
+  const GetClientList = (CID, UID) => {
     let Data
     Data = {
       Page: Page,
@@ -128,11 +132,12 @@ export default function ClientListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetClientList(ClientID,UserID)
+        toast.error("Client Deleted Successfully!");
+        GetClientList(ClientID, UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetClientList(ClientID,UserID)
+        GetClientList(ClientID, UserID)
         SetDeletePopModel(false);
       }
     });
@@ -142,7 +147,7 @@ export default function ClientListPage() {
   //Change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetClientList(ClientID,UserID);
+    GetClientList(ClientID, UserID);
   };
 
   // Edit CLient

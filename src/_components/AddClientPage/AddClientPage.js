@@ -17,6 +17,23 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function AddClientPage({ children }) {
   const [ClientNameError, SetClientNameError] = useState("");
   const [ClientID, SetClientID] = React.useState(0);
@@ -60,7 +77,7 @@ export default function AddClientPage({ children }) {
     }
   });
 
-  
+
   const config = {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
@@ -136,6 +153,7 @@ export default function AddClientPage({ children }) {
           data: Data,
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+            toast.success("Client Added Successfully!")
             history.push("/ClientList");
           }
         })
@@ -154,7 +172,7 @@ export default function AddClientPage({ children }) {
 
   return (
     <>
-     
+
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
@@ -211,7 +229,7 @@ export default function AddClientPage({ children }) {
           </Row>
         </div>
       </div>
-      
+
     </>
   );
 }
