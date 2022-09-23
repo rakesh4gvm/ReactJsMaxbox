@@ -113,7 +113,11 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     }
 
     // Open Compose
-    const OpenCompose = () => {
+    const OpenCompose = (e) => {
+    
+    SetSelectedEmailAccountUser(0);
+    SetSignature({Data:""});
+
         const element = document.getElementById("UserCompose")
 
         if (element.classList.contains("show")) {
@@ -435,7 +439,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={9} className="px-0">
-                                <Input className='input-clend' id='To' name='To' value={State.To} onChange={HandleChange} />
+                                <Input className='input-clend' id='To' name='To' value={State?.To} onChange={HandleChange} />
 
                             </Col>
                             <Col xs={2} className='col text-right d-flex'>
@@ -470,7 +474,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                                 <h6>Subject :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
+                                <Input className='input-clend' id='Subject' name='Subject' value={State?.Subject} onChange={HandleChange} />
                             </Col>
                             {/* <Col xs={11} className="px-0">
                                 <Input className='input-clend' id='Body' name='Body' onChange={HandleChange} />
