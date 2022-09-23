@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -13,16 +13,7 @@ import { Col, Row } from 'react-bootstrap';
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
-import { Input, TextareaAutosize } from '@mui/material';
-import icondelete from '../../images/icons/icon_delete.svg';
-import iconmenu from '../../images/icons/icon_menu.svg';
-import attachment from '../../images/icons/attachment.svg';
-import text_font from '../../images/icons/text_font.svg';
-import image_light from '../../images/icons/image_light.svg';
-import smiley_icons from '../../images/icons/smiley_icons.svg';
-import signature from '../../images/icons/signature.svg';
-import link_line from '../../images/icons/link_line.svg';
-import template from '../../images/icons/template.svg';
+import { Input } from '@mui/material';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,31 +26,8 @@ import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
 toast.configure();
-const Style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 function useOutsideAlerter(ref) {
-    // useEffect(() => {
-    //     function handleClickOutside(event) {
-    //         if (ref.current && !ref.current.contains(event.target)) {
-    //             const element = document.getElementById("UserCompose")
-    //             element.classList.remove("show");
-    //         }
-    //     }
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, [ref]);
 }
 
 export default function OtherInboxComposePage({ GetInBoxList }) {
@@ -67,22 +35,10 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
     const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
-    const [State, SetState] = useState({
-        To: "",
-        Subject: "",
-        Body: "",
-        CC: "",
-        BCC: ""
-    })
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
     const [Signature, SetSignature] = useState({
         Data: ""
-    })
-    const [Value, SetValue] = useState({
-        FirstName: "",
-        LastName: "",
-        Email: ""
     })
 
     useEffect(() => {
@@ -121,7 +77,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
-        
+
         const element = document.getElementById("UserCompose")
 
         if (element.classList.contains("show")) {
@@ -138,7 +94,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         element.classList.remove("show");
     }
 
-    // Open cc
+    // Open CC
     const OpenCc = () => {
         if (Ccflag == false) {
             document.getElementById("Cc").style.display = 'block'
@@ -149,7 +105,8 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
             SetCcflag(false);
         }
     };
-    // Open bcc
+
+    // Open BCC
     const OpenBcc = () => {
         if (Bccflag == false) {
             document.getElementById("Bcc").style.display = 'block'
@@ -161,46 +118,12 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         }
     };
 
-    // Handle State Change
-    const HandleChange = (e) => {
-        SetState({ ...State, [e.target.name]: e.target.value })
-    }
-
-    // Validate Email
-    const ValidateEmail = (Email) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
-
-    // Validate CC Email
-    const ValidateCC = (CC) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(CC)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
-
-    // Validate BCC Email
-    const ValidateBCC = (BCC) => {
-        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(BCC)) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    };
-
-    // Selected User Drop down
+    // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
     }
 
+    // Selected User
     const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
 
     // Sent Mail Starts
@@ -208,22 +131,34 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
-        // var Body = document.getElementById("Body").value;
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
 
         const ValidToEmail = ValidateEmail(ToEmail)
-        const ValidCCEmail = ValidateCC(CC)
-        const ValidBCCEmail = ValidateBCC(BCC)
+
+        var CCEmail = true
+        var BCCEmail = true
+
+        if (CC != "") {
+            CCEmail = ValidateEmail(CC)
+        }
+        if (BCC != "") {
+            BCCEmail = ValidateEmail(BCC)
+        }
 
         if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
-        } else if (!ValidToEmail || (!ValidCCEmail && CC) || (!ValidBCCEmail && BCC)) {
+        } else if (!ValidToEmail) {
             toast.error("Please enter valid email");
-        } else {
+        } else if (!CCEmail) {
+            toast.error("Please enter valid CC email");
+        }
+        else if (!BCCEmail) {
+            toast.error("Please enter valid BCC email");
+        }
+        else {
             const Data = {
                 ToEmail: ToEmail,
-                // Body: Body,
                 Subject: Subject,
                 SignatureText: Signature.Data,
                 CC: CC,
@@ -249,7 +184,10 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                     OpenCompose();
                     CloseCompose()
                     GetInBoxList()
-                    SetState({ To: "", Subject: "", Body: "", CC: "", BCC: "" })
+                    document.getElementById("To").value = ""
+                    document.getElementById("Subject").value = ""
+                    document.getElementById("CC").value = ""
+                    document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
                 }
@@ -279,17 +217,14 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         refreshAfterCallback: true,
         options: EditorVariableNames(),
         callback: function (cmd, val) {
-            SetValue(val)
             var editorInstance = this;
             editorInstance.html.insert("{" + val + "}");
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show');
         }
     });
     Froalaeditor.RegisterCommand('moreMisc', {
@@ -305,14 +240,11 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show');
         }
     });
-    // Check Client Exists
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
@@ -384,7 +316,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={9} className="px-0">
-                                <Input className='input-clend' id='To' name='To' value={State.To} onChange={HandleChange} />
+                                <Input className='input-clend' id='To' name='To' />
 
                             </Col>
                             <Col xs={2} className='col text-right d-flex'>
@@ -419,14 +351,10 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                                 <h6>Subject :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Subject' value={State.Subject} onChange={HandleChange} />
+                                <Input className='input-clend' id='Subject' name='Subject' />
                             </Col>
-                            {/* <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Body' name='Body' value={State.Subject} onChange={HandleChange} />
-                            </Col> */}
                         </Row>
                     </div>
-
                     <div className='bodycompose'>
                         <Row className='pt-2'>
                             <Col>
@@ -436,63 +364,6 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                             </Col>
                         </Row>
                     </div>
-
-                    {/* <div className='bodycompose'>
-                        <Row className='px-3 py-2'>
-                            <Col>
-                                <TextareaAutosize className='w-100' id='Body'
-                                    name='Body'
-                                    value={State.Body}
-                                    onChange={HandleChange}
-                                    aria-label="minimum height"
-                                    minRows={3}
-                                    placeholder=""
-                                />
-                            </Col>
-                        </Row>
-                    </div> */}
-
-                    {/* <div className='ftcompose px-3'>
-                        <Row className='px-3'>
-                            <Col xs={10} className='px-0'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn" onClick={SentMail}> Save</Button>
-                                    <Button>
-                                        <img src={text_font} />
-                                    </Button>
-                                    <Button>
-                                        <img src={attachment} />
-                                    </Button>
-                                    <Button>
-                                        <img src={image_light} />
-                                    </Button>
-                                    <Button>
-                                        <img src={smiley_icons} />
-                                    </Button>
-                                    <Button>
-                                        <img src={signature} />
-                                    </Button>
-                                    <Button>
-                                        <img src={link_line} />
-                                    </Button>
-                                    <Button>
-                                        <img src={template} />
-                                    </Button>
-                                </ButtonGroup>
-                            </Col>
-
-                            <Col xs={2} className='px-0 text-right'>
-                                <ButtonGroup className='ftcompose-btn' variant="text" aria-label="text button group">
-                                    <Button>
-                                        <img src={icondelete} />
-                                    </Button>
-                                    <Button>
-                                        <img src={iconmenu} />
-                                    </Button>
-                                </ButtonGroup>
-                            </Col>
-                        </Row>
-                    </div> */}
                 </div>
             </div>
         </>
