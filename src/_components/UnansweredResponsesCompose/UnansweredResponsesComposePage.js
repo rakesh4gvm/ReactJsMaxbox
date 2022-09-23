@@ -317,11 +317,19 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         colorsButtons: ["colorsBack", "|", "-"],
         callback: SentMail
     });
+    Froalaeditor.RegisterCommand('Send', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        callback: SentMail
+    });
+
+    
+
     Froalaeditor.RegisterCommand('Delete', {
         colorsButtons: ["colorsBack", "|", "-"],
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
+        callback: CloseCompose
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
