@@ -584,11 +584,11 @@ export default function UnansweredResponsesPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    document.getElementById("replybody").value = "";
+    SetSignature({Data:""});
+    
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
-
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
@@ -607,7 +607,8 @@ export default function UnansweredResponsesPage() {
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
-    document.getElementById("replybodyfrwd").value = "";
+    
+    SetForwardSignature({Data:""});
     document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");

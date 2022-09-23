@@ -543,7 +543,7 @@ export default function FollowUpLetterPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    document.getElementById("replybody").value = "";
+    SetSignature({Data:""});
 
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
@@ -672,7 +672,7 @@ export default function FollowUpLetterPage() {
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
-    document.getElementById("replybodyfrwd").value = "";
+    SetForwardSignature({Data:""});
     document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");

@@ -483,7 +483,7 @@ export default function StarredPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    document.getElementById("replybody").value = "";
+    SetSignature({Data:""});
 
     document.getElementById("to").value = "";
 
@@ -618,7 +618,7 @@ export default function StarredPage() {
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
-    document.getElementById("replybodyfrwd").value = "";
+    SetForwardSignature({Data:""});
 
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");

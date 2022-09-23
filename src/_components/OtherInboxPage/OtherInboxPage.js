@@ -541,7 +541,7 @@ export default function OtherInboxPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    document.getElementById("replybody").value = "";
+    SetSignature({Data:""});
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
@@ -671,7 +671,7 @@ export default function OtherInboxPage() {
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
-    document.getElementById("replybodyfrwd").value = "";
+    SetForwardSignature({Data:""});
     document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");
