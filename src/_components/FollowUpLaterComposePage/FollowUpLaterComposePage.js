@@ -263,6 +263,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
+        callback: CloseCompose
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],

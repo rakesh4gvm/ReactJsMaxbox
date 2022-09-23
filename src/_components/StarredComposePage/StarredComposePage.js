@@ -264,6 +264,7 @@ export default function StarredComposePage({ GetStarredList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
+        callback: CloseCompose
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
