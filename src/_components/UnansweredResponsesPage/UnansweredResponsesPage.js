@@ -301,7 +301,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Unanswered Responses Page<br />Delete mail successfully.</div>);
+          toast.error(<div>Unanswered Responses <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID);
@@ -364,7 +364,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses Page<br />Mail Updated successfully.</div>);
+          toast.success(<div>Unanswered Responses <br />Mail Updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           GetUpdatedUnansweredResponsesList(ClientID, UserID);
@@ -665,7 +665,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses Page<br />Reply mail send successfully.</div>);
+          toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
           ReplyPopModelClose();
           SetSignature({ Data: "" })
         }
@@ -777,7 +777,7 @@ export default function UnansweredResponsesPage() {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Unanswered Responses Page<br />Forward mail send successfully.</div>);
+            toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
             ForwardPopModelClose();
             SetForwardSignature({ Data: "" })
           }

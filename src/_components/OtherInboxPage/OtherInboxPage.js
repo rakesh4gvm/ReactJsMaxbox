@@ -303,7 +303,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error("Mail Deleted Successfully!")
+          toast.error(<div>Other Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID);
@@ -366,7 +366,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Updated Successfully!");
+          toast.success(<div>Other Inbox <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID);
@@ -588,7 +588,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Send Successfully!");
+          toast.success(<div>Other Inbox <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
           ReplyPopModelClose();
         }
@@ -737,7 +737,7 @@ export default function OtherInboxPage() {
         ResponseApi.then((Result) => {
           debugger
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success("Mail Send Successfully!");
+            toast.success(<div>Other Inbox <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
             ForwardPopModelClose();
           }

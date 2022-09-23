@@ -161,7 +161,7 @@ export default function EditClientPage(props) {
                     data: Data,
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        toast.success("Client Updated Successfully!")
+                        toast.success(<div>Client <br />Client updated successfully.</div>);
                         history.push("/ClientList");
                     }
                 })

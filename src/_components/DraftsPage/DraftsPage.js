@@ -35,6 +35,11 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -190,6 +195,7 @@ export default function DraftsPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.error(<div>Draft <br />Draft template deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetDraftList(ClientID, UserID);

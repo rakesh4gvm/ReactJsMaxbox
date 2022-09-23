@@ -117,7 +117,11 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
     }
 
     // Open Compose
-    const OpenCompose = () => {
+    const OpenCompose = (e) => {
+
+        SetSelectedEmailAccountUser(0);
+        SetSignature({ Data: "" });
+        
         const element = document.getElementById("UserCompose")
 
         if (element.classList.contains("show")) {
@@ -241,7 +245,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success("Mail Send Successfully!");
+                    toast.success(<div>Other Inbox<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     GetInBoxList()

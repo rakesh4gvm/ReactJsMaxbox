@@ -132,7 +132,7 @@ export default function ClientListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.error("Client Deleted Successfully!");
+        toast.error(<div>Client <br />Client deleted successfully.</div>);
         GetClientList(ClientID, UserID)
         SetDeletePopModel(false);
       }

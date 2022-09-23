@@ -304,6 +304,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.error(<div>Spam <br />Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID);
@@ -366,6 +367,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam  <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           GetUpdatedSpamList(ClientID, UserID);
@@ -432,6 +434,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam  <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID);
@@ -633,6 +636,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam  <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
           ReplyPopModelClose();
         }
@@ -779,6 +783,7 @@ export default function SpamPage() {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success(<div>Spam  <br />Forward  mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
             ForwardPopModelClose();
           }

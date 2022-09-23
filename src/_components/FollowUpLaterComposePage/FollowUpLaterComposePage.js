@@ -117,7 +117,11 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
     }
 
     // Open Compose
-    const OpenCompose = () => {
+    const OpenCompose = (e) => {
+
+        SetSelectedEmailAccountUser(0);
+        SetSignature({ Data: "" });
+        
         const element = document.getElementById("UserCompose")
 
         if (element.classList.contains("show")) {
@@ -240,7 +244,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success("Mail Send Successfully!");
+                    toast.success(<div>Follow Up Later<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     GetFollowUpLaterList()

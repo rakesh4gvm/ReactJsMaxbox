@@ -296,7 +296,7 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error("Mail Deleted Successfully!")
+          toast.error(<div>Follow Up Later <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID);
@@ -359,7 +359,7 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Updated Successfully!");
+          toast.success(<div>Follow Up Later <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID);
@@ -589,7 +589,7 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Send Successfully!");
+          toast.success(<div>Follow Up Later <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
           ReplyPopModelClose();
         }
@@ -737,7 +737,7 @@ export default function FollowUpLetterPage() {
         ResponseApi.then((Result) => {
           debugger
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success("Mail Send Successfully!");
+            toast.success(<div>Follow Up Later <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
             ForwardPopModelClose();
           }

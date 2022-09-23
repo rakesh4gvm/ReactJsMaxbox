@@ -153,7 +153,7 @@ export default function AddClientPage({ children }) {
           data: Data,
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-            toast.success("Client Added Successfully!")
+            toast.success(<div>Client <br />Client added successfully.</div>);
             history.push("/ClientList");
           }
         })

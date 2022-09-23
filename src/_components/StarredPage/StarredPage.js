@@ -246,7 +246,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error("Mail Deleted  Successfully!");
+          toast.error(<div>Starred <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID);
@@ -278,7 +278,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Updated Successfully!");
+          toast.success(<div>Starred <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID);
@@ -534,7 +534,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success("Mail Send Successfully!");
+          toast.success(<div>Starred <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
           ReplyPopModelClose();
         }
@@ -682,7 +682,7 @@ export default function StarredPage() {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success("Mail Send Successfully!");
+            toast.success(<div>Starred <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
             ForwardPopModelClose();
           }

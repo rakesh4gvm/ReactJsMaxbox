@@ -22,6 +22,11 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import template from '../../images/icons/template.svg';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 function useOutsideAlerter(ref) {
   useEffect(() => {
     function handleClickOutside(event) {
@@ -106,6 +111,7 @@ export default function ComposePage({ GetDraftList }) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+        toast.success(<div>Draft <br />Draft template added successfully.</div>);
         OpenCompose();
         CloseCompose()
         GetDraftList()
