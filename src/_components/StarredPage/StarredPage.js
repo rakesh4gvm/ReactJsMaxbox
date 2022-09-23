@@ -1214,10 +1214,10 @@ export default function StarredPage() {
                       <img src={inbox} />
                     </Button>
                     <Button>
-                      <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                     </Button>
                     <Button>
-                      <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
@@ -1241,7 +1241,7 @@ export default function StarredPage() {
                   {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                 </Col>
               </Row>
-              <div className='d-flex mt-5 ml-2'>
+              <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
                     <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
