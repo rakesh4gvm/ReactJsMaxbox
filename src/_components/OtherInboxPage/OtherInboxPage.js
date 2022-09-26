@@ -541,7 +541,7 @@ export default function OtherInboxPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    SetSignature({Data:""});
+    SetSignature({ Data: "" });
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
@@ -657,6 +657,7 @@ export default function OtherInboxPage() {
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
   }
   const HandleModelChange = (Model) => {
@@ -670,8 +671,22 @@ export default function OtherInboxPage() {
   // Send Reply Frola Editor Ends
 
   const ForwardPopModel = (ObjMailsData) => {
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetForwardMssageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetForwardSignature({ Data: Result?.data?.Data })
+      }
+    })
+
     const element = document.getElementsByClassName("user_editor_frwd")
-    SetForwardSignature({Data:""});
+    SetForwardSignature({ Data: "" });
     document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");
@@ -810,6 +825,7 @@ export default function OtherInboxPage() {
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
   }
   const ForwardHandleModelChange = (Model) => {
