@@ -26,6 +26,10 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const Style = {
   position: 'absolute',
@@ -54,9 +58,9 @@ export default function TemplatesListPage() {
 
   useEffect(() => {
     GetClientID();
-    CheckAccountAuthonicate()
-    GetTemplateList()
-  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
+    // CheckAccountAuthonicate()
+    // GetTemplateList()
+  }, [Page, RowsPerPage, SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -74,10 +78,12 @@ export default function TemplatesListPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    CheckAccountAuthonicate()
+    GetTemplateList(UserDetails.ClientID, UserDetails.UserID)
   }
 
   // Start Get Template List
-  const GetTemplateList = () => {
+  const GetTemplateList = (CID, UID) => {
     let Data
     Data = {
       Page: Page,
@@ -86,8 +92,8 @@ export default function TemplatesListPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: '',
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
     };
 
     const ResponseApi = Axios({
@@ -126,11 +132,12 @@ export default function TemplatesListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetTemplateList()
+        toast.error(<div>Template <br />Template deleted successfully.</div>);
+        GetTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetTemplateList()
+        GetTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
     });
@@ -140,7 +147,7 @@ export default function TemplatesListPage() {
   //Change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetTemplateList();
+    GetTemplateList(ClientID, UserID);
   };
 
   // Edit Template
@@ -201,7 +208,7 @@ export default function TemplatesListPage() {
           <Row>
             <Col>
               <TableContainer className='tablename' component={Paper}>
-           
+
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
@@ -214,7 +221,7 @@ export default function TemplatesListPage() {
                     {TemplateList?.map((row) => (
                       <TableRow>
                         <TableCell>{row.Subject}</TableCell>
-                        <TableCell>  { parse( row.BodyText)}   </TableCell>
+                        <TableCell>  {parse(row.BodyText)}   </TableCell>
 
                         <TableCell align="right">
                           <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
@@ -226,7 +233,7 @@ export default function TemplatesListPage() {
                     ))}
                   </TableBody>
                 </Table>
-               
+
               </TableContainer>
 
               <Stack className='my-4 page-dec' spacing={2}>

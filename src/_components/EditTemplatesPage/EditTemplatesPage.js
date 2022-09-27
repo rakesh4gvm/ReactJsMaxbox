@@ -18,6 +18,11 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 export default function EditTemplatesPage(props) {
 
     const [ClientID, SetClientID] = React.useState(0);
@@ -107,63 +112,64 @@ export default function EditTemplatesPage(props) {
         var Subject = document.getElementById("subject").value;
         const Valid = FromValidation();
         if (Valid) {
-        const Data = {
-            ID: TemplateIDDetails[0]._id,
-            Subject: Subject,
-            BodyText: Body.Data,
-            LastUpdatedBy: 1
+            const Data = {
+                ID: TemplateIDDetails[0]._id,
+                Subject: Subject,
+                BodyText: Body.Data,
+                LastUpdatedBy: 1
+            }
+
+            var ExistsTemplates = await CheckExistTemplates(Subject);
+
+            if (ExistsTemplates === ResponseMessage.SUCCESS) {
+                Axios({
+                    url: CommonConstants.MOL_APIURL + "/templates/TemplateUpdate",
+                    method: "POST",
+                    data: Data,
+                }).then((Result) => {
+                    toast.success(<div>Template <br />Template updated successfully.</div>);
+                    history.push("/Templates");
+                })
+            }
+            else {
+                SetSubjectError("Subject Already Exists, Please Add Another Subject")
+            }
         }
-       
-        var ExistsTemplates = await CheckExistTemplates(Subject);
-  
-        if (ExistsTemplates === ResponseMessage.SUCCESS) {
-        Axios({
-            url: CommonConstants.MOL_APIURL + "/templates/TemplateUpdate",
-            method: "POST",
-            data: Data,
-        }).then((Result) => {
-            history.push("/Templates");
-        })
-    }
-    else {
-        SetSubjectError("Subject Already Exists, Please Add Another Subject")
-      }
-    }
     }
 
-      // Check Template Exists
-  const CheckExistTemplates = async (Subject) => {
-    
-    var Data = { Subject: Subject,ClientID:ClientID,TemplatesID: TemplateIDDetails[0].TemplatesID }
-    debugger
-    const ResponseApi = await Axios({
-      url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
-      method: "POST",
-      data: Data,
-    })
-    return ResponseApi?.data.StatusMessage
-  }
+    // Check Template Exists
+    const CheckExistTemplates = async (Subject) => {
+
+        var Data = { Subject: Subject, ClientID: ClientID, TemplatesID: TemplateIDDetails[0].TemplatesID }
+        debugger
+        const ResponseApi = await Axios({
+            url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
+            method: "POST",
+            data: Data,
+        })
+        return ResponseApi?.data.StatusMessage
+    }
 
     // Cancel Edit Template
     const CancelEditTemplate = () => {
         history.push("/Templates");
     }
 
-       // FromValidation Start
-  const FromValidation = () => {
-    var Isvalid = true;
-    var Subject = document.getElementById("subject").value;
+    // FromValidation Start
+    const FromValidation = () => {
+        var Isvalid = true;
+        var Subject = document.getElementById("subject").value;
 
-    if (Subject === "") {
-      SetSubjectError("Please Enter Subject")
-      Isvalid = false
-    }
-    return Isvalid;
-  };
+        if (Subject === "") {
+            SetSubjectError("Please Enter Subject")
+            Isvalid = false
+        }
+        return Isvalid;
+    };
 
     return (
         <>
-           
+
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
@@ -177,25 +183,25 @@ export default function EditTemplatesPage(props) {
                                 <Col sm={2}>
                                     <label>Subject  :</label>
                                 </Col>
-                                
+
                                 <Col sm={8}>
                                     <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={TemplateIDDetails[0]?.Subject} />
                                     {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                                 </Col>
                             </Row>
-                           
+
                             <Row className='input-boxbg mt-5'>
                                 <Col sm={2}>
                                     <label>Body  :</label>
                                 </Col>
-                                
+
                                 <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
                             </Row>
                         </Col>
                     </Row>
                     <Row>
-                    <Col sm={2}>  
-                    </Col>
+                        <Col sm={2}>
+                        </Col>
                         <Col>
                             <div className='btnprofile my-5 left'>
                                 <ButtonGroup variant="text" aria-label="text button group">
@@ -207,7 +213,7 @@ export default function EditTemplatesPage(props) {
                     </Row>
                 </div>
             </div>
-           
+
         </>
     );
 }
