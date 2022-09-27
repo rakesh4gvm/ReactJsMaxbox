@@ -77,6 +77,11 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
 
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
+        document.getElementById("To").value = ""
+        document.getElementById("Subject").value = ""
+        document.getElementById("CC").value = ""
+        document.getElementById("BCC").value = ""
+
 
         const element = document.getElementById("UserCompose")
 

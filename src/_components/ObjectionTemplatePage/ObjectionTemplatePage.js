@@ -26,6 +26,11 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 
 const Style = {
   position: 'absolute',
@@ -54,9 +59,9 @@ export default function ObjectionTemplateListPage() {
 
   useEffect(() => {
     GetClientID();
-    CheckAccountAuthonicate()
-    GetObjectionTemplateList()
-  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
+    // CheckAccountAuthonicate()
+    // GetObjectionTemplateList()
+  }, [Page, RowsPerPage, SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -74,10 +79,12 @@ export default function ObjectionTemplateListPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    CheckAccountAuthonicate()
+    GetObjectionTemplateList(UserDetails.ClientID, UserDetails.UserID)
   }
 
   // Start Get Objection Template List
-  const GetObjectionTemplateList = () => {
+  const GetObjectionTemplateList = (CID, UID) => {
     let Data
     Data = {
       Page: Page,
@@ -86,8 +93,8 @@ export default function ObjectionTemplateListPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: '',
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
     };
 
     const ResponseApi = Axios({
@@ -126,11 +133,12 @@ export default function ObjectionTemplateListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetObjectionTemplateList()
+        toast.error(<div>Object Template <br />Object template deleted successfully.</div>);
+        GetObjectionTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetObjectionTemplateList()
+        GetObjectionTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
     });
@@ -140,7 +148,7 @@ export default function ObjectionTemplateListPage() {
   //Change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetObjectionTemplateList();
+    GetObjectionTemplateList(ClientID, UserID);
   };
 
   // Edit Objection Template
@@ -201,7 +209,7 @@ export default function ObjectionTemplateListPage() {
           <Row>
             <Col>
               <TableContainer className='tablename' component={Paper}>
-           
+
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
@@ -214,7 +222,7 @@ export default function ObjectionTemplateListPage() {
                     {ObjectionTemplateList?.map((row) => (
                       <TableRow>
                         <TableCell>{row.Subject}</TableCell>
-                        <TableCell>  { parse( row.BodyText)}   </TableCell>
+                        <TableCell>  {parse(row.BodyText)}   </TableCell>
 
                         <TableCell align="right">
                           <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
@@ -226,7 +234,7 @@ export default function ObjectionTemplateListPage() {
                     ))}
                   </TableBody>
                 </Table>
-               
+
               </TableContainer>
 
               <Stack className='my-4 page-dec' spacing={2}>

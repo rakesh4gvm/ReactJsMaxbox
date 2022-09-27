@@ -180,7 +180,7 @@ export default function FollowUpLetterPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetInBoxList([...InBoxList, Result.data.PageData]);
+          SetInBoxList([...InBoxList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
