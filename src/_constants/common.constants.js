@@ -15,7 +15,7 @@ const REDIRECT_URL="http://localhost:3000/email_account/AuthCallback"
 // redirect url end
 
 // redirect url start
-const HomePage="http://localhost:3001/OtherInboxPage"
+const HomePage="http://localhost:3001/UnansweredResponses"
 const LoginPage="http://localhost:3001"
 // redirect url end
 

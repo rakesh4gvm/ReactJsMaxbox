@@ -33,6 +33,7 @@ import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
+import EditIcon from '@material-ui/icons/Edit';
 
 
 function UseOutsideAlerter(ref) {
@@ -298,7 +299,8 @@ export default function Header() {
                                 </div>
                             </Nav>
                         </Navbar.Collapse>
-                        <div className="dropboxcard ml-3">
+                        <div className="dropboxcard ml-3"> 
+
                             <a href="#" className="" onClick={OpenPopupUserDetails}>
                                 <span className="userpic">
                                     {UserImage !== undefined ? <img src={UserImage} width="50px" alt="" /> : <img src={defaultimage} width="50px" alt="" />}
@@ -306,7 +308,8 @@ export default function Header() {
                             </a>
 
                             <div className="userdropdown" id="id_userbox" ref={WrapperRef}>
-                                <div className="bg-themehead">
+                                <div className="bg-themehead"> 
+                                    <a href="/ProfileSetting" className='editprofile'><EditIcon /></a>
                                     <span className="userpic us-max-110">
                                         {UserImage !== undefined ? <img src={UserImage} width="110px" alt="" /> : <img src={defaultimage} width="110px" alt="" />}
                                     </span>

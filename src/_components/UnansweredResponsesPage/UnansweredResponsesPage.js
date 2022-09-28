@@ -33,6 +33,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
+import ArrowRight from '@material-ui/icons/ArrowRight';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
 
 import { ButtonGroup, Col, Row } from 'react-bootstrap';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
@@ -53,6 +55,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { TextareaAutosize } from '@mui/material';
 import text_font from '../../images/icons/text_font.svg';
@@ -61,7 +64,8 @@ import image_light from '../../images/icons/image_light.svg';
 import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
-import google_drive from '../../images/icons/google_drive.svg';
+import google_drive from '../../images/icons/google_drive.svg'; 
+import chatquestion from '../../images/icons/chatquestion.svg';
 
 
 import { EditorVariableNames } from "../../_helpers/Utility";
@@ -519,6 +523,120 @@ export default function UnansweredResponsesPage() {
 
     }
   }
+  // End From Email List
+
+  // Start From Email List
+  const Userdropdown = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("Userdropshow")
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
+            }
+            else {
+              element.classList.add("show");
+            }
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+      const element = document.getElementById("Userdropshow")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+  // End From Email List
+
+  // Start From Nav Close  
+    const NavBarClick = () => {
+      var ResultData = (localStorage.getItem('DropdownCheckData'));
+      if (ResultData == "Refresh") {
+        var Data = {
+          ClientID: ClientID,
+          UserID: UserID
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.PageData.length > 0) {
+              SetFromEmailDropdownListChecked()
+              SetFromEmailDropdownList(Result.data.PageData);
+              SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+              localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+              const element = document.getElementById("navclose")
+              if (element.classList.contains("opennav")) {
+                element.classList.remove("opennav");
+              }
+              else {
+                element.classList.add("opennav");
+              }
+            }
+          }
+          else {
+            SetFromEmailDropdownList([]);
+  
+          }
+        });
+      }
+      else {
+        const element = document.getElementById("navclose")
+        if (element.classList.contains("opennav")) {
+          element.classList.remove("opennav");
+        }
+        else {
+          element.classList.add("opennav");
+        }
+        SetFromEmailDropdownListChecked(ResultData.split(','));
+  
+      }
+    }
+
+
   // End From Email List
 
   // Handle Change Dropdown List Manage by on React Js
@@ -1081,11 +1199,15 @@ export default function UnansweredResponsesPage() {
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
-          <Col className='maxcontainerix'>
-            <div className='px-0 py-4 leftinbox'>
-              <div className='px-3'>
+          <Col className='maxcontainerix' id="navclose">
+            <div className='closeopennav'>
+              <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
+              <Tooltip title="Unanswered Responses"><a className='m-4'><img src={chatquestion} /></a></Tooltip>
+            </div>
+            <div className='navsmaller px-0 leftinbox'>
+              <div className='px-3 bgfilter'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Unanswered Responses</h3> </Col>
+                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Unanswered Responses</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -1170,7 +1292,7 @@ export default function UnansweredResponsesPage() {
               </div>
               {
                 UnansweredResponsesList?.length === 0 ?
-                  <div id="scrollableDiv" class="listinbox mt-3">
+                  <div id="scrollableDiv" class="listinbox">
                     <InfiniteScroll
                       dataLength={UnansweredResponsesList?.length}
                       next={FetchMoreData}
@@ -1183,7 +1305,7 @@ export default function UnansweredResponsesPage() {
                   :
                   UnansweredResponsesList?.length <= 9
                     ?
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={UnansweredResponsesList?.length}
                         next={FetchMoreData}
@@ -1203,45 +1325,46 @@ export default function UnansweredResponsesPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
                                 </Col>
+                                
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
-                              <Col xs={11} className="pr-0">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                      <StarBorderIcon className='starone' />
-                                      <StarIcon className='selectedstart startwo' />
-                                    </ToggleButton>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
                             </Item>
                           ))}
                         </Stack>
                       </InfiniteScroll>
                     </div>
                     :
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={UnansweredResponsesList?.length}
                         next={FetchMoreData}
@@ -1261,8 +1384,8 @@ export default function UnansweredResponsesPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
                                 </Col>
-                              </Row>
-                              <Col xs={11} className="pr-0">
+                                
+                              <Col xs={11} className="pr-2">
                                 <Row>
                                   <Col xs={2}>
                                     <span className="inboxuserpic">
@@ -1293,6 +1416,7 @@ export default function UnansweredResponsesPage() {
                                   </Col>
                                 </Row>
                               </Col>
+                              </Row>
                             </Item>
                           ))}
                         </Stack>
@@ -1307,13 +1431,41 @@ export default function UnansweredResponsesPage() {
                 <Col lg={6}>
                   <Row className='userlist'>
                     <Col xs={2}>
-                      <span className="inboxuserpic">
+                      <span className="inboxuserpic p-0">
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'>
+                    <Col xs={10}>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                        <a onClick={Userdropdown}>
+                          <KeyboardArrowDownIcon />
+                        </a>
+                      </h6>
+
+                      <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
+                        <div class="bodyuserdop textdeclist">
+                          <div className='columlistdrop'>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
+                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
+                              <Col sm={9}>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
+                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
+                            </Row>
+                          </div>
+                        </div>
+                      </div>
+
                     </Col>
                   </Row>
                 </Col>
@@ -1332,7 +1484,7 @@ export default function UnansweredResponsesPage() {
                       <img src={icontimer} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} />
+                      <img src={inbox} width="36" />
                     </Button>
 
                     <Button>
@@ -1373,7 +1525,7 @@ export default function UnansweredResponsesPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='user_editor d-none mt-5'>
+              <div className='user_editor d-none my-5'>
                 <Row className='userlist'>
                   <Col className='fixwidleft'>
                     <span className="inboxuserpic">
@@ -1459,7 +1611,7 @@ export default function UnansweredResponsesPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='user_editor_frwd  d-none mt-5'>
+              <div className='user_editor_frwd  d-none my-5'>
                 <Row className='userlist'>
                   <Col className='fixwidleft'>
                     <span className="inboxuserpic">

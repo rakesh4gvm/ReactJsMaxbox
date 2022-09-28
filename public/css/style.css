@@ -5,6 +5,10 @@ html {
     margin: 0;
 }
 
+a {
+    cursor: pointer;
+}
+
 .left {
     float: left;
 }
@@ -109,7 +113,7 @@ span.userpic img {
 .menulist .nav-item.dropdown>a:hover {
     color: #fff;
     padding: 0 1.5rem 0 1rem;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .menulist .dropdown {
@@ -145,6 +149,8 @@ span.userpic img {
     text-align: left;
     position: relative;
     background-color: #fff;
+    border-right: 1px solid #E5E5E5;
+    height: 100%;
 }
 
 .leftinbox .serchdek svg {
@@ -165,6 +171,15 @@ span.userpic img {
     box-shadow: none;
     background: transparent;
     border-radius: 0;
+    cursor: pointer;
+    border-right: 4px solid #fff;
+    margin: 0;
+    position: relative;
+    padding: 10px 10px 10px 15px !important;
+}
+.MuiPaper-root.cardinboxlist:hover { 
+    border-right: 4px solid #647af7; 
+    background-color: #F7F8FF;
 }
 
 .selectedstart {
@@ -195,13 +210,17 @@ span.userpic img {
 }
 
 .col.maxcontainerix {
-    max-width: 470px;
+    max-width: 430px;
     position: fixed;
+    background: #fff;
+    z-index: 1;
+    padding: 0;
+    height: 100%;
 }
 
 .rightinbox {
-    width: calc(100% - 470px);
-    margin-left: 470px;
+    width: calc(100% - 430px);
+    margin-left: 430px;
 }
 
 .inboxuserpic {
@@ -238,7 +257,7 @@ span.userpic img {
 
 .cardinboxlist p {
     font-weight: 400;
-    font-size: 14px;
+    font-size: small;
     line-height: 25px;
     color: #616B77;
 }
@@ -302,7 +321,7 @@ span.userpic img {
 .title-h3 {
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16.5px;
     line-height: 34px;
     color: #000000;
     margin: 0;
@@ -310,10 +329,11 @@ span.userpic img {
 }
 
 .listinbox {
-    max-height: calc(100vh - 370px);
+    max-height: calc(100vh - 325px);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 15px;
+    padding: 0;
+    width: calc(100% + 5px);
 }
 
 ::-webkit-scrollbar {
@@ -377,7 +397,7 @@ Button.iconbtn {
 
 .inxtexteditor p {
     font-weight: 400;
-    font-size: 14px;
+    font-size: small;
     line-height: 24px;
     color: #616B77;
 }
@@ -620,9 +640,9 @@ ul.d-flex.flexlist {
 
 .composebody {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 40px;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
     z-index: 99;
 }
 
@@ -1372,7 +1392,22 @@ div.erorr-msg>*>* {
 
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-2,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-3 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-6,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-1,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#SendReply-6,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-1,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-2,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#ForwardReply-6 {
     background-color: #647AF7;
     box-shadow: 0px 4px 14px 6px #d8defd;
     color: #fff;
@@ -1384,9 +1419,15 @@ div.erorr-msg>*>* {
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-6,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-2,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-6 {
     background-color: #647AF7;
     color: #fff;
     width: 30px;
@@ -1401,9 +1442,15 @@ div.erorr-msg>*>* {
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-1::after,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-2::after,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-3::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-4::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-5::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Sendoption-6::after,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-1::after,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-2::after,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3::after {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-3::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-4::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-5::after,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Variable-6::after {
     border: solid #fff;
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -1421,9 +1468,18 @@ div.erorr-msg>*>* {
 .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-2,
 .FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-3,
 .FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-3, 
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-4,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-4,
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-5,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-5,
+.FroalaEditor .fr-toolbar #dropdown-menu-moreMisc-6,
+.FroalaEditor .fr-toolbar #dropdown-menu-Sendoption-6,   
 .FroalaEditor .fr-toolbar #dropdown-menu-Variable-1,
 .FroalaEditor .fr-toolbar #dropdown-menu-Variable-2,
-.FroalaEditor .fr-toolbar #dropdown-menu-Variable-3 {
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-3,
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-4,
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-5,
+.FroalaEditor .fr-toolbar #dropdown-menu-Variable-6 {
     top: calc(-100% + -15px) !important;
 }
 
@@ -1445,7 +1501,10 @@ div.erorr-msg>*>* {
 
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-1,
 .FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-2,
-.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-3 {
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-3,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-4,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-5,
+.FroalaEditor .fr-toolbar .fr-command.fr-btn#Delete-6 {
     background-image: url(/static/media/icon_delete.05d1efcfa6a990b87bfccb92eda2431c.svg);
     background-size: 24px;
     background-repeat: no-repeat;
@@ -1455,6 +1514,102 @@ div.erorr-msg>*>* {
     width: 42px;
     background-position: center;
 }
+#replaybx a:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.bgfilter {
+    background-color: #F7F8FF;
+    padding: 15px 0;
+}
+.carduser_details{
+    text-align: center;
+}
+.editprofile{
+    width: 35px;
+    height: 35px;
+    background-color: #fff;
+}
+.bg-themehead a.editprofile {
+    width: 30px;
+    height: 30px;
+    background-color: #5066e2;
+    color: #ffff;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 0;
+    position: absolute;
+    margin: -20px -50px 0 0;
+    border-radius: 20px;
+}
+.bg-themehead a.editprofile svg{
+    width: 16px;
+}
+.bg-themehead a.editprofile:hover {
+    opacity: 0.7;
+}
+.composebody button.btn.largbtn {
+    padding: 12px 27px;
+    font-size: 14px;
+}
+.columlistdrop{
+    font-size: small;
+    padding: 10px;
+}
+.columlistdrop .row{
+    margin-bottom: 5px;
+}
+.columlistdrop strong{
+    font-weight: 600;
+    color: #000;
+}
+.columlistdrop lable{ 
+    color: #666;
+}
+.maxuserdropall{ 
+    min-width: 310px;
+}
+
+/*navigation smaller*/
+.closeopennav{
+    display: none; 
+}
+.col.maxcontainerix.opennav .closeopennav{
+    display: block; 
+}
+.col.maxcontainerix .navsmaller{
+    display: block; 
+}
+.col.maxcontainerix.opennav {
+    background-color: #F7F8FF;
+    max-width: 80px; 
+    border-right: 1px solid #E5E5E5; 
+}
+.col.maxcontainerix.opennav .navsmaller{
+    display: none; 
+}
+.col.maxcontainerix.opennav + .rightinbox.col {
+    margin-left: 80px; 
+}
+a.navicons {
+    width: 35px;
+    height: 35px;
+    background: #5267DB;
+    display: table;
+    text-align: center;
+    color: #fff;
+    line-height: 35px;
+    border-radius: 72px;
+    margin: 0;
+    float: left;
+} 
+a.navicons:hover { 
+    color: #fff; 
+} 
+
+
+
+
 
 
 @media screen and (max-width:990px) {
