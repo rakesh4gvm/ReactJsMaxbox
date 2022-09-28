@@ -64,7 +64,7 @@ import image_light from '../../images/icons/image_light.svg';
 import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
-import google_drive from '../../images/icons/google_drive.svg'; 
+import google_drive from '../../images/icons/google_drive.svg';
 import chatquestion from '../../images/icons/chatquestion.svg';
 
 
@@ -145,7 +145,7 @@ export default function UnansweredResponsesPage() {
 
   useEffect(() => {
     GetClientID()
-  }, [SearchInbox, UnansweredResponsesChecked, FromEmailDropdownListChecked, Page]);
+  }, [SearchInbox, UnansweredResponsesChecked, FromEmailDropdownListChecked]);
 
 
   // Start Get ClientID
@@ -155,18 +155,26 @@ export default function UnansweredResponsesPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID);
+    GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
   // End Get ClientID
-
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
   // Start Get UnansweredResponsesList
-  const GetUnansweredResponcesList = (CID, UID) => {
+  const GetUnansweredResponcesList = (CID, UID, PN) => {
 
     let Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -189,13 +197,15 @@ export default function UnansweredResponsesPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
+          SetResponseData(Result.data.PageData)
+          SetHasMoreData(ResponseApi.data.PageData)
           SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         } else {
-
+          SetResponseData([])
+          SetHasMoreData(ResponseApi.data.PageData)
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           if (UnansweredResponsesList && UnansweredResponsesList?.length > 1) {
             let LastElemet = UnansweredResponsesList?.slice(-1)
@@ -308,7 +318,7 @@ export default function UnansweredResponsesPage() {
           toast.error(<div>Unanswered Responses <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID);
+          GetUnansweredResponcesList(ClientID, UserID, Page);
         }
       });
     }
@@ -339,7 +349,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID);
+          GetUnansweredResponcesList(ClientID, UserID, Page);
         }
       });
     }
@@ -402,7 +412,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID);
+          GetUnansweredResponcesList(ClientID, UserID, Page);
         }
         else {
           CloseOtherInboxPopModel();
@@ -440,7 +450,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID);
+          GetUnansweredResponcesList(ClientID, UserID, Page);
         }
       });
     }
@@ -589,52 +599,52 @@ export default function UnansweredResponsesPage() {
   // End From Email List
 
   // Start From Nav Close  
-    const NavBarClick = () => {
-      var ResultData = (localStorage.getItem('DropdownCheckData'));
-      if (ResultData == "Refresh") {
-        var Data = {
-          ClientID: ClientID,
-          UserID: UserID
-        };
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.PageData.length > 0) {
-              SetFromEmailDropdownListChecked()
-              SetFromEmailDropdownList(Result.data.PageData);
-              SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-              localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-              const element = document.getElementById("navclose")
-              if (element.classList.contains("opennav")) {
-                element.classList.remove("opennav");
-              }
-              else {
-                element.classList.add("opennav");
-              }
+  const NavBarClick = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("navclose")
+            if (element.classList.contains("opennav")) {
+              element.classList.remove("opennav");
+            }
+            else {
+              element.classList.add("opennav");
             }
           }
-          else {
-            SetFromEmailDropdownList([]);
-  
-          }
-        });
-      }
-      else {
-        const element = document.getElementById("navclose")
-        if (element.classList.contains("opennav")) {
-          element.classList.remove("opennav");
         }
         else {
-          element.classList.add("opennav");
+          SetFromEmailDropdownList([]);
+
         }
-        SetFromEmailDropdownListChecked(ResultData.split(','));
-  
-      }
+      });
     }
+    else {
+      const element = document.getElementById("navclose")
+      if (element.classList.contains("opennav")) {
+        element.classList.remove("opennav");
+      }
+      else {
+        element.classList.add("opennav");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
 
 
   // End From Email List
@@ -656,11 +666,8 @@ export default function UnansweredResponsesPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetUnansweredResponcesList(ClientID, UserID)
+    await GetUnansweredResponcesList(ClientID, UserID, Page + 1)
 
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
   };
 
   // Start Page Refresh
@@ -1325,7 +1332,7 @@ export default function UnansweredResponsesPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
                                 </Col>
-                                
+
                                 <Col xs={11} className="pr-0">
                                   <Row>
                                     <Col xs={2}>
@@ -1384,38 +1391,38 @@ export default function UnansweredResponsesPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={UnansweredResponsesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={UnansweredResponcesCheckBox} />} label="" />
                                 </Col>
-                                
-                              <Col xs={11} className="pr-2">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                      <StarBorderIcon className='starone' />
-                                      <StarIcon className='selectedstart startwo' />
-                                    </ToggleButton>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+
+                                <Col xs={11} className="pr-2">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -1437,7 +1444,7 @@ export default function UnansweredResponsesPage() {
                     </Col>
                     <Col xs={10}>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>

@@ -88,7 +88,7 @@ export default function DraftsPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, InboxChecked, Page]);
+  }, [SearchInbox, InboxChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -97,17 +97,26 @@ export default function DraftsPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetDraftList(UserDetails.ClientID, UserDetails.UserID);
+    GetDraftList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
 
   // Start Get Draft List
-  const GetDraftList = (CID, UID) => {
+  const GetDraftList = (CID, UID, PN) => {
 
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -123,13 +132,16 @@ export default function DraftsPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
+          SetResponseData(Result.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetDraftList([...DraftList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
         else {
+          SetResponseData([])
+          SetHasMoreData(Result.data.PageData)
           SetDraftList([...DraftList]);
           if (DraftList && DraftList?.length > 1) {
             let LastElement = DraftList?.slice(-1)
@@ -198,7 +210,7 @@ export default function DraftsPage() {
           toast.error(<div>Draft <br />Draft template deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetDraftList(ClientID, UserID);
+          GetDraftList(ClientID, UserID, Page);
         }
       });
     }
@@ -229,7 +241,7 @@ export default function DraftsPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetDraftList(ClientID, UserID);
+          GetDraftList(ClientID, UserID, Page);
         }
       });
     }
@@ -299,11 +311,15 @@ export default function DraftsPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetDraftList(ClientID, UserID)
+    await GetDraftList(ClientID, UserID, Page + 1)
 
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length === 0) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length === 10) {
+    //   SetHasMore(true)
+    // }
 
   };
 

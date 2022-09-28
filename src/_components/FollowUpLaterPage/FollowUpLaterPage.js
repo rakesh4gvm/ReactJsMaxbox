@@ -137,7 +137,7 @@ export default function FollowUpLetterPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, FollowUpLaterChecked, FromEmailDropdownListChecked, Page]);
+  }, [SearchInbox, FollowUpLaterChecked, FromEmailDropdownListChecked]);
 
 
   // Get ClientID
@@ -147,16 +147,24 @@ export default function FollowUpLetterPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetFollowUpLetterList(UserDetails.ClientID, UserDetails.UserID);
+    GetFollowUpLetterList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
-
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
   // Start Get Follow Up Letter List
-  const GetFollowUpLetterList = (CID, UID) => {
+  const GetFollowUpLetterList = (CID, UID, PN) => {
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -178,13 +186,20 @@ export default function FollowUpLetterPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
+          SetResponseData(Result.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetInBoxList([...InBoxList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
+        // else if (Result.data.PageData?.length === 0) {
+        //   SetInBoxList([])
+        //   OpenMessageDetails('')
+        // }
         else {
+          SetResponseData([])
+          SetHasMoreData(Result.data.PageData)
           SetInBoxList([...InBoxList]);
           if (InBoxList && InBoxList?.length > 1) {
             let LastElement = InBoxList?.slice(-1)
@@ -299,7 +314,7 @@ export default function FollowUpLetterPage() {
           toast.error(<div>Follow Up Later <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID);
+          GetFollowUpLetterList(ClientID, UserID, Page);
         }
       });
     }
@@ -330,7 +345,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID);
+          GetFollowUpLetterList(ClientID, UserID, Page);
         }
       });
     }
@@ -362,7 +377,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID);
+          GetFollowUpLetterList(ClientID, UserID, Page);
         }
       });
     }
@@ -507,11 +522,17 @@ export default function FollowUpLetterPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetFollowUpLetterList(ClientID, UserID)
+    await GetFollowUpLetterList(ClientID, UserID, Page + 1)
 
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length === 0) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length === 10) {
+    //   SetHasMore(true)
+    // }
+
+
   };
 
   // Get Total Total Record Count

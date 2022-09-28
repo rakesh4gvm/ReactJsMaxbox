@@ -131,7 +131,7 @@ export default function StarredPage() {
   })
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, StarredChecked, FromEmailDropdownListChecked, Page]);
+  }, [SearchInbox, StarredChecked, FromEmailDropdownListChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -140,16 +140,24 @@ export default function StarredPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetStarredList(UserDetails.ClientID, UserDetails.UserID);
+    GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
-
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
   // Start Get Starred List
-  const GetStarredList = (CID, UID) => {
+  const GetStarredList = (CID, UID, PN) => {
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -171,13 +179,20 @@ export default function StarredPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
+          SetResponseData(Result.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetStarredList([...StarredList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
+        // else if (Result.data.PageData?.length === 0) {
+        //   SetStarredList([])
+        //   OpenMessageDetails('')
+        // }
         else {
+          SetResponseData([])
+          SetHasMoreData(Result.data.PageData)
           SetStarredList([...StarredList]);
           if (StarredList && StarredList?.length > 1) {
             let LastElement = StarredList?.slice(-1)
@@ -249,7 +264,7 @@ export default function StarredPage() {
           toast.error(<div>Starred <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID);
+          GetStarredList(ClientID, UserID, Page);
         }
       });
     }
@@ -281,7 +296,7 @@ export default function StarredPage() {
           toast.success(<div>Starred <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID);
+          GetStarredList(ClientID, UserID, Page);
         }
         else {
           CloseOtherInboxPopModel();
@@ -316,7 +331,7 @@ export default function StarredPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID);
+          GetStarredList(ClientID, UserID, Page);
         }
       });
     }
@@ -351,7 +366,7 @@ export default function StarredPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID);
+          GetStarredList(ClientID, UserID, Page);
         }
       });
     }
@@ -463,21 +478,18 @@ export default function StarredPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetStarredList(ClientID, UserID)
+    await GetStarredList(ClientID, UserID, Page + 1)
 
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
-
-  };
-
-  const FetchMoreDataTwo = async () => {
-    SetPage(Page + 1);
-    await GetStarredList(ClientID, UserID)
-
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length === 0) {
+    //   console.log("000=======")
+    //   SetHasMore(false)
+    // } else if (ResponseData.length <= 9) {
+    //   console.log("<= 9=======")
+    //   SetHasMore(false)
+    // } else if (ResponseData.length === 10) {
+    //   console.log("10=======")
+    //   SetHasMore(true)
+    // }
 
   };
 

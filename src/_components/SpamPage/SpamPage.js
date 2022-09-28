@@ -140,7 +140,7 @@ export default function SpamPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, SpamChecked, FromEmailDropdownListChecked, Page]);
+  }, [SearchInbox, SpamChecked, FromEmailDropdownListChecked]);
 
 
   const HandleOpen = () => SetOpen(true);
@@ -155,16 +155,26 @@ export default function SpamPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetSpamList(UserDetails.ClientID, UserDetails.UserID);
+    GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
 
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
+
   // Start Get Spam List
-  const GetSpamList = (CID, UID) => {
+  const GetSpamList = (CID, UID, PN) => {
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -186,13 +196,16 @@ export default function SpamPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
+          SetResponseData(Result.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetSpamList([...SpamList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
         else {
+          SetResponseData([])
+          SetHasMoreData(Result.data.PageData)
           SetSpamList([...SpamList]);
           if (SpamList && SpamList?.length > 1) {
             let LastElement = SpamList?.slice(-1)
@@ -307,7 +320,7 @@ export default function SpamPage() {
           toast.error(<div>Spam <br />Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID);
+          GetSpamList(ClientID, UserID, Page);
         }
       });
     }
@@ -338,7 +351,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID);
+          GetSpamList(ClientID, UserID, Page);
         }
       });
     }
@@ -405,7 +418,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID);
+          GetSpamList(ClientID, UserID, Page);
         }
       });
     }
@@ -437,7 +450,7 @@ export default function SpamPage() {
           toast.success(<div>Spam  <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID);
+          GetSpamList(ClientID, UserID, Page);
         }
         else {
           CloseOtherInboxPopModel();
@@ -553,11 +566,15 @@ export default function SpamPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetSpamList(ClientID, UserID)
+    await GetSpamList(ClientID, UserID, Page + 1)
 
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
+    // if (ResponseData.length === 0) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length <= 10) {
+    //   SetHasMore(false)
+    // } else if (ResponseData.length === 10) {
+    //   SetHasMore(true)
+    // }
   }
 
   // Get Total Total Record Count
@@ -590,7 +607,7 @@ export default function SpamPage() {
 
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
-    SetSignature({Data:""});
+    SetSignature({ Data: "" });
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
@@ -719,7 +736,7 @@ export default function SpamPage() {
 
   const ForwardPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor_frwd")
-    SetForwardSignature({Data:""});
+    SetForwardSignature({ Data: "" });
     document.getElementById("to").value = "";
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");

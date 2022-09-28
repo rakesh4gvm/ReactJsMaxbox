@@ -145,7 +145,7 @@ export default function OtherInboxPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, InboxChecked, FromEmailDropdownListChecked, Page]);
+  }, [SearchInbox, InboxChecked, FromEmailDropdownListChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -154,16 +154,25 @@ export default function OtherInboxPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetInBoxList(UserDetails.ClientID, UserDetails.UserID);
+    GetInBoxList(UserDetails.ClientID, UserDetails.UserID, Page);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
   }
-
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
   // Start Get InBoxList
-  const GetInBoxList = (CID, UID) => {
+  const GetInBoxList = async (CID, UID, PN) => {
+
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -178,35 +187,42 @@ export default function OtherInboxPage() {
       IsOtherInbox: true,
       AccountIDs: FromEmailDropdownListChecked
     };
-    const ResponseApi = Axios({
+    const ResponseApi = await Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
       data: Data,
     });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
-        if (Result.data.PageData.length > 0) {
-          SetInBoxList([...InBoxList, ...Result.data.PageData]);
-          OpenMessageDetails(Result.data.PageData[0]._id);
-          SetMailNumber(1)
-        }
-        else {
-          SetInBoxList([...InBoxList]);
-          if (InBoxList && InBoxList?.length > 1) {
-            let LastElement = InBoxList?.slice(-1)
-            OpenMessageDetails(LastElement[0]?._id, 0);
-          } else {
-            OpenMessageDetails('');
-          }
-        }
-        GetTotalRecordCount(CID, UID);
+    // ResponseApi.then((Result) => {
+    if (ResponseApi.data.StatusMessage == ResponseMessage.SUCCESS) {
+      if (ResponseApi.data.PageData.length > 0) {
+        SetResponseData(ResponseApi.data.PageData)
+        SetHasMoreData(ResponseApi.data.PageData)
+        SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+        OpenMessageDetails(ResponseApi.data.PageData[0]._id);
+        SetMailNumber(1)
       }
+      // else if (ResponseApi.data.PageData?.length === 0) {
+      //   SetInBoxList([])
+      //   OpenMessageDetails('')
+      // }
       else {
-        SetInBoxList([]);
-        OpenMessageDetails('');
+        SetResponseData([])
+        SetHasMoreData(ResponseApi.data.PageData)
+        SetInBoxList([...InBoxList]);
+        if (InBoxList && InBoxList?.length > 1) {
+          let LastElement = InBoxList?.slice(-1)
+          OpenMessageDetails(LastElement[0]?._id, 0);
+        } else {
+          OpenMessageDetails('');
+        }
       }
-    });
+      GetTotalRecordCount(CID, UID);
+    }
+    else {
+      SetInBoxList([]);
+      OpenMessageDetails('');
+    }
+
   };
 
   const GetUpdatedOtherInboxList = (CID, UID) => {
@@ -306,7 +322,7 @@ export default function OtherInboxPage() {
           toast.error(<div>Other Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID);
+          GetInBoxList(ClientID, UserID, Page);
         }
       });
     }
@@ -337,7 +353,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID);
+          GetInBoxList(ClientID, UserID, Page);
         }
       });
     }
@@ -369,7 +385,7 @@ export default function OtherInboxPage() {
           toast.success(<div>Other Inbox <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID);
+          GetInBoxList(ClientID, UserID, Page);
         }
       });
     }
@@ -750,7 +766,7 @@ export default function OtherInboxPage() {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          debugger
+
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Other Inbox <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
@@ -842,11 +858,17 @@ export default function OtherInboxPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetInBoxList(ClientID, UserID)
-
-    if (ResponseData.length === 0) {
-      SetHasMore(false)
-    }
+    await GetInBoxList(ClientID, UserID, Page + 1)
+    // if (ResponseData.length === 0) {
+    //   console.log("000=======")
+    //   SetHasMore(false)
+    // } else if (ResponseData.length <= 9) {
+    //   console.log("<= 9=======")
+    //   SetHasMore(false)
+    // } else if (ResponseData.length === 10) {
+    //   console.log("10=======")
+    //   SetHasMore(true)
+    // }
   };
 
   const Search = styled('div')(({ theme }) => ({
