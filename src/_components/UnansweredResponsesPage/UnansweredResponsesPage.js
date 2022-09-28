@@ -199,13 +199,18 @@ export default function UnansweredResponsesPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
-          SetHasMoreData(ResponseApi.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
-        } else {
+        }
+        // else if (Result.data.PageData?.length === 0) {
+        //   SetUnansweredResponsesList([])
+        //   OpenMessageDetails('')
+        // }
+        else {
           SetResponseData([])
-          SetHasMoreData(ResponseApi.data.PageData)
+          SetHasMoreData(Result.data.PageData)
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           if (UnansweredResponsesList && UnansweredResponsesList?.length > 1) {
             let LastElemet = UnansweredResponsesList?.slice(-1)
