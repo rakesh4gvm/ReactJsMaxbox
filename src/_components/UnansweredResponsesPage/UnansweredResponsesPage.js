@@ -145,7 +145,7 @@ export default function UnansweredResponsesPage() {
 
   useEffect(() => {
     GetClientID()
-  }, [SearchInbox, UnansweredResponsesChecked, FromEmailDropdownListChecked]);
+  }, [SearchInbox, UnansweredResponsesChecked]);
 
 
   // Start Get ClientID
@@ -155,7 +155,7 @@ export default function UnansweredResponsesPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page);
+    GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
@@ -171,8 +171,8 @@ export default function UnansweredResponsesPage() {
     }
   }
   // Start Get UnansweredResponsesList
-  const GetUnansweredResponcesList = (CID, UID, PN) => {
-
+  const GetUnansweredResponcesList = (CID, UID, PN, Str, IDs) => {
+    
     let Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -187,7 +187,7 @@ export default function UnansweredResponsesPage() {
       IsFollowUp: false,
       IsOtherInbox: false,
       IsSpam: false,
-      AccountIDs: FromEmailDropdownListChecked
+      AccountIDs: IDs
     };
 
     const ResponseApi = Axios({
@@ -200,14 +200,21 @@ export default function UnansweredResponsesPage() {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
           SetHasMoreData(Result.data.PageData)
-          SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
+          // SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
+          if (Str == "checkbox") {
+            SetUnansweredResponsesList(Result.data.PageData);
+          } else if (Str == "scroll") {
+            SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
+          } else {
+            SetUnansweredResponsesList([...UnansweredResponsesList, ...Result.data.PageData]);
+          }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
-        // else if (Result.data.PageData?.length === 0) {
-        //   SetUnansweredResponsesList([])
-        //   OpenMessageDetails('')
-        // }
+        else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
+          SetUnansweredResponsesList([])
+          OpenMessageDetails('')
+        }
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
@@ -323,7 +330,7 @@ export default function UnansweredResponsesPage() {
           toast.error(<div>Unanswered Responses <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID, Page);
+          GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -354,7 +361,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID, Page);
+          GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -417,7 +424,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID, Page);
+          GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
           CloseOtherInboxPopModel();
@@ -455,7 +462,7 @@ export default function UnansweredResponsesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetUnansweredResponcesList(ClientID, UserID, Page);
+          GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -486,6 +493,9 @@ export default function UnansweredResponsesPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetUnansweredResponsesList([])
       SetSearchInbox(e.target.value)
     }
   }
@@ -661,8 +671,12 @@ export default function UnansweredResponsesPage() {
 
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetUnansweredResponcesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetUnansweredResponcesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
@@ -671,12 +685,15 @@ export default function UnansweredResponsesPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetUnansweredResponcesList(ClientID, UserID, Page + 1)
+    await GetUnansweredResponcesList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
 
   };
 
   // Start Page Refresh
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetUnansweredResponsesList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetUnansweredResponsesChecked([]);
