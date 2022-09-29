@@ -33,7 +33,12 @@ import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
 import { GetUserDetails } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroll-component"; 
+import ArrowRight from '@material-ui/icons/ArrowRight';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import Tooltip from "@material-ui/core/Tooltip";
+import timermenu from '../../images/icons/timermenu.svg';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -56,7 +61,7 @@ function UseOutSideAlerter(Ref) {
   useEffect(() => {
     function HandleClickOutside(Event) {
       if (Ref.current && !Ref.current.contains(Event.target)) {
-        const Element = document.getElementById("id_userboxlist")
+        const Element = document.getElementById("Userdropshow")
         Element.classList.remove("show");
       }
     }
@@ -308,6 +313,47 @@ export default function DraftsPage() {
     })
   }
 
+
+  /* start navcode */
+  
+  const NavBarClick = () => {
+    const element = document.getElementById("navclose")
+    if (element.classList.contains("opennav")) {
+      element.classList.remove("opennav");
+    }
+    else {
+      element.classList.add("opennav");
+    }
+  } 
+  /* end code*/
+
+  /* start navcode */
+  
+  const Userdropdown = () => {
+    const element = document.getElementById("Userdropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+  } 
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+  /* end code*/
+
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
@@ -433,11 +479,16 @@ export default function DraftsPage() {
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
-          <Col className='maxcontainerix'>
-            <div className='px-0 py-4 leftinbox'>
-              <div className='px-3'>
+          <Col className='maxcontainerix' id="navclose">
+            <div className='closeopennav'>
+              <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
+              <Tooltip title="Follow Up Later"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+            </div>
+            <div className='navsmaller px-0 py-4 leftinbox'>
+              <div className='px-3 bgfilter'>
                 <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Draft</h3> </Col>
+                  {/* <Col sm={9}> <h3 className='title-h3'>Draft</h3> </Col> */}
+                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Draft</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -522,7 +573,7 @@ export default function DraftsPage() {
               </div>
               {
                 DraftList?.length === 0 ?
-                  <div id="scrollableDiv" class="listinbox mt-3">
+                  <div id="scrollableDiv" class="listinbox">
                     <InfiniteScroll
                       dataLength={DraftList?.length}
                       next={FetchMoreData}
@@ -535,7 +586,7 @@ export default function DraftsPage() {
                   :
                   DraftList?.length <= 9
                     ?
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={DraftList?.length}
                         next={FetchMoreData}
@@ -555,7 +606,7 @@ export default function DraftsPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              </Row>
+                                
                               <Col xs={11} className="pr-0">
                                 <Row>
                                   <Col xs={2}>
@@ -584,6 +635,7 @@ export default function DraftsPage() {
                                   </Col>
                                 </Row>
                               </Col>
+                              </Row>
                             </Item>
                           ))}
                         </Stack>
@@ -610,7 +662,6 @@ export default function DraftsPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              </Row>
                               <Col xs={11} className="pr-0">
                                 <Row>
                                   <Col xs={2}>
@@ -639,6 +690,7 @@ export default function DraftsPage() {
                                   </Col>
                                 </Row>
                               </Col>
+                              </Row>
                             </Item>
                           ))}
                         </Stack>
@@ -661,6 +713,35 @@ export default function DraftsPage() {
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.MailTo}</h5>
                       {/* <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
+                      <h6> 
+                        <a onClick={Userdropdown}>
+                          <KeyboardArrowDownIcon />
+                        </a>
+                      </h6>
+
+                      <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
+                        <div class="bodyuserdop textdeclist">
+                          <div className='columlistdrop'>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
+                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
+                              <Col sm={9}>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
+                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
+                            </Row>
+                          </div>
+                        </div>
+                      </div>
+
                     </Col>
                   </Row>
                 </Col>

@@ -55,15 +55,11 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
-
-import { TextareaAutosize } from '@mui/material';
-import text_font from '../../images/icons/text_font.svg';
-import attachment from '../../images/icons/attachment.svg';
-import image_light from '../../images/icons/image_light.svg';
-import smiley_icons from '../../images/icons/smiley_icons.svg';
-import signature from '../../images/icons/signature.svg';
-import link_line from '../../images/icons/link_line.svg';
-import google_drive from '../../images/icons/google_drive.svg';
+ 
+import ArrowRight from '@material-ui/icons/ArrowRight';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import Tooltip from "@material-ui/core/Tooltip";
+import timermenu from '../../images/icons/timermenu.svg'; 
 
 import { EditorVariableNames } from "../../_helpers/Utility";
 
@@ -459,6 +455,46 @@ export default function SpamPage() {
     }
   }
   // End Other inbox  Message and model open and close
+
+   /* start navcode */
+  
+   const NavBarClick = () => {
+    const element = document.getElementById("navclose")
+    if (element.classList.contains("opennav")) {
+      element.classList.remove("opennav");
+    }
+    else {
+      element.classList.add("opennav");
+    }
+  } 
+  /* end code*/
+
+  /* start navcode */
+  
+  const Userdropdown = () => {
+    const element = document.getElementById("Userdropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+  } 
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+  /* end code*/
 
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
@@ -1087,11 +1123,15 @@ export default function SpamPage() {
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
-          <Col className='maxcontainerix'>
-            <div className='px-0 py-4 leftinbox'>
-              <div className='px-3'>
-                <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Spam</h3> </Col>
+          <Col className='maxcontainerix' id="navclose">
+              <div className='closeopennav'>
+                <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
+                <Tooltip title="Spam"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+              </div>
+              <div className='navsmaller px-0 py-4 leftinbox'>
+                <div className='px-3 bgfilter'>
+                <Row> 
+                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Spam</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -1176,7 +1216,7 @@ export default function SpamPage() {
               </div>
               {
                 SpamList?.length === 0 ?
-                  <div id="scrollableDiv" class="listinbox mt-3">
+                  <div id="scrollableDiv" class="listinbox">
                     <InfiniteScroll
                       dataLength={SpamList.length}
                       next={FetchMoreData}
@@ -1189,7 +1229,7 @@ export default function SpamPage() {
                   :
                   SpamList?.length <= 9
                     ?
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={SpamList?.length}
                         next={FetchMoreData}
@@ -1247,7 +1287,7 @@ export default function SpamPage() {
                       </InfiniteScroll>
                     </div>
                     :
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={SpamList?.length}
                         next={FetchMoreData}
@@ -1319,7 +1359,35 @@ export default function SpamPage() {
                     </Col>
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
+                      {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                        <a onClick={Userdropdown}>
+                          <KeyboardArrowDownIcon />
+                        </a>
+                      </h6>
+
+                      <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
+                        <div class="bodyuserdop textdeclist">
+                          <div className='columlistdrop'>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
+                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
+                              <Col sm={9}>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
+                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
+                            </Row>
+                          </div>
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </Col>
@@ -1338,7 +1406,7 @@ export default function SpamPage() {
                       <img src={icontimer} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} />
+                      <img src={inbox} className="width36" />
                     </Button>
                     <Button>
                       <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
