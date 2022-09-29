@@ -58,8 +58,12 @@ import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
+import menustart from '../../images/icons/menustart.svg';
 
 import { EditorVariableNames } from "../../_helpers/Utility";
+import ArrowRight from '@material-ui/icons/ArrowRight';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import Tooltip from "@material-ui/core/Tooltip";
 
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_style.min.css';
@@ -394,6 +398,121 @@ export default function StarredPage() {
 
   }
   // End CheckBox Code
+
+    // Start From Email List
+    const Userdropdown = () => {
+      var ResultData = (localStorage.getItem('DropdownCheckData'));
+      if (ResultData == "Refresh") {
+        var Data = {
+          ClientID: ClientID,
+          UserID: UserID
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.PageData.length > 0) {
+              SetFromEmailDropdownListChecked()
+              SetFromEmailDropdownList(Result.data.PageData);
+              SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+              localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+              const element = document.getElementById("Userdropshow")
+              if (element.classList.contains("show")) {
+                element.classList.remove("show");
+              }
+              else {
+                element.classList.add("show");
+              }
+            }
+          }
+          else {
+            SetFromEmailDropdownList([]);
+  
+          }
+        });
+      }
+      else {
+        const element = document.getElementById("Userdropshow")
+        if (element.classList.contains("show")) {
+          element.classList.remove("show");
+        }
+        else {
+          element.classList.add("show");
+        }
+        SetFromEmailDropdownListChecked(ResultData.split(','));
+  
+      }
+    }
+    function UseOutsideAlerter(Ref) {
+      useEffect(() => {
+        function handleClickOutside(event) {
+          if (Ref.current && !Ref.current.contains(event.target)) {
+            const element = document.getElementById("Userdropshow")
+            element.classList.remove("show");
+          }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [Ref]);
+    }
+     
+    // End From Email List
+  
+    // Start From Nav Close  
+      const NavBarClick = () => {
+        var ResultData = (localStorage.getItem('DropdownCheckData'));
+        if (ResultData == "Refresh") {
+          var Data = {
+            ClientID: ClientID,
+            UserID: UserID
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              if (Result.data.PageData.length > 0) {
+                SetFromEmailDropdownListChecked()
+                SetFromEmailDropdownList(Result.data.PageData);
+                SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+                localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+                const element = document.getElementById("navclose")
+                if (element.classList.contains("opennav")) {
+                  element.classList.remove("opennav");
+                }
+                else {
+                  element.classList.add("opennav");
+                }
+              }
+            }
+            else {
+              SetFromEmailDropdownList([]);
+    
+            }
+          });
+        }
+        else {
+          const element = document.getElementById("navclose")
+          if (element.classList.contains("opennav")) {
+            element.classList.remove("opennav");
+          }
+          else {
+            element.classList.add("opennav");
+          }
+          SetFromEmailDropdownListChecked(ResultData.split(','));
+    
+        }
+      }
+  
+  
+    // End From Email List
 
   // Start Search
   const SearchBox = (e) => {
@@ -871,6 +990,7 @@ export default function StarredPage() {
   }
 
 
+  UseOutsideAlerter(WrapperRef);
   return (
     <>
       <div>
@@ -999,11 +1119,15 @@ export default function StarredPage() {
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
-          <Col className='maxcontainerix'>
-            <div className='px-0 py-4 leftinbox'>
-              <div className='px-3'>
-                <Row>
-                  <Col sm={9}> <h3 className='title-h3'>Starred</h3> </Col>
+        <Col className='maxcontainerix' id="navclose">
+            <div className='closeopennav'>
+              <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
+              <Tooltip title="Starred"><a className='m-4'><img src={menustart} /></a></Tooltip>
+            </div>
+            <div className='navsmaller px-0 py-4 leftinbox'>
+              <div className='px-3 bgfilter'>
+                <Row> 
+                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Starred</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
@@ -1086,9 +1210,10 @@ export default function StarredPage() {
                   </Col>
                 </Row>
               </div>
+              
               {
                 StarredList?.length === 0 ?
-                  <div id="scrollableDiv" class="listinbox mt-3">
+                  <div id="scrollableDiv" class="listinbox">
                     <InfiniteScroll
                       dataLength={StarredList?.length}
                       next={FetchMoreData}
@@ -1101,7 +1226,7 @@ export default function StarredPage() {
                   :
                   StarredList?.length <= 9
                     ?
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={StarredList?.length}
                         next={FetchMoreData}
@@ -1121,11 +1246,10 @@ export default function StarredPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={StarredChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              </Row>
-                              <Col xs={11} className="pr-0">
+                              <Col xs={11} className="pr-2">
                                 <Row>
                                   <Col xs={2}>
-                                    <span className="inboxuserpic">
+                                    <span className="inboxuserpic p-0">
                                       <img src={defaultimage} width="55px" alt="" />
                                     </span>
                                   </Col>
@@ -1149,13 +1273,14 @@ export default function StarredPage() {
                                   </Col>
                                 </Row>
                               </Col>
+                              </Row>
                             </Item>
                           ))}
                         </Stack>
                       </InfiniteScroll>
                     </div>
                     :
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={StarredList?.length}
                         next={FetchMoreData}
@@ -1175,8 +1300,7 @@ export default function StarredPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={StarredChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              </Row>
-                              <Col xs={11} className="pr-0">
+                              <Col xs={11} className="pr-2">
                                 <Row>
                                   <Col xs={2}>
                                     <span className="inboxuserpic">
@@ -1203,6 +1327,7 @@ export default function StarredPage() {
                                   </Col>
                                 </Row>
                               </Col>
+                              </Row>
                             </Item>
                           ))}
                         </Stack>
@@ -1218,13 +1343,40 @@ export default function StarredPage() {
                 <Col lg={6}>
                   <Row className='userlist'>
                     <Col xs={2}>
-                      <span className="inboxuserpic">
+                      <span className="inboxuserpic p-0">
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6>
+                    <Col xs={10}>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5> 
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                        <a onClick={Userdropdown}>
+                          <KeyboardArrowDownIcon />
+                        </a>
+                      </h6>
+
+                      <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
+                        <div class="bodyuserdop textdeclist">
+                          <div className='columlistdrop'>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
+                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
+                              <Col sm={9}>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
+                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
+                            </Row>
+                          </div>
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </Col>
@@ -1240,7 +1392,7 @@ export default function StarredPage() {
                       <img src={icontimer} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} />
+                      <img src={inbox} className="width36" />
                     </Button>
                     <Button>
                       <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
@@ -1280,14 +1432,14 @@ export default function StarredPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='user_editor d-none mt-5'>
+              <div className='user_editor d-none my-5'>
                 <Row className='userlist'>
                   <Col className='fixwidleft'>
-                    <span className="inboxuserpic">
+                    <span className="inboxuserpic p-0">
                       <img src={inboxuser1} width="63px" alt="" />
                     </span>
                   </Col>
-                  <Col className='fixwidright p-0'>
+                  <Col className='fixwidright'>
                     <div className='editorboxcard'>
                       <Row className='edittoprow p-2'>
                         <Col className='d-flex hedtopedit'>
@@ -1364,7 +1516,7 @@ export default function StarredPage() {
                   </Col>
                 </Row>
               </div>
-              <div className='user_editor_frwd  d-none mt-5'>
+              <div className='user_editor_frwd d-none my-5'>
                 <Row className='userlist'>
                   <Col className='fixwidleft'>
                     <span className="inboxuserpic">

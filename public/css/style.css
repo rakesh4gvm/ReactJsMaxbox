@@ -1606,7 +1606,9 @@ a.navicons {
 a.navicons:hover { 
     color: #fff; 
 } 
-
+img.width36{
+    width: 36px !important;
+}
 
 
 
