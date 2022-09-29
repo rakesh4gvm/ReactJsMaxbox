@@ -145,7 +145,7 @@ export default function OtherInboxPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, InboxChecked, FromEmailDropdownListChecked]);
+  }, [SearchInbox, InboxChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -154,7 +154,7 @@ export default function OtherInboxPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetInBoxList(UserDetails.ClientID, UserDetails.UserID, Page);
+    GetInBoxList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
@@ -169,7 +169,7 @@ export default function OtherInboxPage() {
     }
   }
   // Start Get InBoxList
-  const GetInBoxList = async (CID, UID, PN) => {
+  const GetInBoxList = async (CID, UID, PN, Str, IDs) => {
 
     var Data = {
       Page: PN,
@@ -185,7 +185,7 @@ export default function OtherInboxPage() {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: true,
-      AccountIDs: FromEmailDropdownListChecked
+      AccountIDs: IDs
     };
     const ResponseApi = await Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -197,14 +197,21 @@ export default function OtherInboxPage() {
       if (ResponseApi.data.PageData.length > 0) {
         SetResponseData(ResponseApi.data.PageData)
         SetHasMoreData(ResponseApi.data.PageData)
-        SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+        // SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+        if (Str == "checkbox") {
+          SetInBoxList(ResponseApi.data.PageData);
+        } else if (Str == "scroll") {
+          SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+        } else {
+          SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+        }
         OpenMessageDetails(ResponseApi.data.PageData[0]._id);
         SetMailNumber(1)
       }
-      // else if (ResponseApi.data.PageData?.length === 0) {
-      //   SetInBoxList([])
-      //   OpenMessageDetails('')
-      // }
+      else if (ResponseApi.data.PageData?.length === 0 && Str == "checkbox") {
+        SetInBoxList([])
+        OpenMessageDetails('')
+      }
       else {
         SetResponseData([])
         SetHasMoreData(ResponseApi.data.PageData)
@@ -322,7 +329,7 @@ export default function OtherInboxPage() {
           toast.error(<div>Other Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID, Page);
+          GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -353,7 +360,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID, Page);
+          GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -385,7 +392,7 @@ export default function OtherInboxPage() {
           toast.success(<div>Other Inbox <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetInBoxList(ClientID, UserID, Page);
+          GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -451,6 +458,9 @@ export default function OtherInboxPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetInBoxList([]);
       SetSearchInbox(e.target.value)
     }
   }
@@ -507,13 +517,18 @@ export default function OtherInboxPage() {
 
   // Handle Change Dropdown List Manage by on React Js
   const FromEmailDropdownListCheckbox = (e) => {
+
     localStorage.removeItem("DropdownCheckData");
 
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetInBoxList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetInBoxList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
@@ -521,6 +536,9 @@ export default function OtherInboxPage() {
 
 
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetInBoxList([]);
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetInboxChecked([]);
@@ -858,17 +876,8 @@ export default function OtherInboxPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetInBoxList(ClientID, UserID, Page + 1)
-    // if (ResponseData.length === 0) {
-    //   console.log("000=======")
-    //   SetHasMore(false)
-    // } else if (ResponseData.length <= 9) {
-    //   console.log("<= 9=======")
-    //   SetHasMore(false)
-    // } else if (ResponseData.length === 10) {
-    //   console.log("10=======")
-    //   SetHasMore(true)
-    // }
+    await GetInBoxList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
+
   };
 
   const Search = styled('div')(({ theme }) => ({
@@ -916,10 +925,6 @@ export default function OtherInboxPage() {
     color: theme.palette.text.secondary,
   }));
 
-  // Handle State Change
-  //  const HandleChange = (e) => {
-  //   SetState({ ...State, [e.target.name]: e.target.value })
-  // }
 
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
@@ -1063,7 +1068,8 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {TotalCount}
+                      {/* {TotalCount} */}
+                      {InBoxList?.length}
                     </div>
                   </Col>
                 </Row>
