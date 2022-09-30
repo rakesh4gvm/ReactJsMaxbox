@@ -177,6 +177,8 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                 IsUnansweredResponsesMail: true,
                 IsStarredMail: false,
                 IsFollowUpLaterMail: false,
+                IsSpamMail: false,
+                IsDraftMail: false,
                 CreatedBy: 1
             }
             Axios({
@@ -188,7 +190,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                     toast.success(<div>Other Inbox<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
-                    GetInBoxList()
+                    // GetInBoxList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""

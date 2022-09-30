@@ -37,7 +37,7 @@ import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 
-import Compose from '../ComposePage/ComposePage';
+import SpamComposePage from "../SpamComposePage/SpamComposePage"
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
 import iconstar from '../../images/icon_star.svg';
@@ -55,11 +55,11 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
- 
+
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
-import timermenu from '../../images/icons/timermenu.svg'; 
+import timermenu from '../../images/icons/timermenu.svg';
 
 import { EditorVariableNames } from "../../_helpers/Utility";
 
@@ -136,7 +136,7 @@ export default function SpamPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, SpamChecked, FromEmailDropdownListChecked]);
+  }, [SearchInbox, SpamChecked]);
 
 
   const HandleOpen = () => SetOpen(true);
@@ -151,7 +151,7 @@ export default function SpamPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page);
+    GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
@@ -168,7 +168,7 @@ export default function SpamPage() {
   }
 
   // Start Get Spam List
-  const GetSpamList = (CID, UID, PN) => {
+  const GetSpamList = (CID, UID, PN, Str, IDs) => {
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -183,7 +183,7 @@ export default function SpamPage() {
       IsFollowUp: false,
       IsSpam: true,
       IsOtherInbox: false,
-      AccountIDs: FromEmailDropdownListChecked
+      AccountIDs: IDs
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -195,9 +195,20 @@ export default function SpamPage() {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
           SetHasMoreData(Result.data.PageData)
-          SetSpamList([...SpamList, ...Result.data.PageData]);
+          // SetSpamList([...SpamList, ...Result.data.PageData]);
+          if (Str == "checkbox") {
+            SetSpamList(Result.data.PageData);
+          } else if (Str == "scroll") {
+            SetSpamList([...SpamList, ...Result.data.PageData]);
+          } else {
+            SetSpamList([...SpamList, ...Result.data.PageData]);
+          }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+        }
+        else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
+          SetSpamList([])
+          OpenMessageDetails('')
         }
         else {
           SetResponseData([])
@@ -316,7 +327,7 @@ export default function SpamPage() {
           toast.error(<div>Spam <br />Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID, Page);
+          GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -347,7 +358,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID, Page);
+          GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -414,7 +425,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID, Page);
+          GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -446,7 +457,7 @@ export default function SpamPage() {
           toast.success(<div>Spam  <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetSpamList(ClientID, UserID, Page);
+          GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
           CloseOtherInboxPopModel();
@@ -456,9 +467,9 @@ export default function SpamPage() {
   }
   // End Other inbox  Message and model open and close
 
-   /* start navcode */
-  
-   const NavBarClick = () => {
+  /* start navcode */
+
+  const NavBarClick = () => {
     const element = document.getElementById("navclose")
     if (element.classList.contains("opennav")) {
       element.classList.remove("opennav");
@@ -466,11 +477,11 @@ export default function SpamPage() {
     else {
       element.classList.add("opennav");
     }
-  } 
+  }
   /* end code*/
 
   /* start navcode */
-  
+
   const Userdropdown = () => {
     const element = document.getElementById("Userdropshow")
     if (element.classList.contains("show")) {
@@ -479,7 +490,7 @@ export default function SpamPage() {
     else {
       element.classList.add("show");
     }
-  } 
+  }
   function UseOutsideAlerter(Ref) {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -521,6 +532,9 @@ export default function SpamPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetSpamList([])
       SetSearchInbox(e.target.value)
     }
   }
@@ -582,8 +596,12 @@ export default function SpamPage() {
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetSpamList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetSpamList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
@@ -592,6 +610,9 @@ export default function SpamPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetSpamList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetSpamChecked([])
@@ -602,15 +623,8 @@ export default function SpamPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetSpamList(ClientID, UserID, Page + 1)
+    await GetSpamList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
 
-    // if (ResponseData.length === 0) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length === 10) {
-    //   SetHasMore(true)
-    // }
   }
 
   // Get Total Total Record Count
@@ -771,6 +785,18 @@ export default function SpamPage() {
   // Send Reply Frola Editor Ends
 
   const ForwardPopModel = (ObjMailsData) => {
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetForwardMssageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetForwardSignature({ Data: Result?.data?.Data })
+      }
+    })
     const element = document.getElementsByClassName("user_editor_frwd")
     SetForwardSignature({ Data: "" });
     document.getElementById("to").value = "";
@@ -966,7 +992,7 @@ export default function SpamPage() {
   }));
 
   const WrapperRef = useRef(null);
-  UseOutSideAlerter(WrapperRef);
+  // UseOutSideAlerter(WrapperRef);
 
   return (
     <>
@@ -1124,13 +1150,13 @@ export default function SpamPage() {
       <div className='bodymain'>
         <Row className='mb-columfull'>
           <Col className='maxcontainerix' id="navclose">
-              <div className='closeopennav'>
-                <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-                <Tooltip title="Spam"><a className='m-4'><img src={timermenu} /></a></Tooltip>
-              </div>
-              <div className='navsmaller px-0 py-4 leftinbox'>
-                <div className='px-3 bgfilter'>
-                <Row> 
+            <div className='closeopennav'>
+              <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
+              <Tooltip title="Spam"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+            </div>
+            <div className='navsmaller px-0 py-4 leftinbox'>
+              <div className='px-3 bgfilter'>
+                <Row>
                   <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Spam</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
@@ -1360,7 +1386,7 @@ export default function SpamPage() {
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
                       {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>
@@ -1622,7 +1648,7 @@ export default function SpamPage() {
         </Row>
       </div>
 
-      <Compose />
+      <SpamComposePage GetSpamList={GetSpamList} />
 
     </>
   );

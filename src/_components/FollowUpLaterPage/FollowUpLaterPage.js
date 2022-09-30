@@ -141,7 +141,7 @@ export default function FollowUpLetterPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, FollowUpLaterChecked, FromEmailDropdownListChecked]);
+  }, [SearchInbox, FollowUpLaterChecked]);
 
 
   // Get ClientID
@@ -151,7 +151,7 @@ export default function FollowUpLetterPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetFollowUpLetterList(UserDetails.ClientID, UserDetails.UserID, Page);
+    GetFollowUpLetterList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
@@ -166,7 +166,7 @@ export default function FollowUpLetterPage() {
     }
   }
   // Start Get Follow Up Letter List
-  const GetFollowUpLetterList = (CID, UID, PN) => {
+  const GetFollowUpLetterList = (CID, UID, PN, Str, IDs) => {
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -181,7 +181,7 @@ export default function FollowUpLetterPage() {
       IsFollowUp: true,
       IsSpam: false,
       IsOtherInbox: false,
-      AccountIDs: FromEmailDropdownListChecked
+      AccountIDs: IDs
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -193,14 +193,21 @@ export default function FollowUpLetterPage() {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
           SetHasMoreData(Result.data.PageData)
-          SetInBoxList([...InBoxList, ...Result.data.PageData]);
+          // SetInBoxList([...InBoxList, ...Result.data.PageData]);
+          if (Str == "checkbox") {
+            SetInBoxList(Result.data.PageData);
+          } else if (Str == "scroll") {
+            SetInBoxList([...InBoxList, ...Result.data.PageData]);
+          } else {
+            SetInBoxList([...InBoxList, ...Result.data.PageData]);
+          }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
-        // else if (Result.data.PageData?.length === 0) {
-        //   SetInBoxList([])
-        //   OpenMessageDetails('')
-        // }
+        else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
+          SetInBoxList([])
+          OpenMessageDetails('')
+        }
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
@@ -318,7 +325,7 @@ export default function FollowUpLetterPage() {
           toast.error(<div>Follow Up Later <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID, Page);
+          GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -349,7 +356,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID, Page);
+          GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -381,7 +388,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />Mail updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetFollowUpLetterList(ClientID, UserID, Page);
+          GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -443,8 +450,8 @@ export default function FollowUpLetterPage() {
   }
   // End CheckBox Code
 
-   // Start From Email List
-   const Userdropdown = () => {
+  // Start From Email List
+  const Userdropdown = () => {
     var ResultData = (localStorage.getItem('DropdownCheckData'));
     if (ResultData == "Refresh") {
       var Data = {
@@ -504,56 +511,56 @@ export default function FollowUpLetterPage() {
       };
     }, [Ref]);
   }
-   
+
   // End From Email List
 
   // Start From Nav Close  
-    const NavBarClick = () => {
-      var ResultData = (localStorage.getItem('DropdownCheckData'));
-      if (ResultData == "Refresh") {
-        var Data = {
-          ClientID: ClientID,
-          UserID: UserID
-        };
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.PageData.length > 0) {
-              SetFromEmailDropdownListChecked()
-              SetFromEmailDropdownList(Result.data.PageData);
-              SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-              localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-              const element = document.getElementById("navclose")
-              if (element.classList.contains("opennav")) {
-                element.classList.remove("opennav");
-              }
-              else {
-                element.classList.add("opennav");
-              }
+  const NavBarClick = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("navclose")
+            if (element.classList.contains("opennav")) {
+              element.classList.remove("opennav");
+            }
+            else {
+              element.classList.add("opennav");
             }
           }
-          else {
-            SetFromEmailDropdownList([]);
-  
-          }
-        });
-      }
-      else {
-        const element = document.getElementById("navclose")
-        if (element.classList.contains("opennav")) {
-          element.classList.remove("opennav");
         }
         else {
-          element.classList.add("opennav");
+          SetFromEmailDropdownList([]);
+
         }
-        SetFromEmailDropdownListChecked(ResultData.split(','));
-  
-      }
+      });
     }
+    else {
+      const element = document.getElementById("navclose")
+      if (element.classList.contains("opennav")) {
+        element.classList.remove("opennav");
+      }
+      else {
+        element.classList.add("opennav");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
 
 
   // End From Email List
@@ -561,6 +568,9 @@ export default function FollowUpLetterPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetInBoxList([])
       SetSearchInbox(e.target.value)
     }
   }
@@ -622,8 +632,12 @@ export default function FollowUpLetterPage() {
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetFollowUpLetterList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetFollowUpLetterList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
@@ -631,6 +645,9 @@ export default function FollowUpLetterPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetInBoxList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetFollowUpLaterChecked([]);
@@ -641,7 +658,7 @@ export default function FollowUpLetterPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetFollowUpLetterList(ClientID, UserID, Page + 1)
+    await GetFollowUpLetterList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
 
     // if (ResponseData.length === 0) {
     //   SetHasMore(false)
@@ -1024,7 +1041,7 @@ export default function FollowUpLetterPage() {
   }));
 
   const WrapperRef = useRef(null);
-  UseOutSideAlerter(WrapperRef);
+  // UseOutSideAlerter(WrapperRef);
 
   return (
     <>
@@ -1235,7 +1252,7 @@ export default function FollowUpLetterPage() {
               </div>
               {
                 InBoxList.length === 0 ?
-                <div id="scrollableDiv" class="listinbox">
+                  <div id="scrollableDiv" class="listinbox">
                     <InfiniteScroll
                       dataLength={InBoxList.length}
                       next={FetchMoreData}
@@ -1268,37 +1285,37 @@ export default function FollowUpLetterPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-2">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                      <StarBorderIcon className='starone' />
-                                      <StarIcon className='selectedstart startwo' />
-                                    </ToggleButton>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-2">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -1378,8 +1395,8 @@ export default function FollowUpLetterPage() {
                       </span>
                     </Col>
                     <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5> 
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>
@@ -1422,7 +1439,7 @@ export default function FollowUpLetterPage() {
                       <img src={iconstar} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} className="width36"  />
+                      <img src={inbox} className="width36" />
                     </Button>
                     <Button>
                       <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>

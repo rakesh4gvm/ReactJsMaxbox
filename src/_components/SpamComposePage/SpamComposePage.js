@@ -30,7 +30,7 @@ toast.configure();
 function useOutsideAlerter(ref) {
 }
 
-export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
+export default function SpamComposePage({ GetSpamList }) {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
@@ -123,7 +123,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         }
     };
 
-    // Select Email Account User
+    // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
     }
@@ -152,7 +152,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         }
 
         if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
-            toast.error("All Fields are Mandatory!")
+            toast.error("All Fields are Mandatory!");
         } else if (!ValidToEmail) {
             toast.error("Please enter valid email");
         } else if (!CCEmail) {
@@ -176,8 +176,8 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                 ClientID: ClientID,
                 IsUnansweredResponsesMail: false,
                 IsStarredMail: false,
-                IsFollowUpLaterMail: true,
-                IsSpamMail: false,
+                IsFollowUpLaterMail: false,
+                IsSpamMail: true,
                 IsDraftMail: false,
                 CreatedBy: 1
             }
@@ -187,10 +187,10 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Follow Up Later<br />Mail send successfully.</div>)
+                    toast.success(<div>Spam<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
-                    // GetFollowUpLaterList()
+                    // GetSpamList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""

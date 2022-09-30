@@ -20,7 +20,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-import Compose from '../ComposePage/ComposePage';
+import DraftComposePage from "../DraftComposePage/DraftComposePage"
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
@@ -33,7 +33,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
 import { GetUserDetails } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
-import InfiniteScroll from "react-infinite-scroll-component"; 
+import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
@@ -277,6 +277,9 @@ export default function DraftsPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetDraftList([])
       SetSearchInbox(e.target.value)
     }
   }
@@ -284,6 +287,9 @@ export default function DraftsPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetDraftList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetInboxChecked([]);
@@ -315,7 +321,7 @@ export default function DraftsPage() {
 
 
   /* start navcode */
-  
+
   const NavBarClick = () => {
     const element = document.getElementById("navclose")
     if (element.classList.contains("opennav")) {
@@ -324,11 +330,11 @@ export default function DraftsPage() {
     else {
       element.classList.add("opennav");
     }
-  } 
+  }
   /* end code*/
 
   /* start navcode */
-  
+
   const Userdropdown = () => {
     const element = document.getElementById("Userdropshow")
     if (element.classList.contains("show")) {
@@ -337,7 +343,7 @@ export default function DraftsPage() {
     else {
       element.classList.add("show");
     }
-  } 
+  }
   function UseOutsideAlerter(Ref) {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -358,14 +364,6 @@ export default function DraftsPage() {
   const FetchMoreData = async () => {
     SetPage(Page + 1);
     await GetDraftList(ClientID, UserID, Page + 1)
-
-    // if (ResponseData.length === 0) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length === 10) {
-    //   SetHasMore(true)
-    // }
 
   };
 
@@ -606,35 +604,35 @@ export default function DraftsPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                                
-                              <Col xs={11} className="pr-0">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.Subject}</h4>
-                                    <h3>{row.Body}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <h5 className='draftext'>Draft</h5>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.Subject}</h4>
+                                      <h3>{row.Body}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h5 className='draftext'>Draft</h5>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -662,34 +660,34 @@ export default function DraftsPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-0">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.Subject}</h4>
-                                    <h3>{row.Body}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <h5 className='draftext'>Draft</h5>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.Subject}</h4>
+                                      <h3>{row.Body}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h5 className='draftext'>Draft</h5>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -713,7 +711,7 @@ export default function DraftsPage() {
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.MailTo}</h5>
                       {/* <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
-                      <h6> 
+                      <h6>
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>
@@ -800,7 +798,7 @@ export default function DraftsPage() {
         </Row>
       </div>
 
-      <Compose GetDraftList={GetDraftList} />
+      <DraftComposePage GetDraftList={GetDraftList} />
 
     </>
   );

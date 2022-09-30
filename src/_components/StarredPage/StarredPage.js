@@ -135,7 +135,7 @@ export default function StarredPage() {
   })
   useEffect(() => {
     GetClientID();
-  }, [SearchInbox, StarredChecked, FromEmailDropdownListChecked]);
+  }, [SearchInbox, StarredChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -144,7 +144,7 @@ export default function StarredPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page);
+    GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
     // if (ResponseData.length <= 10) {
     //   SetHasMore(false)
     // }
@@ -159,7 +159,7 @@ export default function StarredPage() {
     }
   }
   // Start Get Starred List
-  const GetStarredList = (CID, UID, PN) => {
+  const GetStarredList = (CID, UID, PN, Str, IDs) => {
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -174,7 +174,7 @@ export default function StarredPage() {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: false,
-      AccountIDs: FromEmailDropdownListChecked
+      AccountIDs: IDs
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -186,14 +186,21 @@ export default function StarredPage() {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
           SetHasMoreData(Result.data.PageData)
-          SetStarredList([...StarredList, ...Result.data.PageData]);
+          // SetStarredList([...StarredList, ...Result.data.PageData]);
+          if (Str == "checkbox") {
+            SetStarredList(Result.data.PageData);
+          } else if (Str == "scroll") {
+            SetStarredList([...StarredList, ...Result.data.PageData]);
+          } else {
+            SetStarredList([...StarredList, ...Result.data.PageData]);
+          }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
-        // else if (Result.data.PageData?.length === 0) {
-        //   SetStarredList([])
-        //   OpenMessageDetails('')
-        // }
+        else if (Result.data.PageData?.length === 0 && Str === "checkbox") {
+          SetStarredList([])
+          OpenMessageDetails('')
+        }
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
@@ -268,7 +275,7 @@ export default function StarredPage() {
           toast.error(<div>Starred <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID, Page);
+          GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -300,7 +307,7 @@ export default function StarredPage() {
           toast.success(<div>Starred <br />Mail updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID, Page);
+          GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
           CloseOtherInboxPopModel();
@@ -335,7 +342,7 @@ export default function StarredPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID, Page);
+          GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -370,7 +377,7 @@ export default function StarredPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseFollowupPopModel();
           OpenMessageDetails('')
-          GetStarredList(ClientID, UserID, Page);
+          GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
       });
     }
@@ -399,124 +406,127 @@ export default function StarredPage() {
   }
   // End CheckBox Code
 
-    // Start From Email List
-    const Userdropdown = () => {
-      var ResultData = (localStorage.getItem('DropdownCheckData'));
-      if (ResultData == "Refresh") {
-        var Data = {
-          ClientID: ClientID,
-          UserID: UserID
-        };
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.PageData.length > 0) {
-              SetFromEmailDropdownListChecked()
-              SetFromEmailDropdownList(Result.data.PageData);
-              SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-              localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-              const element = document.getElementById("Userdropshow")
-              if (element.classList.contains("show")) {
-                element.classList.remove("show");
-              }
-              else {
-                element.classList.add("show");
-              }
-            }
-          }
-          else {
-            SetFromEmailDropdownList([]);
-  
-          }
-        });
-      }
-      else {
-        const element = document.getElementById("Userdropshow")
-        if (element.classList.contains("show")) {
-          element.classList.remove("show");
-        }
-        else {
-          element.classList.add("show");
-        }
-        SetFromEmailDropdownListChecked(ResultData.split(','));
-  
-      }
-    }
-    function UseOutsideAlerter(Ref) {
-      useEffect(() => {
-        function handleClickOutside(event) {
-          if (Ref.current && !Ref.current.contains(event.target)) {
+  // Start From Email List
+  const Userdropdown = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
             const element = document.getElementById("Userdropshow")
-            element.classList.remove("show");
-          }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
-        };
-      }, [Ref]);
-    }
-     
-    // End From Email List
-  
-    // Start From Nav Close  
-      const NavBarClick = () => {
-        var ResultData = (localStorage.getItem('DropdownCheckData'));
-        if (ResultData == "Refresh") {
-          var Data = {
-            ClientID: ClientID,
-            UserID: UserID
-          };
-          const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-            method: "POST",
-            data: Data,
-          });
-          ResponseApi.then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              if (Result.data.PageData.length > 0) {
-                SetFromEmailDropdownListChecked()
-                SetFromEmailDropdownList(Result.data.PageData);
-                SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-                localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-                const element = document.getElementById("navclose")
-                if (element.classList.contains("opennav")) {
-                  element.classList.remove("opennav");
-                }
-                else {
-                  element.classList.add("opennav");
-                }
-              }
+            if (element.classList.contains("show")) {
+              element.classList.remove("show");
             }
             else {
-              SetFromEmailDropdownList([]);
-    
+              element.classList.add("show");
             }
-          });
+          }
         }
         else {
-          const element = document.getElementById("navclose")
-          if (element.classList.contains("opennav")) {
-            element.classList.remove("opennav");
-          }
-          else {
-            element.classList.add("opennav");
-          }
-          SetFromEmailDropdownListChecked(ResultData.split(','));
-    
+          SetFromEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+      const element = document.getElementById("Userdropshow")
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
         }
       }
-  
-  
-    // End From Email List
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+
+  // End From Email List
+
+  // Start From Nav Close  
+  const NavBarClick = () => {
+    var ResultData = (localStorage.getItem('DropdownCheckData'));
+    if (ResultData == "Refresh") {
+      var Data = {
+        ClientID: ClientID,
+        UserID: UserID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownListChecked()
+            SetFromEmailDropdownList(Result.data.PageData);
+            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
+            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
+            const element = document.getElementById("navclose")
+            if (element.classList.contains("opennav")) {
+              element.classList.remove("opennav");
+            }
+            else {
+              element.classList.add("opennav");
+            }
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+
+        }
+      });
+    }
+    else {
+      const element = document.getElementById("navclose")
+      if (element.classList.contains("opennav")) {
+        element.classList.remove("opennav");
+      }
+      else {
+        element.classList.add("opennav");
+      }
+      SetFromEmailDropdownListChecked(ResultData.split(','));
+
+    }
+  }
+
+
+  // End From Email List
 
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetStarredList([])
       SetSearchInbox(e.target.value)
     }
   }
@@ -573,13 +583,18 @@ export default function StarredPage() {
 
   // Handle Change Dropdown List Manage by on React Js
   const FromEmailDropdownListCheckbox = (e) => {
+
     localStorage.removeItem("DropdownCheckData");
 
     var UpdatedList = [...FromEmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetStarredList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetStarredList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
@@ -587,6 +602,9 @@ export default function StarredPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetStarredList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetStarredChecked([]);
@@ -597,18 +615,7 @@ export default function StarredPage() {
   // Fetch More Data
   const FetchMoreData = async () => {
     SetPage(Page + 1);
-    await GetStarredList(ClientID, UserID, Page + 1)
-
-    // if (ResponseData.length === 0) {
-    //   console.log("000=======")
-    //   SetHasMore(false)
-    // } else if (ResponseData.length <= 9) {
-    //   console.log("<= 9=======")
-    //   SetHasMore(false)
-    // } else if (ResponseData.length === 10) {
-    //   console.log("10=======")
-    //   SetHasMore(true)
-    // }
+    await GetStarredList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
 
   };
 
@@ -960,7 +967,7 @@ export default function StarredPage() {
   }));
 
   const WrapperRef = useRef(null);
-  UseOutSideAlerter(WrapperRef);
+  // UseOutSideAlerter(WrapperRef);
 
   // Get Total Total Record Count
   const GetTotalRecordCount = (CID, UID) => {
@@ -1119,14 +1126,14 @@ export default function StarredPage() {
 
       <div className='bodymain'>
         <Row className='mb-columfull'>
-        <Col className='maxcontainerix' id="navclose">
+          <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
               <Tooltip title="Starred"><a className='m-4'><img src={menustart} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 py-4 leftinbox'>
               <div className='px-3 bgfilter'>
-                <Row> 
+                <Row>
                   <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Starred</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
@@ -1210,7 +1217,7 @@ export default function StarredPage() {
                   </Col>
                 </Row>
               </div>
-              
+
               {
                 StarredList?.length === 0 ?
                   <div id="scrollableDiv" class="listinbox">
@@ -1246,33 +1253,33 @@ export default function StarredPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={StarredChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-2">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic p-0">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-2">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic p-0">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -1300,33 +1307,33 @@ export default function StarredPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={StarredChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-2">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-2">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -1348,8 +1355,8 @@ export default function StarredPage() {
                       </span>
                     </Col>
                     <Col xs={10}>
-                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5> 
-                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} 
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>

@@ -177,6 +177,8 @@ export default function StarredComposePage({ GetStarredList }) {
                 IsUnansweredResponsesMail: false,
                 IsStarredMail: true,
                 IsFollowUpLaterMail: false,
+                IsSpamMail: false,
+                IsDraftMail: false,
                 CreatedBy: 1
             }
             Axios({
@@ -188,7 +190,7 @@ export default function StarredComposePage({ GetStarredList }) {
                     toast.success(<div>Starred <br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
-                    GetStarredList()
+                    // GetStarredList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
