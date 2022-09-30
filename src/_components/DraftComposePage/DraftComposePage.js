@@ -163,6 +163,7 @@ export default function DraftComposePage({ GetDraftList }) {
         }
         else {
             const Data = {
+                AccountID: SelectedUser?.AccountID,
                 ToEmail: ToEmail,
                 Subject: Subject,
                 SignatureText: Signature.Data,
@@ -179,6 +180,8 @@ export default function DraftComposePage({ GetDraftList }) {
                 IsFollowUpLaterMail: false,
                 IsSpamMail: false,
                 IsDraftMail: true,
+                IsAllSentEmails: false,
+                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

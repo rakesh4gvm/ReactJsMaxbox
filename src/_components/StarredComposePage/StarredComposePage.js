@@ -163,6 +163,7 @@ export default function StarredComposePage({ GetStarredList }) {
         }
         else {
             const Data = {
+                AccountID: SelectedUser?.AccountID,
                 ToEmail: ToEmail,
                 Subject: Subject,
                 SignatureText: Signature.Data,
@@ -179,6 +180,8 @@ export default function StarredComposePage({ GetStarredList }) {
                 IsFollowUpLaterMail: false,
                 IsSpamMail: false,
                 IsDraftMail: false,
+                IsAllSentEmails: false,
+                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({
