@@ -1609,7 +1609,13 @@ a.navicons:hover {
 img.width36{
     width: 36px !important;
 }
-
+.bodytables {
+    padding: 15px;
+    background-color: #f4f4f4;
+    text-align: left;
+    word-break: break-all;
+    white-space: break-spaces;
+}
 
 
 

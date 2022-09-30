@@ -29,6 +29,12 @@ import { Col, Row } from 'react-bootstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+
 toast.configure();
 
 const Style = {
@@ -55,6 +61,7 @@ export default function TemplatesListPage() {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     GetClientID();
@@ -219,9 +226,15 @@ export default function TemplatesListPage() {
                   </TableHead>
                   <TableBody>
                     {TemplateList?.map((row) => (
+                      <>
                       <TableRow>
+                        <TableCell align="center">
+                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                            {open ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
+                          </IconButton>
+                        </TableCell>
                         <TableCell>{row.Subject}</TableCell>
-                        <TableCell>  {parse(row.BodyText)}   </TableCell>
+                        {/* <TableCell>  {parse(row.BodyText)}   </TableCell> */}
 
                         <TableCell align="right">
                           <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
@@ -230,6 +243,23 @@ export default function TemplatesListPage() {
                           <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
                         </TableCell>
                       </TableRow>
+
+                      <TableRow> 
+                      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                          <Box margin={1} className="innertables"> 
+                            <Table size="small" aria-label="purchases">
+                              <TableHead> 
+                              </TableHead>   
+                              <TableRow>  
+                              <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell> 
+                              </TableRow>
+                            </Table> 
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                      </TableRow>
+                      </>
                     ))}
                   </TableBody>
                 </Table>

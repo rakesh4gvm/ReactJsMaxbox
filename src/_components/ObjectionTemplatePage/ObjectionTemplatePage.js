@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -28,6 +29,11 @@ import { Col, Row } from 'react-bootstrap';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
+import IconButton from '@mui/material/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'; 
 
 toast.configure();
 
@@ -56,6 +62,7 @@ export default function ObjectionTemplateListPage() {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
+  const [open, setOpen] = React.useState(false);  
 
   useEffect(() => {
     GetClientID();
@@ -159,7 +166,7 @@ export default function ObjectionTemplateListPage() {
   // Add Objection Template
   const AddObjectionTemplate = () => {
     history.push("/CreateObjection");
-  }
+  } 
 
   return (
     <>
@@ -213,16 +220,26 @@ export default function ObjectionTemplateListPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
+                      <TableCell> </TableCell> 
                       <TableCell>Subject</TableCell>
-                      <TableCell>Body</TableCell>
+                      {/* <TableCell>Body</TableCell> */}
                       <TableCell align="right">Action</TableCell>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     {ObjectionTemplateList?.map((row) => (
+                      <React.Fragment>
                       <TableRow>
+                        
+                        <TableCell align="center">
+                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                            {open ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
+                          </IconButton>
+                        </TableCell>
+
                         <TableCell>{row.Subject}</TableCell>
-                        <TableCell>  {parse(row.BodyText)}   </TableCell>
+                        {/* <TableCell> </TableCell> */}
 
                         <TableCell align="right">
                           <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
@@ -231,6 +248,24 @@ export default function ObjectionTemplateListPage() {
                           <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
                         </TableCell>
                       </TableRow>
+
+                      <TableRow> 
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                          <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Box margin={1} className="innertables"> 
+                              <Table size="small" aria-label="purchases">
+                                <TableHead> 
+                                </TableHead>   
+                                <TableRow>  
+                                <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell> 
+                                </TableRow>
+                              </Table> 
+                            </Box>
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+
+                      </React.Fragment>
                     ))}
                   </TableBody>
                 </Table>
