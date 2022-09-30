@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import BgSign from '../../images/sign-bg.png';
 
+import OtpInput from 'react-otp-input';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails } from '../../_helpers/Utility'
@@ -16,10 +17,17 @@ export default function OTPConfirmPage(props) {
 
   const [OTPErrorMessage, SetOTPErrorMessage] = useState("")
   const [User, SetUser] = useState()
+  const [OTPMessage, SetOTPMessage] = useState("")
 
   useEffect(() => {
     GetUser()
   }, [])
+
+
+// OTP Message Mathad
+const OTPSend = (OTP) => { 
+  SetOTPMessage(OTP);
+}
 
   // Get User
   const GetUser = () => {
@@ -83,7 +91,7 @@ export default function OTPConfirmPage(props) {
   // Set Client ID
   const SetClientID = (UserID) => {
     var Data = {
-      UserID: UserID
+      UserID: UserID,
     }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
@@ -105,6 +113,7 @@ export default function OTPConfirmPage(props) {
       }
     });
   }
+ 
 
   return (
     <>
@@ -117,8 +126,7 @@ export default function OTPConfirmPage(props) {
 
           <div className='sm-container pt-5'>
             <h2 class="pt-5">Verification Code</h2>
-            <p>Enter your Verification Code sent to</p>
-            <p>91**********</p>
+            <p>Enter your Verification Code sent to</p> 
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
@@ -129,13 +137,20 @@ export default function OTPConfirmPage(props) {
             <Row>
               <Col sm={4}>
                 <div className='code-inputbox'>
-                  <input type='text' name='one' id='one' />
+                  {/* <input type='text' name='one' id='one' />
                   <input type='text' name='two' id='two' />
                   <input type='text' name='three' id='three' />
                   <input type='text' name='four' id='four' />
                   <input type='text' name='five' id='five' />
-                  <input type='text' name='six' id='six' />
+                  <input type='text' name='six' id='six' /> */} 
+                    <OtpInput
+                        value={OTPMessage}
+                        onChange={OTPSend}
+                        numInputs={6}
+                        separator={<span></span>}
+                      />
                 </div>
+ 
               </Col>
             </Row>
           </div>

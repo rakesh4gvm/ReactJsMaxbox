@@ -1616,6 +1616,10 @@ img.width36{
     word-break: break-all;
     white-space: break-spaces;
 }
+.code-inputbox input {
+    width: 45px !important; 
+    text-align: center !important;
+}
 
 
 
