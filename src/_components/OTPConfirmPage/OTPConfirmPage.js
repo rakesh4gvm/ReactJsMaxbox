@@ -46,17 +46,13 @@ const OTPSend = (OTP) => {
   // Verify User
   const VerifyUser = () => {
     // GetUser()
+    debugger
+    
 
-    var One = document.getElementById("one").value;
-    var Two = document.getElementById("two").value;
-    var Three = document.getElementById("three").value;
-    var Four = document.getElementById("four").value;
-    var Five = document.getElementById("five").value;
-    var Six = document.getElementById("six").value;
+    const Result = OTPMessage;
 
-    const Result = One + Two + Three + Four + Five + Six
-
-    if (One == "" || Two == "" || Three == "" || Four == "" || Five == "" || Six == "") {
+    if (Result == "")
+     {
       SetOTPErrorMessage("Please Enter Your Verification Code!")
     } else {
       if (User?.OneTimePassword === parseInt(Result)) {

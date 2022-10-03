@@ -233,8 +233,11 @@ export default function ObjectionTemplateListPage() {
                       <TableRow>
                         
                         <TableCell align="center">
-                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                            {open ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
+                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
+                            ...prev,
+                            [row._id]: !prev[row._id],
+                          }))}>
+                            {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
                           </IconButton>
                         </TableCell>
 
@@ -251,7 +254,7 @@ export default function ObjectionTemplateListPage() {
 
                       <TableRow> 
                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                          <Collapse in={open} timeout="auto" unmountOnExit>
+                          <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
                             <Box margin={1} className="innertables"> 
                               <Table size="small" aria-label="purchases">
                                 <TableHead> 
