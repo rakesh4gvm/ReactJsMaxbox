@@ -550,51 +550,28 @@ export default function UnansweredResponsesPage() {
   }
   // End From Email List
 
-  // Start From Email List
-  const Userdropdown = () => {
-    var ResultData = (localStorage.getItem('DropdownCheckData'));
-    if (ResultData == "Refresh") {
-      var Data = {
-        ClientID: ClientID,
-        UserID: UserID
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (Result.data.PageData.length > 0) {
-            SetFromEmailDropdownListChecked()
-            SetFromEmailDropdownList(Result.data.PageData);
-            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-            const element = document.getElementById("Userdropshow")
-            if (element.classList.contains("show")) {
-              element.classList.remove("show");
-            }
-            else {
-              element.classList.add("show");
-            }
-          }
-        }
-        else {
-          SetFromEmailDropdownList([]);
+  /* start navcode */
 
-        }
-      });
+  const NavBarClick = () => {
+    const element = document.getElementById("navclose")
+    if (element.classList.contains("opennav")) {
+      element.classList.remove("opennav");
     }
     else {
-      const element = document.getElementById("Userdropshow")
-      if (element.classList.contains("show")) {
-        element.classList.remove("show");
-      }
-      else {
-        element.classList.add("show");
-      }
-      SetFromEmailDropdownListChecked(ResultData.split(','));
+      element.classList.add("opennav");
+    }
+  }
+  /* end code*/
 
+  /* start navcode */
+
+  const Userdropdown = () => {
+    const element = document.getElementById("Userdropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
     }
   }
   function UseOutsideAlerter(Ref) {
@@ -611,58 +588,8 @@ export default function UnansweredResponsesPage() {
       };
     }, [Ref]);
   }
-  // End From Email List
+  /* end code*/
 
-  // Start From Nav Close  
-  const NavBarClick = () => {
-    var ResultData = (localStorage.getItem('DropdownCheckData'));
-    if (ResultData == "Refresh") {
-      var Data = {
-        ClientID: ClientID,
-        UserID: UserID
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (Result.data.PageData.length > 0) {
-            SetFromEmailDropdownListChecked()
-            SetFromEmailDropdownList(Result.data.PageData);
-            SetFromEmailDropdownListChecked(Result.data.PageData.map(item => item._id));
-            localStorage.setItem("DropdownCheckData", Result.data.PageData.map(item => item._id));
-            const element = document.getElementById("navclose")
-            if (element.classList.contains("opennav")) {
-              element.classList.remove("opennav");
-            }
-            else {
-              element.classList.add("opennav");
-            }
-          }
-        }
-        else {
-          SetFromEmailDropdownList([]);
-
-        }
-      });
-    }
-    else {
-      const element = document.getElementById("navclose")
-      if (element.classList.contains("opennav")) {
-        element.classList.remove("opennav");
-      }
-      else {
-        element.classList.add("opennav");
-      }
-      SetFromEmailDropdownListChecked(ResultData.split(','));
-
-    }
-  }
-
-
-  // End From Email List
 
   // Handle Change Dropdown List Manage by on React Js
   const FromEmailDropdownListCheckbox = (e) => {
