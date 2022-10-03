@@ -46,12 +46,25 @@ import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
-import InfiniteScroll from "react-infinite-scroll-component";  
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
-import timermenu from '../../images/icons/timermenu.svg'; 
+import timermenu from '../../images/icons/timermenu.svg';
+import UnansweredRepliesComposePage from '../UnansweredRepliesComposePage/UnansweredRepliesComposePage';
+import { EditorVariableNames } from "../../_helpers/Utility";
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const Style = {
   position: 'absolute',
@@ -102,10 +115,16 @@ export default function UnansweredRepliesPage() {
   const [ResponseData, SetResponseData] = useState([])
   const [HasMore, SetHasMore] = useState(true)
   const [TotalCount, SetTotalCount] = React.useState(0);
+  const [Signature, SetSignature] = useState({
+    Data: ""
+  })
+  const [ForwardSignature, SetForwardSignature] = useState({
+    Data: ""
+  })
 
   useEffect(() => {
     GetClientID();
-  }, [SearchSent, UnansweredRepliesChecked, EmailDropdownListChecked, Page]);
+  }, [SearchSent, UnansweredRepliesChecked]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -114,16 +133,23 @@ export default function UnansweredRepliesPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetAllUnanswereRepliesList(UserDetails.ClientID, UserDetails.UserID);
-    // if (ResponseData?.length <= 10) {
-    //   SetHasMore(false)
-    // }
-  }
+    GetAllUnanswereRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, "", EmailDropdownListChecked);
 
+  }
+  const SetHasMoreData = (arr) => {
+    if (arr.length === 0) {
+      SetHasMore(false)
+    } else if (arr.length <= 9) {
+      SetHasMore(false)
+    } else if (arr.length === 10) {
+      SetHasMore(true)
+    }
+  }
   // Start Get All Unanswered Replies List
-  const GetAllUnanswereRepliesList = (CID, UID) => {
+  const GetAllUnanswereRepliesList = (CID, UID, PN, Str, IDs) => {
+
     let Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -131,7 +157,7 @@ export default function UnansweredRepliesPage() {
       Search: SearchSent,
       ClientID: CID,
       UserID: UID,
-      AccountIDs: EmailDropdownListChecked
+      AccountIDs: IDs
     };
 
     const ResponseApi = Axios({
@@ -141,18 +167,35 @@ export default function UnansweredRepliesPage() {
     });
 
     ResponseApi.then((Result) => {
-
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetResponseData(Result.data.PageData)
         if (Result.data.PageData.length > 0) {
-          SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
+          SetResponseData(Result.data.PageData)
+          SetHasMore(Result.data.PageData)
+          // SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
+          if (Str == "checkbox") {
+            SetAllUnanswereRepliesList(Result.data.PageData);
+          } else if (Str == "scroll") {
+            SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
+          } else {
+            SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
+          }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
         }
+        else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
+          SetAllUnanswereRepliesList([])
+          OpenMessageDetails('')
+        }
         else {
+          SetResponseData([])
+          SetHasMoreData(Result.data.PageData)
           SetAllUnanswereRepliesList([...AllUnansweredRepliesList]);
-          SetHasMore(false)
-          OpenMessageDetails('');
+          if (AllUnansweredRepliesList && AllUnansweredRepliesList?.length > 1) {
+            let LastElement = AllUnansweredRepliesList?.slice(-1)
+            OpenMessageDetails(LastElement[0]?._id, 0);
+          } else {
+            OpenMessageDetails('');
+          }
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -165,7 +208,7 @@ export default function UnansweredRepliesPage() {
   // End Get All Unanswered Replies List
 
   //Start Open Message Details
-  const OpenMessageDetails = async (ID, Index) => {
+  const OpenMessageDetails = (ID, Index) => {
     if (ID != '') {
       SetMailNumber(Index + 1)
       var Data = {
@@ -176,12 +219,13 @@ export default function UnansweredRepliesPage() {
         method: "POST",
         data: Data,
       });
-      await ResponseApi.then((Result) => {
+      ResponseApi.then((Result) => {
+
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result.data.Data[0]);
+          SetOpenMessageDetails(Result?.data?.Data[0]);
         }
         else {
-          SetOpenMessageDetails('');
+          SetOpenMessageDetails([]);
         }
       });
     }
@@ -215,7 +259,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList(ClientID, UserID);
+          GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         }
       });
     }
@@ -246,7 +290,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList(ClientID, UserID);
+          GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         }
       });
     }
@@ -276,7 +320,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseStarPopModel();
           OpenMessageDetails('')
-          GetAllUnanswereRepliesList(ClientID, UserID);
+          GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         }
       });
     }
@@ -308,6 +352,9 @@ export default function UnansweredRepliesPage() {
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetAllUnanswereRepliesList([]);
       SetSearchSent(e.target.value)
     }
   }
@@ -369,8 +416,12 @@ export default function UnansweredRepliesPage() {
     var UpdatedList = [...EmailDropdownListChecked];
     if (e.target.checked) {
       UpdatedList = [...EmailDropdownListChecked, e.target.value];
+      SetPage(1)
+      GetAllUnanswereRepliesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(EmailDropdownListChecked.indexOf(e.target.value), 1);
+      SetPage(1)
+      GetAllUnanswereRepliesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetEmailDropdownListChecked(UpdatedList);
@@ -378,6 +429,9 @@ export default function UnansweredRepliesPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    SetPage(1);
+    SetRowsPerPage(10);
+    SetAllUnanswereRepliesList([]);
     SetSelectAllCheckbox(false);
     SetSearchSent('');
     SetUansweredRepliesChecked([]);
@@ -387,13 +441,10 @@ export default function UnansweredRepliesPage() {
 
   // Fetch More Data
   const FetchMoreData = async () => {
-    
-    SetPage(Page + 1);
-    await GetAllUnanswereRepliesList(ClientID, UserID)
 
-    if (ResponseData?.length === 0) {
-      SetHasMore(false)
-    }
+    SetPage(Page + 1);
+    await GetAllUnanswereRepliesList(ClientID, UserID, Page + 1, "scroll", EmailDropdownListChecked)
+
   };
 
   // Get Total Total Record Count
@@ -420,7 +471,7 @@ export default function UnansweredRepliesPage() {
   }
 
   /* start navcode */
-  
+
   const NavBarClick = () => {
     const element = document.getElementById("navclose")
     if (element.classList.contains("opennav")) {
@@ -429,11 +480,11 @@ export default function UnansweredRepliesPage() {
     else {
       element.classList.add("opennav");
     }
-  } 
+  }
   /* end code*/
 
   /* start navcode */
-  
+
   const Userdropdown = () => {
     const element = document.getElementById("Userdropshow")
     if (element.classList.contains("show")) {
@@ -442,7 +493,7 @@ export default function UnansweredRepliesPage() {
     else {
       element.classList.add("show");
     }
-  } 
+  }
   function UseOutsideAlerter(Ref) {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -458,6 +509,306 @@ export default function UnansweredRepliesPage() {
     }, [Ref]);
   }
   /* end code*/
+
+  const ReplyPopModel = (ObjMailsData) => {
+    const element = document.getElementsByClassName("user_editor")
+    SetSignature({ Data: "" });
+
+
+    const elementreply = document.getElementsByClassName("user_editor_frwd")
+    elementreply[0].classList.add("d-none");
+    if (element[0].classList.contains("d-none")) {
+      element[0].classList.remove("d-none");
+      if (ObjMailsData != '') {
+        console.log("ObjMailsData======", ObjMailsData)
+        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        console.log("ToEmail======", ToEmail)
+        document.getElementById("lblreplytoemail").innerHTML = ToEmail
+        document.getElementById("lblreplytoemail").value = ToEmail
+      }
+    }
+
+  }
+
+  const ReplyPopModelClose = () => {
+    const element = document.getElementsByClassName("user_editor")
+    element[0].classList.add("d-none");
+  }
+
+  // Starts Reply Send Mail
+  const ReplySendMail = () => {
+    var ToEmail = OpenMessage.FromEmail;
+    var ToName = OpenMessage.FromName
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = Signature?.Data
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    } else {
+
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: ToName,
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentPageReplyMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
+          ReplyPopModelClose();
+          SetSignature({ Data: "" })
+        }
+        else {
+          ReplyPopModelClose();
+        }
+      });
+    }
+  }
+  // End Reply Send Mail
+
+  // Send Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('SendReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ReplySendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log('do refresh');
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  // Check Client Exists
+  const config = {
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+    imageUploadRemoteUrls: false,
+  }
+  const HandleModelChange = (Model) => {
+    SetSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Send Reply Frola Editor Ends
+
+  const ForwardPopModel = (ObjMailsData) => {
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/SentGetForwardMssageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetForwardSignature({ Data: Result?.data?.Data })
+      }
+    })
+
+    const element = document.getElementsByClassName("user_editor_frwd")
+
+    SetForwardSignature({ Data: "" });
+    document.getElementById("to").value = "";
+    const elementreply = document.getElementsByClassName("user_editor")
+    elementreply[0].classList.add("d-none");
+
+    if (element[0].classList.contains("d-none")) {
+      element[0].classList.remove("d-none");
+      if (ObjMailsData != '') {
+
+        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        document.getElementById("lblreplytoemailfrwd").innerHTML = ToEmail
+        document.getElementById("lblreplytoemailfrwd").value = ToEmail
+      }
+    }
+
+  }
+
+
+  const ForwardPopModelClose = () => {
+    const element = document.getElementsByClassName("user_editor_frwd")
+    element[0].classList.add("d-none");
+  }
+
+  // Validate Email
+  const ValidateEmail = (Email) => {
+    if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
+
+  // Forward Send Mail Starts
+  const ForwardSendMail = (ObjMailData) => {
+    var ToEmail = document.getElementById("to").value;
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = ForwardSignature.Data
+
+    const IsEmailValid = ValidateEmail(ToEmail)
+
+
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    } else if (ToEmail == "") {
+      toast.error("Please Enter Email")
+    }
+
+    else {
+      if (IsEmailValid) {
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: ForwardSignature.Data
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/sent_email_history/SentPageForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
+            ForwardPopModelClose();
+            SetForwardSignature({ Data: "" })
+          }
+          else {
+            ForwardPopModelClose();
+          }
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
+    }
+  }
+  // Forward Send Mail Ends
+
+  // Forward  Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('ForwardReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ForwardSendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log('do refresh');
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show');
+    }
+  });
+  // Check Client Exists
+  const forwardconfig = {
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+    imageUploadRemoteUrls: false,
+  }
+  const ForwardHandleModelChange = (Model) => {
+    SetForwardSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Forward  Reply Frola Editor Ends
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -505,7 +856,7 @@ export default function UnansweredRepliesPage() {
   }));
 
   const WrapperRef = useRef(null);
-  UseOutSideAlerter(WrapperRef);
+  // UseOutSideAlerter(WrapperRef);
 
   return (
     <>
@@ -594,7 +945,7 @@ export default function UnansweredRepliesPage() {
       </div>
 
       <div className='bodymain'>
-        <Row className='mb-columfull'> 
+        <Row className='mb-columfull'>
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
@@ -602,7 +953,7 @@ export default function UnansweredRepliesPage() {
             </div>
             <div className='navsmaller px-0 py-4 leftinbox'>
               <div className='px-3 bgfilter'>
-                <Row> 
+                <Row>
                   <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Unanswered Replies</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
@@ -694,69 +1045,129 @@ export default function UnansweredRepliesPage() {
                       dataLength={AllUnansweredRepliesList?.length}
                       next={FetchMoreData}
                       hasMore={false}
-                      loader={<h4></h4>}
+                      loader={<h4>Loading...</h4>}
                       scrollableTarget="scrollableDiv"
                     >
                     </InfiniteScroll>
                   </div>
                   :
-                  <div id="scrollableDiv" class="listinbox">
-                    <InfiniteScroll
-                      dataLength={AllUnansweredRepliesList?.length}
-                      next={FetchMoreData}
-                      hasMore={HasMore}
-                      loader={<h4>Loading...</h4>}
-                      scrollableTarget="scrollableDiv"
-                      endMessage={
-                        <p style={{ textAlign: "center" }}>
-                          <b>Yay! You have seen it all</b>
-                        </p>
-                      }
-                    >
-                      <Stack spacing={1} align="left">
-                        {AllUnansweredRepliesList?.length > 1 && AllUnansweredRepliesList?.map((row, index) => (
-                          <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
-                            <Row>
-                              <Col xs={1} className="pr-0">
-                                <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
-                              </Col>
-                            <Col xs={11} className="pr-0">
+                  AllUnansweredRepliesList?.length <= 9
+                    ?
+                    <div id="scrollableDiv" class="listinbox">
+                      <InfiniteScroll
+                        dataLength={AllUnansweredRepliesList?.length}
+                        next={FetchMoreData}
+                        hasMore={false}
+                        loader={<h4></h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {AllUnansweredRepliesList?.length >= 1 && AllUnansweredRepliesList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                               <Row>
-                                <Col xs={2}>
-                                  <span className="inboxuserpic">
-                                    <img src={defaultimage} width="55px" alt="" />
-                                  </span>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                                <Col xs={8}>
-                                  <h4>{row.FromEmail}</h4>
-                                  <h3>{row.Subject}</h3>
-                                </Col>
-                                <Col xs={2} className="pl-0">
-                                  <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                  <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                    <StarBorderIcon className='starone' />
-                                    <StarIcon className='selectedstart startwo' />
-                                  </ToggleButton>
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
                                 </Col>
                               </Row>
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
+                    :
+                    <div id="scrollableDiv" class="listinbox">
+                      <InfiniteScroll
+                        dataLength={AllUnansweredRepliesList?.length}
+                        next={FetchMoreData}
+                        hasMore={HasMore}
+                        loader={<h4>Loading...</h4>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                          <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        }
+                      >
+                        <Stack spacing={1} align="left">
+                          {AllUnansweredRepliesList?.length > 1 && AllUnansweredRepliesList?.map((row, index) => (
+                            <Item className='cardinboxlist px-0' onClick={() => OpenMessageDetails(row._id, index)}>
                               <Row>
-                                <Col xs={2} className='ja-center'>
-                                  <div className='attachfile'>
-                                    <input type="file" />
-                                    <AttachFileIcon />
-                                  </div>
+                                <Col xs={1} className="pr-0">
+                                  <FormControlLabel control={<Checkbox defaultChecked={UnansweredRepliesChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                                <Col xs={10}>
-                                  <p>{row.Snippet}</p>
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
                                 </Col>
                               </Row>
-                            </Col>
-                            </Row>
-                          </Item>
-                        ))}
-                      </Stack>
-                    </InfiniteScroll>
-                  </div>
+                            </Item>
+                          ))}
+                        </Stack>
+                      </InfiniteScroll>
+                    </div>
               }
             </div>
           </Col>
@@ -773,7 +1184,7 @@ export default function UnansweredRepliesPage() {
                     <Col xs={10} className='p-0'><h5>
                       {OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
                       {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6> */}
-                      <h6> 
+                      <h6>
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />
                         </a>
@@ -814,10 +1225,10 @@ export default function UnansweredRepliesPage() {
                       <img src={iconstar} />
                     </Button>
                     <Button>
-                      <img src={iconsarrow2} />
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                     </Button>
                     <Button>
-                      <img src={iconsarrow1} />
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
@@ -841,22 +1252,91 @@ export default function UnansweredRepliesPage() {
                   {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                 </Col>
               </Row>
-              <div className='d-flex mt-5 ml-2'>
+
+              <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow1} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow2} /></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
                   </Col>
                 </Row>
               </div>
+
+              <div className='user_editor d-none my-5'>
+                <Row className='userlist'>
+                  <Col className='fixwidleft'>
+                    <span className="inboxuserpic">
+                      <img src={inboxuser1} width="63px" alt="" />
+                    </span>
+                  </Col>
+                  <Col className='fixwidright p-0'>
+                    <div className='editorboxcard'>
+                      <Row className='edittoprow p-2'>
+                        <Col className='d-flex hedtopedit'>
+                          <a href='#' className='p-1'><img src={iconsarrow2} /></a>
+                          <h6><KeyboardArrowDownIcon /></h6>
+                          <label id='lblreplytoemail'></label>
+                        </Col>
+                      </Row>
+
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                          <Col>
+                            <div id='replybody' className='FroalaEditor'>
+                              <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+
+              <div className='user_editor_frwd  d-none my-5'>
+                <Row className='userlist'>
+                  <Col className='fixwidleft'>
+                    <span className="inboxuserpic">
+                      <img src={inboxuser1} width="63px" alt="" />
+                    </span>
+                  </Col>
+                  <Col className='fixwidright p-0'>
+                    <div className='editorboxcard'>
+                      <Row className='edittoprow p-2'>
+                        <Col className='d-flex hedtopedit'>
+                          <a href='#' className='p-1'><img src={iconsarrow1} /></a>
+                          <h6><KeyboardArrowDownIcon /></h6>
+                          {/* <label id='lblreplytoemailfrwd'></label> */}
+                          {/* <TextareaAutosize className='input-clend' id='To' name='To'  /> */}
+                          <input type='text' className='border-none' placeholder='To' name='to' id='to' />
+                        </Col>
+                      </Row>
+
+                      <div className='bodycompose'>
+                        <Row className='pt-2'>
+                          <Col>
+                            <div id='replybodyfrwd' className='FroalaEditor'>
+                              <FroalaEditor tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+
             </div>
           </Col>
         </Row>
       </div>
 
-      <Compose />
+      <UnansweredRepliesComposePage GetAllUnanswereRepliesList={GetAllUnanswereRepliesList} />
 
     </>
   );
