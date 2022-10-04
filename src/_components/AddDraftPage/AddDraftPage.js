@@ -122,13 +122,13 @@ export default function DraftComposePage({ GetDraftList }) {
         colorsButtons: ["colorsBack", "|", "-"],
         callback: AddDraftTemplate
     });
-    Froalaeditor.RegisterCommand('Delete', {
-        colorsButtons: ["colorsBack", "|", "-"],
-        align: 'right',
-        buttonsVisible: 2,
-        title: 'Delete',
-        callback: CloseDraftCompose
-    });
+    // Froalaeditor.RegisterCommand('DraftCompose Delete', {
+    //     colorsButtons: ["colorsBack", "|", "-"],
+    //     align: 'right',
+    //     buttonsVisible: 2,
+    //     title: 'Delete',
+    //     callback: CloseDraftCompose
+    // });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
         title: '',

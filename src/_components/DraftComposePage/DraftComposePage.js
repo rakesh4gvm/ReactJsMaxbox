@@ -217,7 +217,11 @@ export default function DraftComposePage({ GetDraftList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
-        callback: CloseCompose
+        callback:  function (cmd, val) {
+            CloseCompose();
+            const element = document.getElementById("DraftCompose")
+            element.classList.remove("show");
+        }
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
