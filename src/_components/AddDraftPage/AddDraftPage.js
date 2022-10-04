@@ -54,6 +54,9 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open Compose
     const OpenDraftCompose = (e) => {
 
+        const el = document.getElementById("UserCompose")
+        el.classList.remove("show");
+
         SetSelectedEmailAccountUser(0);
         SetDraftSignature({ Data: "" });
         document.getElementById("ToEmail").value = ""
@@ -73,6 +76,7 @@ export default function DraftComposePage({ GetDraftList }) {
     const CloseDraftCompose = () => {
         const element = document.getElementById("DraftCompose")
         element.classList.remove("show");
+
     }
 
     // Sent Mail Starts

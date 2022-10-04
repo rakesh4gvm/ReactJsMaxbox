@@ -75,6 +75,9 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open Compose
     const OpenCompose = (e) => {
 
+        const el = document.getElementById("DraftCompose")
+        el.classList.remove("show");
+
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
         document.getElementById("To").value = ""
@@ -217,7 +220,7 @@ export default function DraftComposePage({ GetDraftList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
-        callback:  function (cmd, val) {
+        callback: function (cmd, val) {
             CloseCompose();
             const element = document.getElementById("DraftCompose")
             element.classList.remove("show");
@@ -284,8 +287,8 @@ export default function DraftComposePage({ GetDraftList }) {
     return (
         <>
             <div className='composebody'>
-            {/* <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button> */}
-            <Button variant="contained btn btn-primary largbtn mr-4" onClick={OpenCompose}> + Compose</Button>
+                {/* <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button> */}
+                <Button variant="contained btn btn-primary largbtn mr-4" onClick={OpenCompose}> + Compose</Button>
                 <div className="usercompose" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
