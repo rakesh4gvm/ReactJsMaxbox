@@ -21,8 +21,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 import DraftComposePage from "../DraftComposePage/DraftComposePage"
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import AddDraftPage from "../AddDraftPage/AddDraftPage"
+
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Iconsedit from '../../images/icons/icons-edit.svg';
@@ -751,16 +751,6 @@ export default function DraftsPage() {
                     <Button>
                       <label>{MailNumber} / {DraftList.length}</label>
                     </Button>
-
-                    <Button>
-                      <img src={iconsarrow2} />
-                    </Button>
-                    <Button>
-                      <img src={iconsarrow1} />
-                    </Button>
-                    <Button>
-                      <img src={Iconsedit} />
-                    </Button>
                     {<Button onClick={OpenDeletePopModel}>
                       <img src={icondelete} />
                     </Button>}
@@ -783,22 +773,13 @@ export default function DraftsPage() {
                   {OpenMessage == 0 ? '' : parse(OpenMessage.Body)}
                 </Col>
               </Row>
-              <div className='d-flex mt-5 ml-2'>
-                <Row>
-                  <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow1} /></a>
-                  </Col>
-                  <Col sm={6} className='p-0'>
-                    <a href='#' className='p-2'><img src={iconsarrow2} /></a>
-                  </Col>
-                </Row>
-              </div>
             </div>
           </Col>
         </Row>
       </div>
 
       <DraftComposePage GetDraftList={GetDraftList} />
+      <AddDraftPage GetDraftList={GetDraftList} />
 
     </>
   );

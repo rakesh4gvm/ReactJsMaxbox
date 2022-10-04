@@ -139,6 +139,7 @@ export default function DraftComposePage({ GetDraftList }) {
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
 
+
         const ValidToEmail = ValidateEmail(ToEmail)
 
         var CCEmail = true
@@ -279,8 +280,8 @@ export default function DraftComposePage({ GetDraftList }) {
     return (
         <>
             <div className='composebody'>
-            <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button>
-            <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
+            {/* <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button> */}
+            <Button variant="contained btn btn-primary largbtn mr-4" onClick={OpenCompose}> + Compose</Button>
                 <div className="usercompose" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
