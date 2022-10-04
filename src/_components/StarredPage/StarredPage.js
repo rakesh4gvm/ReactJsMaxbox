@@ -304,7 +304,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred <br />Mail updated successfully.</div>);
+          toast.success(<div>Starred <br />Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
@@ -340,6 +340,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Starred <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
@@ -1293,19 +1294,21 @@ export default function StarredPage() {
                           <div className='columlistdrop'>
                             <Row>
                               <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
-                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
-                            </Row>
-                            <Row>
-                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
-                              <Col sm={9}>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                              </Col>
+                              <Col sm={9}><strong>{OpenMessage.FromName}</strong> {"<"}{OpenMessage.FromEmail}{">"}</Col>
                             </Row>
                             <Row>
                               <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
-                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
+                              <Col sm={9}>
+                                <p className='mb-0'>{OpenMessage.ToEmail}</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>date:</lable></Col>
+                              <Col sm={9}>{Moment(OpenMessage.MessageDatetime).format("LLL")}</Col>
+                            </Row>
+                            <Row>
+                              <Col className='pr-0' sm={3} align="right"><lable>subject:</lable></Col>
+                              <Col sm={9}>{OpenMessage.Subject}</Col>
                             </Row>
                           </div>
                         </div>
