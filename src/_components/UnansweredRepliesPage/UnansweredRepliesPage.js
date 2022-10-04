@@ -511,18 +511,29 @@ export default function UnansweredRepliesPage() {
   /* end code*/
 
   const ReplyPopModel = (ObjMailsData) => {
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/SentGetReplyMessageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSignature({ Data: Result?.data?.Data })
+      }
+    })
+
     const element = document.getElementsByClassName("user_editor")
     SetSignature({ Data: "" });
-
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
-        console.log("ObjMailsData======", ObjMailsData)
         var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
-        console.log("ToEmail======", ToEmail)
         document.getElementById("lblreplytoemail").innerHTML = ToEmail
         document.getElementById("lblreplytoemail").value = ToEmail
       }

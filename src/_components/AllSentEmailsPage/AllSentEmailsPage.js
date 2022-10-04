@@ -521,7 +521,7 @@ export default function AllSentEnailsPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetForwardSignature({ Data: Result?.data?.Data })
+        SetSignature({ Data: Result?.data?.Data })
       }
     })
 
