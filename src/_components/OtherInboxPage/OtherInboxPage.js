@@ -84,7 +84,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
- 
+
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
@@ -235,6 +235,8 @@ export default function OtherInboxPage() {
     else {
       SetInBoxList([]);
       OpenMessageDetails('');
+      toast.error(ResponseApi?.data?.Message);
+
     }
 
   };
@@ -302,6 +304,8 @@ export default function OtherInboxPage() {
         }
         else {
           SetOpenMessageDetails([]);
+          toast.error(Result?.data?.Message);
+
         }
       });
     }
@@ -337,6 +341,8 @@ export default function OtherInboxPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -369,6 +375,8 @@ export default function OtherInboxPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -401,6 +409,8 @@ export default function OtherInboxPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -437,6 +447,8 @@ export default function OtherInboxPage() {
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetUpdatedOtherInboxList(ClientID, UserID);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -477,7 +489,7 @@ export default function OtherInboxPage() {
 
 
   /* start navcode */
-  
+
   const NavBarClick = () => {
     const element = document.getElementById("navclose")
     if (element.classList.contains("opennav")) {
@@ -486,11 +498,11 @@ export default function OtherInboxPage() {
     else {
       element.classList.add("opennav");
     }
-  } 
+  }
   /* end code*/
 
   /* start navcode */
-  
+
   const Userdropdown = () => {
     const element = document.getElementById("Userdropshow")
     if (element.classList.contains("show")) {
@@ -499,7 +511,7 @@ export default function OtherInboxPage() {
     else {
       element.classList.add("show");
     }
-  } 
+  }
   function UseOutsideAlerter(Ref) {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -546,7 +558,7 @@ export default function OtherInboxPage() {
         }
         else {
           SetFromEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -616,6 +628,7 @@ export default function OtherInboxPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }
@@ -677,6 +690,7 @@ export default function OtherInboxPage() {
         }
         else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -765,6 +779,8 @@ export default function OtherInboxPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -841,6 +857,7 @@ export default function OtherInboxPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
 
         });
@@ -1116,7 +1133,7 @@ export default function OtherInboxPage() {
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>
-                <Row> 
+                <Row>
                   <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Other Inbox</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
@@ -1236,37 +1253,37 @@ export default function OtherInboxPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-0">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                      <StarBorderIcon className='starone' />
-                                      <StarIcon className='selectedstart startwo' />
-                                    </ToggleButton>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}
@@ -1294,37 +1311,37 @@ export default function OtherInboxPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                              <Col xs={11} className="pr-0">
-                                <Row>
-                                  <Col xs={2}>
-                                    <span className="inboxuserpic">
-                                      <img src={defaultimage} width="55px" alt="" />
-                                    </span>
-                                  </Col>
-                                  <Col xs={8}>
-                                    <h4>{row.FromEmail}</h4>
-                                    <h3>{row.Subject}</h3>
-                                  </Col>
-                                  <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                    <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
-                                      <StarBorderIcon className='starone' />
-                                      <StarIcon className='selectedstart startwo' />
-                                    </ToggleButton>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col xs={2} className='ja-center'>
-                                    <div className='attachfile'>
-                                      <input type="file" />
-                                      <AttachFileIcon />
-                                    </div>
-                                  </Col>
-                                  <Col xs={10}>
-                                    <p>{row.Snippet}</p>
-                                  </Col>
-                                </Row>
-                              </Col>
+                                <Col xs={11} className="pr-0">
+                                  <Row>
+                                    <Col xs={2}>
+                                      <span className="inboxuserpic">
+                                        <img src={defaultimage} width="55px" alt="" />
+                                      </span>
+                                    </Col>
+                                    <Col xs={8}>
+                                      <h4>{row.FromEmail}</h4>
+                                      <h3>{row.Subject}</h3>
+                                    </Col>
+                                    <Col xs={2} className="pl-0">
+                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                        <StarBorderIcon className='starone' />
+                                        <StarIcon className='selectedstart startwo' />
+                                      </ToggleButton>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col xs={2} className='ja-center'>
+                                      <div className='attachfile'>
+                                        <input type="file" />
+                                        <AttachFileIcon />
+                                      </div>
+                                    </Col>
+                                    <Col xs={10}>
+                                      <p>{row.Snippet}</p>
+                                    </Col>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Item>
                           ))}

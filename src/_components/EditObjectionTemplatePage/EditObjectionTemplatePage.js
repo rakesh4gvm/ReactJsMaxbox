@@ -68,6 +68,8 @@ export default function EditObjectionTemplatePage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetObjectionTemplateIDDetails(Result?.data?.Data)
                 SetBody({ Data: Result?.data?.Data[0]?.BodyText })
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }

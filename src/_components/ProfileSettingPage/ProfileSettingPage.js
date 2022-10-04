@@ -15,7 +15,7 @@ import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
 import { GetUserDetails } from "../../_helpers/Utility";
 import Cameraicons from '../../images/icons/icons-camera.svg';
- 
+
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -71,6 +71,8 @@ export default function ProfileSettingPage() {
         SetUser(Result?.data?.Data)
         SetDropdownValue(Result?.data?.Data?.CountryID?._id)
         SetChecked(Result?.data?.Data?.TwoWayFactor)
+      } else {
+        toast.error(Result?.data?.Message);
       }
     });
   }
@@ -84,6 +86,8 @@ export default function ProfileSettingPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetCountry(Result?.data?.PageData)
+      } else {
+        toast.error(Result?.data?.Message);
       }
     });
   }
@@ -170,12 +174,14 @@ export default function ProfileSettingPage() {
           Image.UserImage = Base64Image
           localStorage.setItem("LoginData", JSON.stringify(Image))
           toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       })
     }
   }
 
-  const CancelUser = async()=>{
+  const CancelUser = async () => {
     history.push("/UnansweredResponses");
   }
 

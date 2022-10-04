@@ -154,6 +154,8 @@ export default function CreateTemplatesPage({ children }) {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
             toast.success(<div>Template <br />Template added successfully.</div>);
             history.push("/Templates");
+          } else {
+            toast.error(Result?.data?.Message);
           }
         })
       }

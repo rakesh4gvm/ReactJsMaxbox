@@ -62,6 +62,8 @@ export default function EditClientPage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetClientIDDetails(Result?.data?.Data)
                 SetSignature({ Data: Result?.data?.Data[0]?.SignatureText })
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }
@@ -163,6 +165,8 @@ export default function EditClientPage(props) {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                         toast.success(<div>Client <br />Client updated successfully.</div>);
                         history.push("/ClientList");
+                    } else {
+                        toast.error(Result?.data?.Message);
                     }
                 })
             } else {

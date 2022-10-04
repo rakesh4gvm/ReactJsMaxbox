@@ -116,6 +116,7 @@ export default function TemplatesListPage() {
       else {
         SetTemplateList([])
         SetCountPage(0)
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -146,6 +147,7 @@ export default function TemplatesListPage() {
       else {
         GetTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
+        toast.error(Result?.data?.Message);
       }
     });
   }
@@ -227,41 +229,41 @@ export default function TemplatesListPage() {
                   <TableBody>
                     {TemplateList?.map((row) => (
                       <>
-                      <TableRow>
-                        <TableCell align="center">
-                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
-                            ...prev,
-                            [row._id]: !prev[row._id],
-                          }))}>
-                            {open[row._id] ?<><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
-                          </IconButton>
-                        </TableCell>
-                        <TableCell>{row.Subject}</TableCell>
-                        {/* <TableCell>  {parse(row.BodyText)}   </TableCell> */}
+                        <TableRow>
+                          <TableCell align="center">
+                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
+                              ...prev,
+                              [row._id]: !prev[row._id],
+                            }))}>
+                              {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell>{row.Subject}</TableCell>
+                          {/* <TableCell>  {parse(row.BodyText)}   </TableCell> */}
 
-                        <TableCell align="right">
-                          <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
-                            <img src={DeleteIcon} />
-                          </Button>
-                          <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
-                        </TableCell>
-                      </TableRow>
+                          <TableCell align="right">
+                            <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
+                              <img src={DeleteIcon} />
+                            </Button>
+                            <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+                          </TableCell>
+                        </TableRow>
 
-                      <TableRow> 
-                      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                        <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
-                          <Box margin={1} className="innertables"> 
-                            <Table size="small" aria-label="purchases">
-                              <TableHead> 
-                              </TableHead>   
-                              <TableRow>  
-                              <TableCell><div className='bodytables'>{  parse(row.BodyText)}</div></TableCell> 
-                              </TableRow>
-                            </Table> 
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                      </TableRow>
+                        <TableRow>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
+                              <Box margin={1} className="innertables">
+                                <Table size="small" aria-label="purchases">
+                                  <TableHead>
+                                  </TableHead>
+                                  <TableRow>
+                                    <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell>
+                                  </TableRow>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
                       </>
                     ))}
                   </TableBody>

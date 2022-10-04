@@ -28,6 +28,10 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 var atob = require('atob');
 
@@ -118,6 +122,8 @@ export default function EmailConfigurationPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetEmailAccountList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+      } else {
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -152,9 +158,9 @@ export default function EmailConfigurationPage() {
       method: "POST",
       data: data
     });
-    responseapi.then((result) => {
+    responseapi.then((Result) => {
 
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         //var AccountID = 0;
         var loginHint = ''
         var scope = encodeURIComponent(CommonConstants.SCOPE);
@@ -166,6 +172,8 @@ export default function EmailConfigurationPage() {
 
         var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
         window.location.href = Url;
+      } else {
+        toast.error(Result?.data?.Message);
       }
     });
 
@@ -209,14 +217,15 @@ export default function EmailConfigurationPage() {
       method: "POST",
       data: data
     });
-    responseapi.then((result) => {
-      if (result.data.StatusMessage == ResponseMessage.SUCCESS) {
+    responseapi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         GetEmailAccountList()
         SetDeletePopModel(false);
       }
       else {
         GetEmailAccountList()
         SetDeletePopModel(false);
+        toast.error(Result?.data?.Message);
       }
     });
   }

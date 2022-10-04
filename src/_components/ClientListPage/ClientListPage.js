@@ -109,6 +109,7 @@ export default function ClientListPage() {
       else {
         SetClientList([])
         SetCountPage(0)
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -139,6 +140,7 @@ export default function ClientListPage() {
       else {
         GetClientList(ClientID, UserID)
         SetDeletePopModel(false);
+        toast.error(Result?.data?.Message);
       }
     });
   }

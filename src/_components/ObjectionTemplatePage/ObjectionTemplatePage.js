@@ -117,6 +117,7 @@ export default function ObjectionTemplateListPage() {
       else {
         SetObjectionTemplateList([])
         SetCountPage(0)
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -147,6 +148,7 @@ export default function ObjectionTemplateListPage() {
       else {
         GetObjectionTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
+        toast.error(Result?.data?.Message);
       }
     });
   }

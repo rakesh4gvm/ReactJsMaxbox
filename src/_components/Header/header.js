@@ -34,6 +34,10 @@ import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
 import EditIcon from '@material-ui/icons/Edit';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 
 function UseOutsideAlerter(ref) {
@@ -94,6 +98,8 @@ export default function Header() {
         ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetAllTotalRecords(Result.data)
+            } else {
+                toast.error(Result?.data?.Message);
             }
         });
     }
@@ -137,6 +143,8 @@ export default function Header() {
                         SetSelectedClient(Details.ClientID)
                     }
                 }
+            } else {
+                toast.error(Result?.data?.Message);
             }
         });
     }
@@ -178,6 +186,8 @@ export default function Header() {
                         Element.classList.add("show");
                     }
                 }
+            } else {
+                toast.error(Result?.data?.Message);
             }
         });
     }
@@ -299,7 +309,7 @@ export default function Header() {
                                 </div>
                             </Nav>
                         </Navbar.Collapse>
-                        <div className="dropboxcard ml-3"> 
+                        <div className="dropboxcard ml-3">
 
                             <a href="#" className="" onClick={OpenPopupUserDetails}>
                                 <span className="userpic">
@@ -308,7 +318,7 @@ export default function Header() {
                             </a>
 
                             <div className="userdropdown" id="id_userbox" ref={WrapperRef}>
-                                <div className="bg-themehead"> 
+                                <div className="bg-themehead">
                                     <a href="/ProfileSetting" className='editprofile'><EditIcon /></a>
                                     <span className="userpic us-max-110">
                                         {UserImage !== undefined ? <img src={UserImage} width="110px" alt="" /> : <img src={defaultimage} width="110px" alt="" />}

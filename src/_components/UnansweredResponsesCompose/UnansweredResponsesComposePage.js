@@ -68,6 +68,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                 SetEmailAccountUsers(Result.data.PageData)
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }

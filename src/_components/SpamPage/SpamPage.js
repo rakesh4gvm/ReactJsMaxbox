@@ -226,6 +226,7 @@ export default function SpamPage() {
       else {
         SetSpamList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -293,6 +294,7 @@ export default function SpamPage() {
         }
         else {
           SetOpenMessageDetails([]);
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -328,6 +330,8 @@ export default function SpamPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -360,6 +364,8 @@ export default function SpamPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -392,6 +398,8 @@ export default function SpamPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetUpdatedSpamList(ClientID, UserID);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -428,6 +436,8 @@ export default function SpamPage() {
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -463,6 +473,7 @@ export default function SpamPage() {
         }
         else {
           CloseOtherInboxPopModel();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -573,7 +584,7 @@ export default function SpamPage() {
         }
         else {
           SetFromEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -651,6 +662,7 @@ export default function SpamPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }
@@ -711,6 +723,7 @@ export default function SpamPage() {
         }
         else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -797,6 +810,8 @@ export default function SpamPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
     const element = document.getElementsByClassName("user_editor_frwd")
@@ -870,6 +885,7 @@ export default function SpamPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
         });
       } else {

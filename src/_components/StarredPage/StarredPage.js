@@ -217,6 +217,7 @@ export default function StarredPage() {
       else {
         SetStarredList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -241,6 +242,7 @@ export default function StarredPage() {
         }
         else {
           SetOpenMessageDetails([]);
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -276,6 +278,8 @@ export default function StarredPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -311,6 +315,7 @@ export default function StarredPage() {
         }
         else {
           CloseOtherInboxPopModel();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -344,6 +349,8 @@ export default function StarredPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -380,6 +387,8 @@ export default function StarredPage() {
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -491,7 +500,7 @@ export default function StarredPage() {
         }
         else {
           SetFromEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -606,6 +615,7 @@ export default function StarredPage() {
         }
         else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
 
       });
@@ -695,6 +705,8 @@ export default function StarredPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -770,6 +782,7 @@ export default function StarredPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
         });
       } else {
@@ -918,6 +931,7 @@ export default function StarredPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }

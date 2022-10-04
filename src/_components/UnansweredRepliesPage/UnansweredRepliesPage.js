@@ -202,6 +202,7 @@ export default function UnansweredRepliesPage() {
       else {
         SetAllUnanswereRepliesList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -226,6 +227,7 @@ export default function UnansweredRepliesPage() {
         }
         else {
           SetOpenMessageDetails([]);
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -260,6 +262,8 @@ export default function UnansweredRepliesPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -292,6 +296,8 @@ export default function UnansweredRepliesPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -323,6 +329,8 @@ export default function UnansweredRepliesPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -393,7 +401,7 @@ export default function UnansweredRepliesPage() {
         }
         else {
           SetEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -466,6 +474,7 @@ export default function UnansweredRepliesPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }
@@ -524,6 +533,8 @@ export default function UnansweredRepliesPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -580,6 +591,7 @@ export default function UnansweredRepliesPage() {
         }
         else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -667,6 +679,8 @@ export default function UnansweredRepliesPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -744,6 +758,7 @@ export default function UnansweredRepliesPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
         });
       } else {

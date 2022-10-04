@@ -202,6 +202,7 @@ export default function AllSentEnailsPage() {
       else {
         SetAllSentEmailsList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -226,6 +227,7 @@ export default function AllSentEnailsPage() {
         }
         else {
           SetOpenMessageDetails('');
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -261,6 +263,8 @@ export default function AllSentEnailsPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -293,6 +297,8 @@ export default function AllSentEnailsPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -324,6 +330,8 @@ export default function AllSentEnailsPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -434,7 +442,7 @@ export default function AllSentEnailsPage() {
         }
         else {
           SetEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -507,6 +515,7 @@ export default function AllSentEnailsPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }
@@ -525,6 +534,8 @@ export default function AllSentEnailsPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -581,9 +592,9 @@ export default function AllSentEnailsPage() {
           toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
           ReplyPopModelClose();
           SetSignature({ Data: "" })
-        }
-        else {
+        } else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -671,6 +682,8 @@ export default function AllSentEnailsPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -748,6 +761,7 @@ export default function AllSentEnailsPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
         });
       } else {

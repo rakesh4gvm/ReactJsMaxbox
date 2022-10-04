@@ -160,6 +160,7 @@ export default function DraftsPage() {
       else {
         SetDraftList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -185,6 +186,7 @@ export default function DraftsPage() {
       }
       else {
         SetOpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -216,6 +218,8 @@ export default function DraftsPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetDraftList(ClientID, UserID, Page);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -247,6 +251,8 @@ export default function DraftsPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetDraftList(ClientID, UserID, Page);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -313,6 +319,7 @@ export default function DraftsPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
 
       }

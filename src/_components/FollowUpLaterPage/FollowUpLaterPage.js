@@ -224,6 +224,7 @@ export default function FollowUpLetterPage() {
       else {
         SetInBoxList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -291,6 +292,7 @@ export default function FollowUpLetterPage() {
         }
         else {
           SetOpenMessageDetails([]);
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -326,6 +328,8 @@ export default function FollowUpLetterPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -358,6 +362,8 @@ export default function FollowUpLetterPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -390,6 +396,8 @@ export default function FollowUpLetterPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -424,6 +432,7 @@ export default function FollowUpLetterPage() {
         }
         else {
           CloseOtherInboxPopModel();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -452,45 +461,45 @@ export default function FollowUpLetterPage() {
   }
   // End CheckBox Code
 
- /* start navcode */
+  /* start navcode */
 
- const NavBarClick = () => {
-  const element = document.getElementById("navclose")
-  if (element.classList.contains("opennav")) {
-    element.classList.remove("opennav");
-  }
-  else {
-    element.classList.add("opennav");
-  }
-}
-/* end code*/
-
-/* start navcode */
-
-const Userdropdown = () => {
-  const element = document.getElementById("Userdropshow")
-  if (element.classList.contains("show")) {
-    element.classList.remove("show");
-  }
-  else {
-    element.classList.add("show");
-  }
-}
-function UseOutsideAlerter(Ref) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (Ref.current && !Ref.current.contains(event.target)) {
-        const element = document.getElementById("Userdropshow")
-        element.classList.remove("show");
-      }
+  const NavBarClick = () => {
+    const element = document.getElementById("navclose")
+    if (element.classList.contains("opennav")) {
+      element.classList.remove("opennav");
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [Ref]);
-}
-/* end code*/
+    else {
+      element.classList.add("opennav");
+    }
+  }
+  /* end code*/
+
+  /* start navcode */
+
+  const Userdropdown = () => {
+    const element = document.getElementById("Userdropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+  }
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+  /* end code*/
 
 
   // Start Search
@@ -535,7 +544,7 @@ function UseOutsideAlerter(Ref) {
         }
         else {
           SetFromEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -588,15 +597,6 @@ function UseOutsideAlerter(Ref) {
     SetPage(Page + 1);
     await GetFollowUpLetterList(ClientID, UserID, Page + 1, "scroll", FromEmailDropdownListChecked)
 
-    // if (ResponseData.length === 0) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // } else if (ResponseData.length === 10) {
-    //   SetHasMore(true)
-    // }
-
-
   };
 
   // Get Total Total Record Count
@@ -620,8 +620,8 @@ function UseOutsideAlerter(Ref) {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
-
       }
     })
   }
@@ -680,6 +680,7 @@ function UseOutsideAlerter(Ref) {
         }
         else {
           ReplyPopModelClose();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -768,6 +769,8 @@ function UseOutsideAlerter(Ref) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -843,6 +846,7 @@ function UseOutsideAlerter(Ref) {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
 
         });

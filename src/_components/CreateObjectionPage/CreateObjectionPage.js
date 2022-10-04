@@ -156,6 +156,8 @@ export default function CreateObjectionTemplatePage({ children }) {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
             toast.success(<div>Object Template <br />Object template added successfully.</div>);
             history.push("/ObjectionTemplate");
+          } else {
+            toast.error(Result?.data?.Message);
           }
         })
       }

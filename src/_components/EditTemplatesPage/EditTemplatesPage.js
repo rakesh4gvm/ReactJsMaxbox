@@ -68,6 +68,8 @@ export default function EditTemplatesPage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetTemplateIDDetails(Result?.data?.Data)
                 SetBody({ Data: Result?.data?.Data[0]?.BodyText })
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }
@@ -127,8 +129,12 @@ export default function EditTemplatesPage(props) {
                     method: "POST",
                     data: Data,
                 }).then((Result) => {
-                    toast.success(<div>Template <br />Template updated successfully.</div>);
-                    history.push("/Templates");
+                    if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                        toast.success(<div>Template <br />Template updated successfully.</div>);
+                        history.push("/Templates");
+                    } else {
+                        toast.error(Result?.data?.Message);
+                    }
                 })
             }
             else {

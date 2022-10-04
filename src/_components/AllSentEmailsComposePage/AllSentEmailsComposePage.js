@@ -39,7 +39,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
     const [Bccflag, SetBccflag] = useState(false);
     const [Signature, SetSignature] = useState({
         Data: ""
-      })
+    })
 
     useEffect(() => {
         GetClientID()
@@ -68,6 +68,8 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
         }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                 SetEmailAccountUsers(Result.data.PageData)
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }

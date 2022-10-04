@@ -172,7 +172,7 @@ export default function UnansweredResponsesPage() {
   }
   // Start Get UnansweredResponsesList
   const GetUnansweredResponcesList = (CID, UID, PN, Str, IDs) => {
-    
+
     let Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -230,6 +230,7 @@ export default function UnansweredResponsesPage() {
       } else {
         SetUnansweredResponsesList([]);
         OpenMessageDetails('');
+        toast.error(Result?.data?.Message);
       }
     });
   };
@@ -296,6 +297,7 @@ export default function UnansweredResponsesPage() {
         }
         else {
           SetOpenMessageDetails('');
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -331,6 +333,8 @@ export default function UnansweredResponsesPage() {
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -363,6 +367,8 @@ export default function UnansweredResponsesPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -395,6 +401,8 @@ export default function UnansweredResponsesPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           GetUpdatedUnansweredResponsesList(ClientID, UserID);
+        } else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -408,7 +416,6 @@ export default function UnansweredResponsesPage() {
   const CloseOtherInboxPopModel = () => {
     SetOtherInboxPopModel(false);
   }
-
   const UpdateOtherInbox = (ID) => {
     if (ID != '') {
       var Data = {
@@ -430,6 +437,7 @@ export default function UnansweredResponsesPage() {
         }
         else {
           CloseOtherInboxPopModel();
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -466,6 +474,9 @@ export default function UnansweredResponsesPage() {
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+        }
+        else {
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -535,7 +546,7 @@ export default function UnansweredResponsesPage() {
         }
         else {
           SetFromEmailDropdownList([]);
-
+          toast.error(Result?.data?.Message);
         }
       });
     }
@@ -653,8 +664,8 @@ export default function UnansweredResponsesPage() {
           SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
+          toast.error(Result?.data?.Message);
         }
-
       }
     })
   }
@@ -662,7 +673,6 @@ export default function UnansweredResponsesPage() {
   const ReplyPopModel = (ObjMailsData) => {
     const element = document.getElementsByClassName("user_editor")
     SetSignature({ Data: "" });
-
 
     const elementreply = document.getElementsByClassName("user_editor_frwd")
     elementreply[0].classList.add("d-none");
@@ -693,6 +703,8 @@ export default function UnansweredResponsesPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
 
@@ -743,7 +755,7 @@ export default function UnansweredResponsesPage() {
     } else {
 
       var Data = {
-        ToEmail: ToEmail,
+        ToEmail: "ToEmail",
         ToName: ToName,
         ID: ID,
         Subject: Subject,
@@ -761,6 +773,7 @@ export default function UnansweredResponsesPage() {
           SetSignature({ Data: "" })
         }
         else {
+          toast.error(Result?.data?.Message);
           ReplyPopModelClose();
         }
       });
@@ -875,6 +888,7 @@ export default function UnansweredResponsesPage() {
           }
           else {
             ForwardPopModelClose();
+            toast.error(Result?.data?.Message);
           }
         });
       } else {

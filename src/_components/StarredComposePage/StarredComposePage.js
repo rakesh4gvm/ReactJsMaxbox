@@ -69,6 +69,8 @@ export default function StarredComposePage({ GetStarredList }) {
         }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                 SetEmailAccountUsers(Result.data.PageData)
+            } else {
+                toast.error(Result?.data?.Message);
             }
         })
     }
