@@ -272,7 +272,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Starred <br />Delete mail successfully.</div>);
+          toast.success(<div>Starred <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

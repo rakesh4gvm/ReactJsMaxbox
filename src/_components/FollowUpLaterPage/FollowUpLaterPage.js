@@ -322,7 +322,7 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Follow Up Later <br />Delete mail successfully.</div>);
+          toast.success(<div>Follow Up Later <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

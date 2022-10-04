@@ -333,7 +333,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Other Inbox <br />Delete mail successfully.</div>)
+          toast.success(<div>Other Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

@@ -5,6 +5,7 @@ import { Select } from '@material-ui/core';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { MenuItem } from '@mui/material';
+import { history } from "../../_helpers";
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -18,6 +19,11 @@ import Cameraicons from '../../images/icons/icons-camera.svg';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
@@ -163,9 +169,14 @@ export default function ProfileSettingPage() {
           const Image = JSON.parse(GetLoginData)
           Image.UserImage = Base64Image
           localStorage.setItem("LoginData", JSON.stringify(Image))
+          toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
         }
       })
     }
+  }
+
+  const CancelUser = async()=>{
+    history.push("/UnansweredResponses");
   }
 
   return (
@@ -273,9 +284,8 @@ export default function ProfileSettingPage() {
 
         <div className='btnprofile my-5'>
           <ButtonGroup variant="text" aria-label="text button group">
-            <Button variant="contained btn btn-primary smallbtn"> Edit</Button>
             <Button variant="contained btn btn-primary smallbtn mx-4" onClick={UpdateUser}> Save</Button>
-            <Button variant="contained btn btn-orang smallbtn"> Cancel</Button>
+            <Button variant="contained btn btn-orang smallbtn" onClick={CancelUser}> Cancel</Button>
           </ButtonGroup>
         </div>
 

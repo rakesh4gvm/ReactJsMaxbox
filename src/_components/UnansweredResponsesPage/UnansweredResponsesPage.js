@@ -327,7 +327,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Unanswered Responses <br />Delete mail successfully.</div>);
+          toast.success(<div>Unanswered Responses <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

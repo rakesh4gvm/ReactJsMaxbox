@@ -257,6 +257,7 @@ export default function AllSentEnailsPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);

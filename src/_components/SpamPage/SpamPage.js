@@ -324,7 +324,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Spam <br />Spam mail deleted successfully.</div>);
+          toast.success(<div>Spam <br />Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
