@@ -462,6 +462,7 @@ export default function UnansweredResponsesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Unanswered Responses  <br />Follow up later updated successfully.</div>);
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

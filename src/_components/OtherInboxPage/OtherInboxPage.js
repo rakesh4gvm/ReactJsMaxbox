@@ -433,6 +433,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>All Sent Emails  <br />Follow up later updated successfully.</div>);
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetUpdatedOtherInboxList(ClientID, UserID);

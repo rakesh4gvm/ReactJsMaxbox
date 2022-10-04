@@ -424,6 +424,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam <br />Follow up later updated successfully.</div>);
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);

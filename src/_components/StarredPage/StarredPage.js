@@ -376,6 +376,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Starred <br />Follow up later updated successfully.</div>);
           CloseFollowupPopModel();
           OpenMessageDetails('')
           GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
