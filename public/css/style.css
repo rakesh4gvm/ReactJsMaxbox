@@ -1448,6 +1448,16 @@ div.erorr-msg>*>* {
 .composebody.inxfirst{
     z-index: 9;
 }
+.FroalaEditor .fr-toolbar .fr-btn-grp + .fr-btn-grp .fr-command.fr-btn:first-child {
+    background-image: url(/static/media/icon_delete.05d1efcfa6a990b87bfccb92eda2431c.svg);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    padding-top: 40px;
+    vertical-align: text-bottom;
+    overflow: hidden;
+    width: 42px;
+    background-position: center;
+}
 /*difulat start css*/
 
 /* .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
