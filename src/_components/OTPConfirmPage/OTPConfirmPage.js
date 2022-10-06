@@ -26,7 +26,13 @@ export default function OTPConfirmPage(props) {
 
 // OTP Message Mathad
 const OTPSend = (OTP) => { 
-  SetOTPMessage(OTP);
+  const re = /^[0-9\b]+$/;
+      if (OTP === '' || re.test(OTP)==false) {
+        SetOTPMessage('');
+      }else{
+
+        SetOTPMessage(OTP);
+      }
 }
 
   // Get User
@@ -143,6 +149,7 @@ const OTPSend = (OTP) => {
                         value={OTPMessage}
                         onChange={OTPSend}
                         numInputs={6}
+                        isInputNum = {true}
                         separator={<span></span>}
                       />
                 </div>
