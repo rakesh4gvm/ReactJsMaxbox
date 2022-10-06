@@ -288,9 +288,9 @@ export default function DraftComposePage({ GetDraftList }) {
 
     return (
         <>
-            <div className='composebody'>
+            <div className='composebody inxfirst'>
                 {/* <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button> */}
-                <Button variant="contained btn btn-primary largbtn mr-4" onClick={OpenCompose}> + Compose</Button>
+                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
                 <div className="usercompose" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
