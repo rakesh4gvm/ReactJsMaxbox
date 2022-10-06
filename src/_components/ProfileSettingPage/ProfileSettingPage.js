@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect } from 'react';
 import Axios from "axios"
 
 import { Select } from '@material-ui/core';
@@ -187,9 +187,25 @@ export default function ProfileSettingPage() {
     history.push("/UnansweredResponses");
   }
 
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Userdropshow")
+          element.classList.remove("show");
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [Ref]);
+  }
+  const WrapperRef = useRef(null);
+  UseOutsideAlerter(WrapperRef);
   return (
     <>
-      <HeaderTop />
+     
 
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
