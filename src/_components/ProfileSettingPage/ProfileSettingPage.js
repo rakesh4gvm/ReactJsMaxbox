@@ -37,9 +37,9 @@ export default function ProfileSettingPage() {
 
   useEffect(() => {
     GetClientID()
-    GetUserList()
-    GetCountryList()
-  }, [ClientID])
+    // GetUserList()
+    // GetCountryList()
+  }, [])
   useEffect(() => {
 
   }, [DropdownValue])
@@ -56,10 +56,12 @@ export default function ProfileSettingPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetUserList(UserDetails.UserID)
+    GetCountryList()
   }
 
   // Get Users List
-  const GetUserList = () => {
+  const GetUserList = (UserID) => {
     const Data = { UserID: UserID }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/user/UserGetByID",

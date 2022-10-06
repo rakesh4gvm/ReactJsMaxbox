@@ -219,7 +219,13 @@ export default function StarredComposePage({ GetStarredList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
-        callback: CloseCompose
+        callback: function (cmd, val) {
+            CloseCompose();
+            const ForwardElement = document.getElementsByClassName("user_editor_frwd")
+            ForwardElement[0].classList.add("d-none");
+            const ReplyElement = document.getElementsByClassName("user_editor")
+            ReplyElement[0].classList.add("d-none");
+        }
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],

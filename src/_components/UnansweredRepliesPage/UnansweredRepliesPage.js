@@ -884,7 +884,7 @@ export default function UnansweredRepliesPage() {
   }));
 
   const WrapperRef = useRef(null);
-  // UseOutSideAlerter(WrapperRef);
+  UseOutsideAlerter(WrapperRef);
 
   return (
     <>
@@ -1209,9 +1209,10 @@ export default function UnansweredRepliesPage() {
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'><h5>
-                      {OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}</h5>
+                    <Col xs={10} className='p-0'>
+                      <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
                       {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6> */}
+                      {OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                       <h6>
                         <a onClick={Userdropdown}>
                           <KeyboardArrowDownIcon />

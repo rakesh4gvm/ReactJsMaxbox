@@ -50,14 +50,6 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 import StarredComposePage from '../StarredComposePage/StarredComposePage';
-
-import text_font from '../../images/icons/text_font.svg';
-import attachment from '../../images/icons/attachment.svg';
-import image_light from '../../images/icons/image_light.svg';
-import smiley_icons from '../../images/icons/smiley_icons.svg';
-import signature from '../../images/icons/signature.svg';
-import link_line from '../../images/icons/link_line.svg';
-import google_drive from '../../images/icons/google_drive.svg';
 import menustart from '../../images/icons/menustart.svg';
 
 import { EditorVariableNames } from "../../_helpers/Utility";
@@ -713,6 +705,7 @@ export default function StarredPage() {
 
     const element = document.getElementsByClassName("user_editor_frwd")
     SetForwardSignature({ Data: "" });
+    document.getElementById("to").value = "";
 
     const elementreply = document.getElementsByClassName("user_editor")
     elementreply[0].classList.add("d-none");

@@ -1010,7 +1010,7 @@ export default function SpamPage() {
   }));
 
   const WrapperRef = useRef(null);
-  // UseOutSideAlerter(WrapperRef);
+  UseOutsideAlerter(WrapperRef);
 
   return (
     <>

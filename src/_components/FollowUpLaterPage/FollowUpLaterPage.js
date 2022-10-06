@@ -93,20 +93,20 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
-function UseOutSideAlerter(Ref) {
-  useEffect(() => {
-    function HandleClickOutside(Event) {
-      if (Ref.current && !Ref.current.contains(Event.target)) {
-        const Element = document.getElementById("id_userboxlist")
-        Element.classList.remove("show");
-      }
-    }
-    document.addEventListener("mousedown", HandleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", HandleClickOutside);
-    };
-  }, [Ref]);
-}
+// function UseOutSideAlerter(Ref) {
+//   useEffect(() => {
+//     function HandleClickOutside(Event) {
+//       if (Ref.current && !Ref.current.contains(Event.target)) {
+//         const Element = document.getElementById("id_userboxlist")
+//         Element.classList.remove("show");
+//       }
+//     }
+//     document.addEventListener("mousedown", HandleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", HandleClickOutside);
+//     };
+//   }, [Ref]);
+// }
 localStorage.setItem("DropdownCheckData", 'Refresh');
 
 export default function FollowUpLetterPage() {
@@ -973,7 +973,7 @@ export default function FollowUpLetterPage() {
   }));
 
   const WrapperRef = useRef(null);
-  // UseOutSideAlerter(WrapperRef);
+  UseOutsideAlerter(WrapperRef);
 
   return (
     <>
