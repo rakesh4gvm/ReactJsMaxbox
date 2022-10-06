@@ -218,7 +218,14 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
         align: 'right',
         buttonsVisible: 2,
         title: 'Delete',
-        callback: CloseCompose
+        callback: function (cmd, val) {
+        CloseCompose()
+        const element = document.getElementsByClassName("user_editor")
+        element[0].classList.add("d-none");
+        const element1 = document.getElementsByClassName("user_editor_frwd")
+        element1[0].classList.add("d-none");
+    },
+       
     });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
