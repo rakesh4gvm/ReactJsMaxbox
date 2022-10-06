@@ -758,7 +758,7 @@ export default function SpamPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -774,11 +774,11 @@ export default function SpamPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-      console.log('do refresh');
+    
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   // Check Client Exists
@@ -923,7 +923,7 @@ export default function SpamPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -939,11 +939,11 @@ export default function SpamPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-      console.log('do refresh');
+    
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   // Check Client Exists

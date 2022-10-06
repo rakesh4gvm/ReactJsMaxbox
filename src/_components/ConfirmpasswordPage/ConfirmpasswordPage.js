@@ -13,6 +13,11 @@ import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 export default function ConfirmpasswordPage() {
 
   const [User, SetUser] = useState()
@@ -36,6 +41,8 @@ export default function ConfirmpasswordPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
         SetUser(Result.data.Data)
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
   }
@@ -63,6 +70,7 @@ export default function ConfirmpasswordPage() {
             data: Data,
           }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+              toast.success(<div>Confirm Password <br />Password updated successfully.</div>);
               const UpdatedData = { IsPasswordUpdated: false, UserID: "63159cf4957df035d054fe11" }
               Axios({
                 url: CommonConstants.MOL_APIURL + "/user/UpdateIsDeletedPassword",
@@ -73,6 +81,8 @@ export default function ConfirmpasswordPage() {
                 }
               })
               history.push("/")
+            } else {
+              toast.error(Result?.data?.Message);
             }
           })
         } else {

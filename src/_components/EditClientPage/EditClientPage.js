@@ -82,11 +82,11 @@ export default function EditClientPage(props) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh');
+          
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show');
+            
         }
 
     });

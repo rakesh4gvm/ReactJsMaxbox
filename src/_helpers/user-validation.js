@@ -20,14 +20,14 @@ export function userRememberme(){
             //var final_date = moment(newdate).format("DD/MM/YYYY h:mm:ss a");
             var current_time = new Date();
             //var final_current_time = moment(current_time).format("DD/MM/YYYY h:mm:ss a");
-            //console.log(final_date);
-            //console.log(final_current_time);
+           
+           
             if(newdate.getTime()>=current_time.getTime()){
-                //console.log("remember true");
+               
                 return true;
             }
             else{
-                //console.log("remember false")
+               
                 return false;
             }
     }
@@ -44,7 +44,7 @@ export function routePages(page){
         data: str_u
     })
     response.then(res => {
-        console.log(res.data);
+      
         var url_data = res.data;
         if (url_data.NewUrl == "") {
 

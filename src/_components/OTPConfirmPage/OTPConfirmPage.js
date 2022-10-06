@@ -13,6 +13,11 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails } from '../../_helpers/Utility'
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 export default function OTPConfirmPage(props) {
 
   const [OTPErrorMessage, SetOTPErrorMessage] = useState("")
@@ -24,16 +29,16 @@ export default function OTPConfirmPage(props) {
   }, [])
 
 
-// OTP Message Mathad
-const OTPSend = (OTP) => { 
-  const re = /^[0-9\b]+$/;
-      if (OTP === '' || re.test(OTP)==false) {
-        SetOTPMessage('');
-      }else{
+  // OTP Message Mathad
+  const OTPSend = (OTP) => {
+    const re = /^[0-9\b]+$/;
+    if (OTP === '' || re.test(OTP) == false) {
+      SetOTPMessage('');
+    } else {
 
-        SetOTPMessage(OTP);
-      }
-}
+      SetOTPMessage(OTP);
+    }
+  }
 
   // Get User
   const GetUser = () => {
@@ -45,6 +50,8 @@ const OTPSend = (OTP) => {
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
         SetUser(Result?.data?.Data)
+      } else {
+        toast.error(Result?.data?.Message);
       }
     })
   }
@@ -52,13 +59,10 @@ const OTPSend = (OTP) => {
   // Verify User
   const VerifyUser = () => {
     // GetUser()
-    debugger
-    
 
     const Result = OTPMessage;
 
-    if (Result == "")
-     {
+    if (Result == "") {
       SetOTPErrorMessage("Please Enter Your Verification Code!")
     } else {
       if (User?.OneTimePassword === parseInt(Result)) {
@@ -81,6 +85,8 @@ const OTPSend = (OTP) => {
               }
               localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
               SetClientID(LoginDetails._id, LoginDetails.UserImage);
+            } else {
+              toast.error(Result?.data?.Message);
             }
           }
         });
@@ -128,7 +134,7 @@ const OTPSend = (OTP) => {
 
           <div className='sm-container pt-5'>
             <h2 class="pt-5">Verification Code</h2>
-            <p>Enter your Verification Code sent to</p> 
+            <p>Enter your Verification Code sent to</p>
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
@@ -144,16 +150,16 @@ const OTPSend = (OTP) => {
                   <input type='text' name='three' id='three' />
                   <input type='text' name='four' id='four' />
                   <input type='text' name='five' id='five' />
-                  <input type='text' name='six' id='six' /> */} 
-                    <OtpInput
-                        value={OTPMessage}
-                        onChange={OTPSend}
-                        numInputs={6}
-                        isInputNum = {true}
-                        separator={<span></span>}
-                      />
+                  <input type='text' name='six' id='six' /> */}
+                  <OtpInput
+                    value={OTPMessage}
+                    onChange={OTPSend}
+                    numInputs={6}
+                    isInputNum={true}
+                    separator={<span></span>}
+                  />
                 </div>
- 
+
               </Col>
             </Row>
           </div>

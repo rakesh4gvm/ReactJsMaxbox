@@ -142,7 +142,6 @@ export default function CreateTemplatesPage({ children }) {
         ClientID: ClientID,
         CreatedBy: 1
       }
-      debugger
       var ExistsTemplates = await CheckExistTemplates(Subject)
 
       if (ExistsTemplates === ResponseMessage.SUCCESS) {
@@ -173,7 +172,7 @@ export default function CreateTemplatesPage({ children }) {
 
   // Check Template Exists
   const CheckExistTemplates = async (Subject) => {
-    debugger
+    
     var Data = { Subject: Subject, ClientID: ClientID }
 
     const ResponseApi = await Axios({

@@ -715,7 +715,7 @@ export default function FollowUpLetterPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -731,11 +731,11 @@ export default function FollowUpLetterPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-      console.log('do refresh');
+     
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   // Check Client Exists
@@ -838,7 +838,7 @@ export default function FollowUpLetterPage() {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          debugger
+          
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Follow Up Later <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
@@ -885,7 +885,7 @@ export default function FollowUpLetterPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -901,11 +901,11 @@ export default function FollowUpLetterPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-      console.log('do refresh');
+     
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show');
+     
     }
   });
   // Check Client Exists

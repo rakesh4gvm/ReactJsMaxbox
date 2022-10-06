@@ -88,11 +88,11 @@ export default function EditTemplatesPage(props) {
     //     },
     //     // Callback on refresh.
     //     refresh: function ($btn) {
-    //         console.log('do refresh');
+    //        
     //     },
     //     // Callback on dropdown show.
     //     refreshOnShow: function ($btn, $dropdown) {
-    //         console.log('do refresh when show');
+    //         
     //     }
 
     // });
@@ -147,7 +147,7 @@ export default function EditTemplatesPage(props) {
     const CheckExistTemplates = async (Subject) => {
 
         var Data = { Subject: Subject, ClientID: ClientID, TemplatesID: TemplateIDDetails[0].TemplatesID }
-        debugger
+        
         const ResponseApi = await Axios({
             url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
             method: "POST",
