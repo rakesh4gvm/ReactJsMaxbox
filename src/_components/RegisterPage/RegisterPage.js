@@ -15,13 +15,14 @@ import { history } from '../../_helpers/history';
 import { ResponseMessage } from "../../_constants/response.message";
 import { CommonConstants } from "../../_constants/common.constants";
 
-
 export default function RegisterPage() {
   const [FirstNameError, SetFirstNameError] = useState("");
   const [LastNameError, SetLastNameError] = useState("");
   const [EmailError, SetEmailError] = useState("");
   const [PasswordError, SetPasswordError] = useState("");
   const [ConfirmPasswordError, SetConfirmPasswordError] = useState("");
+  const [AgreeError, SetAgreeError] = useState("");
+  const [Agree, SetAgree] = useState(true)
   const [Checked, SetChecked] = React.useState(false);
 
   // FromValidation start
@@ -32,6 +33,7 @@ export default function RegisterPage() {
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
     var ConfirmPassword = document.getElementById("confirmPassword").value;
+
 
     if (FirstName === "") {
       SetFirstNameError("Please enter first name")
@@ -51,6 +53,10 @@ export default function RegisterPage() {
     }
     if (ConfirmPassword === "") {
       SetConfirmPasswordError("Please enter confirm password")
+      Isvalid = false
+    }
+    if (!Agree) {
+      SetAgreeError("Please Check Terms and Conditions")
       Isvalid = false
     }
     return Isvalid;
@@ -110,6 +116,9 @@ export default function RegisterPage() {
         validateConfirmPassword()
       }
     }
+    else if (Agree) {
+      SetAgreeError("")
+    }
 
   };
   // FromValidation end
@@ -146,6 +155,16 @@ export default function RegisterPage() {
     SetChecked(event.target.checked);
   };
 
+  // Handle Terms and Conditions
+  const HandleChecked = (e) => {
+    if (e.target.checked) {
+      SetAgree(true)
+      SetAgreeError("")
+    } else {
+      SetAgree(false)
+    }
+  }
+
   // Register User
   const RegisterUser = async () => {
 
@@ -158,23 +177,27 @@ export default function RegisterPage() {
       var ConfirmPassword = document.getElementById("confirmPassword").value;
 
       if (Password === ConfirmPassword) {
-        const Data = {
-          FirstName: FirstName,
-          LastName: LastName,
-          Email: Email,
-          Password: Password,
-          TwoWayFactor: Checked
-        }
+        if (Agree) {
 
-        Axios({
-          url: CommonConstants.MOL_APIURL + "/user/UserAdd",
-          method: "POST",
-          data: Data,
-        }).then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            history.push('/');
+          const Data = {
+            FirstName: FirstName,
+            LastName: LastName,
+            Email: Email,
+            Password: Password,
+            TwoWayFactor: Checked
           }
-        })
+
+          Axios({
+            url: CommonConstants.MOL_APIURL + "/user/UserAdd",
+            method: "POST",
+            data: Data,
+          }).then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              history.push('/');
+            }
+          })
+
+        }
       }
     }
   }
@@ -240,7 +263,8 @@ export default function RegisterPage() {
             <Row>
               <Col sm={12}>
                 <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="I agree to all the Terms & Privacy Policy." />
+                  <FormControlLabel control={<Checkbox onChange={HandleChecked} checked={Agree} id="agree" />} label="I agree to all the Terms & Privacy Policy." />
+                  {AgreeError && <p style={{ color: "red" }}>{AgreeError}</p>}
                 </FormGroup>
               </Col>
             </Row>
