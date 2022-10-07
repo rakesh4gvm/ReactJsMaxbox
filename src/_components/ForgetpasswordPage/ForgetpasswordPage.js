@@ -45,27 +45,29 @@ export default function ForgetpasswordPage() {
     var Email = document.getElementById("email").value;
     var Tmp_Token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     var Token = CryptoJS.MD5(Tmp_Token).toString();
+    const Valid = ValidateEmail(Email)
 
     if (Email == "") {
       SetEmailError("Please Enter Email!")
     } else {
+      if (Valid) {
+        var Data = {
+          Email: Email,
+          Token: Token
+        };
 
-      var Data = {
-        Email: Email,
-        Token: Token
-      };
-
-      Axios({
-        url: CommonConstants.MOL_APIURL + "/user/ForgotPassword",
-        method: "POST",
-        data: Data,
-      }).then((Result) => {
-        if (Result.data.Data > 0) {
-          SetEmailSuccess("Email Sent Successfully!")
-        } else {
-          SetEmailError("Email not found!")
-        }
-      })
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/user/ForgotPassword",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.Data > 0) {
+            SetEmailSuccess("Email Sent Successfully!")
+          } else {
+            SetEmailError("Email not found!")
+          }
+        })
+      }
     }
   }
 

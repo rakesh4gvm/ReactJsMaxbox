@@ -135,7 +135,7 @@ export default function LoginPage() {
               //  history.push('/OtherInboxPage');
             }
             else {
-              setUserPassword("Please email and password does not match")
+              setUserPassword("User does not exists")
             }
           }
         });
@@ -241,7 +241,7 @@ export default function LoginPage() {
           <div className='sm-container'>
             <Row>
               <Col sm={4}>
-                Not account At? <a href='#' onClick={Register}>Register</a> here.
+                Don't have an account? <a href='#' onClick={Register}>Register</a> here.
               </Col>
             </Row>
           </div>
