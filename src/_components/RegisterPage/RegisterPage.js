@@ -50,7 +50,7 @@ export default function RegisterPage() {
       Isvalid = false
     }
     if (ConfirmPassword === "") {
-      SetConfirmPasswordError("Please enter confirmpassword")
+      SetConfirmPasswordError("Please enter confirm password")
       Isvalid = false
     }
     return Isvalid;
@@ -157,24 +157,25 @@ export default function RegisterPage() {
       var Password = document.getElementById("password").value;
       var ConfirmPassword = document.getElementById("confirmPassword").value;
 
-      const Data = {
-        FirstName: FirstName,
-        LastName: LastName,
-        Email: Email,
-        Password: Password,
-        TwoWayFactor: Checked
-      }
-
-      Axios({
-        url: CommonConstants.MOL_APIURL + "/user/UserAdd",
-        method: "POST",
-        data: Data,
-      }).then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          history.push('/');
+      if (Password === ConfirmPassword) {
+        const Data = {
+          FirstName: FirstName,
+          LastName: LastName,
+          Email: Email,
+          Password: Password,
+          TwoWayFactor: Checked
         }
-      })
 
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/user/UserAdd",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            history.push('/');
+          }
+        })
+      }
     }
   }
 
