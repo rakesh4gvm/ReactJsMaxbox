@@ -10,6 +10,7 @@ import BgSign from '../../images/sign-bg.png';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import { history } from '../../_helpers';
 var CryptoJS = require("crypto-js");
 
 export default function ForgetpasswordPage() {
@@ -68,6 +69,10 @@ export default function ForgetpasswordPage() {
     }
   }
 
+  const CancelButton = () => {
+    history.push("/")
+  }
+
 
   return (
     <>
@@ -109,8 +114,8 @@ export default function ForgetpasswordPage() {
               <Col sm={4}>
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
-                    <Button variant="contained btn btn-primary smallbtn" onClick={SubmitMail}>Request</Button>
-                    <Button variant="contained btn smallbtn">Cancel</Button>
+                    <Button variant="contained btn btn-primary smallbtn mr-4" onClick={SubmitMail}>Request</Button>
+                    <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
                   </ButtonGroup>
                 </div>
               </Col>

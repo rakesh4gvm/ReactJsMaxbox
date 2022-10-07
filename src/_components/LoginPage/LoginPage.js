@@ -82,10 +82,14 @@ export default function LoginPage() {
   }
   // Login method start
   const Login = async () => {
+
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
-    if (valid) {
+
+    const ValidEmail = validateEmail(Email)
+
+    if (valid && ValidEmail) {
 
       const IsTwoWayFactor = await GetDataByEmail()
 

@@ -82,11 +82,11 @@ export default function EditClientPage(props) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-          
+
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            
+
         }
 
     });
@@ -187,7 +187,7 @@ export default function EditClientPage(props) {
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
-                        <h5 className='my-0'><a href='' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Client</h5>
+                        <h5 onClick={CancelEditCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Client</h5>
                     </Col>
                 </Row>
                 <div className='sm-container mt-5'>

@@ -64,10 +64,10 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   useEffect(() => {
     GetClientID();
-    CheckAccountAuthonicate()
-    GetEmailAccountList()
+    // CheckAccountAuthonicate()
+    // GetEmailAccountList()
 
-  }, [Page, RowsPerPage, SortedBy, SortField, ClientID, UserID]);
+  }, [Page, RowsPerPage, SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -97,10 +97,12 @@ export default function EmailConfigurationPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    CheckAccountAuthonicate()
+    GetEmailAccountList(UserDetails.ClientID, UserDetails.UserID)
   }
 
   // Start Get EmailAccount
-  const GetEmailAccountList = () => {
+  const GetEmailAccountList = (CID, UID) => {
     let Data
     Data = {
       Page: Page,
@@ -109,8 +111,8 @@ export default function EmailConfigurationPage() {
       Field: SortField,
       Sortby: SortedBy,
       Search: '',
-      ClientID: ClientID,
-      UserID: UserID,
+      ClientID: CID,
+      UserID: UID,
     };
 
     const ResponseApi = Axios({

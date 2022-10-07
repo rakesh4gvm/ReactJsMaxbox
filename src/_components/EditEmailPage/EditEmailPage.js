@@ -28,8 +28,8 @@ export default function EditEmailPage(props) {
   const [Refreshtoken, SetRefreshtoken] = React.useState(0);
   const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(0);
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(0);
-  
-  var Isworking =false;
+
+  var Isworking = false;
   useEffect(() => {
     const ID = props.location.state;
     CheckAccountAuthonicate()
@@ -41,7 +41,7 @@ export default function EditEmailPage(props) {
   }, []);
 
   useEffect(() => {
-  }, [ClientID, UserID,Isworking]);
+  }, [ClientID, UserID, Isworking]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -50,16 +50,14 @@ export default function EditEmailPage(props) {
       var Refreshtoken = (ResultRefreshtoken.split("=editpageupdate_")[0])
       var AccountID = (ResultRefreshtoken.split("=editpageupdate_")[1])
       SetRefreshtoken(Refreshtoken);
-      Isworking=true;
-      if(Refreshtoken!='')
-      {
+      Isworking = true;
+      if (Refreshtoken != '') {
         SetIsEmailAuthSucess(true)
       }
-      else
-      {
+      else {
         SetIsEmailAuthFail(true)
       }
-      
+
       EditEmailConfiguration(AccountID)
     }
   }
@@ -82,9 +80,8 @@ export default function EditEmailPage(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        if(Result.data.Data.IsWorking==false)
-        {
-          Result.data.Data.IsWorking=Isworking;
+        if (Result.data.Data.IsWorking == false) {
+          Result.data.Data.IsWorking = Isworking;
         }
         SetEditEmailConfigurationDetails(Result.data.Data)
       }
@@ -138,27 +135,26 @@ export default function EditEmailPage(props) {
   }
   // end ReAuthenticate email
 
-
   return (
     <>
-     
+
 
       <div className='bodymain'>
 
 
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
-            <h5 className='my-0'><a href='' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Email Configuration</h5>
+            <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
           </Col>
         </Row>
 
 
         <div className='sm-container mt-5'>
-        
-        <Stack sx={{ width: '100%' }} spacing={2}>
-          {IsEmailAuthSucess==true?<Alert severity="success" onClose={() => {SetIsEmailAuthSucess(false)}}>   <strong> Well done!</strong> Authentication of your account is done.</Alert>:""}
-          {IsEmailAuthFail==true?<Alert severity="error" onClose={() => { SetIsEmailAuthFail(false);}}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert>:""}
-        </Stack>
+
+          <Stack sx={{ width: '100%' }} spacing={2}>
+            {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
+            {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
+          </Stack>
 
           <Row>
             <Col>
@@ -206,7 +202,7 @@ export default function EditEmailPage(props) {
 
       </div>
 
-     
+
 
     </>
   );
