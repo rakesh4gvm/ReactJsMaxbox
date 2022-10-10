@@ -51,6 +51,15 @@ export default function LoginPage() {
     return true;
   };
 
+  const validatePassword = (Pwd) => {
+    if (!/^.{6,20}$/i.test(Pwd)) {
+      setPassword("Password must be 6 to 20 chars long")
+      return false;
+    }
+   
+    return true;
+  };
+
   function handleChange(e) {
     const { name, value } = e.target;
     if (name == "email") {
@@ -60,7 +69,7 @@ export default function LoginPage() {
     }
     else if (name == "password") {
       if (value != "") {
-        setPassword("")
+        validatePassword(value)
       }
     }
     setUserPassword('')
@@ -87,9 +96,10 @@ export default function LoginPage() {
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
 
-    const ValidEmail = validateEmail(Email)
+    const ValidEmail = validateEmail(Email);
+    const ValidPassword = validatePassword(Password);
 
-    if (valid && ValidEmail) {
+    if (valid && ValidEmail && ValidPassword) {
 
       const IsTwoWayFactor = await GetDataByEmail()
 

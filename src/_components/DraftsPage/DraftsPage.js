@@ -559,10 +559,10 @@ export default function DraftsPage() {
                   </Col> */}
                   <Col xs={4} align='right'>
                     <ButtonGroup variant="text" aria-label="text button group">
-                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage} title="Refresh" >
                         <RefreshIcon />
                       </Button>
-                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title="All Delete">
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
@@ -715,39 +715,7 @@ export default function DraftsPage() {
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-                    <Col xs={10} className='p-0'>
-                      <h5>{OpenMessage == 0 ? '' : OpenMessage.MailTo}</h5>
-                      {/* <h6>{OpenMessage == 0 ? '': OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
-                      <h6>
-                        <a onClick={Userdropdown}>
-                          <KeyboardArrowDownIcon />
-                        </a>
-                      </h6>
-
-                      <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
-                        <div class="bodyuserdop textdeclist">
-                          <div className='columlistdrop'>
-                            <Row>
-                              <Col className='pr-0' sm={3} align="right"><lable>from:</lable></Col>
-                              <Col sm={9}><strong>rakesh4gvm@gmail.com</strong></Col>
-                            </Row>
-                            <Row>
-                              <Col className='pr-0' sm={3} align="right"><lable>from to:</lable></Col>
-                              <Col sm={9}>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                                <p className='mb-0'>rakesh4gvm@gmail.com</p>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col className='pr-0' sm={3} align="right"><lable>to:</lable></Col>
-                              <Col sm={9}>rakesh4gvm@gmail.com</Col>
-                            </Row>
-                          </div>
-                        </div>
-                      </div>
-
-                    </Col>
+               
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
@@ -759,7 +727,7 @@ export default function DraftsPage() {
                       <label>{MailNumber} / {DraftList.length}</label>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} />
+                      <img src={icondelete} title={"Delete"}/>
                     </Button>}
                     <Button>
                       <img src={iconmenu} />

@@ -1246,10 +1246,10 @@ export default function UnansweredResponsesPage() {
                   </Col>
                   <Col xs={4} align='right'>
                     <ButtonGroup variant="text" aria-label="text button group">
-                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage} title="Refresh">
                         <RefreshIcon />
                       </Button>
-                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title="All Delete">
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
@@ -1312,7 +1312,7 @@ export default function UnansweredResponsesPage() {
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      <ToggleButton title="Starred" className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)} >
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
                                       </ToggleButton>
@@ -1371,7 +1371,7 @@ export default function UnansweredResponsesPage() {
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id) }title="Starred">
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
                                       </ToggleButton>
@@ -1452,24 +1452,24 @@ export default function UnansweredResponsesPage() {
                     <Button>
                       <label>{MailNumber} / {UnansweredResponsesList?.length}</label>
                     </Button>
-                    <Button onClick={OpenStarPopModel}>
-                      <img src={iconstar} />
+                    <Button onClick={OpenStarPopModel} >
+                      <img src={iconstar} title={"Starred"} />
                     </Button>
                     <Button onClick={OpenFollowupPopModel}>
-                      <img src={icontimer} />
+                      <img src={icontimer} title={"Follow Up Later"}/>
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} width="36" />
+                      <img src={inbox} width="36" title={"Other Inbox"}/>
                     </Button>
 
                     <Button>
-                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward"/></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} />
+                      <img src={icondelete} title="Delete"/>
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
@@ -1493,10 +1493,10 @@ export default function UnansweredResponsesPage() {
               <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
                   </Col>
                 </Row>
               </div>

@@ -70,6 +70,7 @@ export default function EmailConfigurationPage() {
   }, [Page, RowsPerPage, SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
+    debugger
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);
@@ -80,6 +81,7 @@ export default function EmailConfigurationPage() {
       else {
         if (pagename == "UPDATE SUCCESS" || pagename == "SUCCESS") {
           SetIsEmailAuthSucess(true)
+          
         }
         else if (pagename = "Email Already Authenticated") {
           SetIsEmailAuthExist(true)

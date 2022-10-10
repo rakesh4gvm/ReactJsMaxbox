@@ -59,6 +59,22 @@ export default function RegisterPage() {
       SetAgreeError("Please Check Terms and Conditions")
       Isvalid = false
     }
+
+    var IsValiEmail = validateEmail(Email)
+    var IsValidPassword = validatePassword(Password);
+    var IsValidCPassword = validateConfirmPassword();
+
+    if(IsValiEmail==false){
+      Isvalid = false
+    }
+
+    if(IsValidPassword==false){
+      Isvalid = false
+    }
+    if(IsValidCPassword==false){
+      Isvalid = false
+    }
+
     return Isvalid;
   };
 
@@ -73,6 +89,16 @@ export default function RegisterPage() {
     }
     return true;
   };
+
+  const validatePassword = (Pwd) => {
+    if (!/^.{6,20}$/i.test(Pwd)) {
+      SetPasswordError("Password must be 6 to 20 chars long")
+      return false;
+    }
+   
+    return true;
+  };
+
   const validateConfirmPassword = () => {
     var Password = document.getElementById("password").value;
     var ConfirmPassword = document.getElementById("confirmPassword").value;
@@ -105,8 +131,7 @@ export default function RegisterPage() {
     }
     else if (name == "password") {
       if (value != "") {
-        SetPasswordError("")
-        //validateConfirmPassword()
+        validatePassword(value);        
       }
     }
 
@@ -154,6 +179,10 @@ export default function RegisterPage() {
   const HandleTwoWayFactor = (event) => {
     SetChecked(event.target.checked);
   };
+
+  function CancelButton(){
+    history.push("/Login")
+  }
 
   // Handle Terms and Conditions
   const HandleChecked = (e) => {
@@ -273,7 +302,8 @@ export default function RegisterPage() {
           <div className='sm-container'>
             <div className='btnprofile my-5 left'>
               <ButtonGroup variant="text" aria-label="text button group">
-                <Button variant="contained btn btn-primary smallbtn" onClick={RegisterUser}> submit</Button>
+                <Button variant="contained btn btn-primary smallbtn mr-4" onClick={RegisterUser}> submit</Button>
+                <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
               </ButtonGroup>
             </div>
           </div>

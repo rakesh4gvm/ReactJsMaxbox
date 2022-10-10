@@ -23,6 +23,7 @@ export default function ConfirmpasswordPage() {
   const [User, SetUser] = useState()
   const [URLToken, SetURLToken] = useState()
   const [ErrorMessage, SetErrorMessage] = useState("")
+  const [PasswordError, SetPasswordError] = useState("");
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -47,6 +48,25 @@ export default function ConfirmpasswordPage() {
     })
   }
 
+  const validatePassword = (Pwd) => {
+    if (!/^.{6,20}$/i.test(Pwd)) {
+      SetPasswordError("Password must be 6 to 20 chars long")
+      return false;
+    }
+   
+    return true;
+  };
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (name == "password") {
+      if (value != "") {
+        validatePassword(value); 
+     }
+
+    }
+
+  };
   const Update = async () => {
 
     var Password = document.getElementById("password").value;
@@ -62,7 +82,8 @@ export default function ConfirmpasswordPage() {
       if (Password == "" || ConfirmPassword == "") {
         SetErrorMessage("All Fields are Mandatory!")
       } else {
-        if (Password === ConfirmPassword) {
+        var IsValidPassword = validatePassword(Password);
+        if (Password === ConfirmPassword && IsValidPassword) {
           const Data = { Token: URLToken, Password: Password }
           await Axios({
             url: CommonConstants.MOL_APIURL + "/user/UpdatePassword",
@@ -124,7 +145,8 @@ export default function ConfirmpasswordPage() {
                 <Row>
                   <Col sm={4}>
                     <div className='input-box'>
-                      <input type='Password' placeholder='Password' id='password' name="password" />
+                      <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
+                      {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
                     </div>
                   </Col>
                   <Col>

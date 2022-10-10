@@ -1048,10 +1048,10 @@ export default function UnansweredRepliesPage() {
                   </Col>
                   <Col xs={4} align='right'>
                     <ButtonGroup variant="text" aria-label="text button group">
-                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage} title={"Refresh"}>
                         <RefreshIcon />
                       </Button>
-                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title={"All Delete"}>
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
@@ -1253,16 +1253,16 @@ export default function UnansweredRepliesPage() {
                       <label>{MailNumber} / {AllUnansweredRepliesList?.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
-                      <img src={iconstar} />
+                      <img src={iconstar} title={"Starred"}/>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} />
+                      <img src={icondelete} title={"Delete"}/>
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
