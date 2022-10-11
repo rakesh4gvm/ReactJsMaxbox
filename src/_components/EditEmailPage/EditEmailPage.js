@@ -18,8 +18,12 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails } from "../../_helpers/Utility";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+toast.configure();
 var atob = require('atob');
+
 
 export default function EditEmailPage(props) {
   const [EditEmailConfigurationDetails, SetEditEmailConfigurationDetails] = React.useState([]);
@@ -94,6 +98,7 @@ export default function EditEmailPage(props) {
 
   // // Update Email
   const UpdateEmailConfiguration = () => {
+    debugger
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
@@ -113,7 +118,10 @@ export default function EditEmailPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        toast.success(<div>Edit Email <br />Email configuration updated successfully.</div>);
         history.push("/EmailConfiguration");
+      }else{
+        toast.error(Result?.data?.Message);
       }
     })
   }
@@ -173,7 +181,7 @@ export default function EditEmailPage(props) {
               <Row>
                 <Col sm={8}>
                   <div className='input-box'>
-                    <input type='email' placeholder='Email' id='email' defaultValue={EditEmailConfigurationDetails.Email} />
+                    <input type='email' placeholder='Email' id='email' defaultValue={EditEmailConfigurationDetails.Email} readonly="readonly" />
                   </div>
                 </Col>
                 <Col sm={4}>

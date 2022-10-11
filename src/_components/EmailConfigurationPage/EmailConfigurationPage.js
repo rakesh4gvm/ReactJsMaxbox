@@ -81,13 +81,24 @@ export default function EmailConfigurationPage() {
       else {
         if (pagename == "UPDATE SUCCESS" || pagename == "SUCCESS") {
           SetIsEmailAuthSucess(true)
-          
+          const queryParams = ""
+          history.replace({
+            search: queryParams,
+          })
         }
         else if (pagename = "Email Already Authenticated") {
           SetIsEmailAuthExist(true)
+          const queryParams = ""
+          history.replace({
+            search: queryParams,
+          })
         }
         else {
           SetIsEmailAuthFail(true)
+          const queryParams = ""
+          history.replace({
+            search: queryParams,
+          })
         }
       }
 
@@ -136,7 +147,7 @@ export default function EmailConfigurationPage() {
   //change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetEmailAccountList();
+    GetEmailAccountList(ClientID,UserID);
   };
 
   //SortData Page
@@ -147,7 +158,7 @@ export default function EmailConfigurationPage() {
     } else {
       SetSortedBy(1);
     }
-    GetEmailAccountList()
+    GetEmailAccountList(ClientID,UserID)
   }
 
   // start Authenticate email
@@ -223,11 +234,11 @@ export default function EmailConfigurationPage() {
     });
     responseapi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetEmailAccountList()
+        GetEmailAccountList(ClientID,UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetEmailAccountList()
+        GetEmailAccountList(ClientID,UserID)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
