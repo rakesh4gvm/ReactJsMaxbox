@@ -36,6 +36,7 @@ const Style = {
 
 export default function AddClientPage({ children }) {
   const [ClientNameError, SetClientNameError] = useState("");
+  const [SignatureError, SetSignatureError] = useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Signature, SetSignature] = useState({
@@ -69,11 +70,11 @@ export default function AddClientPage({ children }) {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-     
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-      
+
     }
   });
 
@@ -89,6 +90,9 @@ export default function AddClientPage({ children }) {
     SetSignature({
       Data: Model
     });
+    if (Model != "") {
+      SetSignatureError("")
+    }
   }
   // Frola Editor Ends
 
@@ -112,6 +116,11 @@ export default function AddClientPage({ children }) {
 
     if (ClientName === "") {
       SetClientNameError("Please Enter Client Name")
+      Isvalid = false
+    }
+
+    if (Signature.Data === "") {
+      SetSignatureError("Please Enter Signature Body")
       Isvalid = false
     }
     return Isvalid;
@@ -214,6 +223,7 @@ export default function AddClientPage({ children }) {
                 </Col>
                 <Col sm={12}>
                   <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                  {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                   {/* <FroalaEditor config={config} /> */}
                 </Col>
               </Row>

@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 
 export default function EditClientPage(props) {
     const [ClientNameError, SetClientNameError] = useState("");
+    const [SignatureError, SetSignatureError] = useState("");
     const [ClientID, SetClientID] = React.useState(0);
     const [ClientIDDetails, SetClientIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
@@ -102,6 +103,9 @@ export default function EditClientPage(props) {
         SetSignature({
             Data: Model
         });
+        if (Model != "") {
+            SetSignatureError("")
+        }
     }
     // Frola Editor Ends
 
@@ -125,6 +129,11 @@ export default function EditClientPage(props) {
 
         if (ClientName === "") {
             SetClientNameError("Please Enter Client Name")
+            Isvalid = false
+        }
+
+        if (Signature.Data === "") {
+            SetSignatureError("Please Enter Signature Body")
             Isvalid = false
         }
         return Isvalid;
@@ -221,6 +230,7 @@ export default function EditClientPage(props) {
                                 <Col sm={8}>
                                 </Col>
                                 <Col sm={12}><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                             </Row>
                         </Col>
                     </Row>

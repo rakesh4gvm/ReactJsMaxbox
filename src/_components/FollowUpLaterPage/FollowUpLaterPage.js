@@ -627,6 +627,22 @@ export default function FollowUpLetterPage() {
   }
 
   const ReplyPopModel = (ObjMailsData) => {
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+
     const element = document.getElementsByClassName("user_editor")
     SetSignature({ Data: "" });
 
@@ -715,7 +731,7 @@ export default function FollowUpLetterPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -731,11 +747,11 @@ export default function FollowUpLetterPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-     
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -838,7 +854,7 @@ export default function FollowUpLetterPage() {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          
+
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Follow Up Later <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
@@ -885,7 +901,7 @@ export default function FollowUpLetterPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -901,11 +917,11 @@ export default function FollowUpLetterPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-     
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -1370,19 +1386,19 @@ export default function FollowUpLetterPage() {
                       <label>{MailNumber} / {InBoxList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
-                      <img src={iconstar}  title={"Starred"}/>
+                      <img src={iconstar} title={"Starred"} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} className="width36" title={"Other Inbox"}/>
+                      <img src={inbox} className="width36" title={"Other Inbox"} />
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}title="Reply" /></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward"/></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title="Delete"/>
+                      <img src={icondelete} title="Delete" />
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
@@ -1409,7 +1425,7 @@ export default function FollowUpLetterPage() {
                     <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply"/></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
                   </Col>
                 </Row>
               </div>

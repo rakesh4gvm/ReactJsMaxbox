@@ -549,6 +549,22 @@ export default function StarredPage() {
   };
 
   const ReplyPopModel = (ObjMailsData) => {
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+
     const element = document.getElementsByClassName("user_editor")
     SetSignature({ Data: "" });
 
@@ -643,7 +659,7 @@ export default function StarredPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -659,11 +675,11 @@ export default function StarredPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-    
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -813,7 +829,7 @@ export default function StarredPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -829,11 +845,11 @@ export default function StarredPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-    
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -1336,7 +1352,7 @@ export default function StarredPage() {
                       <img src={icontimer} title={"Follow Up Later"} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} className="width36" title={"Other Inbox"}/>
+                      <img src={inbox} className="width36" title={"Other Inbox"} />
                     </Button>
                     <Button>
                       <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
@@ -1345,7 +1361,7 @@ export default function StarredPage() {
                       <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete}  title="Delete"/>
+                      <img src={icondelete} title="Delete" />
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
@@ -1369,7 +1385,7 @@ export default function StarredPage() {
               <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward"/></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
                     <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>

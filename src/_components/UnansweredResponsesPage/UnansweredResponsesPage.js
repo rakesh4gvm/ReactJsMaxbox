@@ -671,6 +671,22 @@ export default function UnansweredResponsesPage() {
   }
 
   const ReplyPopModel = (ObjMailsData) => {
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+
     const element = document.getElementsByClassName("user_editor")
     SetSignature({ Data: "" });
 
@@ -809,7 +825,7 @@ export default function UnansweredResponsesPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-    
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -825,11 +841,11 @@ export default function UnansweredResponsesPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-    
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-    
+
     }
   });
   // Check Client Exists
@@ -926,7 +942,7 @@ export default function UnansweredResponsesPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-    
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -942,11 +958,11 @@ export default function UnansweredResponsesPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-    
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-    
+
     }
   });
   // Check Client Exists
@@ -1371,7 +1387,7 @@ export default function UnansweredResponsesPage() {
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
-                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id) }title="Starred">
+                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)} title="Starred">
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
                                       </ToggleButton>
@@ -1456,20 +1472,20 @@ export default function UnansweredResponsesPage() {
                       <img src={iconstar} title={"Starred"} />
                     </Button>
                     <Button onClick={OpenFollowupPopModel}>
-                      <img src={icontimer} title={"Follow Up Later"}/>
+                      <img src={icontimer} title={"Follow Up Later"} />
                     </Button>
                     <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} width="36" title={"Other Inbox"}/>
+                      <img src={inbox} width="36" title={"Other Inbox"} />
                     </Button>
 
                     <Button>
                       <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward"/></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title="Delete"/>
+                      <img src={icondelete} title="Delete" />
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
