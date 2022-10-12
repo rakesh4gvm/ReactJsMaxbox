@@ -629,12 +629,12 @@ export default function DraftsPage() {
                                     </Col>
                                   </Row>
                                   <Row>
-                                    <Col xs={2} className='ja-center'>
+                                    {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
                                         <AttachFileIcon />
                                       </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col xs={10}>
                                       <p>{row.Snippet}</p>
                                     </Col>
@@ -684,12 +684,12 @@ export default function DraftsPage() {
                                     </Col>
                                   </Row>
                                   <Row>
-                                    <Col xs={2} className='ja-center'>
+                                    {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
                                         <AttachFileIcon />
                                       </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col xs={10}>
                                       <p>{row.Snippet}</p>
                                     </Col>

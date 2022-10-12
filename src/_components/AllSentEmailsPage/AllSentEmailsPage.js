@@ -644,11 +644,11 @@ export default function AllSentEnailsPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-     
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -798,7 +798,7 @@ export default function AllSentEnailsPage() {
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   Froalaeditor.RegisterCommand('moreMisc', {
@@ -814,11 +814,11 @@ export default function AllSentEnailsPage() {
     },
     // Callback on refresh.
     refresh: function ($btn) {
-     
+
     },
     // Callback on dropdown show.
     refreshOnShow: function ($btn, $dropdown) {
-     
+
     }
   });
   // Check Client Exists
@@ -1123,12 +1123,12 @@ export default function AllSentEnailsPage() {
                                     </Col>
                                   </Row>
                                   <Row>
-                                    <Col xs={2} className='ja-center'>
+                                    {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
                                         <AttachFileIcon />
                                       </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col xs={10}>
                                       <p>{row.Snippet}</p>
                                     </Col>
@@ -1181,12 +1181,12 @@ export default function AllSentEnailsPage() {
                                     </Col>
                                   </Row>
                                   <Row>
-                                    <Col xs={2} className='ja-center'>
+                                    {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
                                         <AttachFileIcon />
                                       </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col xs={10}>
                                       <p>{row.Snippet}</p>
                                     </Col>
@@ -1254,16 +1254,16 @@ export default function AllSentEnailsPage() {
                       <label>{MailNumber} / {AllSentEmailsList.length}</label>
                     </Button>
                     <Button onClick={OpenStarPopModel}>
-                      <img src={iconstar} title={"Starred"}/>
+                      <img src={iconstar} title={"Starred"} />
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}  title={"Reply"}/></a>
+                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
                     </Button>
                     <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"}/></a>
+                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title={"Delete"}/>
+                      <img src={icondelete} title={"Delete"} />
                     </Button>}
                     <Button>
                       <img src={iconmenu} />
@@ -1288,10 +1288,10 @@ export default function AllSentEnailsPage() {
               <div id="replaybx" className='d-flex mt-5 ml-2'>
                 <Row>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"}/></a>
+                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
                   </Col>
                   <Col sm={6} className='p-0'>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2}title={"Reply"} /></a>
+                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
                   </Col>
                 </Row>
               </div>
