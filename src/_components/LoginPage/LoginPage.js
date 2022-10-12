@@ -22,7 +22,7 @@ export default function LoginPage() {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
- 
+
   // FromValidation start
   const FromValidation = () => {
     var Isvalid = true;
@@ -56,7 +56,7 @@ export default function LoginPage() {
       setPassword("Password must be 6 to 20 chars long")
       return false;
     }
-   
+
     return true;
   };
 
@@ -105,9 +105,7 @@ export default function LoginPage() {
 
       if (IsTwoWayFactor) {
         const Data = {
-          Email: "jenish16gvm@gmail.com",
           ToEmail: Email,
-          RefreshToken: "1//0gcDWmYcfZsL-CgYIARAAGBASNwF-L9IrfYCQvSCPM1Z5AJZTVEhpCjGD2b2k946PBNMCR2B0NXe9qdqgdRkcfmjElyy4lUlkLLA"
         }
         const ResponseApi = Axios({
           url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
