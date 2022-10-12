@@ -23,6 +23,11 @@ export default function LoginPage() {
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
 
+  useEffect(() => {
+    document.title = 'Login | MAXBOX';
+   
+  });
+
   // FromValidation start
   const FromValidation = () => {
     var Isvalid = true;

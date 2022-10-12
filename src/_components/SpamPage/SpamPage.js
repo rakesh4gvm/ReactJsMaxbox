@@ -135,6 +135,7 @@ export default function SpamPage() {
   })
 
   useEffect(() => {
+    document.title = 'Spam | MAXBOX';
     GetClientID();
   }, [SearchInbox, SpamChecked]);
 

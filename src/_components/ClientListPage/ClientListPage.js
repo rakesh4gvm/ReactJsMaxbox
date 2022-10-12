@@ -57,6 +57,7 @@ export default function ClientListPage() {
   const [DeleteID, SetDeleteID] = React.useState()
 
   useEffect(() => {
+    document.title = 'Client | MAXBOX';
     GetClientID();
     // CheckAccountAuthonicate()
     // GetClientList()

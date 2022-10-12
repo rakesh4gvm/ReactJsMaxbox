@@ -151,6 +151,7 @@ export default function OtherInboxPage() {
   })
 
   useEffect(() => {
+    document.title = 'Other Inbox | MAXBOX';
     GetClientID();
   }, [SearchInbox, InboxChecked]);
 

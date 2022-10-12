@@ -6,24 +6,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Mlogo from "../../images/Logo-w.png";
 
 import { history } from '../../_helpers/history';
-function useOutsideAlerter(ref) {
-    useEffect(() => { 
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          const element = document.getElementById("id_userbox") 
-            element.classList.remove("show"); 
-        }
-      } 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => { 
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-}
+
 
 
 
 export default function Header() { 
+
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef); 
 
@@ -35,7 +23,26 @@ export default function Header() {
         history.push('/Login');
       }
     
+      function useOutsideAlerter(ref) {
     
+    
+        useEffect(() => { 
+          function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+              const element = document.getElementById("id_userbox") 
+                element.classList.remove("show"); 
+            }
+    
+    
+          } 
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => { 
+            document.removeEventListener("mousedown", handleClickOutside);
+          };
+    
+          
+        }, [ref]);
+    }
 
 	
   return (
@@ -62,9 +69,10 @@ export default function Header() {
                             <NavDropdown.Item href="#">
                                 Contact
                             </NavDropdown.Item> 
+                            {window.location.pathname.toString() != "/"?
                             <NavDropdown.Item onClick={Login}>
                                 Login
-                            </NavDropdown.Item> 
+                            </NavDropdown.Item>:'' }
                             <NavDropdown.Item onClick={Register}>
                                 Register
                             </NavDropdown.Item>  

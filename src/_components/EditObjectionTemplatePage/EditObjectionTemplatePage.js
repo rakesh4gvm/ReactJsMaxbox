@@ -34,6 +34,7 @@ export default function EditObjectionTemplatePage(props) {
     })
 
     useEffect(() => {
+        document.title = 'Edit Objection Template | MAXBOX';
         const ID = props.location.state;
         if (ID != "" && ID != null && ID != "undefined") {
             GetObjectionTemplateByID(ID)

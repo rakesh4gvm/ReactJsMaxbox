@@ -92,6 +92,7 @@ export default function DraftsPage() {
   const [HasMore, SetHasMore] = useState(true)
 
   useEffect(() => {
+    document.title = 'Draft | MAXBOX';
     GetClientID();
   }, [SearchInbox, InboxChecked]);
 

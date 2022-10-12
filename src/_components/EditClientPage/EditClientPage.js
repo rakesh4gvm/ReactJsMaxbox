@@ -38,7 +38,7 @@ export default function EditClientPage(props) {
     }, [])
 
     useEffect(() => {
-
+        document.title = 'Edit Client | MAXBOX';
     }, [ClientID, UserID]);
 
     // Get Client ID

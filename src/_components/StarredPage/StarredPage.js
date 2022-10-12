@@ -126,6 +126,7 @@ export default function StarredPage() {
     Data: ""
   })
   useEffect(() => {
+    document.title = 'Starred | MAXBOX';
     GetClientID();
   }, [SearchInbox, StarredChecked]);
 

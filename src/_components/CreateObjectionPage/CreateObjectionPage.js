@@ -87,6 +87,7 @@ export default function CreateObjectionTemplatePage({ children }) {
   };
 
   useEffect(() => {
+    document.title = 'Create Objection Template | MAXBOX';
     GetClientID()
   }, [ClientID])
 

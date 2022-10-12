@@ -36,6 +36,7 @@ export default function ProfileSettingPage() {
   const [Checked, SetChecked] = React.useState();
 
   useEffect(() => {
+    document.title = 'Profile Setting | MAXBOX';
     GetClientID()
     // GetUserList()
     // GetCountryList()

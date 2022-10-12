@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Axios from "axios"
 
 import Button from '@mui/material/Button';
@@ -24,6 +24,10 @@ export default function RegisterPage() {
   const [AgreeError, SetAgreeError] = useState("");
   const [Agree, SetAgree] = useState(true)
   const [Checked, SetChecked] = React.useState(false);
+
+  useEffect(() => {
+    document.title = 'Register | MAXBOX';
+  });
 
   // FromValidation start
   const FromValidation = () => {

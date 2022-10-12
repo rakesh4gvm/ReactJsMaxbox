@@ -123,6 +123,7 @@ export default function UnansweredRepliesPage() {
   })
 
   useEffect(() => {
+    document.title = 'Unanswered Replies | MAXBOX';
     GetClientID();
   }, [SearchSent, UnansweredRepliesChecked]);
 

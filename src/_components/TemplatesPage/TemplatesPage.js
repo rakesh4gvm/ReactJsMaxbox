@@ -64,6 +64,7 @@ export default function TemplatesListPage() {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
+    document.title = 'Template | MAXBOX';
     GetClientID();
     // CheckAccountAuthonicate()
     // GetTemplateList()

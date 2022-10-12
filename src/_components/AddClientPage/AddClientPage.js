@@ -44,6 +44,7 @@ export default function AddClientPage({ children }) {
   })
 
   useEffect(() => {
+    document.title = 'Add Client | MAXBOX';
     GetClientID()
   }, [ClientID])
 

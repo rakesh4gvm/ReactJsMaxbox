@@ -121,6 +121,7 @@ export default function AllSentEnailsPage() {
   })
 
   useEffect(() => {
+    document.title = 'All Sent Emails | MAXBOX';
     GetClientID();
   }, [SearchSent, SentMailsChecked]);
 

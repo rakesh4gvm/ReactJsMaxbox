@@ -144,6 +144,7 @@ export default function UnansweredResponsesPage() {
   })
 
   useEffect(() => {
+    document.title = 'Unanswered Responses | MAXBOX';
     GetClientID()
   }, [SearchInbox, UnansweredResponsesChecked]);
 

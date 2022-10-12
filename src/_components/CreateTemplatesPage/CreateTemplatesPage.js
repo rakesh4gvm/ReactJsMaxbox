@@ -85,6 +85,7 @@ export default function CreateTemplatesPage({ children }) {
   };
 
   useEffect(() => {
+    document.title = 'Create Template | MAXBOX';
     GetClientID()
   }, [ClientID])
 

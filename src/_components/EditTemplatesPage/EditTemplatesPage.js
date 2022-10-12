@@ -42,7 +42,7 @@ export default function EditTemplatesPage(props) {
     }, [])
 
     useEffect(() => {
-
+        document.title = 'Edit Template | MAXBOX';
     }, [ClientID, UserID]);
 
     // Get Client ID

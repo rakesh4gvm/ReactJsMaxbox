@@ -140,6 +140,7 @@ export default function FollowUpLetterPage() {
   })
 
   useEffect(() => {
+    document.title = 'Follow Up Letter | MAXBOX';
     GetClientID();
   }, [SearchInbox, FollowUpLaterChecked]);
 

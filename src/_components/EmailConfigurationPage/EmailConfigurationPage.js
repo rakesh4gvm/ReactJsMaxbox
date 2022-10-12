@@ -63,6 +63,7 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(false);
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   useEffect(() => {
+    document.title = 'Email Configuration | MAXBOX';
     GetClientID();
     // CheckAccountAuthonicate()
     // GetEmailAccountList()
@@ -70,7 +71,7 @@ export default function EmailConfigurationPage() {
   }, [Page, RowsPerPage, SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
-    debugger
+    
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);

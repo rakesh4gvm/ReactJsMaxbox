@@ -18,6 +18,11 @@ export default function ForgetpasswordPage() {
   const [EmailSuccess, SetEmailSuccess] = useState("");
   const [EmailError, SetEmailError] = useState("");
 
+
+  useEffect(() => {
+    document.title = 'Forget Password | MAXBOX';
+   
+  });
   const ValidateEmail = (Email) => {
     if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(Email)) {
       SetEmailError("Invalid email")
