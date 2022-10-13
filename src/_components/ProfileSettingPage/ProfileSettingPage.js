@@ -34,6 +34,7 @@ export default function ProfileSettingPage() {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Checked, SetChecked] = React.useState();
+  
 
   useEffect(() => {
     document.title = 'Profile Setting | MAXBOX';
@@ -154,7 +155,7 @@ export default function ProfileSettingPage() {
     var Password = document.getElementById("password").value;
 
     var CheckData = await CheckEmailExists(Email)
-debugger
+
     let CountryId
     if (DropdownValue === null) {
       CountryId = User?.CountryID?._id
@@ -216,6 +217,8 @@ debugger
       };
     }, [Ref]);
   }
+
+  
   const WrapperRef = useRef(null);
   UseOutsideAlerter(WrapperRef);
   return (
@@ -290,12 +293,12 @@ debugger
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Password' id='password' defaultValue={User?.Password} />
+                <input type='Password' placeholder='Password' id='password' defaultValue={User?.Password} readonly="readonly" />
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} />
+                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} readonly="readonly"/>
               </div>
             </Col>
             <Col sm={4}>
