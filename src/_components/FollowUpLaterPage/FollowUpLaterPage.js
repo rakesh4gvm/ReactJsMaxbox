@@ -548,6 +548,8 @@ export default function FollowUpLetterPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Follow Up Later <br />Please add email configuration.</div>)
           }
         }
         else {

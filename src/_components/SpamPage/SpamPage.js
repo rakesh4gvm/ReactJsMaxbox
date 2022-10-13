@@ -588,6 +588,8 @@ export default function SpamPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Spam <br />Please add email configuration.</div>)
           }
         }
         else {

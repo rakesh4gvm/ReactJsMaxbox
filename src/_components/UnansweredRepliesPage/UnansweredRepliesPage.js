@@ -405,6 +405,8 @@ export default function UnansweredRepliesPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Unanswered Replies <br />Please add email configuration.</div>)
           }
         }
         else {

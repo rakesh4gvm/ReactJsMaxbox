@@ -496,6 +496,8 @@ export default function StarredPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Starred <br />Please add email configuration.</div>)
           }
         }
         else {

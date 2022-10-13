@@ -446,6 +446,8 @@ export default function AllSentEnailsPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>All Sent Emails <br />Please add email configuration.</div>)
           }
         }
         else {

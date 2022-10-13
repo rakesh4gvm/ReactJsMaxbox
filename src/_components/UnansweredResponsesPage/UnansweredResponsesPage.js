@@ -550,6 +550,8 @@ export default function UnansweredResponsesPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
           }
         }
         else {

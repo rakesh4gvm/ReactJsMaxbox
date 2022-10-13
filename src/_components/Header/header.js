@@ -152,12 +152,15 @@ export default function Header() {
     // Open Pop User Details
     const OpenPopupUserDetails = () => {
         var UserID
+        var ClientID
         var Details = GetUserDetails();
         if (Details != null) {
             UserID = Details.UserID
+            ClientID = Details.ClientID
         }
         var Data = {
-            UserID: UserID,
+            ClientID: ClientID,
+            UserID: UserID
         }
 
         const ResponseApi = Axios({

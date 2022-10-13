@@ -562,6 +562,8 @@ export default function OtherInboxPage() {
             else {
               element.classList.add("show");
             }
+          } else {
+            toast.error(<div>Other Inbox <br />Please add email configuration.</div>)
           }
         }
         else {
