@@ -74,6 +74,8 @@ export default function ProfileSettingPage() {
         SetUser(Result?.data?.Data)
         SetDropdownValue(Result?.data?.Data?.CountryID?._id)
         SetChecked(Result?.data?.Data?.TwoWayFactor)
+        debugger
+        SetBase64Image(Result?.data?.Data?.UserImage);
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -109,8 +111,17 @@ export default function ProfileSettingPage() {
   // Upload Image
   const UploadImage = async (e) => {
     const File = e.target.files[0]
+    console.log(e.target.files[0]);
     const Base64 = await ConvertBase64(File)
     SetBase64Image(Base64)
+
+    // const Data = { Email: Email }
+    // const ResponseApi = await Axios({
+    //   url: CommonConstants.MOL_APIURL + "/utility/UserProfileImageUpload",
+    //   method: "POST",
+    //   data: Data,
+    // })
+
   }
 
   // Convert image to base64
@@ -143,13 +154,13 @@ export default function ProfileSettingPage() {
     var Password = document.getElementById("password").value;
 
     var CheckData = await CheckEmailExists(Email)
-
+debugger
     let CountryId
-    if (SelectedCountryDropdown === null) {
+    if (DropdownValue === null) {
       CountryId = User?.CountryID?._id
     }
     else {
-      CountryId = SelectedCountryDropdown
+      CountryId = DropdownValue
     }
 
     let Data = {
@@ -172,11 +183,14 @@ export default function ProfileSettingPage() {
         data: Data,
       }).then((Result) => {
         if (Result.data.StatusMessage === "SUCCESS") {
+          debugger
           const GetLoginData = localStorage.getItem("LoginData")
           const Image = JSON.parse(GetLoginData)
           Image.UserImage = Base64Image
+
           localStorage.setItem("LoginData", JSON.stringify(Image))
           toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
+          GetUserList(UserID);
         } else {
           toast.error(Result?.data?.Message);
         }
