@@ -169,29 +169,43 @@ export default function DraftsPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID, index) => {
-    if (ID != '') {
-      SetMailNumber(index + 1)
-    }
-    var Data = {
-      _id: ID,
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateGetByID",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetOpenMessageDetails(Result.data.Data);
 
-      }
-      else {
-        SetOpenMessageDetails('');
-        toast.error(Result?.data?.Message);
-      }
-    });
-  };
+    // if (ID != '') {
+    //   SetMailNumber(index + 1)
+    // }
+
+    if (ID != "") {
+
+      SetMailNumber(index + 1)
+
+      var Data = {
+        _id: ID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateGetByID",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.Data != "" && Result.data.Data != null && Result.data.Data != undefined) {
+            SetOpenMessageDetails(Result.data.Data);
+          } else {
+            SetDraftList([])
+            SetOpenMessageDetails([]);
+          }
+        }
+        else {
+          SetOpenMessageDetails('');
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+
+  }
   //End Open Message Details
+
 
   // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {
@@ -249,9 +263,12 @@ export default function DraftsPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Draft <br />Draft template deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetDraftList(ClientID, UserID, Page);
+          SetSelectAllCheckbox(false);
+          SetInboxChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -572,7 +589,7 @@ export default function DraftsPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -716,7 +733,7 @@ export default function DraftsPage() {
                         <img src={defaultimage} width="63px" alt="" />
                       </span>
                     </Col>
-               
+
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
@@ -728,7 +745,7 @@ export default function DraftsPage() {
                       <label>{MailNumber} / {DraftList.length}</label>
                     </Button>
                     {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title={"Delete"}/>
+                      <img src={icondelete} title={"Delete"} />
                     </Button>}
                     <Button>
                       <img src={iconmenu} />

@@ -301,7 +301,12 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result.data.Data[0]);
+          if (Result.data.Data.length > 0) {
+            SetOpenMessageDetails(Result.data.Data[0]);
+          } else {
+            SetInBoxList([])
+            SetOpenMessageDetails([]);
+          }
         }
         else {
           SetOpenMessageDetails([]);
@@ -376,6 +381,8 @@ export default function OtherInboxPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+          SetSelectAllCheckbox(false);
+          SetInboxChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1230,7 +1237,7 @@ export default function OtherInboxPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>

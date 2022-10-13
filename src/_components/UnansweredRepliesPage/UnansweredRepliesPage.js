@@ -224,7 +224,12 @@ export default function UnansweredRepliesPage() {
       ResponseApi.then((Result) => {
 
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result?.data?.Data[0]);
+          if (Result.data.Data.length > 0) {
+            SetOpenMessageDetails(Result.data.Data[0]);
+          } else {
+            SetAllUnanswereRepliesList([])
+            SetOpenMessageDetails([]);
+          }
         }
         else {
           SetOpenMessageDetails([]);
@@ -297,6 +302,8 @@ export default function UnansweredRepliesPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+          SetSelectAllCheckbox(false);
+          SetUansweredRepliesChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1061,7 +1068,7 @@ export default function UnansweredRepliesPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllSentMailCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllSentMailCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>

@@ -291,7 +291,12 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result.data.Data[0]);
+          if (Result.data.Data.length > 0) {
+            SetOpenMessageDetails(Result.data.Data[0]);
+          } else {
+            SetSpamList([])
+            SetOpenMessageDetails([]);
+          }
         }
         else {
           SetOpenMessageDetails([]);
@@ -365,6 +370,8 @@ export default function SpamPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+          SetSelectAllCheckbox(false);
+          SetSpamChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1270,7 +1277,7 @@ export default function SpamPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>

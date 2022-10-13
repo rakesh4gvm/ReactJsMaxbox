@@ -211,7 +211,7 @@ export default function AllSentEnailsPage() {
   // End Get All SentEmails List
 
   //Start Open Message Details
-  const OpenMessageDetails = async (ID, index) => {
+  const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -222,9 +222,14 @@ export default function AllSentEnailsPage() {
         method: "POST",
         data: Data,
       });
-      await ResponseApi.then((Result) => {
+      ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result.data.Data[0]);
+          if (Result.data.Data.length > 0) {
+            SetOpenMessageDetails(Result.data.Data[0]);
+          } else {
+            SetAllSentEmailsList([])
+            SetOpenMessageDetails([]);
+          }
         }
         else {
           SetOpenMessageDetails('');
@@ -298,6 +303,8 @@ export default function AllSentEnailsPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
+          SetSelectAllCheckbox(false);
+          SetSentMailsChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1068,7 +1075,7 @@ export default function AllSentEnailsPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllSentMailCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllSentMailCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>

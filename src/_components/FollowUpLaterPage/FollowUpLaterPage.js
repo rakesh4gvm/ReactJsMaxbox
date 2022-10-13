@@ -289,7 +289,12 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetOpenMessageDetails(Result.data.Data[0]);
+          if (Result.data.Data.length > 0) {
+            SetOpenMessageDetails(Result.data.Data[0]);
+          } else {
+            SetInBoxList([])
+            SetOpenMessageDetails([]);
+          }
         }
         else {
           SetOpenMessageDetails([]);
@@ -363,6 +368,8 @@ export default function FollowUpLetterPage() {
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+          SetSelectAllCheckbox(false);
+          SetFollowUpLaterChecked([]);
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1194,7 +1201,7 @@ export default function FollowUpLetterPage() {
                 <Row>
                   <Col xs={12} className="mt-3">
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox defaultChecked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
+                      <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
                   </Col>
                 </Row>
