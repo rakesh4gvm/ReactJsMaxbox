@@ -456,6 +456,13 @@ export default function UnansweredRepliesPage() {
     SetSearchSent('');
     SetUansweredRepliesChecked([]);
     SetEmailDropdownListChecked([-1])
+    const element = document.getElementById("id_userboxlist")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

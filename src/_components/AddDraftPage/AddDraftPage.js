@@ -110,7 +110,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     toast.success(<div>Draft<br />Draft added successfully.</div>)
                     OpenDraftCompose();
                     CloseDraftCompose()
-                    GetDraftList(ClientID, UserID, 1)
+                    GetDraftList(ClientID, UserID, 1, "")
                     document.getElementById("ToEmail").value = ""
                     document.getElementById("DraftSubject").value = ""
                 } else {
@@ -122,7 +122,7 @@ export default function DraftComposePage({ GetDraftList }) {
     // Sent Mail Ends
 
     // Frola Editor Starts
-    Froalaeditor.RegisterCommand('Send', {
+    Froalaeditor.RegisterCommand('Save', {
         colorsButtons: ["colorsBack", "|", "-"],
         callback: AddDraftTemplate
     });
@@ -173,7 +173,7 @@ export default function DraftComposePage({ GetDraftList }) {
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,

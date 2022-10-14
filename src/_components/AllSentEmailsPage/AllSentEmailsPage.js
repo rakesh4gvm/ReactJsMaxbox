@@ -497,6 +497,13 @@ export default function AllSentEnailsPage() {
     SetSearchSent('');
     SetSentMailsChecked([]);
     SetEmailDropdownListChecked([-1])
+    const element = document.getElementById("id_userboxlist")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

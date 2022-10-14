@@ -436,29 +436,38 @@ export default function OtherInboxPage() {
     SetFollowupDate(NewValue);
   };
   const UpdateFollowupMessage = (ID) => {
+    const IsValidDate = Moment(FollowupDate).isValid()
     if (ID != '') {
-      var Data = {
-        ID: ID,
-        IsFollowUp: true,
-        FollowupDate: FollowupDate,
-        IsOtherInbox: false,
-        LastUpdatedBy: -1
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Sent Emails  <br />Follow up later updated successfully.</div>);
-          CloseFollowupPopModel();
-          OpenMessageDetails('')
-          GetUpdatedOtherInboxList(ClientID, UserID);
+      if (FollowupDate != null) {
+        if (IsValidDate) {
+          var Data = {
+            ID: ID,
+            IsFollowUp: true,
+            FollowupDate: FollowupDate,
+            IsOtherInbox: false,
+            LastUpdatedBy: -1
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
+              CloseFollowupPopModel();
+              OpenMessageDetails('')
+              GetUpdatedOtherInboxList(ClientID, UserID);
+            } else {
+              toast.error(Result?.data?.Message);
+            }
+          });
         } else {
-          toast.error(Result?.data?.Message);
+          toast.error(<div>Other Inbox <br />Please enter valid date.</div>)
         }
-      });
+      } else {
+        toast.error(<div>Other Inbox <br />Please enter date.</div>)
+      }
     }
   }
   // End Followup Message
@@ -614,6 +623,13 @@ export default function OtherInboxPage() {
     SetSearchInbox('');
     SetInboxChecked([]);
     SetFromEmailDropdownListChecked([-1])
+    const element = document.getElementById("id_userboxlist")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

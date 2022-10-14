@@ -368,35 +368,46 @@ export default function StarredPage() {
     SetFollowupDate(NewValue);
   };
   const UpdateFollowupMessage = (ID) => {
+    const IsValidDate = Moment(FollowupDate).isValid()
     if (ID != '') {
-      var Data = {
-        ID: ID,
-        IsFollowUp: true,
-        FollowupDate: FollowupDate,
-        IsOtherInbox: false,
-        LastUpdatedBy: -1
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred <br />Follow up later updated successfully.</div>);
-          CloseFollowupPopModel();
-          OpenMessageDetails('')
-          GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+      if (FollowupDate != null) {
+        if (IsValidDate) {
+          var Data = {
+            ID: ID,
+            IsFollowUp: true,
+            FollowupDate: FollowupDate,
+            IsOtherInbox: false,
+            LastUpdatedBy: -1
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              toast.success(<div>Starred <br />Follow up later updated successfully.</div>);
+              CloseFollowupPopModel();
+              OpenMessageDetails('')
+              GetStarredList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+            } else {
+              toast.error(Result?.data?.Message);
+            }
+          });
         } else {
-          toast.error(Result?.data?.Message);
+          toast.error(<div>Starred <br />Please enter valid date.</div>)
         }
-      });
+      } else {
+        toast.error(<div>Starred <br />Please enter date.</div>)
+      }
+
     }
   }
   // End Followup Message
 
   // Start CheckBox Code
   const InBoxCheckBox = (e) => {
+
     var UpdatedList = [...StarredChecked];
     if (e.target.checked) {
       UpdatedList = [...StarredChecked, e.target.value];
@@ -406,6 +417,7 @@ export default function StarredPage() {
     SetStarredChecked(UpdatedList);
   }
   const SeleactAllInBoxCheckBox = (e) => {
+
     if (e.target.checked) {
       SetSelectAllCheckbox(true);
       SetStarredChecked(StarredList.map(item => item._id));
@@ -538,7 +550,6 @@ export default function StarredPage() {
     localStorage.setItem("DropdownCheckData", UpdatedList);
     SetFromEmailDropdownListChecked(UpdatedList);
   }
-
   // Refresh Page
   const RefreshPage = () => {
     SetPage(1);
@@ -548,6 +559,13 @@ export default function StarredPage() {
     SetSearchInbox('');
     SetStarredChecked([]);
     SetFromEmailDropdownListChecked([-1])
+    const element = document.getElementById("id_userboxlist")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
