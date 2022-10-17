@@ -12,7 +12,7 @@ import OtpInput from 'react-otp-input';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails } from '../../_helpers/Utility'
-
+import { history } from '../../_helpers/history';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -121,7 +121,9 @@ export default function OTPConfirmPage(props) {
       }
     });
   }
- 
+  function CancelButton(){
+    history.push("/Login")
+  }
 
   return (
     <>
@@ -169,8 +171,8 @@ export default function OTPConfirmPage(props) {
               <Col sm={4}>
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
-                    <Button variant="contained btn btn-primary smallbtn" onClick={VerifyUser}>Verify</Button>
-                    {/* <Button variant="contained btn smallbtn">Cancel</Button>  */}
+                    <Button variant="contained btn btn-primary smallbtn mr-4" onClick={VerifyUser}>Verify</Button>
+                    <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
                   </ButtonGroup>
                 </div>
               </Col>
