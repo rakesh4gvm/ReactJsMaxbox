@@ -1458,6 +1458,26 @@ div.erorr-msg>*>* {
     width: 42px;
     background-position: center;
 }
+#dropdown-menu-TemplatesOption-3 {
+    /* z-index: 9999;
+    position: relative;
+    background: red;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin-top: -15px;
+    margin-left: 0; */
+}
+.FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:nth-child(10) {
+    background-image: url(../icons/template.svg);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    padding-top: 40px;
+    vertical-align: text-bottom;
+    overflow: hidden;
+    width: 42px;
+    background-position: center;
+}
 /*difulat start css*/
 
 /* .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
@@ -1690,9 +1710,78 @@ img.width36{
     width: 45px !important; 
     text-align: center !important;
 }
+.modal-lister .MuiBox-root {
+    padding: 0;
+    border: 0 !important;
+    border-radius: 8px;
+    min-width: 667px;
+}
+.m-head{
+    border-bottom:1px solid #ccc;
+    padding: 20px 15px;
+}
+.m-body{
+    padding: 15px;
+}
+.m-fotter{
+    border-top:1px solid #ccc;
+    padding: 20px 15px;
+}
+.cardobject {
+    box-shadow: 0 1px 15px 1px rgb(69 65 78 / 8%);
+    background-color: #fff;
+    padding: 20px 30px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.cardobject:hover,
+.cardobject.active { 
+    border: 1px solid #647AF7; 
+}
+.btn-right{
+    float: right;
+    color: #999;
+}
+.m-head h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #181b1e;
+}
 
+.shower + div{
+    display: block !important;
+}
 
-
+.listcardman > .MuiAccordion-root {
+    box-shadow: 0 1px 15px 1px rgb(69 65 78 / 8%) !important;
+    background-color: #fff;
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    outline: 0;
+}
+.listcardman > .MuiAccordion-root::before {
+    display: none;
+}
+.listcardman .MuiCollapse-root {
+    background-color: #ebebeb;
+    padding: 0;
+    border-radius: 8px;
+}
+.listcardman .MuiCollapse-root p{
+    font-size: 14px;
+}
+.listcardman .MuiCollapse-entered{
+    margin-bottom: 15px;
+}
+.listcardman .MuiAccordionSummary-root{
+    padding: 0;
+}
+.listcardman > .MuiAccordion-root.activetemplate{
+    border: 1px solid #4E63DA; 
+}
 
 @media screen and (max-width:990px) {
     .mobile-nav {

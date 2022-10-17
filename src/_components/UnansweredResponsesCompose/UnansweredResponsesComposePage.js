@@ -25,6 +25,30 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
+ 
+import Box from '@mui/material/Box'; 
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { display } from '@mui/system';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary'; 
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 toast.configure();
 
 function useOutsideAlerter(ref) {
@@ -37,6 +61,19 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false); 
+    const [temopen, setTemOpen] = React.useState(false);
+    const handleTemOpen = () => setTemOpen(true);
+    const handleTemClose = () => setTemOpen(false);  
+    const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -243,6 +280,39 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         refreshOnShow: function ($btn, $dropdown) {
         }
     });
+    /* template option */
+    Froalaeditor.RegisterCommand('TemplatesOption', {
+        title: 'Templates Option',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        className: 'tam',
+        refreshAfterCallback: true,
+        // options: EditorVariableNames(),
+        options: {
+            'opt1': 'Objections',
+            'opt2': 'Templates'
+            },
+        callback: function (cmd, val) { 
+            var editorInstance = this;
+            if(val == "opt1"){
+                setOpen(true);
+                // editorInstance.html.insert("{" + val + "}");
+            }
+            if(val == "opt2"){
+                setTemOpen(true);
+                // editorInstance.html.insert("{" + val + "}");
+            } 
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+        }
+    });
+    /* end template option */
     Froalaeditor.RegisterCommand('moreMisc', {
         title: '',
         type: 'dropdown',
@@ -265,7 +335,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
@@ -278,13 +348,180 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     var editor = new FroalaEditor('.send', {}, function () {
         editor.button.buildList();
     })
-    // Frola Editor Ends
+ 
+
+    // // Frola Editor Ends    
+    // function openModal(e) {
+    //     setIsOpen(true);
+    // }
+    // function closeModal(e) {
+    //     setIsOpen(false);
+    // }  
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
 
     return (
-        <>
+        <> 
+        
+            <Modal  className="modal-lister"
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                <div className='m-head'>
+                    <Typography id="modal-modal-title" variant="h4" component="h4">
+                        Select Objection
+                    </Typography>
+                </div>
+                <div className='m-body'> 
+                     <div className='listcardman'>  
+                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                        General settings
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+                                        Aliquam eget maximus est, id dignissim quam.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion className='activetemplate' expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel2bh-content"
+                                    id="panel2bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
+                                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
+                                        laoreet.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel3bh-content"
+                                    id="panel3bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                        Advanced settings
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
+                                        amet egestas eros, vitae egestas augue. Duis vel est augue.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion> 
+                     </div> 
+
+                </div>
+                <div className='m-fotter' align="right">  
+                    <ButtonGroup variant="text" aria-label="text button group">
+                        <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
+                        <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                    </ButtonGroup>
+                </div> 
+                </Box>
+            </Modal>  
+
+            <Modal  className="modal-lister"
+                open={temopen}
+                onClose={handleTemClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                <div className='m-head'>
+                    <Typography id="modal-modal-title" variant="h4" component="h4">
+                        Select Template
+                    </Typography>
+                </div>
+                <div className='m-body'> 
+                     <div className='listcardman'>  
+                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                        General settings
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+                                        Aliquam eget maximus est, id dignissim quam.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion className='activetemplate' expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel2bh-content"
+                                    id="panel2bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
+                                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
+                                        laoreet.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel3bh-content"
+                                    id="panel3bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                        Advanced settings
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
+                                        amet egestas eros, vitae egestas augue. Duis vel est augue.
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion> 
+                     </div> 
+
+                </div>
+                <div className='m-fotter' align="right">  
+                    <ButtonGroup variant="text" aria-label="text button group">
+                        <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
+                        <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                    </ButtonGroup>
+                </div> 
+                </Box>
+            </Modal>  
+           
+        
+
             <div className='composebody'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
                 <div className="usercompose" id="UserCompose" ref={WrapperRef}>
