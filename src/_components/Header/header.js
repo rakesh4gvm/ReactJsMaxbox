@@ -213,8 +213,8 @@ export default function Header() {
             <header className='header-main'>
                 <Navbar expand="lg">
                     <div className='left'>
-                        <Navbar.Brand href="#home">
-                            <img src={Mlogo} />
+                        <Navbar.Brand href="/UnansweredResponses">
+                            <img src={Mlogo}  />
                         </Navbar.Brand>
                     </div>
                     <div className='menulist right'>
@@ -358,8 +358,8 @@ export default function Header() {
                                                     }
                                                 />
                                                 <ul className='d-flex flexlist'>
-                                                    <li><a href=''><img src={Chatmail} /><span className='orange'>10</span></a></li>
-                                                    <li><a href=''><img src={Chatmail} /><span className='blue'>10</span></a></li>
+                                                    <li><a href=''><img src={Chatmail} /><span className='orange'>unawser response</span></a></li>
+                                                    <li><a href=''><img src={Chatmail} /><span className='blue'>unawser replies</span></a></li>
                                                 </ul>
                                             </ListItem>
                                         ))}
