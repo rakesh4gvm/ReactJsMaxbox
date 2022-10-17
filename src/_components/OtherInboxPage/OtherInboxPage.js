@@ -153,7 +153,7 @@ export default function OtherInboxPage() {
   useEffect(() => {
     document.title = 'Other Inbox | MAXBOX';
     GetClientID();
-  }, [SearchInbox, InboxChecked]);
+  }, [SearchInbox]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -211,7 +211,7 @@ export default function OtherInboxPage() {
         } else if (Str == "scroll") {
           SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
         } else {
-          SetInBoxList([...InBoxList, ...ResponseApi.data.PageData]);
+          SetInBoxList(ResponseApi.data.PageData);
         }
         OpenMessageDetails(ResponseApi.data.PageData[0]._id);
         SetMailNumber(1)
@@ -623,13 +623,14 @@ export default function OtherInboxPage() {
     SetSearchInbox('');
     SetInboxChecked([]);
     SetFromEmailDropdownListChecked([-1])
+    GetInBoxList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

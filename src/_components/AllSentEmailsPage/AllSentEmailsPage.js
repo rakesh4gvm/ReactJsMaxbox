@@ -123,7 +123,7 @@ export default function AllSentEnailsPage() {
   useEffect(() => {
     document.title = 'All Sent Emails | MAXBOX';
     GetClientID();
-  }, [SearchSent, SentMailsChecked]);
+  }, [SearchSent]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -178,7 +178,7 @@ export default function AllSentEnailsPage() {
           } else if (Str == "scroll") {
             SetAllSentEmailsList([...AllSentEmailsList, ...Result.data.PageData]);
           } else {
-            SetAllSentEmailsList([...AllSentEmailsList, ...Result.data.PageData]);
+            SetAllSentEmailsList(Result.data.PageData);
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -497,13 +497,14 @@ export default function AllSentEnailsPage() {
     SetSearchSent('');
     SetSentMailsChecked([]);
     SetEmailDropdownListChecked([-1])
+    GetAllSentEmailsList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

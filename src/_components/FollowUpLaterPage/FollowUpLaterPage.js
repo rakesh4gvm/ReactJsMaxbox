@@ -142,7 +142,7 @@ export default function FollowUpLetterPage() {
   useEffect(() => {
     document.title = 'Follow Up Letter | MAXBOX';
     GetClientID();
-  }, [SearchInbox, FollowUpLaterChecked]);
+  }, [SearchInbox]);
 
 
   // Get ClientID
@@ -200,7 +200,7 @@ export default function FollowUpLetterPage() {
           } else if (Str == "scroll") {
             SetInBoxList([...InBoxList, ...Result.data.PageData]);
           } else {
-            SetInBoxList([...InBoxList, ...Result.data.PageData]);
+            SetInBoxList(Result.data.PageData);
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -599,13 +599,14 @@ export default function FollowUpLetterPage() {
     SetSearchInbox('');
     SetFollowUpLaterChecked([]);
     SetFromEmailDropdownListChecked([-1])
+    GetFollowUpLetterList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

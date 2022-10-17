@@ -125,7 +125,7 @@ export default function UnansweredRepliesPage() {
   useEffect(() => {
     document.title = 'Unanswered Replies | MAXBOX';
     GetClientID();
-  }, [SearchSent, UnansweredRepliesChecked]);
+  }, [SearchSent]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -178,7 +178,7 @@ export default function UnansweredRepliesPage() {
           } else if (Str == "scroll") {
             SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
           } else {
-            SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData]);
+            SetAllUnanswereRepliesList(Result.data.PageData);
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -456,13 +456,14 @@ export default function UnansweredRepliesPage() {
     SetSearchSent('');
     SetUansweredRepliesChecked([]);
     SetEmailDropdownListChecked([-1])
+    GetAllUnanswereRepliesList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

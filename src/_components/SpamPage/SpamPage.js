@@ -137,7 +137,7 @@ export default function SpamPage() {
   useEffect(() => {
     document.title = 'Spam | MAXBOX';
     GetClientID();
-  }, [SearchInbox, SpamChecked]);
+  }, [SearchInbox]);
 
 
   const HandleOpen = () => SetOpen(true);
@@ -202,7 +202,7 @@ export default function SpamPage() {
           } else if (Str == "scroll") {
             SetSpamList([...SpamList, ...Result.data.PageData]);
           } else {
-            SetSpamList([...SpamList, ...Result.data.PageData]);
+            SetSpamList(Result.data.PageData);
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -649,13 +649,14 @@ export default function SpamPage() {
     SetSearchInbox('');
     SetSpamChecked([])
     SetFromEmailDropdownListChecked([-1])
+    GetSpamList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 

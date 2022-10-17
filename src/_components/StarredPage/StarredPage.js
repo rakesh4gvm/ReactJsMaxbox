@@ -128,7 +128,7 @@ export default function StarredPage() {
   useEffect(() => {
     document.title = 'Starred | MAXBOX';
     GetClientID();
-  }, [SearchInbox, StarredChecked]);
+  }, [SearchInbox]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -185,7 +185,7 @@ export default function StarredPage() {
           } else if (Str == "scroll") {
             SetStarredList([...StarredList, ...Result.data.PageData]);
           } else {
-            SetStarredList([...StarredList, ...Result.data.PageData]);
+            SetStarredList(Result.data.PageData);
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -559,13 +559,14 @@ export default function StarredPage() {
     SetSearchInbox('');
     SetStarredChecked([]);
     SetFromEmailDropdownListChecked([-1])
+    GetStarredList(ClientID, UserID, Page, "", [-1])
     const element = document.getElementById("id_userboxlist")
     if (element.classList.contains("show")) {
       element.classList.remove("show");
     }
-    else {
-      element.classList.add("show");
-    }
+    // else {
+    //   element.classList.add("show");
+    // }
     localStorage.setItem("DropdownCheckData", 'Refresh');
   }
 
