@@ -435,7 +435,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                 </div>
                 <div className='m-fotter' align="right">  
                     <ButtonGroup variant="text" aria-label="text button group">
-                        <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
+                        <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleClose}> Cancel</Button>
                         <Button variant="contained btn btn-primary smallbtn" > Select</Button>
                     </ButtonGroup>
                 </div> 
