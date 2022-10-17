@@ -265,7 +265,7 @@ export default function ProfileSettingPage() {
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} />
+                <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} readonly="readonly" />
               </div>
             </Col>
           </Row>
