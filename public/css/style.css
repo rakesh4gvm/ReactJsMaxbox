@@ -1748,19 +1748,27 @@ img.width36{
     font-weight: 600;
     color: #181b1e;
 }
-
+.upperlable {
+    position: absolute;
+    z-index: 1;
+    width: calc(100% - 50px) !important;
+    height: 46px;
+    line-height: 46px !important;
+}
 .shower + div{
     display: block !important;
 }
 
 .listcardman > .MuiAccordion-root {
-    box-shadow: 0 1px 15px 1px rgb(69 65 78 / 8%) !important;
+    /* box-shadow: 0 1px 15px 1px rgb(69 65 78 / 8%) !important;
     background-color: #fff;
     padding: 0 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
-    outline: 0;
+    outline: 0; */
+    box-shadow: none;
+    border: none;
 }
 .listcardman > .MuiAccordion-root::before {
     display: none;
@@ -1778,9 +1786,28 @@ img.width36{
 }
 .listcardman .MuiAccordionSummary-root{
     padding: 0;
+    min-height: 47px !important;
 }
 .listcardman > .MuiAccordion-root.activetemplate{
     border: 1px solid #4E63DA; 
+}
+
+.cardtemplate{
+    box-shadow: 0 1px 15px 1px rgb(69 65 78 / 8%) !important;
+    background-color: #fff;
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    outline: 0;
+    position: relative;
+}
+.cardtemplate.active{
+    border: 1px solid #4E63DA; 
+}
+.cardtemplate .MuiPaper-root {
+    border: none;
+    box-shadow: none;
 }
 
 @media screen and (max-width:990px) {

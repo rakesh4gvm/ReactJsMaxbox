@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Axios from "axios"
 
+import parse from "html-react-parser";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, ObjectTemplateGetAll} from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -68,8 +69,11 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const handleTemOpen = () => setTemOpen(true);
     const handleTemClose = () => setTemOpen(false);  
     const [expanded, setExpanded] = React.useState(false);
+    const [ObjectData, SetAllObjectData] = useState([])
+    const [TemplateData, SetAllTemplateData] = useState([])
 
   const handleChange = (panel) => (event, isExpanded) => {
+    console.log(panel);
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -82,6 +86,10 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         GetClientID()
     }, [])
 
+    useEffect(() => {
+        
+    }, [ObjectData])
+
     // Get Client ID
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
@@ -90,6 +98,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             SetUserID(UserDetails.UserID);
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
+        
     }
 
     // Get All Email Account Users
@@ -296,11 +305,55 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         callback: function (cmd, val) { 
             var editorInstance = this;
             if(val == "opt1"){
-                setOpen(true);
+                
+                var Data = {
+                    ClientID: ClientID,
+                    UserID: UserID,
+                  };
+                const ResponseApi = Axios({
+                    url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
+                    method: "POST",
+                    data: Data,
+                  });
+                  ResponseApi.then((Result) => {
+                    if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                        if (Result.data.PageData.length > 0) 
+                        {
+                            setExpanded(false)
+                            SetAllObjectData(Result.data.PageData)
+                            setOpen(true);
+                        }
+                    }else{
+                        SetAllObjectData('');
+                        toast.error(Result?.data?.Message);
+                    }
+                  });
                 // editorInstance.html.insert("{" + val + "}");
             }
             if(val == "opt2"){
-                setTemOpen(true);
+                var Data = {
+                    ClientID: ClientID,
+                    UserID: UserID,
+                  };
+                const ResponseApi = Axios({
+                    url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
+                    method: "POST",
+                    data: Data,
+                  });
+                  ResponseApi.then((Result) => {
+                    if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                        if (Result.data.PageData.length > 0) 
+                        {
+                            setExpanded(false);
+                            SetAllTemplateData(Result.data.PageData)
+                            setTemOpen(true);
+                        }
+                    }else{
+                        SetAllTemplateData('');
+                        toast.error(Result?.data?.Message);
+                    }
+                  });
+               
                 // editorInstance.html.insert("{" + val + "}");
             } 
         },
@@ -378,58 +431,27 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                 </div>
                 <div className='m-body'> 
                      <div className='listcardman'>  
-                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                     {ObjectData?.length > 1 && ObjectData?.map((row, index) => (
+                            <Accordion expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                 >
+                                    
                                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                        General settings
+                                        {row.Subject}
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography>
-                                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                                        Aliquam eget maximus est, id dignissim quam.
+                                    {parse(row.BodyText)}
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
+                     ))}
 
-                            <Accordion className='activetemplate' expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel2bh-content"
-                                    id="panel2bh-header"
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-                                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-                                        laoreet.
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion>
-
-                            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel3bh-content"
-                                    id="panel3bh-header"
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                        Advanced settings
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-                                        amet egestas eros, vitae egestas augue. Duis vel est augue.
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion> 
+                            
                      </div> 
 
                 </div>
@@ -456,58 +478,25 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                 </div>
                 <div className='m-body'> 
                      <div className='listcardman'>  
-                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                        General settings
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                                        Aliquam eget maximus est, id dignissim quam.
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion>
-
-                            <Accordion className='activetemplate' expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                                <AccordionSummary
+                         
+                     {TemplateData?.length > 1 && TemplateData?.map((row, index) => ( 
+                        <div className='cardtemplate'>
+                            <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                            <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                                <AccordionSummary 
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel2bh-content"
                                     id="panel2bh-header"
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Users</Typography>
+                                > 
                                 </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-                                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-                                        laoreet.
+                                <AccordionDetails >
+                                    <Typography >
+                                    {parse(row.BodyText)}
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
-
-                            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel3bh-content"
-                                    id="panel3bh-header"
-                                >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                        Advanced settings
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-                                        amet egestas eros, vitae egestas augue. Duis vel est augue.
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion> 
+                        </div>
+                        ))}
                      </div> 
 
                 </div>
