@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from "axios"
 
 import Button from '@mui/material/Button';
@@ -68,14 +68,14 @@ export default function RegisterPage() {
     var IsValidPassword = validatePassword(Password);
     var IsValidCPassword = validateConfirmPassword();
 
-    if(IsValiEmail==false){
+    if (IsValiEmail == false) {
       Isvalid = false
     }
 
-    if(IsValidPassword==false){
+    if (IsValidPassword == false) {
       Isvalid = false
     }
-    if(IsValidCPassword==false){
+    if (IsValidCPassword == false) {
       Isvalid = false
     }
 
@@ -98,8 +98,10 @@ export default function RegisterPage() {
     if (!/^.{6,20}$/i.test(Pwd)) {
       SetPasswordError("Password must be 6 to 20 chars long")
       return false;
+    } else {
+      SetPasswordError("")
     }
-   
+
     return true;
   };
 
@@ -135,7 +137,7 @@ export default function RegisterPage() {
     }
     else if (name == "password") {
       if (value != "") {
-        validatePassword(value);        
+        validatePassword(value);
       }
     }
 
@@ -184,7 +186,7 @@ export default function RegisterPage() {
     SetChecked(event.target.checked);
   };
 
-  function CancelButton(){
+  function CancelButton() {
     history.push("/Login")
   }
 

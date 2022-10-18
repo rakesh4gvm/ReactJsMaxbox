@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = 'Login | MAXBOX';
-   
+
   });
 
   // FromValidation start
@@ -60,6 +60,8 @@ export default function LoginPage() {
     if (!/^.{6,20}$/i.test(Pwd)) {
       setPassword("Password must be 6 to 20 chars long")
       return false;
+    } else {
+      setPassword("")
     }
 
     return true;

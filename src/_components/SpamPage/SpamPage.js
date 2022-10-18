@@ -1440,17 +1440,25 @@ export default function SpamPage() {
                 <Col lg={6}>
                   <Row className='userlist'>
                     <Col xs={2}>
-                      <span className="inboxuserpic">
-                        <img src={defaultimage} width="63px" alt="" />
-                      </span>
+                      {
+                        OpenMessage == 0 ? ''
+                          :
+                          <span className="inboxuserpic">
+                            <img src={defaultimage} width="63px" alt="" />
+                          </span>
+                      }
                     </Col>
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
                       {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName} <KeyboardArrowDownIcon /></h6> */}
                       <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
-                        <a onClick={Userdropdown}>
-                          <KeyboardArrowDownIcon />
-                        </a>
+                        {
+                          OpenMessage == 0 ? ''
+                            :
+                            <a onClick={Userdropdown}>
+                              <KeyboardArrowDownIcon />
+                            </a>
+                        }
                       </h6>
 
                       <div class="userdropall maxuserdropall" id="Userdropshow" ref={WrapperRef}>
@@ -1481,35 +1489,39 @@ export default function SpamPage() {
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
-                  <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    <Button onClick={HandleOpen}>
-                      <img src={iconleftright} />
-                    </Button>
-                    <Button>
-                      <label>{MailNumber} / {SpamList.length}</label>
-                    </Button>
-                    <Button onClick={OpenStarPopModel}>
-                      <img src={iconstar} title={"Starred"} />
-                    </Button>
-                    <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
-                      <img src={icontimer} />
-                    </Button>
-                    <Button onClick={OpenOtherInboxPopModel}>
-                      <img src={inbox} className="width36" title="Other Inbox" />
-                    </Button>
-                    <Button>
-                      <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
-                    </Button>
-                    <Button>
-                      <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
-                    </Button>
-                    {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title="Delete" />
-                    </Button>}
-                    <Button>
-                      <img src={iconmenu} />
-                    </Button>
-                  </ButtonGroup>
+                  {
+                    OpenMessage == 0 ? ''
+                      :
+                      <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
+                        <Button onClick={HandleOpen}>
+                          <img src={iconleftright} />
+                        </Button>
+                        <Button>
+                          <label>{MailNumber} / {SpamList.length}</label>
+                        </Button>
+                        <Button onClick={OpenStarPopModel}>
+                          <img src={iconstar} title={"Starred"} />
+                        </Button>
+                        <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
+                          <img src={icontimer} />
+                        </Button>
+                        <Button onClick={OpenOtherInboxPopModel}>
+                          <img src={inbox} className="width36" title="Other Inbox" />
+                        </Button>
+                        <Button>
+                          <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
+                        </Button>
+                        <Button>
+                          <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
+                        </Button>
+                        {<Button onClick={OpenDeletePopModel}>
+                          <img src={icondelete} title="Delete" />
+                        </Button>}
+                        <Button>
+                          <img src={iconmenu} />
+                        </Button>
+                      </ButtonGroup>
+                  }
                 </Col>
               </Row>
               <Row className='mb-3'>
@@ -1526,14 +1538,18 @@ export default function SpamPage() {
                 </Col>
               </Row>
               <div id="replaybx" className='d-flex mt-5 ml-2'>
-                <Row>
-                  <Col sm={6} className='p-0'>
-                    <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
-                  </Col>
-                  <Col sm={6} className='p-0'>
-                    <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
-                  </Col>
-                </Row>
+                {
+                  OpenMessage == 0 ? ''
+                    :
+                    <Row>
+                      <Col sm={6} className='p-0'>
+                        <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
+                      </Col>
+                      <Col sm={6} className='p-0'>
+                        <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
+                      </Col>
+                    </Row>
+                }
               </div>
               <div className='user_editor d-none mt-5'>
                 <Row className='userlist'>

@@ -734,28 +734,35 @@ export default function DraftsPage() {
                 <Col lg={6}>
                   <Row className='userlist'>
                     <Col xs={2}>
-                      <span className="inboxuserpic">
-                        <img src={defaultimage} width="63px" alt="" />
-                      </span>
+                      {
+                        OpenMessage == 0 ? ''
+                          :
+                          <span className="inboxuserpic">
+                            <img src={defaultimage} width="63px" alt="" />
+                          </span>
+                      }
                     </Col>
-
                   </Row>
                 </Col>
                 <Col lg={6} Align="right">
-                  <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
-                    {/* <Button onClick={HandleOpen}>
+                  {
+                    OpenMessage == 0 ? ''
+                      :
+                      <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
+                        {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
                     </Button> */}
-                    <Button>
-                      <label>{MailNumber} / {DraftList.length}</label>
-                    </Button>
-                    {<Button onClick={OpenDeletePopModel}>
-                      <img src={icondelete} title={"Delete"} />
-                    </Button>}
-                    <Button>
-                      <img src={iconmenu} />
-                    </Button>
-                  </ButtonGroup>
+                        <Button>
+                          <label>{MailNumber} / {DraftList.length}</label>
+                        </Button>
+                        {<Button onClick={OpenDeletePopModel}>
+                          <img src={icondelete} title={"Delete"} />
+                        </Button>}
+                        <Button>
+                          <img src={iconmenu} />
+                        </Button>
+                      </ButtonGroup>
+                  }
                 </Col>
               </Row>
               <Row className='mb-3'>
