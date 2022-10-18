@@ -64,6 +64,8 @@ export default function Header() {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [AllTotalRecords, SetAllTotalRecords] = useState()
+    const [UnansweredResponsesCount, SetUnansweredResponsesCount] = useState([])
+    const [UnansweredRepliesCount, SetUnansweredRepliesCount] = useState([])
 
     useEffect(() => {
         GetClientID()
@@ -150,7 +152,7 @@ export default function Header() {
     }
 
     // Open Pop User Details
-    const OpenPopupUserDetails = () => {
+    const OpenPopupUserDetails = async () => {
         var UserID
         var ClientID
         var Details = GetUserDetails();
@@ -160,7 +162,7 @@ export default function Header() {
         }
         var Data = {
             ClientID: ClientID,
-            UserID: UserID
+            UserID: UserID,
         }
 
         const ResponseApi = Axios({
@@ -168,10 +170,28 @@ export default function Header() {
             method: "POST",
             data: Data,
         });
-        ResponseApi.then((Result) => {
+        await ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 if (Result.data.Data.length > 0) {
                     SetUserDetails(Result.data.Data[0])
+                    var AccountIDs = Result.data.Data[0].EmailAccount.map((res) => res.AccountID)
+
+                    var Data = {
+                        ClientID: ClientID,
+                        UserID: UserID,
+                        AccountIDs: AccountIDs
+                    }
+                    const ResponseApi = Axios({
+                        url: CommonConstants.MOL_APIURL + "/receive_email_history/GetUnansweredCount",
+                        method: "POST",
+                        data: Data,
+                    });
+                    ResponseApi.then((Result) => {
+                        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                            SetUnansweredResponsesCount(Result.data.UnansweredResponsesCount)
+                            SetUnansweredRepliesCount(Result.data.UnansweredRepliesCount)
+                        }
+                    })
                     const Element = document.getElementById("id_userbox")
                     if (Element.classList.contains("show")) {
                         Element.classList.remove("show");
@@ -208,13 +228,23 @@ export default function Header() {
     const WrapperRef = useRef(null);
     UseOutsideAlerter(WrapperRef);
 
+    const ResponsesCount = (ID) => {
+        const Result = UnansweredResponsesCount.find((element) => element.AccountID === ID)
+        return Result?.Count
+    }
+
+    const RepliesCount = (ID) => {
+        const Result = UnansweredRepliesCount.find((element) => element.AccountID === ID)
+        return Result?.Count
+    }
+
     return (
         <>
             <header className='header-main'>
                 <Navbar expand="lg">
                     <div className='left'>
                         <Navbar.Brand href="/UnansweredResponses">
-                            <img src={Mlogo}  />
+                            <img src={Mlogo} />
                         </Navbar.Brand>
                     </div>
                     <div className='menulist right'>
@@ -358,12 +388,15 @@ export default function Header() {
                                                     }
                                                 />
                                                 <ul className='d-flex flexlist'>
-                                                    <li><a href=''><img src={Chatmail} /><span className='orange'>unawser response</span></a></li>
-                                                    <li><a href=''><img src={Chatmail} /><span className='blue'>unawser replies</span></a></li>
+                                                    <li><a href=''><img src={Chatmail} /><span className='orange'>
+                                                        {ResponsesCount(row._id)}
+                                                    </span></a></li>
+                                                    <li><a href=''><img src={Chatmail} /><span className='blue'>
+                                                        {RepliesCount(row._id)}
+                                                    </span></a></li>
                                                 </ul>
                                             </ListItem>
                                         ))}
-
                                         <ListItem alignItems="flex-start" >
                                             <ListItemAvatar>
                                                 <Avatar alt="Remy Sharp" src={iconlogout} className='max-40' />
