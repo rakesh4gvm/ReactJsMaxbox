@@ -80,6 +80,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 const Style = {
@@ -204,6 +206,7 @@ export default function FollowUpLetterPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          document.getElementById("hideloding").style.display = "none";
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetInBoxList([])
@@ -1012,6 +1015,11 @@ export default function FollowUpLetterPage() {
   return (
     <>
       <div>
+
+        <div id="hideloding" className="loding-display">
+          <img src={MaxboxLoading} />
+        </div>
+        
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}

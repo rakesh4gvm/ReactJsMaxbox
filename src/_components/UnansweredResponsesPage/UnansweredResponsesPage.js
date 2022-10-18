@@ -66,6 +66,7 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 import chatquestion from '../../images/icons/chatquestion.svg';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 
 import { EditorVariableNames } from "../../_helpers/Utility";
@@ -211,6 +212,7 @@ export default function UnansweredResponsesPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          document.getElementById("hideloding").style.display = "none";
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetUnansweredResponsesList([])
@@ -1063,6 +1065,11 @@ export default function UnansweredResponsesPage() {
 
     <>
       <div>
+
+        <div id="hideloding" className="loding-display">
+          <img src={MaxboxLoading} />
+        </div>
+
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
