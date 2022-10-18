@@ -77,6 +77,16 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     setExpanded(isExpanded ? panel : false);
   };
 
+  const ActiveClass=(panel)=>()=>{
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if(elementcs.length>0){
+        for (var i = elementcs.length - 1; i >= 0; i--) {
+            elementcs[i].classList.remove("active");
+          }
+}
+    element.classList.add("active");
+  }
 
     const [Signature, SetSignature] = useState({
         Data: ""
@@ -86,10 +96,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         GetClientID()
     }, [])
 
-    useEffect(() => {
-        
-    }, [ObjectData])
-
+ 
     // Get Client ID
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
@@ -480,7 +487,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                      <div className='listcardman'>  
                          
                      {TemplateData?.length > 1 && TemplateData?.map((row, index) => ( 
-                        <div className='cardtemplate'>
+                        <div className='cardtemplate'  onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                             <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
                             <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
                                 <AccordionSummary 
