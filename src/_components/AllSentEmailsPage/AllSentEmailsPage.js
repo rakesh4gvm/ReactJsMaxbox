@@ -280,8 +280,12 @@ export default function AllSentEnailsPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SentMailsChecked.length > 0) {
+    if (SelectAllCheckbox) {
       SetAllDeletePopModel(true);
+    } else if (SentMailsChecked.length > 0) {
+      SetDeletePopModel(true);
+    } else {
+      SetDeletePopModel(false);
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -926,7 +930,7 @@ export default function AllSentEnailsPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a email.
+                you want to delete a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -953,7 +957,7 @@ export default function AllSentEnailsPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a all email.
+                you want to delete all email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
