@@ -975,6 +975,25 @@ div.modal-prein {
     color: #616B77;
 }
 
+.input-pasbox > div {
+    border: 1px solid #E5E5E5;
+    border-radius: 15px;
+    width: 100%;
+    /* padding: 0 15px; */
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 50px;
+    color: #616B77;
+    background: #e8f0fe;
+    outline: 0;
+}
+.input-pasbox fieldset legend{
+    display: none;
+}
+.input-pasbox fieldset{
+    border: 0 !important;
+}
+
 .select-box {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -1277,7 +1296,9 @@ Button.btntemplateround:hover {
 .sign-main label {
     color: #909092;
 }
-
+.sign-main label .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
+    padding: 0 9px;
+}
 /* div#menu- {
     margin-top: 41px;
 } */
@@ -1292,6 +1313,7 @@ Button.btntemplateround:hover {
 
 .header-white .navbar {
     justify-content: space-between;
+    padding: 0.5rem 0rem;
 }
 
 button#Variable-1 {

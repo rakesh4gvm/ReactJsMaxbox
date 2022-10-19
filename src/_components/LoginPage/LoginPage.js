@@ -15,6 +15,14 @@ import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails } from '../../_helpers/Utility'
+ 
+import IconButton from '@mui/material/IconButton'; 
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment'; 
+import FormControl from '@mui/material/FormControl'; 
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 
 
@@ -22,6 +30,29 @@ export default function LoginPage() {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
+
+  const [values, setValues] = React.useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
+  const handleChanges = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   useEffect(() => {
     document.title = 'Login | MAXBOX';
@@ -185,7 +216,7 @@ export default function LoginPage() {
 
     });
   }
-
+ 
   const Register = () => {
     history.push('/Register');
   }
@@ -220,15 +251,36 @@ export default function LoginPage() {
             </Row>
             <Row>
               <Col sm={4}>
-                <div className='input-box'>
-                  <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
-                  {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
-                </div>
+              <div className='input-box'>
+                <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
+                {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
+              </div> 
+              <div className='input-pasbox'>                 
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={values.showPassword ? 'text' : 'password'}
+                    value={values.password}
+                    onChange={handleChanges('password')}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />                 
+              </div> 
               </Col>
               <Col>
               </Col>
             </Row>
-            <Row>
+            <Row className='mt-4'>
               <Col sm={4}>
                 <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Remember me" />

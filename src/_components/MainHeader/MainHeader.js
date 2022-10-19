@@ -60,13 +60,13 @@ export default function Header() {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                         <Nav className="me-auto dropdec">  
-                            <NavDropdown.Item href="#">
+                            <NavDropdown.Item href="Home">
                                 Home
                             </NavDropdown.Item> 
-                            <NavDropdown.Item href="#">
+                            <NavDropdown.Item href="About">
                                 About
                             </NavDropdown.Item> 
-                            <NavDropdown.Item href="#">
+                            <NavDropdown.Item href="Contact">
                                 Contact
                             </NavDropdown.Item> 
                             {window.location.pathname.toString() != "/"?
