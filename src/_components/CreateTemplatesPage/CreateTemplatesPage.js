@@ -101,6 +101,7 @@ export default function CreateTemplatesPage({ children }) {
 
   //set editor buttons (config)
   const config = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
@@ -173,7 +174,7 @@ export default function CreateTemplatesPage({ children }) {
 
   // Check Template Exists
   const CheckExistTemplates = async (Subject) => {
-    
+
     var Data = { Subject: Subject, ClientID: ClientID }
 
     const ResponseApi = await Axios({

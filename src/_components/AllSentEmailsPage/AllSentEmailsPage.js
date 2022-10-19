@@ -197,6 +197,7 @@ export default function AllSentEnailsPage() {
           } else {
             OpenMessageDetails('');
           }
+          toast.error(<div>All Sent Emails <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -671,6 +672,7 @@ export default function AllSentEnailsPage() {
   });
   // Check Client Exists
   const config = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
@@ -841,6 +843,7 @@ export default function AllSentEnailsPage() {
   });
   // Check Client Exists
   const forwardconfig = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],

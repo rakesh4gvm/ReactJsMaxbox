@@ -264,6 +264,7 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
         }
     });
     const config = {
+        quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],

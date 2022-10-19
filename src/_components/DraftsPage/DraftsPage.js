@@ -160,6 +160,7 @@ export default function DraftsPage() {
           } else {
             OpenMessageDetails('');
           }
+          toast.error(<div>Drafts <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
       }
