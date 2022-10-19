@@ -98,6 +98,7 @@ export default function EditTemplatesPage(props) {
     // });
 
     const config = {
+        quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html'],

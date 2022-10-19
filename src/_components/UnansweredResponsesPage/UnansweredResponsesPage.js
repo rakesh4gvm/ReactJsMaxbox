@@ -227,6 +227,7 @@ export default function UnansweredResponsesPage() {
           } else {
             OpenMessageDetails('')
           }
+          toast.error(<div>Unanswered Responses <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
       } else {
@@ -300,6 +301,7 @@ export default function UnansweredResponsesPage() {
           } else {
             SetUnansweredResponsesList([])
             SetOpenMessageDetails([]);
+            toast.error(<div>Starred <br />No Data.</div>)
           }
         }
         else {
@@ -878,6 +880,7 @@ export default function UnansweredResponsesPage() {
   });
   // Check Client Exists
   const config = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
@@ -995,6 +998,7 @@ export default function UnansweredResponsesPage() {
   });
   // Check Client Exists
   const forwardconfig = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],

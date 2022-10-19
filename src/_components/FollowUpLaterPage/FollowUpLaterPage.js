@@ -222,6 +222,7 @@ export default function FollowUpLetterPage() {
           } else {
             OpenMessageDetails('');
           }
+          toast.error(<div>Follow Up Later <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -777,6 +778,7 @@ export default function FollowUpLetterPage() {
   });
   // Check Client Exists
   const config = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
@@ -947,6 +949,7 @@ export default function FollowUpLetterPage() {
   });
   // Check Client Exists
   const forwardconfig = {
+    quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],

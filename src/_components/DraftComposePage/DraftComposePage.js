@@ -266,6 +266,7 @@ export default function DraftComposePage({ GetDraftList }) {
         }
     });
     const config = {
+        quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],

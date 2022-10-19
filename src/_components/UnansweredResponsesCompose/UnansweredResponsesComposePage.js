@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail, ObjectTemplateGetAll} from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, ObjectTemplateGetAll } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -26,8 +26,8 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
- 
-import Box from '@mui/material/Box'; 
+
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,19 +35,19 @@ import { display } from '@mui/system';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary'; 
+import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
 };
 
 toast.configure();
@@ -64,29 +64,29 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [Bccflag, SetBccflag] = useState(false);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false); 
+    const handleClose = () => setOpen(false);
     const [temopen, setTemOpen] = React.useState(false);
     const handleTemOpen = () => setTemOpen(true);
-    const handleTemClose = () => setTemOpen(false);  
+    const handleTemClose = () => setTemOpen(false);
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
-    setExpanded(isExpanded ? panel : false);
-  };
+    const handleChange = (panel) => (event, isExpanded) => {
+        console.log(panel);
+        setExpanded(isExpanded ? panel : false);
+    };
 
-  const ActiveClass=(panel)=>()=>{
-    const element = document.getElementById(panel)
-    const elementcs = document.getElementsByClassName("active")
-    if(elementcs.length>0){
-        for (var i = elementcs.length - 1; i >= 0; i--) {
-            elementcs[i].classList.remove("active");
-          }
-}
-    element.classList.add("active");
-  }
+    const ActiveClass = (panel) => () => {
+        const element = document.getElementById(panel)
+        const elementcs = document.getElementsByClassName("active")
+        if (elementcs.length > 0) {
+            for (var i = elementcs.length - 1; i >= 0; i--) {
+                elementcs[i].classList.remove("active");
+            }
+        }
+        element.classList.add("active");
+    }
 
     const [Signature, SetSignature] = useState({
         Data: ""
@@ -96,7 +96,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         GetClientID()
     }, [])
 
- 
+
     // Get Client ID
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
@@ -105,7 +105,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             SetUserID(UserDetails.UserID);
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
-        
+
     }
 
     // Get All Email Account Users
@@ -308,61 +308,59 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         options: {
             'opt1': 'Objections',
             'opt2': 'Templates'
-            },
-        callback: function (cmd, val) { 
+        },
+        callback: function (cmd, val) {
             var editorInstance = this;
-            if(val == "opt1"){
-                
+            if (val == "opt1") {
+
                 var Data = {
                     ClientID: ClientID,
                     UserID: UserID,
-                  };
+                };
                 const ResponseApi = Axios({
                     url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
                     method: "POST",
                     data: Data,
-                  });
-                  ResponseApi.then((Result) => {
+                });
+                ResponseApi.then((Result) => {
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                        if (Result.data.PageData.length > 0) 
-                        {
+                        if (Result.data.PageData.length > 0) {
                             setExpanded(false)
                             SetAllObjectData(Result.data.PageData)
                             setOpen(true);
                         }
-                    }else{
+                    } else {
                         SetAllObjectData('');
                         toast.error(Result?.data?.Message);
                     }
-                  });
+                });
                 // editorInstance.html.insert("{" + val + "}");
             }
-            if(val == "opt2"){
+            if (val == "opt2") {
                 var Data = {
                     ClientID: ClientID,
                     UserID: UserID,
-                  };
+                };
                 const ResponseApi = Axios({
                     url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
                     method: "POST",
                     data: Data,
-                  });
-                  ResponseApi.then((Result) => {
+                });
+                ResponseApi.then((Result) => {
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                        if (Result.data.PageData.length > 0) 
-                        {
+                        if (Result.data.PageData.length > 0) {
                             setExpanded(false);
                             SetAllTemplateData(Result.data.PageData)
                             setTemOpen(true);
                         }
-                    }else{
+                    } else {
                         SetAllTemplateData('');
                         toast.error(Result?.data?.Message);
                     }
-                  });
-               
+                });
+
                 // editorInstance.html.insert("{" + val + "}");
-            } 
+            }
         },
         // Callback on refresh.
         refresh: function ($btn) {
@@ -393,6 +391,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     });
     const config = {
+        quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
@@ -408,7 +407,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     var editor = new FroalaEditor('.send', {}, function () {
         editor.button.buildList();
     })
- 
+
 
     // // Frola Editor Ends    
     // function openModal(e) {
@@ -422,101 +421,101 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     useOutsideAlerter(WrapperRef);
 
     return (
-        <> 
-        
-            <Modal  className="modal-lister"
+        <>
+
+            <Modal className="modal-lister"
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                <div className='m-head'>
-                    <Typography id="modal-modal-title" variant="h4" component="h4">
-                        Select Objection
-                    </Typography>
-                </div>
-                <div className='m-body'> 
-                     <div className='listcardman'>  
-                     {ObjectData?.length > 1 && ObjectData?.map((row, index) => (
-                            <Accordion expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
-                                >
-                                    
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                        {row.Subject}
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                    {parse(row.BodyText)}
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion>
-                     ))}
+                    <div className='m-head'>
+                        <Typography id="modal-modal-title" variant="h4" component="h4">
+                            Select Objection
+                        </Typography>
+                    </div>
+                    <div className='m-body'>
+                        <div className='listcardman'>
+                            {ObjectData?.length > 1 && ObjectData?.map((row, index) => (
+                                <Accordion expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                    >
 
-                            
-                     </div> 
+                                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                            {row.Subject}
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>
+                                            {parse(row.BodyText)}
+                                        </Typography>
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))}
 
-                </div>
-                <div className='m-fotter' align="right">  
-                    <ButtonGroup variant="text" aria-label="text button group">
-                        <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleClose}> Cancel</Button>
-                        <Button variant="contained btn btn-primary smallbtn" > Select</Button>
-                    </ButtonGroup>
-                </div> 
+
+                        </div>
+
+                    </div>
+                    <div className='m-fotter' align="right">
+                        <ButtonGroup variant="text" aria-label="text button group">
+                            <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleClose}> Cancel</Button>
+                            <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                        </ButtonGroup>
+                    </div>
                 </Box>
-            </Modal>  
+            </Modal>
 
-            <Modal  className="modal-lister"
+            <Modal className="modal-lister"
                 open={temopen}
                 onClose={handleTemClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                <div className='m-head'>
-                    <Typography id="modal-modal-title" variant="h4" component="h4">
-                        Select Template
-                    </Typography>
-                </div>
-                <div className='m-body'> 
-                     <div className='listcardman'>  
-                         
-                     {TemplateData?.length > 1 && TemplateData?.map((row, index) => ( 
-                        <div className='cardtemplate'  onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
-                            <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                            <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
-                                <AccordionSummary 
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel2bh-content"
-                                    id="panel2bh-header"
-                                > 
-                                </AccordionSummary>
-                                <AccordionDetails >
-                                    <Typography >
-                                    {parse(row.BodyText)}
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion>
-                        </div>
-                        ))}
-                     </div> 
+                    <div className='m-head'>
+                        <Typography id="modal-modal-title" variant="h4" component="h4">
+                            Select Template
+                        </Typography>
+                    </div>
+                    <div className='m-body'>
+                        <div className='listcardman'>
 
-                </div>
-                <div className='m-fotter' align="right">  
-                    <ButtonGroup variant="text" aria-label="text button group">
-                        <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
-                        <Button variant="contained btn btn-primary smallbtn" > Select</Button>
-                    </ButtonGroup>
-                </div> 
+                            {TemplateData?.length > 1 && TemplateData?.map((row, index) => (
+                                <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
+                                    <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                                    <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel2bh-content"
+                                            id="panel2bh-header"
+                                        >
+                                        </AccordionSummary>
+                                        <AccordionDetails >
+                                            <Typography >
+                                                {parse(row.BodyText)}
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                    <div className='m-fotter' align="right">
+                        <ButtonGroup variant="text" aria-label="text button group">
+                            <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
+                            <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                        </ButtonGroup>
+                    </div>
                 </Box>
-            </Modal>  
-           
-        
+            </Modal>
+
+
 
             <div className='composebody'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>

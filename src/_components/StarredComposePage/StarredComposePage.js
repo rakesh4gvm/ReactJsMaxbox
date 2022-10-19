@@ -43,7 +43,7 @@ export default function StarredComposePage({ GetStarredList }) {
     })
 
     useEffect(() => {
-        
+
         GetClientID()
     }, [])
 
@@ -266,6 +266,7 @@ export default function StarredComposePage({ GetStarredList }) {
         }
     });
     const config = {
+        quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
