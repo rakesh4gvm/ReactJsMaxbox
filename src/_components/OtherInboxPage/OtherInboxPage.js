@@ -358,8 +358,12 @@ export default function OtherInboxPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (InboxChecked.length > 0) {
+    if (SelectAllCheckbox) {
       SetAllDeletePopModel(true);
+    } else if (InboxChecked.length > 0) {
+      SetDeletePopModel(true);
+    } else {
+      SetDeletePopModel(false);
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -1059,7 +1063,7 @@ export default function OtherInboxPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a email.
+                you want to delete a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -1086,7 +1090,7 @@ export default function OtherInboxPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a all email.
+                you want to delete all email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
