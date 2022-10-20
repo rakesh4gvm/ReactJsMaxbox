@@ -250,7 +250,7 @@ export default function AddClientPage({ children }) {
                 </Col>
                 <Col sm={8}>
                 </Col>
-                <Col sm={12}>
+                <Col sm={12} className="vardroper">
                   <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
                   {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                   {/* <FroalaEditor config={config} /> */}

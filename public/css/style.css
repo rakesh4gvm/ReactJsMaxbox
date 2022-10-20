@@ -177,6 +177,9 @@ span.userpic img {
     position: relative;
     padding: 10px 10px 10px 15px !important;
 }
+.MuiPaper-root.cardinboxlist p{
+    line-break: anywhere;
+}
 .MuiPaper-root.cardinboxlist:hover { 
     border-right: 4px solid #647af7; 
     background-color: #F7F8FF;
@@ -241,7 +244,7 @@ span.userpic img {
 .cardinboxlist h4 {
     font-style: normal;
     font-weight: 300;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 25px;
     color: #616B77;
     margin: 0;
@@ -250,8 +253,8 @@ span.userpic img {
 .cardinboxlist h3 {
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 30px;
+    font-size: 14px;
+    line-height: normal;
     color: #242424;
     margin-top: 0;
 }
@@ -615,6 +618,8 @@ ul.d-flex.flexlist {
 
 .textdeclist>.MuiList-root {
     max-width: inherit;
+    max-height: 250px; 
+    overflow-y: auto;
 }
 
 .maxcontainerix div .Mui-checked,
@@ -1847,6 +1852,34 @@ img.width36{
     width: 100px;
     margin: 0 auto;
   }
+  .carduser_details h4{
+    font-size: 1.1rem;
+  }
+  .carduser_details a{
+    font-size: 0.9rem;
+  }
+  .textdeclist h5{
+    font-size: 1rem;
+  }
+  .vardroper div div div button:nth-child(7){
+    padding-right: 15px !important;
+  }
+  .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active, 
+  .fr-toolbar .fr-command.fr-btn.fr-dropdown:hover{
+    background-color: transparent !important;
+  }
+.rightinbox  .inxtexteditor .iconlistinbox.btn-group button img {
+    width: 25px;
+}
+.rightinbox .inxtexteditor .iconlistinbox.btn-group button {
+    min-width: 35px;
+    padding: 6px 8px;
+}
+.infinite-scroll-component__outerdiv .infinite-scroll-component {
+    overflow-x: hidden !important;
+}
+
+
 
 @media screen and (max-width:990px) {
     .mobile-nav {

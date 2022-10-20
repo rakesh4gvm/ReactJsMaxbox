@@ -230,7 +230,7 @@ export default function EditClientPage(props) {
                                 </Col>
                                 <Col sm={8}>
                                 </Col>
-                                <Col sm={12}><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                                <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
                                 {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                             </Row>
                         </Col>

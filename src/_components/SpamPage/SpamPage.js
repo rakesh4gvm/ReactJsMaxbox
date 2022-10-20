@@ -1236,7 +1236,7 @@ export default function SpamPage() {
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
               <Tooltip title="Spam"><a className='m-4'><img src={timermenu} /></a></Tooltip>
             </div>
-            <div className='navsmaller px-0 py-4 leftinbox'>
+            <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>
                 <Row>
                   <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Spam</h3> </Col>
