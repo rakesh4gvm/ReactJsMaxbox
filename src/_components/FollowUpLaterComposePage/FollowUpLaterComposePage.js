@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -24,6 +24,8 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 
@@ -135,7 +137,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
 
     // Sent Mail Starts
     const SentMail = async () => {
-
+        LoaderShow()
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
@@ -195,6 +197,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                     toast.success(<div>Follow Up Later<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
+                    LoaderHide()
                     // GetFollowUpLaterList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
@@ -287,6 +290,11 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
 
     return (
         <>
+
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
+
             <div className='composebody'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
                 <div className="usercompose" id="UserCompose" ref={WrapperRef}>

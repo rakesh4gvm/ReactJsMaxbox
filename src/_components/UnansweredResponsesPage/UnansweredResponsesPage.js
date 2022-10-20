@@ -53,7 +53,7 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -66,7 +66,6 @@ import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import google_drive from '../../images/icons/google_drive.svg';
 import chatquestion from '../../images/icons/chatquestion.svg';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 
 import { EditorVariableNames } from "../../_helpers/Utility";
@@ -211,11 +210,12 @@ export default function UnansweredResponsesPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
-          document.getElementById("hideloding").style.display = "none";
+          LoaderHide()
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetUnansweredResponsesList([])
           OpenMessageDetails('')
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -227,6 +227,7 @@ export default function UnansweredResponsesPage() {
           } else {
             OpenMessageDetails('')
           }
+          LoaderHide()
           toast.error(<div>Unanswered Responses <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -270,6 +271,7 @@ export default function UnansweredResponsesPage() {
           SetUnansweredResponsesList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetUnansweredResponsesList([...UnansweredResponsesList]);
           OpenMessageDetails('');
@@ -341,6 +343,7 @@ export default function UnansweredResponsesPage() {
           toast.success(<div>Unanswered Responses <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -352,12 +355,10 @@ export default function UnansweredResponsesPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (UnansweredResponsesChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (UnansweredResponsesChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -379,6 +380,7 @@ export default function UnansweredResponsesPage() {
           toast.success(<div>Unanswered Responses <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetUnansweredResponsesChecked([]);
@@ -415,6 +417,7 @@ export default function UnansweredResponsesPage() {
           toast.success(<div>Unanswered Responses <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUpdatedUnansweredResponsesList(ClientID, UserID);
         } else {
           toast.error(Result?.data?.Message);
@@ -448,6 +451,7 @@ export default function UnansweredResponsesPage() {
           toast.success(<div>Unanswered Responses  <br />Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
@@ -491,6 +495,7 @@ export default function UnansweredResponsesPage() {
               toast.success(<div>Unanswered Responses  <br />Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
+              LoaderShow()
               GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
             }
             else {
@@ -635,14 +640,15 @@ export default function UnansweredResponsesPage() {
   const FromEmailDropdownListCheckbox = (e) => {
     localStorage.removeItem("DropdownCheckData");
     var UpdatedList = [...FromEmailDropdownListChecked];
-
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetUnansweredResponcesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetUnansweredResponcesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -658,6 +664,7 @@ export default function UnansweredResponsesPage() {
 
   // Start Page Refresh
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetUnansweredResponsesList([])
@@ -794,6 +801,7 @@ export default function UnansweredResponsesPage() {
 
   // Starts Reply Send Mail
   const ReplySendMail = () => {
+    LoaderShow()
     var ToEmail = OpenMessage.FromEmail;
     var ToName = OpenMessage.FromName
     var ID = OpenMessage._id
@@ -821,6 +829,7 @@ export default function UnansweredResponsesPage() {
           toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
           ReplyPopModelClose();
           SetSignature({ Data: "" })
+          LoaderHide()
         }
         else {
           toast.error(Result?.data?.Message);
@@ -904,6 +913,7 @@ export default function UnansweredResponsesPage() {
 
   // Forward Send Mail Starts
   const ForwardSendMail = (ObjMailData) => {
+    LoaderShow()
     var ToEmail = document.getElementById("to").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
@@ -936,6 +946,7 @@ export default function UnansweredResponsesPage() {
             toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
             ForwardPopModelClose();
             SetForwardSignature({ Data: "" })
+            LoaderHide()
           }
           else {
             ForwardPopModelClose();
@@ -1073,10 +1084,6 @@ export default function UnansweredResponsesPage() {
     <>
       <div>
 
-        <div id="hideloding" className="loding-display">
-          <img src={MaxboxLoading} />
-        </div>
-
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
@@ -1117,7 +1124,7 @@ export default function UnansweredResponsesPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

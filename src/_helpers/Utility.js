@@ -64,3 +64,10 @@ export function ValidateEmail(Email) {
 };
 
 
+export function LoaderShow() {
+    return document.getElementById("hideloding").style.display = "flex";
+}
+
+export function LoaderHide() {
+    return document.getElementById("hideloding").style.display = "none";
+}

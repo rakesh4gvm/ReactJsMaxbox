@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail, ObjectTemplateGetAll } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, ObjectTemplateGetAll, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -37,6 +37,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 const style = {
     position: 'absolute',
@@ -187,7 +188,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     // Sent Mail
     const SentMail = async () => {
-
+        LoaderShow()
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
@@ -246,6 +247,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     toast.success(<div>Unanswered Responses <br />Mail send successfully.</div>);
                     OpenCompose();
                     CloseCompose()
+                    LoaderHide()
                     // GetUnansweredResponsesList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
@@ -422,6 +424,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     return (
         <>
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
 
             <Modal className="modal-lister"
                 open={open}

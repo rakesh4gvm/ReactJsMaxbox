@@ -53,7 +53,7 @@ import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FollowUpLaterComposePage from '../FollowUpLaterComposePage/FollowUpLaterComposePage';
 
@@ -206,11 +206,12 @@ export default function FollowUpLetterPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
-          document.getElementById("hideloding").style.display = "none";
+          LoaderHide()
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetInBoxList([])
           OpenMessageDetails('')
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -222,6 +223,7 @@ export default function FollowUpLetterPage() {
           } else {
             OpenMessageDetails('');
           }
+          LoaderHide()
           toast.error(<div>Follow Up Later <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -263,6 +265,7 @@ export default function FollowUpLetterPage() {
           SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else {
           SetInBoxList([...InBoxList]);
@@ -337,6 +340,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -348,12 +352,10 @@ export default function FollowUpLetterPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (FollowUpLaterChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (FollowUpLaterChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -375,6 +377,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetFollowUpLaterChecked([]);
@@ -411,6 +414,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -444,6 +448,7 @@ export default function FollowUpLetterPage() {
           toast.success(<div>Follow Up Later <br />Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUpdatedFollowUpLaterList(ClientID, UserID);
         }
         else {
@@ -588,10 +593,12 @@ export default function FollowUpLetterPage() {
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetFollowUpLetterList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetFollowUpLetterList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -600,6 +607,7 @@ export default function FollowUpLetterPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetInBoxList([])
@@ -694,6 +702,7 @@ export default function FollowUpLetterPage() {
 
   // Reply Send Mail Starts
   const ReplySendMail = () => {
+    LoaderShow()
     var ToEmail = OpenMessage.FromEmail;
     var ToName = OpenMessage.FromName
     var ID = OpenMessage._id
@@ -718,6 +727,7 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Follow Up Later <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
+          LoaderHide()
           ReplyPopModelClose();
         }
         else {
@@ -852,7 +862,7 @@ export default function FollowUpLetterPage() {
 
   // Forward Send Mail Starts
   const ForwardSendMail = () => {
-
+    LoaderShow()
     var ToEmail = document.getElementById("to").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
@@ -885,6 +895,7 @@ export default function FollowUpLetterPage() {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Follow Up Later <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
+            LoaderHide()
             ForwardPopModelClose();
           }
           else {
@@ -1023,10 +1034,6 @@ export default function FollowUpLetterPage() {
     <>
       <div>
 
-        <div id="hideloding" className="loding-display">
-          <img src={MaxboxLoading} />
-        </div>
-
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
@@ -1067,7 +1074,7 @@ export default function FollowUpLetterPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
