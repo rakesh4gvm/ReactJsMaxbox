@@ -31,7 +31,7 @@ import { Col, Row } from 'react-bootstrap';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import parse from "html-react-parser";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import defaultimage from '../../images/default.png';
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowRight from '@material-ui/icons/ArrowRight';
@@ -149,6 +149,7 @@ export default function DraftsPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -160,6 +161,7 @@ export default function DraftsPage() {
           } else {
             OpenMessageDetails('');
           }
+          LoaderHide()
           toast.error(<div>Drafts <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -221,6 +223,7 @@ export default function DraftsPage() {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
+    debugger
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -235,9 +238,10 @@ export default function DraftsPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.error(<div>Draft <br />Draft template deleted successfully.</div>);
+          toast.success(<div>Draft <br />Draft template deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetDraftList(ClientID, UserID, Page, "");
         } else {
           toast.error(Result?.data?.Message);
@@ -249,18 +253,17 @@ export default function DraftsPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (InboxChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (InboxChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
     SetAllDeletePopModel(false);
   }
   const DeleteAllMessage = () => {
+    debugger
     if (InboxChecked.length > 0) {
       var Data = {
         IDs: InboxChecked,
@@ -276,6 +279,7 @@ export default function DraftsPage() {
           toast.success(<div>Draft <br />Draft template deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetDraftList(ClientID, UserID, Page, "");
           SetSelectAllCheckbox(false);
           SetInboxChecked([]);
@@ -321,12 +325,14 @@ export default function DraftsPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     // SetDraftList([])
     SetSelectAllCheckbox(false);
     SetSearchInbox('');
     SetInboxChecked([]);
+    GetDraftList(ClientID, UserID, Page, "");
   }
 
   // Get Total Total Record Count
@@ -453,6 +459,7 @@ export default function DraftsPage() {
   return (
     <>
       <div>
+
         <Modal className="modal-pre"
           open={DeletePopModel}
           onClose={CloseDeletePopModel}
@@ -493,7 +500,7 @@ export default function DraftsPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

@@ -53,7 +53,7 @@ import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
@@ -206,10 +206,12 @@ export default function SpamPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetSpamList([])
           OpenMessageDetails('')
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -221,6 +223,7 @@ export default function SpamPage() {
           } else {
             OpenMessageDetails('');
           }
+          LoaderHide()
           toast.error(<div>Spam <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -262,6 +265,7 @@ export default function SpamPage() {
           SetSpamList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else {
           SetSpamList([...SpamList]);
@@ -336,6 +340,7 @@ export default function SpamPage() {
           toast.success(<div>Spam <br />Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -347,12 +352,10 @@ export default function SpamPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (SpamChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (SpamChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -374,6 +377,7 @@ export default function SpamPage() {
           toast.success(<div>Spam <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetSpamChecked([]);
@@ -410,6 +414,7 @@ export default function SpamPage() {
           toast.success(<div>Spam  <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetUpdatedSpamList(ClientID, UserID);
         } else {
           toast.error(Result?.data?.Message);
@@ -451,6 +456,7 @@ export default function SpamPage() {
               toast.success(<div>Spam <br />Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
+              LoaderShow()
               GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
             } else {
               toast.error(Result?.data?.Message);
@@ -491,6 +497,7 @@ export default function SpamPage() {
           toast.success(<div>Spam  <br />Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
@@ -634,10 +641,12 @@ export default function SpamPage() {
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetSpamList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetSpamList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -647,6 +656,7 @@ export default function SpamPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetSpamList([])
@@ -751,6 +761,7 @@ export default function SpamPage() {
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -767,6 +778,7 @@ export default function SpamPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Spam  <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
+          LoaderHide()
           ReplyPopModelClose();
         }
         else {
@@ -914,6 +926,7 @@ export default function SpamPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",
@@ -930,6 +943,7 @@ export default function SpamPage() {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Spam  <br />Forward  mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
+            LoaderHide()
             ForwardPopModelClose();
           }
           else {
@@ -1105,7 +1119,7 @@ export default function SpamPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -24,6 +24,7 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 toast.configure();
 
@@ -168,6 +169,7 @@ export default function DraftComposePage({ GetDraftList }) {
             toast.error("Please enter valid BCC email");
         }
         else {
+            LoaderShow()
             const Data = {
                 AccountID: SelectedUser?.AccountID,
                 ToEmail: ToEmail,
@@ -199,6 +201,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     toast.success(<div>Draft<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
+                    LoaderHide()
                     // GetDraftList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
@@ -289,6 +292,11 @@ export default function DraftComposePage({ GetDraftList }) {
 
     return (
         <>
+
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
+
             <div className='composebody inxfirst'>
                 {/* <Button variant="contained btn btn-primary largbtn mr-2" onClick={OpenCompose}> + Draft</Button> */}
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>

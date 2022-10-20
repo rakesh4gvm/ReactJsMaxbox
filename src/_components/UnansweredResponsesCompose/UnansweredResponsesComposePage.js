@@ -94,7 +94,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     })
 
     useEffect(() => {
-        GetClientID()  
+        GetClientID()
     }, [])
 
 
@@ -188,7 +188,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     // Sent Mail
     const SentMail = async () => {
-        LoaderShow()
+        
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
@@ -216,6 +216,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             toast.error("Please enter valid BCC email");
         }
         else {
+            LoaderShow()
             const Data = {
                 AccountID: SelectedUser?.AccountID,
                 ToEmail: ToEmail,

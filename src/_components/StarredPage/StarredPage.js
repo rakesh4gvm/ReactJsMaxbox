@@ -635,7 +635,7 @@ export default function StarredPage() {
 
   // Reply Send Mail Starts
   const ReplySendMail = () => {
-    LoaderShow()
+
     var ToEmail = OpenMessage.FromEmail;
     var ToName = OpenMessage.FromName
     var ID = OpenMessage._id
@@ -646,7 +646,7 @@ export default function StarredPage() {
       toast.error("Please Enter Body");
     }
     else {
-
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -801,7 +801,7 @@ export default function StarredPage() {
 
   // Forward Send Mail Starts
   const ForwardSendMail = () => {
-    LoaderShow()
+
     var ToEmail = document.getElementById("to").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
@@ -817,6 +817,7 @@ export default function StarredPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",

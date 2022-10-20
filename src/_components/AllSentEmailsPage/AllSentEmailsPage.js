@@ -44,7 +44,7 @@ import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
@@ -182,10 +182,12 @@ export default function AllSentEnailsPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetAllSentEmailsList([])
           OpenMessageDetails('')
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -197,6 +199,7 @@ export default function AllSentEnailsPage() {
           } else {
             OpenMessageDetails('');
           }
+          LoaderHide()
           toast.error(<div>All Sent Emails <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -269,6 +272,7 @@ export default function AllSentEnailsPage() {
           toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -280,12 +284,10 @@ export default function AllSentEnailsPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (SentMailsChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (SentMailsChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -307,6 +309,7 @@ export default function AllSentEnailsPage() {
           toast.success(<div>All Sent Emails <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetSentMailsChecked([]);
@@ -342,6 +345,7 @@ export default function AllSentEnailsPage() {
           toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllSentEmailsList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -483,10 +487,12 @@ export default function AllSentEnailsPage() {
     if (e.target.checked) {
       UpdatedList = [...EmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetAllSentEmailsList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(EmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetAllSentEmailsList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -495,6 +501,7 @@ export default function AllSentEnailsPage() {
 
 
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetAllSentEmailsList([]);
@@ -597,7 +604,7 @@ export default function AllSentEnailsPage() {
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
-
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -615,6 +622,7 @@ export default function AllSentEnailsPage() {
           toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
           ReplyPopModelClose();
           SetSignature({ Data: "" })
+          LoaderHide()
         } else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
@@ -764,6 +772,7 @@ export default function AllSentEnailsPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",
@@ -781,6 +790,7 @@ export default function AllSentEnailsPage() {
             toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
             ForwardPopModelClose();
             SetForwardSignature({ Data: "" })
+            LoaderHide()
           }
           else {
             ForwardPopModelClose();
@@ -957,7 +967,7 @@ export default function AllSentEnailsPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

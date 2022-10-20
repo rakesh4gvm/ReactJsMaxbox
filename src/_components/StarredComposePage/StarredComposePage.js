@@ -138,7 +138,7 @@ export default function StarredComposePage({ GetStarredList }) {
 
     // Sent Mail Starts
     const SentMail = async () => {
-        LoaderShow()
+
         var ToEmail = document.getElementById("To").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
@@ -167,6 +167,7 @@ export default function StarredComposePage({ GetStarredList }) {
             toast.error("Please enter valid BCC email");
         }
         else {
+            LoaderShow()
             const Data = {
                 AccountID: SelectedUser?.AccountID,
                 ToEmail: ToEmail,

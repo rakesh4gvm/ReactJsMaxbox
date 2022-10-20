@@ -801,7 +801,7 @@ export default function UnansweredResponsesPage() {
 
   // Starts Reply Send Mail
   const ReplySendMail = () => {
-    LoaderShow()
+
     var ToEmail = OpenMessage.FromEmail;
     var ToName = OpenMessage.FromName
     var ID = OpenMessage._id
@@ -811,7 +811,7 @@ export default function UnansweredResponsesPage() {
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
-
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -913,7 +913,7 @@ export default function UnansweredResponsesPage() {
 
   // Forward Send Mail Starts
   const ForwardSendMail = (ObjMailData) => {
-    LoaderShow()
+
     var ToEmail = document.getElementById("to").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
@@ -929,6 +929,7 @@ export default function UnansweredResponsesPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",

@@ -45,7 +45,7 @@ import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
@@ -182,10 +182,12 @@ export default function UnansweredRepliesPage() {
           }
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
           SetAllUnanswereRepliesList([])
           OpenMessageDetails('')
+          LoaderHide()
         }
         else {
           SetResponseData([])
@@ -197,6 +199,7 @@ export default function UnansweredRepliesPage() {
           } else {
             OpenMessageDetails('');
           }
+          LoaderHide()
           toast.error(<div>Unanswered Replies <br />No Data.</div>)
         }
         GetTotalRecordCount(CID, UID);
@@ -268,6 +271,7 @@ export default function UnansweredRepliesPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -279,12 +283,10 @@ export default function UnansweredRepliesPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (UnansweredRepliesChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (UnansweredRepliesChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -306,6 +308,7 @@ export default function UnansweredRepliesPage() {
           toast.success(<div>Unanswered Replies <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetUansweredRepliesChecked([]);
@@ -341,6 +344,7 @@ export default function UnansweredRepliesPage() {
           toast.success(<div>Unanswered Replies  <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetAllUnanswereRepliesList(ClientID, UserID, Page, "", EmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -442,10 +446,12 @@ export default function UnansweredRepliesPage() {
     if (e.target.checked) {
       UpdatedList = [...EmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetAllUnanswereRepliesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(EmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetAllUnanswereRepliesList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -454,6 +460,7 @@ export default function UnansweredRepliesPage() {
 
   // Refresh Page
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetAllUnanswereRepliesList([]);
@@ -593,7 +600,7 @@ export default function UnansweredRepliesPage() {
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
-
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -611,6 +618,7 @@ export default function UnansweredRepliesPage() {
           toast.success(<div>Unanswered Responses <br />Reply mail send successfully.</div>);
           ReplyPopModelClose();
           SetSignature({ Data: "" })
+          LoaderHide()
         }
         else {
           ReplyPopModelClose();
@@ -762,6 +770,7 @@ export default function UnansweredRepliesPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",
@@ -779,6 +788,7 @@ export default function UnansweredRepliesPage() {
             toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
             ForwardPopModelClose();
             SetForwardSignature({ Data: "" })
+            LoaderHide()
           }
           else {
             ForwardPopModelClose();
@@ -955,7 +965,7 @@ export default function UnansweredRepliesPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

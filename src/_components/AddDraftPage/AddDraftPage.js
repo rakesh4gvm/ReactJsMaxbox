@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -93,6 +93,7 @@ export default function DraftComposePage({ GetDraftList }) {
             toast.error("Please enter valid email");
         }
         else {
+            LoaderShow()
             const Data = {
                 MailTo: ToEmail,
                 Subject: Subject,
@@ -110,6 +111,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     toast.success(<div>Draft<br />Draft added successfully.</div>)
                     OpenDraftCompose();
                     CloseDraftCompose()
+                    LoaderHide()
                     GetDraftList(ClientID, UserID, 1, "")
                     document.getElementById("ToEmail").value = ""
                     document.getElementById("DraftSubject").value = ""

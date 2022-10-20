@@ -39,9 +39,6 @@ import downarrow from '../../images/icon_downarrow.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 
-
-
-
 import Compose from '../ComposePage/ComposePage';
 import inboxuser1 from '../../images/avatar/1.jpg';
 import iconleftright from '../../images/icon_left_right.svg';
@@ -61,7 +58,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 
 // import HeaderTop from '../Header/header';
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { TextareaAutosize } from '@mui/material';
@@ -215,10 +212,12 @@ export default function OtherInboxPage() {
         }
         OpenMessageDetails(ResponseApi.data.PageData[0]._id);
         SetMailNumber(1)
+        LoaderHide()
       }
       else if (ResponseApi.data.PageData?.length === 0 && Str == "checkbox") {
         SetInBoxList([])
         OpenMessageDetails('')
+        LoaderHide()
       }
       else {
         SetResponseData([])
@@ -230,6 +229,7 @@ export default function OtherInboxPage() {
         } else {
           OpenMessageDetails('');
         }
+        LoaderHide()
         toast.error(<div>Other Inbox <br />No Data.</div>)
       }
       GetTotalRecordCount(CID, UID);
@@ -272,6 +272,7 @@ export default function OtherInboxPage() {
           SetInBoxList(Result.data.PageData);
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         }
         else {
           SetInBoxList([...InBoxList]);
@@ -347,6 +348,7 @@ export default function OtherInboxPage() {
           toast.success(<div>Other Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -358,12 +360,10 @@ export default function OtherInboxPage() {
 
   // Start Delete All Message 
   const OpenAllDeletePopModel = () => {
-    if (SelectAllCheckbox) {
+    if (InboxChecked.length > 0) {
       SetAllDeletePopModel(true);
-    } else if (InboxChecked.length > 0) {
-      SetDeletePopModel(true);
     } else {
-      SetDeletePopModel(false);
+      toast.error("Please select atleast one email.")
     }
   }
   const CloseAllDeletePopModel = () => {
@@ -385,6 +385,7 @@ export default function OtherInboxPage() {
           toast.success(<div>Other Inbox <br />All mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
           SetSelectAllCheckbox(false);
           SetInboxChecked([]);
@@ -421,6 +422,7 @@ export default function OtherInboxPage() {
           toast.success(<div>Other Inbox <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
+          LoaderShow()
           GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
@@ -462,6 +464,7 @@ export default function OtherInboxPage() {
               toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
+              LoaderShow()
               GetUpdatedOtherInboxList(ClientID, UserID);
             } else {
               toast.error(Result?.data?.Message);
@@ -609,10 +612,12 @@ export default function OtherInboxPage() {
     if (e.target.checked) {
       UpdatedList = [...FromEmailDropdownListChecked, e.target.value];
       SetPage(1)
+      LoaderShow()
       GetInBoxList(ClientID, UserID, 1, "checkbox", UpdatedList)
     } else {
       UpdatedList.splice(FromEmailDropdownListChecked.indexOf(e.target.value), 1);
       SetPage(1)
+      LoaderShow()
       GetInBoxList(ClientID, UserID, 1, "checkbox", UpdatedList)
     }
     localStorage.setItem("DropdownCheckData", UpdatedList);
@@ -621,6 +626,7 @@ export default function OtherInboxPage() {
 
 
   const RefreshPage = () => {
+    LoaderShow()
     SetPage(1);
     SetRowsPerPage(10);
     SetInBoxList([]);
@@ -717,7 +723,7 @@ export default function OtherInboxPage() {
     if (Body == "") {
       toast.error("Please Enter Body");
     } else {
-
+      LoaderShow()
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
@@ -734,6 +740,7 @@ export default function OtherInboxPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Other Inbox <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
+          LoaderHide()
           ReplyPopModelClose();
         }
         else {
@@ -885,6 +892,7 @@ export default function OtherInboxPage() {
 
     else {
       if (IsEmailValid) {
+        LoaderShow()
         var Data = {
           ToEmail: ToEmail,
           ToName: "",
@@ -902,6 +910,7 @@ export default function OtherInboxPage() {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             toast.success(<div>Other Inbox <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
+            LoaderHide()
             ForwardPopModelClose();
           }
           else {
@@ -1047,7 +1056,6 @@ export default function OtherInboxPage() {
 
   return (
     <>
-      {/* <HeaderTop /> */}
 
       <div>
         <Modal className="modal-pre"
@@ -1090,7 +1098,7 @@ export default function OtherInboxPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete all email ?
+                you want to delete selected email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
