@@ -22,12 +22,14 @@ import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 
@@ -106,11 +108,13 @@ export default function ClientListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetClientList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        LoaderHide()
       }
       else {
         SetClientList([])
         SetCountPage(0)
         toast.error(Result?.data?.Message);
+        LoaderHide()
       }
     });
   };
@@ -134,7 +138,8 @@ export default function ClientListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.error(<div>Client <br />Client deleted successfully.</div>);
+        toast.success(<div>Client <br />Client deleted successfully.</div>);
+        LoaderShow()
         GetClientList(ClientID, UserID)
         SetDeletePopModel(false);
       }
@@ -165,7 +170,10 @@ export default function ClientListPage() {
 
   return (
     <>
-
+    
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <Modal className="modal-pre"
         open={DeletePopModel}

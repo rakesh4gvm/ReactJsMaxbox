@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 export default function EditClientPage(props) {
     const [ClientNameError, SetClientNameError] = useState("");
     const [SignatureError, SetSignatureError] = useState("");
+    const [BCCEmailError, SetBCCEmailError] = useState("");
     const [ClientID, SetClientID] = React.useState(0);
     const [ClientIDDetails, SetClientIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
@@ -142,6 +143,11 @@ export default function EditClientPage(props) {
 
     const HandleChange = (e) => {
         const { name, value } = e.target;
+        if (name == "bccEmail") {
+            if (value != "") {
+                validateEmail(value)
+            }
+        }
         if (name == "name") {
             if (value != "") {
                 SetClientNameError("")
@@ -150,6 +156,17 @@ export default function EditClientPage(props) {
     };
     // FromValidation End
 
+    const validateEmail = (email) => {
+        if (!/^[[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            SetBCCEmailError("Invalid email")
+            return false;
+        }
+        else {
+            SetBCCEmailError("")
+        }
+        return true;
+    };
+
     // Client Update
     const UpdateClient = async () => {
         const Valid = FromValidation();
@@ -157,30 +174,38 @@ export default function EditClientPage(props) {
             var ClientName = document.getElementById("name").value;
             var BccEmail = document.getElementById("bccEmail").value;
 
-            const Data = {
-                ID: ClientIDDetails[0]._id,
-                Name: ClientName,
-                BccEmail: BccEmail,
-                SignatureText: Signature.Data,
+            let ValidEmail
+
+            if (BccEmail != "") {
+                ValidEmail = validateEmail(BccEmail);
             }
 
-            var ExistsClient = await CheckExistClient(ClientName)
+            if (BccEmail === "" || ValidEmail) {
+                const Data = {
+                    ID: ClientIDDetails[0]._id,
+                    Name: ClientName,
+                    BccEmail: BccEmail,
+                    SignatureText: Signature.Data,
+                }
 
-            if (ExistsClient === ResponseMessage.SUCCESS) {
-                Axios({
-                    url: CommonConstants.MOL_APIURL + "/client/ClientUpdate",
-                    method: "POST",
-                    data: Data,
-                }).then((Result) => {
-                    if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        toast.success(<div>Client <br />Client updated successfully.</div>);
-                        history.push("/ClientList");
-                    } else {
-                        toast.error(Result?.data?.Message);
-                    }
-                })
-            } else {
-                SetClientNameError("ClientName Already Exists, Please Add Another Name")
+                var ExistsClient = await CheckExistClient(ClientName)
+
+                if (ExistsClient === ResponseMessage.SUCCESS) {
+                    Axios({
+                        url: CommonConstants.MOL_APIURL + "/client/ClientUpdate",
+                        method: "POST",
+                        data: Data,
+                    }).then((Result) => {
+                        if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+                            toast.success(<div>Client <br />Client updated successfully.</div>);
+                            history.push("/ClientList");
+                        } else {
+                            toast.error(Result?.data?.Message);
+                        }
+                    })
+                } else {
+                    SetClientNameError("ClientName Already Exists, Please Add Another Name")
+                }
             }
         }
 
@@ -221,7 +246,8 @@ export default function EditClientPage(props) {
                                 <Col sm={8}>
                                 </Col>
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter BCC EMail' name='bccEmail' id='bccEmail' defaultValue={ClientIDDetails[0]?.BccEmail} />
+                                    <input type='text' placeholder='Enter BCC EMail' name='bccEmail' id='bccEmail' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.BccEmail} />
+                                    {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
                                 </Col>
                             </Row>
                             <Row className='input-boxbg mt-5'>

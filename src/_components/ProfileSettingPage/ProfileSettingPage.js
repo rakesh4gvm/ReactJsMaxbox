@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios"
 
 import { Select } from '@material-ui/core';
@@ -13,7 +13,7 @@ import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
 import HeaderTop from '../Header/header';
 import FooterBottom from '../Footer/footer';
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import Cameraicons from '../../images/icons/icons-camera.svg';
 
 import FormGroup from '@mui/material/FormGroup';
@@ -22,6 +22,8 @@ import Switch from '@mui/material/Switch';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 
@@ -34,7 +36,7 @@ export default function ProfileSettingPage() {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Checked, SetChecked] = React.useState();
-  
+
 
   useEffect(() => {
     document.title = 'Profile Setting | MAXBOX';
@@ -75,8 +77,8 @@ export default function ProfileSettingPage() {
         SetUser(Result?.data?.Data)
         SetDropdownValue(Result?.data?.Data?.CountryID?._id)
         SetChecked(Result?.data?.Data?.TwoWayFactor)
-        debugger
         SetBase64Image(Result?.data?.Data?.UserImage);
+        LoaderHide()
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -191,6 +193,7 @@ export default function ProfileSettingPage() {
 
           localStorage.setItem("LoginData", JSON.stringify(Image))
           toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
+          LoaderShow()
           GetUserList(UserID);
         } else {
           toast.error(Result?.data?.Message);
@@ -218,12 +221,15 @@ export default function ProfileSettingPage() {
     }, [Ref]);
   }
 
-  
+
   const WrapperRef = useRef(null);
   UseOutsideAlerter(WrapperRef);
   return (
     <>
-     
+
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
@@ -298,7 +304,7 @@ export default function ProfileSettingPage() {
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} readonly="readonly"/>
+                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} readonly="readonly" />
               </div>
             </Col>
             <Col sm={4}>

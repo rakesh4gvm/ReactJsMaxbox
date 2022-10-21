@@ -26,10 +26,11 @@ import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 toast.configure();
 
@@ -71,7 +72,7 @@ export default function EmailConfigurationPage() {
   }, [Page, RowsPerPage, SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
-    
+
     var queryparamter = window.location.search.substring(1);
     if (queryparamter != "") {
       var ResultMessage = (queryparamter.split('data=')[1]);
@@ -138,7 +139,9 @@ export default function EmailConfigurationPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetEmailAccountList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        LoaderHide()
       } else {
+        LoaderHide()
         toast.error(Result?.data?.Message);
       }
     });
@@ -148,7 +151,7 @@ export default function EmailConfigurationPage() {
   //change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetEmailAccountList(ClientID,UserID);
+    GetEmailAccountList(ClientID, UserID);
   };
 
   //SortData Page
@@ -159,7 +162,7 @@ export default function EmailConfigurationPage() {
     } else {
       SetSortedBy(1);
     }
-    GetEmailAccountList(ClientID,UserID)
+    GetEmailAccountList(ClientID, UserID)
   }
 
   // start Authenticate email
@@ -235,11 +238,12 @@ export default function EmailConfigurationPage() {
     });
     responseapi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        GetEmailAccountList(ClientID,UserID)
+        LoaderShow()
+        GetEmailAccountList(ClientID, UserID)
         SetDeletePopModel(false);
       }
       else {
-        GetEmailAccountList(ClientID,UserID)
+        GetEmailAccountList(ClientID, UserID)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -250,6 +254,10 @@ export default function EmailConfigurationPage() {
 
   return (
     <>
+
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <Modal className="modal-pre"
         open={DeletePopModel}

@@ -15,12 +15,12 @@ import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { UpdateUserDetails } from '../../_helpers/Utility'
- 
-import IconButton from '@mui/material/IconButton'; 
+
+import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment'; 
-import FormControl from '@mui/material/FormControl'; 
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -30,6 +30,7 @@ export default function LoginPage() {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
+  const [PasswordValues, SetPasswordValues] = useState("")
 
   const [values, setValues] = React.useState({
     amount: '',
@@ -99,6 +100,10 @@ export default function LoginPage() {
   };
 
   function handleChange(e) {
+
+    var Password = document.getElementById("password").value;
+    SetPasswordValues(Password)
+
     const { name, value } = e.target;
     if (name == "email") {
       if (value != "") {
@@ -189,6 +194,11 @@ export default function LoginPage() {
     }
   }
 
+  const PasswordValue = () => {
+    if (PasswordValues != "" || PasswordValues != undefined || PasswordValues != null) {
+      return PasswordValues
+    }
+  }
 
   const SetClientID = (UserID) => {
     var Data = {
@@ -216,7 +226,7 @@ export default function LoginPage() {
 
     });
   }
- 
+
   const Register = () => {
     history.push('/Register');
   }
@@ -251,18 +261,19 @@ export default function LoginPage() {
             </Row>
             <Row>
               <Col sm={4}>
-              <div className='input-box'>
-                <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
-                {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
-              </div> 
-              <div className='input-pasbox'>                 
+                <div className='input-box'>
+                  <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
+                  {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
+                </div>
+                <div className='input-pasbox'>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
+                    value={PasswordValue()}
                     onChange={handleChanges('password')}
+                    readOnly
                     endAdornment={
-                      <InputAdornment position="end">
+                      <InputAdornment position="end" >
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
@@ -274,8 +285,8 @@ export default function LoginPage() {
                       </InputAdornment>
                     }
                     label="Password"
-                  />                 
-              </div> 
+                  />
+                </div>
               </Col>
               <Col>
               </Col>

@@ -23,7 +23,7 @@ import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
@@ -33,7 +33,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'; 
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 toast.configure();
 
@@ -62,11 +63,11 @@ export default function ObjectionTemplateListPage() {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
-  const [open, setOpen] = React.useState(false);  
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     document.title = 'Objection Template | MAXBOX';
-    
+
     GetClientID();
     // CheckAccountAuthonicate()
     // GetObjectionTemplateList()
@@ -115,10 +116,12 @@ export default function ObjectionTemplateListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetObjectionTemplateList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        LoaderHide()
       }
       else {
         SetObjectionTemplateList([])
         SetCountPage(0)
+        LoaderHide()
         toast.error(Result?.data?.Message);
       }
     });
@@ -143,7 +146,8 @@ export default function ObjectionTemplateListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.error(<div>Object Template <br />Object template deleted successfully.</div>);
+        toast.success(<div>Object Template <br />Object template deleted successfully.</div>);
+        LoaderShow()
         GetObjectionTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
@@ -170,11 +174,13 @@ export default function ObjectionTemplateListPage() {
   // Add Objection Template
   const AddObjectionTemplate = () => {
     history.push("/CreateObjection");
-  } 
+  }
 
   return (
     <>
-
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <Modal className="modal-pre"
         open={DeletePopModel}
@@ -224,7 +230,7 @@ export default function ObjectionTemplateListPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                      <TableCell> </TableCell> 
+                      <TableCell> </TableCell>
                       <TableCell>Subject</TableCell>
                       {/* <TableCell>Body</TableCell> */}
                       <TableCell align="right">Action</TableCell>
@@ -234,43 +240,43 @@ export default function ObjectionTemplateListPage() {
                   <TableBody>
                     {ObjectionTemplateList?.map((row) => (
                       <React.Fragment>
-                      <TableRow>
-                        
-                        <TableCell align="center">
-                          <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
-                            ...prev,
-                            [row._id]: !prev[row._id],
-                          }))}>
-                            {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></> }
-                          </IconButton>
-                        </TableCell>
+                        <TableRow>
 
-                        <TableCell>{row.Subject}</TableCell>
-                        {/* <TableCell> </TableCell> */}
+                          <TableCell align="center">
+                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
+                              ...prev,
+                              [row._id]: !prev[row._id],
+                            }))}>
+                              {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
+                            </IconButton>
+                          </TableCell>
 
-                        <TableCell align="right">
-                          <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
-                            <img src={DeleteIcon} />
-                          </Button>
-                          <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
-                        </TableCell>
-                      </TableRow>
+                          <TableCell>{row.Subject}</TableCell>
+                          {/* <TableCell> </TableCell> */}
 
-                      <TableRow> 
-                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                          <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
-                            <Box margin={1} className="innertables"> 
-                              <Table size="small" aria-label="purchases">
-                                <TableHead> 
-                                </TableHead>   
-                                <TableRow>  
-                                <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell> 
-                                </TableRow>
-                              </Table> 
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
+                          <TableCell align="right">
+                            <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
+                              <img src={DeleteIcon} />
+                            </Button>
+                            <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+                          </TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
+                              <Box margin={1} className="innertables">
+                                <Table size="small" aria-label="purchases">
+                                  <TableHead>
+                                  </TableHead>
+                                  <TableRow>
+                                    <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell>
+                                  </TableRow>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
 
                       </React.Fragment>
                     ))}

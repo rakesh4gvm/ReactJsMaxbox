@@ -22,7 +22,7 @@ import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 
@@ -34,6 +34,8 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 
@@ -113,10 +115,12 @@ export default function TemplatesListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetTemplateList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        LoaderHide()
       }
       else {
         SetTemplateList([])
         SetCountPage(0)
+        LoaderHide()
         toast.error(Result?.data?.Message);
       }
     });
@@ -141,7 +145,8 @@ export default function TemplatesListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.error(<div>Template <br />Template deleted successfully.</div>);
+        toast.success(<div>Template <br />Template deleted successfully.</div>);
+        LoaderShow()
         GetTemplateList(ClientID, UserID)
         SetDeletePopModel(false);
       }
@@ -173,6 +178,9 @@ export default function TemplatesListPage() {
   return (
     <>
 
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <Modal className="modal-pre"
         open={DeletePopModel}
