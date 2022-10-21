@@ -647,7 +647,7 @@ export default function DraftsPage() {
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
 
-                                <Col xs={11} className="pr-0">
+                                <Col xs={11}>
                                   <Row>
                                     <Col xs={2}>
                                       <span className="inboxuserpic">
@@ -708,7 +708,7 @@ export default function DraftsPage() {
                                 <Col xs={1} className="pr-0">
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
-                                <Col xs={11} className="pr-0">
+                                <Col xs={11}>
                                   <Row>
                                     <Col xs={2}>
                                       <span className="inboxuserpic">

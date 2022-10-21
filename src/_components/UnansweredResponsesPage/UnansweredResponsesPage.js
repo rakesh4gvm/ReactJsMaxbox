@@ -1330,7 +1330,7 @@ export default function UnansweredResponsesPage() {
               </div>
               {
                 UnansweredResponsesList?.length === 0 ?
-                  <div id="scrollableDiv" class="listinbox">
+                  <div id="scrollableDiv" class="listinbox maxwidthblock">
                     <InfiniteScroll
                       dataLength={UnansweredResponsesList?.length}
                       next={FetchMoreData}
@@ -1343,7 +1343,7 @@ export default function UnansweredResponsesPage() {
                   :
                   UnansweredResponsesList?.length <= 9
                     ?
-                    <div id="scrollableDiv" class="listinbox">
+                    <div id="scrollableDiv" class="listinbox maxwidthblock">
                       <InfiniteScroll
                         dataLength={UnansweredResponsesList?.length}
                         next={FetchMoreData}
@@ -1408,7 +1408,7 @@ export default function UnansweredResponsesPage() {
                       </InfiniteScroll>
                     </div>
                     :
-                    <div id="scrollableDiv" class="listinbox">
+                    <div id="scrollableDiv" class="listinbox maxwidthblock">
                       <InfiniteScroll
                         dataLength={UnansweredResponsesList?.length}
                         next={FetchMoreData}

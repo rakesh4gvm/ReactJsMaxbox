@@ -337,7 +337,7 @@ span.userpic img {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0;
-    width: calc(100% + 5px);
+    width: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -1877,8 +1877,26 @@ img.width36{
 }
 .infinite-scroll-component__outerdiv .infinite-scroll-component {
     overflow-x: hidden !important;
+} 
+.dropboxcard .bodyuserdop ul > li:nth-child(2) {
+    border: none; 
 }
-
+.dropboxcard .bodyuserdop > ul > li:nth-child(1) {
+    background-color: #F7F8FF;
+}
+.dropboxcard .bodyuserdop ul {
+    padding-top: 0px;
+}
+.maxwidthblock{
+    width: calc(100% + 5px);
+}
+.infinite-scroll-component > p{
+    margin: 15px auto;
+    font-weight: 500;
+}
+.infinite-scroll-component > p b{
+    font-weight: 500;
+}
 
 
 @media screen and (max-width:990px) {
