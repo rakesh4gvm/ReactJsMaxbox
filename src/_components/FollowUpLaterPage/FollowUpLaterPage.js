@@ -1287,7 +1287,13 @@ export default function FollowUpLetterPage() {
                                       <h3>{row.Subject}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.MessageDatetime).format("LT")
+                                            : Moment(row.MessageDatetime).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                       <ToggleButton title="Starred" className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
@@ -1346,7 +1352,13 @@ export default function FollowUpLetterPage() {
                                     <h3>{row.Subject}</h3>
                                   </Col>
                                   <Col xs={2} className="pl-0">
-                                    <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                    <h6>
+                                      {
+                                        Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                          ? Moment(row.MessageDatetime).format("LT")
+                                          : Moment(row.MessageDatetime).format("DD/MM/YYYY")
+                                      }
+                                    </h6>
                                     <ToggleButton title="Starred" className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                       <StarBorderIcon className='starone' />
                                       <StarIcon className='selectedstart startwo' />

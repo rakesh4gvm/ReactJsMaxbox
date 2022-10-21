@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
@@ -20,6 +20,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 toast.configure();
 
@@ -69,6 +70,7 @@ export default function EditObjectionTemplatePage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetObjectionTemplateIDDetails(Result?.data?.Data)
                 SetBody({ Data: Result?.data?.Data[0]?.BodyText })
+                LoaderHide()
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -95,6 +97,7 @@ export default function EditObjectionTemplatePage(props) {
         var Subject = document.getElementById("subject").value;
         const Valid = FromValidation();
         if (Valid) {
+            LoaderShow()
             const Data = {
                 ID: ObjectionTemplateIDDetails[0]._id,
                 Subject: Subject,
@@ -111,6 +114,7 @@ export default function EditObjectionTemplatePage(props) {
                     data: Data,
                 }).then((Result) => {
                     toast.success(<div>Object Template <br />Object template updated successfully.</div>);
+                    LoaderHide()
                     history.push("/ObjectionTemplate");
                 })
             }
@@ -152,6 +156,10 @@ export default function EditObjectionTemplatePage(props) {
 
     return (
         <>
+
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
 
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>

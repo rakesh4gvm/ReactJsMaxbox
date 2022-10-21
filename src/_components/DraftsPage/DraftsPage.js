@@ -659,7 +659,13 @@ export default function DraftsPage() {
                                       <h3>{row.Body}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.CreatedDate).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.CreatedDate).format("LT")
+                                            : Moment(row.CreatedDate).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                       <h5 className='draftext'>Draft</h5>
                                     </Col>
                                   </Row>
@@ -714,7 +720,13 @@ export default function DraftsPage() {
                                       <h3>{row.Body}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.CreatedDate).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.CreatedDate).format("LT")
+                                            : Moment(row.CreatedDate).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                       <h5 className='draftext'>Draft</h5>
                                     </Col>
                                   </Row>

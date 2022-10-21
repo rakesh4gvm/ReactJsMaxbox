@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
@@ -20,6 +20,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 toast.configure();
 
@@ -68,6 +69,7 @@ export default function EditTemplatesPage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetTemplateIDDetails(Result?.data?.Data)
                 SetBody({ Data: Result?.data?.Data[0]?.BodyText })
+                LoaderHide()
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -115,6 +117,7 @@ export default function EditTemplatesPage(props) {
         var Subject = document.getElementById("subject").value;
         const Valid = FromValidation();
         if (Valid) {
+            LoaderShow()
             const Data = {
                 ID: TemplateIDDetails[0]._id,
                 Subject: Subject,
@@ -132,6 +135,7 @@ export default function EditTemplatesPage(props) {
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                         toast.success(<div>Template <br />Template updated successfully.</div>);
+                        LoaderHide()
                         history.push("/Templates");
                     } else {
                         toast.error(Result?.data?.Message);
@@ -148,7 +152,7 @@ export default function EditTemplatesPage(props) {
     const CheckExistTemplates = async (Subject) => {
 
         var Data = { Subject: Subject, ClientID: ClientID, TemplatesID: TemplateIDDetails[0].TemplatesID }
-        
+
         const ResponseApi = await Axios({
             url: CommonConstants.MOL_APIURL + "/templates/TemplateExists",
             method: "POST",
@@ -176,6 +180,9 @@ export default function EditTemplatesPage(props) {
 
     return (
         <>
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
 
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>

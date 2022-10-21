@@ -11,7 +11,7 @@ import BgProfile from '../../images/bg-profile.png';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 
 import inboximg2 from '../../images/inboximg2.jpg';
@@ -25,6 +25,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
 
 toast.configure();
 
@@ -87,6 +89,7 @@ export default function CreateTemplatesPage({ children }) {
   useEffect(() => {
     document.title = 'Create Template | MAXBOX';
     GetClientID()
+    LoaderHide()
   }, [ClientID])
 
   // Get Client ID
@@ -136,7 +139,7 @@ export default function CreateTemplatesPage({ children }) {
     if (Valid) {
 
       var Subject = document.getElementById("subject").value;
-
+      LoaderShow()
       const Data = {
         Subject: Subject,
         BodyText: Body.Data,
@@ -154,6 +157,7 @@ export default function CreateTemplatesPage({ children }) {
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
             toast.success(<div>Template <br />Template added successfully.</div>);
+            LoaderHide()
             history.push("/Templates");
           } else {
             toast.error(Result?.data?.Message);
@@ -188,6 +192,10 @@ export default function CreateTemplatesPage({ children }) {
   return (
     <>
       <HeaderTop />
+
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>

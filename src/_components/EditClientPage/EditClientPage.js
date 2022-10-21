@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
@@ -18,6 +18,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from 'react-toastify';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 export default function EditClientPage(props) {
     const [ClientNameError, SetClientNameError] = useState("");
@@ -64,6 +65,7 @@ export default function EditClientPage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetClientIDDetails(Result?.data?.Data)
                 SetSignature({ Data: Result?.data?.Data[0]?.SignatureText })
+                LoaderHide()
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -171,6 +173,7 @@ export default function EditClientPage(props) {
     const UpdateClient = async () => {
         const Valid = FromValidation();
         if (Valid) {
+
             var ClientName = document.getElementById("name").value;
             var BccEmail = document.getElementById("bccEmail").value;
 
@@ -181,6 +184,7 @@ export default function EditClientPage(props) {
             }
 
             if (BccEmail === "" || ValidEmail) {
+                LoaderShow()
                 const Data = {
                     ID: ClientIDDetails[0]._id,
                     Name: ClientName,
@@ -198,6 +202,7 @@ export default function EditClientPage(props) {
                     }).then((Result) => {
                         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                             toast.success(<div>Client <br />Client updated successfully.</div>);
+                            LoaderHide()
                             history.push("/ClientList");
                         } else {
                             toast.error(Result?.data?.Message);
@@ -218,6 +223,10 @@ export default function EditClientPage(props) {
 
     return (
         <>
+
+            <div id="hideloding" className="loding-display">
+                <img src={MaxboxLoading} />
+            </div>
 
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>

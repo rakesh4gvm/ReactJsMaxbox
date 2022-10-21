@@ -1150,7 +1150,13 @@ export default function AllSentEnailsPage() {
                                       <h3>{row.Subject}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.MailSentDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.MailSentDatetime).format("LT")
+                                            : Moment(row.MailSentDatetime).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                       <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
@@ -1208,7 +1214,13 @@ export default function AllSentEnailsPage() {
                                       <h3>{row.Subject}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.MailSentDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.MailSentDatetime).format("LT")
+                                            : Moment(row.MailSentDatetime).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                       <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />

@@ -1266,7 +1266,13 @@ export default function StarredPage() {
                                       <h3>{row.Subject}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.MessageDatetime).format("LT")
+                                            : Moment(row.MessageDatetime).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -1320,7 +1326,13 @@ export default function StarredPage() {
                                       <h3>{row.Subject}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
-                                      <h6>{Moment(row.MailSentDatetime).format("LT")}</h6>
+                                      <h6>
+                                        {
+                                          Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
+                                            ? Moment(row.MessageDatetime).format("LT")
+                                            : Moment(row.MessageDatetime).format("DD/MM/YYYY")
+                                        }
+                                      </h6>
                                     </Col>
                                   </Row>
                                   <Row>
