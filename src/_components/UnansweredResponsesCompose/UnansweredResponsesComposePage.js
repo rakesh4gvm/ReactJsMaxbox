@@ -78,6 +78,36 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         setExpanded(isExpanded ? panel : false);
     };
 
+    const SelectTemplate= () => {
+        var GetByClass = document.getElementsByClassName('active');
+        if(GetByClass.length > 0){
+        var TemplateID = document.getElementsByClassName('active')[0].id;
+        var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+        var BodyData = Signature.Data;
+        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
+        SetSignature({ Data: NewData });
+        handleTemClose()
+    }else{
+        toast.error("Please select template");
+    }
+    }
+
+    const SelectObjectTemplate= () => {
+        var GetByClass = document.getElementsByClassName('active');
+        if(GetByClass.length > 0){
+        var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+        var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+        var BodyData = Signature.Data;
+        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
+        SetSignature({ Data: NewData });
+        handleClose()
+    }else{
+        toast.error("Please select object template");
+    }
+    }
+
+    
+
     const ActiveClass = (panel) => () => {
         const element = document.getElementById(panel)
         const elementcs = document.getElementsByClassName("active")
@@ -99,6 +129,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
 
     // Get Client ID
+
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
         if (UserDetails != null) {
@@ -350,6 +381,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     data: Data,
                 });
                 ResponseApi.then((Result) => {
+                    debugger
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                         if (Result.data.PageData.length > 0) {
                             setExpanded(false);
@@ -443,24 +475,24 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     </div>
                     <div className='m-body'>
                         <div className='listcardman'>
-                            {ObjectData?.length > 1 && ObjectData?.map((row, index) => (
-                                <Accordion expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                            {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
+                                <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
+                                <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                                <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1bh-content"
-                                        id="panel1bh-header"
+                                        aria-controls="panel2bh-content"
+                                        id="panel2bh-header"
                                     >
-
-                                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                            {row.Subject}
-                                        </Typography>
                                     </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography>
+                                    <AccordionDetails >
+                                        <Typography >
                                             {parse(row.BodyText)}
                                         </Typography>
                                     </AccordionDetails>
                                 </Accordion>
+                            </div>
+                               
                             ))}
 
 
@@ -470,7 +502,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     <div className='m-fotter' align="right">
                         <ButtonGroup variant="text" aria-label="text button group">
                             <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleClose}> Cancel</Button>
-                            <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                            <Button variant="contained btn btn-primary smallbtn" onClick={SelectObjectTemplate}> Select</Button>
                         </ButtonGroup>
                     </div>
                 </Box>
@@ -491,7 +523,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     <div className='m-body'>
                         <div className='listcardman'>
 
-                            {TemplateData?.length > 1 && TemplateData?.map((row, index) => (
+                            {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                                     <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
                                     <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
@@ -514,8 +546,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     </div>
                     <div className='m-fotter' align="right">
                         <ButtonGroup variant="text" aria-label="text button group">
-                            <Button variant="contained btn btn-orang smallbtn mr-3"> Cancel</Button>
-                            <Button variant="contained btn btn-primary smallbtn" > Select</Button>
+                            <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleTemClose}> Cancel</Button>
+                            <Button variant="contained btn btn-primary smallbtn" onClick={SelectTemplate}> Select</Button>
                         </ButtonGroup>
                     </div>
                 </Box>
