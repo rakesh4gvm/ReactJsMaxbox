@@ -1600,6 +1600,10 @@ div.erorr-msg>*>* {
     top: calc(-100% + -15px) !important;
 } */
 
+.FroalaEditor div.fr-dropdown-menu{
+    top: calc(-100% + 20px) !important; 
+}
+
 .FroalaEditor .fr-toolbar .fr-popup {
     transform: translate(0px, -100%);
     max-height: 160px;
@@ -1897,7 +1901,33 @@ img.width36{
 .infinite-scroll-component > p b{
     font-weight: 500;
 }
+.d-flex.hedtopedit input{
+    font-size: 13px;
+    padding: 0 15px;
+    min-width: 200px;
+    width: auto;
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    top: calc(100% + 15px); 
+    right: 0;
+    left: auto;
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu:before {
+    content: "";
+    position: absolute;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-bottom: 13px solid #fff;
+    right: 20px;
+    top: -13px;
+}
 
+div#menu- {
+    z-index: 9999 !important;
+}
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded {
+    margin-top: 43px;
+}
 
 @media screen and (max-width:990px) {
     .mobile-nav {

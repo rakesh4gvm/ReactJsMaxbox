@@ -122,7 +122,7 @@ export default function ForgetpasswordPage() {
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
                     <Button variant="contained btn btn-primary smallbtn mr-4" onClick={SubmitMail}>Request</Button>
-                    <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
+                    <Button variant="contained btn smallbtn btn-orang" onClick={CancelButton}>Cancel</Button>
                   </ButtonGroup>
                 </div>
               </Col>

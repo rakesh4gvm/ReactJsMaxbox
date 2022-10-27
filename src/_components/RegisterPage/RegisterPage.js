@@ -309,7 +309,7 @@ export default function RegisterPage() {
             <div className='btnprofile my-5 left'>
               <ButtonGroup variant="text" aria-label="text button group">
                 <Button variant="contained btn btn-primary smallbtn mr-4" onClick={RegisterUser}> submit</Button>
-                <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
+                <Button variant="contained btn smallbtn btn-orang" onClick={CancelButton}>Cancel</Button>
               </ButtonGroup>
             </div>
           </div>
