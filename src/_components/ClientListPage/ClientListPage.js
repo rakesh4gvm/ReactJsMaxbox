@@ -25,6 +25,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
+import FooterBottom from '../Footer/footer';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -170,7 +171,7 @@ export default function ClientListPage() {
 
   return (
     <>
-    
+
       <div id="hideloding" className="loding-display">
         <img src={MaxboxLoading} />
       </div>
@@ -202,7 +203,7 @@ export default function ClientListPage() {
         </Box>
       </Modal>
 
-      <div className='bodymain'>
+      <div className='bodymain min-100vh'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
             <h5 className='my-0'>Client</h5>
@@ -252,7 +253,7 @@ export default function ClientListPage() {
           </Row>
         </div>
       </div>
-
+      <FooterBottom />
     </>
   );
 }

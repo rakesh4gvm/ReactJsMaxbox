@@ -17,6 +17,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import FooterBottom from '../Footer/footer';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
@@ -286,7 +287,7 @@ export default function EmailConfigurationPage() {
         </Box>
       </Modal>
 
-      <div className='bodymain'>
+      <div className='bodymain min-100vh'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
             <h5 className='my-0'>Email Configuration</h5>
@@ -359,8 +360,7 @@ export default function EmailConfigurationPage() {
         </div>
 
       </div>
-
-
+      <FooterBottom />
     </>
   );
 }
