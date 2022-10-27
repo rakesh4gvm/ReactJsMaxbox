@@ -36,7 +36,7 @@ export default function ProfileSettingPage() {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [Checked, SetChecked] = React.useState();
-
+  const [ImagePreview, SetImagePreview] = useState()
 
   useEffect(() => {
     document.title = 'Profile Setting | MAXBOX';
@@ -114,7 +114,7 @@ export default function ProfileSettingPage() {
   // Upload Image
   const UploadImage = async (e) => {
     const File = e.target.files[0]
-    console.log(e.target.files[0]);
+    SetImagePreview(File)
     const Base64 = await ConvertBase64(File)
     SetBase64Image(Base64)
 
@@ -186,7 +186,6 @@ export default function ProfileSettingPage() {
         data: Data,
       }).then((Result) => {
         if (Result.data.StatusMessage === "SUCCESS") {
-          debugger
           const GetLoginData = localStorage.getItem("LoginData")
           const Image = JSON.parse(GetLoginData)
           Image.UserImage = Base64Image
@@ -243,7 +242,8 @@ export default function ProfileSettingPage() {
           <Col>
             <div className='imguploadmain'>
               <div className='imgupload'>
-                <img src={User?.UserImage} alt="img" />
+                {/* <img src={User?.UserImage} alt="img" /> */}
+                <img src={ImagePreview ? URL.createObjectURL(ImagePreview) : User?.UserImage} alt={ImagePreview ? ImagePreview.name : null} />
               </div>
               <div className='uploadedimg'>
                 <img src={Cameraicons} width="20px" />
