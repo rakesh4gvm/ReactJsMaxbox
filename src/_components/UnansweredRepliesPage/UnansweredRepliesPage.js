@@ -192,15 +192,18 @@ export default function UnansweredRepliesPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetAllUnanswereRepliesList([...AllUnansweredRepliesList]);
           if (AllUnansweredRepliesList && AllUnansweredRepliesList?.length > 1) {
+            SetAllUnanswereRepliesList([...AllUnansweredRepliesList]);
             let LastElement = AllUnansweredRepliesList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
             OpenMessageDetails('');
+            SetAllUnanswereRepliesList([]);
           }
           LoaderHide()
-          toast.error(<div>Unanswered Replies <br />No Data.</div>)
+          if (OpenMessage.length == 0) {
+            toast.error(<div>Unanswered Replies <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }

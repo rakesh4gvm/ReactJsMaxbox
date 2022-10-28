@@ -142,7 +142,7 @@ export default function FollowUpLetterPage() {
   })
 
   useEffect(() => {
-    document.title = 'Follow Up Letter | MAXBOX';
+    document.title = 'Follow Up Later | MAXBOX';
     GetClientID();
   }, [SearchInbox]);
 
@@ -216,15 +216,18 @@ export default function FollowUpLetterPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetInBoxList([...InBoxList]);
           if (InBoxList && InBoxList?.length > 1) {
+            SetInBoxList([...InBoxList]);
             let LastElement = InBoxList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
+            SetInBoxList([]);
             OpenMessageDetails('');
           }
           LoaderHide()
-          toast.error(<div>Follow Up Later <br />No Data.</div>)
+          if (OpenMessage == "") {
+            toast.error(<div>Follow Up Later <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }

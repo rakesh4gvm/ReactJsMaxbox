@@ -154,15 +154,18 @@ export default function DraftsPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetDraftList([...DraftList]);
           if (DraftList && DraftList?.length > 1) {
+            SetDraftList([...DraftList]);
             let LastElement = DraftList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
             OpenMessageDetails('');
+            SetDraftList([]);
           }
           LoaderHide()
-          toast.error(<div>Drafts <br />No Data.</div>)
+          if (OpenMessage == "") {
+            toast.error(<div>Drafts <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -263,7 +266,6 @@ export default function DraftsPage() {
     SetAllDeletePopModel(false);
   }
   const DeleteAllMessage = () => {
-    debugger
     if (InboxChecked.length > 0) {
       var Data = {
         IDs: InboxChecked,

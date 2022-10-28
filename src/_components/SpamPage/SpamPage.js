@@ -216,15 +216,18 @@ export default function SpamPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetSpamList([...SpamList]);
           if (SpamList && SpamList?.length > 1) {
+            SetSpamList([...SpamList]);
             let LastElement = SpamList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
             OpenMessageDetails('');
+            SetSpamList([]);
           }
           LoaderHide()
-          toast.error(<div>Spam <br />No Data.</div>)
+          if (OpenMessage == "") {
+            toast.error(<div>Spam <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }
@@ -415,7 +418,8 @@ export default function SpamPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          GetUpdatedSpamList(ClientID, UserID);
+          GetSpamList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
+          // GetUpdatedSpamList(ClientID, UserID);
         } else {
           toast.error(Result?.data?.Message);
         }

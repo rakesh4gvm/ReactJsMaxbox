@@ -200,15 +200,18 @@ export default function StarredPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetStarredList([...StarredList]);
           if (StarredList && StarredList?.length > 1) {
+            SetStarredList([...StarredList]);
             let LastElement = StarredList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
             OpenMessageDetails('');
+            SetStarredList([]);
           }
           LoaderHide()
-          toast.error(<div>Starred <br />No Data.</div>)
+          if (OpenMessage == "") {
+            toast.error(<div>Starred <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }

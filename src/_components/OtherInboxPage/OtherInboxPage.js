@@ -222,15 +222,18 @@ export default function OtherInboxPage() {
       else {
         SetResponseData([])
         SetHasMoreData(ResponseApi.data.PageData)
-        SetInBoxList([...InBoxList]);
         if (InBoxList && InBoxList?.length > 1) {
+          SetInBoxList([...InBoxList]);
           let LastElement = InBoxList?.slice(-1)
           OpenMessageDetails(LastElement[0]?._id, 0);
         } else {
           OpenMessageDetails('');
+          SetInBoxList([]);
         }
         LoaderHide()
-        toast.error(<div>Other Inbox <br />No Data.</div>)
+        if (OpenMessage == "") {
+          toast.error(<div>Other Inbox <br />No Data.</div>)
+        }
       }
       GetTotalRecordCount(CID, UID);
     }
@@ -1196,8 +1199,7 @@ export default function OtherInboxPage() {
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
-                      {/* {TotalCount} */}
-                      {InBoxList?.length}
+                      {TotalCount}
                     </div>
                   </Col>
                 </Row>

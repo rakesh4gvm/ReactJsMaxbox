@@ -167,7 +167,6 @@ export default function AllSentEnailsPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
-
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
@@ -192,15 +191,18 @@ export default function AllSentEnailsPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetAllSentEmailsList([...AllSentEmailsList]);
           if (AllSentEmailsList && AllSentEmailsList?.length > 1) {
+            SetAllSentEmailsList([...AllSentEmailsList]);
             let LastElement = AllSentEmailsList?.slice(-1)
             OpenMessageDetails(LastElement[0]?._id, 0);
           } else {
             OpenMessageDetails('');
+            SetAllSentEmailsList([]);
           }
           LoaderHide()
-          toast.error(<div>All Sent Emails <br />No Data.</div>)
+          if (OpenMessage.length == 0) {
+            toast.error(<div>All Sent Emails <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       }

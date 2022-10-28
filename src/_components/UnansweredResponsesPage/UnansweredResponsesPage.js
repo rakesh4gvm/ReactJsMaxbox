@@ -220,15 +220,18 @@ export default function UnansweredResponsesPage() {
         else {
           SetResponseData([])
           SetHasMoreData(Result.data.PageData)
-          SetUnansweredResponsesList([...UnansweredResponsesList]);
           if (UnansweredResponsesList && UnansweredResponsesList?.length > 1) {
+            SetUnansweredResponsesList([...UnansweredResponsesList]);
             let LastElemet = UnansweredResponsesList?.slice(-1)
             OpenMessageDetails(LastElemet[0]?._id, 0);
           } else {
             OpenMessageDetails('')
+            SetUnansweredResponsesList([]);
           }
           LoaderHide()
-          toast.error(<div>Unanswered Responses <br />No Data.</div>)
+          if (OpenMessage == "") {
+            toast.error(<div>Unanswered Responses <br />No Data.</div>)
+          }
         }
         GetTotalRecordCount(CID, UID);
       } else {
@@ -418,7 +421,8 @@ export default function UnansweredResponsesPage() {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          GetUpdatedUnansweredResponsesList(ClientID, UserID);
+          // GetUpdatedUnansweredResponsesList(ClientID, UserID);
+          GetUnansweredResponcesList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         } else {
           toast.error(Result?.data?.Message);
         }
