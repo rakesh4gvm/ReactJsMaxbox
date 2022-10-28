@@ -73,7 +73,7 @@ export default function SpamComposePage({ GetSpamList }) {
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
-  
+
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -83,35 +83,35 @@ export default function SpamComposePage({ GetSpamList }) {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const SelectTemplate= () => {
+    const SelectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
-        if(GetByClass.length > 0){
-        var TemplateID = document.getElementsByClassName('active')[0].id;
-        var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-        var BodyData = Signature.Data;
-        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
-        SetSignature({ Data: NewData });
-        handleTemClose()
-    }else{
-        toast.error("Please select template");
-    }
+        if (GetByClass.length > 0) {
+            var TemplateID = document.getElementsByClassName('active')[0].id;
+            var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+            var BodyData = Signature.Data;
+            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            SetSignature({ Data: NewData });
+            handleTemClose()
+        } else {
+            toast.error("Please select template");
+        }
     }
 
-    const SelectObjectTemplate= () => {
+    const SelectObjectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
-        if(GetByClass.length > 0){
-        var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-        var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-        var BodyData = Signature.Data;
-        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
-        SetSignature({ Data: NewData });
-        handleClose()
-    }else{
-        toast.error("Please select object template");
-    }
+        if (GetByClass.length > 0) {
+            var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+            var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+            var BodyData = Signature.Data;
+            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            SetSignature({ Data: NewData });
+            handleClose()
+        } else {
+            toast.error("Please select object template");
+        }
     }
 
-    
+
 
     const ActiveClass = (panel) => () => {
         const element = document.getElementById(panel)
@@ -123,7 +123,7 @@ export default function SpamComposePage({ GetSpamList }) {
         }
         element.classList.add("active");
     }
-  
+
 
     useEffect(() => {
         GetClientID()
@@ -331,82 +331,86 @@ export default function SpamComposePage({ GetSpamList }) {
         refreshOnShow: function ($btn, $dropdown) {
         }
     });
-        /* template option */
-        Froalaeditor.RegisterCommand('TemplatesOption', {
-            title: 'Templates Option',
-            type: 'dropdown',
-            focus: false,
-            undo: false,
-            className: 'tam',
-            refreshAfterCallback: true,
-            // options: EditorVariableNames(),
-            options: {
-                'opt1': 'Objections',
-                'opt2': 'Templates'
-            },
-            callback: function (cmd, val) {
-                var editorInstance = this;
-                if (val == "opt1") {
-    
-                    var Data = {
-                        ClientID: ClientID,
-                        UserID: UserID,
-                    };
-                    const ResponseApi = Axios({
-                        url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
-                        method: "POST",
-                        data: Data,
-                    });
-                    ResponseApi.then((Result) => {
-                        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                            if (Result.data.PageData.length > 0) {
-                                setExpanded(false)
-                                SetAllObjectData(Result.data.PageData)
-                                setOpen(true);
-                            }
+    /* template option */
+    Froalaeditor.RegisterCommand('TemplatesOption', {
+        title: 'Templates Option',
+        type: 'dropdown',
+        focus: false,
+        undo: false,
+        className: 'tam',
+        refreshAfterCallback: true,
+        // options: EditorVariableNames(),
+        options: {
+            'opt1': 'Objections',
+            'opt2': 'Templates'
+        },
+        callback: function (cmd, val) {
+            var editorInstance = this;
+            if (val == "opt1") {
+
+                var Data = {
+                    ClientID: ClientID,
+                    UserID: UserID,
+                };
+                const ResponseApi = Axios({
+                    url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
+                    method: "POST",
+                    data: Data,
+                });
+                ResponseApi.then((Result) => {
+                    if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                        if (Result.data.PageData.length > 0) {
+                            setExpanded(false)
+                            SetAllObjectData(Result.data.PageData)
+                            setOpen(true);
                         } else {
-                            SetAllObjectData('');
                             toast.error(Result?.data?.Message);
                         }
-                    });
-                    // editorInstance.html.insert("{" + val + "}");
-                }
-                if (val == "opt2") {
-                    var Data = {
-                        ClientID: ClientID,
-                        UserID: UserID,
-                    };
-                    const ResponseApi = Axios({
-                        url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
-                        method: "POST",
-                        data: Data,
-                    });
-                    ResponseApi.then((Result) => {
-                        debugger
-                        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                            if (Result.data.PageData.length > 0) {
-                                setExpanded(false);
-                                SetAllTemplateData(Result.data.PageData)
-                                setTemOpen(true);
-                            }
-                        } else {
-                            SetAllTemplateData('');
-                            toast.error(Result?.data?.Message);
-                        }
-                    });
-    
-                    // editorInstance.html.insert("{" + val + "}");
-                }
-            },
-            // Callback on refresh.
-            refresh: function ($btn) {
-    
-            },
-            // Callback on dropdown show.
-            refreshOnShow: function ($btn, $dropdown) {
+                    } else {
+                        SetAllObjectData('');
+                        toast.error(Result?.data?.Message);
+                    }
+                });
+                // editorInstance.html.insert("{" + val + "}");
             }
-        });
-        /* end template option */
+            if (val == "opt2") {
+                var Data = {
+                    ClientID: ClientID,
+                    UserID: UserID,
+                };
+                const ResponseApi = Axios({
+                    url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
+                    method: "POST",
+                    data: Data,
+                });
+                ResponseApi.then((Result) => {
+                    debugger
+                    if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                        if (Result.data.PageData.length > 0) {
+                            setExpanded(false);
+                            SetAllTemplateData(Result.data.PageData)
+                            setTemOpen(true);
+                        } else {
+                            toast.error(Result?.data?.Message);
+                        }
+                    } else {
+                        SetAllTemplateData('');
+                        toast.error(Result?.data?.Message);
+                    }
+                });
+
+                // editorInstance.html.insert("{" + val + "}");
+            }
+        },
+        // Callback on refresh.
+        refresh: function ($btn) {
+
+        },
+        // Callback on dropdown show.
+        refreshOnShow: function ($btn, $dropdown) {
+        }
+    });
+    /* end template option */
     Froalaeditor.RegisterCommand('moreMisc', {
         title: '',
         type: 'dropdown',
@@ -429,7 +433,7 @@ export default function SpamComposePage({ GetSpamList }) {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink','TemplatesOption'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
@@ -450,11 +454,11 @@ export default function SpamComposePage({ GetSpamList }) {
     return (
         <>
 
-          <div id="hideloding" className="loding-display">
+            <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
-            </div>  
+            </div>
 
-        
+
             <Modal className="modal-lister"
                 open={open}
                 onClose={handleClose}
@@ -471,22 +475,22 @@ export default function SpamComposePage({ GetSpamList }) {
                         <div className='listcardman'>
                             {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
-                                <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                                <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel2bh-content"
-                                        id="panel2bh-header"
-                                    >
-                                    </AccordionSummary>
-                                    <AccordionDetails >
-                                        <Typography >
-                                            {parse(row.BodyText)}
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </div>
-                               
+                                    <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                                    <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel2bh-content"
+                                            id="panel2bh-header"
+                                        >
+                                        </AccordionSummary>
+                                        <AccordionDetails >
+                                            <Typography >
+                                                {parse(row.BodyText)}
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div>
+
                             ))}
 
 

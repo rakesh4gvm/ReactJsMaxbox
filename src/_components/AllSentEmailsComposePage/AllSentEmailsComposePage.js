@@ -70,7 +70,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
-  
+
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -84,35 +84,35 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const SelectTemplate= () => {
+    const SelectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
-        if(GetByClass.length > 0){
-        var TemplateID = document.getElementsByClassName('active')[0].id;
-        var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-        var BodyData = Signature.Data;
-        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
-        SetSignature({ Data: NewData });
-        handleTemClose()
-    }else{
-        toast.error("Please select template");
-    }
+        if (GetByClass.length > 0) {
+            var TemplateID = document.getElementsByClassName('active')[0].id;
+            var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+            var BodyData = Signature.Data;
+            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            SetSignature({ Data: NewData });
+            handleTemClose()
+        } else {
+            toast.error("Please select template");
+        }
     }
 
-    const SelectObjectTemplate= () => {
+    const SelectObjectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
-        if(GetByClass.length > 0){
-        var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-        var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-        var BodyData = Signature.Data;
-        var NewData = BodyData +"<p>"+ DivData.Subject +"</p>"+ DivData.BodyText;
-        SetSignature({ Data: NewData });
-        handleClose()
-    }else{
-        toast.error("Please select object template");
-    }
+        if (GetByClass.length > 0) {
+            var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+            var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+            var BodyData = Signature.Data;
+            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            SetSignature({ Data: NewData });
+            handleClose()
+        } else {
+            toast.error("Please select object template");
+        }
     }
 
-    
+
 
     const ActiveClass = (panel) => () => {
         const element = document.getElementById(panel)
@@ -328,8 +328,8 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
         refreshOnShow: function ($btn, $dropdown) {
         }
     });
-     /* template option */
-     Froalaeditor.RegisterCommand('TemplatesOption', {
+    /* template option */
+    Froalaeditor.RegisterCommand('TemplatesOption', {
         title: 'Templates Option',
         type: 'dropdown',
         focus: false,
@@ -360,6 +360,8 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                             setExpanded(false)
                             SetAllObjectData(Result.data.PageData)
                             setOpen(true);
+                        } else {
+                            toast.error(Result?.data?.Message);
                         }
                     } else {
                         SetAllObjectData('');
@@ -385,6 +387,8 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                             setExpanded(false);
                             SetAllTemplateData(Result.data.PageData)
                             setTemOpen(true);
+                        } else {
+                            toast.error(Result?.data?.Message);
                         }
                     } else {
                         SetAllTemplateData('');
@@ -424,7 +428,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink','TemplatesOption'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
@@ -446,7 +450,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
         <>
             <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
-            </div> 
+            </div>
 
             <Modal className="modal-lister"
                 open={open}
@@ -464,22 +468,22 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                         <div className='listcardman'>
                             {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
-                                <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                                <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel2bh-content"
-                                        id="panel2bh-header"
-                                    >
-                                    </AccordionSummary>
-                                    <AccordionDetails >
-                                        <Typography >
-                                            {parse(row.BodyText)}
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </div>
-                               
+                                    <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                                    <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel2bh-content"
+                                            id="panel2bh-header"
+                                        >
+                                        </AccordionSummary>
+                                        <AccordionDetails >
+                                            <Typography >
+                                                {parse(row.BodyText)}
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div>
+
                             ))}
 
 
