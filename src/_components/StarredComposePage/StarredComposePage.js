@@ -88,7 +88,8 @@ export default function StarredComposePage({ GetStarredList }) {
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
-            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            document.getElementById("Subject").value = DivData.Subject;
+            var NewData = BodyData + '</br>'+ DivData.BodyText;
             SetSignature({ Data: NewData });
             handleTemClose()
         } else {
@@ -102,7 +103,8 @@ export default function StarredComposePage({ GetStarredList }) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
-            var NewData = BodyData + "<p>" + DivData.Subject + "</p>" + DivData.BodyText;
+            document.getElementById("Subject").value = DivData.Subject;
+            var NewData = BodyData + '</br>'+ DivData.BodyText;
             SetSignature({ Data: NewData });
             handleClose()
         } else {
