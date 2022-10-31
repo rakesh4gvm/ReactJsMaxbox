@@ -90,7 +90,7 @@ export default function SpamComposePage({ GetSpamList }) {
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>'+ DivData.BodyText;
+            var NewData = BodyData + '</br>' + DivData.BodyText;
             SetSignature({ Data: NewData });
             handleTemClose()
         } else {
@@ -105,7 +105,7 @@ export default function SpamComposePage({ GetSpamList }) {
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>'+ DivData.BodyText;
+            var NewData = BodyData + '</br>' + DivData.BodyText;
             SetSignature({ Data: NewData });
             handleClose()
         } else {
@@ -435,7 +435,7 @@ export default function SpamComposePage({ GetSpamList }) {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
