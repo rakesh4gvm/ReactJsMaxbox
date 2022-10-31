@@ -200,7 +200,7 @@ export default function CreateTemplatesPage({ children }) {
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
-            <h5 className='my-0'><a href='/Templates' className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
+            <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
           </Col>
         </Row>
 

@@ -164,7 +164,7 @@ export default function EditObjectionTemplatePage(props) {
             <div className='bodymain'>
                 <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
                     <Col className='py-4'>
-                        <h5 className='my-0'><a href='/ObjectionTemplate' className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
+                        <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
                     </Col>
                 </Row>
                 <div className='sm-container mt-5'>

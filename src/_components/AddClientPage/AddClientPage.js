@@ -197,6 +197,7 @@ export default function AddClientPage({ children }) {
               history.push("/ClientList");
             } else {
               toast.error(Result?.data?.Message);
+              LoaderHide()
             }
           })
         }
@@ -222,7 +223,7 @@ export default function AddClientPage({ children }) {
       <div className='bodymain'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
-            <h5 className='my-0'><a href='' className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
+            <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
           </Col>
         </Row>
 

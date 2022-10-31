@@ -206,6 +206,7 @@ export default function EditClientPage(props) {
                             history.push("/ClientList");
                         } else {
                             toast.error(Result?.data?.Message);
+                            LoaderHide()
                         }
                     })
                 } else {
