@@ -280,7 +280,7 @@ export default function LoginPage() {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                          {values.showPassword ? <Visibility />:  <VisibilityOff /> }
                         </IconButton>
                       </InputAdornment>
                     }
