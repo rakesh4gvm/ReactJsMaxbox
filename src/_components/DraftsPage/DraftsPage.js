@@ -784,9 +784,9 @@ export default function DraftsPage() {
                         {<Button onClick={OpenDeletePopModel}>
                           <img src={icondelete} title={"Delete"} />
                         </Button>}
-                        <Button>
+                        {/* <Button>
                           <img src={iconmenu} />
-                        </Button>
+                        </Button> */}
                       </ButtonGroup>
                   }
                 </Col>

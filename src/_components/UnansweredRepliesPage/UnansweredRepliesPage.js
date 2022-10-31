@@ -688,7 +688,7 @@ export default function UnansweredRepliesPage() {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete', 'moreMisc']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -861,7 +861,7 @@ export default function UnansweredRepliesPage() {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'emoticons', 'insertLink'], ['Delete', 'moreMisc']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete', 'moreMisc']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -1325,9 +1325,9 @@ export default function UnansweredRepliesPage() {
                         {<Button onClick={OpenDeletePopModel}>
                           <img src={icondelete} title={"Delete"} />
                         </Button>}
-                        <Button>
+                        {/* <Button>
                           <img src={iconmenu} />
-                        </Button>
+                        </Button> */}
                       </ButtonGroup>
                   }
                 </Col>
