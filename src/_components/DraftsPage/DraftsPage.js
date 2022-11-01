@@ -658,6 +658,7 @@ export default function DraftsPage() {
                                     </Col>
                                     <Col xs={8}>
                                       <h4>{row.Subject}</h4>
+                                      <div className='small'> <p className='mb-0'><strong className='bold400'>To</strong>: bhumit@gmail.com</p></div>
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>
@@ -717,7 +718,8 @@ export default function DraftsPage() {
                                       </span>
                                     </Col>
                                     <Col xs={8}>
-                                      <h4>{row.Subject}</h4>
+                                      <h4>{row.Subject}</h4> 
+                                      <div className='small'> <p className='mb-0'><strong className='bold400'>To</strong>: bhumit@gmail.com</p></div>
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>

@@ -264,6 +264,15 @@ span.userpic img {
     font-size: small;
     line-height: 25px;
     color: #616B77;
+    max-height: 75px;
+    overflow: hidden;
+    background-color: transparent;
+}
+.cardinboxlist p *{
+    background-color: transparent !important;
+    font-weight: 400;
+    font-size: small;
+    line-height: 25px;
 }
 
 .cardinboxlist h6 {
