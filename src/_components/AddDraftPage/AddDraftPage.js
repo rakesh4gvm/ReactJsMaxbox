@@ -117,6 +117,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     document.getElementById("DraftSubject").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
         }

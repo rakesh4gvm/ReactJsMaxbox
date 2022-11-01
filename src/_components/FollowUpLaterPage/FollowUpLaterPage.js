@@ -737,6 +737,7 @@ export default function FollowUpLetterPage() {
         else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
+          LoaderHide()
         }
       });
     }
@@ -906,6 +907,7 @@ export default function FollowUpLetterPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
 
         });

@@ -289,6 +289,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
                     document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
         }

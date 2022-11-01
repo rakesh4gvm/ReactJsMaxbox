@@ -289,6 +289,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                     document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
         }

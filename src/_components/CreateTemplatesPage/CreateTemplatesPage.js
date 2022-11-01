@@ -161,6 +161,7 @@ export default function CreateTemplatesPage({ children }) {
             history.push("/Templates");
           } else {
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         })
       }

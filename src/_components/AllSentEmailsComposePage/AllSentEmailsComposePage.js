@@ -286,6 +286,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                     document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
         }

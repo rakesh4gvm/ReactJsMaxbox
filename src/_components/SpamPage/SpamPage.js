@@ -788,6 +788,7 @@ export default function SpamPage() {
         else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
+          LoaderHide()
         }
       });
     }
@@ -953,6 +954,7 @@ export default function SpamPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         });
       } else {

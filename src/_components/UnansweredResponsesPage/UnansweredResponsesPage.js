@@ -838,6 +838,7 @@ export default function UnansweredResponsesPage() {
         else {
           toast.error(Result?.data?.Message);
           ReplyPopModelClose();
+          LoaderHide()
         }
       });
     }
@@ -956,6 +957,7 @@ export default function UnansweredResponsesPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         });
       } else {

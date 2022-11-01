@@ -163,6 +163,7 @@ export default function CreateObjectionTemplatePage({ children }) {
             history.push("/ObjectionTemplate");
           } else {
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         })
       }

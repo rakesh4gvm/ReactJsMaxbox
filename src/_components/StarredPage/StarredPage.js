@@ -672,6 +672,7 @@ export default function StarredPage() {
         else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
+          LoaderHide()
         }
 
       });
@@ -843,6 +844,7 @@ export default function StarredPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         });
       } else {

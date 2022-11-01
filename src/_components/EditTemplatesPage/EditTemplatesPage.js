@@ -139,6 +139,7 @@ export default function EditTemplatesPage(props) {
                         history.push("/Templates");
                     } else {
                         toast.error(Result?.data?.Message);
+                        LoaderHide()
                     }
                 })
             }

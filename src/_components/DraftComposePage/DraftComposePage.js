@@ -293,6 +293,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
         }

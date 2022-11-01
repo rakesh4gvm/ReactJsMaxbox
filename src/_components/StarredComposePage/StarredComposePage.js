@@ -290,6 +290,7 @@ export default function StarredComposePage({ GetStarredList }) {
                     document.getElementById("BCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
+                    LoaderHide()
                 }
             })
 

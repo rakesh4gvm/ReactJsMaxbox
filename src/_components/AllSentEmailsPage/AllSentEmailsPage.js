@@ -628,6 +628,7 @@ export default function AllSentEnailsPage() {
         } else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
+          LoaderHide()
         }
       });
     }
@@ -797,6 +798,7 @@ export default function AllSentEnailsPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
         });
       } else {

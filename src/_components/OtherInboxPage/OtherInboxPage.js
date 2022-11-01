@@ -749,6 +749,7 @@ export default function OtherInboxPage() {
         else {
           ReplyPopModelClose();
           toast.error(Result?.data?.Message);
+          LoaderHide()
         }
       });
     }
@@ -919,6 +920,7 @@ export default function OtherInboxPage() {
           else {
             ForwardPopModelClose();
             toast.error(Result?.data?.Message);
+            LoaderHide()
           }
 
         });
