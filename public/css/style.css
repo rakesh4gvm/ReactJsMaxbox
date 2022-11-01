@@ -268,7 +268,7 @@ span.userpic img {
 
 .cardinboxlist h6 {
     font-weight: 400;
-    font-size: 13px;
+    font-size: 10px;
     line-height: 21px;
     color: #616B77;
     margin-bottom: 0;
@@ -1931,6 +1931,33 @@ div#menu- {
 .min-100vh{
     min-height: calc(100vh - 165px);
 }
+.daterangerdrop {
+    display: none;
+    min-height: 100px;
+    border-radius: 15px;
+    max-width: 250px;
+    border: 1px solid #E5E5E5;
+    overflow: hidden;
+    width: 180px;
+    position: absolute;
+    background: #fff;
+    top: 100%;
+    right: 10px;
+    padding: 15px;
+    z-index: 9999;
+}
+.daterangerdrop.show {
+    display: block;
+}
+.smalldate.datepikclen .MuiOutlinedInput-root{
+    width: 150px;
+    height: 40px;
+}
+.bold400{
+    font-weight: 500;
+    color: #000;
+}
+
 
 @media screen and (max-width:990px) {
     .mobile-nav {

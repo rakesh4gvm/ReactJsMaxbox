@@ -69,6 +69,7 @@ import timermenu from '../../images/icons/timermenu.svg';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 
 import { EditorVariableNames } from "../../_helpers/Utility";
 
@@ -139,7 +140,8 @@ export default function FollowUpLetterPage() {
   })
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
-  })
+  }) 
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
 
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
@@ -526,6 +528,34 @@ export default function FollowUpLetterPage() {
   /* end code*/
 
 
+  /* start follow date ranger */
+
+  const Datedropdown = () => {
+    const element = document.getElementById("Datedropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+  }
+  function UseOutsideAlerter(Ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (Ref.current && !Ref.current.contains(event.target)) {
+          const element = document.getElementById("Datedropshow")
+          element.classList.remove("show");
+        }
+      }
+      // document.addEventListener("mousedown", handleClickOutside);
+      // return () => {
+      //   document.removeEventListener("mousedown", handleClickOutside);
+      // };
+    }, [Ref]);
+  }
+  /* end follow date ranger code*/
+
+
   // Start Search
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
@@ -702,6 +732,11 @@ export default function FollowUpLetterPage() {
     const element = document.getElementsByClassName("user_editor")
     element[0].classList.add("d-none");
   }
+
+  // date ranger
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
 
   // Reply Send Mail Starts
   const ReplySendMail = () => {
@@ -1238,10 +1273,47 @@ export default function FollowUpLetterPage() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12} className="mt-3">
+                  <Col xs={8} className="mt-3">
                     <FormGroup>
                       <FormControlLabel control={<Checkbox checked={SelectAllCheckbox} onChange={SeleactAllInBoxCheckBox} />} label="Select All" />
                     </FormGroup>
+                  </Col>
+                  <Col xs={4} className="mt-3">
+                    <ButtonGroup className='float-right' variant="text" aria-label="text button group">
+                      <Button className='iconbtn' variant="contained" size="large" onClick={Datedropdown} title="Refresh">
+                        <DateRangeIcon />
+                      </Button> 
+                    </ButtonGroup>
+                    <div id='Datedropshow' className='daterangerdrop'>
+                      <div className='datepikclen smalldate'>
+                        <h6 className='small'> Start Date </h6>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <Stack spacing={0}>
+                            <DesktopDatePicker
+                              inputFormat="MM/dd/yyyy"
+                              value={FollowupDate}
+                              onChange={SelectFollowupDate}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                          </Stack>
+                        </LocalizationProvider>
+                      </div>
+
+                      <div className='datepikclen smalldate'>
+                        <h6 className='small mt-2'> End Date </h6>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <Stack spacing={0}>
+                            <DesktopDatePicker
+                              inputFormat="MM/dd/yyyy"
+                              value={FollowupDate}
+                              onChange={SelectFollowupDate}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                          </Stack>
+                        </LocalizationProvider>
+                      </div>
+
+                    </div>
                   </Col>
                 </Row>
               </div>
@@ -1287,7 +1359,7 @@ export default function FollowUpLetterPage() {
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col xs={8} className='px-2'>
                                       <h4>{row.FromEmail}</h4>
                                       <h3>{row.Subject}</h3>
                                     </Col>
@@ -1314,6 +1386,9 @@ export default function FollowUpLetterPage() {
                                     </Col> */}
                                     <Col xs={10}>
                                       <p>{row.Snippet}</p>
+                                    </Col>
+                                    <Col xs={12}>
+                                     <div className='small'> <p className='mb-0'><strong className='bold400'>Follow up Later Date</strong>: 30/09/2022</p></div>
                                     </Col>
                                   </Row>
                                 </Col>
@@ -1352,7 +1427,7 @@ export default function FollowUpLetterPage() {
                                       <img src={defaultimage} width="55px" alt="" />
                                     </span>
                                   </Col>
-                                  <Col xs={8}>
+                                  <Col xs={8} className='px-2'>
                                     <h4>{row.FromEmail}</h4>
                                     <h3>{row.Subject}</h3>
                                   </Col>
@@ -1379,7 +1454,7 @@ export default function FollowUpLetterPage() {
                                   </Col> */}
                                   <Col xs={10}>
                                     <p>{row.Snippet}</p>
-                                  </Col>
+                                  </Col> 
                                 </Row>
                               </Col>
                             </Item>
