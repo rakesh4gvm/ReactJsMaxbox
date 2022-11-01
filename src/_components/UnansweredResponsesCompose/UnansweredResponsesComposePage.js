@@ -72,6 +72,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
+    const [ClientData, SetClientData] = useState()
+
 
     const handleChange = (panel) => (event, isExpanded) => {
         console.log(panel);
@@ -108,8 +110,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }
     }
 
-
-
     const ActiveClass = (panel) => () => {
         const element = document.getElementById(panel)
         const elementcs = document.getElementsByClassName("active")
@@ -139,8 +139,25 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             SetUserID(UserDetails.UserID);
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
-
+        GetClientList(UserDetails.ClientID)
     }
+    const GetClientList = (ID) => {
+        let Data
+        Data = {
+            ID: ID
+        };
+
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/client/ClientGetByID",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetClientData(Result?.data?.Data[0]?.SignatureText)
+            }
+        });
+    };
 
     // Get All Email Account Users
     const GetEmailAccountUsers = (CID, UID) => {
@@ -155,6 +172,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                 SetEmailAccountUsers(Result.data.PageData)
+
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -214,6 +232,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     // Select Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
+        const str = "<br>"
+        SetSignature({ Data: str + ClientData })
+
     }
 
     // Selected User
@@ -447,6 +468,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     }
     var editor = new FroalaEditor('.send', {}, function () {
         editor.button.buildList();
+        editor.events.focus();
     })
 
 
