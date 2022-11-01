@@ -1388,7 +1388,7 @@ export default function FollowUpLetterPage() {
                                       <p>{row.Snippet}</p>
                                     </Col>
                                     <Col xs={12}>
-                                     <div className='small'> <p className='mb-0'><strong className='bold400'>Follow up Later Date</strong>: 30/09/2022</p></div>
+                                     <div className='small'> <p className='mb-0'><strong className='bold400'>Follow up Later Date</strong>: {Moment(row.FollowUpDate).format("DD/MM/YYYY")}</p></div>
                                     </Col>
                                   </Row>
                                 </Col>
