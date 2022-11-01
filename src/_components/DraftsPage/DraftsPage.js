@@ -658,7 +658,6 @@ export default function DraftsPage() {
                                     </Col>
                                     <Col xs={8}>
                                       <h4>{row.Subject}</h4>
-                                      <h3>{parse(row.Body)}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>
@@ -679,7 +678,7 @@ export default function DraftsPage() {
                                       </div>
                                     </Col> */}
                                     <Col xs={10}>
-                                      <p>{row.Snippet}</p>
+                                      <p>{parse(row.Body)}</p>
                                     </Col>
                                   </Row>
                                 </Col>
@@ -719,7 +718,6 @@ export default function DraftsPage() {
                                     </Col>
                                     <Col xs={8}>
                                       <h4>{row.Subject}</h4>
-                                      <h3>{parse(row.Body)}</h3>
                                     </Col>
                                     <Col xs={2} className="pl-0">
                                       <h6>
@@ -740,7 +738,7 @@ export default function DraftsPage() {
                                       </div>
                                     </Col> */}
                                     <Col xs={10}>
-                                      <p>{row.Snippet}</p>
+                                      <p>{parse(row.Body)}</p>
                                     </Col>
                                   </Row>
                                 </Col>
