@@ -25,7 +25,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
-import { Col, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Row } from 'react-bootstrap';
 import FooterBottom from '../Footer/footer';
 
 import { toast } from "react-toastify";
@@ -36,6 +36,13 @@ import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+
+import Templatecarbon from '../../images/icons/table-template.svg';
+import SmallSend from '../../images/icons/small_send.svg';
+import MailMultipal from '../../images/icons/mail_multipal.svg';
+import InboxRounded from '../../images/icons/inbox_rounded.svg';
+import EyesView from '../../images/icons/eyes_view.svg';
+
 
 toast.configure();
 
@@ -63,6 +70,7 @@ export default function ObjectionTemplateListPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [EyesPopModel, SetEyesPopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
   const [open, setOpen] = React.useState(false);
 
@@ -136,6 +144,16 @@ export default function ObjectionTemplateListPage() {
   const CloseDeletePopModel = () => {
     SetDeletePopModel(false);
   }
+
+  // Start PopModel Open and Close and Delete Message
+  const OpenEyesPopModel = (ID) => {
+    SetEyesPopModel(true);
+    SetDeleteID(ID)
+  }
+  const CloseEyesPopModel = () => {
+    SetEyesPopModel(false);
+  }
+
   const DeleteObjectionTemplate = () => {
     const Data = {
       ID: DeleteID
@@ -210,6 +228,38 @@ export default function ObjectionTemplateListPage() {
         </Box>
       </Modal>
 
+
+      <Modal className="modal-pre"
+        open={EyesPopModel}
+        onClose={CloseEyesPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein wd-600">
+          <div className="px-4 pt-4"> 
+            <Typography className='text-center mt-2 mb-4' id="modal-modal-title" variant="b" component="h4">
+              Body
+            </Typography>
+            <div className='max-heghauto'>
+              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              </Typography>
+              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              </Typography>
+              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              </Typography>
+            </div>
+          </div> 
+          <div className='mt-4 d-flex btn-50'> 
+            <Button className='btn btn-darkpre mx-auto w-100' variant="contained" size="medium" onClick={() => { CloseEyesPopModel(); }}>
+              Close
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
       <div className='bodymain min-100vh'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
@@ -230,11 +280,15 @@ export default function ObjectionTemplateListPage() {
 
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
-                    <TableRow>
-                      <TableCell> </TableCell>
-                      <TableCell>Subject</TableCell>
-                      {/* <TableCell>Body</TableCell> */}
-                      <TableCell align="right">Action</TableCell>
+                    <TableRow> 
+                      <TableCell>Name</TableCell>
+                      <TableCell>Body</TableCell>
+                      <TableCell>Send</TableCell>
+                      <TableCell>Open</TableCell>
+                      <TableCell>Replies</TableCell>
+                      <TableCell>Open %</TableCell>
+                      <TableCell>Replies %</TableCell>
+                      <TableCell>Action</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -243,23 +297,37 @@ export default function ObjectionTemplateListPage() {
                       <React.Fragment>
                         <TableRow>
 
-                          <TableCell align="center">
+                          {/* <TableCell align="center">
                             <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
                               ...prev,
                               [row._id]: !prev[row._id],
                             }))}>
                               {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
                             </IconButton>
-                          </TableCell>
+                          </TableCell> */}
+
+                          <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> Reschedule a meeting</TableCell>
 
                           <TableCell>{row.Subject}</TableCell>
                           {/* <TableCell> </TableCell> */}
 
-                          <TableCell align="right">
-                            <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
-                              <img src={DeleteIcon} />
-                            </Button>
-                            <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+                          <TableCell><img src={SmallSend} /> Send</TableCell>
+                          <TableCell><img src={MailMultipal} /> Open</TableCell>
+                          <TableCell><img src={InboxRounded} /> Replies</TableCell>
+                          <TableCell>Open %</TableCell>
+                          <TableCell>Replies %</TableCell>
+
+                          <TableCell align="left">
+                           <ButtonGroup variant="text" aria-label="text button group">
+                              <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+
+                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id)}>
+                                <img src={EyesView} />
+                              </Button>
+                              <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
+                                <img src={DeleteIcon} />
+                              </Button>
+                            </ButtonGroup>
                           </TableCell>
                         </TableRow>
 
