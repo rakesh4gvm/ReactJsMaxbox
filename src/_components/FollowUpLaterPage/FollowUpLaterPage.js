@@ -140,14 +140,14 @@ export default function FollowUpLetterPage() {
   })
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
-  }) 
-  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  })
+  const [FollowupStartDate, SetFollowupStartDate] = React.useState(new Date().toLocaleString());
+  const [FollowupEndDate, SetFollowupEndDate] = React.useState(new Date().toLocaleString());
 
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
     GetClientID();
   }, [SearchInbox]);
-
 
   // Get ClientID
   const GetClientID = () => {
@@ -172,75 +172,81 @@ export default function FollowUpLetterPage() {
   }
   // Start Get Follow Up Letter List
   const GetFollowUpLetterList = (CID, UID, PN, Str, IDs) => {
-    var Data = {
-      Page: PN,
-      RowsPerPage: RowsPerPage,
-      sort: true,
-      Field: SortField,
-      Sortby: SortedBy,
-      Search: SearchInbox,
-      ClientID: CID,
-      UserID: UID,
-      IsInbox: false,
-      IsStarred: false,
-      IsFollowUp: true,
-      IsSpam: false,
-      IsOtherInbox: false,
-      AccountIDs: IDs
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        if (Result.data.PageData.length > 0) {
-          SetResponseData(Result.data.PageData)
-          SetHasMoreData(Result.data.PageData)
-          // SetInBoxList([...InBoxList, ...Result.data.PageData]);
-          if (Str == "checkbox") {
-            SetInBoxList(Result.data.PageData);
-          } else if (Str == "scroll") {
-            SetInBoxList([...InBoxList, ...Result.data.PageData]);
-          } else {
-            SetInBoxList(Result.data.PageData);
+    if (Moment(FollowupStartDate).format("YYYY-MM-DD") > Moment(FollowupEndDate).format("YYYY-MM-DD")) {
+      toast.error("Please add valid date.")
+    } else {
+      var Data = {
+        Page: PN,
+        RowsPerPage: RowsPerPage,
+        sort: true,
+        Field: SortField,
+        Sortby: SortedBy,
+        Search: SearchInbox,
+        ClientID: CID,
+        UserID: UID,
+        IsInbox: false,
+        IsStarred: false,
+        IsFollowUp: true,
+        IsSpam: false,
+        IsOtherInbox: false,
+        AccountIDs: IDs,
+        StartDate: Moment(FollowupStartDate).format("YYYY-MM-DD"),
+        EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD")
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetResponseData(Result.data.PageData)
+            SetHasMoreData(Result.data.PageData)
+            // SetInBoxList([...InBoxList, ...Result.data.PageData]);
+            if (Str == "checkbox") {
+              SetInBoxList(Result.data.PageData);
+            } else if (Str == "scroll") {
+              SetInBoxList([...InBoxList, ...Result.data.PageData]);
+            } else {
+              SetInBoxList(Result.data.PageData);
+            }
+            OpenMessageDetails(Result.data.PageData[0]._id);
+            SetMailNumber(1)
+            LoaderHide()
           }
-          OpenMessageDetails(Result.data.PageData[0]._id);
-          SetMailNumber(1)
-          LoaderHide()
-        }
-        else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
-          SetInBoxList([])
-          OpenMessageDetails('')
-          LoaderHide()
+          else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
+            SetInBoxList([])
+            OpenMessageDetails('')
+            LoaderHide()
+          }
+          else {
+            SetResponseData([])
+            SetHasMoreData(Result.data.PageData)
+            if (InBoxList && InBoxList?.length > 1) {
+              SetInBoxList([...InBoxList]);
+              let LastElement = InBoxList?.slice(-1)
+              OpenMessageDetails(LastElement[0]?._id, 0);
+            } else {
+              SetInBoxList([]);
+              OpenMessageDetails('');
+            }
+            LoaderHide()
+            if (OpenMessage == "") {
+              toast.error(<div>Follow Up Later <br />No Data.</div>)
+            }
+          }
+          GetTotalRecordCount(CID, UID);
         }
         else {
-          SetResponseData([])
-          SetHasMoreData(Result.data.PageData)
-          if (InBoxList && InBoxList?.length > 1) {
-            SetInBoxList([...InBoxList]);
-            let LastElement = InBoxList?.slice(-1)
-            OpenMessageDetails(LastElement[0]?._id, 0);
-          } else {
-            SetInBoxList([]);
-            OpenMessageDetails('');
-          }
+          SetInBoxList([]);
+          OpenMessageDetails('');
+          toast.error(Result?.data?.Message);
           LoaderHide()
-          if (OpenMessage == "") {
-            toast.error(<div>Follow Up Later <br />No Data.</div>)
-          }
         }
-        GetTotalRecordCount(CID, UID);
-      }
-      else {
-        SetInBoxList([]);
-        OpenMessageDetails('');
-        toast.error(Result?.data?.Message);
-      }
-    });
+      });
+    }
   };
-
   const GetUpdatedFollowUpLaterList = (CID, UID) => {
     var Data = {
       Page: Page,
@@ -676,6 +682,8 @@ export default function FollowUpLetterPage() {
       IsFollowUp: true,
       IsSpam: false,
       IsOtherInbox: false,
+      StartDate: Moment(FollowupStartDate).format("YYYY-MM-DD"),
+      EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD")
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
@@ -683,8 +691,8 @@ export default function FollowUpLetterPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        if (Result.data.TotalCount >= 0) {
-          SetTotalCount(Result.data.TotalCount);
+        if (Result.data.TotalCount[0]?.IsFollowUp >= 0) {
+          SetTotalCount(Result.data.TotalCount[0]?.IsFollowUp);
         } else {
           SetTotalCount(0);
           toast.error(Result?.data?.Message);
@@ -734,8 +742,12 @@ export default function FollowUpLetterPage() {
   }
 
   // date ranger
-  const SelectFollowupDate = (NewValue) => {
-    SetFollowupDate(NewValue);
+  const SelectFollowupStartDate = (NewValue) => {
+    SetFollowupStartDate(NewValue);
+  };
+
+  const SelectFollowupEndDate = (NewValue) => {
+    SetFollowupEndDate(NewValue);
   };
 
   // Reply Send Mail Starts
@@ -1282,7 +1294,7 @@ export default function FollowUpLetterPage() {
                     <ButtonGroup className='float-right' variant="text" aria-label="text button group">
                       <Button className='iconbtn' variant="contained" size="large" onClick={Datedropdown} title="Refresh">
                         <DateRangeIcon />
-                      </Button> 
+                      </Button>
                     </ButtonGroup>
                     <div id='Datedropshow' className='daterangerdrop'>
                       <div className='datepikclen smalldate'>
@@ -1291,8 +1303,8 @@ export default function FollowUpLetterPage() {
                           <Stack spacing={0}>
                             <DesktopDatePicker
                               inputFormat="MM/dd/yyyy"
-                              value={FollowupDate}
-                              onChange={SelectFollowupDate}
+                              value={FollowupStartDate}
+                              onChange={SelectFollowupStartDate}
                               renderInput={(params) => <TextField {...params} />}
                             />
                           </Stack>
@@ -1305,14 +1317,16 @@ export default function FollowUpLetterPage() {
                           <Stack spacing={0}>
                             <DesktopDatePicker
                               inputFormat="MM/dd/yyyy"
-                              value={FollowupDate}
-                              onChange={SelectFollowupDate}
+                              value={FollowupEndDate}
+                              onChange={SelectFollowupEndDate}
                               renderInput={(params) => <TextField {...params} />}
                             />
                           </Stack>
                         </LocalizationProvider>
                       </div>
-
+                      <ButtonGroup className='mt-3' variant="text" aria-label="text button group">
+                        <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={() => GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked)} > Apply</Button>
+                      </ButtonGroup>
                     </div>
                   </Col>
                 </Row>
@@ -1388,7 +1402,7 @@ export default function FollowUpLetterPage() {
                                       <p>{row.Snippet}</p>
                                     </Col>
                                     <Col xs={12}>
-                                     <div className='small'> <p className='mb-0'><strong className='bold400'>Follow up Later Date</strong>: {Moment(row.FollowUpDate).format("DD/MM/YYYY")}</p></div>
+                                      <div className='small'> <p className='mb-0'><strong className='bold400'>Follow up Later Date</strong>: {Moment(row.FollowUpDate).format("DD/MM/YYYY")}</p></div>
                                     </Col>
                                   </Row>
                                 </Col>
@@ -1454,7 +1468,7 @@ export default function FollowUpLetterPage() {
                                   </Col> */}
                                   <Col xs={10}>
                                     <p>{row.Snippet}</p>
-                                  </Col> 
+                                  </Col>
                                 </Row>
                               </Col>
                             </Item>
