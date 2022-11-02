@@ -72,6 +72,7 @@ export default function TemplatesListPage() {
   const [EyesPopModel, SetEyesPopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
   const [open, setOpen] = React.useState(false);
+  const [PopupBody, SetPopupBody] = React.useState(false);
 
   useEffect(() => {
     document.title = 'Template | MAXBOX';
@@ -144,8 +145,9 @@ export default function TemplatesListPage() {
   }
 
    // Start PopModel Open and Close and Delete Message
-   const OpenEyesPopModel = (ID) => {
+   const OpenEyesPopModel = (ID,Body) => {
     SetEyesPopModel(true);
+    SetPopupBody(Body);
     SetDeleteID(ID)
   }
   const CloseEyesPopModel = () => {
@@ -238,16 +240,12 @@ export default function TemplatesListPage() {
             <Typography className='text-center mt-2 mb-4' id="modal-modal-title" variant="b" component="h4">
               Body
             </Typography>
-            <Typography className='text-left  '   variant="b" component="h5">
-             Input Adornments
-            </Typography>
             <div className='max-heghauto'>
-              <Typography component="h6" className='bodytextpoup'>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography> 
-            </div>
+              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
+                {PopupBody}
+              </Typography>
+              
+            </div>            
           </div> 
           <div className='mt-4 d-flex btn-50'> 
             <Button className='btn btn-darkpre mx-auto w-100' variant="contained" size="medium" onClick={() => { CloseEyesPopModel(); }}>
@@ -302,19 +300,19 @@ export default function TemplatesListPage() {
                           </TableCell> */}
                           <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
                           <TableCell sx={{ minWidth: 500 }}>
-                             <div className='hidtextmax'>{parse(row.BodyText)}</div>
+                             <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
                             </TableCell>
 
-                          <TableCell><img src={SmallSend} />  1542</TableCell>
-                          <TableCell><img src={MailMultipal} /> 45</TableCell>
-                          <TableCell><img src={InboxRounded} /> 254</TableCell>
-                          <TableCell>45 %</TableCell>
-                          <TableCell>85 %</TableCell>
+                            <TableCell><img src={SmallSend} /> Send</TableCell>
+                          <TableCell><img src={MailMultipal} /> Open</TableCell>
+                          <TableCell><img src={InboxRounded} /> Replies</TableCell>
+                          <TableCell>Open %</TableCell>
+                          <TableCell>Replies %</TableCell>
 
                           <TableCell align="right">
                             <ButtonGroup variant="text" aria-label="text button group">
                               <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button> 
-                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id)}>
+                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id,parse(row.BodyText))}>
                                 <img src={EyesView} />
                               </Button>
                               <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
