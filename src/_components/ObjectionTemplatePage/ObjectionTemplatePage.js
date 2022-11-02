@@ -304,8 +304,9 @@ export default function ObjectionTemplateListPage() {
                           </TableCell> */}
 
                           <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
-
-                          <TableCell>{parse(row.BodyText.substring(0, 100))}</TableCell>
+                          <TableCell sx={{ minWidth: 500 }}>
+                             <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
+                            </TableCell>
                           {/* <TableCell> </TableCell> */}
 
                           <TableCell><img src={SmallSend} /> Send</TableCell>
