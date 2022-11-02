@@ -73,7 +73,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
     const [ClientData, SetClientData] = useState()
-    var editor
+   
 
 
 
@@ -132,9 +132,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     }, [])
 
-    editor = new FroalaEditor('.send', {}, function () {
-        editor.button.buildList();
-    })
+   
     // Get Client ID
 
     const GetClientID = () => {
@@ -485,6 +483,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     // function closeModal(e) {
     //     setIsOpen(false);
     // }  
+    var editor = new FroalaEditor('.send', {}, function () {
+        editor.button.buildList();
+    })
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
