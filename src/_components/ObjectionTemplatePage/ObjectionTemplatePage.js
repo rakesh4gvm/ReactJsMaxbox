@@ -73,6 +73,7 @@ export default function ObjectionTemplateListPage() {
   const [EyesPopModel, SetEyesPopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
   const [open, setOpen] = React.useState(false);
+  const [PopupBody, SetPopupBody] = React.useState(false);
 
   useEffect(() => {
     document.title = 'Objection Template | MAXBOX';
@@ -146,8 +147,9 @@ export default function ObjectionTemplateListPage() {
   }
 
   // Start PopModel Open and Close and Delete Message
-  const OpenEyesPopModel = (ID) => {
+  const OpenEyesPopModel = (ID,Body) => {
     SetEyesPopModel(true);
+    SetPopupBody(Body);
     SetDeleteID(ID)
   }
   const CloseEyesPopModel = () => {
@@ -242,14 +244,9 @@ export default function ObjectionTemplateListPage() {
             </Typography>
             <div className='max-heghauto'>
               <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                {PopupBody}
               </Typography>
-              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
-              <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
+              
             </div>
           </div> 
           <div className='mt-4 d-flex btn-50'> 
@@ -306,9 +303,9 @@ export default function ObjectionTemplateListPage() {
                             </IconButton>
                           </TableCell> */}
 
-                          <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> Reschedule a meeting</TableCell>
+                          <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
 
-                          <TableCell>{row.Subject}</TableCell>
+                          <TableCell>{parse(row.BodyText.substring(0, 100))}</TableCell>
                           {/* <TableCell> </TableCell> */}
 
                           <TableCell><img src={SmallSend} /> Send</TableCell>
@@ -321,7 +318,7 @@ export default function ObjectionTemplateListPage() {
                            <ButtonGroup variant="text" aria-label="text button group">
                               <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
 
-                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id)}>
+                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id,parse(row.BodyText))}>
                                 <img src={EyesView} />
                               </Button>
                               <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>

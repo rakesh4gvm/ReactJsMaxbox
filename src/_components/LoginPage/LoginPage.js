@@ -262,17 +262,19 @@ export default function LoginPage() {
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange} />
+                  {/* <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange}
+                  
+                  
+                  /> */}
                   {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
                 </div>
                 <div className='input-pasbox'>
                   <OutlinedInput
-                    id="outlined-adornment-password"
+                    id="password"
                     type={values.showPassword ? 'text' : 'password'}
-                    value={PasswordValue()}
-                    onChange={handleChanges('password')}
-                    readOnly
-                    endAdornment={
+                    // value={PasswordValue()}
+                    onChange={handleChange}
+                               endAdornment={
                       <InputAdornment position="end" >
                         <IconButton
                           aria-label="toggle password visibility"
