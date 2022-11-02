@@ -73,6 +73,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
     const [ClientData, SetClientData] = useState()
+    var editor
+
 
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -127,9 +129,12 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
     useEffect(() => {
         GetClientID()
+
     }, [])
 
-
+    editor = new FroalaEditor('.send', {}, function () {
+        editor.button.buildList();
+    })
     // Get Client ID
 
     const GetClientID = () => {
@@ -155,6 +160,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetClientData(Result?.data?.Data[0]?.SignatureText)
+
             }
         });
     };
@@ -234,7 +240,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         SetSignature({ Data: str + ClientData })
-
+        console.log("editor=========", editor)
+        editor.events.focus();
     }
 
     // Selected User
@@ -466,11 +473,10 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             Data: Model
         });
     }
-    var editor = new FroalaEditor('.send', {}, function () {
-        editor.button.buildList();
-        editor.events.focus();
-    })
 
+    // var editors = new FroalaEditor('.initialized', function (events, editors) {
+    //     editors.events.focus(true);
+    // })
 
     // // Frola Editor Ends    
     // function openModal(e) {
