@@ -691,8 +691,8 @@ export default function FollowUpLetterPage() {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        if (Result.data.TotalCount[0]?.IsFollowUp >= 0) {
-          SetTotalCount(Result.data.TotalCount[0]?.IsFollowUp);
+        if (Result.data.TotalCount >= 0) {
+          SetTotalCount(Result.data.TotalCount);
         } else {
           SetTotalCount(0);
           toast.error(Result?.data?.Message);
@@ -1292,7 +1292,7 @@ export default function FollowUpLetterPage() {
                   </Col>
                   <Col xs={4} className="mt-3">
                     <ButtonGroup className='float-right' variant="text" aria-label="text button group">
-                      <Button className='iconbtn' variant="contained" size="large" onClick={Datedropdown} title="Refresh">
+                      <Button className='iconbtn' variant="contained" size="large" onClick={Datedropdown} title="Follow Up Later">
                         <DateRangeIcon />
                       </Button>
                     </ButtonGroup>

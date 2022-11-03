@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios";
+import Moment from "moment";
 
 import { Select } from '@material-ui/core';
 import { Alert, Stack } from '@mui/material';
@@ -91,6 +92,8 @@ export default function Header() {
         const Data = {
             ClientID: CID,
             UserID: UID,
+            StartDate: Moment().format("YYYY-MM-DD"),
+            EndDate: Moment().format("YYYY-MM-DD")
         }
         const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/AllTotalRecords",
