@@ -1981,12 +1981,21 @@ div.modal-prein.wd-600{
 }
 .hidtextmax {
     max-width: 100%;
-    max-height: 52px;
+    max-height: 42px;
     overflow: hidden;
 }
 .hidtextmax p{
     margin: 0;
 }
+.hidtextmax *{ 
+    font-weight: 400;
+    font-size: 14px !important;
+    line-height: normal !important;
+    font-family: 'Poppins', sans-serif !important;
+    background: none !important;
+    color: #616B77 !important;
+}
+
 
 @media screen and (max-width:990px) {
     .mobile-nav {
