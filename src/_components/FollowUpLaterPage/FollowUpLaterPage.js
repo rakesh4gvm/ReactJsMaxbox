@@ -175,6 +175,7 @@ export default function FollowUpLetterPage() {
     if (Moment(FollowupStartDate).format("YYYY-MM-DD") > Moment(FollowupEndDate).format("YYYY-MM-DD")) {
       toast.error("Please add valid date.")
     } else {
+      LoaderShow()
       var Data = {
         Page: PN,
         RowsPerPage: RowsPerPage,
@@ -214,6 +215,7 @@ export default function FollowUpLetterPage() {
             OpenMessageDetails(Result.data.PageData[0]._id);
             SetMailNumber(1)
             LoaderHide()
+            HideDatePicker()
           }
           else if (Result.data.PageData?.length === 0 && Str == "checkbox") {
             SetInBoxList([])
@@ -231,10 +233,11 @@ export default function FollowUpLetterPage() {
               SetInBoxList([]);
               OpenMessageDetails('');
             }
-            LoaderHide()
             if (OpenMessage == "") {
               toast.error(<div>Follow Up Later <br />No Data.</div>)
             }
+            LoaderHide()
+            HideDatePicker()
           }
           GetTotalRecordCount(CID, UID);
         }
@@ -558,6 +561,12 @@ export default function FollowUpLetterPage() {
       //   document.removeEventListener("mousedown", handleClickOutside);
       // };
     }, [Ref]);
+  }
+  const HideDatePicker = () => {
+    const element = document.getElementById("Datedropshow")
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
   }
   /* end follow date ranger code*/
 
