@@ -579,7 +579,7 @@ export default function UnansweredRepliesPage() {
     if (element[0].classList.contains("d-none")) {
       element[0].classList.remove("d-none");
       if (ObjMailsData != '') {
-        var ToEmail = ObjMailsData.FromName + " (" + ObjMailsData.FromEmail + ")";
+        var ToEmail = ObjMailsData.ToName + " (" + ObjMailsData.ToEmail + ")";
         document.getElementById("lblreplytoemail").innerHTML = ToEmail
         document.getElementById("lblreplytoemail").value = ToEmail
       }
@@ -594,8 +594,8 @@ export default function UnansweredRepliesPage() {
 
   // Starts Reply Send Mail
   const ReplySendMail = () => {
-    var ToEmail = OpenMessage.FromEmail;
-    var ToName = OpenMessage.FromName
+    var ToEmail = OpenMessage.ToEmail;
+    var ToName = OpenMessage.ToName
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
@@ -757,6 +757,7 @@ export default function UnansweredRepliesPage() {
 
   // Forward Send Mail Starts
   const ForwardSendMail = (ObjMailData) => {
+    debugger;
     var ToEmail = document.getElementById("to").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
