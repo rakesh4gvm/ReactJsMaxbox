@@ -74,6 +74,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CloseIcon from '@material-ui/icons/CloseOutlined';
 
 
 import { EditorVariableNames } from "../../_helpers/Utility";
@@ -1552,6 +1553,7 @@ export default function FollowUpLetterPage() {
                       </Button>
                     </ButtonGroup>
                     <div id='Datedropshow' className='daterangerdrop'>
+                      <a className='iconrigtdrop' onClick={Datedropdown}> <CloseIcon /> </a>
                       <div className='datepikclen smalldate'>
                         <h6 className='small'> Start Date </h6>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
