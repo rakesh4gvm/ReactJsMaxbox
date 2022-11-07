@@ -303,6 +303,13 @@ export default function FollowUpLetterPage() {
             OpenMessageDetails('')
             LoaderHide()
           }
+          else if (Result.data.PageData?.length === 0 && Str == "date") {
+            SetInBoxList([])
+            OpenMessageDetails('')
+            LoaderHide()
+            HideDatePicker()
+            toast.error(<div>Follow Up Later <br />No Data.</div>)
+          }
           else {
             SetResponseData([])
             SetHasMoreData(Result.data.PageData)
@@ -318,7 +325,6 @@ export default function FollowUpLetterPage() {
               toast.error(<div>Follow Up Later <br />No Data.</div>)
             }
             LoaderHide()
-            HideDatePicker()
           }
           GetTotalRecordCount(CID, UID);
         }
@@ -544,7 +550,7 @@ export default function FollowUpLetterPage() {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          GetUpdatedFollowUpLaterList(ClientID, UserID);
+          GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
         }
         else {
           CloseOtherInboxPopModel();
@@ -1592,7 +1598,7 @@ export default function FollowUpLetterPage() {
                         </LocalizationProvider>
                       </div>
                       <ButtonGroup className='mt-3' variant="text" aria-label="text button group">
-                        <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={() => GetFollowUpLetterList(ClientID, UserID, Page, "", FromEmailDropdownListChecked)} > Apply</Button>
+                        <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={() => GetFollowUpLetterList(ClientID, UserID, Page, "date", FromEmailDropdownListChecked)} > Apply</Button>
                       </ButtonGroup>
                     </div>
                   </Col>
