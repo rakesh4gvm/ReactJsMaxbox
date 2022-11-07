@@ -96,6 +96,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
 
     const SelectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
+        LoaderShow()
         if (GetByClass.length > 0) {
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
@@ -103,14 +104,17 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
             document.getElementById("Subject").value = DivData.Subject;
             var NewData = BodyData + '</br>' + DivData.BodyText;
             SetSignature({ Data: NewData });
+            LoaderHide()
             handleTemClose()
         } else {
             toast.error("Please select template");
+            LoaderHide()
         }
     }
 
     const SelectObjectTemplate = () => {
         var GetByClass = document.getElementsByClassName('active');
+        LoaderShow()
         if (GetByClass.length > 0) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
@@ -118,9 +122,11 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
             document.getElementById("Subject").value = DivData.Subject;
             var NewData = BodyData + '</br>' + DivData.BodyText;
             SetSignature({ Data: NewData });
+            LoaderHide()
             handleClose()
         } else {
             toast.error("Please select object template");
+            LoaderHide()
         }
     }
 
@@ -346,7 +352,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
         callback: function (cmd, val) {
             var editorInstance = this;
             if (val == "opt1") {
-
+                LoaderShow()
                 var Data = {
                     ClientID: ClientID,
                     UserID: UserID,
@@ -362,8 +368,10 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
                             setExpanded(false)
                             SetAllObjectData(Result.data.PageData)
                             setOpen(true);
+                            LoaderHide()
                         } else {
                             toast.error(Result?.data?.Message);
+                            LoaderHide()
                         }
                     } else {
                         SetAllObjectData('');
@@ -373,6 +381,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
                 // editorInstance.html.insert("{" + val + "}");
             }
             if (val == "opt2") {
+                LoaderShow()
                 var Data = {
                     ClientID: ClientID,
                     UserID: UserID,
@@ -389,8 +398,10 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
                             setExpanded(false);
                             SetAllTemplateData(Result.data.PageData)
                             setTemOpen(true);
+                            LoaderHide()
                         } else {
                             toast.error(Result?.data?.Message);
+                            LoaderHide()
                         }
                     } else {
                         SetAllTemplateData('');
