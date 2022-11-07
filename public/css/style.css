@@ -2008,16 +2008,19 @@ div.modal-prein.wd-600{
 .largebox.composebody { 
     z-index: 99999;
 }
-.largebox.composebody .usercompose{  
+.largebox.composebody .userdefual{  
     left: 50%;
     width: 100%;
     max-width: 90%;
     padding: 0;
     transform: translate(-50%, -50%);
     top: 50%;
-    display: table;
+    display: none;
     border-radius: 15px;
     overflow: hidden;
+}
+.largebox.composebody .userdefual.show{   
+    display: table; 
 }
 .largebox.composebody:before {
     content: '';
@@ -2030,7 +2033,7 @@ div.modal-prein.wd-600{
     bottom: 0;
     top: 0;
 }
-.largebox.composebody .usercompose .composeion .maxicon{
+.largebox.composebody .userdefual .composeion .maxicon{
     transform: rotate(180deg);
     border-right: none;
     border-left: 1px solid rgba(25, 118, 210, 0.5);
@@ -2039,9 +2042,11 @@ div.modal-prein.wd-600{
     margin-top: 5px;
 }
 /* end maxbody */
-.minmusbox .usercompose { 
-    bottom: calc(-100% - -116px); 
+.minmusbox .userdefual {
+    top: calc(100% - 49px);
     max-width: 390px;
+    bottom: auto;
+    overflow: hidden;
 }
 .iconrigtdrop {
     float: right;

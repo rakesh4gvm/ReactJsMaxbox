@@ -192,24 +192,48 @@ export default function DraftComposePage({ GetDraftList }) {
     })
     // Frola Editor Ends
 
+     /* start navcode */ 
+     const mincomposeon = () => {
+        const element = document.getElementById("maxcompose")
+        if (element.classList.contains("minmusbox")) {
+        element.classList.remove("minmusbox");
+        }
+        else {
+        element.classList.add("minmusbox");
+        element.classList.remove("largebox");
+        }
+    }
+
+    const maxcomposeon = () => {
+        const element = document.getElementById("maxcompose")
+        if (element.classList.contains("largebox")) {
+        element.classList.remove("largebox");
+        }
+        else {
+        element.classList.add("largebox");
+        element.classList.remove("minmusbox");
+        }
+    } 
+    /* end code*/
+
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
 
     return (
         <>
-            <div className='composebody'>
+            <div className='composebody' id='maxcompose'>
                 <Button variant="contained btn btn-primary largbtn btn-draft" onClick={OpenDraftCompose} >  + Draft</Button>
                 {/* <Button variant="contained btn btn-primary largbtn" onClick={OpenDraftCompose}> + Compose</Button> */}
-                <div className="draftCompose" id="DraftCompose" ref={WrapperRef}>
+                <div className="draftCompose userdefual" id="DraftCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
                             <Col><h4>Draft Message</h4></Col>
                             <Col className='col text-right'>
-                                <ButtonGroup variant="text" aria-label="text button group">
-                                    <Button>
+                                <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                                    <Button onClick={mincomposeon} className="minicon">
                                         <img src={Minimize} />
                                     </Button>
-                                    <Button>
+                                    <Button onClick={maxcomposeon} className="maxicon">
                                         <img src={Maximize} />
                                     </Button>
                                     <Button onClick={OpenDraftCompose}>

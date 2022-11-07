@@ -627,7 +627,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
 
             <div className='composebody' id='maxcompose'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
-                <div className="usercompose" id="UserCompose" ref={WrapperRef}>
+                <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
                             <Col><h4>New Message</h4></Col>
