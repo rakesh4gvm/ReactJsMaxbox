@@ -475,7 +475,7 @@ export default function FollowUpLetterPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Follow Up Later <br />All mail deleted successfully.</div>);
+          toast.success(<div>Follow Up Later <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()

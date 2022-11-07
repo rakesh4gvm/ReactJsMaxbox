@@ -211,6 +211,7 @@ export default function EditClientPage(props) {
                     })
                 } else {
                     SetClientNameError("ClientName Already Exists, Please Add Another Name")
+                    LoaderHide()
                 }
             }
         }

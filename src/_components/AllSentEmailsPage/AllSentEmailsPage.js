@@ -388,7 +388,7 @@ export default function AllSentEnailsPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Sent Emails <br />All mail deleted successfully.</div>);
+          toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()

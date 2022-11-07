@@ -436,7 +436,7 @@ export default function StarredPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred <br />All mail deleted successfully.</div>);
+          toast.success(<div>Starred <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()

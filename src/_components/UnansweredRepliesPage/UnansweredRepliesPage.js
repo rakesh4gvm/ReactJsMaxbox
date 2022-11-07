@@ -388,7 +388,7 @@ export default function UnansweredRepliesPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Replies <br />All mail deleted successfully.</div>);
+          toast.success(<div>Unanswered Replies <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()

@@ -456,7 +456,7 @@ export default function SpamPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Spam <br />All mail deleted successfully.</div>);
+          toast.success(<div>Spam <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()

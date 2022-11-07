@@ -114,9 +114,14 @@ export default function ProfileSettingPage() {
   // Upload Image
   const UploadImage = async (e) => {
     const File = e.target.files[0]
-    SetImagePreview(File)
-    const Base64 = await ConvertBase64(File)
-    SetBase64Image(Base64)
+    if (File.type === "image/png" || File.type === "image/jpeg" || File.type === "image/jpg") {
+      SetImagePreview(File)
+      const Base64 = await ConvertBase64(File)
+      SetBase64Image(Base64)
+    } else {
+      toast.error("Please select valid image format.")
+    }
+
 
     // const Data = { Email: Email }
     // const ResponseApi = await Axios({
@@ -247,7 +252,7 @@ export default function ProfileSettingPage() {
               </div>
               <div className='uploadedimg'>
                 <img src={Cameraicons} width="20px" />
-                <input type='file' onChange={(e) => UploadImage(e)} />
+                <input type='file' onChange={(e) => UploadImage(e)} accept="image/*" />
               </div>
             </div>
             <div className='mt-4'>

@@ -467,7 +467,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Other Inbox <br />All mail deleted successfully.</div>);
+          toast.success(<div>Other Inbox <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
