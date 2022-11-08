@@ -19,7 +19,7 @@ a {
 
 input:-internal-autofill-selected,
 input:-webkit-autofill,
-input-pasbox { 
+.input-pasbox input { 
     font-size: 17px;
     line-height: 50px;
     -webkit-text-fill-color: #616B77;
@@ -1871,10 +1871,17 @@ img.width36{
     display: flex;
     top: 0;
     align-items: center;
+    text-align: center;
+    vertical-align: middle;
   }
   .loding-display img {
     width: 100px;
     margin: 0 auto;
+    width: 100px;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
   .carduser_details h4{
     font-size: 1.1rem;

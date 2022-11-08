@@ -1524,8 +1524,7 @@ export default function UnansweredRepliesPage() {
                     <Col xs={10} className='p-0'>
                       <h5>{OpenMessage == 0 ? '' : OpenMessage.FromName}</h5>
                       {/* <h6>{OpenMessage == 0 ? '' : OpenMessage.ToEmail} <KeyboardArrowDownIcon /></h6> */}
-                      {OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
-                      <h6>
+                      <h6>{OpenMessage == 0 ? '' : OpenMessage.EmailAccount.FirstName}
                         {
                           OpenMessage == 0 ? ''
                             :
