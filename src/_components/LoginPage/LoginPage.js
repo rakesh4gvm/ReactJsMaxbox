@@ -243,14 +243,14 @@ export default function LoginPage() {
           <div className='sm-container pt-5'>
             <h2>Login</h2>
             <Row>
-              <Col sm={4}>
+              <Col sm={5}>
                 <div className='input-box'>
                   {UserPasswordError && <p style={{ color: "red" }}>{UserPasswordError}</p>}
                 </div>
               </Col>
             </Row>
             <Row>
-              <Col sm={4}>
+              <Col sm={5}>
                 <div className='input-box'>
                   <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
 
@@ -260,7 +260,7 @@ export default function LoginPage() {
               </Col>
             </Row>
             <Row>
-              <Col sm={4}>
+              <Col sm={5}>
                 <div className='input-box'>
                   {/* <input type='Password' placeholder='Password' id='password' name="password" onChange={handleChange}
                   
@@ -293,13 +293,13 @@ export default function LoginPage() {
               <Col>
               </Col>
             </Row>
-            <Row className='mt-4'>
-              <Col sm={4}>
+            <Row className='mt-5'>
+              <Col sm={3}>
                 <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Remember me" />
                 </FormGroup>
               </Col>
-              <Col sm={4}>
+              <Col sm={3}>
                 <a href='/Forgetpassword'>Forgot Password?</a>
               </Col>
             </Row>
