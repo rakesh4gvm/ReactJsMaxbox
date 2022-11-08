@@ -203,6 +203,7 @@ export default function AddClientPage({ children }) {
         }
         else {
           SetClientNameError("ClientName Already Exists, Please Add Another Name")
+          LoaderHide()
         }
       }
     }

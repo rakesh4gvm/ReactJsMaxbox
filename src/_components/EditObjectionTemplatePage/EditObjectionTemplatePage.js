@@ -125,6 +125,7 @@ export default function EditObjectionTemplatePage(props) {
             }
             else {
                 SetSubjectError("Subject Already Exists, Please Add Another Subject")
+                LoaderHide()
             }
         }
     }

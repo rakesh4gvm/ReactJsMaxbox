@@ -145,6 +145,7 @@ export default function EditTemplatesPage(props) {
             }
             else {
                 SetSubjectError("Subject Already Exists, Please Add Another Subject")
+                LoaderHide()
             }
         }
     }
