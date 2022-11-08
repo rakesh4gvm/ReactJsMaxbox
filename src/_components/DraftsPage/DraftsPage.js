@@ -43,6 +43,11 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+import { EditorVariableNames } from "../../_helpers/Utility";
+import { Input } from '@mui/material';
+
 toast.configure();
 
 const Style = {
@@ -90,6 +95,16 @@ export default function DraftsPage() {
   const [ResponseData, SetResponseData] = useState([])
   const [TotalCount, SetTotalCount] = React.useState(0);
   const [HasMore, SetHasMore] = useState(true)
+  const [expanded, setExpanded] = React.useState(false);
+  const [ObjectData, SetAllObjectData] = useState([])
+  const [TemplateData, SetAllTemplateData] = useState([])
+  const [open, setOpen] = React.useState(false);
+  const [temopen, setTemOpen] = React.useState(false);
+
+  const [Signature, SetSignature] = useState({
+    Data: ""
+})
+  
 
   useEffect(() => {
     document.title = 'Draft | MAXBOX';
@@ -455,6 +470,135 @@ export default function DraftsPage() {
     color: theme.palette.text.secondary,
   }));
 
+
+
+
+
+ /* template option */
+ Froalaeditor.RegisterCommand('TemplatesOption', {
+  title: 'Templates Option',
+  type: 'dropdown',
+  focus: false,
+  undo: false,
+  className: 'tam',
+  refreshAfterCallback: true,
+  // options: EditorVariableNames(),
+  options: {
+      'opt1': 'Objections',
+      'opt2': 'Templates'
+  },
+  callback: function (cmd, val) {
+      var editorInstance = this;
+      if (val == "opt1") {
+          LoaderShow()
+          var Data = {
+              ClientID: ClientID,
+              UserID: UserID,
+          };
+          const ResponseApi = Axios({
+              url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
+              method: "POST",
+              data: Data,
+          });
+          ResponseApi.then((Result) => {
+              if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                  if (Result.data.PageData.length > 0) {
+                      setExpanded(false)
+                      SetAllObjectData(Result.data.PageData)
+                      setOpen(true);
+                      LoaderHide()
+                  } else {
+                      toast.error(Result?.data?.Message);
+                      LoaderHide()
+                  }
+              } else {
+                  SetAllObjectData('');
+                  toast.error(Result?.data?.Message);
+              }
+          });
+          // editorInstance.html.insert("{" + val + "}");
+      }
+      if (val == "opt2") {
+          LoaderShow()
+          var Data = {
+              ClientID: ClientID,
+              UserID: UserID,
+          };
+          const ResponseApi = Axios({
+              url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
+              method: "POST",
+              data: Data,
+          });
+          ResponseApi.then((Result) => {
+              debugger
+              if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                  if (Result.data.PageData.length > 0) {
+                      setExpanded(false);
+                      SetAllTemplateData(Result.data.PageData)
+                      setTemOpen(true);
+                      LoaderHide()
+                  } else {
+                      toast.error(Result?.data?.Message);
+                      LoaderHide()
+                  }
+              } else {
+                  SetAllTemplateData('');
+                  toast.error(Result?.data?.Message);
+              }
+          });
+
+          // editorInstance.html.insert("{" + val + "}");
+      }
+  },
+  // Callback on refresh.
+  refresh: function ($btn) {
+
+  },
+  // Callback on dropdown show.
+  refreshOnShow: function ($btn, $dropdown) {
+  }
+});
+Froalaeditor.RegisterCommand('moreMisc', {
+  title: '',
+  type: 'dropdown',
+  focus: false,
+  undo: false,
+  refreshAfterCallback: true,
+  options: EditorVariableNames(),
+  callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+  },
+  // Callback on refresh.
+  refresh: function ($btn) {
+  },
+  // Callback on dropdown show.
+  refreshOnShow: function ($btn, $dropdown) {
+  }
+});
+const config = {
+  quickInsertEnabled: false,
+  placeholderText: 'Edit Your Content Here!',
+  charCounterCount: false,
+  toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
+  imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+  fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+  imageUploadRemoteUrls: false,
+}
+const HandleModelChange = (Model) => {
+  SetSignature({
+      Data: Model
+  });
+}
+var editor = new FroalaEditor('.send', {}, function () {
+  editor.button.buildList();
+})
+// Frola Editor Ends
+
+
+
+
+
   const WrapperRef = useRef(null);
   UseOutSideAlerter(WrapperRef);
 
@@ -755,7 +899,79 @@ export default function DraftsPage() {
             </div>
           </Col>
           <Col className='rightinbox'>
-            <div className='inxtexteditor'>
+            <div className='inxtexteditor px-0'>
+
+          
+
+            <div className="draftboxinset">
+                    <div className='hcompose px-3'>
+                        <Row>
+                            <Col><h4>New Message</h4></Col>
+                            <Col className='col text-right'>
+                                {/* <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                                    <Button className="minicon">
+                                        <img src={Minimize} />
+                                    </Button>
+                                    <Button className="maxicon">
+                                        <img src={Maximize} />
+                                    </Button>
+                                    <Button onClick={OpenCompose}>
+                                        <img src={Close} />
+                                    </Button>
+                                </ButtonGroup> */}
+                            </Col>
+                        </Row>
+                    </div>
+                    {/* <div className='subcompose px-3 py-2'>
+                        <Row className='px-3'>
+                            <Col xs={2} className="px-0 pt-1">
+                                <h6>Email Account :</h6>
+                            </Col>
+                            <Col xs={10} className="px-1">
+                                <div className='comse-select'>
+                                     
+                                </div>
+                            </Col>
+                        </Row>
+                    </div> */}
+                    <div className='subcompose px-3 py-2'>
+                        <Row className='px-3'>
+                            <Col xs={2} className="px-0">
+                                <h6>To :</h6>
+                            </Col>
+                            <Col xs={10} className="px-0">
+                                <Input className='input-clend' id='To' name='To' />
+
+                            </Col>
+                            {/* <Col xs={2} className='col text-right d-flex'>
+                                <Button className='lable-btn'>Cc</Button>
+                                <Button className='lable-btn'>Bcc</Button>
+                            </Col> */}
+                        </Row>
+                    </div> 
+                    <div className='subcompose px-3 py-2'>
+                        <Row className='px-3'>
+                            <Col xs={1} className="px-0">
+                                <h6>Subject :</h6>
+                            </Col>
+                            <Col xs={11} className="px-0">
+                                <Input className='input-clend' id='Subject' name='Subject' />
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className='bodycompose'>
+                        <Row className='pt-2'>
+                            <Col>
+                                <div className='FroalaEditor'>
+                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </div>
+
+              
+{/*               
               <Row className='bt-border pb-4 mb-4 colsm12'>
                 <Col lg={6}>
                   <Row className='userlist'>
@@ -777,7 +993,7 @@ export default function DraftsPage() {
                       <ButtonGroup className='iconlistinbox' variant="text" aria-label="text button group">
                         {/* <Button onClick={HandleOpen}>
                       <img src={iconleftright} />
-                    </Button> */}
+                    </Button>  
                         <Button>
                           <label>{MailNumber} / {DraftList.length}</label>
                         </Button>
@@ -786,7 +1002,7 @@ export default function DraftsPage() {
                         </Button>}
                         {/* <Button>
                           <img src={iconmenu} />
-                        </Button> */}
+                        </Button>  
                       </ButtonGroup>
                   }
                 </Col>
@@ -804,6 +1020,7 @@ export default function DraftsPage() {
                   {OpenMessage == 0 ? '' : parse(OpenMessage.Body)}
                 </Col>
               </Row>
+               */}
             </div>
           </Col>
         </Row>

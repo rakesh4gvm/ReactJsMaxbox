@@ -2063,19 +2063,27 @@ div.modal-prein.wd-600{
 .iconrigtdrop svg {
     width: 16px;
 }
-
-
-
-
-
-
-
-
-
-
+ 
+.draftboxinset {
+    border: 1px solid #E5E5E5;
+    z-index: 0;
+    position: relative;
+}
+.draftboxinset .subcompose h6{
+    text-align: left;
+}
+.draftboxinset .hcompose { 
+    border-radius: 0;
+}
 
 
 @media screen and (max-width:990px) {
+    .col.rightinbox {
+        width: 100%;
+        margin-left: 0;
+        overflow: hidden;
+        display: table;
+    }
     .mobile-nav {
         background-color: #212529;
         position: absolute !important;
