@@ -291,7 +291,7 @@ export default function Header() {
                                     <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
-                                            <NotificationsIcon /> {AllTotalRecords?.AllSentEmailsCount}
+                                            <NotificationsIcon /> {AllTotalRecords?.AllUnansweredRepliesCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/AllSentEmails")}><img src={Sent} />All Sent Emails
