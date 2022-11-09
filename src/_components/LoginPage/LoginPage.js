@@ -14,7 +14,7 @@ import BgSign from '../../images/sign-bg.png';
 import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails } from '../../_helpers/Utility'
+import { LoaderHide, LoaderShow, UpdateUserDetails } from '../../_helpers/Utility'
 
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -23,6 +23,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 
 
@@ -57,7 +58,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = 'Login | MAXBOX';
-
+    LoaderHide()
   });
 
   // FromValidation start
@@ -147,6 +148,7 @@ export default function LoginPage() {
       const IsTwoWayFactor = await GetDataByEmail()
 
       if (IsTwoWayFactor) {
+        LoaderShow()
         const Data = {
           ToEmail: Email,
         }
@@ -161,9 +163,11 @@ export default function LoginPage() {
               pathname: '/OTPConfirm',
               state: { Email: Email, Password: Password }
             });
+            LoaderHide()
           }
         })
       } else {
+        LoaderShow()
         const Data = { Email: Email, Password: Password }
         const ResponseApi = Axios({
           url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
@@ -182,7 +186,7 @@ export default function LoginPage() {
               }
               localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
               SetClientID(LoginDetails._id, LoginDetails.UserImage);
-
+              LoaderHide()
               //  history.push('/OtherInboxPage');
             }
             else {
@@ -235,6 +239,9 @@ export default function LoginPage() {
     <>
 
       <MainHeader />
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
       <div className='bodymain my-0 px-0'>
         <div className='sign-main'>
@@ -274,7 +281,7 @@ export default function LoginPage() {
                     type={values.showPassword ? 'text' : 'password'}
                     // value={PasswordValue()}
                     onChange={handleChange}
-                               endAdornment={
+                    endAdornment={
                       <InputAdornment position="end" >
                         <IconButton
                           aria-label="toggle password visibility"
@@ -282,7 +289,7 @@ export default function LoginPage() {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {values.showPassword ? <Visibility />:  <VisibilityOff /> }
+                          {values.showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -311,7 +318,6 @@ export default function LoginPage() {
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
                     <Button variant="contained btn btn-primary smallbtn" onClick={Login}>Login</Button>
-
                   </ButtonGroup>
                 </div>
               </Col>

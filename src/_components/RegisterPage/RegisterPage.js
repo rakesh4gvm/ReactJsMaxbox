@@ -15,6 +15,11 @@ import { history } from '../../_helpers/history';
 import { ResponseMessage } from "../../_constants/response.message";
 import { CommonConstants } from "../../_constants/common.constants";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 export default function RegisterPage() {
   const [FirstNameError, SetFirstNameError] = useState("");
   const [LastNameError, SetLastNameError] = useState("");
@@ -229,6 +234,9 @@ export default function RegisterPage() {
           }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
               history.push('/');
+              toast.success("User registered successfully.")
+            } else {
+              toast.error(Result.data.Message)
             }
           })
 
