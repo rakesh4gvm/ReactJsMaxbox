@@ -134,7 +134,7 @@ function UseOutSideAlerter(Ref) {
 }
 localStorage.setItem("DropdownCheckData", 'Refresh');
 
-export default function OtherInboxPage() {
+export default function AllInboxPage() {
   const [AllInBoxList, SetInBoxList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -230,7 +230,7 @@ export default function OtherInboxPage() {
   }
 
   useEffect(() => {
-    document.title = 'Other Inbox | MAXBOX';
+    document.title = 'All Inbox | MAXBOX';
     GetClientID();
   }, [SearchInbox]);
 
@@ -275,7 +275,7 @@ export default function OtherInboxPage() {
       AccountIDs: IDs
     };
     const ResponseApi = await Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryAllInboxGet",
       method: "POST",
       data: Data,
     });
@@ -314,7 +314,7 @@ export default function OtherInboxPage() {
         }
         LoaderHide()
         if (OpenMessage == "") {
-          toast.error(<div>Other Inbox <br />No Data.</div>)
+          toast.error(<div>All Inbox <br />No Data.</div>)
         }
       }
       GetTotalRecordCount(CID, UID);
@@ -430,7 +430,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Other Inbox <br />Delete mail successfully.</div>)
+          toast.success(<div>All Inbox <br />Delete mail successfully.</div>)
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -467,7 +467,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Other Inbox <br />Mail deleted successfully.</div>);
+          toast.success(<div>All Inbox <br />Mail deleted successfully.</div>);
           CloseAllDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -504,7 +504,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Other Inbox <br />Starred  updated successfully.</div>);
+          toast.success(<div>All Inbox <br />Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -546,7 +546,7 @@ export default function OtherInboxPage() {
           });
           ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
+              toast.success(<div>All Inbox  <br />Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
@@ -556,10 +556,10 @@ export default function OtherInboxPage() {
             }
           });
         } else {
-          toast.error(<div>Other Inbox <br />Please enter valid date.</div>)
+          toast.error(<div>All Inbox <br />Please enter valid date.</div>)
         }
       } else {
-        toast.error(<div>Other Inbox <br />Please enter date.</div>)
+        toast.error(<div>All Inbox <br />Please enter date.</div>)
       }
     }
   }
@@ -665,7 +665,7 @@ export default function OtherInboxPage() {
               element.classList.add("show");
             }
           } else {
-            toast.error(<div>Other Inbox <br />Please add email configuration.</div>)
+            toast.error(<div>All Inbox <br />Please add email configuration.</div>)
           }
         }
         else {
@@ -742,7 +742,7 @@ export default function OtherInboxPage() {
       IsOtherInbox: true,
     }
     Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/AllInboxTotalRecordCount",
       method: "POST",
       data: Data,
     }).then((Result) => {
@@ -823,7 +823,7 @@ export default function OtherInboxPage() {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Other Inbox <br />Reply mail send successfully.</div>);
+          toast.success(<div>All Inbox <br />Reply mail send successfully.</div>);
           SetSignature({ Data: "" })
           LoaderHide()
           ReplyPopModelClose();
@@ -1078,7 +1078,7 @@ export default function OtherInboxPage() {
         ResponseApi.then((Result) => {
 
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Other Inbox <br />Forward mail send successfully.</div>);
+            toast.success(<div>All Inbox <br />Forward mail send successfully.</div>);
             SetForwardSignature({ Data: "" })
             LoaderHide()
             ForwardPopModelClose();
@@ -1450,12 +1450,12 @@ export default function OtherInboxPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="Other Inbox"><a className='m-4'><img src={inbox} /></a></Tooltip>
+              <Tooltip title="All Inbox"><a className='m-4'><img src={inbox} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>
                 <Row>
-                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>Other Inbox</h3> </Col>
+                  <Col sm={9}><a className='navicons mr-2' onClick={(NavBarClick)}><ArrowLeft /></a> <h3 className='title-h3'>All Inbox</h3> </Col>
                   <Col sm={3}>
                     <div className="inboxnoti">
                       <NotificationsIcon />
