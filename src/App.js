@@ -27,6 +27,7 @@ import AddClientPage from './_components/AddClientPage/AddClientPage';
 import EditClientPage from './_components/EditClientPage/EditClientPage';
 import UnansweredRepliesPage from './_components/UnansweredRepliesPage/UnansweredRepliesPage';
 import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage';
+import AllInboxPage from './_components/AllInboxPage/AllInboxPage';
 import HeaderTop from './_components/Header/header';
 import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
@@ -73,7 +74,7 @@ function App() {
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/ContactEmail" component={ContactEmailPage} />
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
-
+          <Route exact path="/AllInbox" component={AllInboxPage} />
          
 
           <Redirect from="*" to="/" />
