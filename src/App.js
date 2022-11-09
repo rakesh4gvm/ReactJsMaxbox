@@ -32,6 +32,8 @@ import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
 import EditTemplatesPage from './_components/EditTemplatesPage/EditTemplatesPage';
 import OTPConfirmPage from './_components/OTPConfirmPage/OTPConfirmPage';
+import ContactEmailPage from '../src/_components/ContactEmailPage/ContactEmailPage';
+import AddContactEmailPage from '../src/_components/AddContactEmailPage/AddContactEmailPage';
 
 
 function App() {
@@ -69,6 +71,9 @@ function App() {
           <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
           <Route exact path="/OTPConfirm" component={OTPConfirmPage} />
           <Route exact path="/" component={LoginPage} />
+          <Route exact path="/ContactEmail" component={ContactEmailPage} />
+          <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
+
          
 
           <Redirect from="*" to="/" />

@@ -2084,6 +2084,29 @@ div.modal-prein.wd-600{
 .draftboxinset .hcompose { 
     border-radius: 0;
 }
+.dropemailbox {
+    width: 100%;
+}
+.dropemailbox fieldset legend{
+    display: none;
+}
+.dropemailbox fieldset{
+    top: 0;
+}
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{ 
+    margin-top: 0 !important;
+}
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded ul.MuiMenu-list{
+    max-height: 180px;
+}
+.listlable label{
+    color: #000;
+    float: left;
+    margin-right: 40px;
+}
+.listlable p{
+    color: rgb(121, 121, 121);
+}
 
 
 @media screen and (max-width:990px) {
