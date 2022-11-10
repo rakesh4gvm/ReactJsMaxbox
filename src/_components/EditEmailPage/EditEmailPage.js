@@ -193,8 +193,6 @@ export default function EditEmailPage(props) {
             </Col>
           </Row>
           <Row>
-            <Col sm={2}>
-            </Col>
             <Col>
               <div className='btnprofile my-5 left'>
                 <ButtonGroup variant="text" aria-label="text button group">
