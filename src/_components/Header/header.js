@@ -29,6 +29,9 @@ import Chatmail from '../../images/icons/chat-mail.svg';
 import Sent from '../../images/icons/sent.svg';
 import Objectroup from '../../images/icons/object-group.svg';
 import Carbontem from '../../images/icons/carbontem.svg';
+import Emails from '../../images/icons/emails.svg';
+import Users from '../../images/icons/users.svg';
+
 import { Nav } from 'react-bootstrap';
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants"
@@ -314,10 +317,10 @@ export default function Header() {
                                 </NavDropdown>
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
                                     <NavDropdown.Item onClick={() => OpenPage("/EmailConfiguration")} >
-                                        <img src={Objectroup} />Email Configuration
+                                        <img src={Emails} />Email Configuration
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/ClientList")}>
-                                        <img src={Carbontem} />Client
+                                        <img src={Users} />Client
                                     </NavDropdown.Item>
                                 </NavDropdown>
                                 <div class="selecter-m mx-4">
@@ -370,7 +373,7 @@ export default function Header() {
                                 </div>
                                 <div className="bodyuserdop textdeclist">
                                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                        <ListItem alignItems="flex-start">
+                                        <ListItem className='cursorinhiret' alignItems="flex-start">
                                             <ListItemAvatar>
                                                 <Avatar alt="Remy Sharp" src={allusers} />
                                             </ListItemAvatar>

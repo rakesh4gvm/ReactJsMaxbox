@@ -395,7 +395,7 @@ export default function ProfileSettingPage() {
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Phone No.' id='phone' defaultValue={User?.PhoneNumber} />
+                <input type='text' placeholder='Phone Number' id='phone' defaultValue={User?.PhoneNumber} />
               </div>
             </Col>
             <Col sm={4}>

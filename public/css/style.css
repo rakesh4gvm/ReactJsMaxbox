@@ -397,7 +397,7 @@ Button.iconbtn {
 }
 
 .MuiButton-root.iconbtn svg {
-    width: 20px;
+    width: 17px;
 }
 
 .MuiButton-root.iconbtn:hover,
@@ -497,7 +497,7 @@ Button.iconbtn {
 }
 
 .selectorall {
-    padding: 10px 15px;
+    padding: 8px 15px;
     max-width: 220px;
     border: 1px solid #E5E5E5;
     min-height: 45px;
@@ -540,7 +540,7 @@ Button.iconbtn {
     cursor: pointer;
 }
 
-.bodyuserdop ul li:hover {
+.bodyuserdop > ul > li:hover {
     background: #f7f7f7;
 }
 
@@ -1891,10 +1891,11 @@ img.width36{
     margin: 0 auto;
     width: 100px;
     margin: 0 auto;
-    position: relative;
+    position: fixed;
     top: 50%;
     transform: translate(-50%, -50%);
-  }
+    left: 50%;
+}
   .carduser_details h4{
     font-size: 1.1rem;
   }
@@ -1950,6 +1951,8 @@ img.width36{
     top: calc(100% + 15px); 
     right: 0;
     left: auto;
+    border: none;
+    box-shadow: 0px 7px 19px 1px #dfdfdf;
 }
 .navbar-expand-lg .navbar-nav .dropdown-menu:before {
     content: "";
@@ -2119,7 +2122,12 @@ div.modal-prein.wd-600{
 .listlable p{
     color: rgb(121, 121, 121);
 }
-
+.input-boxbg .fr-input-line label{
+    line-height: inherit;
+}
+.bodyuserdop ul li.cursorinhiret {
+    cursor: inherit !important;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
