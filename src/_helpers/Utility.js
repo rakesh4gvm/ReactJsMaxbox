@@ -1,5 +1,7 @@
 import { history } from '../_helpers';
 import { CommonConstants } from "../_constants/common.constants";
+import Moment from "moment";
+
 export function GetUserDetails() {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
     if (ObjLoginData && ObjLoginData != null) {
@@ -30,8 +32,10 @@ export function UpdateUserDetails(ClientID) {
     }
 }
 export function Logout() {
+   
     localStorage.removeItem("LoginData");
     window.location.href = CommonConstants.LoginPage;
+   
     // history.push('/');
 }
 
@@ -70,4 +74,12 @@ export function LoaderShow() {
 
 export function LoaderHide() {
     return document.getElementById("hideloding").style.display = "none";
+}
+
+export function IsGreaterDate(Date) {
+    if (Moment(Date).format("DD-MM-YYYY") < Moment().format("DD-MM-YYYY")) {
+        return false
+    } else {
+        return true
+    }
 }

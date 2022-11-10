@@ -33,7 +33,7 @@ import { Nav } from 'react-bootstrap';
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout, LoaderHide, LoaderShow } from '../../_helpers/Utility'
 import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -70,6 +70,7 @@ export default function Header() {
 
     useEffect(() => {
         GetClientID()
+
         const TimeID = setTimeout(() => {
             SetShow(false)
         }, 3000)
@@ -220,7 +221,9 @@ export default function Header() {
 
     // SignOut
     const SignOut = () => {
+        LoaderShow()
         Logout();
+        LoaderHide()
     }
 
     // OPen Pge
@@ -243,6 +246,7 @@ export default function Header() {
 
     return (
         <>
+
             <header className='header-main'>
                 <Navbar expand="lg">
                     <div className='left'>

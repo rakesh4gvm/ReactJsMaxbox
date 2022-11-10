@@ -57,7 +57,7 @@ import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
@@ -519,9 +519,11 @@ export default function SpamPage() {
   };
   const UpdateFollowupMessage = (ID) => {
     const IsValidDate = Moment(FollowupDate).isValid()
+    const IsGreater = IsGreaterDate(FollowupDate)
+
     if (ID != '') {
       if (FollowupDate != null) {
-        if (IsValidDate) {
+        if (IsValidDate && IsGreater) {
           var Data = {
             ID: ID,
             IsFollowUp: true,
