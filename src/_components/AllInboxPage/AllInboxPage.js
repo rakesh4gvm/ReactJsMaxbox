@@ -85,7 +85,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
+import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
@@ -1969,7 +1969,7 @@ export default function AllInboxPage() {
         </Row>
       </div>
 
-      <OtherInboxComposePage GetInBoxList={GetInBoxList} />
+      <AllInboxComposePage GetInBoxList={GetInBoxList} />
     </>
   );
 }

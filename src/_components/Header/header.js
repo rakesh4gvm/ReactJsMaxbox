@@ -70,6 +70,7 @@ export default function Header() {
     const [AllTotalRecords, SetAllTotalRecords] = useState()
     const [UnansweredResponsesCount, SetUnansweredResponsesCount] = useState([])
     const [UnansweredRepliesCount, SetUnansweredRepliesCount] = useState([])
+    const [TotalCount, SetTotalCount] = React.useState(0);
 
     useEffect(() => {
         GetClientID()
@@ -90,6 +91,7 @@ export default function Header() {
             SetUserID(UserDetails.UserID);
         }
         GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+        GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     }
 
     const GetAllTotalCount = (CID, UID) => {
@@ -111,6 +113,35 @@ export default function Header() {
                 toast.error(Result?.data?.Message);
             }
         });
+    }
+
+
+
+    // Get Total Total Record Count
+    const GetTotalRecordCount = (CID, UID) => {
+        const Data = {
+            ClientID: CID,
+            UserID: UID,
+            IsInbox: false,
+            IsStarred: false,
+            IsFollowUp: false,
+            IsSpam: false,
+            IsOtherInbox: true,
+        }
+        Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AllInboxTotalRecordCount",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                if (Result.data.TotalCount >= 0) {
+                    SetTotalCount(Result.data.TotalCount);
+                } else {
+                    SetTotalCount(0);
+                    toast.error(Result?.data?.Message);
+                }
+            }
+        })
     }
 
     useEffect(() => {
@@ -291,6 +322,11 @@ export default function Header() {
                                     <NavDropdown.Item onClick={() => OpenPage("/Spam")} ><img src={spam} />Spam
                                         <div className="notifimen">
                                             <NotificationsIcon /> {AllTotalRecords?.AllSpamCount}
+                                        </div>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={spam} />All Inbox
+                                        <div className="notifimen">
+                                            <NotificationsIcon /> {TotalCount}
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
