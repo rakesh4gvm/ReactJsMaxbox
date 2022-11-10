@@ -73,6 +73,7 @@ export default function StarredComposePage({ GetStarredList }) {
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
+    const [ClientData, SetClientData] = useState()
 
     const [Signature, SetSignature] = useState({
         Data: ""
@@ -89,8 +90,22 @@ export default function StarredComposePage({ GetStarredList }) {
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -107,8 +122,22 @@ export default function StarredComposePage({ GetStarredList }) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -145,6 +174,7 @@ export default function StarredComposePage({ GetStarredList }) {
             SetUserID(UserDetails.UserID);
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
+        GetClientList(UserDetails.ClientID)
     }
 
     // Get All Email Account Users
@@ -216,10 +246,30 @@ export default function StarredComposePage({ GetStarredList }) {
             SetBccflag(false);
         }
     };
+    const GetClientList = (ID) => {
+        let Data
+        Data = {
+            ID: ID
+        };
 
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/client/ClientGetByID",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetClientData(Result?.data?.Data[0]?.SignatureText)
+
+            }
+        });
+    };
     // Select Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
+        const str = "<br>"
+        SetSignature({ Data: str + ClientData })
+        editor.events.focus();
     }
 
     // Selected User

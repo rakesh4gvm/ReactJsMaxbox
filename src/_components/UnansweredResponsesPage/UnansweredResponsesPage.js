@@ -181,22 +181,9 @@ export default function UnansweredResponsesPage() {
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
-      var BodyData = Signature.Data;var body = "";
-            BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
-                    body = address
-            }
-            });
-            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
-            document.getElementById("Subject").value = DivData.Subject;
-            
-            var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
       SetSignature({ Data: NewData });
       LoaderHide()
       handleTemClose()
@@ -213,22 +200,8 @@ export default function UnansweredResponsesPage() {
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
-      var BodyData = Signature.Data;var body = "";
-            BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
-                    body = address
-            }
-            });
-            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
-            document.getElementById("Subject").value = DivData.Subject;
-            
-            var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
       SetSignature({ Data: NewData });
       LoaderHide()
       handleClose()
