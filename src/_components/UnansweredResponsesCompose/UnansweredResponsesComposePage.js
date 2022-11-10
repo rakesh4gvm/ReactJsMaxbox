@@ -89,8 +89,22 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -106,9 +120,22 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         if (GetByClass.length > 0) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-            var BodyData = Signature.Data;
+            var BodyData = Signature.Data;var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -244,7 +271,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         SetSignature({ Data: str + ClientData })
-        console.log("editor=========", editor)
         editor.events.focus();
     }
 
