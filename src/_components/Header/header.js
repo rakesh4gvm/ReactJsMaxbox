@@ -324,7 +324,7 @@ export default function Header() {
                                             <NotificationsIcon /> {AllTotalRecords?.AllSpamCount}
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={spam} />All Inbox
+                                    <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={inbox} />All Inbox
                                         <div className="notifimen">
                                             <NotificationsIcon /> {TotalCount}
                                         </div>

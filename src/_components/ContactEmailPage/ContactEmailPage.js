@@ -69,6 +69,7 @@ const MenuProps = {
 
 export default function ContactEmailPage() {  
   const [personName, setPersonName] = React.useState([]);
+  const [PersonID, SetPersonID] = React.useState([]);
 
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
@@ -107,6 +108,8 @@ export default function ContactEmailPage() {
     // Start Get Objection Template List
     const GetContactList = (CID, UID) => {
      
+      
+
      var Data = {
         Page: Page,
         RowsPerPage: RowsPerPage,
@@ -197,14 +200,20 @@ export default function ContactEmailPage() {
   }
 
   const handleChange = (event) => {
-    debugger;
+
+    console.log(AccountList);
+    var values = event.target.value;
+  
+
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setPersonName  (
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+
+    
   };
 
 
@@ -235,8 +244,8 @@ export default function ContactEmailPage() {
                   MenuProps={MenuProps}
                 >
                   {AccountList.map((data) => (
-                    <MenuItem key={data.AccountID} name={data.Email} value={data.AccountID}>
-                      <Checkbox checked={personName.indexOf(data.AccountID) > -1} />
+                    <MenuItem key={data.AccountID} name={data.Email} value={data.Email}>
+                      <Checkbox checked={personName.indexOf(data.Email) > -1} />
                       <ListItemText primary={data.Email} />
                     </MenuItem>
                   ))}
