@@ -315,6 +315,9 @@ export default function Header() {
                                     <NavDropdown.Item onClick={() => OpenPage("/ClientList")}>
                                         <img src={Carbontem} />Client
                                     </NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => OpenPage("/ContactEmail")}>
+                                        <img src={Carbontem} />Contact Email
+                                    </NavDropdown.Item>
                                 </NavDropdown>
                                 <div class="selecter-m mx-4">
                                     {ClientDropdown &&

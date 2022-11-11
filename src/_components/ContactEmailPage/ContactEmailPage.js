@@ -49,13 +49,7 @@ function createData(email) {
   return { email };
 }
   
-const rows = [
-  createData('shubham55gvm@gmail.com'),
-  createData('bham55gvm@gmail.com'),
-  createData('sbham55gvm@gmail.com'),
-  createData('shham55gvm@gmail.com'),
-  createData('ham55gvm@gmail.com'), 
-];
+
 
  
 
@@ -71,23 +65,139 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'ham55gvm@gmail.com',
-  'hqwqam55gvm@gmail.com',
-  'haasdm55gvm@gmail.com',
-  'ham55gvm@gmail.com',
-  'hamasq55gvm@gmail.com',
-  'hamasd55gvm@gmail.com',
-  'ham55gvm@gmail.com',
-  'haqwqwm55gvm@gmail.com',
-  'haqwqqwdsasdm55gvm@gmail.com',
-];
  
 
 export default function ContactEmailPage() {  
   const [personName, setPersonName] = React.useState([]);
 
+  const [CountPage, SetCountPage] = React.useState(0);
+  const [Page, SetPage] = React.useState(1);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [ContactList, SetContactList] = React.useState([]);
+  const [AccountList, SetAccountList] = React.useState([]);
+  const [SortField, SetSortField] = React.useState("ContactEmail");
+  const [AccountIDs, SetAccountIDs] = React.useState([]);
+  
+  const [SortedBy, SetSortedBy] = React.useState(1);
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
+  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [EyesPopModel, SetEyesPopModel] = React.useState(false);
+  const [DeleteID, SetDeleteID] = React.useState()
+  const [open, setOpen] = React.useState(false);
+  const [PopupBody, SetPopupBody] = React.useState(false);
+
+  useEffect(() => {
+    GetClientID();
+  }, [Page, RowsPerPage, SortedBy, SortField]);
+
+
+  // Get Client ID
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+    GetContactList(UserDetails.ClientID, UserDetails.UserID)
+    EmailAccountGet(UserDetails.ClientID, UserDetails.UserID)
+  }
+
+    // Start Get Objection Template List
+    const GetContactList = (CID, UID) => {
+     
+     var Data = {
+        Page: Page,
+        RowsPerPage: RowsPerPage,
+        sort: true,
+        Field: SortField,
+        Sortby: SortedBy,
+        Search: '',
+        ClientID: CID,
+        UserID: UID,
+        AccountIDs:AccountIDs
+      };
+  
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/contact/ContactGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        debugger;
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetContactList(Result.data.PageData);
+          SetCountPage(Result.data.PageCount);
+          LoaderHide()
+        }
+        else {
+          SetContactList([])
+          SetCountPage(0)
+          LoaderHide()
+          toast.error(Result?.data?.Message);
+        }
+      });
+    };
+
+  const EmailAccountGet=(CID, UID)  =>
+  {
+   var Data = {
+      ClientID: CID,
+      UserID: UID
+     
+    };
+  const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/contact/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      debugger;
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger;
+        SetAccountList(Result.data.PageData);
+        LoaderHide()
+      }
+      else {
+        SetAccountList([])
+        LoaderHide()
+        toast.error(Result?.data?.Message);
+      }
+    });
+
+  }
+
+  const AddContact=()=>{
+    history.push("/AddContactEmail");
+  }
+
+  
+
+
+  const DeleteContact =(id)=>{
+    var Data={
+      ID:id
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/contact/ContactDelete",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      //debugger;
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        history.push("/ContactEmail");
+      }
+      else {
+       
+        toast.error(Result?.data?.Message);
+      }
+    });
+  }
+
   const handleChange = (event) => {
+    debugger;
     const {
       target: { value },
     } = event;
@@ -124,38 +234,20 @@ export default function ContactEmailPage() {
                   renderValue={(selected) => selected.join(', ')}
                   MenuProps={MenuProps}
                 >
-                  {names.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox checked={personName.indexOf(name) > -1} />
-                      <ListItemText primary={name} />
+                  {AccountList.map((data) => (
+                    <MenuItem key={data.AccountID} name={data.Email} value={data.AccountID}>
+                      <Checkbox checked={personName.indexOf(data.AccountID) > -1} />
+                      <ListItemText primary={data.Email} />
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
 
                
-                {/* <FormControl className='dropemailbox'>
-                  <Select
-                    value={age}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value="">
-                      Select Contacts Email
-                    </MenuItem>
-                    <MenuItem value={10}>shubham55gvm@gmail.com</MenuItem>
-                    <MenuItem value={20}>shubhamhsd55gvm@gmail.com</MenuItem>
-                    <MenuItem value={30}>shubham55asdgvm@gmail.com</MenuItem>
-                    <MenuItem value={30}>shubham55asdgvm@gmail.com</MenuItem>
-                    <MenuItem value={30}>shubham55asdgvm@gmail.com</MenuItem>
-                    <MenuItem value={30}>shubham55asdgvm@gmail.com</MenuItem>
-                    <MenuItem value={30}>shubham55asdgvm@gmail.com</MenuItem>
-                  </Select>
-                </FormControl>  */} 
+              
             </Col>
             <Col sm={6} align="right">
-              <Button className='btnaccount'>
+              <Button className='btnaccount'  onClick={AddContact}>
                 <AddIcon /> Add Contact
               </Button>
             </Col>
@@ -168,20 +260,25 @@ export default function ContactEmailPage() {
                 <TableHead>
                   <TableRow>
                     <TableCell>Email</TableCell> 
+                    <TableCell>Contact Email</TableCell> 
                     <TableCell align="right">Action</TableCell> 
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {ContactList.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.ContactEmail}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.email}
+                        {row.EmailAccount.Email}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.ContactEmail}
                       </TableCell>
                       <TableCell align="right">
-                          <Button className='iconbtntable'>
+                          <Button className='iconbtntable'  onClick={() => {  DeleteContact(row?._id);}} 
+                      >
                             <img src={DeleteIcon} />
                           </Button>
                       </TableCell>
