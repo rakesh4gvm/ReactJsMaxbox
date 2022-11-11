@@ -92,26 +92,14 @@ export default function ForgetpasswordPage() {
 
           <div className='sm-container pt-5'>
             <h2 class="pt-5">Forgot Password?</h2>
-            <p>Enter your email to reset your password</p>
-            <Row>
-              <Col sm={4}>
-                <div className='input-box'>
-                  {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={4}>
-                <div className='input-box'>
-                  {EmailSuccess && <p style={{ color: "green" }}>{EmailSuccess}</p>}
-                </div>
-              </Col>
-            </Row>
+            <p>Enter your email to reset your password</p> 
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
                   <input type='email' placeholder='Email' id='email' name="email" onChange={handleChange} />
                 </div>
+                  {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
+                  {EmailSuccess && <p style={{ color: "green" }}>{EmailSuccess}</p>}
               </Col>
             </Row>
           </div>

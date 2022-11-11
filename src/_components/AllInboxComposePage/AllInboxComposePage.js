@@ -27,6 +27,7 @@ import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
 
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -56,7 +57,7 @@ toast.configure();
 function useOutsideAlerter(ref) {
 }
 
-export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
+export default function AllInboxComposePage() {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
@@ -72,10 +73,10 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
-    const [ClientData, SetClientData] = useState()
     const [Signature, SetSignature] = useState({
         Data: ""
     })
+    const [ClientData, SetClientData] = useState()
 
     useEffect(() => {
         GetClientID()
@@ -95,20 +96,18 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
             var BodyData = Signature.Data;
             var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
             document.getElementById("Subject").value = DivData.Subject;
-            
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -127,20 +126,18 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
             var BodyData = Signature.Data;
             var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
             document.getElementById("Subject").value = DivData.Subject;
-            
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -149,8 +146,6 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
             LoaderHide()
         }
     }
-
-
 
     const ActiveClass = (panel) => () => {
         const element = document.getElementById(panel)
@@ -163,7 +158,6 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         element.classList.add("active");
     }
 
-
     // Get Client ID
     const GetClientID = () => {
         var UserDetails = GetUserDetails();
@@ -174,6 +168,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
         GetClientList(UserDetails.ClientID)
     }
+
     const GetClientList = (ID) => {
         let Data
         Data = {
@@ -188,10 +183,10 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetClientData(Result?.data?.Data[0]?.SignatureText)
-
             }
         });
     };
+
     // Get All Email Account Users
     const GetEmailAccountUsers = (CID, UID) => {
         const Data = {
@@ -262,11 +257,12 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         }
     };
 
-    // Select Email Account User
+    // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         SetSignature({ Data: str + ClientData })
+        console.log("editor=========", editor)
         editor.events.focus();
     }
 
@@ -294,7 +290,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         }
 
         if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
-            toast.error("All Fields are Mandatory!")
+            toast.error("All Fields are Mandatory!");
         } else if (!ValidToEmail) {
             toast.error("Please enter valid email");
         } else if (!CCEmail) {
@@ -318,9 +314,9 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                 LastName: SelectedUser.LastName,
                 UserID: UserID,
                 ClientID: ClientID,
-                IsUnansweredResponsesMail: false,
+                IsUnansweredResponsesMail: true,
                 IsStarredMail: false,
-                IsFollowUpLaterMail: true,
+                IsFollowUpLaterMail: false,
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
@@ -333,11 +329,11 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Follow Up Later<br />Mail send successfully.</div>)
+                    toast.success(<div>Other Inbox<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()
-                    // GetFollowUpLaterList()
+                    // GetInBoxList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
@@ -509,28 +505,28 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
     })
     // Frola Editor Ends
 
-     /* start navcode */ 
-     const mincomposeon = () => {
+    /* start navcode */
+    const mincomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("minmusbox")) {
-        element.classList.remove("minmusbox");
+            element.classList.remove("minmusbox");
         }
         else {
-        element.classList.add("minmusbox");
-        element.classList.remove("largebox");
+            element.classList.add("minmusbox");
+            element.classList.remove("largebox");
         }
     }
 
     const maxcomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("largebox")) {
-        element.classList.remove("largebox");
+            element.classList.remove("largebox");
         }
         else {
-        element.classList.add("largebox");
-        element.classList.remove("minmusbox");
+            element.classList.add("largebox");
+            element.classList.remove("minmusbox");
         }
-    } 
+    }
     /* end code*/
 
     const WrapperRef = useRef(null);
@@ -538,10 +534,10 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
 
     return (
         <>
-
             <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
             </div>
+
 
             <Modal className="modal-lister"
                 open={open}

@@ -47,7 +47,7 @@ import { Col, Row, ToggleButton } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 import StarredComposePage from '../StarredComposePage/StarredComposePage';
 import menustart from '../../images/icons/menustart.svg';
@@ -463,9 +463,11 @@ export default function StarredPage() {
   };
   const UpdateFollowupMessage = (ID) => {
     const IsValidDate = Moment(FollowupDate).isValid()
+    const IsGreater = IsGreaterDate(FollowupDate)
+
     if (ID != '') {
       if (FollowupDate != null) {
-        if (IsValidDate) {
+        if (IsValidDate && IsGreater) {
           var Data = {
             ID: ID,
             IsFollowUp: true,

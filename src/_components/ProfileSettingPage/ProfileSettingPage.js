@@ -37,6 +37,11 @@ export default function ProfileSettingPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [Checked, SetChecked] = React.useState();
   const [ImagePreview, SetImagePreview] = useState()
+  const [FirstNameError, SetFirstNameError] = useState("");
+  const [LastNameError, SetLastNameError] = useState("");
+  const [EmailError, SetEmailError] = useState("");
+  const [PasswordError, SetPasswordError] = useState("");
+  const [ConfirmPasswordError, SetConfirmPasswordError] = useState("");
 
   useEffect(() => {
     document.title = 'Profile Setting | MAXBOX';
@@ -152,8 +157,110 @@ export default function ProfileSettingPage() {
     SetChecked(event.target.checked);
   };
 
+  // FromValidation start
+  const FromValidation = () => {
+    var Isvalid = true;
+    var FirstName = document.getElementById("firstName").value;
+    var LastName = document.getElementById("lastName").value;
+    var Password = document.getElementById("password").value;
+    var ConfirmPassword = document.getElementById("confirmpassword").value;
+
+
+    if (FirstName === "") {
+      SetFirstNameError("Please enter first name")
+      Isvalid = false
+    }
+    if (LastName === "") {
+      SetLastNameError("Please enter last name")
+      Isvalid = false
+    }
+   
+    if (Password === "") {
+      SetPasswordError("Please enter password");
+      Isvalid = false
+    }
+    if (ConfirmPassword === "") {
+      SetConfirmPasswordError("Please enter confirm password")
+      Isvalid = false
+    }
+   
+
+
+    var IsValidPassword = validatePassword(Password);
+    var IsValidCPassword = validateConfirmPassword();
+
+   
+
+    if (IsValidPassword == false) {
+      Isvalid = false
+    }
+    if (IsValidCPassword == false) {
+      Isvalid = false
+    }
+
+    return Isvalid;
+  };
+
+  function handleChange(e) {
+    
+    const { name, value } = e.target;
+    console.log(value)
+    console.log(name)
+    if (name == "firstName") {
+      if (value != "") {
+        SetFirstNameError("")
+      }
+    }
+    else if (name == "lastName") {
+      if (value != "") {
+        SetLastNameError("")
+      }
+    }
+  
+    else if (name == "password") {
+      if (value != "") {
+        validatePassword(value);
+      }
+    }
+
+    else if (name == "confirmpassword") {
+      if (value != "") {
+
+        validateConfirmPassword()
+      }
+    }
+    
+
+  };
+
+  const validatePassword = (Pwd) => {
+    if (!/^.{6,20}$/i.test(Pwd)) {
+      SetPasswordError("Password must be 6 to 20 chars long")
+      return false;
+    } else {
+      SetPasswordError("")
+    }
+
+    return true;
+  };
+
+  const validateConfirmPassword = () => {
+    var Password = document.getElementById("password").value;
+    var ConfirmPassword = document.getElementById("confirmpassword").value;
+    if (Password !== ConfirmPassword) {
+      SetConfirmPasswordError("Confirmed password is not matching with password");
+      return false
+    }
+    else {
+      SetConfirmPasswordError('');
+    }
+    return true
+  }
+
   // Update User
   const UpdateUser = async () => {
+    const Valid = FromValidation();
+    if (Valid) {
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
@@ -204,6 +311,8 @@ export default function ProfileSettingPage() {
         }
       })
     }
+
+  }
   }
 
   const CancelUser = async () => {
@@ -266,24 +375,27 @@ export default function ProfileSettingPage() {
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName} />
+                <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName}  onChange={handleChange}/>
+                {FirstNameError && <p style={{ color: "red" }}>{FirstNameError}</p>}
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} />
+                <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} onChange={handleChange}/>
+                {LastNameError && <p style={{ color: "red" }}>{LastNameError}</p>}
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
                 <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} readonly="readonly" />
+                
               </div>
             </Col>
           </Row>
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='text' placeholder='Phone No.' id='phone' defaultValue={User?.PhoneNumber} />
+                <input type='text' placeholder='Phone Number' id='phone' defaultValue={User?.PhoneNumber} />
               </div>
             </Col>
             <Col sm={4}>
@@ -304,13 +416,15 @@ export default function ProfileSettingPage() {
           <Row>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Password' id='password' defaultValue={User?.Password} readonly="readonly" />
+                <input type='Password' placeholder='Password' id='password' name="password" defaultValue={User?.Password} onChange={handleChange} />
+                {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
               </div>
             </Col>
             <Col sm={4}>
               <div className='input-box'>
-                <input type='Password' placeholder='Confirm Password' id='confirmpassword' defaultValue={User?.Password} readonly="readonly" />
-              </div>
+                <input type='Password' placeholder='Confirm Password' id='confirmpassword' name="confirmpassword" defaultValue={User?.Password} onChange={handleChange}/> 
+                {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
+                 </div>
             </Col>
             <Col sm={4}>
             </Col>

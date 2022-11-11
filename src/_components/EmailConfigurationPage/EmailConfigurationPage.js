@@ -314,20 +314,20 @@ export default function EmailConfigurationPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                      <TableCell onClick={() => { SortData("FirstName") }} align="right">First Name</TableCell>
-                      <TableCell onClick={() => { SortData("LastName") }} align="right">Last Name</TableCell>
+                      <TableCell onClick={() => { SortData("FirstName") }}>First Name</TableCell>
+                      <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
                       <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
                       <TableCell align="right">Working</TableCell>
                       <TableCell align="right"></TableCell>
-                      <TableCell align="right">Action</TableCell>
+                      <TableCell align="center">Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {EmailAccountList.map((row) => (
 
                       <TableRow>
-                        <TableCell align="right">{row.FirstName}</TableCell>
-                        <TableCell align="right">{row.LastName}</TableCell>
+                        <TableCell>{row.FirstName}</TableCell>
+                        <TableCell>{row.LastName}</TableCell>
                         <TableCell scope="row">{row.Email}</TableCell>
                         <TableCell align="right">
                           <ButtonGroup className='table-btn' variant="text" aria-label="text button group">

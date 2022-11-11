@@ -63,7 +63,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 
 // import HeaderTop from '../Header/header';
-import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { TextareaAutosize } from '@mui/material';
@@ -527,11 +527,13 @@ export default function OtherInboxPage() {
   const SelectFollowupDate = (NewValue) => {
     SetFollowupDate(NewValue);
   };
+
   const UpdateFollowupMessage = (ID) => {
     const IsValidDate = Moment(FollowupDate).isValid()
+    const IsGreater = IsGreaterDate(FollowupDate)
     if (ID != '') {
       if (FollowupDate != null) {
-        if (IsValidDate) {
+        if (IsValidDate && IsGreater) {
           var Data = {
             ID: ID,
             IsFollowUp: true,
@@ -550,7 +552,7 @@ export default function OtherInboxPage() {
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
-              GetUpdatedOtherInboxList(ClientID, UserID);
+              GetInBoxList(ClientID, UserID, Page, "", FromEmailDropdownListChecked);
             } else {
               toast.error(Result?.data?.Message);
             }

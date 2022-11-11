@@ -61,6 +61,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
     const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
     const [Ccflag, SetCcflag] = useState(false);
     const [Bccflag, SetBccflag] = useState(false);
+    const [ClientData, SetClientData] = useState()
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -87,8 +88,26 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
             SetUserID(UserDetails.UserID);
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
+        GetClientList(UserDetails.ClientID)
     }
+    const GetClientList = (ID) => {
+        let Data
+        Data = {
+            ID: ID
+        };
 
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/client/ClientGetByID",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetClientData(Result?.data?.Data[0]?.SignatureText)
+
+            }
+        });
+    };
     const handleChange = (panel) => (event, isExpanded) => {
         console.log(panel);
         setExpanded(isExpanded ? panel : false);
@@ -101,8 +120,22 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -119,8 +152,22 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if(index == 0){
+                    body = address
+            }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = BodyData + '</br>' + DivData.BodyText;
+            
+            var NewData = "";
+            if(body!="" && chckEmptyBody != ""){
+            NewData = body + DivData.BodyText + ClientData;
+        }else{
+            NewData = DivData.BodyText + BodyData
+        }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -216,6 +263,9 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
     // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
+        const str = "<br>"
+        SetSignature({ Data: str + ClientData })
+        editor.events.focus();
     }
 
     // Selected User

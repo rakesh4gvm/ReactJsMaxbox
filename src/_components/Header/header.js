@@ -29,11 +29,14 @@ import Chatmail from '../../images/icons/chat-mail.svg';
 import Sent from '../../images/icons/sent.svg';
 import Objectroup from '../../images/icons/object-group.svg';
 import Carbontem from '../../images/icons/carbontem.svg';
+import Emails from '../../images/icons/emails.svg';
+import Users from '../../images/icons/users.svg';
+
 import { Nav } from 'react-bootstrap';
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants"
 import { ResponseMessage } from "../../_constants/response.message";
-import { UpdateUserDetails, GetUserDetails, Logout } from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout, LoaderHide, LoaderShow } from '../../_helpers/Utility'
 import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,9 +70,11 @@ export default function Header() {
     const [AllTotalRecords, SetAllTotalRecords] = useState()
     const [UnansweredResponsesCount, SetUnansweredResponsesCount] = useState([])
     const [UnansweredRepliesCount, SetUnansweredRepliesCount] = useState([])
+    const [TotalCount, SetTotalCount] = React.useState(0);
 
     useEffect(() => {
         GetClientID()
+
         const TimeID = setTimeout(() => {
             SetShow(false)
         }, 3000)
@@ -86,6 +91,7 @@ export default function Header() {
             SetUserID(UserDetails.UserID);
         }
         GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+        GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     }
 
     const GetAllTotalCount = (CID, UID) => {
@@ -107,6 +113,35 @@ export default function Header() {
                 toast.error(Result?.data?.Message);
             }
         });
+    }
+
+
+
+    // Get Total Total Record Count
+    const GetTotalRecordCount = (CID, UID) => {
+        const Data = {
+            ClientID: CID,
+            UserID: UID,
+            IsInbox: false,
+            IsStarred: false,
+            IsFollowUp: false,
+            IsSpam: false,
+            IsOtherInbox: true,
+        }
+        Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AllInboxTotalRecordCount",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                if (Result.data.TotalCount >= 0) {
+                    SetTotalCount(Result.data.TotalCount);
+                } else {
+                    SetTotalCount(0);
+                    toast.error(Result?.data?.Message);
+                }
+            }
+        })
     }
 
     useEffect(() => {
@@ -220,7 +255,9 @@ export default function Header() {
 
     // SignOut
     const SignOut = () => {
+        LoaderShow()
         Logout();
+        LoaderHide()
     }
 
     // OPen Pge
@@ -243,6 +280,7 @@ export default function Header() {
 
     return (
         <>
+
             <header className='header-main'>
                 <Navbar expand="lg">
                     <div className='left'>
@@ -286,6 +324,11 @@ export default function Header() {
                                             <NotificationsIcon /> {AllTotalRecords?.AllSpamCount}
                                         </div>
                                     </NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={spam} />All Inbox
+                                        <div className="notifimen">
+                                            <NotificationsIcon /> {TotalCount}
+                                        </div>
+                                    </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Sent" id="basic-nav-dropdown">
                                     <NavDropdown.Item href="/UnansweredReplies">
@@ -310,10 +353,10 @@ export default function Header() {
                                 </NavDropdown>
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
                                     <NavDropdown.Item onClick={() => OpenPage("/EmailConfiguration")} >
-                                        <img src={Objectroup} />Email Configuration
+                                        <img src={Emails} />Email Configuration
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/ClientList")}>
-                                        <img src={Carbontem} />Client
+                                        <img src={Users} />Client
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/ContactEmail")}>
                                         <img src={Carbontem} />Contact Email
@@ -369,7 +412,7 @@ export default function Header() {
                                 </div>
                                 <div className="bodyuserdop textdeclist">
                                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                        <ListItem alignItems="flex-start">
+                                        <ListItem className='cursorinhiret' alignItems="flex-start">
                                             <ListItemAvatar>
                                                 <Avatar alt="Remy Sharp" src={allusers} />
                                             </ListItemAvatar>

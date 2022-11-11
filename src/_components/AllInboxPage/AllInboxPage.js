@@ -85,7 +85,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
+import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
@@ -1592,10 +1592,10 @@ export default function AllInboxPage() {
                                             : Moment(row.MessageDatetime).format("DD/MM/YYYY")
                                         }
                                       </h6>
-                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      {/* <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
-                                      </ToggleButton>
+                                      </ToggleButton> */}
                                     </Col>
                                   </Row>
                                   <Row>
@@ -1656,10 +1656,10 @@ export default function AllInboxPage() {
                                             : Moment(row.MessageDatetime).format("DD/MM/YYYY")
                                         }
                                       </h6>
-                                      <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
+                                      {/* <ToggleButton className='startselct' value="check" selected={row.IsStarred} onClick={() => UpdateStarMessage(row._id)}>
                                         <StarBorderIcon className='starone' />
                                         <StarIcon className='selectedstart startwo' />
-                                      </ToggleButton>
+                                      </ToggleButton> */}
                                     </Col>
                                   </Row>
                                   <Row>
@@ -1750,12 +1750,7 @@ export default function AllInboxPage() {
                         <Button>
                           <label>{MailNumber} / {AllInBoxList.length}</label>
                         </Button>
-                        <Button onClick={OpenStarPopModel}>
-                          <img src={iconstar} title={"Starred"} />
-                        </Button>
-                        <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
-                          <img src={icontimer} />
-                        </Button>
+                        
                         <Button>
                           <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
                         </Button>
@@ -1974,7 +1969,7 @@ export default function AllInboxPage() {
         </Row>
       </div>
 
-      <OtherInboxComposePage GetInBoxList={GetInBoxList} />
+      <AllInboxComposePage GetInBoxList={GetInBoxList} />
     </>
   );
 }
