@@ -122,9 +122,14 @@ export default function TemplatesListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetTemplateList(Result.data.PageData);
-        SetCountPage(Result.data.PageCount);
-        LoaderHide()
+        if (Result.data.PageData.length > 0) {
+          SetTemplateList(Result.data.PageData);
+          SetCountPage(Result.data.PageCount);
+          LoaderHide()
+        } else {
+          toast.error(<div>Templates <br />No Data.</div>)
+          LoaderHide()
+        }
       }
       else {
         SetTemplateList([])
@@ -144,8 +149,8 @@ export default function TemplatesListPage() {
     SetDeletePopModel(false);
   }
 
-   // Start PopModel Open and Close and Delete Message
-   const OpenEyesPopModel = (ID,Body) => {
+  // Start PopModel Open and Close and Delete Message
+  const OpenEyesPopModel = (ID, Body) => {
     SetEyesPopModel(true);
     SetPopupBody(Body);
     SetDeleteID(ID)
@@ -236,7 +241,7 @@ export default function TemplatesListPage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={Style} className="modal-prein wd-600">
-          <div className="px-4 pt-4"> 
+          <div className="px-4 pt-4">
             <Typography className='text-center mt-2 mb-4' id="modal-modal-title" variant="b" component="h4">
               Body
             </Typography>
@@ -244,10 +249,10 @@ export default function TemplatesListPage() {
               <Typography sx={{ mt: 2 }} component="h6" className='bodytextpoup'>
                 {PopupBody}
               </Typography>
-              
-            </div>            
-          </div> 
-          <div className='mt-4 d-flex btn-50'> 
+
+            </div>
+          </div>
+          <div className='mt-4 d-flex btn-50'>
             <Button className='btn btn-darkpre mx-auto w-100' variant="contained" size="medium" onClick={() => { CloseEyesPopModel(); }}>
               Close
             </Button>
@@ -300,10 +305,10 @@ export default function TemplatesListPage() {
                           </TableCell> */}
                           <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
                           <TableCell sx={{ minWidth: 500 }}>
-                             <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
-                            </TableCell>
+                            <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
+                          </TableCell>
 
-                            <TableCell><img src={SmallSend} /> Send</TableCell>
+                          <TableCell><img src={SmallSend} /> Send</TableCell>
                           <TableCell><img src={MailMultipal} /> Open</TableCell>
                           <TableCell><img src={InboxRounded} /> Replies</TableCell>
                           <TableCell>Open %</TableCell>
@@ -311,8 +316,8 @@ export default function TemplatesListPage() {
 
                           <TableCell align="right">
                             <ButtonGroup variant="text" aria-label="text button group">
-                              <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button> 
-                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id,parse(row.BodyText))}>
+                              <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id, parse(row.BodyText))}>
                                 <img src={EyesView} />
                               </Button>
                               <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>

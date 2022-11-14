@@ -127,6 +127,7 @@ export default function AddContactEmailPage(props) {
     if (IsValiEmail == false) {
       Isvalid = false
     }
+
     return Isvalid;
   };
 
@@ -143,7 +144,23 @@ export default function AddContactEmailPage(props) {
     }
   };
 
-  const SaveContact = () => {
+  const CheckContactExist = async (ContactEmail) => {
+
+    var Data = {
+      ContactEmail: ContactEmail,
+      ClientID: ClientID,
+      AccountID: AccountID
+    }
+
+    const ResponseApi = await Axios({
+      url: CommonConstants.MOL_APIURL + "/contact/ContactExists",
+      method: "POST",
+      data: Data,
+    })
+    return ResponseApi?.data.StatusMessage
+  }
+
+  const SaveContact = async () => {
     LoaderShow();
     var Isvalid = FromValidation()
     if (AccountID <= 0) {
@@ -152,29 +169,41 @@ export default function AddContactEmailPage(props) {
     } else {
       SetEmailAccountError("")
     }
+
     if (Isvalid) {
       var contactemail = document.getElementById("contactemail").value;
+
       var Data = {
         AccountID: AccountID,
         ClientID: ClientID,
         UserID: UserID,
         ContactEmail: contactemail
       }
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/contact/ContactAdd",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Contacts <br />Mail added successfully.</div>);
-          history.push("/ContactEmail");
-        }
-        else {
-          toast.error(Result?.data?.Message);
-        }
-      });
+
+      var ExistsContact = await CheckContactExist(contactemail)
+
+      if (ExistsContact === ResponseMessage.SUCCESS) {
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/contact/ContactAdd",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success(<div>Contacts <br />Mail added successfully.</div>);
+            history.push("/ContactEmail");
+          }
+          else {
+            toast.error(Result?.data?.Message);
+          }
+        });
+      } else {
+        SetEmailError("Contact Email Already Exists, Please Add Another Email")
+        LoaderHide()
+      }
+
     }
+
     LoaderHide()
   }
   // Cancel Edit Client
