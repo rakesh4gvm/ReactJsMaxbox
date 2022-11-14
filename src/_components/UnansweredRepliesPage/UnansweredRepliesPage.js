@@ -43,6 +43,7 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
+import Chatmail from '../../images/icons/chat-mail.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
@@ -1253,7 +1254,7 @@ export default function UnansweredRepliesPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
+                you want to Star a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -1273,7 +1274,7 @@ export default function UnansweredRepliesPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="Follow Up Later"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+              <Tooltip title="Unanswered Replies"><a className='m-4'><img src={Chatmail} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>
@@ -1609,10 +1610,10 @@ export default function UnansweredRepliesPage() {
                     :
                     <Row>
                       <Col sm={6} className='p-0'>
-                        <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} /></a>
+                        <a onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
                       </Col>
                       <Col sm={6} className='p-0'>
-                        <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} /></a>
+                        <a onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
                       </Col>
                     </Row>
                 }

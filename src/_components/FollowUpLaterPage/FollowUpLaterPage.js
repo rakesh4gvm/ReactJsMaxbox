@@ -1427,7 +1427,7 @@ export default function FollowUpLetterPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
+                you want to Star a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>

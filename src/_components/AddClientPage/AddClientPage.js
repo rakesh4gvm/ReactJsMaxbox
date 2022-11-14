@@ -249,7 +249,7 @@ export default function AddClientPage({ children }) {
                 <Col sm={8}>
                 </Col>
                 <Col sm={8}>
-                  <input type='text' placeholder='Enter BCC EMail' name='bccEmail' id='bccEmail' onChange={HandleChange} />
+                  <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} />
                   {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
                 </Col>
               </Row>

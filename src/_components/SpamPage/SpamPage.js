@@ -64,6 +64,7 @@ import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
 import timermenu from '../../images/icons/timermenu.svg';
+import spam from '../../images/icons/spam.svg';
 
 import { EditorVariableNames } from "../../_helpers/Utility";
 
@@ -1412,7 +1413,7 @@ export default function SpamPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
+                you want to Star a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -1500,7 +1501,7 @@ export default function SpamPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="Spam"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+              <Tooltip title="Spam"><a className='m-4'><img src={spam} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>

@@ -44,6 +44,7 @@ import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
+import Sent from '../../images/icons/sent.svg';
 import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import { CommonConstants } from "../../_constants/common.constants";
@@ -1255,7 +1256,7 @@ export default function AllSentEnailsPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email.
+                you want to Star a email ?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -1280,7 +1281,7 @@ export default function AllSentEnailsPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="All Sent Emails"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+              <Tooltip title="All Sent Emails"><a className='m-4'><img src={Sent} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>

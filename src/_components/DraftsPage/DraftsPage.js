@@ -37,7 +37,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Tooltip from "@material-ui/core/Tooltip";
-import timermenu from '../../images/icons/timermenu.svg';
+import drafts from '../../images/icons/drafts.svg';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import { toast } from "react-toastify";
@@ -1043,7 +1043,7 @@ export default function DraftsPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="Follow Up Later"><a className='m-4'><img src={timermenu} /></a></Tooltip>
+              <Tooltip title="Draft"><a className='m-4'><img src={drafts} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>

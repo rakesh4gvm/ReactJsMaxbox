@@ -25,8 +25,6 @@ import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 import { MenuItem } from '@mui/material';
 
-
-
 toast.configure();
 
 const Style = {
@@ -91,7 +89,7 @@ export default function AddContactEmailPage(props) {
       data: Data,
     });
     ResponseApi.then((Result) => {
-     
+
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetAccountList(Result.data.PageData);
       }
@@ -100,7 +98,6 @@ export default function AddContactEmailPage(props) {
         toast.error(Result?.data?.Message);
       }
     });
-
   }
 
   const SelectEmailAccount = (event) => {
@@ -130,8 +127,6 @@ export default function AddContactEmailPage(props) {
     if (IsValiEmail == false) {
       Isvalid = false
     }
-
-
     return Isvalid;
   };
 
@@ -146,8 +141,6 @@ export default function AddContactEmailPage(props) {
         SetEmailError("")
       }
     }
-
-
   };
 
   const SaveContact = () => {
@@ -248,15 +241,11 @@ export default function AddContactEmailPage(props) {
           <div className='btnprofile my-3 float-left'>
             <ButtonGroup variant="text" aria-label="text button group">
               <Button variant="contained btn btn-primary smallbtn mr-4" onClick={SaveContact}> Save</Button>
+              <Button variant="contained btn btn-orang smallbtn" onClick={CancelContact}> Cancel</Button>
             </ButtonGroup>
           </div>
-
-
         </div>
-
-
       </div>
-
       <FooterBottom />
     </>
   );
