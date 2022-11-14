@@ -200,7 +200,7 @@ export default function CreateObjectionTemplatePage({ children }) {
         <img src={MaxboxLoading} />
       </div>
 
-      <div className='bodymain'>
+      <div className='bodymain min-100vh'>
         <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
           <Col className='py-4'>
             <h5 onClick={CancelAddObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Objection Template</h5>

@@ -1682,13 +1682,13 @@ export default function StarredPage() {
                           <img src={icontimer} title={"Follow Up Later"} />
                         </Button>
                         <Button onClick={OpenOtherInboxPopModel}>
-                          <img src={inbox} className="width36" title={"Other Inbox"} />
+                          <img src={inbox} className="inboxicon" title={"Other Inbox"} />
                         </Button>
                         <Button>
-                          <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title="Reply" /></a>
+                          <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-1'><img src={iconsarrow2} className="arrowicon" title="Reply" /></a>
                         </Button>
                         <Button>
-                          <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title="Forward" /></a>
+                          <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-1'><img src={iconsarrow1} className="arrowicon" title="Forward" /></a>
                         </Button>
                         {<Button onClick={OpenDeletePopModel}>
                           <img src={icondelete} title="Delete" />

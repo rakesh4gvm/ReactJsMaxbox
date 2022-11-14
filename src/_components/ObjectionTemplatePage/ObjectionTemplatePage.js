@@ -263,7 +263,7 @@ export default function ObjectionTemplateListPage() {
             <h5 className='my-0'>Objection Template</h5>
           </Col>
         </Row>
-        <div className='sm-container mt-5'>
+        <div className='sm-container-bix mt-5'>
           <Row className='mb-5'>
             <Col align="right">
               <Button className='btnaccount' onClick={AddObjectionTemplate}>

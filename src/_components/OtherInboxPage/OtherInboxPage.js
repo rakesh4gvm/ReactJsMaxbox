@@ -1759,10 +1759,10 @@ export default function OtherInboxPage() {
                           <img src={icontimer} />
                         </Button>
                         <Button>
-                          <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-2'><img src={iconsarrow2} title={"Reply"} /></a>
+                          <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-1'><img src={iconsarrow2} className="arrowicon" title={"Reply"} /></a>
                         </Button>
                         <Button>
-                          <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-2'><img src={iconsarrow1} title={"Forward"} /></a>
+                          <a href="#replaybx" onClick={() => ForwardPopModel(OpenMessage)} className='p-1'><img src={iconsarrow1} className="arrowicon" title={"Forward"} /></a>
                         </Button>
                         {<Button onClick={OpenDeletePopModel}>
                           <img src={icondelete} title="Delete" />

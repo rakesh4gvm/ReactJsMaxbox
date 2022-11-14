@@ -143,6 +143,7 @@ span.userpic img {
     padding: 0 15px;
     margin-top: 69px;
     margin-bottom: 40px;
+    min-height: calc(100vh - 165px);
 }
 
 .textbox-dek input {
@@ -266,7 +267,8 @@ span.userpic img {
     font-size: 14px;
     line-height: normal;
     color: #242424;
-    margin-top: 0;
+    margin-top: 0; 
+    word-break: break-all;
 }
 
 .cardinboxlist p {
@@ -637,9 +639,18 @@ ul.d-flex.flexlist {
 
 .textdeclist>.MuiList-root {
     max-width: inherit;
-    max-height: 250px; 
-    overflow-y: auto;
+    max-height: 250px;
+    overflow-y: auto; 
 }
+/* 
+.textdeclist>.MuiList-root li:first-child{
+    position: fixed;
+    top: 0;
+}
+.textdeclist>.MuiList-root li:last-child{
+    position: fixed;
+    bottom: 0;
+} */
 
 .maxcontainerix div .Mui-checked,
 .maxcontainerix div .MuiCheckbox-indeterminate {
@@ -1040,6 +1051,10 @@ div.modal-prein {
 
 .sm-container {
     max-width: 1000px;
+    margin: 0 auto;
+}
+.sm-container-big {
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -1705,9 +1720,10 @@ div.erorr-msg>*>* {
     padding: 12px 27px;
     font-size: 14px;
 }
-.columlistdrop{
+.columlistdrop {
     font-size: small;
     padding: 10px;
+    max-width: 320px;
 }
 .columlistdrop .row{
     margin-bottom: 5px;
@@ -1723,6 +1739,9 @@ div.erorr-msg>*>* {
     min-width: 310px;
 }
 
+.columlistdrop .row .col-sm-9{
+    word-break: break-all;
+}
 /*navigation smaller*/
 .closeopennav{
     display: none; 
@@ -2128,6 +2147,17 @@ div.modal-prein.wd-600{
 .bodyuserdop ul li.cursorinhiret {
     cursor: inherit !important;
 }
+
+img.inboxicon {
+    width: 28px !important;
+}
+img.arrowicon {
+    width: 23px !important;
+}
+ 
+
+
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

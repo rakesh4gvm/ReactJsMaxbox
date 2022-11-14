@@ -303,9 +303,15 @@ export default function ContactEmailPage() {
                   value={personName}
                   onChange={handleChange}
                   input={<OutlinedInput label="Tag" />}
-                  renderValue={(selected) => selected.join(', ')}
-                  MenuProps={MenuProps}
-                >
+                  MenuProps={MenuProps} 
+                  displayEmpty   
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <>Select Authed Email</>;
+                    }
+                    return selected.join(', ');
+                  }}
+                > 
                   {AccountList.map((data) => (
                     <MenuItem key={data.AccountID} name={data.Email} value={data.Email}>
                       <Checkbox checked={personName.indexOf(data.Email) > -1} />

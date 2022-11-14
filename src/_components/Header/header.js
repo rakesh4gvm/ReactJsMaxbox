@@ -411,15 +411,17 @@ export default function Header() {
                                     </div>
                                 </div>
                                 <div className="bodyuserdop textdeclist">
+                                    <ListItem className='cursorinhiret' alignItems="flex-start">
+                                        <ListItemAvatar>
+                                            <Avatar alt="Remy Sharp" src={allusers} />
+                                        </ListItemAvatar>
+                                        <div className='pt-3'>
+                                            <h5>All User</h5>
+                                        </div>
+                                    </ListItem>
+
                                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                        <ListItem className='cursorinhiret' alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <Avatar alt="Remy Sharp" src={allusers} />
-                                            </ListItemAvatar>
-                                            <div className='pt-3'>
-                                                <h5>All User</h5>
-                                            </div>
-                                        </ListItem>
+                                       
 
                                         <Divider variant="inset" component="li" />
                                         {UserDetails == undefined ? "" : UserDetails.EmailAccount.map((row) => (
@@ -445,16 +447,16 @@ export default function Header() {
                                                     </span></a></li>
                                                 </ul>
                                             </ListItem>
-                                        ))}
-                                        <ListItem alignItems="flex-start" >
-                                            <ListItemAvatar>
-                                                <Avatar alt="Remy Sharp" src={iconlogout} className='max-40' />
-                                            </ListItemAvatar>
-                                            <div className='pt-3 pb-2' onClick={SignOut}>
-                                                <h5>Logout</h5>
-                                            </div>
-                                        </ListItem>
+                                        ))} 
                                     </List>
+                                    <ListItem alignItems="flex-start" >
+                                        <ListItemAvatar>
+                                            <Avatar alt="Remy Sharp" src={iconlogout} className='max-40' />
+                                        </ListItemAvatar>
+                                        <div className='pt-3 pb-2' onClick={SignOut}>
+                                            <h5>Logout</h5>
+                                        </div>
+                                    </ListItem>
                                 </div>
                             </div>
                         </div>
