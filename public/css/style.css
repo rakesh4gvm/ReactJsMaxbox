@@ -44,16 +44,14 @@ span.userpic {
     border-radius: 72px;
     width: 53px;
     height: 53px;
-    display: table;
     position: relative;
+    object-position: center center;
+    display: inline-flex;
 }
 
 span.userpic img {
-    width: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 100%;
+    object-position: center center;
+    object-fit: none;
 }
 
 .dropboxcard {
@@ -1053,8 +1051,8 @@ div.modal-prein {
     max-width: 1000px;
     margin: 0 auto;
 }
-.sm-container-big {
-    max-width: 1200px;
+.sm-container-bix {
+    max-width: 1280px;
     margin: 0 auto;
 }
 
@@ -1862,6 +1860,7 @@ img.width36{
 }
 .listcardman .MuiCollapse-root p{
     font-size: 14px;
+    word-break: break-all;
 }
 .listcardman .MuiCollapse-entered{
     margin-bottom: 15px;
