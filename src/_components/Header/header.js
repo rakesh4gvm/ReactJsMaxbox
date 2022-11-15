@@ -183,6 +183,10 @@ export default function Header() {
                         SetSelectedClient(Details.ClientID)
                     }
                 }
+                else
+                {
+                    UpdateUserDetails('')
+                }
             } else {
                 toast.error(Result?.data?.Message);
             }

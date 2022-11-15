@@ -57,7 +57,7 @@ export default function EmailConfigurationPage() {
   const [EmailAccountList, SetEmailAccountList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("FromName");
   const [SortedBy, SetSortedBy] = React.useState(1);
-  const [ClientID, SetClientID] = React.useState(0);
+  const [ClientID, SetClientID] = React.useState('');
   const [UserID, SetUserID] = React.useState(0);
   const [EmailAccountDetails, SetEmailAccountDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
@@ -303,9 +303,11 @@ export default function EmailConfigurationPage() {
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
             <Col align="right">
+              {ClientID !="" ?
               <Button className='btnaccount' onClick={AddEmailAccount}>
                 <AddIcon /> Add Account
               </Button>
+                 :"" } 
             </Col>
           </Row>
           <Row>

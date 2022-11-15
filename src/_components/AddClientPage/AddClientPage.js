@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, EditorVariableNames, ValidateEmail, LoaderShow, LoaderHide } from "../../_helpers/Utility";
+import { GetUserDetails, EditorVariableNames, UpdateUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import { history } from "../../_helpers";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
@@ -194,7 +194,16 @@ export default function AddClientPage({ children }) {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
               toast.success(<div>Client <br />Client added successfully.</div>);
               LoaderHide()
-              history.push("/ClientList");
+              var UserDetails = GetUserDetails();
+              if (UserDetails != null) {
+                if(UserDetails.ClientID == '')
+                {
+                  UpdateUserDetails((Result.data.Data.ClientID))
+                }
+               
+              }
+              window.location.href = "/ClientList";
+              //history.push("/ClientList");
             } else {
               toast.error(Result?.data?.Message);
               LoaderHide()
