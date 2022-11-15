@@ -252,12 +252,12 @@ export default function EditClientPage(props) {
                             </Row>
                             <Row className='input-boxbg mt-5'>
                                 <Col sm={2}>
-                                    <label>BCC Email  :</label>
+                                    <label>BCC email  :</label>
                                 </Col>
                                 <Col sm={8}>
                                 </Col>
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter BCC EMail' name='bccEmail' id='bccEmail' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.BccEmail} />
+                                    <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.BccEmail} />
                                     {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
                                 </Col>
                             </Row>

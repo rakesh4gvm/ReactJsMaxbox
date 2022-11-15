@@ -244,7 +244,7 @@ export default function AddClientPage({ children }) {
               </Row>
               <Row className='input-boxbg mt-5'>
                 <Col sm={2}>
-                  <label>BCC Email  :</label>
+                  <label>BCC email  :</label>
                 </Col>
                 <Col sm={8}>
                 </Col>
