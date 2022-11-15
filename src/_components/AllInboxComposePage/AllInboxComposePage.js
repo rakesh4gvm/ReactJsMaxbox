@@ -263,7 +263,7 @@ export default function AllInboxComposePage() {
         const str = "<br>"
         SetSignature({ Data: str + ClientData })
         console.log("editor=========", editor)
-        editor.events.focus();
+        // editor.events.focus();
     }
 
     // Selected User
