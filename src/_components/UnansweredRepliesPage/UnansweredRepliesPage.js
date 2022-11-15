@@ -1348,7 +1348,7 @@ export default function UnansweredRepliesPage() {
                       <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage} title={"Refresh"}>
                         <RefreshIcon />
                       </Button>
-                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title={"All Delete"}>
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title={"Delete"}>
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>

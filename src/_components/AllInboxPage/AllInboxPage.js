@@ -1524,7 +1524,7 @@ export default function AllInboxPage() {
                       <Button className='iconbtn' variant="contained" size="large" onClick={RefreshPage} title="Refresh">
                         <RefreshIcon />
                       </Button>
-                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title="All Delete">
+                      <Button className='iconbtn' variant="contained" size="large" onClick={OpenAllDeletePopModel} title="Delete">
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
@@ -1750,7 +1750,7 @@ export default function AllInboxPage() {
                         <Button>
                           <label>{MailNumber} / {AllInBoxList.length}</label>
                         </Button>
-                        
+
                         <Button>
                           <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-1'><img src={iconsarrow2} className="arrowicon" title={"Reply"} /></a>
                         </Button>
