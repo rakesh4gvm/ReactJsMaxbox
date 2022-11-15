@@ -16,12 +16,12 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+
 import FooterBottom from '../Footer/footer';
-import InputLabel from '@mui/material/InputLabel';
+
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import FormHelperText from '@mui/material/FormHelperText';
+
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
@@ -57,13 +57,6 @@ const Style = {
 
 toast.configure();
 
-function createData(email) {
-  return { email };
-}
-
-
-
-
 
 
 const ITEM_HEIGHT = 48;
@@ -81,8 +74,7 @@ const MenuProps = {
 
 export default function ContactEmailPage() {
   const [personName, setPersonName] = React.useState([]);
-  const [PersonID, SetPersonID] = React.useState([]);
-
+  
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
@@ -90,16 +82,12 @@ export default function ContactEmailPage() {
   const [AccountList, SetAccountList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("ContactEmail");
   const [AccountIDs, SetAccountIDs] = React.useState([]);
-
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
-  const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
-  const [EyesPopModel, SetEyesPopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
-  const [open, setOpen] = React.useState(false);
-  const [PopupBody, SetPopupBody] = React.useState(false);
+  
 
   useEffect(() => {
     GetClientID();
@@ -236,12 +224,6 @@ export default function ContactEmailPage() {
 
       let Result = AccountList.find(data => data.Email == value[i])
       Ids.push(Result.AccountID)
-
-      // if (i > 0) {
-      //   acids += "," + y.AccountID
-      // } else {
-      //   acids = y.AccountID
-      // }
     }
     let res
     if (Ids.length > 0) {
