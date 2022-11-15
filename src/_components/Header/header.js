@@ -90,8 +90,8 @@ export default function Header() {
             SetClientID(UserDetails.ClientID);
             SetUserID(UserDetails.UserID);
         }
-        GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
-        GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+        // GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+        // GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     }
 
     const GetAllTotalCount = (CID, UID) => {
@@ -187,6 +187,11 @@ export default function Header() {
                 toast.error(Result?.data?.Message);
             }
         });
+    }
+    const CountListApi = ()=>
+    {
+        GetAllTotalCount(ClientID, UserID)
+        GetTotalRecordCount(ClientID, UserID)
     }
 
     // Open Pop User Details
@@ -292,7 +297,7 @@ export default function Header() {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec">
-                                <NavDropdown title="Inbox" id="basic-nav-dropdown">
+                                <NavDropdown title="Inbox" id="basic-nav-dropdown" onClick={()=>CountListApi()}>
                                     <NavDropdown.Item onClick={() => OpenPage("/UnansweredResponses")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
