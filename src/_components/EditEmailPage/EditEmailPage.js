@@ -29,7 +29,7 @@ export default function EditEmailPage(props) {
   const [EditEmailConfigurationDetails, SetEditEmailConfigurationDetails] = React.useState([]);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
-  const [Refreshtoken, SetRefreshtoken] = React.useState(0);
+  const [Refreshtoken, SetRefreshtoken] = React.useState();
   const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(0);
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(0);
 
@@ -45,7 +45,7 @@ export default function EditEmailPage(props) {
   }, []);
 
   useEffect(() => {
-  }, [ClientID, UserID, Isworking]);
+  }, [ClientID, UserID, Isworking,Refreshtoken]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);

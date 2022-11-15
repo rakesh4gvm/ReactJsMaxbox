@@ -11,12 +11,12 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import BgProfile from '../../images/bg-profile.png';
 import { Col, Row } from 'react-bootstrap';
-import HeaderTop from '../Header/header';
+
 import FooterBottom from '../Footer/footer';
 import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import Cameraicons from '../../images/icons/icons-camera.svg';
 
-import FormGroup from '@mui/material/FormGroup';
+
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -31,7 +31,7 @@ export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
   const [User, SetUser] = useState()
   const [Country, SetCountry] = useState([])
-  const [SelectedCountryDropdown, setSelectedCountryDropdown] = useState(null);
+  
   const [Base64Image, SetBase64Image] = useState()
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
