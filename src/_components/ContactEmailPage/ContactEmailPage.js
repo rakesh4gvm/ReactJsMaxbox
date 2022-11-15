@@ -113,8 +113,8 @@ export default function ContactEmailPage() {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetContactList(UserDetails.ClientID, UserDetails.UserID, [])
     EmailAccountGet(UserDetails.ClientID, UserDetails.UserID)
+    // GetContactList(UserDetails.ClientID, UserDetails.UserID, AccountIDs)
   }
 
   // Start Get Objection Template List
@@ -166,6 +166,11 @@ export default function ContactEmailPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetAccountList(Result.data.PageData);
+        SetAccountIDs(Result.data.PageData[0].AccountID)
+        GetContactList(CID, UID, [Result.data.PageData[0].AccountID])
+        setPersonName(
+          typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
+        );
         LoaderHide()
       }
       else {
@@ -303,18 +308,19 @@ export default function ContactEmailPage() {
                   value={personName}
                   onChange={handleChange}
                   input={<OutlinedInput label="Tag" />}
-                  MenuProps={MenuProps} 
-                  displayEmpty   
+                  MenuProps={MenuProps}
+                  displayEmpty
                   renderValue={(selected) => {
                     if (selected.length === 0) {
                       return <>Select Authed Email</>;
                     }
                     return selected.join(', ');
                   }}
-                > 
+                >
                   {AccountList.map((data) => (
                     <MenuItem key={data.AccountID} name={data.Email} value={data.Email}>
                       <Checkbox checked={personName.indexOf(data.Email) > -1} />
+                      {/* <Checkbox defaultChecked={data.AccountID == AccountIDs ? true : false} /> */}
                       <ListItemText primary={data.Email} />
                     </MenuItem>
                   ))}

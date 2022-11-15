@@ -267,7 +267,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         SetSignature({ Data: str + ClientData })
-        editor.events.focus();
+        // editor.events.focus();
     }
 
     // Selected User
