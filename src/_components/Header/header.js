@@ -31,6 +31,8 @@ import Objectroup from '../../images/icons/object-group.svg';
 import Carbontem from '../../images/icons/carbontem.svg';
 import Emails from '../../images/icons/emails.svg';
 import Users from '../../images/icons/users.svg';
+import ContactEmail from '../../images/icons/contact-email.svg';
+import OtherInbox from '../../images/icons/otherinbox.svg';
 
 import { Nav } from 'react-bootstrap';
 import { history } from "../../_helpers";
@@ -323,7 +325,7 @@ export default function Header() {
                                             <NotificationsIcon /> {AllTotalRecords?.AllDraftCount}
                                         </div>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() => OpenPage("/OtherInboxPage")}><img src={inbox} />Other Inbox
+                                    <NavDropdown.Item onClick={() => OpenPage("/OtherInboxPage")}><img src={OtherInbox} />Other Inbox
                                         <div className="notifimen">
                                             <NotificationsIcon /> {AllTotalRecords?.AllOtherInboxCount}
                                         </div>
@@ -368,7 +370,7 @@ export default function Header() {
                                         <img src={Users} />Client
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/ContactEmail")}>
-                                        <img src={Carbontem} />Contact Email
+                                        <img src={ContactEmail} />Contact Email
                                     </NavDropdown.Item>
                                 </NavDropdown>
                                 <div class="selecter-m mx-4">

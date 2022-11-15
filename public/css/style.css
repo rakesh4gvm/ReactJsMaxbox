@@ -19,12 +19,11 @@ a {
 
 input:-internal-autofill-selected,
 input:-webkit-autofill,
-.input-pasbox input { 
-    font-size: 17px;
+.input-pasbox input {
     line-height: 50px;
     -webkit-text-fill-color: #616B77;
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-    transition: background-color 5000s ease-in-out 0s; 
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 /* .header-main{
@@ -51,7 +50,10 @@ span.userpic {
 
 span.userpic img {
     object-position: center center;
-    object-fit: none;
+    object-fit: cover;
+    width: 55px;
+    margin: 0 auto;
+    display: table;
 }
 
 .dropboxcard {
@@ -960,16 +962,14 @@ div.modal-prein {
     display: inline-block;
     position: relative;
     text-align: center;
+    object-position: center center;
 }
 
 .imgupload img {
-    width: auto;
+    width: 100%;
     height: 100%;
-    margin: 0 auto;
-    display: table;
-    transform: translate(-50%, 0);
-    left: 50%;
-    position: absolute;
+    object-fit: cover;
+    object-position: center center;
 }
 
 .uploadedimg {
@@ -1004,7 +1004,7 @@ div.modal-prein {
     width: 100%;
     padding: 0 15px;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 50px;
     color: #616B77;
 }

@@ -58,6 +58,7 @@ import Emailcall from '../../images/email_call_img.png';
 import { Col, Row } from 'react-bootstrap';
 import defaultimage from '../../images/default.png';
 import inbox from '../../images/icons/inbox.svg';
+import OtherInbox from '../../images/icons/otherinbox.svg';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -1452,7 +1453,7 @@ export default function OtherInboxPage() {
           <Col className='maxcontainerix' id="navclose">
             <div className='closeopennav'>
               <a className='navicons m-4' onClick={(NavBarClick)}><ArrowRight /></a>
-              <Tooltip title="Other Inbox"><a className='m-4'><img src={inbox} /></a></Tooltip>
+              <Tooltip title="Other Inbox"><a className='m-4'><img src={OtherInbox} /></a></Tooltip>
             </div>
             <div className='navsmaller px-0 leftinbox'>
               <div className='px-3 bgfilter'>
