@@ -1574,17 +1574,17 @@ export default function AllInboxPage() {
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                                 <Col xs={11} className="pr-0">
-                                  <Row>
-                                    <Col xs={2}>
+                                  <Row className='mx-0'>
+                                    <Col className='px-2' xs={2}>
                                       <span className="inboxuserpic">
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col className='px-2' xs={8}>
                                       <h4>{row.FromEmail}</h4>
                                       <h3>{row.Subject}</h3>
                                     </Col>
-                                    <Col xs={2} className="pl-0">
+                                    <Col className='px-2' xs={2}>
                                       <h6>
                                         {
                                           Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1598,7 +1598,7 @@ export default function AllInboxPage() {
                                       </ToggleButton> */}
                                     </Col>
                                   </Row>
-                                  <Row>
+                                  <Row className='mx-0'>
                                     {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
@@ -1617,7 +1617,7 @@ export default function AllInboxPage() {
                       </InfiniteScroll>
                     </div>
                     :
-                    <div id="scrollableDiv" class="listinbox mt-3">
+                    <div id="scrollableDiv" class="listinbox">
                       <InfiniteScroll
                         dataLength={AllInBoxList.length}
                         next={FetchMoreData}
@@ -1638,17 +1638,17 @@ export default function AllInboxPage() {
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                                 <Col xs={11} className="pr-0">
-                                  <Row>
-                                    <Col xs={2}>
+                                  <Row className='mx-0'>
+                                    <Col className='px-2' xs={2}>
                                       <span className="inboxuserpic">
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col className='px-2' xs={8}>
                                       <h4>{row.FromEmail}</h4>
                                       <h3>{row.Subject}</h3>
                                     </Col>
-                                    <Col xs={2} className="pl-0">
+                                    <Col className='px-2' xs={2}>
                                       <h6>
                                         {
                                           Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1662,7 +1662,7 @@ export default function AllInboxPage() {
                                       </ToggleButton> */}
                                     </Col>
                                   </Row>
-                                  <Row>
+                                  <Row className='mx-0'>
                                     {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />

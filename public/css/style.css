@@ -25,6 +25,20 @@ input:-webkit-autofill,
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
 }
+input::placeholder,
+.input-pasbox input::placeholder { 
+    opacity: 1;
+    color: red;
+    -webkit-text-fill-color: #616B77;
+    font-size: 13px;
+    font-weight: 400;
+}
+.select-box div::after{
+    display: none;
+}
+.select-box .MuiSelect-selectMenu{
+    background-color: transparent;
+}
 
 /* .header-main{
     background-color: #647AF7;
@@ -1686,7 +1700,8 @@ div.erorr-msg>*>* {
 }
 .bgfilter {
     background-color: #F7F8FF;
-    padding: 15px 0;
+    padding: 15px 0; 
+    border-bottom: 1px solid #ccc;
 }
 .carduser_details{
     text-align: center;

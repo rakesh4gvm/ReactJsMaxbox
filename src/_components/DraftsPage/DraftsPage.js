@@ -1168,17 +1168,17 @@ export default function DraftsPage() {
                                 </Col>
 
                                 <Col xs={11}>
-                                  <Row>
-                                    <Col xs={2}>
+                                  <Row className='mx-0'>
+                                    <Col className='px-2' xs={2}>
                                       <span className="inboxuserpic">
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col className='px-2' xs={8}>
                                       <h4>{row.Subject}</h4>
                                       <div className='small'> <p className='mb-0'><strong className='bold400'>To</strong>: {row.MailTo}</p></div>
                                     </Col>
-                                    <Col xs={2} className="pl-0">
+                                    <Col className='px-2' xs={2} className="pl-0">
                                       <h6>
                                         {
                                           Moment(row.CreatedDate).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1189,7 +1189,7 @@ export default function DraftsPage() {
                                       <h5 className='draftext'>Draft</h5>
                                     </Col>
                                   </Row>
-                                  <Row>
+                                  <Row className='mx-0'>
                                     {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
@@ -1229,17 +1229,17 @@ export default function DraftsPage() {
                                   <FormControlLabel control={<Checkbox defaultChecked={InboxChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                                 <Col xs={11}>
-                                  <Row>
-                                    <Col xs={2}>
+                                  <Row className='mx-0'>
+                                    <Col className='px-2' xs={2}>
                                       <span className="inboxuserpic">
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col className='px-2' xs={8}>
                                       <h4>{row.Subject}</h4>
                                       <div className='small'> <p className='mb-0'><strong className='bold400'>To</strong>: bhumit@gmail.com</p></div>
                                     </Col>
-                                    <Col xs={2} className="pl-0">
+                                    <Col className='px-2' xs={2}>
                                       <h6>
                                         {
                                           Moment(row.CreatedDate).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1250,7 +1250,7 @@ export default function DraftsPage() {
                                       <h5 className='draftext'>Draft</h5>
                                     </Col>
                                   </Row>
-                                  <Row>
+                                  <Row className='mx-0'>
                                     {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />

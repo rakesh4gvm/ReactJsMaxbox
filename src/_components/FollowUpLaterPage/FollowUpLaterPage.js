@@ -1640,8 +1640,8 @@ export default function FollowUpLetterPage() {
                                   <FormControlLabel control={<Checkbox defaultChecked={FollowUpLaterChecked.find(x => x == row._id) ? true : false} name={row._id} value={row._id} onChange={InBoxCheckBox} />} label="" />
                                 </Col>
                                 <Col xs={11} className="pr-2">
-                                  <Row>
-                                    <Col xs={2}>
+                                  <Row className='mx-0'>
+                                    <Col xs={2} className='px-2'>
                                       <span className="inboxuserpic">
                                         <img src={defaultimage} width="55px" alt="" />
                                       </span>
@@ -1650,7 +1650,7 @@ export default function FollowUpLetterPage() {
                                       <h4>{row.FromEmail}</h4>
                                       <h3>{row.Subject}</h3>
                                     </Col>
-                                    <Col xs={2} className="pl-0">
+                                    <Col xs={2} className='px-2'>
                                       <h6>
                                         {
                                           Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1664,7 +1664,7 @@ export default function FollowUpLetterPage() {
                                       </ToggleButton>
                                     </Col>
                                   </Row>
-                                  <Row>
+                                  <Row className='mx-0'>
                                     {/* <Col xs={2} className='ja-center'>
                                       <div className='attachfile'>
                                         <input type="file" />
@@ -1708,17 +1708,17 @@ export default function FollowUpLetterPage() {
                                 </Col>
                               </Row>
                               <Col xs={11} className="pr-2">
-                                <Row>
-                                  <Col xs={2}>
+                                <Row className='mx-0'>
+                                  <Col className='px-2' xs={2}>
                                     <span className="inboxuserpic p-0">
                                       <img src={defaultimage} width="55px" alt="" />
                                     </span>
                                   </Col>
-                                  <Col xs={8} className='px-2'>
+                                  <Col className='px-2' xs={8}>
                                     <h4>{row.FromEmail}</h4>
                                     <h3>{row.Subject}</h3>
                                   </Col>
-                                  <Col xs={2} className="pl-0">
+                                  <Col className='px-2' xs={2}>
                                     <h6>
                                       {
                                         Moment(row.MessageDatetime).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
@@ -1732,7 +1732,7 @@ export default function FollowUpLetterPage() {
                                     </ToggleButton>
                                   </Col>
                                 </Row>
-                                <Row>
+                                <Row className='mx-0'>
                                   {/* <Col xs={2} className='ja-center'>
                                     <div className='attachfile'>
                                       <input type="file" />

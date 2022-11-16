@@ -277,7 +277,7 @@ export default function LoginPage() {
                 </div>
                 <div className='input-pasbox'>
                   <OutlinedInput
-                    id="password"
+                    id="password"  placeholder='Password'
                     type={values.showPassword ? 'text' : 'password'}
                     // value={PasswordValue()}
                     onChange={handleChange}
