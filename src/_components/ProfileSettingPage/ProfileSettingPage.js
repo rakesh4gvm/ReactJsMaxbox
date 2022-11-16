@@ -259,6 +259,7 @@ export default function ProfileSettingPage() {
 
   // Update User
   const UpdateUser = async () => {
+    LoaderShow()
     const Valid = FromValidation();
     if (Valid) {
     var FirstName = document.getElementById("firstName").value;
@@ -304,7 +305,7 @@ export default function ProfileSettingPage() {
 
           localStorage.setItem("LoginData", JSON.stringify(Image))
           toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
-          LoaderShow()
+         
           GetUserList(UserID);
         } else {
           toast.error(Result?.data?.Message);
