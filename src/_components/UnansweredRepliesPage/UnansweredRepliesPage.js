@@ -576,7 +576,7 @@ export default function UnansweredRepliesPage() {
     const Data = {
       ClientID: CID,
       UserID: UID,
-
+      IsReplied: false
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",

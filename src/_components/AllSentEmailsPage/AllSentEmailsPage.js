@@ -615,7 +615,7 @@ export default function AllSentEnailsPage() {
     const Data = {
       ClientID: CID,
       UserID: UID,
-
+      IsReplied: true
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
