@@ -200,6 +200,8 @@ export default function Header() {
         GetTotalRecordCount(ClientID, UserID)
     }
 
+    
+
     // Open Pop User Details
     const OpenPopupUserDetails = async () => {
         var UserID
@@ -341,7 +343,7 @@ export default function Header() {
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <NavDropdown title="Sent" id="basic-nav-dropdown">
+                                <NavDropdown title="Sent" id="basic-nav-dropdown" onClick={()=>CountListApi()}>
                                     <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
