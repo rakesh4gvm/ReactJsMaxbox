@@ -1178,7 +1178,7 @@ export default function DraftsPage() {
                                       <h4>{row.Subject}</h4>
                                       <div className='small'> <p className='mb-0'><strong className='bold400'>To</strong>: {row.MailTo}</p></div>
                                     </Col>
-                                    <Col className='px-2' xs={2} className="pl-0">
+                                    <Col className='px-2' xs={2}>
                                       <h6>
                                         {
                                           Moment(row.CreatedDate).format("DD/MM/YYYY") === Moment().format("DD/MM/YYYY")
