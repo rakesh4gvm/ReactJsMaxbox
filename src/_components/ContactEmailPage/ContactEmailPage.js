@@ -154,7 +154,10 @@ export default function ContactEmailPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetAccountList(Result.data.PageData);
-        SetAccountIDs(Result.data.PageData[0].AccountID)
+        var AccountID=Result.data.PageData[0].AccountID;
+        var AccountIDArry=[];
+        AccountIDArry.push(AccountID);
+        SetAccountIDs(AccountIDArry)
         GetContactList(CID, UID, [Result.data.PageData[0].AccountID])
         setPersonName(
           typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
