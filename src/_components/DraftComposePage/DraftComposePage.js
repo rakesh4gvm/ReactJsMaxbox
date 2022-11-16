@@ -329,7 +329,6 @@ export default function DraftComposePage({ GetDraftList }) {
                 IsSpamMail: false,
                 IsDraftMail: true,
                 IsAllSentEmails: false,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

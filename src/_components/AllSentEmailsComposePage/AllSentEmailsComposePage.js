@@ -321,7 +321,6 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: true,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

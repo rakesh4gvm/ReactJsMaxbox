@@ -320,7 +320,6 @@ export default function AllInboxComposePage() {
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

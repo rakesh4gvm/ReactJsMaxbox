@@ -328,7 +328,6 @@ export default function OtherInboxComposePage({ GetInBoxList }) {
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

@@ -322,7 +322,6 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                IsUansweredReplies: true,
                 CreatedBy: 1
             }
             Axios({

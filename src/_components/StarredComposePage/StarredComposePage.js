@@ -326,7 +326,6 @@ export default function StarredComposePage({ GetStarredList }) {
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({

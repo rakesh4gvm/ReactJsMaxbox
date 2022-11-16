@@ -326,7 +326,6 @@ export default function SpamComposePage({ GetSpamList }) {
                 IsSpamMail: true,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                IsUansweredReplies: false,
                 CreatedBy: 1
             }
             Axios({
