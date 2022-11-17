@@ -141,6 +141,7 @@ export default function ContactEmailPage() {
   };
 
   const EmailAccountGet = (CID, UID) => {
+    LoaderShow()
     var Data = {
       ClientID: CID,
       UserID: UID,
@@ -153,6 +154,7 @@ export default function ContactEmailPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if(Result.data.PageData.length > 0){
         SetAccountList(Result.data.PageData);
         var AccountID=Result.data.PageData[0].AccountID;
         var AccountIDArry=[];
@@ -162,15 +164,16 @@ export default function ContactEmailPage() {
         setPersonName(
           typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
         );
-        LoaderHide()
+      }
+        
       }
       else {
         SetAccountList([])
-        LoaderHide()
+        
         toast.error(Result?.data?.Message);
       }
     });
-
+    LoaderHide()
   }
 
   const AddContact = () => {
