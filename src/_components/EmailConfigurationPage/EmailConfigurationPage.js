@@ -188,7 +188,7 @@ export default function EmailConfigurationPage() {
         var client_id = encodeURIComponent(CommonConstants.CLIENT_ID);
         var response_type = "code";
         var access_type = "offline";
-        var state = null;
+        var state = "Addemailaccountlistpage" + "," + ClientID + "," + UserID;
 
         var Url = "https://accounts.google.com/o/oauth2/auth?scope=" + scope + "&redirect_uri=" + redirect_uri_encode + "&response_type=" + response_type + "&client_id=" + client_id + "&state=" + state + "&access_type=" + access_type + "&approval_prompt=force&login_hint=" + loginHint + ""
         window.location.href = Url;
