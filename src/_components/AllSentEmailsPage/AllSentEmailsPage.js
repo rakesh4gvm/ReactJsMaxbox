@@ -616,7 +616,7 @@ export default function AllSentEnailsPage() {
       ClientID: CID,
       UserID: UID,
       IsAllSent: true
-      
+
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/sent_email_history/TotalRecordCount",
@@ -1574,9 +1574,13 @@ export default function AllSentEnailsPage() {
                         <Button>
                           <label>{MailNumber} / {AllSentEmailsList.length}</label>
                         </Button>
-                        <Button onClick={OpenStarPopModel}>
+                        {/* <Button onClick={OpenStarPopModel}>
                           <img src={iconstar} title={"Starred"} />
-                        </Button>
+                        </Button> */}
+                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
                         <Button>
                           <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-1'><img src={iconsarrow2} className="arrowicon" title={"Reply"} /></a>
                         </Button>

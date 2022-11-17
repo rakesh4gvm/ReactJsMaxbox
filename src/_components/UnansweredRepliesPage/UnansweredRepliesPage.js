@@ -1571,9 +1571,13 @@ export default function UnansweredRepliesPage() {
                         <Button>
                           <label>{MailNumber} / {AllUnansweredRepliesList?.length}</label>
                         </Button>
-                        <Button onClick={OpenStarPopModel}>
+                        {/* <Button onClick={OpenStarPopModel}>
                           <img src={iconstar} title={"Starred"} />
-                        </Button>
+                        </Button> */}
+                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
                         <Button>
                           <a href="#replaybx" onClick={() => ReplyPopModel(OpenMessage)} className='p-1'><img src={iconsarrow2} className="arrowicon" title={"Reply"} /></a>
                         </Button>
