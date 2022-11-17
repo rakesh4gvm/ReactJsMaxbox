@@ -93,20 +93,20 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
             var BodyData = Signature.Data;
             var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
+
             document.getElementById("Subject").value = DivData.Subject;
-            
+
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -125,20 +125,20 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
             var BodyData = Signature.Data;
             var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
+
             document.getElementById("Subject").value = DivData.Subject;
-            
+
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -333,7 +333,7 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()
-                    // GetAllSentEmailsList()
+                    GetAllSentEmailsList(ClientID, UserID, 1, "", [-1])
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
@@ -505,28 +505,28 @@ export default function AllSentEmailsComposePage({ GetAllSentEmailsList }) {
     })
     // Frola Editor Ends
 
-    /* start navcode */ 
+    /* start navcode */
     const mincomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("minmusbox")) {
-        element.classList.remove("minmusbox");
+            element.classList.remove("minmusbox");
         }
         else {
-        element.classList.add("minmusbox");
-        element.classList.remove("largebox");
+            element.classList.add("minmusbox");
+            element.classList.remove("largebox");
         }
     }
 
     const maxcomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("largebox")) {
-        element.classList.remove("largebox");
+            element.classList.remove("largebox");
         }
         else {
-        element.classList.add("largebox");
-        element.classList.remove("minmusbox");
+            element.classList.add("largebox");
+            element.classList.remove("minmusbox");
         }
-    } 
+    }
     /* end code*/
 
     const WrapperRef = useRef(null);
