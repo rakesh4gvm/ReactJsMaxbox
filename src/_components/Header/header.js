@@ -97,6 +97,7 @@ export default function Header() {
     }
 
     const GetAllTotalCount = (CID, UID) => {
+        LoaderShow()
         const Data = {
             ClientID: CID,
             UserID: UID,
@@ -115,12 +116,14 @@ export default function Header() {
                 toast.error(Result?.data?.Message);
             }
         });
+        LoaderHide()
     }
 
 
 
     // Get Total Total Record Count
     const GetTotalRecordCount = (CID, UID) => {
+        LoaderShow()
         const Data = {
             ClientID: CID,
             UserID: UID,
@@ -144,6 +147,7 @@ export default function Header() {
                 }
             }
         })
+        LoaderHide()
     }
 
     useEffect(() => {
@@ -185,8 +189,7 @@ export default function Header() {
                         SetSelectedClient(Details.ClientID)
                     }
                 }
-                else
-                {
+                else {
                     UpdateUserDetails('')
                 }
             } else {
@@ -194,13 +197,12 @@ export default function Header() {
             }
         });
     }
-    const CountListApi = ()=>
-    {
+    const CountListApi = () => {
         GetAllTotalCount(ClientID, UserID)
         GetTotalRecordCount(ClientID, UserID)
     }
 
-    
+
 
     // Open Pop User Details
     const OpenPopupUserDetails = async () => {
@@ -305,7 +307,7 @@ export default function Header() {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec">
-                                <NavDropdown title="Inbox" id="basic-nav-dropdown" onClick={()=>CountListApi()}>
+                                <NavDropdown title="Inbox" id="basic-nav-dropdown" onClick={() => CountListApi()}>
                                     <NavDropdown.Item onClick={() => OpenPage("/UnansweredResponses")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
@@ -343,7 +345,7 @@ export default function Header() {
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <NavDropdown title="Sent" id="basic-nav-dropdown" onClick={()=>CountListApi()}>
+                                <NavDropdown title="Sent" id="basic-nav-dropdown" onClick={() => CountListApi()}>
                                     <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
@@ -434,7 +436,7 @@ export default function Header() {
                                     </ListItem>
 
                                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                       
+
 
                                         <Divider variant="inset" component="li" />
                                         {UserDetails == undefined ? "" : UserDetails.EmailAccount.map((row) => (
@@ -460,7 +462,7 @@ export default function Header() {
                                                     </span></a></li>
                                                 </ul>
                                             </ListItem>
-                                        ))} 
+                                        ))}
                                     </List>
                                     <ListItem alignItems="flex-start" >
                                         <ListItemAvatar>

@@ -135,7 +135,7 @@ export default function LoginPage() {
   }
   // Login method start
   const Login = async () => {
-
+    LoaderShow()
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
@@ -148,7 +148,7 @@ export default function LoginPage() {
       const IsTwoWayFactor = await GetDataByEmail()
 
       if (IsTwoWayFactor) {
-        LoaderShow()
+
         const Data = {
           ToEmail: Email,
         }
@@ -163,11 +163,13 @@ export default function LoginPage() {
               pathname: '/OTPConfirm',
               state: { Email: Email, Password: Password }
             });
-            LoaderHide()
+
           }
         })
-      } else {
-        LoaderShow()
+        LoaderHide()
+      }
+      else {
+
         const Data = { Email: Email, Password: Password }
         const ResponseApi = Axios({
           url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
@@ -196,6 +198,7 @@ export default function LoginPage() {
         });
       }
     }
+    LoaderHide()
   }
 
   const PasswordValue = () => {
@@ -277,7 +280,7 @@ export default function LoginPage() {
                 </div>
                 <div className='input-pasbox'>
                   <OutlinedInput
-                    id="password"  placeholder='Password'
+                    id="password" placeholder='Password'
                     type={values.showPassword ? 'text' : 'password'}
                     // value={PasswordValue()}
                     onChange={handleChange}

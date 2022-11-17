@@ -1553,7 +1553,7 @@ export default function AllSentEnailsPage() {
                             </Row>
                             <Row>
                               <Col className='pr-0' sm={3} align="right"><lable>date:</lable></Col>
-                              <Col sm={9}>{Moment(OpenMessage.MessageDatetime).format("LLL")}</Col>
+                              <Col sm={9}>{Moment(OpenMessage.MailSentDatetime).format("LLL")}</Col>
                             </Row>
                             <Row>
                               <Col className='pr-0' sm={3} align="right"><lable>subject:</lable></Col>
