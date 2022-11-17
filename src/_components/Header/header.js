@@ -278,6 +278,7 @@ export default function Header() {
     // OPen Pge
     const OpenPage = (PageName) => {
         history.push(PageName);
+        localStorage.setItem("DropdownCheckData", "Refresh");
     }
 
     const WrapperRef = useRef(null);
