@@ -77,7 +77,7 @@ export default function ContactEmailPage() {
   
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(500);
   const [ContactList, SetContactList] = React.useState([]);
   const [AccountList, SetAccountList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("ContactEmail");
