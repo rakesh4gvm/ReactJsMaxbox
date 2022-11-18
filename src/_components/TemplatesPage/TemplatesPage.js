@@ -184,11 +184,13 @@ export default function TemplatesListPage() {
   }
   // End Delete Message
 
-  //Change Page
+  // Pagination Starts
   const HandleChangePage = (Event, NewPage) => {
+    LoaderShow()
     SetPage(NewPage);
     GetTemplateList(ClientID, UserID);
   };
+  // Pagination Ends
 
   // Edit Template
   const EditTemplate = (ID) => {

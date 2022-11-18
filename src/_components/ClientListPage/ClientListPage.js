@@ -153,11 +153,13 @@ export default function ClientListPage() {
   }
   // End Delete Message
 
-  //Change Page
+  // Pagination Starts
   const HandleChangePage = (Event, NewPage) => {
-    SetPage(NewPage);
-    GetClientList(ClientID, UserID);
-  };
+    LoaderShow()
+    SetPage(NewPage)
+    GetClientList(ClientID, UserID)
+  }
+  // Pagination Ends
 
   // Edit CLient
   const EditClient = (ID) => {

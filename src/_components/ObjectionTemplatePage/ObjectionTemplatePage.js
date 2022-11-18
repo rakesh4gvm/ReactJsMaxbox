@@ -186,11 +186,13 @@ export default function ObjectionTemplateListPage() {
   }
   // End Delete Message
 
-  //Change Page
+  // Pagination Starts
   const HandleChangePage = (Event, NewPage) => {
+    LoaderShow()
     SetPage(NewPage);
     GetObjectionTemplateList(ClientID, UserID);
   };
+  // Pagination Ends
 
   // Edit Objection Template
   const EditTemplate = (ID) => {
