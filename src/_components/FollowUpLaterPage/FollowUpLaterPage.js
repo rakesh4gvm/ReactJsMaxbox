@@ -384,7 +384,7 @@ export default function FollowUpLetterPage() {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID, index) => {
-
+    LoaderShow();
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -399,19 +399,23 @@ export default function FollowUpLetterPage() {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide();
           } else {
             SetInBoxList([])
             SetOpenMessageDetails([]);
+            LoaderHide();
           }
         }
         else {
           SetOpenMessageDetails([]);
           toast.error(Result?.data?.Message);
+          LoaderHide();
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide();
     }
   };
   //End Open Message Details
