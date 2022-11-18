@@ -101,20 +101,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-function UseOutSideAlerter(Ref) {
-  useEffect(() => {
-    function HandleClickOutside(Event) {
-      if (Ref.current && !Ref.current.contains(Event.target)) {
-        const Element = document.getElementById("id_userboxlist")
-        Element.classList.remove("show");
-      }
-    }
-    document.addEventListener("mousedown", HandleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", HandleClickOutside);
-    };
-  }, [Ref]);
-}
+
 localStorage.setItem("DropdownCheckData", 'Refresh');
 
 export default function SpamPage() {
@@ -233,9 +220,7 @@ export default function SpamPage() {
       SetUserID(UserDetails.UserID);
     }
     GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
-    // if (ResponseData.length <= 10) {
-    //   SetHasMore(false)
-    // }
+   
   }
 
   const SetHasMoreData = (arr) => {
@@ -259,15 +244,10 @@ export default function SpamPage() {
       Search: SearchInbox,
       ClientID: CID,
       UserID: UID,
-      IsInbox: false,
-      IsStarred: false,
-      IsFollowUp: false,
-      IsSpam: true,
-      IsOtherInbox: false,
       AccountIDs: IDs
     };
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGet",
       method: "POST",
       data: Data,
     });
@@ -337,7 +317,7 @@ export default function SpamPage() {
       AccountIDs: FromEmailDropdownListChecked
     };
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGet",
       method: "POST",
       data: Data,
     });
@@ -373,7 +353,7 @@ export default function SpamPage() {
         _id: ID,
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGetByID",
         method: "POST",
         data: Data,
       });
@@ -414,7 +394,7 @@ export default function SpamPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -451,7 +431,7 @@ export default function SpamPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -488,7 +468,7 @@ export default function SpamPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryUpdate",
         method: "POST",
         data: Data,
       });
@@ -533,7 +513,7 @@ export default function SpamPage() {
             LastUpdatedBy: -1
           };
           const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+            url: CommonConstants.MOL_APIURL + "/spamemailhistory/FollowupUpdate",
             method: "POST",
             data: Data,
           });
@@ -574,7 +554,7 @@ export default function SpamPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryUpdate",
         method: "POST",
         data: Data,
       });
@@ -677,7 +657,7 @@ export default function SpamPage() {
         UserID: UserID
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -773,14 +753,9 @@ export default function SpamPage() {
     const Data = {
       ClientID: CID,
       UserID: UID,
-      IsInbox: false,
-      IsStarred: false,
-      IsFollowUp: false,
-      IsSpam: true,
-      IsOtherInbox: false,
     }
     Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/TotalRecordCount",
       method: "POST",
       data: Data,
     }).then((Result) => {
