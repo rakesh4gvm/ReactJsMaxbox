@@ -143,7 +143,7 @@ export default function ContactEmailPage() {
 
   // Start Get Objection Template List
   const GetContactList = (CID, UID, IDs, PN) => {
-
+    LoaderShow()
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -283,9 +283,11 @@ export default function ContactEmailPage() {
   };
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
+      LoaderShow()
       SetPage(1);
       SetRowsPerPage(10);
       SetSearchInbox(e.target.value)
+      LoaderHide()
     }
   }
   return (
