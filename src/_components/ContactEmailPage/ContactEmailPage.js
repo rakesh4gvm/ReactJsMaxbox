@@ -59,11 +59,11 @@ const Style = {
 };
 
 const Search = styled('div')(({ theme }) => ({
-  position: 'relative', 
+  position: 'relative',
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
-  
+
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -127,7 +127,7 @@ export default function ContactEmailPage() {
 
   useEffect(() => {
     GetClientID();
-  }, [SortedBy, SortField]);
+  }, [SearchInbox, SortedBy, SortField]);
 
 
   // Get Client ID
@@ -150,7 +150,7 @@ export default function ContactEmailPage() {
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
-      Search: '',
+      Search: SearchInbox,
       ClientID: CID,
       UserID: UID,
       AccountIDs: IDs
@@ -282,7 +282,6 @@ export default function ContactEmailPage() {
     GetContactList(ClientID, UserID, res, Page)
   };
   const SearchBox = (e) => {
-    console.log("e=========", e)
     if (e.keyCode == 13) {
       SetPage(1);
       SetRowsPerPage(10);
@@ -365,21 +364,21 @@ export default function ContactEmailPage() {
 
 
 
-            </Col> 
+            </Col>
             <Col sm={4}>
               <div className='textbox-dek serchdek'>
-                    <Search onKeyUp={(e) => SearchBox(e, this)}>
-                      <SearchIconWrapper>
-                        <SearchIcon />
-                      </SearchIconWrapper>
-                      <StyledInputBase
-                      defaultValue={SearchInbox}
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                      />
-                    </Search> 
+                <Search onKeyUp={(e) => SearchBox(e, this)}>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    defaultValue={SearchInbox}
+                    placeholder="Search…"
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Search>
               </div>
-            </Col> 
+            </Col>
             <Col sm={3} align="right">
               <Button className='btnaccount' onClick={AddContact}>
                 <AddIcon /> Add Contact
