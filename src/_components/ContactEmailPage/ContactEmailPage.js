@@ -44,7 +44,6 @@ import { MenuItem } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { Search } from '@material-ui/icons';
 
 
 const Style = {
@@ -59,6 +58,14 @@ const Style = {
   p: 4,
 };
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative', 
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  
+}));
+
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -67,6 +74,8 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  zIndex: '9',
+  color: '#666'
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -326,7 +335,7 @@ export default function ContactEmailPage() {
 
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
-            <Col sm={6}>
+            <Col sm={5}>
               <FormControl className='dropemailbox'>
                 <Select
                   labelId="demo-multiple-checkbox-label"
@@ -356,24 +365,22 @@ export default function ContactEmailPage() {
 
 
 
-            </Col>
-            <Row className='my-3'>
-              <Col>
-                <div className='textbox-dek serchdek'>
-                  <Search onKeyUp={(e) => SearchBox(e, this)}>
-                    <SearchIconWrapper>
-                      <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
+            </Col> 
+            <Col sm={4}>
+              <div className='textbox-dek serchdek'>
+                    <Search onKeyUp={(e) => SearchBox(e, this)}>
+                      <SearchIconWrapper>
+                        <SearchIcon />
+                      </SearchIconWrapper>
+                      <StyledInputBase
                       defaultValue={SearchInbox}
-                      placeholder="Search…"
-                      inputProps={{ 'aria-label': 'search' }}
-                    />
-                  </Search>
-                </div>
-              </Col>
-            </Row>
-            <Col sm={6} align="right">
+                        placeholder="Search…"
+                        inputProps={{ 'aria-label': 'search' }}
+                      />
+                    </Search> 
+              </div>
+            </Col> 
+            <Col sm={3} align="right">
               <Button className='btnaccount' onClick={AddContact}>
                 <AddIcon /> Add Contact
               </Button>
