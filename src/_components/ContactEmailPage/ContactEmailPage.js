@@ -25,8 +25,10 @@ import Select from '@mui/material/Select';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
+import SearchIcon from '@material-ui/icons/Search';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
 import BgProfile from '../../images/bg-profile.png';
+import { styled, alpha } from '@mui/material/styles';
 import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
@@ -34,6 +36,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
+import InputBase from '@mui/material/InputBase';
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 import { MenuItem } from '@mui/material';
@@ -41,6 +44,7 @@ import { MenuItem } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
+import { Search } from '@material-ui/icons';
 
 
 const Style = {
@@ -54,6 +58,29 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 toast.configure();
 
@@ -74,10 +101,10 @@ const MenuProps = {
 
 export default function ContactEmailPage() {
   const [personName, setPersonName] = React.useState([]);
-  
+  const [SearchInbox, SetSearchInbox] = React.useState("");
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(500);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [ContactList, SetContactList] = React.useState([]);
   const [AccountList, SetAccountList] = React.useState([]);
   const [SortField, SetSortField] = React.useState("ContactEmail");
@@ -87,11 +114,11 @@ export default function ContactEmailPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
-  
+
 
   useEffect(() => {
     GetClientID();
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [SortedBy, SortField]);
 
 
   // Get Client ID
@@ -106,10 +133,10 @@ export default function ContactEmailPage() {
   }
 
   // Start Get Objection Template List
-  const GetContactList = (CID, UID, IDs) => {
+  const GetContactList = (CID, UID, IDs, PN) => {
 
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -154,27 +181,32 @@ export default function ContactEmailPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        if(Result.data.PageData.length > 0){
-        SetAccountList(Result.data.PageData);
-        var AccountID=Result.data.PageData[0].AccountID;
-        var AccountIDArry=[];
-        AccountIDArry.push(AccountID);
-        SetAccountIDs(AccountIDArry)
-        GetContactList(CID, UID, [Result.data.PageData[0].AccountID])
-        setPersonName(
-          typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
-        );
-      }
-        
+        if (Result.data.PageData.length > 0) {
+          SetAccountList(Result.data.PageData);
+          var AccountID = Result.data.PageData[0].AccountID;
+          var AccountIDArry = [];
+          AccountIDArry.push(AccountID);
+          SetAccountIDs(AccountIDArry)
+          GetContactList(CID, UID, [Result.data.PageData[0].AccountID], Page)
+          setPersonName(
+            typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
+          );
+        }
+
       }
       else {
         SetAccountList([])
-        
+
         toast.error(Result?.data?.Message);
       }
     });
     LoaderHide()
   }
+
+  const HandleChangePage = (Event, NewPage) => {
+    SetPage(NewPage);
+    GetContactList(ClientID, UserID, AccountIDs, Page + 1);
+  };
 
   const AddContact = () => {
     history.push({
@@ -202,12 +234,12 @@ export default function ContactEmailPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderShow()
-        GetContactList(ClientID, UserID, [])
+        GetContactList(ClientID, UserID, [], Page)
         toast.success(<div>Contacts <br />Delete mail successfully.</div>);
         SetDeletePopModel(false);
       }
       else {
-        GetContactList(ClientID, UserID, [])
+        GetContactList(ClientID, UserID, [], Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -238,9 +270,16 @@ export default function ContactEmailPage() {
       res = [-1]
     }
     SetAccountIDs(res)
-    GetContactList(ClientID, UserID, res)
+    GetContactList(ClientID, UserID, res, Page)
   };
-
+  const SearchBox = (e) => {
+    console.log("e=========", e)
+    if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetSearchInbox(e.target.value)
+    }
+  }
   return (
     <>
 
@@ -318,6 +357,22 @@ export default function ContactEmailPage() {
 
 
             </Col>
+            <Row className='my-3'>
+              <Col>
+                <div className='textbox-dek serchdek'>
+                  <Search onKeyUp={(e) => SearchBox(e, this)}>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      defaultValue={SearchInbox}
+                      placeholder="Search…"
+                      inputProps={{ 'aria-label': 'search' }}
+                    />
+                  </Search>
+                </div>
+              </Col>
+            </Row>
             <Col sm={6} align="right">
               <Button className='btnaccount' onClick={AddContact}>
                 <AddIcon /> Add Contact
@@ -359,6 +414,10 @@ export default function ContactEmailPage() {
                   </TableBody>
                 </Table>
               </TableContainer>
+
+              <Stack className='my-4 page-dec' spacing={2}>
+                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+              </Stack>
 
             </Col>
           </Row>
