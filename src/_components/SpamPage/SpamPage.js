@@ -460,6 +460,7 @@ export default function SpamPage() {
     SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID) => {
+    debugger
     if (ID != '') {
       //setSelected(true);
       var Data = {

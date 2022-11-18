@@ -73,6 +73,7 @@ export default function Header() {
     const [UnansweredResponsesCount, SetUnansweredResponsesCount] = useState([])
     const [UnansweredRepliesCount, SetUnansweredRepliesCount] = useState([])
     const [TotalCount, SetTotalCount] = React.useState(0);
+    const [TotalSpamCount, SetTotalSpamCount] = React.useState(0);
 
     useEffect(() => {
         GetClientID()
@@ -197,9 +198,34 @@ export default function Header() {
             }
         });
     }
+
+    const GetSpamTotalRecordCount = (CID, UID) => {
+        const Data = {
+          ClientID: CID,
+          UserID: UID,
+        }
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/spamemailhistory/TotalRecordCount",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+    
+            if (Result.data.TotalCount >= 0) {
+                SetTotalSpamCount(Result.data.TotalCount);
+            } else {
+                SetTotalSpamCount(0);
+              toast.error(Result?.data?.Message);
+            }
+    
+          }
+        })
+      }
+
     const CountListApi = () => {
         GetAllTotalCount(ClientID, UserID)
         GetTotalRecordCount(ClientID, UserID)
+        GetSpamTotalRecordCount(ClientID, UserID)
     }
 
 
@@ -337,7 +363,7 @@ export default function Header() {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/Spam")} ><img src={spam} />Spam
                                         <div className="notifimen">
-                                            <NotificationsIcon /> {AllTotalRecords?.AllSpamCount}
+                                            <NotificationsIcon />  {TotalSpamCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={inbox} />All Inbox
