@@ -220,7 +220,7 @@ export default function SpamPage() {
       SetUserID(UserDetails.UserID);
     }
     GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, "", FromEmailDropdownListChecked);
-   
+
   }
 
   const SetHasMoreData = (arr) => {
@@ -464,7 +464,6 @@ export default function SpamPage() {
     SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID) => {
-    debugger
     if (ID != '') {
       //setSelected(true);
       var Data = {
@@ -1392,9 +1391,16 @@ export default function SpamPage() {
               <Typography id="modal-modal-title" variant="b" component="h6">
                 Are you sure ?
               </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to Star a email ?
-              </Typography>
+              {
+                OpenMessage?.IsStarred === false ?
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    you want to Star an email ?
+                  </Typography>
+                  :
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    you want to UnStar an email ?
+                  </Typography>
+              }
             </div>
             <div className='d-flex btn-50'>
               <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
@@ -1779,9 +1785,13 @@ export default function SpamPage() {
                         <Button>
                           <label>{MailNumber} / {SpamList.length}</label>
                         </Button>
-                        <Button onClick={OpenStarPopModel}>
+                        {/* <Button onClick={OpenStarPopModel}>
                           <img src={iconstar} title={"Starred"} />
-                        </Button>
+                        </Button> */}
+                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
                         <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
                           <img src={icontimer} />
                         </Button>

@@ -214,7 +214,7 @@ export default function ContactEmailPage() {
 
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetContactList(ClientID, UserID, AccountIDs, Page + 1);
+    GetContactList(ClientID, UserID, AccountIDs, NewPage);
   };
 
   const AddContact = () => {

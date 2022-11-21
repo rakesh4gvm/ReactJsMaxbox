@@ -252,7 +252,7 @@ export default function StarredPage() {
       AccountIDs: IDs
     };
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetStarred",
       method: "POST",
       data: Data,
     });
@@ -261,6 +261,7 @@ export default function StarredPage() {
         if (Result.data.PageData.length > 0) {
           SetResponseData(Result.data.PageData)
           SetHasMoreData(Result.data.PageData)
+          SetTotalCount(Result.data.TotalCount)
           // SetStarredList([...StarredList, ...Result.data.PageData]);
           if (Str == "checkbox") {
             SetStarredList(Result.data.PageData);
@@ -1162,9 +1163,9 @@ export default function StarredPage() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.TotalCount >= 0) {
-          SetTotalCount(Result.data.TotalCount);
+          // SetTotalCount(Result.data.TotalCount);
         } else {
-          SetTotalCount(0);
+          // SetTotalCount(0);
           toast.error(Result?.data?.Message);
         }
 
