@@ -252,7 +252,7 @@ export default function StarredPage() {
       AccountIDs: IDs
     };
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetStarred",
+      url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryGet",
       method: "POST",
       data: Data,
     });
@@ -315,7 +315,7 @@ export default function StarredPage() {
         _id: ID,
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryGetByID",
         method: "POST",
         data: Data,
       });
@@ -360,7 +360,7 @@ export default function StarredPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -395,7 +395,7 @@ export default function StarredPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryUpdate",
         method: "POST",
         data: Data,
       });
@@ -435,7 +435,7 @@ export default function StarredPage() {
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryDelete",
         method: "POST",
         data: Data,
       });
@@ -481,7 +481,7 @@ export default function StarredPage() {
             LastUpdatedBy: -1
           };
           const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+            url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredFollowUpdate",
             method: "POST",
             data: Data,
           });
@@ -592,7 +592,7 @@ export default function StarredPage() {
         UserID: UserID,
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        url: CommonConstants.MOL_APIURL + "/starredemailhistory/EmailAccountGet",
         method: "POST",
         data: Data,
       });
@@ -1157,15 +1157,15 @@ export default function StarredPage() {
       IsOtherInbox: false,
     }
     Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
+      url: CommonConstants.MOL_APIURL + "/starredemailhistory/TotalRecordCount",
       method: "POST",
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.TotalCount >= 0) {
-          // SetTotalCount(Result.data.TotalCount);
+          SetTotalCount(Result.data.TotalCount);
         } else {
-          // SetTotalCount(0);
+          SetTotalCount(0);
           toast.error(Result?.data?.Message);
         }
 
