@@ -73,6 +73,7 @@ export default function Header() {
     const [UnansweredResponsesCount, SetUnansweredResponsesCount] = useState([])
     const [UnansweredRepliesCount, SetUnansweredRepliesCount] = useState([])
     const [TotalCount, SetTotalCount] = React.useState(0);
+    const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
     const [TotalSpamCount, SetTotalSpamCount] = React.useState(0);
 
     useEffect(() => {
@@ -119,8 +120,6 @@ export default function Header() {
         });
         LoaderHide()
     }
-
-
 
     // Get Total Total Record Count
     const GetTotalRecordCount = (CID, UID) => {
@@ -201,34 +200,57 @@ export default function Header() {
 
     const GetSpamTotalRecordCount = (CID, UID) => {
         const Data = {
-          ClientID: CID,
-          UserID: UID,
+            ClientID: CID,
+            UserID: UID,
         }
         Axios({
-          url: CommonConstants.MOL_APIURL + "/spamemailhistory/TotalRecordCount",
-          method: "POST",
-          data: Data,
+            url: CommonConstants.MOL_APIURL + "/spamemailhistory/TotalRecordCount",
+            method: "POST",
+            data: Data,
         }).then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-    
-            if (Result.data.TotalCount >= 0) {
-                SetTotalSpamCount(Result.data.TotalCount);
-            } else {
-                SetTotalSpamCount(0);
-              toast.error(Result?.data?.Message);
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+
+                if (Result.data.TotalCount >= 0) {
+                    SetTotalSpamCount(Result.data.TotalCount);
+                } else {
+                    SetTotalSpamCount(0);
+                    toast.error(Result?.data?.Message);
+                }
+
             }
-    
-          }
         })
-      }
+    }
+
+    // Get All Sent Emails Total Count
+    const GetAllSentEmailsTotalCount = (CID, UID) => {
+        LoaderShow()
+        const Data = {
+            ClientID: CID,
+            UserID: UID,
+        }
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetAllSentTotalRecords(Result.data)
+            } else {
+                toast.error(Result?.data?.Message);
+            }
+        });
+        LoaderHide()
+    }
 
     const CountListApi = () => {
         GetAllTotalCount(ClientID, UserID)
         GetTotalRecordCount(ClientID, UserID)
-        GetSpamTotalRecordCount(ClientID, UserID)
     }
 
-
+    const SentCountListApi = () => {
+        GetAllSentEmailsTotalCount(ClientID, UserID)
+    }
 
     // Open Pop User Details
     const OpenPopupUserDetails = async () => {
@@ -363,7 +385,7 @@ export default function Header() {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/Spam")} ><img src={spam} />Spam
                                         <div className="notifimen">
-                                            <NotificationsIcon />  {TotalSpamCount}
+                                            <NotificationsIcon />  {AllTotalRecords?.AllSpamCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/AllInbox")} ><img src={inbox} />All Inbox
@@ -372,16 +394,16 @@ export default function Header() {
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <NavDropdown title="Sent" id="basic-nav-dropdown" onClick={() => CountListApi()}>
+                                <NavDropdown title="Sent" id="basic-nav-dropdown" onClick={() => SentCountListApi()}>
                                     <NavDropdown.Item href="/UnansweredReplies">
                                         <img src={Chatmail} />Unanswered Replies
                                         <div className="notifimen">
-                                            <NotificationsIcon /> {AllTotalRecords?.AllUnansweredRepliesCount}
+                                            <NotificationsIcon /> {AllSentTotalRecords?.AllUnansweredRepliesCount}
                                         </div>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/AllSentEmails")}><img src={Sent} />All Sent Emails
                                         <div className="notifimen">
-                                            <NotificationsIcon /> {AllTotalRecords?.AllSentEmailsCount}
+                                            <NotificationsIcon /> {AllSentTotalRecords?.AllSentEmailsCount}
                                         </div>
                                     </NavDropdown.Item>
                                 </NavDropdown>
