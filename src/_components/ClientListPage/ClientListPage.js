@@ -64,7 +64,7 @@ export default function ClientListPage() {
     GetClientID();
     // CheckAccountAuthonicate()
     // GetClientList()
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -83,14 +83,14 @@ export default function ClientListPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetClientList(UserDetails.ClientID, UserDetails.UserID)
+    GetClientList(UserDetails.ClientID, UserDetails.UserID, Page)
   }
 
   // Start Get Client List
-  const GetClientList = (CID, UID) => {
+  const GetClientList = (CID, UID, PN) => {
     let Data
     Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -141,11 +141,11 @@ export default function ClientListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Client <br />Client deleted successfully.</div>);
         LoaderShow()
-        GetClientList(ClientID, UserID)
+        GetClientList(ClientID, UserID, Page)
         SetDeletePopModel(false);
       }
       else {
-        GetClientList(ClientID, UserID)
+        GetClientList(ClientID, UserID, Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -157,7 +157,7 @@ export default function ClientListPage() {
   const HandleChangePage = (Event, NewPage) => {
     LoaderShow()
     SetPage(NewPage)
-    GetClientList(ClientID, UserID)
+    GetClientList(ClientID, UserID, NewPage)
   }
   // Pagination Ends
 

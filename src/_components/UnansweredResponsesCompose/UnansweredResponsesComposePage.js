@@ -91,20 +91,20 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
             var BodyData = Signature.Data;
             var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
+
             document.getElementById("Subject").value = DivData.Subject;
-            
+
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleTemClose()
@@ -120,22 +120,22 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         if (GetByClass.length > 0) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-            var BodyData = Signature.Data;var body = "";
+            var BodyData = Signature.Data; var body = "";
             BodyData.split(ClientData).map(function (address, index) {
-                if(index == 0){
+                if (index == 0) {
                     body = address
-            }
+                }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            
+
             document.getElementById("Subject").value = DivData.Subject;
-            
+
             var NewData = "";
-            if(body!="" && chckEmptyBody != ""){
-            NewData = body + DivData.BodyText + ClientData;
-        }else{
-            NewData = DivData.BodyText + BodyData
-        }
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+            } else {
+                NewData = DivData.BodyText + BodyData
+            }
             SetSignature({ Data: NewData });
             LoaderHide()
             handleClose()
@@ -521,7 +521,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponsesL
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,

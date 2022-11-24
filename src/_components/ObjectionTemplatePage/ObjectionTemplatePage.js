@@ -81,7 +81,7 @@ export default function ObjectionTemplateListPage() {
     GetClientID();
     // CheckAccountAuthonicate()
     // GetObjectionTemplateList()
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -100,14 +100,14 @@ export default function ObjectionTemplateListPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetObjectionTemplateList(UserDetails.ClientID, UserDetails.UserID)
+    GetObjectionTemplateList(UserDetails.ClientID, UserDetails.UserID, Page)
   }
 
   // Start Get Objection Template List
-  const GetObjectionTemplateList = (CID, UID) => {
+  const GetObjectionTemplateList = (CID, UID, PN) => {
     let Data
     Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -174,11 +174,11 @@ export default function ObjectionTemplateListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Object Template <br />Object template deleted successfully.</div>);
         LoaderShow()
-        GetObjectionTemplateList(ClientID, UserID)
+        GetObjectionTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);
       }
       else {
-        GetObjectionTemplateList(ClientID, UserID)
+        GetObjectionTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -190,7 +190,7 @@ export default function ObjectionTemplateListPage() {
   const HandleChangePage = (Event, NewPage) => {
     LoaderShow()
     SetPage(NewPage);
-    GetObjectionTemplateList(ClientID, UserID);
+    GetObjectionTemplateList(ClientID, UserID, NewPage);
   };
   // Pagination Ends
 

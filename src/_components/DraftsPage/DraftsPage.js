@@ -865,7 +865,7 @@ export default function DraftsPage() {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendDraft', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Deletes', 'moreMisc']],
+    toolbarButtons: [['SendDraft', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Deletes']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,

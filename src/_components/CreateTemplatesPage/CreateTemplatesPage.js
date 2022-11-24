@@ -54,6 +54,7 @@ export default function CreateTemplatesPage({ children }) {
   const [SubjectError, SetSubjectError] = useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [SignatureError, SetSignatureError] = useState("");
   const addShowCompose = () => {
     const element = document.getElementById("UserCompose")
     if (element.classList.contains("show")) {
@@ -80,6 +81,9 @@ export default function CreateTemplatesPage({ children }) {
     SetBody({
       Data: Model
     });
+    if (Model != "") {
+      SetSignatureError("")
+    }
   }
 
   const handleChange = (newValue) => {
@@ -119,12 +123,18 @@ export default function CreateTemplatesPage({ children }) {
       SetSubjectError("Please Enter Subject")
       Isvalid = false
     }
+
+    if (Body.Data === "") {
+      SetSignatureError("Please Enter Signature Body")
+      Isvalid = false
+    }
+
     return Isvalid;
   };
 
   const HandleChange = (e) => {
-    const { subject, value } = e.target;
-    if (subject == "subject") {
+    const { name, value } = e.target;
+    if (name == "subject") {
       if (value != "") {
         SetSubjectError("")
       }
@@ -215,7 +225,7 @@ export default function CreateTemplatesPage({ children }) {
                   <label>Subject  :</label>
                 </Col>
                 <Col sm={8}>
-                  <input type='text' placeholder='Subject ' name='subject' id='subject' />
+                  <input type='text' placeholder='Subject ' name='subject' id='subject' onChange={HandleChange} />
                   {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                 </Col>
               </Row>
@@ -224,8 +234,8 @@ export default function CreateTemplatesPage({ children }) {
                   <label>Body  :</label>
                 </Col>
                 <Col sm={8}>
-                  {/* <FroalaEditor tag='textarea'/> */}
                   <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} />
+                  {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                 </Col>
               </Row>
             </Col>
@@ -236,7 +246,6 @@ export default function CreateTemplatesPage({ children }) {
             <Col>
               <div className='btnprofile my-5 left'>
                 <ButtonGroup variant="text" aria-label="text button group">
-                  {/* <Button variant="contained btn btn-primary smallbtn"> Edit</Button> */}
                   <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddTemplate}> Save</Button>
                   <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddTemplate}> Cancel</Button>
                 </ButtonGroup>

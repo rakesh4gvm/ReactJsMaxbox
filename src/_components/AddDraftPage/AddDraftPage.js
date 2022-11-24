@@ -177,7 +177,7 @@ export default function DraftComposePage({ GetDraftList }) {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
@@ -192,28 +192,28 @@ export default function DraftComposePage({ GetDraftList }) {
     })
     // Frola Editor Ends
 
-     /* start navcode */ 
-     const mincomposeon = () => {
+    /* start navcode */
+    const mincomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("minmusbox")) {
-        element.classList.remove("minmusbox");
+            element.classList.remove("minmusbox");
         }
         else {
-        element.classList.add("minmusbox");
-        element.classList.remove("largebox");
+            element.classList.add("minmusbox");
+            element.classList.remove("largebox");
         }
     }
 
     const maxcomposeon = () => {
         const element = document.getElementById("maxcompose")
         if (element.classList.contains("largebox")) {
-        element.classList.remove("largebox");
+            element.classList.remove("largebox");
         }
         else {
-        element.classList.add("largebox");
-        element.classList.remove("minmusbox");
+            element.classList.add("largebox");
+            element.classList.remove("minmusbox");
         }
-    } 
+    }
     /* end code*/
 
     const WrapperRef = useRef(null);

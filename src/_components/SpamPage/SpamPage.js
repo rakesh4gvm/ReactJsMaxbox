@@ -996,7 +996,7 @@ export default function SpamPage() {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete', 'moreMisc']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     imageUploadRemoteUrls: false,
   }
@@ -1165,7 +1165,7 @@ export default function SpamPage() {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete', 'moreMisc']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     imageUploadRemoteUrls: false,
   }

@@ -28,6 +28,7 @@ export default function EditObjectionTemplatePage(props) {
 
     const [ClientID, SetClientID] = React.useState(0);
     const [SubjectError, SetSubjectError] = useState("");
+    const [SignatureError, SetSignatureError] = useState("");
     const [ObjectionTemplateIDDetails, SetObjectionTemplateIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
     const [Body, SetBody] = useState({
@@ -56,7 +57,14 @@ export default function EditObjectionTemplatePage(props) {
         }
     }
 
-
+    const HandleChange = (e) => {
+        const { name, value } = e.target;
+        if (name == "subject") {
+            if (value != "") {
+                SetSubjectError("")
+            }
+        }
+    };
     // Get Objection Template By ID
     const GetObjectionTemplateByID = (ID) => {
         const Data = {
@@ -89,6 +97,9 @@ export default function EditObjectionTemplatePage(props) {
         SetBody({
             Data: Model
         });
+        if (Model != "") {
+            SetSignatureError("")
+        }
     }
     // Frola Editor Ends
 
@@ -157,6 +168,12 @@ export default function EditObjectionTemplatePage(props) {
             SetSubjectError("Please Enter Subject")
             Isvalid = false
         }
+
+        if (Body.Data === "") {
+            SetSignatureError("Please Enter Signature Body")
+            Isvalid = false
+        }
+
         return Isvalid;
     };
 
@@ -182,17 +199,19 @@ export default function EditObjectionTemplatePage(props) {
                                 </Col>
 
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={ObjectionTemplateIDDetails[0]?.Subject} />
+                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={ObjectionTemplateIDDetails[0]?.Subject} />
                                     {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                                 </Col>
                             </Row>
 
-                            <Row className='input-boxbg mt-5'>
+                            <Row className='input-boxbg'>
                                 <Col sm={2}>
                                     <label>Body  :</label>
                                 </Col>
 
-                                <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
+                                <Col sm={8}>
+                                    <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
+                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                             </Row>
                         </Col>
                     </Row>

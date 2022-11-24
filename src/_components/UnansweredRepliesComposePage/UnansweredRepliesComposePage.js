@@ -490,7 +490,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnanswereRepliesLis
     const config = {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete', 'moreMisc']],
+        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,

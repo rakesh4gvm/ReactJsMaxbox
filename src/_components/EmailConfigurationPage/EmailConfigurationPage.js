@@ -70,7 +70,7 @@ export default function EmailConfigurationPage() {
     // CheckAccountAuthonicate()
     // GetEmailAccountList()
 
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [SortedBy, SortField]);
 
   const CheckAccountAuthonicate = () => {
 
@@ -114,14 +114,14 @@ export default function EmailConfigurationPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetEmailAccountList(UserDetails.ClientID, UserDetails.UserID)
+    GetEmailAccountList(UserDetails.ClientID, UserDetails.UserID, Page)
   }
 
   // Start Get EmailAccount
-  const GetEmailAccountList = (CID, UID) => {
+  const GetEmailAccountList = (CID, UID, PN) => {
     let Data
     Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -152,7 +152,7 @@ export default function EmailConfigurationPage() {
   //change Page
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
-    GetEmailAccountList(ClientID, UserID);
+    GetEmailAccountList(ClientID, UserID, NewPage);
   };
 
   //SortData Page
@@ -163,7 +163,7 @@ export default function EmailConfigurationPage() {
     } else {
       SetSortedBy(1);
     }
-    GetEmailAccountList(ClientID, UserID)
+    GetEmailAccountList(ClientID, UserID, Page)
   }
 
   // start Authenticate email
@@ -240,11 +240,11 @@ export default function EmailConfigurationPage() {
     responseapi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderShow()
-        GetEmailAccountList(ClientID, UserID)
+        GetEmailAccountList(ClientID, UserID, Page)
         SetDeletePopModel(false);
       }
       else {
-        GetEmailAccountList(ClientID, UserID)
+        GetEmailAccountList(ClientID, UserID, Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -303,11 +303,11 @@ export default function EmailConfigurationPage() {
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
             <Col align="right">
-              {ClientID !="" ?
-              <Button className='btnaccount' onClick={AddEmailAccount}>
-                <AddIcon /> Add Account
-              </Button>
-                 :"" } 
+              {ClientID != "" ?
+                <Button className='btnaccount' onClick={AddEmailAccount}>
+                  <AddIcon /> Add Account
+                </Button>
+                : ""}
             </Col>
           </Row>
           <Row>

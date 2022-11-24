@@ -79,7 +79,7 @@ export default function TemplatesListPage() {
     GetClientID();
     // CheckAccountAuthonicate()
     // GetTemplateList()
-  }, [Page, RowsPerPage, SortedBy, SortField]);
+  }, [SortedBy, SortField]);
 
   // Check Authinticate
   const CheckAccountAuthonicate = () => {
@@ -98,14 +98,14 @@ export default function TemplatesListPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetTemplateList(UserDetails.ClientID, UserDetails.UserID)
+    GetTemplateList(UserDetails.ClientID, UserDetails.UserID, Page)
   }
 
   // Start Get Template List
-  const GetTemplateList = (CID, UID) => {
+  const GetTemplateList = (CID, UID, PN) => {
     let Data
     Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
@@ -172,11 +172,11 @@ export default function TemplatesListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Template <br />Template deleted successfully.</div>);
         LoaderShow()
-        GetTemplateList(ClientID, UserID)
+        GetTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);
       }
       else {
-        GetTemplateList(ClientID, UserID)
+        GetTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -188,7 +188,7 @@ export default function TemplatesListPage() {
   const HandleChangePage = (Event, NewPage) => {
     LoaderShow()
     SetPage(NewPage);
-    GetTemplateList(ClientID, UserID);
+    GetTemplateList(ClientID, UserID, NewPage);
   };
   // Pagination Ends
 

@@ -30,6 +30,7 @@ export default function EditTemplatesPage(props) {
     const [SubjectError, SetSubjectError] = useState("");
     const [TemplateIDDetails, SetTemplateIDDetails] = useState([])
     const [UserID, SetUserID] = React.useState(0);
+    const [SignatureError, SetSignatureError] = useState("");
     const [Body, SetBody] = useState({
         Data: ""
     })
@@ -109,6 +110,9 @@ export default function EditTemplatesPage(props) {
         SetBody({
             Data: Model
         });
+        if (Model != "") {
+            SetSignatureError("")
+        }
     }
     // Frola Editor Ends
 
@@ -150,6 +154,15 @@ export default function EditTemplatesPage(props) {
         }
     }
 
+    const HandleChange = (e) => {
+        const { name, value } = e.target;
+        if (name == "subject") {
+            if (value != "") {
+                SetSubjectError("")
+            }
+        }
+    };
+
     // Check Template Exists
     const CheckExistTemplates = async (Subject) => {
 
@@ -177,6 +190,12 @@ export default function EditTemplatesPage(props) {
             SetSubjectError("Please Enter Subject")
             Isvalid = false
         }
+
+        if (Body.Data === "") {
+            SetSignatureError("Please Enter Signature Body")
+            Isvalid = false
+        }
+
         return Isvalid;
     };
 
@@ -201,7 +220,7 @@ export default function EditTemplatesPage(props) {
                                 </Col>
 
                                 <Col sm={8}>
-                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' defaultValue={TemplateIDDetails[0]?.Subject} />
+                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={TemplateIDDetails[0]?.Subject} />
                                     {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                                 </Col>
                             </Row>
@@ -212,6 +231,7 @@ export default function EditTemplatesPage(props) {
                                 </Col>
 
                                 <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
+                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                             </Row>
                         </Col>
                     </Row>
