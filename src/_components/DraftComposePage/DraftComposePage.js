@@ -245,11 +245,11 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open CC
     const OpenCc = () => {
         if (Ccflag == false) {
-            document.getElementById("Cc").style.display = 'block'
+            document.getElementById("FlagCC").style.display = 'block'
             SetCcflag(true);
         }
         else {
-            document.getElementById("Cc").style.display = 'none'
+            document.getElementById("FlagCC").style.display = 'none'
             SetCcflag(false);
         }
     };
@@ -257,11 +257,11 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open BCC
     const OpenBcc = () => {
         if (Bccflag == false) {
-            document.getElementById("Bcc").style.display = 'block'
+            document.getElementById("FlagBCC").style.display = 'block'
             SetBccflag(true);
         }
         else {
-            document.getElementById("Bcc").style.display = 'none'
+            document.getElementById("FlagBCC").style.display = 'none'
             SetBccflag(false);
         }
     };
@@ -278,13 +278,12 @@ export default function DraftComposePage({ GetDraftList }) {
     const SelectedUser = EmailAccountUsers.find(o => o.AccountID === SelectedEmailAccountUser)
 
     // Sent Mail Starts
-    const SentMail = async () => {
+    const ComposeSentMail = async () => {
 
-        var ToEmail = document.getElementById("To").value;
-        var Subject = document.getElementById("Subject").value;
-        var CC = document.getElementById("CC").value;
-        var BCC = document.getElementById("BCC").value;
-
+        var ToEmail = document.getElementById("ComposeTo").value;
+        var Subject = document.getElementById("ComposeSubject").value;
+        var CC = document.getElementById("ComposeCC").value;
+        var BCC = document.getElementById("ComposeBCC").value;
 
         const ValidToEmail = ValidateEmail(ToEmail)
 
@@ -342,10 +341,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     CloseCompose()
                     LoaderHide()
                     // GetDraftList()
-                    document.getElementById("To").value = ""
-                    document.getElementById("Subject").value = ""
-                    document.getElementById("CC").value = ""
-                    document.getElementById("BCC").value = ""
+                    document.getElementById("ComposeTo").value = ""
+                    document.getElementById("ComposeSubject").value = ""
+                    document.getElementById("ComposeCC").value = ""
+                    document.getElementById("ComposeBCC").value = ""
                 } else {
                     toast.error(Result?.data?.Message);
                     LoaderHide()
@@ -358,7 +357,7 @@ export default function DraftComposePage({ GetDraftList }) {
     // Frola Editor Starts
     Froalaeditor.RegisterCommand('Send', {
         colorsButtons: ["colorsBack", "|", "-"],
-        callback: SentMail
+        callback: ComposeSentMail
     });
     Froalaeditor.RegisterCommand('Delete', {
         colorsButtons: ["colorsBack", "|", "-"],
@@ -686,7 +685,7 @@ export default function DraftComposePage({ GetDraftList }) {
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={9} className="px-0">
-                                <Input className='input-clend' id='To' name='To' />
+                                <Input className='input-clend' id='ComposeTo' name='To' />
 
                             </Col>
                             <Col xs={2} className='col text-right d-flex'>
@@ -695,23 +694,23 @@ export default function DraftComposePage({ GetDraftList }) {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose cc px-3 py-2' id='Cc'>
+                    <div className='subcompose cc px-3 py-2' id='FlagCC'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='CC' name='Cc' />
+                                <Input className='input-clend' id='ComposeCC' name='Cc' />
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose bcc px-3 py-2' id='Bcc'>
+                    <div className='subcompose bcc px-3 py-2' id='FlagBCC'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Bcc :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='BCC' name='Bcc' />
+                                <Input className='input-clend' id='ComposeBCC' name='Bcc' />
                             </Col>
                         </Row>
                     </div>
@@ -721,7 +720,7 @@ export default function DraftComposePage({ GetDraftList }) {
                                 <h6>Subject :</h6>
                             </Col>
                             <Col xs={11} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Subject' />
+                                <Input className='input-clend' id='ComposeSubject' name='Subject' />
                             </Col>
                         </Row>
                     </div>

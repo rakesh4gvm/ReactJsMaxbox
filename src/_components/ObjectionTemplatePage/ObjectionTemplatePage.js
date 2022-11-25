@@ -285,7 +285,7 @@ export default function ObjectionTemplateListPage() {
                 <Table sx={{ minWidth: 750 }} aria-label="caption table">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Name</TableCell>
+                      <TableCell>Title</TableCell>
                       <TableCell>Body</TableCell>
                       <TableCell>Send</TableCell>
                       <TableCell>Open</TableCell>
