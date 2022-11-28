@@ -684,8 +684,10 @@ export default function AllSentEnailsPage() {
 
   // Starts Reply Send Mail
   const ReplySendMail = () => {
-    var ToEmail = OpenMessage.FromEmail;
-    var ToName = OpenMessage.FromName
+    var ToEmail = OpenMessage.ToEmail;
+    var ToName = OpenMessage.ToName
+    var FromEmail = OpenMessage.FromEmail;
+    var FromName = OpenMessage.FromName
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
@@ -697,12 +699,14 @@ export default function AllSentEnailsPage() {
       var Data = {
         ToEmail: ToEmail,
         ToName: ToName,
+        FromEmail : FromEmail,
+        FromName : FromName,
         ID: ID,
         Subject: Subject,
         Body: Body
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentPageReplyMessage",
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/AllSentReplyMessage",
         method: "POST",
         data: Data,
       });
