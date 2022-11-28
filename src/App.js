@@ -35,6 +35,7 @@ import EditTemplatesPage from './_components/EditTemplatesPage/EditTemplatesPage
 import OTPConfirmPage from './_components/OTPConfirmPage/OTPConfirmPage';
 import ContactEmailPage from '../src/_components/ContactEmailPage/ContactEmailPage';
 import AddContactEmailPage from '../src/_components/AddContactEmailPage/AddContactEmailPage';
+import NewInboxPage from '../src/_components/NewInboxPage/NewInboxPage';
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
           <Route exact path="/ContactEmail" component={ContactEmailPage} />
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
           <Route exact path="/AllInbox" component={AllInboxPage} />
+          <Route exact path="/NewInbox" component={NewInboxPage} />
          
 
           <Redirect from="*" to="/" />

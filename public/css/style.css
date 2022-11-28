@@ -2168,9 +2168,287 @@ img.inboxicon {
 img.arrowicon {
     width: 23px !important;
 }
- 
+.header-main{
+    display: none;
+} 
+button[id^=imageByURL] {
+    display: none !important;
+}
+
+button[id^=imageManager] {
+    display: none !important;
+}
 
 
+
+
+/* style new design css */
+html, body {
+    height: 100%;
+}
+.App, div#root {
+    height: 100%;
+}
+.text-bold > div.MuiTreeItem-content > .MuiTreeItem-label.MuiTypography-body1{
+    font-weight: 600;
+}
+.lefter {
+    max-width: 310px;
+    float: left;
+    height: 100%;
+}
+.lefter > div {
+    height: 100%;
+}
+.orangbody + div > div {
+    margin-left: 70px;
+    background-color: #FFF7F7;
+    padding: 15px;
+}
+.righter {
+    max-width: calc(100% - 310px);
+    margin-left: 310px;
+    height: 100%;
+}
+.orangbody{
+    background-color: #E49273;
+    height: 100%;
+    width: 70px;
+    z-index: 9999;
+    padding: 10px;
+}
+.Settingsbd{
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+.Settingsbd svg {
+    font-size: 36px;
+    color: #fff;
+    margin: 0 5px;
+    position: absolute;
+    bottom: 15px;
+}
+.sidenavtree a {
+    width: 100%;
+    clear: both;
+    display: table;
+    color: #666;
+    padding: 0 0 0 15px;
+    font-size: 0.9rem;
+} 
+.sidenavtree .MuiTreeItem-label{
+    font-size: 0.9rem;
+}
+.minisearchhed {
+    width: 100%;
+    background-color: #FFF7F7;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 3px 15px;
+    display: table;
+}
+.serchinbox {
+    background-color: transparent;
+    max-width: 250px;
+    border: none;
+    display: table;
+    width: 100% !important;
+    float: left;
+    margin: 0 !important;
+}
+.serchinbox > div{
+    float: right;
+    font-size: 0.9rem;
+}
+div .MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label{
+    background-color: transparent;
+}
+.serchinbox svg{
+    color: rgb(169, 169, 169);
+}
+.bodyview {
+    width: 100%;
+    height: calc(100% - 48px);
+}
+.bodyview .SplitPane {
+    position: relative !important;
+}
+.tablelister tr th{
+    border-right: 1px solid rgba(224, 224, 224, 1);
+    padding: 2px 5px;
+}
+.tablelister tr td{
+    border-bottom: none;
+    padding: 2px 5px;
+}
+.tablelister tr svg{
+    color: rgb(169, 169, 169);
+    width: 18px;
+}
+
+.carsetting {
+    background-color: #E49273;
+    position: absolute;
+    left: 70px;
+    bottom: 0;
+    min-width: 180px;
+    border-radius: 0 5px 0 0;
+    padding: 20px;
+    display: none;
+}
+.carsetting.show {
+    display: block;
+}
+.carsetting ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.carsetting ul li a{
+    color: #fff;
+    text-decoration: none;
+}
+.carsetting ul li a:hover{
+    opacity: 0.8;
+}
+
+
+/*resign devs*/
+.settingsDiv,
+.simulationDiv,
+.statisticsDiv {
+  width: 100%;
+  height: 100%;
+}
+
+.simulationDiv { 
+  overflow-y: auto;
+}
+
+.statisticsDiv { 
+  overflow-y: auto;
+}
+
+.Resizer {
+  background: #000;
+  opacity: 0.2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+}
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%;
+}
+
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+.Resizer.disabled {
+  cursor: not-allowed;
+}
+.Resizer.disabled:hover {
+  border-color: transparent;
+}
+/*resign devs*/
+
+.composehead{
+    background-color: #FCF2EE;
+    padding: 8px;
+}
+.lablebox {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+}
+.lablebox label{
+    width: 100%;
+    float: none;
+    margin-bottom: 0;
+}
+.lablebox label b {
+    min-width: 78px;
+    float: left;
+    font-weight: 600;
+}
+.iconsboxcd button.btn.btn-primary,
+.iconsboxcd button.btn.btn-primary:focus {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: #222;
+    font-size: 0.8rem;
+    padding: 0 7px;
+    box-shadow: none !important; 
+}
+.iconsboxcd button.btn.btn-primary:hover {
+   opacity: 0.9; 
+}
+.iconsboxcd button.btn.btn-primary img {
+    width: 20px;
+}
+.iconsboxcd button.btn.btn-primary label {
+    margin-bottom: 0;
+}
+.iconsboxcd.btn-group {
+    margin: 10px 0 0 auto;
+    display: table;
+}
+.dropdatebox div input {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+}
+.dropdatebox {
+    max-width: 210px;
+    margin: 7px 0 0 auto;
+    background: #fff;
+}
+.dropdatebox fieldset legend{
+    display: none;
+}
+.MuiCalendarPicker-root .Mui-selected { 
+    background-color: #e49273 !important; 
+}
+div.css-dhopo2 {
+    min-height: 214px;
+}
+.dropdatebox svg {
+    width: 16px;
+}
+
+.emailbodybox{
+    background-color: #c1c1c1;
+    font-size: 0.9rem;
+    padding: 10px;
+}
 
 
 @media screen and (max-width:990px) {
