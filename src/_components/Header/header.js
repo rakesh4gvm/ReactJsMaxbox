@@ -104,7 +104,8 @@ export default function Header() {
             ClientID: CID,
             UserID: UID,
             StartDate: Moment().format("YYYY-MM-DD"),
-            EndDate: Moment().format("YYYY-MM-DD")
+            EndDate: Moment().format("YYYY-MM-DD"),
+            SearchDate: Moment().format("YYYY-MM-DD"),
         }
         const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/AllTotalRecords",

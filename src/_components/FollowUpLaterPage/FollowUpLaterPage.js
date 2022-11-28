@@ -273,7 +273,8 @@ export default function FollowUpLetterPage() {
         IsOtherInbox: false,
         AccountIDs: IDs,
         StartDate: Moment(FollowupStartDate).format("YYYY-MM-DD"),
-        EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD")
+        EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD"),
+        SearchDate: Moment(FollowupStartDate).format("YYYY-MM-DD")
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -783,7 +784,8 @@ export default function FollowUpLetterPage() {
       IsSpam: false,
       IsOtherInbox: false,
       StartDate: Moment(FollowupStartDate).format("YYYY-MM-DD"),
-      EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD")
+      EndDate: Moment(FollowupEndDate).format("YYYY-MM-DD"),
+      SearchDate: Moment(FollowupStartDate).format("YYYY-MM-DD"),
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/TotalRecordCount",
