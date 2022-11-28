@@ -268,7 +268,7 @@ export default function SpamComposePage({ GetSpamList }) {
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        SetSignature({ Data: str + ClientData })
+        SetSignature({ Data: Signature.Data + str + ClientData })
         // editor.events.focus();
     }
 

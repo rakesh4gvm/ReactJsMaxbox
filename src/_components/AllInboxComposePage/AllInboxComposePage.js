@@ -261,8 +261,7 @@ export default function AllInboxComposePage() {
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        SetSignature({ Data: str + ClientData })
-        console.log("editor=========", editor)
+        SetSignature({ Data: Signature.Data + str + ClientData })
         // editor.events.focus();
     }
 
