@@ -2326,7 +2326,7 @@ div .MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label{
 }
 
 .statisticsDiv { 
-  overflow-y: auto;
+   
 }
 
 .Resizer {
@@ -2443,13 +2443,28 @@ div.css-dhopo2 {
 .dropdatebox svg {
     width: 16px;
 }
-
-.emailbodybox{
-    background-color: #c1c1c1;
+.emailbodybox {
+    background-color: #fff;
     font-size: 0.9rem;
     padding: 10px;
+    overflow-y: auto !important;
+    height: calc(100% - 74px);
+    min-height: 100%;
 }
 
+.Pane.horizontal.Pane2 {
+    height: 100%;
+}
+.container-xs{
+    max-width: 767px;
+    margin: 0 auto;
+}
+.orangbody button{
+    color: #fff;
+}
+.orangbody button.mobileshow{
+    display: none;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
@@ -2532,6 +2547,9 @@ div.css-dhopo2 {
     .footer-main .col-sm-6 {
         text-align: center;
         margin: 5px auto;
+    }
+    .orangbody button.mobileshow{
+        display: block;
     }
 }
 

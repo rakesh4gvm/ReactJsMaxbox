@@ -102,9 +102,9 @@ const AppBar = styled(MuiAppBar, {
 })(({ theme, open }) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen,  
   }),
-  ...(open && {
+  ...(open && { 
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
@@ -146,9 +146,12 @@ const addNavClick = () => {
 export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);  
+  const [open, setOpen] = React.useState(true);  
   const handleDrawerOpen = () => {
     setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
  
 
@@ -214,21 +217,37 @@ export default function Navigation() {
 
   return (
     <Box sx={{ display: 'flex' }}> 
-    <div className='orangbody'> 
-        <img src={Xlogo} width="100%" />  
+      <div className='orangbody'> 
+        <img src={Xlogo} width="100%" /> 
+
+        <IconButton className='mx-1'
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+          >
+            <MenuIcon />
+        </IconButton>
+
+      
+        <IconButton className='mobileshow' onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+        </IconButton> 
+
         <div onClick={addNavClick} className='Settingsbd'>
           <SettingsIcon />
-        </div>
+      </div>  
         
-    <div id='OpenNavigation' className='carsetting'>
-        <ul>
-          <li><a href="/">Templates</a></li>
-          <li><a href="/">Objections</a></li>
-          <li><a href="/">Email Settings</a></li>
-          <li><a href="/">Clients</a></li>
-          <li><a href="/">Contacts</a></li>
-        </ul>
-    </div>
+      <div id='OpenNavigation' className='carsetting'>
+          <ul>
+            <li><a href="/">Templates</a></li>
+            <li><a href="/">Objections</a></li>
+            <li><a href="/">Email Settings</a></li>
+            <li><a href="/">Clients</a></li>
+            <li><a href="/">Contacts</a></li>
+          </ul>
+      </div>
     </div>
 
     
@@ -236,14 +255,16 @@ export default function Navigation() {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
+            visibility : 'visible',
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: 'border-box',
+            boxSizing: 'border-box', 
           },
         }}
         variant="persistent"
         anchor="left"
-         open>
+        open={open} 
+         >
        
        <TreeView
       aria-label="multi-select"
