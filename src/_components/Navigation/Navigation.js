@@ -1,5 +1,10 @@
-import * as React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { makeStyles, styled, useTheme } from '@material-ui/core/styles';
+import Axios from "axios";
+
+import { CommonConstants } from "../../_constants/common.constants";
+import { ResponseMessage } from "../../_constants/response.message";
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -31,6 +36,12 @@ import { Link } from 'react-router-dom';
 import TreeView from '@material-ui/lab/TreeView'; 
 import TreeItem from '@material-ui/lab/TreeItem';  
 
+
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -145,6 +156,15 @@ export default function Navigation() {
   const [navopenone, setNavOneOpen] = React.useState(true);
   const [navopenonenew, setNavOneOpenNew] = React.useState(true);
   const [openstarred, setopenstarredNew] = React.useState(true);
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
+
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+
+  useEffect(() => {
+    FromEmailList();
+  },[]);
+
 
   const OnehandleClick = () => {
     setNavOpen(!navopen);
@@ -161,6 +181,35 @@ export default function Navigation() {
     setopenstarredNew(!openstarred);
   };
   
+  // Start From Email List
+  const FromEmailList = () => {
+  
+      var Data = {
+        ClientID: "6306f9256597e411202642f3",
+        UserID: "62fdff964b8b3a2614136ac2"
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            SetFromEmailDropdownList(Result.data.PageData);
+           
+          } else {
+            toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
+          }
+        }
+        else {
+          SetFromEmailDropdownList([]);
+          toast.error(Result?.data?.Message);
+        }
+      });
+    
+   
+  }
   
 
   return (
@@ -268,7 +317,7 @@ export default function Navigation() {
           </TreeItem>  
       </TreeItem> 
 
-      
+     
       <TreeItem nodeId="f1" className='text-bold' label="email1@gmail.com">
         <TreeItem nodeId="f2" label="Inbox">
           <TreeItem nodeId="f7" label="All"> 
@@ -332,7 +381,9 @@ export default function Navigation() {
             </TreeItem>  
           </TreeItem>  
       </TreeItem> 
+
     </TreeView>
+    
         
 {/* 
 
