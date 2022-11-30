@@ -202,7 +202,7 @@ export default function ListInbox() {
     <>
       <header className='minisearchhed'>
         <Row>
-          <Col sm={8}>
+          <Col>
             <Search className='serchinbox'>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -213,7 +213,7 @@ export default function ListInbox() {
             </Search>
           </Col>
 
-          <Col sm={4}>
+          <Col>
             <div className="dropdatebox">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack spacing={0}>

@@ -2256,9 +2256,18 @@ html, body {
     float: left;
     margin: 0 !important;
 }
-.serchinbox > div{
-    float: right;
+.serchinbox > div:first-child {
+    float: left;
     font-size: 0.9rem;
+    position: relative;
+    width: 40px;
+    padding: 0;
+    margin: 5px auto;
+}
+.serchinbox > div:last-child {
+    float: left;
+    font-size: 0.9rem; 
+    width: calc(100% - 40px); 
 }
 div .MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label{
     background-color: transparent;
@@ -2465,6 +2474,30 @@ div.css-dhopo2 {
 .orangbody button.mobileshow{
     display: none;
 }
+div.clientselc {
+    margin-bottom: 15px;
+}
+.clientselc .MuiSelect-select{
+    padding: 6px 14px;
+    background-color: #fff;
+    font-style: normal;
+    font-size: 0.9rem;
+}
+.clientselc fieldset {
+    top: 0;
+}
+
+.clientselc fieldset legend {
+    display: none;
+}
+div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected,
+div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
+    background-color: rgb(252 242 238) !important;
+}
+.MuiPaper-root.MuiMenu-paper ul li  {
+    font-size: 0.9rem;
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
@@ -2550,6 +2583,17 @@ div.css-dhopo2 {
     }
     .orangbody button.mobileshow{
         display: block;
+    }
+
+    .orangbody + div {
+        width: auto;
+    }
+    /* .orangbody + div > div{
+        transform: translateX(-310px);
+    } */
+    .righter {
+        max-width: calc(100% - 70px);
+        margin-left: 70px;
     }
 }
 

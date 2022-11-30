@@ -43,6 +43,12 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 toast.configure();
 
 function useOutsideAlerter(ref) {
@@ -165,9 +171,13 @@ export default function Navigation() {
   const [navopenonenew, setNavOneOpenNew] = React.useState(true);
   const [openstarred, setopenstarredNew] = React.useState(true);
   const [ClientID, SetClientID] = React.useState(0);
-  const [UserID, SetUserID] = React.useState(0);
-
+  const [UserID, SetUserID] = React.useState(0); 
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [client, setClient] = React.useState('');
+
+  const handleChange = (event) => {
+    setClient(event.target.value);
+  };
 
   useEffect(() => {
     FromEmailList();
@@ -289,6 +299,27 @@ debugger
         anchor="left"
         open={open}
       >
+        <FormControl className='clientselc'>
+          <Select
+            value={client}
+            onChange={handleChange}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="">
+              <em>Select Client</em>
+            </MenuItem>
+            <MenuItem value={10}>Client 1</MenuItem>
+            <MenuItem value={20}>Client 2</MenuItem>
+            <MenuItem value={30}>Client 3</MenuItem>
+            <MenuItem value={10}>Client 4</MenuItem>
+            <MenuItem value={20}>Client 5</MenuItem>
+            <MenuItem value={30}>Client 6</MenuItem> 
+            <MenuItem value={10}>Client 7</MenuItem>
+            <MenuItem value={20}>Client 8</MenuItem>
+            <MenuItem value={30}>Client 9</MenuItem>
+          </Select> 
+        </FormControl>
 
         <TreeView
           aria-label="multi-select"
