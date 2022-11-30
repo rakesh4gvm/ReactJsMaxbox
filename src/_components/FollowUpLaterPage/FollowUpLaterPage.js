@@ -110,7 +110,7 @@ const rows = [
 ];
 
 
-export default function FollowUpLater({ location }) {
+export default function FollowUpLater({ props }) {
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
@@ -120,12 +120,23 @@ export default function FollowUpLater({ location }) {
   const [FollowUpDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
 
   useEffect(() => {
-    GetFollowUpLaterList()
+debugger
+console.log(props);
+if (props !== undefined){
+    const ID = props.location.state;
+        if (ID != "" && ID != null && ID != "undefined") {
+            // GetClientByID(ID)
+            GetFollowUpLaterList(ID)
+        }
+      }else{
+        GetFollowUpLaterList("")
+      }
+
   }, [FollowUpDate])
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = () => {
-
+  const GetFollowUpLaterList = (ID) => {
+    debugger
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,

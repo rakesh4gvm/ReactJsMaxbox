@@ -26,6 +26,7 @@ import MailIcon from '@material-ui/icons/Mail';
 
 import Xlogo from "../../images/Xlogo.jpg";
 
+
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -33,6 +34,7 @@ import { Collapse } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
+import { history } from "../../_helpers";
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 
@@ -42,6 +44,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
+
+function useOutsideAlerter(ref) {
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -213,8 +218,27 @@ export default function Navigation() {
 
 
   }
-  console.log("FromEmailDropdownList========", FromEmailDropdownList)
 
+   // Edit CLient
+   const RedirectLink = (ID,PageName) => {
+debugger
+    if(PageName=="Follow Up Later"){
+      
+      history.push("/FollowUpLater");
+    }
+    if (PageName =="Unanswered Responses")
+  {
+    // history.push("/UnansweredResponses",ID);
+    history.push({
+      pathname: '/UnansweredResponses',
+      state: { ID:ID }
+    });
+  }
+  }
+
+  console.log("FromEmailDropdownList========", FromEmailDropdownList)
+  const WrapperRef = useRef(null);
+  useOutsideAlerter(WrapperRef);
   return (
     <Box sx={{ display: 'flex' }}>
       <div className='orangbody'>
@@ -367,8 +391,9 @@ export default function Navigation() {
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                      <Link to={{ pathname: "/FollowUpLater", state: item?._id }} >Follow Up Later</Link>
+                      <Link onClick={() => RedirectLink(item._id,"Follow Up Later")} >Follow Up Later</Link>
                     </TreeItem>
+                    
 
                     <TreeItem nodeId={"f8" + item._id} label="Junk">
                       <Link to="/">Junk 1</Link>
@@ -400,6 +425,9 @@ export default function Navigation() {
                     <TreeItem nodeId={"f15" + item._id} label="Draft">
                       <Link to="/">Draft 1</Link>
                       <Link to="/">Draft 2</Link>
+                    </TreeItem>
+                    <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
+                      <Link onClick={() => RedirectLink(item._id,"Unanswered Responses")} >Unanswered Responses</Link>
                     </TreeItem>
                   </TreeItem>
                 </TreeItem>
