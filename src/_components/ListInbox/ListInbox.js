@@ -308,9 +308,7 @@ export default function ListInbox() {
             </div>
 
             <div className='emailbodybox'>
-              <div className='container-xs'>
-                {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-              </div>
+              {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
             </div>
           </div>
         </SplitPane>

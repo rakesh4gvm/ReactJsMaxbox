@@ -341,64 +341,64 @@ export default function Navigation() {
           {
             FromEmailDropdownList?.map((item, index) => {
               return (
-                <TreeItem nodeId="f1" className='text-bold' label={item.Email}>
-                  <TreeItem nodeId="f2" label="Inbox">
-                    <TreeItem nodeId="f7" label="All">
-                      <TreeItem nodeId="f8" label="New">
+                <TreeItem nodeId={item._id} className='text-bold' label={item.Email}>
+                  <TreeItem nodeId={"f1" + item._id} label="Inbox">
+                    <TreeItem nodeId={"f2" + item._id} label="All">
+                      <TreeItem nodeId={"f3" + item._id} label="New">
                         <Link to="/"> New 1</Link>
                         <Link to="/"> New 2</Link>
                         <Link to="/"> New 3</Link>
                       </TreeItem>
-                      <TreeItem nodeId="f9" label="Starred">
+                      <TreeItem nodeId={"f4" + item._id} label="Starred">
                         <Link to="/">Starred 1</Link>
                         <Link to="/">Starred 2</Link>
                         <Link to="/">Starred 3</Link>
                       </TreeItem>
                     </TreeItem>
 
-                    <TreeItem nodeId="f10" label="Focused">
+                    <TreeItem nodeId={"f5" + item._id} label="Focused">
                       <Link to="/">Focused 1</Link>
                       <Link to="/">Focused 2</Link>
                     </TreeItem>
 
-                    <TreeItem nodeId="f11" label="Other Inbox">
+                    <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
                       <Link to="/">Other Inbox 1</Link>
                       <Link to="/">Other Inbox 2</Link>
                     </TreeItem>
 
-                    <TreeItem nodeId="f12" label="Follow Up Later">
+                    <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
                       <Link to="/">Follow Up Later 1</Link>
                       <Link to="/">Follow Up Later 2</Link>
                     </TreeItem>
 
-                    <TreeItem nodeId="f13" label="Junk">
+                    <TreeItem nodeId={"f8" + item._id} label="Junk">
                       <Link to="/">Junk 1</Link>
                       <Link to="/">Junk 2</Link>
                     </TreeItem>
 
-                    <TreeItem nodeId="f14" label="Trash">
+                    <TreeItem nodeId={"f9" + item._id} label="Trash">
                       <Link to="/">Trash 1</Link>
                       <Link to="/">Trash 2</Link>
                     </TreeItem>
                   </TreeItem>
 
-                  <TreeItem nodeId="f18" label="Outbox">
-                    <TreeItem nodeId="f19" label="All Sent">
+                  <TreeItem nodeId={"f10" + item._id} label="Outbox">
+                    <TreeItem nodeId={"f11" + item._id} label="All Sent">
                       <Link to="/">All Sent 1</Link>
                       <Link to="/">All Sent 2</Link>
                       <Link to="/">All Sent 3</Link>
                     </TreeItem>
-                    <TreeItem nodeId="f20" label="Unanswered">
+                    <TreeItem nodeId={"f13" + item._id} label="Unanswered">
                       <Link to="/">Unanswered 1</Link>
                       <Link to="/">Unanswered 2</Link>
                       <Link to="/">Unanswered 3</Link>
                     </TreeItem>
-                    <TreeItem nodeId="f21" label="Scheuled">
+                    <TreeItem nodeId={"f14" + item._id} label="Scheuled">
                       <Link to="/">Scheuled 1</Link>
                       <Link to="/">Scheuled 2</Link>
                       <Link to="/">Scheuled 3</Link>
                     </TreeItem>
-                    <TreeItem nodeId="f22" label="Draft">
+                    <TreeItem nodeId={"f15" + item._id} label="Draft">
                       <Link to="/">Draft 1</Link>
                       <Link to="/">Draft 2</Link>
                     </TreeItem>
@@ -484,7 +484,7 @@ export default function Navigation() {
       </List>
            */}
       </Drawer>
-    </Box>
+    </Box >
   );
 }
 
