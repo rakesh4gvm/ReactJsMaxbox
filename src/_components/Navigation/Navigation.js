@@ -367,7 +367,7 @@ export default function Navigation() {
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                      <Link to={{ pathname: "/FollowUp", state: item?._id }} >Follow Up Later</Link>
+                      <Link to={{ pathname: "/FollowUpLater", state: item?._id }} >Follow Up Later</Link>
                     </TreeItem>
 
                     <TreeItem nodeId={"f8" + item._id} label="Junk">
