@@ -171,7 +171,7 @@ export default function Navigation() {
   const [navopenonenew, setNavOneOpenNew] = React.useState(true);
   const [openstarred, setopenstarredNew] = React.useState(true);
   const [ClientID, SetClientID] = React.useState(0);
-  const [UserID, SetUserID] = React.useState(0); 
+  const [UserID, SetUserID] = React.useState(0);
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [client, setClient] = React.useState('');
 
@@ -229,24 +229,27 @@ export default function Navigation() {
 
   }
 
-   // Edit CLient
-   const RedirectLink = (ID,PageName) => {
-debugger
-    if(PageName=="Follow Up Later"){
-      
-      history.push("/FollowUpLater");
+  const RedirectLink = (ID, PageName) => {
+    if (PageName == "Follow Up Later") {
+      history.push({
+        pathname: '/FollowUpLater',
+        state: { ID: ID }
+      });
     }
-    if (PageName =="Unanswered Responses")
-  {
-    // history.push("/UnansweredResponses",ID);
-    history.push({
-      pathname: '/UnansweredResponses',
-      state: { ID:ID }
-    });
-  }
+    if (PageName == "Unanswered Responses") {
+      history.push({
+        pathname: '/UnansweredResponses',
+        state: { ID: ID }
+      });
+    }
+    if (PageName == "Other Inbox") {
+      history.push({
+        pathname: '/OtherInboxPage',
+        state: { ID: ID }
+      });
+    }
   }
 
-  console.log("FromEmailDropdownList========", FromEmailDropdownList)
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
   return (
@@ -314,11 +317,11 @@ debugger
             <MenuItem value={30}>Client 3</MenuItem>
             <MenuItem value={10}>Client 4</MenuItem>
             <MenuItem value={20}>Client 5</MenuItem>
-            <MenuItem value={30}>Client 6</MenuItem> 
+            <MenuItem value={30}>Client 6</MenuItem>
             <MenuItem value={10}>Client 7</MenuItem>
             <MenuItem value={20}>Client 8</MenuItem>
             <MenuItem value={30}>Client 9</MenuItem>
-          </Select> 
+          </Select>
         </FormControl>
 
         <TreeView
@@ -417,14 +420,13 @@ debugger
                     </TreeItem>
 
                     <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
-                      <Link to="/">Other Inbox 1</Link>
-                      <Link to="/">Other Inbox 2</Link>
+                      <Link onClick={() => RedirectLink(item._id, "Other Inbox")} >Other Inbox </Link>
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                      <Link onClick={() => RedirectLink(item._id,"Follow Up Later")} >Follow Up Later</Link>
+                      <Link onClick={() => RedirectLink(item._id, "Follow Up Later")} >Follow Up Later</Link>
                     </TreeItem>
-                    
+
 
                     <TreeItem nodeId={"f8" + item._id} label="Junk">
                       <Link to="/">Junk 1</Link>
@@ -458,7 +460,7 @@ debugger
                       <Link to="/">Draft 2</Link>
                     </TreeItem>
                     <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
-                      <Link onClick={() => RedirectLink(item._id,"Unanswered Responses")} >Unanswered Responses</Link>
+                      <Link onClick={() => RedirectLink(item._id, "Unanswered Responses")} >Unanswered Responses</Link>
                     </TreeItem>
                   </TreeItem>
                 </TreeItem>

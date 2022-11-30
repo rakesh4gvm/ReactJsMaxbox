@@ -94,52 +94,33 @@ function createData(name, correspondents, date) {
   return { name, correspondents, date };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 'Charles Byrd', '11:12 AM'),
-  createData('Lorem Ipsum is simply dummy text of the printing', '3DLook Team', '9:59 AM'),
-  createData('containing Lorem Ipsum passages', '3DLook Team', '9:59 AM'),
-  createData(' looked up one of the more obscure Latin words', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" by Cicero are also reproduced', '3DLook Team', '9:59 AM'),
-  createData(' looked up one of the more obscure Latin words', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" by Cicero are also reproduced', '3DLook Team', '9:59 AM'),
-  createData('Frozen yoghurt', 'Charles Byrd', '11:12 AM'),
-  createData('Lorem Ipsum is simply dummy text of the printing', '3DLook Team', '9:59 AM'),
-  createData('containing Lorem Ipsum passages', '3DLook Team', '9:59 AM'),
-];
-
-
-export default function UnansweredResponsesPage( props ) {
+export default function UnansweredResponsesPage(props) {
+  console.log("props======UnansweredResponsesPage", props);
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [FollowUpDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [SortField, SetsortField] = React.useState("MessageDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
 
   useEffect(() => {
-debugger
-console.log(props);
-// if (props !== undefined){
-//     const ID = props.location.state;
-//         if (ID != "" && ID != null && ID != "undefined") {
-//             // GetClientByID(ID)
-//             GetUnansweredResponcesList(ID)
-//         }
-//       }else{
-        GetUnansweredResponcesList("")
-      // }
+    // if (props !== undefined){
+    //     const ID = props.location.state;
+    //         if (ID != "" && ID != null && ID != "undefined") {
+    //             // GetClientByID(ID)
+    //             GetUnansweredResponcesList(ID)
+    //         }
+    //       }else{
+    GetUnansweredResponcesList("")
+    // }
 
-  }, [])
+  }, [SearchInbox])
 
   // Start Get Follow Up Later List
   const GetUnansweredResponcesList = (ID) => {
-    debugger
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -209,11 +190,16 @@ console.log(props);
   };
   //End Open Message Details
 
-  const SelectFollowupDate = (NewValue) => {
-    SetFollowupDate(NewValue);
-  };
-
-
+  // Start Search
+  const SearchBox = (e) => {
+    if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetFollowUpList([])
+      SetSearchInbox(e.target.value)
+    }
+  }
+  // End Search
 
   return (
 
@@ -225,30 +211,17 @@ console.log(props);
         <header className='minisearchhed'>
           <Row>
             <Col sm={8}>
-              <Search className='serchinbox'>
+              <Search className='serchinbox' onKeyUp={(e) => SearchBox(e, this)}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
+                  defaultValue={SearchInbox}
                   placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
             </Col>
-
-            {/* <Col sm={4}>
-              <div className="dropdatebox">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack spacing={0}>
-                    <DesktopDatePicker
-                      inputFormat="MM/dd/yyyy"
-                      value={FollowUpDate}
-                      onChange={SelectFollowupDate}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </div>
-            </Col> */}
           </Row>
         </header>
 
@@ -276,12 +249,13 @@ console.log(props);
                     <TableRow
                       key={item.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      onClick={() => OpenMessageDetails(item._id, index)}
                     >
                       <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
                       <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.FollowUpDate).format("DD/MM/YYYY")}</TableCell>
+                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

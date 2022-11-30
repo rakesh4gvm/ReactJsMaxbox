@@ -23,10 +23,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
 import SplitPane from "react-split-pane";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
@@ -36,11 +34,8 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
-import iconleftright from '../../images/icon_left_right.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
-import ReplyIcon from '@material-ui/icons/Reply';
-import EmailBanner from '../../images/email_banner.jpg'
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -94,23 +89,8 @@ function createData(name, correspondents, date) {
   return { name, correspondents, date };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 'Charles Byrd', '11:12 AM'),
-  createData('Lorem Ipsum is simply dummy text of the printing', '3DLook Team', '9:59 AM'),
-  createData('containing Lorem Ipsum passages', '3DLook Team', '9:59 AM'),
-  createData(' looked up one of the more obscure Latin words', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" by Cicero are also reproduced', '3DLook Team', '9:59 AM'),
-  createData(' looked up one of the more obscure Latin words', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero', '3DLook Team', '9:59 AM'),
-  createData('Finibus Bonorum et Malorum" by Cicero are also reproduced', '3DLook Team', '9:59 AM'),
-  createData('Frozen yoghurt', 'Charles Byrd', '11:12 AM'),
-  createData('Lorem Ipsum is simply dummy text of the printing', '3DLook Team', '9:59 AM'),
-  createData('containing Lorem Ipsum passages', '3DLook Team', '9:59 AM'),
-];
-
-
-export default function FollowUpLater({ props }) {
+export default function FollowUpLater(props) {
+  console.log("props======FollowUpLater", props);
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
@@ -118,32 +98,31 @@ export default function FollowUpLater({ props }) {
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [FollowUpDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [SortField, SetsortField] = React.useState("MessageDatetime");
+  const [SortedBy, SetSortedBy] = React.useState(-1);
+  const [SearchInbox, SetSearchInbox] = React.useState("");
 
   useEffect(() => {
-debugger
-console.log(props);
-if (props !== undefined){
-    const ID = props.location.state;
-        if (ID != "" && ID != null && ID != "undefined") {
-            // GetClientByID(ID)
-            GetFollowUpLaterList(ID)
-        }
-      }else{
-        GetFollowUpLaterList("")
-      }
-
-  }, [FollowUpDate])
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    //   if (ID != "" && ID != null && ID != "undefined") {
+    //     GetFollowUpLaterList(ID)
+    //   }
+    // } else {
+    //   GetFollowUpLaterList("")
+    // }
+    GetFollowUpLaterList("")
+  }, [FollowUpDate, SearchInbox])
 
   // Start Get Follow Up Later List
   const GetFollowUpLaterList = (ID) => {
-    debugger
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
       sort: true,
-      Field: "MessageDatetime",
-      Sortby: -1,
-      Search: "",
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: SearchInbox,
       ClientID: "63329c5eb0c02730f8cac29d",
       UserID: "63159cf4957df035d054fe11",
       IsInbox: false,
@@ -207,11 +186,20 @@ if (props !== undefined){
   };
   //End Open Message Details
 
+  // Start Search
+  const SearchBox = (e) => {
+    if (e.keyCode == 13) {
+      SetPage(1);
+      SetRowsPerPage(10);
+      SetFollowUpList([])
+      SetSearchInbox(e.target.value)
+    }
+  }
+  // End Search
+
   const SelectFollowupDate = (NewValue) => {
     SetFollowupDate(NewValue);
   };
-
-
 
   return (
 
@@ -223,12 +211,14 @@ if (props !== undefined){
         <header className='minisearchhed'>
           <Row>
             <Col sm={8}>
-              <Search className='serchinbox'>
+              <Search className='serchinbox' onKeyUp={(e) => SearchBox(e, this)}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
+                  defaultValue={SearchInbox}
                   placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
             </Col>
@@ -274,6 +264,7 @@ if (props !== undefined){
                     <TableRow
                       key={item.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      onClick={() => OpenMessageDetails(item._id, index)}
                     >
                       <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell>
