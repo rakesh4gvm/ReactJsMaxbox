@@ -1,14 +1,16 @@
 import './App.css';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../src/_helpers/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import OtherInboxPage from './_components/OtherInboxPage/OtherInboxPage';
+import OtherInbox from './_components/OtherInbox/OtherInbox';
 import ProfileSettingPage from '../src/_components/ProfileSettingPage/ProfileSettingPage';
 import EmailConfigurationPage from '../src/_components/EmailConfigurationPage/EmailConfigurationPage';
 import UnansweredResponsesPage from './_components/UnansweredResponsesPage/UnansweredResponsesPage';
 import StarredPage from '../src/_components/StarredPage/StarredPage';
 import FollowUpLaterPage from '../src/_components/FollowUpLaterPage/FollowUpLaterPage';
+import FollowUpLater from '../src/_components/FollowUpLater/FollowUpLater';
 import DraftsPage from '../src/_components/DraftsPage/DraftsPage';
 import SpamPage from '../src/_components/SpamPage/SpamPage';
 import TemplatesPage from '../src/_components/TemplatesPage/TemplatesPage';
@@ -43,14 +45,16 @@ function App() {
 
   return (
     <div className="App">
-       {window.location.pathname != '/' && isAuth==true ? <HeaderTop/>:null}
-       
+      {window.location.pathname != '/' && isAuth == true ? <HeaderTop /> : null}
+
       <Router history={history}>
         <Switch>
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
+          <Route exact path="/OtherInbox" component={OtherInbox} />
           <Route exact path="/UnansweredResponses" component={UnansweredResponsesPage} />
           <Route exact path="/Starred" component={StarredPage} />
           <Route exact path="/FollowUpLater" component={FollowUpLaterPage} />
+          <Route exact path="/FollowUp" component={FollowUpLater} />
           <Route exact path="/Drafts" component={DraftsPage} />
           <Route exact path="/Spam" component={SpamPage} />
           <Route exact path="/ProfileSetting" component={ProfileSettingPage} />
@@ -77,10 +81,10 @@ function App() {
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
           <Route exact path="/AllInbox" component={AllInboxPage} />
           <Route exact path="/NewInbox" component={NewInboxPage} />
-         
+
 
           <Redirect from="*" to="/" />
-         
+
         </Switch>
         {/* {(window.location.pathname == '/ClientList' || 
           window.location.pathname == '/AddClient' ||
@@ -88,7 +92,7 @@ function App() {
           window.location.pathname == '/EmailConfiguration' ||
           window.location.pathname == '/EditEmail') && isAuth==true ? <FooterBottom/>:null} */}
       </Router>
-      
+
     </div>
   );
 }
