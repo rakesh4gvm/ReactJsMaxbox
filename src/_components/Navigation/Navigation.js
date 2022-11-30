@@ -22,19 +22,19 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail'; 
+import MailIcon from '@material-ui/icons/Mail';
 
 import Xlogo from "../../images/Xlogo.jpg";
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import SettingsIcon from '@material-ui/icons/Settings'; 
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Collapse } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-import TreeView from '@material-ui/lab/TreeView'; 
-import TreeItem from '@material-ui/lab/TreeItem';  
+import TreeView from '@material-ui/lab/TreeView';
+import TreeItem from '@material-ui/lab/TreeItem';
 
 
 
@@ -102,9 +102,9 @@ const AppBar = styled(MuiAppBar, {
 })(({ theme, open }) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,  
+    duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && { 
+  ...(open && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
@@ -127,9 +127,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const addNavClick = () => {
   const element = document.getElementById("OpenNavigation")
-  if(element.classList.toggle("show")){
+  if (element.classList.toggle("show")) {
   }
-  else{
+  else {
     element.classList.remove("show");
   }
 };
@@ -146,14 +146,14 @@ const addNavClick = () => {
 export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);  
+  const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
- 
+
 
   const [navopen, setNavOpen] = React.useState(false);
   const [navopenone, setNavOneOpen] = React.useState(true);
@@ -166,7 +166,7 @@ export default function Navigation() {
 
   useEffect(() => {
     FromEmailList();
-  },[]);
+  }, []);
 
 
   const OnehandleClick = () => {
@@ -183,63 +183,63 @@ export default function Navigation() {
   const OnehandleClickStarred = () => {
     setopenstarredNew(!openstarred);
   };
-  
+
   // Start From Email List
   const FromEmailList = () => {
-  
-      var Data = {
-        ClientID: "6306f9256597e411202642f3",
-        UserID: "62fdff964b8b3a2614136ac2"
-      };
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (Result.data.PageData.length > 0) {
-            SetFromEmailDropdownList(Result.data.PageData);
-           
-          } else {
-            toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
-          }
+
+    var Data = {
+      ClientID: "6306f9256597e411202642f3",
+      UserID: "62fdff964b8b3a2614136ac2"
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.PageData.length > 0) {
+          SetFromEmailDropdownList(Result.data.PageData);
+
+        } else {
+          toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
         }
-        else {
-          SetFromEmailDropdownList([]);
-          toast.error(Result?.data?.Message);
-        }
-      });
-    
-   
+      }
+      else {
+        SetFromEmailDropdownList([]);
+        toast.error(Result?.data?.Message);
+      }
+    });
+
+
   }
-  
+  console.log("FromEmailDropdownList========", FromEmailDropdownList)
 
   return (
-    <Box sx={{ display: 'flex' }}> 
-      <div className='orangbody'> 
-        <img src={Xlogo} width="100%" /> 
+    <Box sx={{ display: 'flex' }}>
+      <div className='orangbody'>
+        <img src={Xlogo} width="100%" />
 
         <IconButton className='mx-1'
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          sx={{ mr: 2, ...(open && { display: 'none' }) }}
+        >
+          <MenuIcon />
         </IconButton>
 
-      
+
         <IconButton className='mobileshow' onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-        </IconButton> 
+          <ChevronLeftIcon />
+        </IconButton>
 
         <div onClick={addNavClick} className='Settingsbd'>
           <SettingsIcon />
-      </div>  
-        
-      <div id='OpenNavigation' className='carsetting'>
+        </div>
+
+        <div id='OpenNavigation' className='carsetting'>
           <ul>
             <li><a href="/">Templates</a></li>
             <li><a href="/">Objections</a></li>
@@ -247,166 +247,168 @@ export default function Navigation() {
             <li><a href="/">Clients</a></li>
             <li><a href="/">Contacts</a></li>
           </ul>
+        </div>
       </div>
-    </div>
 
-    
+
       <Drawer className='sidenavtree'
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-            visibility : 'visible',
+          visibility: 'visible',
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: 'border-box', 
+            boxSizing: 'border-box',
           },
         }}
         variant="persistent"
         anchor="left"
-        open={open} 
-         >
-       
-       <TreeView
-      aria-label="multi-select"
-      defaultExpanded={['1', '2', '18']}
-      defaultCollapseIcon={<ExpandMore />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      multiSelect
-      sx={{ height: 216, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-    > 
-      <TreeItem nodeId="1" className='text-bold' label="All Account">
-        <TreeItem nodeId="2" label="Inbox">
-          <TreeItem nodeId="7" label="All"> 
-            <TreeItem nodeId="8" label="New"> 
-              <Link to="/"> New 1</Link>
-              <Link to="/"> New 2</Link>
-              <Link to="/"> New 3</Link>
+        open={open}
+      >
+
+        <TreeView
+          aria-label="multi-select"
+          defaultExpanded={['1', '2', '18']}
+          defaultCollapseIcon={<ExpandMore />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          multiSelect
+          sx={{ height: 216, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+        >
+          <TreeItem nodeId="1" className='text-bold' label="All Account">
+            <TreeItem nodeId="2" label="Inbox">
+              <TreeItem nodeId="7" label="All">
+                <TreeItem nodeId="8" label="New">
+                  <Link to="/"> New 1</Link>
+                  <Link to="/"> New 2</Link>
+                  <Link to="/"> New 3</Link>
+                </TreeItem>
+                <TreeItem nodeId="9" label="Starred">
+                  <Link to="/">Starred 1</Link>
+                  <Link to="/">Starred 2</Link>
+                  <Link to="/">Starred 3</Link>
+                </TreeItem>
+              </TreeItem>
+
+              <TreeItem nodeId="10" label="Focused">
+                <Link to="/">Focused 1</Link>
+                <Link to="/">Focused 2</Link>
+              </TreeItem>
+
+              <TreeItem nodeId="11" label="Other Inbox">
+                <Link to="/">Other Inbox 1</Link>
+                <Link to="/">Other Inbox 2</Link>
+              </TreeItem>
+
+              <TreeItem nodeId="12" label="Follow Up Later">
+                <Link to="/">Follow Up Later 1</Link>
+                <Link to="/">Follow Up Later 2</Link>
+              </TreeItem>
+
+              <TreeItem nodeId="13" label="Junk">
+                <Link to="/">Junk 1</Link>
+                <Link to="/">Junk 2</Link>
+              </TreeItem>
+
+              <TreeItem nodeId="14" label="Trash">
+                <Link to="/">Trash 1</Link>
+                <Link to="/">Trash 2</Link>
+              </TreeItem>
             </TreeItem>
-            <TreeItem nodeId="9" label="Starred">  
-              <Link to="/">Starred 1</Link>
-              <Link to="/">Starred 2</Link>
-              <Link to="/">Starred 3</Link>
-            </TreeItem>  
-          </TreeItem>
 
-          <TreeItem nodeId="10" label="Focused">    
-              <Link to="/">Focused 1</Link>
-              <Link to="/">Focused 2</Link> 
-          </TreeItem>
-
-          <TreeItem nodeId="11" label="Other Inbox">    
-              <Link to="/">Other Inbox 1</Link>
-              <Link to="/">Other Inbox 2</Link> 
-          </TreeItem> 
-
-          <TreeItem nodeId="12" label="Follow Up Later">    
-              <Link to="/">Follow Up Later 1</Link>
-              <Link to="/">Follow Up Later 2</Link> 
-          </TreeItem>
-          
-          <TreeItem nodeId="13" label="Junk">    
-              <Link to="/">Junk 1</Link>
-              <Link to="/">Junk 2</Link> 
-          </TreeItem>
-          
-          <TreeItem nodeId="14" label="Trash">    
-              <Link to="/">Trash 1</Link>
-              <Link to="/">Trash 2</Link> 
-          </TreeItem> 
-        </TreeItem>
-
-        <TreeItem nodeId="18" label="Outbox"> 
-            <TreeItem nodeId="19" label="All Sent"> 
-              <Link to="/">All Sent 1</Link>
-              <Link to="/">All Sent 2</Link>
-              <Link to="/">All Sent 3</Link>
+            <TreeItem nodeId="18" label="Outbox">
+              <TreeItem nodeId="19" label="All Sent">
+                <Link to="/">All Sent 1</Link>
+                <Link to="/">All Sent 2</Link>
+                <Link to="/">All Sent 3</Link>
+              </TreeItem>
+              <TreeItem nodeId="20" label="Unanswered">
+                <Link to="/">Unanswered 1</Link>
+                <Link to="/">Unanswered 2</Link>
+                <Link to="/">Unanswered 3</Link>
+              </TreeItem>
+              <TreeItem nodeId="21" label="Scheuled">
+                <Link to="/">Scheuled 1</Link>
+                <Link to="/">Scheuled 2</Link>
+                <Link to="/">Scheuled 3</Link>
+              </TreeItem>
+              <TreeItem nodeId="22" label="Draft">
+                <Link to="/">Draft 1</Link>
+                <Link to="/">Draft 2</Link>
+              </TreeItem>
             </TreeItem>
-            <TreeItem nodeId="20" label="Unanswered">  
-              <Link to="/">Unanswered 1</Link>
-              <Link to="/">Unanswered 2</Link>
-              <Link to="/">Unanswered 3</Link>
-            </TreeItem> 
-            <TreeItem nodeId="21" label="Scheuled">  
-              <Link to="/">Scheuled 1</Link>
-              <Link to="/">Scheuled 2</Link>
-              <Link to="/">Scheuled 3</Link>
-            </TreeItem> 
-            <TreeItem nodeId="22" label="Draft">  
-              <Link to="/">Draft 1</Link>
-              <Link to="/">Draft 2</Link> 
-            </TreeItem>  
-          </TreeItem>  
-      </TreeItem> 
-
-     
-      <TreeItem nodeId="f1" className='text-bold' label="email1@gmail.com">
-        <TreeItem nodeId="f2" label="Inbox">
-          <TreeItem nodeId="f7" label="All"> 
-            <TreeItem nodeId="f8" label="New"> 
-              <Link to="/"> New 1</Link>
-              <Link to="/"> New 2</Link>
-              <Link to="/"> New 3</Link>
-            </TreeItem>
-            <TreeItem nodeId="f9" label="Starred">  
-              <Link to="/">Starred 1</Link>
-              <Link to="/">Starred 2</Link>
-              <Link to="/">Starred 3</Link>
-            </TreeItem>  
           </TreeItem>
 
-          <TreeItem nodeId="f10" label="Focused">    
-              <Link to="/">Focused 1</Link>
-              <Link to="/">Focused 2</Link> 
-          </TreeItem>
+          {
+            FromEmailDropdownList?.map((item, index) => {
+              return (
+                <TreeItem nodeId="f1" className='text-bold' label={item.Email}>
+                  <TreeItem nodeId="f2" label="Inbox">
+                    <TreeItem nodeId="f7" label="All">
+                      <TreeItem nodeId="f8" label="New">
+                        <Link to="/"> New 1</Link>
+                        <Link to="/"> New 2</Link>
+                        <Link to="/"> New 3</Link>
+                      </TreeItem>
+                      <TreeItem nodeId="f9" label="Starred">
+                        <Link to="/">Starred 1</Link>
+                        <Link to="/">Starred 2</Link>
+                        <Link to="/">Starred 3</Link>
+                      </TreeItem>
+                    </TreeItem>
 
-          <TreeItem nodeId="f11" label="Other Inbox">    
-              <Link to="/">Other Inbox 1</Link>
-              <Link to="/">Other Inbox 2</Link> 
-          </TreeItem> 
+                    <TreeItem nodeId="f10" label="Focused">
+                      <Link to="/">Focused 1</Link>
+                      <Link to="/">Focused 2</Link>
+                    </TreeItem>
 
-          <TreeItem nodeId="f12" label="Follow Up Later">    
-              <Link to="/">Follow Up Later 1</Link>
-              <Link to="/">Follow Up Later 2</Link> 
-          </TreeItem>
-          
-          <TreeItem nodeId="f13" label="Junk">    
-              <Link to="/">Junk 1</Link>
-              <Link to="/">Junk 2</Link> 
-          </TreeItem>
-          
-          <TreeItem nodeId="f14" label="Trash">    
-              <Link to="/">Trash 1</Link>
-              <Link to="/">Trash 2</Link> 
-          </TreeItem> 
-        </TreeItem>
+                    <TreeItem nodeId="f11" label="Other Inbox">
+                      <Link to="/">Other Inbox 1</Link>
+                      <Link to="/">Other Inbox 2</Link>
+                    </TreeItem>
 
-        <TreeItem nodeId="f18" label="Outbox"> 
-            <TreeItem nodeId="f19" label="All Sent"> 
-              <Link to="/">All Sent 1</Link>
-              <Link to="/">All Sent 2</Link>
-              <Link to="/">All Sent 3</Link>
-            </TreeItem>
-            <TreeItem nodeId="f20" label="Unanswered">  
-              <Link to="/">Unanswered 1</Link>
-              <Link to="/">Unanswered 2</Link>
-              <Link to="/">Unanswered 3</Link>
-            </TreeItem> 
-            <TreeItem nodeId="f21" label="Scheuled">  
-              <Link to="/">Scheuled 1</Link>
-              <Link to="/">Scheuled 2</Link>
-              <Link to="/">Scheuled 3</Link>
-            </TreeItem> 
-            <TreeItem nodeId="f22" label="Draft">  
-              <Link to="/">Draft 1</Link>
-              <Link to="/">Draft 2</Link> 
-            </TreeItem>  
-          </TreeItem>  
-      </TreeItem> 
+                    <TreeItem nodeId="f12" label="Follow Up Later">
+                      <Link to="/">Follow Up Later 1</Link>
+                      <Link to="/">Follow Up Later 2</Link>
+                    </TreeItem>
 
-    </TreeView>
-    
-        
-{/* 
+                    <TreeItem nodeId="f13" label="Junk">
+                      <Link to="/">Junk 1</Link>
+                      <Link to="/">Junk 2</Link>
+                    </TreeItem>
+
+                    <TreeItem nodeId="f14" label="Trash">
+                      <Link to="/">Trash 1</Link>
+                      <Link to="/">Trash 2</Link>
+                    </TreeItem>
+                  </TreeItem>
+
+                  <TreeItem nodeId="f18" label="Outbox">
+                    <TreeItem nodeId="f19" label="All Sent">
+                      <Link to="/">All Sent 1</Link>
+                      <Link to="/">All Sent 2</Link>
+                      <Link to="/">All Sent 3</Link>
+                    </TreeItem>
+                    <TreeItem nodeId="f20" label="Unanswered">
+                      <Link to="/">Unanswered 1</Link>
+                      <Link to="/">Unanswered 2</Link>
+                      <Link to="/">Unanswered 3</Link>
+                    </TreeItem>
+                    <TreeItem nodeId="f21" label="Scheuled">
+                      <Link to="/">Scheuled 1</Link>
+                      <Link to="/">Scheuled 2</Link>
+                      <Link to="/">Scheuled 3</Link>
+                    </TreeItem>
+                    <TreeItem nodeId="f22" label="Draft">
+                      <Link to="/">Draft 1</Link>
+                      <Link to="/">Draft 2</Link>
+                    </TreeItem>
+                  </TreeItem>
+                </TreeItem>
+              )
+            })
+          }
+        </TreeView>
+        {/* 
 
        <List> 
        <ListItemButton onClick={OnehandleClick}>
@@ -481,7 +483,7 @@ export default function Navigation() {
       </ListItem>
       </List>
            */}
-      </Drawer> 
+      </Drawer>
     </Box>
   );
 }
