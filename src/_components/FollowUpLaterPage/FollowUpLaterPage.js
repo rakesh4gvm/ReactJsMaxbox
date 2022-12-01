@@ -90,7 +90,6 @@ function createData(name, correspondents, date) {
 }
 
 export default function FollowUpLater(props) {
-  console.log("props======FollowUpLater", props);
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
@@ -103,19 +102,24 @@ export default function FollowUpLater(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
 
   useEffect(() => {
-    // if (props !== undefined) {
-    //   const ID = props.location.state;
-    //   if (ID != "" && ID != null && ID != "undefined") {
-    //     GetFollowUpLaterList(ID)
-    //   }
-    // } else {
-    //   GetFollowUpLaterList("")
-    // }
-    GetFollowUpLaterList("")
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetFollowUpLaterList(ID)
+      } else {
+        GetFollowUpLaterList(ID)
+      }
+    }
   }, [FollowUpDate, SearchInbox])
 
   // Start Get Follow Up Later List
   const GetFollowUpLaterList = (ID) => {
+    let AccountIDs = []
+    if (ID?.ID.length > 0) {
+      AccountIDs.push(ID.ID)
+    } else {
+      AccountIDs = [-1]
+    }
     var Data = {
       Page: Page,
       RowsPerPage: RowsPerPage,
@@ -130,7 +134,7 @@ export default function FollowUpLater(props) {
       IsFollowUp: true,
       IsSpam: false,
       IsOtherInbox: false,
-      AccountIDs: [-1],
+      AccountIDs: AccountIDs,
       SearchDate: Moment(FollowUpDate).format("YYYY-MM-DD")
     };
 

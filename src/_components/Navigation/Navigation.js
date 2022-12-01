@@ -358,8 +358,7 @@ export default function Navigation() {
               </TreeItem>
 
               <TreeItem nodeId="12" label="Follow Up Later">
-                <Link to="/">Follow Up Later 1</Link>
-                <Link to="/">Follow Up Later 2</Link>
+                <Link to="/FollowUpLater">Follow Up Later 1</Link>
               </TreeItem>
 
               <TreeItem nodeId="13" label="Junk">
@@ -424,7 +423,7 @@ export default function Navigation() {
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                      <Link onClick={() => RedirectLink(item._id, "Follow Up Later")} >Follow Up Later</Link>
+                      <Link onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} >Follow Up Later</Link>
                     </TreeItem>
 
 
