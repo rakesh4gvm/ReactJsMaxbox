@@ -42,6 +42,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -100,20 +101,48 @@ export default function FollowUpLater(props) {
   const [SortField, SetsortField] = React.useState("MessageDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
+
+  // useEffect(() => {
+  //   if (props !== undefined) {
+  //     const ID = props.location.state;
+  //     if (ID != "" && ID != null && ID != "undefined") {
+  //       GetFollowUpLaterList(ID)
+  //     } else {
+  //       GetFollowUpLaterList(ID)
+  //     }
+  //   }
+  // }, [FollowUpDate, SearchInbox])
 
   useEffect(() => {
-    if (props !== undefined) {
-      const ID = props.location.state;
-      if (ID != "" && ID != null && ID != "undefined") {
-        GetFollowUpLaterList(ID)
-      } else {
-        GetFollowUpLaterList(ID)
-      }
+    document.title = 'Follow Up Later | MAXBOX';
+    GetClientID();
+  }, [FollowUpDate,SearchInbox]);
+
+
+   // Get ClientID
+   const GetClientID = () => {
+    
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
     }
-  }, [FollowUpDate, SearchInbox])
+    if (props !== undefined) {
+          const ID = props.location.state;
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page,  ID);
+          }
+        } else {
+          GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page,  0)
+        }
+  
+
+  }
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (ID) => {
+  const GetFollowUpLaterList = (CID,UID,PN,ID) => {
     let AccountIDs = []
     if (ID?.ID.length > 0) {
       AccountIDs.push(ID.ID)
@@ -121,14 +150,14 @@ export default function FollowUpLater(props) {
       AccountIDs = [-1]
     }
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: "63329c5eb0c02730f8cac29d",
-      UserID: "63159cf4957df035d054fe11",
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: true,
