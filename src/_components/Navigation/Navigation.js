@@ -186,54 +186,53 @@ export default function Navigation() {
   };
 
   useEffect(() => {
-   
+
     GetClientDropdown();
   }, []);
 
 
-//   useEffect(() => {
-//     GetClientDropdown()
-// }, [SetSelectedClient])
+  //   useEffect(() => {
+  //     GetClientDropdown()
+  // }, [SetSelectedClient])
 
   // Get Client Dropdown
   const GetClientDropdown = () => {
-    debugger
     var UserID
     var Details = GetUserDetails();
     if (Details != null) {
-        UserID = Details.UserID
-        SetUserImage(Details.UserImage)
+      UserID = Details.UserID
+      SetUserImage(Details.UserImage)
     }
     var Data = {
-        UserID: UserID,
+      UserID: UserID,
     }
     const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
-        method: "POST",
-        data: Data,
+      url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+      method: "POST",
+      data: Data,
     });
     ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            if (Result.data.Data.length > 0) {
-                SetClientDropdown(Result.data.Data);
-                if (Details.ClientID == null) {
-                    UpdateUserDetails((Result.data.Data[0].ClientID))
-                    SetSelectedClient(Result.data.Data[0]._id)
-                }
-                else {
-                    SetSelectedClient(Details.ClientID)
-                }
-            }
-            else {
-                UpdateUserDetails('')
-            }
-        } else {
-            toast.error(Result?.data?.Message);
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.Data.length > 0) {
+          SetClientDropdown(Result.data.Data);
+          if (Details.ClientID == null) {
+            UpdateUserDetails((Result.data.Data[0].ClientID))
+            SetSelectedClient(Result.data.Data[0]._id)
+          }
+          else {
+            SetSelectedClient(Details.ClientID)
+          }
         }
+        else {
+          UpdateUserDetails('')
+        }
+      } else {
+        toast.error(Result?.data?.Message);
+      }
     });
 
     FromEmailList();
-}
+  }
 
 
   // Select Client
@@ -241,7 +240,7 @@ export default function Navigation() {
     SetSelectedClient(e.target.value)
     UpdateUserDetails(e.target.value)
     window.location.reload(false);
-}
+  }
 
 
   const OnehandleClick = () => {
@@ -263,8 +262,8 @@ export default function Navigation() {
   const FromEmailList = () => {
 
     var Data = {
-      ClientID: "6306f9256597e411202642f3",
-      UserID: "62fdff964b8b3a2614136ac2"
+      ClientID: "63329c5eb0c02730f8cac29d",
+      UserID: "63159cf4957df035d054fe11"
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
@@ -290,7 +289,6 @@ export default function Navigation() {
   }
 
   const RedirectLink = (ID, PageName) => {
-    debugger
     if (PageName == "Follow Up Later") {
       history.push({
         pathname: '/FollowUpLater',
@@ -363,8 +361,8 @@ export default function Navigation() {
         anchor="left"
         open={open}
       >
-       <FormControl className='clientselc'>
-          
+        <FormControl className='clientselc'>
+
           <Select
             value={SelectedClient}
             onChange={SelectClient}
@@ -375,8 +373,8 @@ export default function Navigation() {
               <em>Select Client</em>
             </MenuItem>
             {ClientDropdown?.map((row) => (
-            <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
-            
+              <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
+
             ))}
           </Select>
         </FormControl>
@@ -410,8 +408,7 @@ export default function Navigation() {
               </TreeItem>
 
               <TreeItem nodeId="11" label="Other Inbox">
-                <Link to="/">Other Inbox 1</Link>
-                <Link to="/">Other Inbox 2</Link>
+                <Link to="/OtherInboxPage">Other Inbox </Link>
               </TreeItem>
 
               <TreeItem nodeId="12" label="Follow Up Later">
@@ -436,9 +433,7 @@ export default function Navigation() {
                 <Link to="/">All Sent 3</Link>
               </TreeItem>
               <TreeItem nodeId="20" label="Unanswered">
-                <Link to="/">Unanswered 1</Link>
-                <Link to="/">Unanswered 2</Link>
-                <Link to="/">Unanswered 3</Link>
+                <Link to="/UnansweredResponses">Unanswered</Link>
               </TreeItem>
               <TreeItem nodeId="21" label="Scheuled">
                 <Link to="/">Scheuled 1</Link>
@@ -446,8 +441,7 @@ export default function Navigation() {
                 <Link to="/">Scheuled 3</Link>
               </TreeItem>
               <TreeItem nodeId="22" label="Draft">
-                <Link to="/">Draft 1</Link>
-                <Link to="/">Draft 2</Link>
+                <Link to="/Drafts">Draft 1</Link>
               </TreeItem>
             </TreeItem>
           </TreeItem>
@@ -476,7 +470,7 @@ export default function Navigation() {
                     </TreeItem>
 
                     <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
-                      <Link onClick={() => RedirectLink(item._id, "Other Inbox")} >Other Inbox </Link>
+                      <Link onClick={() => RedirectLink(item.AccountID, "Other Inbox")} >Other Inbox </Link>
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
@@ -516,7 +510,7 @@ export default function Navigation() {
                       <Link to="/">Draft 2</Link>
                     </TreeItem>
                     <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
-                      <Link onClick={() => RedirectLink(item._id, "Unanswered Responses")} >Unanswered Responses</Link>
+                      <Link onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} >Unanswered Responses</Link>
                     </TreeItem>
                   </TreeItem>
                 </TreeItem>

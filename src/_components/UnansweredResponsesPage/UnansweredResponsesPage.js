@@ -47,6 +47,8 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -89,13 +91,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-function createData(name, correspondents, date) {
-  return { name, correspondents, date };
-}
-
 export default function UnansweredResponsesPage(props) {
-  console.log("props======UnansweredResponsesPage", props);
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
@@ -105,37 +101,53 @@ export default function UnansweredResponsesPage(props) {
   const [SortField, SetsortField] = React.useState("MessageDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
-    // if (props !== undefined){
-    //     const ID = props.location.state;
-    //         if (ID != "" && ID != null && ID != "undefined") {
-    //             // GetClientByID(ID)
-    //             GetUnansweredResponcesList(ID)
-    //         }
-    //       }else{
-    GetUnansweredResponcesList("")
-    // }
-
+    document.title = 'Unanswered Responses | MAXBOX';
+    GetClientID();
   }, [SearchInbox])
 
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      } else {
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      }
+    }
+  }
+
   // Start Get Follow Up Later List
-  const GetUnansweredResponcesList = (ID) => {
+  const GetUnansweredResponcesList = (CID, UID, PN, ID) => {
+    let AccountIDs = []
+    if (ID?.ID?.length > 0) {
+      AccountIDs.push(ID?.ID)
+    } else {
+      AccountIDs = [-1]
+    }
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: "63329c5eb0c02730f8cac29d",
-      UserID: "63159cf4957df035d054fe11",
+      ClientID: CID,
+      UserID: UID,
       IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,
       IsOtherInbox: false,
       IsSpam: false,
-      AccountIDs: [-1]
+      AccountIDs: AccountIDs
     };
 
     const ResponseApi = Axios({

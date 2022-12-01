@@ -11,10 +11,9 @@ import MuiAppBar from '@mui/material/AppBar';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 import { useLocation } from 'react-router-dom'
 import Navigation from '../Navigation/Navigation';
-
-
 
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -89,13 +88,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-function createData(name, correspondents, date) {
-  return { name, correspondents, date };
-}
-
 export default function OtherInboxPage(props) {
-  console.log("props======OtherInboxPage", props)
 
   const [FollowUpList, SetFollowUpList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
@@ -105,30 +98,54 @@ export default function OtherInboxPage(props) {
   const [SortField, SetsortField] = React.useState("MessageDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
 
 
   useEffect(() => {
-    GetFollowUpLaterList()
+    document.title = 'Other Inbox | MAXBOX';
+    GetClientID();
   }, [SearchInbox])
 
-  // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (ID) => {
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      } else {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      }
+    }
+  }
 
+  // Start Get Follow Up Later List
+  const GetFollowUpLaterList = (CID, UID, PN, ID) => {
+    let AccountIDs = []
+    if (ID?.ID?.length > 0) {
+      AccountIDs.push(ID?.ID)
+    } else {
+      AccountIDs = [-1]
+    }
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: "63329c5eb0c02730f8cac29d",
-      UserID: "63159cf4957df035d054fe11",
+      ClientID: CID,
+      UserID: UID,
       IsInbox: false,
       IsStarred: false,
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: true,
-      AccountIDs: [-1],
+      AccountIDs: AccountIDs
     };
 
     const ResponseApi = Axios({

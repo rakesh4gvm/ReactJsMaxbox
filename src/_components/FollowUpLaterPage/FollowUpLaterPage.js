@@ -118,34 +118,33 @@ export default function FollowUpLater(props) {
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
     GetClientID();
-  }, [FollowUpDate,SearchInbox]);
+  }, [FollowUpDate, SearchInbox]);
 
 
-   // Get ClientID
-   const GetClientID = () => {
-    
+  // Get ClientID
+  const GetClientID = () => {
+
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
     if (props !== undefined) {
-          const ID = props.location.state;
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page,  ID);
-          }
-        } else {
-          GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page,  0)
-        }
-  
-
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      }
+      else {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      }
+    }
   }
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (CID,UID,PN,ID) => {
+  const GetFollowUpLaterList = (CID, UID, PN, ID) => {
     let AccountIDs = []
-    if (ID?.ID.length > 0) {
-      AccountIDs.push(ID.ID)
+    if (ID?.ID?.length > 0) {
+      AccountIDs.push(ID?.ID)
     } else {
       AccountIDs = [-1]
     }
