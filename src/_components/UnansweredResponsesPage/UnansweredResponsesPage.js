@@ -246,7 +246,7 @@ export default function UnansweredResponsesPage(props) {
                 </TableHead>
                 <TableBody>
                   {FollowUpList.map((item, index) => (
-                    <TableRow
+                    <TableRow className="SelectionSubject"
                       key={item.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       onClick={() => OpenMessageDetails(item._id, index)}
