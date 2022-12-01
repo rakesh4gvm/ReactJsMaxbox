@@ -49,6 +49,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import { UpdateUserDetails, GetUserDetails, Logout, LoaderHide, LoaderShow } from '../../_helpers/Utility'
+
 toast.configure();
 
 function useOutsideAlerter(ref) {
@@ -174,6 +176,10 @@ export default function Navigation() {
   const [UserID, SetUserID] = React.useState(0);
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const [client, setClient] = React.useState('');
+  const [ClientDropdown, SetClientDropdown] = useState([])
+  const [SelectedClient, SetSelectedClient] = useState([]);
+  const [UserImage, SetUserImage] = useState()
+  const [UserDetails, SetUserDetails] = useState();
 
   const handleChange = (event) => {
     setClient(event.target.value);
@@ -182,6 +188,57 @@ export default function Navigation() {
   useEffect(() => {
     FromEmailList();
   }, []);
+
+
+  useEffect(() => {
+    GetClientDropdown()
+}, [SetSelectedClient])
+
+  // Get Client Dropdown
+  const GetClientDropdown = () => {
+    debugger
+    var UserID
+    var Details = GetUserDetails();
+    if (Details != null) {
+        UserID = Details.UserID
+        SetUserImage(Details.UserImage)
+    }
+    var Data = {
+        UserID: UserID,
+    }
+    const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+        method: "POST",
+        data: Data,
+    });
+    ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.Data.length > 0) {
+                SetClientDropdown(Result.data.Data);
+                if (Details.ClientID == null) {
+                    UpdateUserDetails((Result.data.Data[0].ClientID))
+                    SetSelectedClient(Result.data.Data[0]._id)
+                }
+                else {
+                    SetSelectedClient(Details.ClientID)
+                }
+            }
+            else {
+                UpdateUserDetails('')
+            }
+        } else {
+            toast.error(Result?.data?.Message);
+        }
+    });
+}
+
+
+  // Select Client
+  const SelectClient = (e) => {
+    SetSelectedClient(e.target.value)
+    UpdateUserDetails(e.target.value)
+    window.location.reload(false);
+}
 
 
   const OnehandleClick = () => {
@@ -302,25 +359,21 @@ export default function Navigation() {
         anchor="left"
         open={open}
       >
-        <FormControl className='clientselc'>
+       <FormControl className='clientselc'>
+          
           <Select
-            value={client}
-            onChange={handleChange}
+            value={SelectedClient}
+            onChange={SelectClient}
             displayEmpty
             inputProps={{ 'aria-label': 'Without label' }}
           >
             <MenuItem value="">
               <em>Select Client</em>
             </MenuItem>
-            <MenuItem value={10}>Client 1</MenuItem>
-            <MenuItem value={20}>Client 2</MenuItem>
-            <MenuItem value={30}>Client 3</MenuItem>
-            <MenuItem value={10}>Client 4</MenuItem>
-            <MenuItem value={20}>Client 5</MenuItem>
-            <MenuItem value={30}>Client 6</MenuItem>
-            <MenuItem value={10}>Client 7</MenuItem>
-            <MenuItem value={20}>Client 8</MenuItem>
-            <MenuItem value={30}>Client 9</MenuItem>
+            {ClientDropdown?.map((row) => (
+            <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
+            
+            ))}
           </Select>
         </FormControl>
 
