@@ -532,7 +532,7 @@ export default function AllInboxComposePage() {
 
     return (
         <>
-            <div id="hideloding" className="loding-display">
+            <div id="hideloding" className="loding-display d-none">
                 <img src={MaxboxLoading} />
             </div>
 
@@ -630,7 +630,7 @@ export default function AllInboxComposePage() {
             </Modal>
 
             <div className='composebody' id='maxcompose'>
-                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
+                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>

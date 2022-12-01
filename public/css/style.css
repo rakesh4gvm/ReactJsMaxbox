@@ -693,7 +693,7 @@ ul.d-flex.flexlist {
     bottom: 0;
     right: 0;
     padding: 12px;
-    z-index: 99;
+    z-index: 9999;
 }
 
 .usercompose {
@@ -731,7 +731,7 @@ ul.d-flex.flexlist {
 }
 
 .hcompose {
-    background: #647AF7;
+    background: #e49273;
     border-radius: 0px 15px 0px 0px;
 }
 
@@ -1474,7 +1474,7 @@ div.erorr-msg>*>* {
 
 .FroalaEditor .fr-box.fr-basic .fr-wrapper {
     border: none;
-    height: 270px;
+    height: 170px;
     margin-bottom: 50px;
     overflow-y: auto;
 }
@@ -1730,8 +1730,11 @@ div.erorr-msg>*>* {
     opacity: 0.7;
 }
 .composebody button.btn.largbtn {
-    padding: 12px 27px;
-    font-size: 14px;
+    width: 50px;
+    font-size: 50px;
+    height: 64px;
+    border-radius: 5px;
+    padding: 0;
 }
 .columlistdrop {
     font-size: small;
