@@ -186,13 +186,14 @@ export default function Navigation() {
   };
 
   useEffect(() => {
-    FromEmailList();
+   
+    GetClientDropdown();
   }, []);
 
 
-  useEffect(() => {
-    GetClientDropdown()
-}, [SetSelectedClient])
+//   useEffect(() => {
+//     GetClientDropdown()
+// }, [SetSelectedClient])
 
   // Get Client Dropdown
   const GetClientDropdown = () => {
@@ -230,6 +231,8 @@ export default function Navigation() {
             toast.error(Result?.data?.Message);
         }
     });
+
+    FromEmailList();
 }
 
 
@@ -287,6 +290,7 @@ export default function Navigation() {
   }
 
   const RedirectLink = (ID, PageName) => {
+    debugger
     if (PageName == "Follow Up Later") {
       history.push({
         pathname: '/FollowUpLater',
