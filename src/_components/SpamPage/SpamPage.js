@@ -47,6 +47,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -104,22 +105,36 @@ export default function SpamPage(props) {
   const [SortField, SetsortField] = React.useState("MessageDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
+  const [ClientID, SetClientID] = React.useState(0);
+  const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
-    if (props !== undefined){
-        const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-                // GetClientByID(ID)
-                GetSpamList(ID)
-            }
-          }else{
-      GetSpamList("")
-    }
+ 
+    document.title = 'Spam | MAXBOX';
+    GetClientID();
 
-  }, [SearchInbox])
+  },[] )
+
+   // Get ClientID
+   const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      }
+      else {
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      }
+    }
+  }
 
   // Start Get Follow Up Later List
-  const GetSpamList = (ID) => {
+  const GetSpamList = (CID, UID, PN, ID) => {
 var ids;
     if(ID == ""){
 ids=[-1]
@@ -127,24 +142,19 @@ ids=[-1]
       ids = ID
     }
     var Data = {
-      Page: Page,
+      Page: PN,
       RowsPerPage: RowsPerPage,
       sort: true,
       Field: SortField,
       Sortby: SortedBy,
       Search: SearchInbox,
-      ClientID: "63329c5eb0c02730f8cac29d",
-      UserID: "63159cf4957df035d054fe11",
-      IsInbox: true,
-      IsStarred: false,
-      IsFollowUp: false,
-      IsOtherInbox: false,
-      IsSpam: false,
+      ClientID: CID,
+      UserID: UID,
       AccountIDs: [-1]
     };
 
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGet",
       method: "POST",
       data: Data,
     });

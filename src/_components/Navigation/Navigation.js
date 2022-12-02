@@ -221,6 +221,7 @@ export default function Navigation() {
           }
           else {
             SetSelectedClient(Details.ClientID)
+            FromEmailList(Details.ClientID,Details.UserID);
           }
         }
         else {
@@ -231,7 +232,7 @@ export default function Navigation() {
       }
     });
 
-    FromEmailList();
+   
   }
 
 
@@ -259,11 +260,11 @@ export default function Navigation() {
   };
 
   // Start From Email List
-  const FromEmailList = () => {
+  const FromEmailList = (CID,UID) => {
 
     var Data = {
-      ClientID: "63329c5eb0c02730f8cac29d",
-      UserID: "63159cf4957df035d054fe11"
+      ClientID: CID,
+      UserID: UID
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
@@ -307,6 +308,13 @@ export default function Navigation() {
         state: { ID: ID }
       });
     }
+    if (PageName == "Spam") {
+      history.push({
+        pathname: '/Spam',
+        state: { ID: ID }
+      });
+    }
+    
   }
 
   const WrapperRef = useRef(null);
@@ -475,6 +483,10 @@ export default function Navigation() {
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
                       <Link onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} >Follow Up Later</Link>
+                    </TreeItem>
+
+                    <TreeItem nodeId={"f7" + item._id} label="Spam">
+                      <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link>
                     </TreeItem>
 
 
