@@ -109,7 +109,7 @@ export default function SpamPage(props) {
   const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
- 
+ debugger
     document.title = 'Spam | MAXBOX';
     GetClientID();
 

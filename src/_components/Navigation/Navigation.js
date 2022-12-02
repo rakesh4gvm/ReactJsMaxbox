@@ -181,9 +181,9 @@ export default function Navigation() {
   const [UserImage, SetUserImage] = useState()
   const [UserDetails, SetUserDetails] = useState();
 
-  const handleChange = (event) => {
-    setClient(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setClient(event.target.value);
+  // };
 
   useEffect(() => {
 
@@ -226,6 +226,7 @@ export default function Navigation() {
         }
         else {
           UpdateUserDetails('')
+          FromEmailList('');
         }
       } else {
         toast.error(Result?.data?.Message);
@@ -290,6 +291,7 @@ export default function Navigation() {
   }
 
   const RedirectLink = (ID, PageName) => {
+    debugger
     if (PageName == "Follow Up Later") {
       history.push({
         pathname: '/FollowUpLater',
@@ -309,10 +311,7 @@ export default function Navigation() {
       });
     }
     if (PageName == "Spam") {
-      history.push({
-        pathname: '/Spam',
-        state: { ID: ID }
-      });
+      history.push("/Spam", ID);
     }
     
   }
@@ -478,16 +477,14 @@ export default function Navigation() {
                     </TreeItem>
 
                     <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
-                      <Link onClick={() => RedirectLink(item.AccountID, "Other Inbox")} >Other Inbox </Link>
+                    <TreeItem nodeId={"f60" + item._id} label="Other Inbox" onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
                     </TreeItem>
 
                     <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                      <Link onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} >Follow Up Later</Link>
+                    <TreeItem nodeId={"f70" + item._id} label="Follow Up Later" onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} />
                     </TreeItem>
 
-                    <TreeItem nodeId={"f7" + item._id} label="Spam">
-                      <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link>
-                    </TreeItem>
+             
 
 
                     <TreeItem nodeId={"f8" + item._id} label="Junk">
@@ -521,8 +518,13 @@ export default function Navigation() {
                       <Link to="/">Draft 1</Link>
                       <Link to="/">Draft 2</Link>
                     </TreeItem>
+                   
                     <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
-                      <Link onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} >Unanswered Responses</Link>
+                      <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
+                    </TreeItem>
+                    <TreeItem nodeId={"f17" + item._id} label="Spam">
+                    <TreeItem nodeId={"f170" + item._id} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")} />
+                     {/* <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link> */}
                     </TreeItem>
                   </TreeItem>
                 </TreeItem>
