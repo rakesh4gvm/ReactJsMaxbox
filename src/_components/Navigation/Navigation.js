@@ -180,6 +180,7 @@ export default function Navigation() {
   const [SelectedClient, SetSelectedClient] = useState([]);
   const [UserImage, SetUserImage] = useState()
   const [UserDetails, SetUserDetails] = useState();
+  const [expanded, SetExpanded] = useState([]);
 
   // const handleChange = (event) => {
   //   setClient(event.target.value);
@@ -188,6 +189,7 @@ export default function Navigation() {
   useEffect(() => {
 
     GetClientDropdown();
+    SetExpanded(["f170"])
   }, []);
 
 
@@ -222,6 +224,7 @@ export default function Navigation() {
           else {
             SetSelectedClient(Details.ClientID)
             FromEmailList(Details.ClientID,Details.UserID);
+            
           }
         }
         else {
@@ -233,7 +236,7 @@ export default function Navigation() {
       }
     });
 
-   
+
   }
 
 
@@ -388,7 +391,7 @@ export default function Navigation() {
 
         <TreeView
           aria-label="multi-select"
-          defaultExpanded={['1', '2', '18']}
+          defaultExpanded={['1','2','7','8']}
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRightIcon />}
           multiSelect
@@ -453,9 +456,9 @@ export default function Navigation() {
             </TreeItem>
           </TreeItem>
 
-          {
-            FromEmailDropdownList?.map((item, index) => {
-              return (
+          {FromEmailDropdownList?.map((item) => (
+            // FromEmailDropdownList?.map((item, index) => {
+              // return (
                 <TreeItem nodeId={item._id} className='text-bold' label={item.Email}>
                   <TreeItem nodeId={"f1" + item._id} label="Inbox">
                     <TreeItem nodeId={"f2" + item._id} label="All">
@@ -523,14 +526,13 @@ export default function Navigation() {
                       <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
                     </TreeItem>
                     <TreeItem nodeId={"f17" + item._id} label="Spam">
-                    <TreeItem nodeId={"f170" + item._id} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")} />
+                    <TreeItem nodeId={"f170"} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")}  selected/>
                      {/* <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link> */}
                     </TreeItem>
                   </TreeItem>
                 </TreeItem>
-              )
-            })
-          }
+              
+              ))}
         </TreeView>
         {/* 
 
