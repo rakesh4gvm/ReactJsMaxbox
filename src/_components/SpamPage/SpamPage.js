@@ -1,53 +1,31 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
-
-import { makeStyles, styled, useTheme, alpha } from '@material-ui/core/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
+import SplitPane from "react-split-pane";
+import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { useLocation } from 'react-router-dom'
+import { GetUserDetails } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
-
-
-
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-import SplitPane from "react-split-pane";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import { styled, alpha } from '@material-ui/core/styles';
 
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
-import iconleftright from '../../images/icon_left_right.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
-import ReplyIcon from '@material-ui/icons/Reply';
-import EmailBanner from '../../images/email_banner.jpg'
-
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -90,11 +68,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-function createData(name, correspondents, date) {
-  return { name, correspondents, date };
-}
-
 export default function SpamPage(props) {
 
   const [SpamPage, SetSpamList] = useState([])
@@ -109,14 +82,12 @@ export default function SpamPage(props) {
   const [UserID, SetUserID] = React.useState(0);
 
   useEffect(() => {
- debugger
     document.title = 'Spam | MAXBOX';
     GetClientID();
+  }, [])
 
-  },[] )
-
-   // Get ClientID
-   const GetClientID = () => {
+  // Starts Get Client ID
+  const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
@@ -132,14 +103,15 @@ export default function SpamPage(props) {
       }
     }
   }
+  // End Get Client ID
 
   // Start Get Follow Up Later List
   const GetSpamList = (CID, UID, PN, ID) => {
-var ids;
-    if(ID == ""){
-ids=[-1]
-    }else{
-      ids = ID
+    let AccountIDs = []
+    if (ID?.ID?.length > 0) {
+      AccountIDs.push(ID?.ID)
+    } else {
+      AccountIDs = [-1]
     }
     var Data = {
       Page: PN,
@@ -150,9 +122,8 @@ ids=[-1]
       Search: SearchInbox,
       ClientID: CID,
       UserID: UID,
-      AccountIDs: [-1]
+      AccountIDs: AccountIDs
     };
-
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGet",
       method: "POST",

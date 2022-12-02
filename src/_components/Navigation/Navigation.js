@@ -223,8 +223,8 @@ export default function Navigation() {
           }
           else {
             SetSelectedClient(Details.ClientID)
-            FromEmailList(Details.ClientID,Details.UserID);
-            
+            FromEmailList(Details.ClientID, Details.UserID);
+
           }
         }
         else {
@@ -264,7 +264,7 @@ export default function Navigation() {
   };
 
   // Start From Email List
-  const FromEmailList = (CID,UID) => {
+  const FromEmailList = (CID, UID) => {
 
     var Data = {
       ClientID: CID,
@@ -294,7 +294,18 @@ export default function Navigation() {
   }
 
   const RedirectLink = (ID, PageName) => {
-    debugger
+    if (PageName == "AllInbox") {
+      history.push({
+        pathname: '/AllInbox',
+        state: { ID: ID }
+      });
+    }
+    if (PageName == "Starred") {
+      history.push({
+        pathname: '/Starred',
+        state: { ID: ID }
+      });
+    }
     if (PageName == "Follow Up Later") {
       history.push({
         pathname: '/FollowUpLater',
@@ -314,9 +325,15 @@ export default function Navigation() {
       });
     }
     if (PageName == "Spam") {
-      history.push("/Spam", ID);
+      history.push({
+        pathname: '/Spam',
+        state: { ID: ID }
+      });
     }
-    
+    // if (PageName == "Spam") {
+    //   history.push("/Spam", ID);
+    // }
+
   }
 
   const WrapperRef = useRef(null);
@@ -391,7 +408,7 @@ export default function Navigation() {
 
         <TreeView
           aria-label="multi-select"
-          defaultExpanded={['1','2','7','8']}
+          defaultExpanded={['1', '2', '7', '8']}
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRightIcon />}
           multiSelect
@@ -401,14 +418,10 @@ export default function Navigation() {
             <TreeItem nodeId="2" label="Inbox">
               <TreeItem nodeId="7" label="All">
                 <TreeItem nodeId="8" label="New">
-                  <Link to="/"> New 1</Link>
-                  <Link to="/"> New 2</Link>
-                  <Link to="/"> New 3</Link>
+                  <Link to="/AllInbox">All Inbox</Link>
                 </TreeItem>
                 <TreeItem nodeId="9" label="Starred">
-                  <Link to="/">Starred 1</Link>
-                  <Link to="/">Starred 2</Link>
-                  <Link to="/">Starred 3</Link>
+                  <Link to="/Starred">Starred</Link>
                 </TreeItem>
               </TreeItem>
 
@@ -453,86 +466,85 @@ export default function Navigation() {
               <TreeItem nodeId="22" label="Draft">
                 <Link to="/Drafts">Draft 1</Link>
               </TreeItem>
+              <TreeItem nodeId="23" label="Spam">
+                <Link to="/Spam">Spam</Link>
+              </TreeItem>
             </TreeItem>
           </TreeItem>
 
           {FromEmailDropdownList?.map((item) => (
             // FromEmailDropdownList?.map((item, index) => {
-              // return (
-                <TreeItem nodeId={item._id} className='text-bold' label={item.Email}>
-                  <TreeItem nodeId={"f1" + item._id} label="Inbox">
-                    <TreeItem nodeId={"f2" + item._id} label="All">
-                      <TreeItem nodeId={"f3" + item._id} label="New">
-                        <Link to="/"> New 1</Link>
-                        <Link to="/"> New 2</Link>
-                        <Link to="/"> New 3</Link>
-                      </TreeItem>
-                      <TreeItem nodeId={"f4" + item._id} label="Starred">
-                        <Link to="/">Starred 1</Link>
-                        <Link to="/">Starred 2</Link>
-                        <Link to="/">Starred 3</Link>
-                      </TreeItem>
-                    </TreeItem>
-
-                    <TreeItem nodeId={"f5" + item._id} label="Focused">
-                      <Link to="/">Focused 1</Link>
-                      <Link to="/">Focused 2</Link>
-                    </TreeItem>
-
-                    <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
-                    <TreeItem nodeId={"f60" + item._id} label="Other Inbox" onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
-                    </TreeItem>
-
-                    <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
-                    <TreeItem nodeId={"f70" + item._id} label="Follow Up Later" onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} />
-                    </TreeItem>
-
-             
-
-
-                    <TreeItem nodeId={"f8" + item._id} label="Junk">
-                      <Link to="/">Junk 1</Link>
-                      <Link to="/">Junk 2</Link>
-                    </TreeItem>
-
-                    <TreeItem nodeId={"f9" + item._id} label="Trash">
-                      <Link to="/">Trash 1</Link>
-                      <Link to="/">Trash 2</Link>
-                    </TreeItem>
+            // return (
+            <TreeItem nodeId={item._id} className='text-bold' label={item.Email}>
+              <TreeItem nodeId={"f1" + item._id} label="Inbox">
+                <TreeItem nodeId={"f2" + item._id} label="All">
+                  <TreeItem nodeId={"f3" + item._id} label="New">
+                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox")} />
                   </TreeItem>
-
-                  <TreeItem nodeId={"f10" + item._id} label="Outbox">
-                    <TreeItem nodeId={"f11" + item._id} label="All Sent">
-                      <Link to="/">All Sent 1</Link>
-                      <Link to="/">All Sent 2</Link>
-                      <Link to="/">All Sent 3</Link>
-                    </TreeItem>
-                    <TreeItem nodeId={"f13" + item._id} label="Unanswered">
-                      <Link to="/">Unanswered 1</Link>
-                      <Link to="/">Unanswered 2</Link>
-                      <Link to="/">Unanswered 3</Link>
-                    </TreeItem>
-                    <TreeItem nodeId={"f14" + item._id} label="Scheuled">
-                      <Link to="/">Scheuled 1</Link>
-                      <Link to="/">Scheuled 2</Link>
-                      <Link to="/">Scheuled 3</Link>
-                    </TreeItem>
-                    <TreeItem nodeId={"f15" + item._id} label="Draft">
-                      <Link to="/">Draft 1</Link>
-                      <Link to="/">Draft 2</Link>
-                    </TreeItem>
-                   
-                    <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
-                      <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
-                    </TreeItem>
-                    <TreeItem nodeId={"f17" + item._id} label="Spam">
-                    <TreeItem nodeId={"f170"} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")}  selected/>
-                     {/* <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link> */}
-                    </TreeItem>
+                  <TreeItem nodeId={"f4" + item._id} label="Starred">
+                    <TreeItem nodeId={"f60" + item._id} label="Starred" onClick={() => RedirectLink(item.AccountID, "Starred")} />
                   </TreeItem>
                 </TreeItem>
-              
-              ))}
+
+                <TreeItem nodeId={"f5" + item._id} label="Focused">
+                  <Link to="/">Focused 1</Link>
+                  <Link to="/">Focused 2</Link>
+                </TreeItem>
+
+                <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
+                  <TreeItem nodeId={"f60" + item._id} label="Other Inbox" onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
+                </TreeItem>
+
+                <TreeItem nodeId={"f7" + item._id} label="Follow Up Later">
+                  <TreeItem nodeId={"f70" + item._id} label="Follow Up Later" onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} />
+                </TreeItem>
+
+
+
+
+                <TreeItem nodeId={"f8" + item._id} label="Junk">
+                  <Link to="/">Junk 1</Link>
+                  <Link to="/">Junk 2</Link>
+                </TreeItem>
+
+                <TreeItem nodeId={"f9" + item._id} label="Trash">
+                  <Link to="/">Trash 1</Link>
+                  <Link to="/">Trash 2</Link>
+                </TreeItem>
+              </TreeItem>
+
+              <TreeItem nodeId={"f10" + item._id} label="Outbox">
+                <TreeItem nodeId={"f11" + item._id} label="All Sent">
+                  <Link to="/">All Sent 1</Link>
+                  <Link to="/">All Sent 2</Link>
+                  <Link to="/">All Sent 3</Link>
+                </TreeItem>
+                <TreeItem nodeId={"f13" + item._id} label="Unanswered">
+                  <Link to="/">Unanswered 1</Link>
+                  <Link to="/">Unanswered 2</Link>
+                  <Link to="/">Unanswered 3</Link>
+                </TreeItem>
+                <TreeItem nodeId={"f14" + item._id} label="Scheuled">
+                  <Link to="/">Scheuled 1</Link>
+                  <Link to="/">Scheuled 2</Link>
+                  <Link to="/">Scheuled 3</Link>
+                </TreeItem>
+                <TreeItem nodeId={"f15" + item._id} label="Draft">
+                  <Link to="/">Draft 1</Link>
+                  <Link to="/">Draft 2</Link>
+                </TreeItem>
+
+                <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
+                  <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
+                </TreeItem>
+                <TreeItem nodeId={"f17" + item._id} label="Spam">
+                  <TreeItem nodeId={"f170"} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")} selected />
+                  {/* <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link> */}
+                </TreeItem>
+              </TreeItem>
+            </TreeItem>
+
+          ))}
         </TreeView>
         {/* 
 
