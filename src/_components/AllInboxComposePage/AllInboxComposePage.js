@@ -650,12 +650,12 @@ export default function AllInboxComposePage() {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose px-3 py-2'>
+                    <div className='subcompose px-3 py-1'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0 pt-1">
+                            <Col xs={3} className="px-0 pt-1">
                                 <h6>Email Account :</h6>
                             </Col>
-                            <Col xs={10} className="px-1">
+                            <Col xs={9} className="px-1">
                                 <div className='comse-select'>
                                     <Select
                                         value={SelectedEmailAccountUser}
@@ -671,47 +671,47 @@ export default function AllInboxComposePage() {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose px-3 py-2'>
+                    <div className='subcompose px-3'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>To :</h6>
                             </Col>
-                            <Col xs={9} className="px-0">
+                            <Col xs={7} className="px-0">
                                 <Input className='input-clend' id='To' name='To' />
 
                             </Col>
-                            <Col xs={2} className='col text-right d-flex'>
+                            <Col xs={3} className='col text-right d-flex px-0'>
                                 <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
                                 <Button className='lable-btn' onClick={OpenBcc}>Bcc</Button>
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose cc px-3 py-2' id='Cc'>
+                    <div className='subcompose cc px-3' id='Cc'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>Cc :</h6>
                             </Col>
-                            <Col xs={11} className="px-0">
+                            <Col xs={10} className="px-0">
                                 <Input className='input-clend' id='CC' name='Cc' />
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose bcc px-3 py-2' id='Bcc'>
+                    <div className='subcompose bcc px-3' id='Bcc'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>Bcc :</h6>
                             </Col>
-                            <Col xs={11} className="px-0">
+                            <Col xs={10} className="px-0">
                                 <Input className='input-clend' id='BCC' name='Bcc' />
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose px-3 py-2'>
+                    <div className='subcompose px-3'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>Subject :</h6>
                             </Col>
-                            <Col xs={11} className="px-0">
+                            <Col xs={10} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' />
                             </Col>
                         </Row>

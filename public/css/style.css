@@ -704,7 +704,7 @@ ul.d-flex.flexlist {
     left: 0px;
     bottom: 0px;
     width: 100%;
-    max-width: 840px;
+    max-width: 550px;
     padding: 0;
     display: none;
 }
@@ -738,7 +738,7 @@ ul.d-flex.flexlist {
 .hcompose h4 {
     color: #fff;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 1rem;
     line-height: 28px;
     text-align: left;
     margin: 10px auto;
@@ -769,7 +769,7 @@ ul.d-flex.flexlist {
 
 .subcompose h6 {
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.9rem;
     line-height: 26px;
     color: #242424;
     margin: 0 auto;
@@ -778,7 +778,7 @@ ul.d-flex.flexlist {
 
 button.lable-btn {
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.9rem;
     line-height: 22px;
     color: #242424;
     text-transform: capitalize;
@@ -1394,8 +1394,8 @@ div.erorr-msg>*>* {
 }
 
 .comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-    padding: 8.5px 17px;
-    min-width: 430px;
+    padding: 5px 15px;
+    min-width: 300px;
 }
 
 .comse-select div fieldset legend {
@@ -1474,7 +1474,7 @@ div.erorr-msg>*>* {
 
 .FroalaEditor .fr-box.fr-basic .fr-wrapper {
     border: none;
-    height: 170px;
+    height: 240px;
     margin-bottom: 50px;
     overflow-y: auto;
 }
@@ -1485,8 +1485,8 @@ div.erorr-msg>*>* {
 
 /*difulat start css*/
 .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child {
-    background-color: #647AF7;
-    box-shadow: 0px 4px 14px 6px #d8defd;
+    background-color: #e49273;
+    box-shadow: 0px 4px 14px 6px #fcf2ee;
     color: #fff;
     padding: 6px 20px 6px 20px;
     border-radius: 72px !important;
@@ -1729,12 +1729,16 @@ div.erorr-msg>*>* {
 .bg-themehead a.editprofile:hover {
     opacity: 0.7;
 }
-.composebody button.btn.largbtn {
+.composebody button.btn.largbtn, 
+.composebody button.btn.largbtn:focus,
+.composebody .btn-primary:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0px 4px 14px 6px #e6c8bc;
     width: 50px;
     font-size: 50px;
     height: 64px;
     border-radius: 5px;
     padding: 0;
+    background: #e49273;
 }
 .columlistdrop {
     font-size: small;
@@ -2099,7 +2103,7 @@ div.modal-prein.wd-600{
     border-left: 1px solid rgba(25, 118, 210, 0.5);
 }
 .composeion {
-    margin-top: 5px;
+    margin-top: 3px;
 }
 /* end maxbody */
 .minmusbox .userdefual {
@@ -2500,7 +2504,16 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .MuiPaper-root.MuiMenu-paper ul li  {
     font-size: 0.9rem;
 }
-
+.composeion button img {
+    width: 18px;
+    margin: 5px auto;
+}
+.composeion .MuiButtonGroup-grouped:not(:last-of-type) {
+    border-color: rgb(220 134 102) !important;
+} 
+.comse-select .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #e49273; 
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
