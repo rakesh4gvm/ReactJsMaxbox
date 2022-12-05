@@ -330,10 +330,18 @@ export default function Navigation() {
         state: { ID: ID }
       });
     }
-    // if (PageName == "Spam") {
-    //   history.push("/Spam", ID);
-    // }
-
+    if (PageName == "AllSent") {
+      history.push({
+        pathname: '/AllSentEmails',
+        state: { ID: ID }
+      });
+    }
+    if (PageName == "UnansweredReplies") {
+      history.push({
+        pathname: '/UnansweredReplies',
+        state: { ID: ID }
+      });
+    }
   }
 
   const WrapperRef = useRef(null);
@@ -451,9 +459,7 @@ export default function Navigation() {
 
             <TreeItem nodeId="18" label="Outbox">
               <TreeItem nodeId="19" label="All Sent">
-                <Link to="/">All Sent 1</Link>
-                <Link to="/">All Sent 2</Link>
-                <Link to="/">All Sent 3</Link>
+                <Link to="/AllSentEmails">All Sent</Link>
               </TreeItem>
               <TreeItem nodeId="20" label="Unanswered">
                 <Link to="/UnansweredResponses">Unanswered</Link>
@@ -468,6 +474,9 @@ export default function Navigation() {
               </TreeItem>
               <TreeItem nodeId="23" label="Spam">
                 <Link to="/Spam">Spam</Link>
+              </TreeItem>
+              <TreeItem nodeId="23" label="UnansweredReplies">
+                <Link to="/UnansweredReplies">UnansweredReplies</Link>
               </TreeItem>
             </TreeItem>
           </TreeItem>
@@ -515,9 +524,7 @@ export default function Navigation() {
 
               <TreeItem nodeId={"f10" + item._id} label="Outbox">
                 <TreeItem nodeId={"f11" + item._id} label="All Sent">
-                  <Link to="/">All Sent 1</Link>
-                  <Link to="/">All Sent 2</Link>
-                  <Link to="/">All Sent 3</Link>
+                  <TreeItem nodeId={"f160" + item._id} label="AllSent" onClick={() => RedirectLink(item.AccountID, "AllSent")} />
                 </TreeItem>
                 <TreeItem nodeId={"f13" + item._id} label="Unanswered">
                   <Link to="/">Unanswered 1</Link>
@@ -539,7 +546,9 @@ export default function Navigation() {
                 </TreeItem>
                 <TreeItem nodeId={"f17" + item._id} label="Spam">
                   <TreeItem nodeId={"f170"} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")} selected />
-                  {/* <Link onClick={() => RedirectLink(item.AccountID, "Spam")} >Spam</Link> */}
+                </TreeItem>
+                <TreeItem nodeId={"f18" + item._id} label="UnansweredReplies">
+                  <TreeItem nodeId={"f180"} label="UnansweredReplies" onClick={() => RedirectLink(item.AccountID, "UnansweredReplies")} selected />
                 </TreeItem>
               </TreeItem>
             </TreeItem>
