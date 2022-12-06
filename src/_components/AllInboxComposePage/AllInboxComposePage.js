@@ -57,7 +57,7 @@ toast.configure();
 function useOutsideAlerter(ref) {
 }
 
-export default function AllInboxComposePage() {
+export default function AllInboxComposePage({ GetAllInboxList }) {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
@@ -327,11 +327,11 @@ export default function AllInboxComposePage() {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Other Inbox<br />Mail send successfully.</div>)
+                    toast.success(<div>All Inbox<br />Mail send successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()
-                    // GetInBoxList()
+                    // GetAllInboxList()
                     document.getElementById("To").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
@@ -532,10 +532,9 @@ export default function AllInboxComposePage() {
 
     return (
         <>
-            <div id="hideloding" className="loding-display d-none">
+            <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
             </div>
-
 
             <Modal className="modal-lister"
                 open={open}

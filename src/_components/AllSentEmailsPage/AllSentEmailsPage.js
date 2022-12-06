@@ -7,8 +7,9 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
+import AllSentEmailsComposePage from '../AllSentEmailsComposePage/AllSentEmailsComposePage';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -27,8 +28,6 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
-import AllInboxComposePage from '../AllSentEmailsComposePage/AllSentEmailsComposePage';
-import AllSentEmailsComposePage from '../AllSentEmailsComposePage/AllSentEmailsComposePage';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -115,6 +114,7 @@ export default function AllSentEmailsPage(props) {
     } else {
       AccountIDs = [-1]
     }
+    LoaderShow()
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -137,9 +137,11 @@ export default function AllSentEmailsPage(props) {
           SetAllSentList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetAllSentList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -150,6 +152,7 @@ export default function AllSentEmailsPage(props) {
   const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+      LoaderShow()
       var Data = {
         _id: ID,
       };
@@ -162,20 +165,23 @@ export default function AllSentEmailsPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetAllSentList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
-
   };
   //End Open Message Details
 
@@ -192,9 +198,6 @@ export default function AllSentEmailsPage(props) {
 
   return (
     <>
-      <div id="hideloding" className="loding-display">
-        <img src={MaxboxLoading} />
-      </div>
       <div className='lefter'>
         <Navigation />
       </div>

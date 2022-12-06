@@ -294,9 +294,9 @@ export default function Navigation() {
   }
 
   const RedirectLink = (ID, PageName) => {
-    if (PageName == "AllInbox") {
+    if (PageName == "Unanswered Responses") {
       history.push({
-        pathname: '/AllInbox',
+        pathname: '/UnansweredResponses',
         state: { ID: ID }
       });
     }
@@ -312,9 +312,9 @@ export default function Navigation() {
         state: { ID: ID }
       });
     }
-    if (PageName == "Unanswered Responses") {
+    if (PageName == "Draft") {
       history.push({
-        pathname: '/UnansweredResponses',
+        pathname: '/Drafts',
         state: { ID: ID }
       });
     }
@@ -327,6 +327,12 @@ export default function Navigation() {
     if (PageName == "Spam") {
       history.push({
         pathname: '/Spam',
+        state: { ID: ID }
+      });
+    }
+    if (PageName == "AllInbox") {
+      history.push({
+        pathname: '/AllInbox',
         state: { ID: ID }
       });
     }
@@ -471,12 +477,12 @@ export default function Navigation() {
                 <Link to="/">Scheuled 3</Link>
               </TreeItem>
               <TreeItem nodeId="22" label="Draft">
-                <Link to="/Drafts">Draft 1</Link>
+                <Link to="/Drafts">Draft</Link>
               </TreeItem>
               <TreeItem nodeId="23" label="Spam">
                 <Link to="/Spam">Spam</Link>
               </TreeItem>
-              <TreeItem nodeId="23" label="UnansweredReplies">
+              <TreeItem nodeId="24" label="UnansweredReplies">
                 <Link to="/UnansweredReplies">UnansweredReplies</Link>
               </TreeItem>
             </TreeItem>
@@ -538,10 +544,8 @@ export default function Navigation() {
                   <Link to="/">Scheuled 3</Link>
                 </TreeItem>
                 <TreeItem nodeId={"f15" + item._id} label="Draft">
-                  <Link to="/">Draft 1</Link>
-                  <Link to="/">Draft 2</Link>
+                  <TreeItem nodeId={"f150" + item._id} label="Draft" onClick={() => RedirectLink(item.AccountID, "Draft")} />
                 </TreeItem>
-
                 <TreeItem nodeId={"f16" + item._id} label="Unanswered Responses">
                   <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
                 </TreeItem>

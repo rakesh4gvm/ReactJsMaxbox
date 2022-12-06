@@ -2,48 +2,36 @@ import React, { useRef, useState, useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
-
-import { makeStyles, styled, useTheme, alpha } from '@material-ui/core/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
+import SplitPane from "react-split-pane";
+import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { useLocation } from 'react-router-dom'
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
-
-
+import FollowUpLaterComposePage from '../FollowUpLaterComposePage/FollowUpLaterComposePage';
 
 import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-import SplitPane from "react-split-pane";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { styled, alpha } from '@material-ui/core/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
-
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { GetUserDetails, LoaderShow, LoaderHide, IsGreaterDate } from "../../_helpers/Utility";
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -85,11 +73,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-function createData(name, correspondents, date) {
-  return { name, correspondents, date };
-}
-
 export default function FollowUpLater(props) {
 
   const [FollowUpList, SetFollowUpList] = useState([])
@@ -104,26 +87,13 @@ export default function FollowUpLater(props) {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
 
-  // useEffect(() => {
-  //   if (props !== undefined) {
-  //     const ID = props.location.state;
-  //     if (ID != "" && ID != null && ID != "undefined") {
-  //       GetFollowUpLaterList(ID)
-  //     } else {
-  //       GetFollowUpLaterList(ID)
-  //     }
-  //   }
-  // }, [FollowUpDate, SearchInbox])
-
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
     GetClientID();
   }, [FollowUpDate, SearchInbox]);
 
-
   // Get ClientID
   const GetClientID = () => {
-
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
@@ -165,7 +135,7 @@ export default function FollowUpLater(props) {
       AccountIDs: AccountIDs,
       SearchDate: Moment(FollowUpDate).format("YYYY-MM-DD")
     };
-
+    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
@@ -177,9 +147,11 @@ export default function FollowUpLater(props) {
           SetFollowUpList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetFollowUpList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -193,6 +165,7 @@ export default function FollowUpLater(props) {
       var Data = {
         _id: ID,
       };
+      LoaderShow()
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
         method: "POST",
@@ -202,18 +175,22 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetFollowUpList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
   };
   //End Open Message Details
@@ -234,7 +211,6 @@ export default function FollowUpLater(props) {
   };
 
   return (
-
     <>
       <div className='lefter'>
         <Navigation />
@@ -271,7 +247,6 @@ export default function FollowUpLater(props) {
             </Col>
           </Row>
         </header>
-
 
         <div className='bodyview' >
           <SplitPane
@@ -357,8 +332,7 @@ export default function FollowUpLater(props) {
           </SplitPane>
         </div>
       </div>
-
-
+      <FollowUpLaterComposePage GetFollowUpLaterList={GetFollowUpLaterList} />
     </>
   );
 }

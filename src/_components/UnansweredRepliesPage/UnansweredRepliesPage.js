@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredRepliesComposePage from '../UnansweredRepliesComposePage/UnansweredRepliesComposePage';
 
@@ -113,6 +113,7 @@ export default function AllUnansweredRepliesPage(props) {
     } else {
       AccountIDs = [-1]
     }
+    LoaderShow()
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -135,9 +136,11 @@ export default function AllUnansweredRepliesPage(props) {
           SetAllUnanswereRepliesList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetAllUnanswereRepliesList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -148,6 +151,7 @@ export default function AllUnansweredRepliesPage(props) {
   const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+      LoaderShow()
       var Data = {
         _id: ID,
       };
@@ -160,18 +164,22 @@ export default function AllUnansweredRepliesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetAllUnanswereRepliesList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
   };
   //End Open Message Details

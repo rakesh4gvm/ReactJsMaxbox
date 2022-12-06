@@ -7,8 +7,9 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
+import SpamComposePage from '../SpamComposePage/SpamComposePage';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -113,6 +114,7 @@ export default function SpamPage(props) {
     } else {
       AccountIDs = [-1]
     }
+    LoaderShow()
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -135,9 +137,11 @@ export default function SpamPage(props) {
           SetSpamList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetSpamList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -148,6 +152,7 @@ export default function SpamPage(props) {
   const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+      LoaderShow()
       var Data = {
         _id: ID,
       };
@@ -160,18 +165,22 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetSpamList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
   };
   //End Open Message Details
@@ -296,8 +305,7 @@ export default function SpamPage(props) {
           </SplitPane>
         </div>
       </div>
-
-
+      <SpamComposePage GetSpamList={GetSpamList} />
     </>
   );
 }

@@ -7,8 +7,9 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
+import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -80,13 +81,12 @@ export default function OtherInboxPage(props) {
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
 
-
   useEffect(() => {
     document.title = 'Other Inbox | MAXBOX';
     GetClientID();
   }, [SearchInbox])
 
-  // Start Get Client ID
+  // Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
@@ -102,7 +102,6 @@ export default function OtherInboxPage(props) {
       }
     }
   }
-  // End Get Client ID
 
   // Start Get Follow Up Later List
   const GetAllInboxList = (CID, UID, PN, ID) => {
@@ -112,6 +111,7 @@ export default function OtherInboxPage(props) {
     } else {
       AccountIDs = [-1]
     }
+    LoaderShow()
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -140,9 +140,11 @@ export default function OtherInboxPage(props) {
           SetAllInboxList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetAllInboxList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -153,6 +155,7 @@ export default function OtherInboxPage(props) {
   const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+      LoaderShow()
       var Data = {
         _id: ID,
       };
@@ -165,18 +168,22 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetAllInboxList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
   };
   //End Open Message Details
@@ -298,6 +305,7 @@ export default function OtherInboxPage(props) {
           </SplitPane>
         </div>
       </div>
+      <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
     </>
   );
 }

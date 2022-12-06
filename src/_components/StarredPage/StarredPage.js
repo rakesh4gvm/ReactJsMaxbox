@@ -7,8 +7,9 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
+import StarredComposePage from '../StarredComposePage/StarredComposePage';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -127,6 +128,7 @@ export default function OtherInboxPage(props) {
       IsOtherInbox: false,
       AccountIDs: AccountIDs
     };
+    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryGet",
       method: "POST",
@@ -138,9 +140,11 @@ export default function OtherInboxPage(props) {
           SetStarredList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          LoaderHide()
         } else {
           SetStarredList([])
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       }
     })
@@ -154,6 +158,7 @@ export default function OtherInboxPage(props) {
       var Data = {
         _id: ID,
       };
+      LoaderShow()
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryGetByID",
         method: "POST",
@@ -163,18 +168,22 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            LoaderHide()
           } else {
             SetStarredList([])
             SetOpenMessageDetails([]);
+            LoaderHide()
           }
         }
         else {
           SetOpenMessageDetails([]);
+          LoaderHide()
         }
       });
     }
     else {
       SetOpenMessageDetails([]);
+      LoaderHide()
     }
   };
   //End Open Message Details
@@ -296,6 +305,7 @@ export default function OtherInboxPage(props) {
           </SplitPane>
         </div>
       </div>
+      <StarredComposePage GetStarredList={GetStarredList} />
     </>
   );
 }

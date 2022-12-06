@@ -523,10 +523,9 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
 
     return (
         <>
-            <div id="hideloding" className="loding-display d-none">
+            <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
             </div>
-
 
             <Modal className="modal-lister"
                 open={open}
