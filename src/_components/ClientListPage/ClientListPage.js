@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
+import Navigation from '../Navigation/Navigation'; 
 
 toast.configure();
 
@@ -205,57 +206,67 @@ export default function ClientListPage() {
         </Box>
       </Modal>
 
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 className='my-0'>Client</h5>
-          </Col>
-        </Row>
-        <div className='sm-container mt-5'>
-          <Row className='mb-5'>
-            <Col align="right">
-              <Button className='btnaccount' onClick={AddClient}>
-                <AddIcon /> Add Client
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <TableContainer className='tablename' component={Paper}>
-                <Table sx={{ minWidth: 750 }} aria-label="caption table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>BCC Email</TableCell>
-                      <TableCell align="right">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {ClientList?.map((row) => (
-                      <TableRow>
-                        <TableCell>{row.Name}</TableCell>
-                        <TableCell scope="row">{row.BccEmail}</TableCell>
 
-                        <TableCell align="right">
-                          <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
-                            <img src={DeleteIcon} />
-                          </Button>
-                          <Button className="iconbtntable" onClick={() => EditClient(row._id)}><EditIcon /></Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      <div className='righter'> 
 
-              <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
-              </Stack>
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 className='my-0'>Client</h5>
             </Col>
           </Row>
         </div>
-      </div>
-      <FooterBottom />
+
+        <div className='container'> 
+          <div className='sm-container mt-5'>
+            <Row className='mb-5'>
+              <Col align="right">
+                <Button className='btnaccount' onClick={AddClient}>
+                  <AddIcon /> Add Client
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <TableContainer className='tablename' component={Paper}>
+                  <Table sx={{ minWidth: 750 }} aria-label="caption table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>BCC Email</TableCell>
+                        <TableCell align="right">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {ClientList?.map((row) => (
+                        <TableRow>
+                          <TableCell>{row.Name}</TableCell>
+                          <TableCell scope="row">{row.BccEmail}</TableCell>
+
+                          <TableCell align="right">
+                            <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
+                              <img src={DeleteIcon} />
+                            </Button>
+                            <Button className="iconbtntable" onClick={() => EditClient(row._id)}><EditIcon /></Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Stack className='my-4 page-dec' spacing={2}>
+                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                </Stack>
+              </Col>
+            </Row>
+          </div>
+        </div> 
+      </div> 
+
     </>
   );
 }

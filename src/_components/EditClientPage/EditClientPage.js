@@ -20,6 +20,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from 'react-toastify';
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
+import Navigation from '../Navigation/Navigation'; 
+
 export default function EditClientPage(props) {
     const [ClientNameError, SetClientNameError] = useState("");
     const [SignatureError, SetSignatureError] = useState("");
@@ -230,60 +232,70 @@ export default function EditClientPage(props) {
                 <img src={MaxboxLoading} />
             </div>
 
-            <div className='bodymain'>
-                <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-                    <Col className='py-4'>
-                        <h5 onClick={CancelEditCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Client</h5>
+
+    <div className='lefter'>
+        <Navigation />
+    </div>
+    <div className='righter'>  
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+                <h5 onClick={CancelEditCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Client</h5>
+            </Col>
+          </Row>
+        </div>
+
+
+        <div className='container'> 
+            <div className='sm-container'>
+                <Row>
+                    <Col>
+                        <Row className='input-boxbg mt-5'>
+                            <Col sm={4}>
+                                <label>Name  :</label>
+                            </Col>
+                            <Col sm={8}>
+                            </Col>
+                            <Col sm={8}>
+                                <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.Name} />
+                                {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
+                            </Col>
+                        </Row>
+                        <Row className='input-boxbg mt-5'>
+                            <Col sm={2}>
+                                <label>BCC email  :</label>
+                            </Col>
+                            <Col sm={8}>
+                            </Col>
+                            <Col sm={8}>
+                                <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.BccEmail} />
+                                {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
+                            </Col>
+                        </Row>
+                        <Row className='input-boxbg mt-5'>
+                            <Col sm={4}>
+                                <label>Email Signature Text  :</label>
+                            </Col>
+                            <Col sm={8}>
+                            </Col>
+                            <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                            {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                        </Row>
                     </Col>
                 </Row>
-                <div className='sm-container mt-5'>
-                    <Row>
-                        <Col>
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={4}>
-                                    <label>Name  :</label>
-                                </Col>
-                                <Col sm={8}>
-                                </Col>
-                                <Col sm={8}>
-                                    <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.Name} />
-                                    {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
-                                </Col>
-                            </Row>
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={2}>
-                                    <label>BCC email  :</label>
-                                </Col>
-                                <Col sm={8}>
-                                </Col>
-                                <Col sm={8}>
-                                    <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} defaultValue={ClientIDDetails[0]?.BccEmail} />
-                                    {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
-                                </Col>
-                            </Row>
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={4}>
-                                    <label>Email Signature Text  :</label>
-                                </Col>
-                                <Col sm={8}>
-                                </Col>
-                                <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
-                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <div className='btnprofile my-5 left'>
-                                <ButtonGroup variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateClient} > Save</Button>
-                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditCLient}> Cancel</Button>
-                                </ButtonGroup>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
+                <Row>
+                    <Col>
+                        <div className='btnprofile my-5 left'>
+                            <ButtonGroup variant="text" aria-label="text button group">
+                                <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateClient} > Save</Button>
+                                <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditCLient}> Cancel</Button>
+                            </ButtonGroup>
+                        </div>
+                    </Col>
+                </Row>
             </div>
+        </div>
+    </div>
 
         </>
     );

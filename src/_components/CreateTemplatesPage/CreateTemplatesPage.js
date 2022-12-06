@@ -28,6 +28,8 @@ import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 
+import Navigation from '../Navigation/Navigation';  
+
 toast.configure();
 
 const style = {
@@ -203,20 +205,25 @@ export default function CreateTemplatesPage({ children }) {
 
   return (
     <>
-      <HeaderTop />
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      <div className='righter'> 
+      
 
       <div id="hideloding" className="loding-display">
         <img src={MaxboxLoading} />
       </div>
 
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
+      <div className='px-3'>   
+        <Row className='bodsetting'>
+          <Col className='py-3'> 
             <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
           </Col>
         </Row>
+      </div>
 
-
+      <div className='container'>  
         <div className='sm-container mt-5'>
           <Row>
             <Col>
@@ -258,7 +265,8 @@ export default function CreateTemplatesPage({ children }) {
 
       </div>
 
-      <FooterBottom />
+      </div>
+ 
 
     </>
   );

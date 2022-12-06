@@ -43,6 +43,7 @@ import MailMultipal from '../../images/icons/mail_multipal.svg';
 import InboxRounded from '../../images/icons/inbox_rounded.svg';
 import EyesView from '../../images/icons/eyes_view.svg';
 
+import Navigation from '../Navigation/Navigation';  
 
 toast.configure();
 
@@ -264,109 +265,118 @@ export default function ObjectionTemplateListPage() {
         </Box>
       </Modal>
 
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 className='my-0'>Objection Template</h5>
-          </Col>
-        </Row>
-        <div className='sm-container-bix mt-5'>
-          <Row className='mb-5'>
-            <Col align="right">
-              <Button className='btnaccount' onClick={AddObjectionTemplate}>
-                <AddIcon /> Create Objection Template
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <TableContainer className='tablename' component={Paper}>
+      <div className='lefter'>
+        <Navigation />
+      </div>
 
-                <Table sx={{ minWidth: 750 }} aria-label="caption table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Title</TableCell>
-                      <TableCell>Body</TableCell>
-                      <TableCell>Send</TableCell>
-                      <TableCell>Open</TableCell>
-                      <TableCell>Replies</TableCell>
-                      <TableCell>Open %</TableCell>
-                      <TableCell>Replies %</TableCell>
-                      <TableCell>Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {ObjectionTemplateList?.map((row) => (
-                      <React.Fragment>
-                        <TableRow>
-
-                          {/* <TableCell align="center">
-                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
-                              ...prev,
-                              [row._id]: !prev[row._id],
-                            }))}>
-                              {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
-                            </IconButton>
-                          </TableCell> */}
-
-                          <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
-                          <TableCell sx={{ minWidth: 500 }}>
-                            <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
-                          </TableCell>
-                          {/* <TableCell> </TableCell> */}
-
-                          <TableCell><img src={SmallSend} /> Send</TableCell>
-                          <TableCell><img src={MailMultipal} /> Open</TableCell>
-                          <TableCell><img src={InboxRounded} /> Replies</TableCell>
-                          <TableCell>Open %</TableCell>
-                          <TableCell>Replies %</TableCell>
-
-                          <TableCell align="left">
-                            <ButtonGroup variant="text" aria-label="text button group">
-                              <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
-
-                              <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id, parse(row.BodyText))}>
-                                <img src={EyesView} />
-                              </Button>
-                              <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
-                                <img src={DeleteIcon} />
-                              </Button>
-                            </ButtonGroup>
-                          </TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                            <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
-                              <Box margin={1} className="innertables">
-                                <Table size="small" aria-label="purchases">
-                                  <TableHead>
-                                  </TableHead>
-                                  <TableRow>
-                                    <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell>
-                                  </TableRow>
-                                </Table>
-                              </Box>
-                            </Collapse>
-                          </TableCell>
-                        </TableRow>
-
-                      </React.Fragment>
-                    ))}
-                  </TableBody>
-                </Table>
-
-              </TableContainer>
-
-              <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
-              </Stack>
+      <div className='righter'> 
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 className='my-0'>Objection Template</h5>
             </Col>
           </Row>
         </div>
+
+        <div className='container'> 
+          <div className='sm-container-bix mt-5'>
+            <Row className='mb-5'>
+              <Col align="right">
+                <Button className='btnaccount' onClick={AddObjectionTemplate}>
+                  <AddIcon /> Create Objection Template
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <TableContainer className='tablename' component={Paper}>
+
+                  <Table sx={{ minWidth: 750 }} aria-label="caption table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Body</TableCell>
+                        <TableCell>Send</TableCell>
+                        <TableCell>Open</TableCell>
+                        <TableCell>Replies</TableCell>
+                        <TableCell>Open %</TableCell>
+                        <TableCell>Replies %</TableCell>
+                        <TableCell>Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {ObjectionTemplateList?.map((row) => (
+                        <React.Fragment>
+                          <TableRow>
+
+                            {/* <TableCell align="center">
+                              <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => ({
+                                ...prev,
+                                [row._id]: !prev[row._id],
+                              }))}>
+                                {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
+                              </IconButton>
+                            </TableCell> */}
+
+                            <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
+                            <TableCell sx={{ minWidth: 500 }}>
+                              <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
+                            </TableCell>
+                            {/* <TableCell> </TableCell> */}
+
+                            <TableCell><img src={SmallSend} /> Send</TableCell>
+                            <TableCell><img src={MailMultipal} /> Open</TableCell>
+                            <TableCell><img src={InboxRounded} /> Replies</TableCell>
+                            <TableCell>Open %</TableCell>
+                            <TableCell>Replies %</TableCell>
+
+                            <TableCell align="left">
+                              <ButtonGroup variant="text" aria-label="text button group">
+                                <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
+
+                                <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id, parse(row.BodyText))}>
+                                  <img src={EyesView} />
+                                </Button>
+                                <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
+                                  <img src={DeleteIcon} />
+                                </Button>
+                              </ButtonGroup>
+                            </TableCell>
+                          </TableRow>
+
+                          <TableRow>
+                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                              <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
+                                <Box margin={1} className="innertables">
+                                  <Table size="small" aria-label="purchases">
+                                    <TableHead>
+                                    </TableHead>
+                                    <TableRow>
+                                      <TableCell><div className='bodytables'>{parse(row.BodyText)}</div></TableCell>
+                                    </TableRow>
+                                  </Table>
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+
+                        </React.Fragment>
+                      ))}
+                    </TableBody>
+                  </Table>
+
+                </TableContainer>
+
+                <Stack className='my-4 page-dec' spacing={2}>
+                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                </Stack>
+              </Col>
+            </Row>
+          </div>
+        </div> 
       </div>
-      <FooterBottom />
+
     </>
   );
 }

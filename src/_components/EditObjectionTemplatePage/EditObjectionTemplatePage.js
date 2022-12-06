@@ -22,6 +22,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
+import Navigation from '../Navigation/Navigation'; 
+
 toast.configure();
 
 export default function EditObjectionTemplatePage(props) {
@@ -184,49 +186,57 @@ export default function EditObjectionTemplatePage(props) {
                 <img src={MaxboxLoading} />
             </div>
 
-            <div className='bodymain'>
-                <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-                    <Col className='py-4'>
-                        <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
-                    </Col>
-                </Row>
-                <div className='sm-container mt-5'>
-                    <Row>
-                        <Col>
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={2}>
-                                    <label>Subject  :</label>
-                                </Col>
-
-                                <Col sm={8}>
-                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={ObjectionTemplateIDDetails[0]?.Subject} />
-                                    {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
-                                </Col>
-                            </Row>
-
-                            <Row className='input-boxbg'>
-                                <Col sm={2}>
-                                    <label>Body  :</label>
-                                </Col>
-
-                                <Col sm={8}>
-                                    <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
-                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                            </Row>
+            <div className='lefter'>
+                <Navigation />
+            </div>
+            <div className='righter'>  
+                <div className='px-3'> 
+                    <Row className='bodsetting px-4'>
+                        <Col className='py-3'>
+                            <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col sm={2}>
-                        </Col>
-                        <Col>
-                            <div className='btnprofile my-5 left'>
-                                <ButtonGroup variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateObjectionTemplate} > Save</Button>
-                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditObjectionTemplate}> Cancel</Button>
-                                </ButtonGroup>
-                            </div>
-                        </Col>
-                    </Row>
+                </div>
+
+                <div className='container'> 
+                    <div className='sm-container'>
+                        <Row>
+                            <Col>
+                                <Row className='input-boxbg mt-5'>
+                                    <Col sm={2}>
+                                        <label>Subject  :</label>
+                                    </Col>
+
+                                    <Col sm={8}>
+                                        <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={ObjectionTemplateIDDetails[0]?.Subject} />
+                                        {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
+                                    </Col>
+                                </Row>
+
+                                <Row className='input-boxbg'>
+                                    <Col sm={2}>
+                                        <label>Body  :</label>
+                                    </Col>
+
+                                    <Col sm={8}>
+                                        <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
+                                    {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={2}>
+                            </Col>
+                            <Col>
+                                <div className='btnprofile my-5 left'>
+                                    <ButtonGroup variant="text" aria-label="text button group">
+                                        <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateObjectionTemplate} > Save</Button>
+                                        <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditObjectionTemplate}> Cancel</Button>
+                                    </ButtonGroup>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
             </div>
 

@@ -21,6 +21,8 @@ import { GetUserDetails } from "../../_helpers/Utility";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Navigation from '../Navigation/Navigation'; 
+
 toast.configure();
 var atob = require('atob');
 
@@ -147,63 +149,67 @@ export default function EditEmailPage(props) {
     <>
 
 
-      <div className='bodymain'>
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      <div className='righter'> 
 
-
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
-          </Col>
-        </Row>
-
-
-        <div className='sm-container mt-5'>
-
-          <Stack sx={{ width: '100%' }} spacing={2}>
-            {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
-            {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
-          </Stack>
-
-          <Row>
-            <Col>
-              <Row>
-                <Col sm={4}>
-                  <div className='input-box'>
-                    <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={EditEmailConfigurationDetails.FirstName} />
-                  </div>
-                </Col>
-                <Col sm={4}>
-                  <div className='input-box'>
-                    <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={EditEmailConfigurationDetails.LastName} />
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={8}>
-                  <div className='input-box'>
-                    <input type='email' placeholder='Email' id='email' defaultValue={EditEmailConfigurationDetails.Email} readonly="readonly" />
-                  </div>
-                </Col>
-                <Col sm={4}>
-                  {EditEmailConfigurationDetails.IsWorking == false ?
-                    <Button className='btnauthenticate mt-4' onClick={() => { ReAuthenticate(EditEmailConfigurationDetails); }} ><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button> : ''}
-                </Col>
-              </Row>
-
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className='btnprofile my-5 left'>
-                <ButtonGroup variant="text" aria-label="text button group">
-                  <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={() => { UpdateEmailConfiguration() }}> Save</Button>
-                  <Button variant="contained btn btn-orang smallbtn" onClick={() => { Cancle() }}> Cancel</Button>
-                </ButtonGroup>
-              </div>
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+                <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
             </Col>
           </Row>
         </div>
 
+        <div className='container'>
+          <div className='sm-container mt-5'>
+
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
+              {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
+            </Stack>
+
+            <Row>
+              <Col>
+                <Row>
+                  <Col sm={4}>
+                    <div className='input-box'>
+                      <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={EditEmailConfigurationDetails.FirstName} />
+                    </div>
+                  </Col>
+                  <Col sm={4}>
+                    <div className='input-box'>
+                      <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={EditEmailConfigurationDetails.LastName} />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={8}>
+                    <div className='input-box'>
+                      <input type='email' placeholder='Email' id='email' defaultValue={EditEmailConfigurationDetails.Email} readonly="readonly" />
+                    </div>
+                  </Col>
+                  <Col sm={4}>
+                    {EditEmailConfigurationDetails.IsWorking == false ?
+                      <Button className='btnauthenticate mt-4' onClick={() => { ReAuthenticate(EditEmailConfigurationDetails); }} ><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button> : ''}
+                  </Col>
+                </Row>
+
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className='btnprofile my-5 left'>
+                  <ButtonGroup variant="text" aria-label="text button group">
+                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={() => { UpdateEmailConfiguration() }}> Save</Button>
+                    <Button variant="contained btn btn-orang smallbtn" onClick={() => { Cancle() }}> Cancel</Button>
+                  </ButtonGroup>
+                </div>
+              </Col>
+            </Row>
+          </div> 
+        </div>
 
 
       </div>

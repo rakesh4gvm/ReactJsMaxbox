@@ -21,6 +21,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
+import Navigation from '../Navigation/Navigation'; 
+
+
 toast.configure();
 
 const Style = {
@@ -230,14 +233,22 @@ export default function AddClientPage({ children }) {
         <img src={MaxboxLoading} />
       </div>
 
-      <div className='bodymain'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
-          </Col>
-        </Row>
 
-        <div className='sm-container mt-5'>
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      <div className='righter'> 
+
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
+            </Col>
+          </Row>
+        </div>
+
+      <div className='container'> 
+        <div className='sm-container'>
           <Row>
             <Col>
               <Row className='input-boxbg mt-5'>
@@ -288,6 +299,7 @@ export default function AddClientPage({ children }) {
           </Row>
         </div>
       </div>
+    </div>
 
     </>
   );

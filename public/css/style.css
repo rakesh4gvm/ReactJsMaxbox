@@ -951,10 +951,14 @@ div.modal-prein {
 }
 
 .bodsetting {
-    background: #8193f9a3;
-    color: #fff;
+    background: rgb(255 247 247);
+    color: #333;
     overflow: hidden;
     position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.bodsetting h5{
+    font-size: 0.9rem;
 }
 
 .imguploadmain {
@@ -1076,12 +1080,12 @@ div.modal-prein {
 }
 
 .btn.btn-orang {
-    background: #F89665;
+    background: #e49273;
     color: #fff;
 }
 
 .btn.btn-orang:hover {
-    background: #DC6529;
+    background: #be7256;
     color: #fff;
 }
 
@@ -1121,12 +1125,13 @@ th {
     color: #616B77;
     border-color: #E5E5E5;
     white-space: nowrap;
+    font-size: 0.9rem;
 }
 
 .tablename tbody tr td {
     font-style: normal;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.9rem;
     line-height: 22px;
     color: #616B77;
     white-space: nowrap;
@@ -1163,7 +1168,7 @@ button.btn-cancel {
 
 Button.iconbtntable {
     line-height: 40px;
-    background: #647AF7;
+    background: #e49273;
     border-radius: 5px;
     height: 40px;
     width: 40px;
@@ -1176,7 +1181,7 @@ Button.iconbtntable {
 
 Button.iconbtntable:hover,
 Button.iconbtntable:focus {
-    background: #5267DB;
+    background: #d97752;
 }
 
 Button.btnauthenticate {
@@ -1228,8 +1233,8 @@ Button.btnaccount:hover {
 }
 
 .page-dec ul li button.Mui-selected {
-    color: #647AF7;
-    background: #F7F8FF;
+    color: #e49273;
+    background: #fff2ed;
 }
 
 .footer-main {
@@ -1299,10 +1304,10 @@ Button.btntemplateround:hover {
     max-width: 1200px;
 }
 
-.iconwhite,
+.iconwhite, 
 .iconwhite svg {
-    color: #fff;
-    width: 26px;
+    color: #333;
+    width: 20px;
     height: auto;
 }
 
@@ -1328,7 +1333,7 @@ Button.btntemplateround:hover {
     font-size: 15px;
     line-height: 50px;
     color: #616B77;
-    background: #F7F8FF;
+    background: #fff7f7;
     outline: 0;
 }
 
@@ -2216,6 +2221,7 @@ html, body {
     max-width: calc(100% - 310px);
     margin-left: 310px;
     height: 100%;
+    overflow-y: auto;
 }
 .orangbody{
     background-color: #E49273;
