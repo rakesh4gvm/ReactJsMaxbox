@@ -189,7 +189,7 @@ export default function Navigation() {
   useEffect(() => {
 
     GetClientDropdown();
-    SetExpanded(["f170"])
+    
   }, []);
 
 
@@ -293,61 +293,113 @@ export default function Navigation() {
 
   }
 
-  const RedirectLink = (ID, PageName) => {
+  const RedirectLink = (ID, PageName,MenuID) => {
     if (PageName == "Unanswered Responses") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/UnansweredResponses',
         state: { ID: ID }
       });
+    }else{
+      history.push({
+        pathname: '/UnansweredResponses'
+      });
+    }
     }
     if (PageName == "Starred") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/Starred',
         state: { ID: ID }
-      });
+      });}else{
+        history.push({
+          pathname: '/Starred'
+        });
+      }
     }
     if (PageName == "Follow Up Later") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/FollowUpLater',
         state: { ID: ID }
-      });
+      })
+    }
+      else{
+        history.push({
+          pathname: '/FollowUpLater'
+        });
+      }
     }
     if (PageName == "Draft") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/Drafts',
         state: { ID: ID }
-      });
+      })}else{
+        history.push({
+          pathname: '/Drafts'
+      })}
     }
     if (PageName == "Other Inbox") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/OtherInboxPage',
         state: { ID: ID }
       });
+    }else{
+      history.push({
+        pathname: '/OtherInboxPage'
+      });
+    }
     }
     if (PageName == "Spam") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/Spam',
         state: { ID: ID }
       });
+    }else{
+      history.push({
+        pathname: '/Spam'
+      });
+    }
     }
     if (PageName == "AllInbox") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/AllInbox',
         state: { ID: ID }
       });
+    }else{
+      history.push({
+        pathname: '/AllInbox'
+       
+      });
+    }
     }
     if (PageName == "AllSent") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/AllSentEmails',
         state: { ID: ID }
-      });
+      });}else{
+        history.push({
+          pathname: '/AllSentEmails'
+        })
+      }
     }
     if (PageName == "UnansweredReplies") {
+      if(ID !="" && ID !=null){
       history.push({
         pathname: '/UnansweredReplies',
         state: { ID: ID }
-      });
+      });}else{
+        history.push({
+          pathname: '/UnansweredReplies'
+        })
+      }
     }
+    // SetExpanded([MenuID,"f1" + MenuID,"f2" + MenuID,"f3" + MenuID,"f60" + MenuID])
   }
 
   const WrapperRef = useRef(null);
@@ -433,7 +485,8 @@ export default function Navigation() {
             <TreeItem nodeId="2" label="Inbox">
               <TreeItem nodeId="7" label="All">
                 <TreeItem nodeId="8" label="New">
-                  <Link to="/AllInbox">All Inbox</Link>
+                  {/* <Link to="/AllInbox">All Inbox</Link> */}
+                  <TreeItem nodeId="81" label="AllInbox" onClick={() => RedirectLink("AllInbox")} />
                 </TreeItem>
                 <TreeItem nodeId="9" label="Starred">
                   <Link to="/Starred">Starred</Link>
@@ -495,7 +548,7 @@ export default function Navigation() {
               <TreeItem nodeId={"f1" + item._id} label="Inbox">
                 <TreeItem nodeId={"f2" + item._id} label="All">
                   <TreeItem nodeId={"f3" + item._id} label="New">
-                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox")} />
+                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox",item._id)} />
                   </TreeItem>
                   <TreeItem nodeId={"f4" + item._id} label="Starred">
                     <TreeItem nodeId={"f60" + item._id} label="Starred" onClick={() => RedirectLink(item.AccountID, "Starred")} />
