@@ -75,7 +75,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
-  const [SortField, SetsortField] = React.useState("MessageDatetime");
+  const [SortField, SetsortField] = React.useState("MailSentDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
@@ -246,7 +246,7 @@ export default function AllUnansweredRepliesPage(props) {
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
                       <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -267,7 +267,7 @@ export default function AllUnansweredRepliesPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("LLL")}</lable>
                     </div>
                     <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
                       <Button>
