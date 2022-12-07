@@ -672,7 +672,7 @@ ul.d-flex.flexlist {
 }
 
 .btn.btn-primary {
-    background: #647AF7;
+    background: #E49273;
     box-shadow: 0px 4px 14px 6px #D8DEFD;
     border-radius: 50px;
     color: #fff;
@@ -685,7 +685,7 @@ ul.d-flex.flexlist {
 .btn.btn-primary:hover,
 .btn.btn-primary:focus,
 .btn.btn-primary:active {
-    background: #5267DB;
+    background:#cb795a;
 }
 
 .composebody {
@@ -889,13 +889,13 @@ div .dropdown-item:focus img {
 
 button.btn-pre,
 button.btn-pre:hover {
-    background-color: #647AF7;
+    background-color: #e49273;
     color: #fff;
 }
 
 button.btn-darkpre,
 button.btn-darkpre:hover {
-    background-color: #4E63DA;
+    background-color: #cd7d5e;
     color: #fff;
 }
 
@@ -914,7 +914,7 @@ div.modal-prein {
 }
 
 .datepikclen .MuiOutlinedInput-root {
-    background-color: #F7F8FF;
+    background-color: #fff7f4;
 }
 
 .datepikclen fieldset {
@@ -1080,12 +1080,12 @@ div.modal-prein {
 }
 
 .btn.btn-orang {
-    background: #e49273;
+    background: #979797;
     color: #fff;
 }
 
 .btn.btn-orang:hover {
-    background: #be7256;
+    background: #756f6f;
     color: #fff;
 }
 
@@ -1343,7 +1343,9 @@ Button.btntemplateround:hover {
     position: relative;
     padding: 65px 15px 0;
 }
-
+.sign-main a {
+    color: #E49273;
+}
 .bgsigner {
     position: absolute;
     right: 0;
@@ -2520,6 +2522,11 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .comse-select .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border-color: #e49273; 
 }
+.sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, 
+.sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: #e49273;
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

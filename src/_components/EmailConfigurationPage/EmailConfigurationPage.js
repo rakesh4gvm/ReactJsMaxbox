@@ -33,6 +33,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
+import Navigation from '../Navigation/Navigation';
+
 toast.configure();
 
 var atob = require('atob');
@@ -287,12 +289,22 @@ export default function EmailConfigurationPage() {
         </Box>
       </Modal>
 
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 className='my-0'>Email Configuration</h5>
-          </Col>
-        </Row>
+
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      
+      <div className='righter'> 
+
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 className='my-0'>Email Configuration</h5>
+            </Col>
+          </Row>
+        </div> 
+
+      <div className='container'> 
         <Stack sx={{ width: '100%' }} spacing={2}>
           {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
           {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
@@ -361,8 +373,8 @@ export default function EmailConfigurationPage() {
           </Row>
         </div>
 
-      </div>
-      <FooterBottom />
+      </div> 
+      </div> 
     </>
   );
 }

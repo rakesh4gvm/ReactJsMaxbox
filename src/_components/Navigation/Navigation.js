@@ -431,10 +431,10 @@ export default function Navigation() {
         <div id='OpenNavigation' className='carsetting'>
           <ul>
             <li><a href="/Templates">Templates</a></li>
-            <li><a href="/ObjectionTemplate">Objections</a></li>
-            <li><a href="/">Email Settings</a></li>
-            <li><a href="/ClientList">Clients</a></li>
-            <li><a href="/">Contacts</a></li>
+            <li><a href="/ObjectionTemplate">Objections</a></li> 
+            <li><a href="/EmailConfiguration">Email Settings</a></li>
+            <li><a href="/ClientList">Clients</a></li> 
+            <li><a href="/ContactEmail">Contacts</a></li>
             <li><a href="/">Logout</a></li>
           </ul>
         </div>

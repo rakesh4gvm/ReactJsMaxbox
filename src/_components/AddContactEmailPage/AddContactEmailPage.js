@@ -25,6 +25,8 @@ import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 import { MenuItem } from '@mui/material';
 
+import Navigation from '../Navigation/Navigation';
+
 toast.configure();
 
 const Style = {
@@ -227,12 +229,22 @@ export default function AddContactEmailPage(props) {
       <div id="hideloding" className="loding-display">
         <img src={MaxboxLoading} />
       </div>
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5>
-          </Col>
-        </Row>
+
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      
+      <div className='righter'> 
+
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5> 
+            </Col>
+          </Row>
+        </div> 
+
+      <div className='container'> 
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
             <Col sm={6}>
@@ -275,7 +287,7 @@ export default function AddContactEmailPage(props) {
           </div>
         </div>
       </div>
-      <FooterBottom />
+      </div> 
     </>
   );
 }

@@ -28,6 +28,32 @@ import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
 
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Emailinbox from '../../images/email_inbox_img.png';
+import Emailcall from '../../images/email_call_img.png'; 
+import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/icons/inbox.svg';
+import { Box } from '@material-ui/core';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -80,6 +106,17 @@ export default function UnansweredResponsesPage(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+
+  const [open, setOpen] = React.useState(false);
+  const StarhandleOpen = () => setOpen(true);
+  const StarhandleClose = () => setOpen(false); 
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);   
+  const FollowupPopOpen = () => SetFollowupPopModel(true);
+  const FollowupPopClose = () => SetFollowupPopModel(false); 
+  const [InboxhandleModel, SetInboxhandleModel] = React.useState(false);   
+  const InboxhandleOpen = () => SetInboxhandleModel(true);
+  const InboxhandleClose = () => SetInboxhandleModel(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
 
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
@@ -197,10 +234,120 @@ export default function UnansweredResponsesPage(props) {
     }
   }
   // End Search
+  // Followup Message
+  const OpenFollowupPopModel = () => {
+    SetFollowupPopModel(true);
+  }
+  const CloseFollowupPopModel = () => {
+    SetFollowupPopModel(false);
+  }  
+  const SelectFollowupDate = (NewValue) => {
+        SetFollowupDate(NewValue);
+      };
+  // End Followup Message
 
   return (
 
     <>
+    
+    <Modal
+        open={open}
+        onClose={StarhandleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+             you want to Star a email?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium">
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium">
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+
+      <Modal className="modal-pre"
+          open={FollowupPopModel}
+          onClose={FollowupPopClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} className="modal-prein">
+            <div className='px-5 pt-5 text-center'>
+              <img src={Emailcall} width="130" className='mb-4' />
+              <Typography id="modal-modal-title" variant="b" component="h6">
+                Follow Up Later
+              </Typography>
+            </div>
+            <div className='px-5 pb-5 text-left datepikclen'>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Choose date for follow up later.
+              </Typography>
+              <div className="pt-3">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={0}>
+                    <DesktopDatePicker
+                      inputFormat="MM/dd/yyyy"
+                      value={FollowupDate}
+                      onChange={SelectFollowupDate}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </div>
+            </div>
+            <div className='d-flex btn-50'>
+              <Button className='btn btn-pre' variant="contained" size="medium">
+                Ok
+              </Button>
+              <Button className='btn btn-darkpre' variant="contained" size="medium">
+                Cancel
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+
+
+        <Modal
+        open={InboxhandleModel}
+        onClose={InboxhandleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Are you sure for move this E-mail into Other Inbox ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium">
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium">
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+
       <div className='lefter'>
         <Navigation />
       </div>
@@ -281,7 +428,13 @@ export default function UnansweredResponsesPage(props) {
                         <label>{MailNumber} / {FollowUpList.length}</label>
                       </Button>
                       <Button>
-                        <a><img src={iconstar} title={"Starred"} /></a>
+                        <a><img src={iconstar} title={"Starred"}  onClick={StarhandleOpen} /></a>
+                      </Button>
+                      <Button>
+                        <a onClick={FollowupPopOpen}><img src={icontimer} /></a>
+                      </Button>
+                      <Button>
+                        <a onClick={InboxhandleOpen}><img src={inbox} /></a>
                       </Button>
                       <Button>
                         <a><img src={iconsarrow2} /></a>

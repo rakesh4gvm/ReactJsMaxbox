@@ -45,6 +45,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 
+import Navigation from '../Navigation/Navigation'; 
 
 const Style = {
   position: 'absolute',
@@ -326,13 +327,20 @@ export default function ContactEmailPage() {
         </Modal>
       </div>
 
+      <div className='lefter'>
+        <Navigation />
+      </div>
+      <div className='righter'> 
 
-      <div className='bodymain min-100vh'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='py-4'>
-            <h5 className='my-0'>Email Contacts</h5>
-          </Col>
-        </Row>
+        <div className='px-3'> 
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+            <h5 className='my-0'>Email Contacts</h5> 
+            </Col>
+          </Row>
+        </div>
+
+      <div className='container'> 
 
         <div className='sm-container mt-5'>
           <Row className='mb-5'>
@@ -433,8 +441,8 @@ export default function ContactEmailPage() {
 
 
       </div>
-
-      <FooterBottom />
+      </div>
+ 
     </>
   );
 }
