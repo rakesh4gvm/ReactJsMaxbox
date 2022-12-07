@@ -289,7 +289,11 @@ export default function Navigation() {
         toast.error(Result?.data?.Message);
       }
     });
-
+    const items = JSON.parse(localStorage.getItem('items'));
+    if (items) {
+      console.log(items)
+      SetExpanded(items);
+    }
 
   }
 
@@ -399,7 +403,8 @@ export default function Navigation() {
         })
       }
     }
-    // SetExpanded([MenuID,"f1" + MenuID,"f2" + MenuID,"f3" + MenuID,"f60" + MenuID])
+    var items = ['1', '2', '11']
+    localStorage.setItem("items",JSON.stringify(items) );
   }
 
   const WrapperRef = useRef(null);
@@ -474,11 +479,13 @@ export default function Navigation() {
         </FormControl>
 
         <TreeView
-          aria-label="multi-select"
-          defaultExpanded={['1', '2', '7', '8']}
+          // aria-label="multi-select"
+          // defaultExpanded={['1', '2', '7', '8']}
+          defaultExpanded={expanded}
+          // defaultExpanded={['1', '2', '11']}
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRightIcon />}
-          multiSelect
+          // multiSelect
           sx={{ height: 216, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
         >
           <TreeItem nodeId="1" className='text-bold' label="All Account">
@@ -486,7 +493,7 @@ export default function Navigation() {
               <TreeItem nodeId="7" label="All">
                 <TreeItem nodeId="8" label="New">
                   {/* <Link to="/AllInbox">All Inbox</Link> */}
-                  <TreeItem nodeId="81" label="AllInbox" onClick={() => RedirectLink("AllInbox")} />
+                  <TreeItem nodeId="81" label="AllInbox" onClick={() => RedirectLink('',"AllInbox",'')} />
                 </TreeItem>
                 <TreeItem nodeId="9" label="Starred">
                   <Link to="/Starred">Starred</Link>
@@ -499,8 +506,9 @@ export default function Navigation() {
               </TreeItem>
 
               <TreeItem nodeId="11" label="Other Inbox">
-                <Link to="/OtherInboxPage">Other Inbox </Link>
-              </TreeItem>
+              <TreeItem nodeId="111" label="Other Inbox" onClick={() => RedirectLink('',"Other Inbox",'')} />
+                {/* <Link to="/OtherInboxPage">Other Inbox </Link> */}
+               </TreeItem>
 
               <TreeItem nodeId="12" label="Follow Up Later">
                 <Link to="/FollowUpLater">Follow Up Later 1</Link>

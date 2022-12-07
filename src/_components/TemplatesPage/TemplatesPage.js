@@ -59,6 +59,7 @@ const Style = {
   p: 4,
 };
 
+
 export default function TemplatesListPage() {
   const [CountPage, SetCountPage] = React.useState(0);
   const [Page, SetPage] = React.useState(1);
@@ -316,7 +317,7 @@ export default function TemplatesListPage() {
                             </TableCell> */}
                             <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
                             <TableCell sx={{ minWidth: 500 }}>
-                              <div className='hidtextmax'>{parse(row.BodyText.substring(0, 100))}</div>
+                              <div className='hidtextmax' style={{  width: 400}}>{parse(row.BodyText)}</div>
                             </TableCell>
 
                             <TableCell><img src={SmallSend} /> Send</TableCell>
