@@ -80,21 +80,30 @@ export default function OtherInboxPage(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [IDs, SetIDs] = useState(null)
 
   useEffect(() => {
-    document.title = 'Other Inbox | MAXBOX';
-    GetClientID();
+    if (props.location.search != undefined) {
+      const Response = decodeURIComponent(props.location.search)
+      const Decoded = Response.split("?")[1]
+      const ID = Decoded?.slice(1, -1)
+      SetIDs([ID])
+      document.title = 'All Inbox | MAXBOX';
+      GetClientID([ID]);
+    } else {
+      GetClientID([-1]);
+    }
+
   }, [SearchInbox])
 
   // Get Client ID
-  const GetClientID = () => {
+  const GetClientID = (ID) => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
     if (props !== undefined) {
-      const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
         GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
@@ -106,8 +115,8 @@ export default function OtherInboxPage(props) {
   // Start Get Follow Up Later List
   const GetAllInboxList = (CID, UID, PN, ID) => {
     let AccountIDs = []
-    if (ID?.ID?.length > 0) {
-      AccountIDs.push(ID?.ID)
+    if (ID?.length > 0) {
+      AccountIDs = ID
     } else {
       AccountIDs = [-1]
     }

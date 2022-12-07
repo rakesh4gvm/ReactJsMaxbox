@@ -189,7 +189,6 @@ export default function Navigation() {
   useEffect(() => {
 
     GetClientDropdown();
-    
   }, []);
 
 
@@ -297,114 +296,115 @@ export default function Navigation() {
 
   }
 
-  const RedirectLink = (ID, PageName,MenuID) => {
+  const RedirectLink = (ID, PageName, MenuID) => {
     if (PageName == "Unanswered Responses") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/UnansweredResponses',
-        state: { ID: ID }
-      });
-    }else{
-      history.push({
-        pathname: '/UnansweredResponses'
-      });
-    }
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/UnansweredResponses',
+          state: { ID: ID }
+        });
+      } else {
+        history.push({
+          pathname: '/UnansweredResponses'
+        });
+      }
     }
     if (PageName == "Starred") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/Starred',
-        state: { ID: ID }
-      });}else{
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/Starred',
+          state: { ID: ID }
+        });
+      } else {
         history.push({
           pathname: '/Starred'
         });
       }
     }
     if (PageName == "Follow Up Later") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/FollowUpLater',
-        state: { ID: ID }
-      })
-    }
-      else{
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/FollowUpLater',
+          state: { ID: ID }
+        })
+      }
+      else {
         history.push({
           pathname: '/FollowUpLater'
         });
       }
     }
     if (PageName == "Draft") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/Drafts',
-        state: { ID: ID }
-      })}else{
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/Drafts',
+          state: { ID: ID }
+        })
+      } else {
         history.push({
           pathname: '/Drafts'
-      })}
+        })
+      }
     }
     if (PageName == "Other Inbox") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/OtherInboxPage',
-        state: { ID: ID }
-      });
-    }else{
-      history.push({
-        pathname: '/OtherInboxPage'
-      });
-    }
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/OtherInboxPage',
+          state: { ID: ID }
+        });
+      } else {
+        history.push({
+          pathname: '/OtherInboxPage'
+        });
+      }
     }
     if (PageName == "Spam") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/Spam',
-        state: { ID: ID }
-      });
-    }else{
-      history.push({
-        pathname: '/Spam'
-      });
-    }
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/Spam',
+          state: { ID: ID }
+        });
+      } else {
+        history.push({
+          pathname: '/Spam'
+        });
+      }
     }
     if (PageName == "AllInbox") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/AllInbox',
-        state: { ID: ID }
-      });
-    }else{
-      history.push({
-        pathname: '/AllInbox'
-       
-      });
-    }
+      if (ID != "" && ID != null) {
+        if (history.location.pathname === "/AllInbox") {
+          window.location.href = "http://localhost:3001/AllInbox?" + encodeURIComponent(JSON.stringify(ID))
+        }
+      } else {
+        window.location.href = "http://localhost:3001/AllInbox"
+      }
     }
     if (PageName == "AllSent") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/AllSentEmails',
-        state: { ID: ID }
-      });}else{
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/AllSentEmails',
+          state: { ID: ID }
+        });
+      } else {
         history.push({
           pathname: '/AllSentEmails'
         })
       }
     }
     if (PageName == "UnansweredReplies") {
-      if(ID !="" && ID !=null){
-      history.push({
-        pathname: '/UnansweredReplies',
-        state: { ID: ID }
-      });}else{
+      if (ID != "" && ID != null) {
+        history.push({
+          pathname: '/UnansweredReplies',
+          state: { ID: ID }
+        });
+      } else {
         history.push({
           pathname: '/UnansweredReplies'
         })
       }
     }
     var items = ['1', '2', '11']
-    localStorage.setItem("items",JSON.stringify(items) );
+    localStorage.setItem("items", JSON.stringify(items));
   }
 
   const WrapperRef = useRef(null);
@@ -436,9 +436,9 @@ export default function Navigation() {
         <div id='OpenNavigation' className='carsetting'>
           <ul>
             <li><a href="/Templates">Templates</a></li>
-            <li><a href="/ObjectionTemplate">Objections</a></li> 
+            <li><a href="/ObjectionTemplate">Objections</a></li>
             <li><a href="/EmailConfiguration">Email Settings</a></li>
-            <li><a href="/ClientList">Clients</a></li> 
+            <li><a href="/ClientList">Clients</a></li>
             <li><a href="/ContactEmail">Contacts</a></li>
             <li><a href="/">Logout</a></li>
           </ul>
@@ -493,7 +493,7 @@ export default function Navigation() {
               <TreeItem nodeId="7" label="All">
                 <TreeItem nodeId="8" label="New">
                   {/* <Link to="/AllInbox">All Inbox</Link> */}
-                  <TreeItem nodeId="81" label="AllInbox" onClick={() => RedirectLink('',"AllInbox",'')} />
+                  <TreeItem nodeId="81" label="AllInbox" onClick={() => RedirectLink('', "AllInbox", '')} />
                 </TreeItem>
                 <TreeItem nodeId="9" label="Starred">
                   <Link to="/Starred">Starred</Link>
@@ -506,9 +506,9 @@ export default function Navigation() {
               </TreeItem>
 
               <TreeItem nodeId="11" label="Other Inbox">
-              <TreeItem nodeId="111" label="Other Inbox" onClick={() => RedirectLink('',"Other Inbox",'')} />
+                <TreeItem nodeId="111" label="Other Inbox" onClick={() => RedirectLink('', "Other Inbox", '')} />
                 {/* <Link to="/OtherInboxPage">Other Inbox </Link> */}
-               </TreeItem>
+              </TreeItem>
 
               <TreeItem nodeId="12" label="Follow Up Later">
                 <Link to="/FollowUpLater">Follow Up Later 1</Link>
@@ -556,7 +556,7 @@ export default function Navigation() {
               <TreeItem nodeId={"f1" + item._id} label="Inbox">
                 <TreeItem nodeId={"f2" + item._id} label="All">
                   <TreeItem nodeId={"f3" + item._id} label="New">
-                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox",item._id)} />
+                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
                   </TreeItem>
                   <TreeItem nodeId={"f4" + item._id} label="Starred">
                     <TreeItem nodeId={"f60" + item._id} label="Starred" onClick={() => RedirectLink(item.AccountID, "Starred")} />
