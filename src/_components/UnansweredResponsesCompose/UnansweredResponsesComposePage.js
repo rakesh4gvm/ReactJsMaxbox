@@ -217,6 +217,11 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         else {
             element.classList.add("show");
         }
+
+        const elementreply = document.getElementById("UserComposeReply")  
+        elementreply.classList.remove("show");
+        const elementreplytwo = document.getElementById("UserComposeForward")  
+        elementreplytwo.classList.remove("show");
     };
 
     // Close Compose
@@ -518,6 +523,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     }
     /* end code*/
 
+
+     
+
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
 
@@ -618,7 +626,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                 </Box>
             </Modal>
-
+ 
             <div className='composebody' id='maxcompose'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
@@ -717,6 +725,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                 </div>
             </div>
+ 
+
         </>
     );
 }

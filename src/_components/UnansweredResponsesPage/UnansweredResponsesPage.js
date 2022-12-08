@@ -10,6 +10,8 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
+import UnansweredResponsesReplyPage from '../UnansweredResponsesReply/UnansweredResponsesReplyPage';
+import UnansweredResponsesForwardPage from '../UnansweredResponsesReply/UnansweredResponsesForwardPage';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -438,6 +440,57 @@ export default function UnansweredResponsesPage(props) {
   }
   // End Other inbox  Message and model open and close
 
+  // start replay code
+  // Open Compose
+  const OpenComposeReply = (e) => { 
+    document.getElementById("To").value = ""
+    document.getElementById("Subject").value = ""
+    document.getElementById("CC").value = ""
+    document.getElementById("BCC").value = ""
+
+
+    const element = document.getElementById("UserComposeReply")
+
+    if (element.classList.contains("show")) {
+        element.classList.remove("show");
+    }
+    else {
+        element.classList.add("show");
+    }
+
+    const elementreply = document.getElementById("UserCompose")  
+    elementreply.classList.remove("show"); 
+    const elementreplytwo = document.getElementById("UserComposeForward")  
+    elementreplytwo.classList.remove("show"); 
+  }; 
+  // end replay code
+
+  // start replay code
+  // Open Compose
+  const OpenComposeForward = (e) => { 
+    document.getElementById("To").value = ""
+    document.getElementById("Subject").value = ""
+    document.getElementById("CC").value = ""
+    document.getElementById("BCC").value = ""
+
+
+    const element = document.getElementById("UserComposeForward")
+
+    if (element.classList.contains("show")) {
+        element.classList.remove("show");
+    }
+    else {
+        element.classList.add("show");
+    }
+
+    const elementforward = document.getElementById("UserCompose")   
+    elementforward.classList.remove("show"); 
+
+    const elementforwardtwo = document.getElementById("UserComposeReply")   
+    elementforwardtwo.classList.remove("show"); 
+  }; 
+  // end replay code
+
   return (
 
     <>
@@ -671,13 +724,13 @@ export default function UnansweredResponsesPage(props) {
                         <a onClick={InboxhandleOpen}><img src={inbox} /></a>
                       </Button> */}
                       <Button onClick={OpenOtherInboxPopModel}>
-                        <img className='inboxicon' src={inbox} title={"Other Inbox"} />
+                        <img src={inbox} title={"Other Inbox"} />
                       </Button>
                       <Button>
-                        <a><img src={iconsarrow2} /></a>
+                        <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
                       </Button>
                       <Button>
-                        <a><img src={iconsarrow1} /></a>
+                        <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
                       </Button>
                       {<Button onClick={OpenDeletePopModel}>
                         <img src={icondelete} title="Delete" />
@@ -697,6 +750,18 @@ export default function UnansweredResponsesPage(props) {
         </div>
       </div>
       <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
+
+      <div className='composebody' id='maxcomposeReply'> 
+        <div className="usercompose userdefual" id="UserComposeReply">
+        <UnansweredResponsesReplyPage GetUnansweredResponcesList={GetUnansweredResponcesList}  />
+        </div>
+      </div>
+
+      <div className='composebody' id='maxcomposeForward'> 
+        <div className="usercompose userdefual" id="UserComposeForward">
+        <UnansweredResponsesForwardPage GetUnansweredResponcesList={GetUnansweredResponcesList}  />
+        </div>
+      </div>
     </>
   );
 }

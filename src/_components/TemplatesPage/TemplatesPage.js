@@ -316,8 +316,8 @@ export default function TemplatesListPage() {
                               </IconButton>
                             </TableCell> */}
                             <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
-                            <TableCell sx={{ minWidth: 500 }}>
-                              <div className='hidtextmax' style={{  width: 400}}>{parse(row.BodyText)}</div>
+                            <TableCell sx={{ minWidth: 320 }}>
+                              <div className='hidtextmax' style={{  width: 320}}>{parse(row.BodyText)}</div>
                             </TableCell>
 
                             <TableCell><img src={SmallSend} /> Send</TableCell>

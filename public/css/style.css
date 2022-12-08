@@ -2093,7 +2093,7 @@ div.modal-prein.wd-600{
 .largebox.composebody .userdefual.show{   
     display: table; 
 }
-.largebox.composebody:before {
+/* .largebox.composebody:before {
     content: '';
     position: fixed;
     background: rgba(255,255,255,0);
@@ -2103,7 +2103,7 @@ div.modal-prein.wd-600{
     right: 0;
     bottom: 0;
     top: 0;
-}
+} */
 .largebox.composebody .userdefual .composeion .maxicon{
     transform: rotate(180deg);
     border-right: none;
@@ -2525,9 +2525,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, 
 .sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
     color: #e49273;
-}
-
-
+}  
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;
