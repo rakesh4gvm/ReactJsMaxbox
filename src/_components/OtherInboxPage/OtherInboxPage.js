@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
 
@@ -21,12 +21,40 @@ import TableRow from '@mui/material/TableRow';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { styled, alpha } from '@material-ui/core/styles';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import { Box } from '@material-ui/core';
+import ToggleButton from '@mui/material/ToggleButton';
+import StarIcon from '@material-ui/icons/Star';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+import icontimer from '../../images/icon_timer.svg';
+import Emailcall from '../../images/email_call_img.png';
+import Emailinbox from '../../images/email_inbox_img.png';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
-import iconstar from '../../images/icon_star.svg';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -80,6 +108,10 @@ export default function OtherInboxPage(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [StarPopModel, SetStarPopModel] = React.useState(false);
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
 
   useEffect(() => {
     document.title = 'Other Inbox | MAXBOX';
@@ -198,9 +230,252 @@ export default function OtherInboxPage(props) {
   }
   // End Search
 
+  // Start Update Star Message and model open and close
+  const OpenStarPopModel = () => {
+    SetStarPopModel(true);
+  }
+  const CloseStarPopModel = () => {
+    SetStarPopModel(false);
+  }
+  const UpdateStarMessage = (ID) => {
+    if (ID != '') {
+      //setSelected(true);
+      var Data = {
+        _id: ID,
+        IsStarred: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Other Inbox <br />Starred  updated successfully.</div>);
+          CloseStarPopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetOtherInboxList(ClientID, UserID, Page, ID);
+            } else {
+              GetOtherInboxList(ClientID, UserID, Page, 0)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End Update Star Message and model open and close
+
+  // Followup Message
+  const OpenFollowupPopModel = () => {
+    SetFollowupPopModel(true);
+  }
+  const CloseFollowupPopModel = () => {
+    SetFollowupPopModel(false);
+  }
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
+  const UpdateFollowupMessage = (ID) => {
+    const IsValidDate = Moment(FollowupDate).isValid()
+    const IsGreater = IsGreaterDate(FollowupDate)
+    if (ID != '') {
+      if (FollowupDate != null) {
+        if (IsValidDate && IsGreater) {
+          var Data = {
+            ID: ID,
+            IsFollowUp: true,
+            FollowupDate: FollowupDate,
+            IsOtherInbox: false,
+            LastUpdatedBy: -1
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
+              CloseFollowupPopModel();
+              OpenMessageDetails('')
+              LoaderShow()
+              if (props !== undefined) {
+                const ID = props.location.state;
+                if (ID != "" && ID != null && ID != "undefined") {
+                  GetOtherInboxList(ClientID, UserID, Page, ID);
+                } else {
+                  GetOtherInboxList(ClientID, UserID, Page, 0)
+                }
+              }
+            } else {
+              toast.error(Result?.data?.Message);
+            }
+          });
+        } else {
+          toast.error(<div>Other Inbox <br />Please enter valid date.</div>)
+        }
+      } else {
+        toast.error(<div>Other Inbox <br />Please enter date.</div>)
+      }
+    }
+  }
+  // End Followup Message
+
+  // start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Other Inbox <br />Delete mail successfully.</div>)
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetOtherInboxList(ClientID, UserID, Page, ID);
+            } else {
+              GetOtherInboxList(ClientID, UserID, Page, 0)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End PopModel Open and Close And Delete Message
+
   return (
 
     <>
+      <Modal className="modal-pre"
+        open={StarPopModel}
+        onClose={CloseStarPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            {
+              OpenMessage?.IsStarred === false ?
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to Star an email ?
+                </Typography>
+                :
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to UnStar an email ?
+                </Typography>
+            }
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal className="modal-pre"
+        open={FollowupPopModel}
+        onClose={CloseFollowupPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='px-5 pt-5 text-center'>
+            <img src={Emailcall} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Follow Up Later
+            </Typography>
+          </div>
+          <div className='px-5 pb-5 text-left datepikclen'>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Choose date for follow up later.
+            </Typography>
+            <div className="pt-3">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={0}>
+                  <DesktopDatePicker
+                    inputFormat="MM/dd/yyyy"
+                    value={FollowupDate}
+                    onChange={SelectFollowupDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </div>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
+              Ok
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
+              Cancel
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
       <div className='lefter'>
         <Navigation />
       </div>
@@ -247,7 +522,12 @@ export default function OtherInboxPage(props) {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       onClick={() => OpenMessageDetails(item._id, index)}
                     >
-                      <TableCell width={'35px'}><StarBorderIcon /></TableCell>
+                      <TableCell width={'35px'}>
+                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
+                      </TableCell>
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
                       <TableCell>{item.FromEmail}</TableCell>
@@ -280,7 +560,13 @@ export default function OtherInboxPage(props) {
                         <label>{MailNumber} / {FollowUpList.length}</label>
                       </Button>
                       <Button>
-                        <a><img src={iconstar} title={"Starred"} /></a>
+                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
+                      </Button>
+                      <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
+                        <img src={icontimer} />
                       </Button>
                       <Button>
                         <a><img src={iconsarrow2} /></a>
@@ -288,8 +574,8 @@ export default function OtherInboxPage(props) {
                       <Button>
                         <a><img src={iconsarrow1} /></a>
                       </Button>
-                      {<Button>
-                        <a><img src={icondelete} /></a>
+                      {<Button onClick={OpenDeletePopModel}>
+                        <img src={icondelete} title="Delete" />
                       </Button>}
                       <Button>
                         <a><img src={iconmenu} /></a>

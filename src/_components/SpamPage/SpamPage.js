@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import SpamComposePage from '../SpamComposePage/SpamComposePage';
 
@@ -26,7 +26,37 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
-import iconstar from '../../images/icon_star.svg';
+
+import ToggleButton from '@mui/material/ToggleButton';
+import StarIcon from '@material-ui/icons/Star';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Emailinbox from '../../images/email_inbox_img.png';
+import Emailcall from '../../images/email_call_img.png';
+import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/icons/inbox.svg';
+import { Box } from '@material-ui/core';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -81,6 +111,12 @@ export default function SpamPage(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [StarPopModel, SetStarPopModel] = React.useState(false);
+  const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
+  const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
+  const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+
 
   useEffect(() => {
     document.title = 'Spam | MAXBOX';
@@ -196,9 +232,328 @@ export default function SpamPage(props) {
   }
   // End Search
 
+  // Start Update Star Message and model open and close
+  const OpenStarPopModel = () => {
+    SetStarPopModel(true);
+  }
+  const CloseStarPopModel = () => {
+    SetStarPopModel(false);
+  }
+  const UpdateStarMessage = (ID) => {
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsStarred: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam  <br />Starred  updated successfully.</div>);
+          CloseStarPopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetSpamList(ClientID, UserID, Page, ID);
+            }
+            else {
+              GetSpamList(ClientID, UserID, Page, 0)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End Update Star Message and model open and close
+
+  // Followup Message
+  const OpenFollowupPopModel = () => {
+    SetFollowupPopModel(true);
+  }
+  const CloseFollowupPopModel = () => {
+    SetFollowupPopModel(false);
+  }
+  const SelectFollowupDate = (NewValue) => {
+    SetFollowupDate(NewValue);
+  };
+  const UpdateFollowupMessage = (ID) => {
+    const IsValidDate = Moment(FollowupDate).isValid()
+    const IsGreater = IsGreaterDate(FollowupDate)
+
+    if (ID != '') {
+      if (FollowupDate != null) {
+        if (IsValidDate && IsGreater) {
+          var Data = {
+            ID: ID,
+            IsFollowUp: true,
+            FollowupDate: FollowupDate,
+            IsOtherInbox: false,
+            LastUpdatedBy: -1
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/spamemailhistory/FollowupUpdate",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              toast.success(<div>Spam <br />Follow up later updated successfully.</div>);
+              CloseFollowupPopModel();
+              OpenMessageDetails('')
+              LoaderShow()
+              if (props !== undefined) {
+                const ID = props.location.state;
+                if (ID != "" && ID != null && ID != "undefined") {
+                  GetSpamList(ClientID, UserID, Page, ID);
+                }
+                else {
+                  GetSpamList(ClientID, UserID, Page, 0)
+                }
+              }
+            } else {
+              toast.error(Result?.data?.Message);
+            }
+          });
+        } else {
+          toast.error(<div>Spam <br />Please enter valid date.</div>)
+        }
+      } else {
+        toast.error(<div>Spam <br />Please enter date.</div>)
+      }
+    }
+  }
+  // End Followup Message
+
+  // Start Other inbox Message and model open and close
+  const OpenOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(true);
+  }
+  const CloseOtherInboxPopModel = () => {
+    SetOtherInboxPopModel(false);
+  }
+  const UpdateOtherInbox = (ID) => {
+    if (ID != '') {
+      var Data = {
+        _id: ID,
+        IsOtherInbox: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam  <br />Other inbox updated successfully.</div>);
+          CloseOtherInboxPopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetSpamList(ClientID, UserID, Page, ID);
+            }
+            else {
+              GetSpamList(ClientID, UserID, Page, 0)
+            }
+          }
+        }
+        else {
+          CloseOtherInboxPopModel();
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End Other inbox  Message and model open and close
+
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Spam <br />Spam mail deleted successfully.</div>);
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetSpamList(ClientID, UserID, Page, ID);
+            }
+            else {
+              GetSpamList(ClientID, UserID, Page, 0)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End PopModel Open and Close And Delete Message
+
+
   return (
 
     <>
+      <Modal className="modal-pre"
+        open={StarPopModel}
+        onClose={CloseStarPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            {
+              OpenMessage?.IsStarred === false ?
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to Star an email ?
+                </Typography>
+                :
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to UnStar an email ?
+                </Typography>
+            }
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal className="modal-pre"
+        open={FollowupPopModel}
+        onClose={CloseFollowupPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='px-5 pt-5 text-center'>
+            <img src={Emailcall} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Follow Up Later
+            </Typography>
+          </div>
+          <div className='px-5 pb-5 text-left datepikclen'>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Choose date for follow up later.
+            </Typography>
+            <div className="pt-3">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack spacing={0}>
+                  <DesktopDatePicker
+                    inputFormat="MM/dd/yyyy"
+                    value={FollowupDate}
+                    onChange={SelectFollowupDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </div>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
+              Ok
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
+              Cancel
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal className="modal-pre"
+        open={OtherInboxPopModel}
+        onClose={CloseOtherInboxPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Are you sure  for move this E-mail into Other Inbox ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateOtherInbox(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseOtherInboxPopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+
       <div className='lefter'>
         <Navigation />
       </div>
@@ -219,7 +574,6 @@ export default function SpamPage(props) {
             </Col>
           </Row>
         </header>
-
 
         <div className='bodyview' >
           <SplitPane
@@ -246,7 +600,12 @@ export default function SpamPage(props) {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       onClick={() => OpenMessageDetails(item._id, index)}
                     >
-                      <TableCell width={'35px'}><StarBorderIcon /></TableCell>
+                      <TableCell width={'35px'}>
+                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
+                      </TableCell>
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
                       <TableCell>{item.FromEmail}</TableCell>
@@ -279,7 +638,16 @@ export default function SpamPage(props) {
                         <label>{MailNumber} / {SpamPage.length}</label>
                       </Button>
                       <Button>
-                        <a><img src={iconstar} title={"Starred"} /></a>
+                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
+                      </Button>
+                      <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
+                        <img src={icontimer} />
+                      </Button>
+                      <Button onClick={OpenOtherInboxPopModel}>
+                        <img src={inbox} className="inboxicon" title={"Other Inbox"} />
                       </Button>
                       <Button>
                         <a><img src={iconsarrow2} /></a>
@@ -287,8 +655,8 @@ export default function SpamPage(props) {
                       <Button>
                         <a><img src={iconsarrow1} /></a>
                       </Button>
-                      {<Button>
-                        <a><img src={icondelete} /></a>
+                      {<Button onClick={OpenDeletePopModel}>
+                        <img src={icondelete} title="Delete" />
                       </Button>}
                       <Button>
                         <a><img src={iconmenu} /></a>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -11,6 +11,11 @@ import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import DraftComposePage from '../DraftComposePage/DraftComposePage';
 
+import iconsarrow1 from '../../images/icons_arrow_1.svg';
+import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import icondelete from '../../images/icon_delete.svg';
+import iconmenu from '../../images/icon_menu.svg';
+
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Table from '@mui/material/Table';
@@ -21,12 +26,26 @@ import TableRow from '@mui/material/TableRow';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { styled, alpha } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Emailinbox from '../../images/email_inbox_img.png';
+import { Box } from '@material-ui/core';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
-import iconstar from '../../images/icon_star.svg';
+toast.configure();
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -79,6 +98,8 @@ export default function OtherInboxPage(props) {
   const [UserID, SetUserID] = React.useState(0);
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+
 
   useEffect(() => {
     document.title = 'Drafts | MAXBOX';
@@ -181,9 +202,77 @@ export default function OtherInboxPage(props) {
   }
   // End Search
 
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/draft_template/DraftTemplateDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Draft <br />Draft template deleted successfully.</div>);
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetDraftList(ClientID, UserID, Page);
+            } else {
+              GetDraftList(ClientID, UserID, Page)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End PopModel Open and Close And Delete Message
+
   return (
 
     <>
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       <div className='lefter'>
         <Navigation />
       </div>
@@ -263,16 +352,13 @@ export default function OtherInboxPage(props) {
                         <label>{MailNumber} / {DraftList.length}</label>
                       </Button>
                       <Button>
-                        <a><img src={iconstar} title={"Starred"} /></a>
-                      </Button>
-                      <Button>
                         <a><img src={iconsarrow2} /></a>
                       </Button>
                       <Button>
                         <a><img src={iconsarrow1} /></a>
                       </Button>
-                      {<Button>
-                        <a><img src={icondelete} /></a>
+                      {<Button onClick={OpenDeletePopModel}>
+                        <img src={icondelete} title={"Delete"} />
                       </Button>}
                       <Button>
                         <a><img src={iconmenu} /></a>
