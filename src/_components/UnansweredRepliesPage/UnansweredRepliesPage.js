@@ -11,6 +11,11 @@ import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredRepliesComposePage from '../UnansweredRepliesComposePage/UnansweredRepliesComposePage';
 
+import ToggleButton from '@mui/material/ToggleButton';
+import StarIcon from '@material-ui/icons/Star';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Emailinbox from '../../images/email_inbox_img.png';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -27,6 +32,25 @@ import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import iconstar from '../../images/icon_star.svg';
+
+import { Box } from '@material-ui/core';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -80,6 +104,8 @@ export default function AllUnansweredRepliesPage(props) {
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
+  const [StarPopModel, SetStarPopModel] = React.useState(false);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
 
   useEffect(() => {
     document.title = 'Unanswered Replies | MAXBOX';
@@ -195,8 +221,153 @@ export default function AllUnansweredRepliesPage(props) {
   }
   // End Search
 
+    // Start PopModel Open and Close and Delete Message
+    const OpenDeletePopModel = () => {
+      SetDeletePopModel(true);
+    }
+    const CloseDeletePopModel = () => {
+      SetDeletePopModel(false);
+    }
+    const DeleteMessage = (ID) => {
+      if (ID != '') {
+              var DeleteArray = []
+              DeleteArray.push(ID)
+              var Data = {
+                IDs: DeleteArray,
+                LastUpdatedBy: -1
+              };
+              const ResponseApi = Axios({
+                url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
+                method: "POST",
+                data: Data,
+              });
+              ResponseApi.then((Result) => {
+                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                  CloseDeletePopModel();
+                  OpenMessageDetails('')
+                  LoaderShow()
+                  if (props !== undefined) {
+                    const ID = props.location.state;
+                    if (ID != "" && ID != null && ID != "undefined") {
+                      GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+                    }
+                    else {
+                      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+                    }
+                  }
+                } else {
+                  toast.error(Result?.data?.Message);
+                }
+              });
+            }
+    }
+    // End PopModel Open and Close and Delete Message
+
+    // Start Update Star Message and model open and close
+   const OpenStarPopModel = () => {
+    SetStarPopModel(true);
+  }
+  const CloseStarPopModel = () => {
+    SetStarPopModel(false);
+  }
+  const UpdateStarMessage = (ID) => {
+    if (ID != '') {
+            var Data = {
+              _id: ID,
+              IsStarred: true,
+              LastUpdatedBy: -1
+            };
+            const ResponseApi = Axios({
+              url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryStatusUpdate",
+              method: "POST",
+              data: Data,
+            });
+            ResponseApi.then((Result) => {
+              if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                toast.success(<div>Unanswered Replies  <br />Starred  updated successfully.</div>);
+                CloseStarPopModel();
+                OpenMessageDetails('')
+                LoaderShow()
+                if (props !== undefined) {
+                  const ID = props.location.state;
+                  if (ID != "" && ID != null && ID != "undefined") {
+                    GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+                  }
+                  else {
+                    GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+                  }
+                }
+              } else {
+                toast.error(Result?.data?.Message);
+              }
+            });
+          }
+  }
+  // End Update Star Message and model open and close
+
   return (
     <>
+
+<Modal className="modal-pre"
+        open={StarPopModel}
+        onClose={CloseStarPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            {
+              OpenMessage?.IsStarred === false ?
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to Star an email ?
+                </Typography>
+                :
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to UnStar an email ?
+                </Typography>
+            }
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+     <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       <div className='lefter'>
         <Navigation />
       </div>
@@ -274,7 +445,10 @@ export default function AllUnansweredRepliesPage(props) {
                         <label>{MailNumber} / {AllUnansweredRepliesList.length}</label>
                       </Button>
                       <Button>
-                        <a><img src={iconstar} title={"Starred"} /></a>
+                      <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
                       </Button>
                       <Button>
                         <a><img src={iconsarrow2} /></a>
@@ -282,7 +456,7 @@ export default function AllUnansweredRepliesPage(props) {
                       <Button>
                         <a><img src={iconsarrow1} /></a>
                       </Button>
-                      {<Button>
+                      {<Button onClick={OpenDeletePopModel}>
                         <a><img src={icondelete} /></a>
                       </Button>}
                       <Button>
