@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { makeStyles, styled, useTheme } from '@material-ui/core/styles';
 import Axios from "axios";
+import Moment from "moment";
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -181,6 +182,7 @@ export default function Navigation() {
   const [UserImage, SetUserImage] = useState()
   const [UserDetails, SetUserDetails] = useState();
   const [expanded, SetExpanded] = useState([]);
+  const [AllTotalRecords, SetAllTotalRecords] = useState()
 
   // const handleChange = (event) => {
   //   setClient(event.target.value);
@@ -189,8 +191,45 @@ export default function Navigation() {
   useEffect(() => {
 
     GetClientDropdown();
+    GetClientID()
   }, [expanded]);
 
+  
+  // Get Client ID
+  const GetClientID = () => {
+    var UserDetails = GetUserDetails();
+    if (UserDetails != null) {
+      SetClientID(UserDetails.ClientID);
+      SetUserID(UserDetails.UserID);
+    }
+    GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+  }
+
+
+
+  const GetAllTotalCount = (CID,UID) => {
+    LoaderShow()
+    const Data = {
+        ClientID: CID,
+        UserID: UID,
+        StartDate: Moment().format("YYYY-MM-DD"),
+        EndDate: Moment().format("YYYY-MM-DD"),
+        SearchDate: Moment().format("YYYY-MM-DD"),
+    }
+    const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/AllTotalRecords",
+        method: "POST",
+        data: Data,
+    });
+    ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            SetAllTotalRecords(Result.data)
+        } else {
+            toast.error(Result?.data?.Message);
+        }
+    });
+    LoaderHide()
+}
 
   //   useEffect(() => {
   //     GetClientDropdown()
