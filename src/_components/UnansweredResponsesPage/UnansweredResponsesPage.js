@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, ValidateEmail, EditorVariableNames, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
 import UnansweredResponsesReplyPage from '../UnansweredResponsesReply/UnansweredResponsesReplyPage';
@@ -28,7 +28,6 @@ import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
-import iconstar from '../../images/icon_star.svg';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import StarIcon from '@material-ui/icons/Star';
@@ -38,6 +37,11 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import icontimer from '../../images/icon_timer.svg';
 import inbox from '../../images/icons/inbox.svg';
+import Maximize from '../../images/icons/w-maximize.svg';
+import Minimize from '../../images/icons/w-minimize.svg';
+import Close from '../../images/icons/w-close.svg';
+
+import { Input } from '@mui/material';
 import { Box } from '@material-ui/core';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -46,6 +50,11 @@ import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
 
 toast.configure();
 
@@ -131,13 +140,17 @@ export default function UnansweredResponsesPage(props) {
   const [FollowupPopModel, SetFollowupPopModel] = React.useState(false);
   const FollowupPopOpen = () => SetFollowupPopModel(true);
   const FollowupPopClose = () => SetFollowupPopModel(false);
-  const [InboxhandleModel, SetInboxhandleModel] = React.useState(false);
-  const InboxhandleOpen = () => SetInboxhandleModel(true);
-  const InboxhandleClose = () => SetInboxhandleModel(false);
   const [FollowupDate, SetFollowupDate] = React.useState(new Date().toLocaleString());
   const [StarPopModel, SetStarPopModel] = React.useState(false);
   const [OtherInboxPopModel, SetOtherInboxPopModel] = React.useState(false);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [ObjectData, SetAllObjectData] = useState([])
+  const [TemplateData, SetAllTemplateData] = useState([])
+  const [temopen, setTemOpen] = React.useState(false);
+  const [Signature, SetSignature] = useState({
+    Data: ""
+  })
 
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
@@ -440,18 +453,12 @@ export default function UnansweredResponsesPage(props) {
   }
   // End Other inbox  Message and model open and close
 
-  const [ReplyDetails, SetReplyDetails] = useState("")
-
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
-    document.getElementById("To").value = ""
-    document.getElementById("Subject").value = ""
-    document.getElementById("CC").value = ""
-    document.getElementById("BCC").value = ""
 
     const Data = {
-      ID: OpenMessage._id,
+      ID: OpenMessage?._id,
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
@@ -459,12 +466,11 @@ export default function UnansweredResponsesPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetReplyDetails(Result?.data?.Data)
+        SetSignature({ Data: Result?.data?.Data })
       } else {
-        // toast.error(Result?.data?.Message);
+        toast.error(Result?.data?.Message);
       }
     })
-
     const element = document.getElementById("UserComposeReply")
 
     if (element.classList.contains("show")) {
@@ -476,38 +482,258 @@ export default function UnansweredResponsesPage(props) {
 
     const elementreply = document.getElementById("UserCompose")
     elementreply.classList.remove("show");
-    const elementreplytwo = document.getElementById("UserComposeForward")
-    elementreplytwo.classList.remove("show");
+    // const elementreplytwo = document.getElementById("UserComposeForward")
+    // elementreplytwo.classList.remove("show");
   };
   // end replay code
-
 
   // start replay code
-  // Open Compose
-  const OpenComposeForward = (e) => {
-    document.getElementById("To").value = ""
-    document.getElementById("Subject").value = ""
-    document.getElementById("CC").value = ""
-    document.getElementById("BCC").value = ""
+  // // Open Compose
+  // const OpenComposeForward = (e) => {
+  //   document.getElementById("To").value = ""
+  //   document.getElementById("Subject").value = ""
+  //   document.getElementById("CC").value = ""
+  //   document.getElementById("BCC").value = ""
 
-   
 
-    const element = document.getElementById("UserComposeForward")
 
-    if (element.classList.contains("show")) {
-      element.classList.remove("show");
+  //   const element = document.getElementById("UserComposeForward")
+
+  //   if (element.classList.contains("show")) {
+  //     element.classList.remove("show");
+  //   }
+  //   else {
+  //     element.classList.add("show");
+  //   }
+
+  //   const elementforward = document.getElementById("UserCompose")
+  //   elementforward.classList.remove("show");
+
+  //   const elementforwardtwo = document.getElementById("UserComposeReply")
+  //   elementforwardtwo.classList.remove("show");
+  // };
+  // // end replay code
+
+
+  /* start navcode */
+  const mincomposeonReply = () => {
+    const element = document.getElementById("maxcomposeReply")
+    if (element.classList.contains("minmusbox")) {
+      element.classList.remove("minmusbox");
     }
     else {
-      element.classList.add("show");
+      element.classList.add("minmusbox");
+      element.classList.remove("largebox");
     }
+  }
 
-    const elementforward = document.getElementById("UserCompose")
-    elementforward.classList.remove("show");
+  const maxcomposeonReply = () => {
+    const element = document.getElementById("maxcomposeReply")
+    if (element.classList.contains("largebox")) {
+      element.classList.remove("largebox");
+    }
+    else {
+      element.classList.add("largebox");
+      element.classList.remove("minmusbox");
+    }
+  }
+  /* end code*/
 
-    const elementforwardtwo = document.getElementById("UserComposeReply")
-    elementforwardtwo.classList.remove("show");
-  };
-  // end replay code
+  // Close Compose
+  const CloseComposeReply = () => {
+    const element = document.getElementById("UserComposeReply")
+    element.classList.remove("show");
+  }
+
+  // Sent Mail Starts
+  const ReplySendMail = async () => {
+    var ToEmail = OpenMessage.FromEmail;
+    var ToName = OpenMessage.FromName
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = Signature?.Data
+    LoaderShow()
+    var Data = {
+      ToEmail: ToEmail,
+      ToName: ToName,
+      ID: ID,
+      Subject: Subject,
+      Body: Body
+    };
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+        toast.success(<div>Unanswered Responses <br />Mail send successfully.</div>);
+        OpenComposeReply();
+        CloseComposeReply()
+        LoaderHide()
+      } else {
+        toast.error(Result?.data?.Message);
+        LoaderHide()
+      }
+    })
+  }
+  // Sent Mail Ends
+
+  // Frola Editor Starts
+  Froalaeditor.RegisterCommand('SendReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ReplySendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeReply()
+      const element = document.getElementsByClassName("user_editor")
+      element[0].classList.add("d-none");
+      const elementfr = document.getElementsByClassName("user_editor_frwd")
+      elementfr[0].classList.add("d-none");
+    },
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+    }
+  });
+  Froalaeditor.RegisterCommand('TemplatesOption', {
+    title: 'Templates Option',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    className: 'tam',
+    refreshAfterCallback: true,
+    // options: EditorVariableNames(),
+    options: {
+      'opt1': 'Objections',
+      'opt2': 'Templates'
+    },
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      if (val == "opt1") {
+        LoaderShow()
+        var Data = {
+          ClientID: ClientID,
+          UserID: UserID,
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGetAll",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.PageData.length > 0) {
+              setExpanded(false)
+              SetAllObjectData(Result.data.PageData)
+              setOpen(true);
+              LoaderHide()
+            } else {
+              toast.error(Result?.data?.Message);
+              LoaderHide()
+            }
+          } else {
+            SetAllObjectData('');
+            toast.error(Result?.data?.Message);
+          }
+        });
+        // editorInstance.html.insert("{" + val + "}");
+      }
+      if (val == "opt2") {
+        LoaderShow()
+        var Data = {
+          ClientID: ClientID,
+          UserID: UserID,
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/templates/TemplateGetAll",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          debugger
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.PageData.length > 0) {
+              setExpanded(false);
+              SetAllTemplateData(Result.data.PageData)
+              setTemOpen(true);
+              LoaderHide()
+            } else {
+              toast.error(Result?.data?.Message);
+              LoaderHide()
+            }
+          } else {
+            SetAllTemplateData('');
+            toast.error(Result?.data?.Message);
+          }
+        });
+
+        // editorInstance.html.insert("{" + val + "}");
+      }
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+    }
+  });
+  const config = {
+    quickInsertEnabled: false,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+    imageUploadRemoteUrls: false,
+  }
+  const HandleModelChange = (Model) => {
+    SetSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Frola Editor Ends
 
   return (
 
@@ -645,6 +871,7 @@ export default function UnansweredResponsesPage(props) {
       <div className='lefter'>
         <Navigation />
       </div>
+
       <div className='righter'>
         <header className='minisearchhed'>
           <Row>
@@ -706,57 +933,56 @@ export default function UnansweredResponsesPage(props) {
               <div className='composehead px-3'>
                 <Row>
                   <Col sm={6}>
-                    <div className='lablebox'>
-                      <label>
-                        <b>From</b>
-                        {OpenMessage.FromEmail}
-                      </label>
-                      <label><b>To</b>{OpenMessage.ToEmail}</label>
-                      <label><b>Subject</b>{OpenMessage.Subject}</label>
-                    </div>
+                    {
+                      OpenMessage == 0 ? '' :
+                        <div className='lablebox'>
+                          <label>
+                            <b>From</b>
+                            {OpenMessage.FromEmail}
+                          </label>
+                          <label><b>To</b>{OpenMessage.ToEmail}</label>
+                          <label><b>Subject</b>{OpenMessage.Subject}</label>
+                        </div>
+                    }
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
                       <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
                     </div>
-                    <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
-                      <Button>
-                        <label>{MailNumber} / {FollowUpList.length}</label>
-                      </Button>
-                      {/* <Button>
-                        <a><img src={iconstar} title={"Starred"} onClick={StarhandleOpen} /></a>
-                      </Button> */}
-                      <Button>
-                        <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </Button>
-                      {/* <Button>
-                        <a onClick={FollowupPopOpen}><img src={icontimer} /></a>
-                      </Button> */}
-                      <Button onClick={OpenFollowupPopModel}>
-                        <img src={icontimer} title={"Follow Up Later"} />
-                      </Button>
-                      {/* <Button>
-                        <a onClick={InboxhandleOpen}><img src={inbox} /></a>
-                      </Button> */}
-                      <Button onClick={OpenOtherInboxPopModel}>
-                        <img src={inbox} title={"Other Inbox"} />
-                      </Button>
-                      <Button>
-                        <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
-                      </Button>
-                      <Button>
-                        <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
-                      </Button>
-                      {<Button onClick={OpenDeletePopModel}>
-                        <img src={icondelete} title="Delete" />
-                      </Button>}
-                      <Button>
-                        <a><img src={iconmenu} /></a>
-                      </Button>
-                    </ButtonGroup>
+
+                    {
+                      OpenMessage == 0 ? '' :
+                        <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
+                          <Button>
+                            <label>{MailNumber} / {FollowUpList.length}</label>
+                          </Button>
+                          <Button>
+                            <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Button>
+                          <Button onClick={OpenFollowupPopModel}>
+                            <img src={icontimer} title={"Follow Up Later"} />
+                          </Button>
+                          <Button onClick={OpenOtherInboxPopModel}>
+                            <img src={inbox} title={"Other Inbox"} />
+                          </Button>
+                          <Button>
+                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                          </Button>
+                          <Button>
+                            {/* <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a> */}
+                            <a><img src={iconsarrow1} /></a>
+                          </Button>
+                          {<Button onClick={OpenDeletePopModel}>
+                            <img src={icondelete} title="Delete" />
+                          </Button>}
+                          <Button>
+                            <a><img src={iconmenu} /></a>
+                          </Button>
+                        </ButtonGroup>
+                    }
                   </Col>
                 </Row>
               </div>
@@ -767,20 +993,58 @@ export default function UnansweredResponsesPage(props) {
           </SplitPane>
         </div>
       </div>
+
       <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
 
       <Button onClick={() => OpenComposeReply(OpenMessage)}>
         <div className='composebody' id='maxcomposeReply'>
           <div className="usercompose userdefual" id="UserComposeReply">
-            <UnansweredResponsesReplyPage GetUnansweredResponcesList={GetUnansweredResponcesList} ReplyDetails={OpenMessage._id}  />
+            <div className='hcompose px-3'>
+              <Row>
+                <Col><h4>Reply Message</h4></Col>
+                <Col className='col text-right'>
+                  <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                    <Button onClick={mincomposeonReply} className="minicon">
+                      <img src={Minimize} />
+                    </Button>
+                    <Button onClick={maxcomposeonReply} className="maxicon">
+                      <img src={Maximize} />
+                    </Button>
+                    <Button onClick={CloseComposeReply}>
+                      <img src={Close} />
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+              </Row>
+            </div>
+            <div className='subcompose px-3'>
+              <Row className='px-3'>
+                <Col xs={2} className="px-0">
+                  <h6>To :</h6>
+                </Col>
+                <Col xs={7} className="px-0">
+                  <Input className='input-clend' id='To' name='To' value={OpenMessage?.FromEmail} disabled />
+                </Col>
+              </Row>
+            </div>
+            <div className='bodycompose'>
+              <Row className='pt-2'>
+                <Col>
+                  <div className='FroalaEditor'>
+                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                  </div>
+                </Col>
+              </Row>
+            </div>
           </div>
         </div>
       </Button>
-      <div className='composebody' id='maxcomposeForward'>
+
+      {/* <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
           <UnansweredResponsesForwardPage GetUnansweredResponcesList={GetUnansweredResponcesList} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -51,7 +51,6 @@ function useOutsideAlerter(ref) {
 }
 
 export default function UnansweredResponsesComposePage({ GetUnansweredResponcesList, ReplyDetails }) {
-    console.log("ReplyDetails======", ReplyDetails)
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
@@ -642,7 +641,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </Col>
                 </Row>
             </div>
-
         </>
     );
 }
