@@ -50,7 +50,8 @@ toast.configure();
 function useOutsideAlerter(ref) {
 }
 
-export default function UnansweredResponsesComposePage({ GetUnansweredResponcesList }) {
+export default function UnansweredResponsesComposePage({ GetUnansweredResponcesList, ReplyDetails }) {
+    console.log("ReplyDetails======", ReplyDetails)
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
@@ -67,12 +68,14 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
     const [ClientData, SetClientData] = useState()
+
     const [Signature, SetSignature] = useState({
         Data: ""
     })
 
     useEffect(() => {
         GetClientID()
+        GetReplyMessageDetails(ReplyDetails)
     }, [])
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -151,7 +154,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     }
 
     // Get Client ID
-    const GetClientID = () => {
+    const GetClientID = async () => {
         var UserDetails = GetUserDetails();
         if (UserDetails != null) {
             SetClientID(UserDetails.ClientID);
@@ -159,6 +162,27 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         }
         GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
         GetClientList(UserDetails.ClientID)
+        // if (ReplyDetails != "" || ReplyDetails != undefined) {
+        
+        // }
+    }
+
+    const GetReplyMessageDetails = async (i) => {
+        const Data = {
+            ID: i,
+        }
+        await Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            console.log("Result======", Result)
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                // SetSignature({ Data: Result?.data?.Data })
+            } else {
+                // toast.error(Result?.data?.Message);
+            }
+        })
     }
 
     const GetClientList = (ID) => {
@@ -523,103 +547,102 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
     return (
         <>
-             
-              
-                    <div className='hcompose px-3'>
-                        <Row>
-                            <Col><h4>Reply Message</h4></Col>
-                            <Col className='col text-right'>
-                                <ButtonGroup className='composeion' variant="text" aria-label="text button group">
-                                    <Button onClick={mincomposeonReply} className="minicon">
-                                        <img src={Minimize} />
-                                    </Button>
-                                    <Button onClick={maxcomposeonReply} className="maxicon">
-                                        <img src={Maximize} />
-                                    </Button>
-                                    <Button onClick={CloseComposeReply}>
-                                        <img src={Close} />
-                                    </Button>
-                                </ButtonGroup>
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='subcompose px-3 py-1'>
-                        <Row className='px-3'>
-                            <Col xs={3} className="px-0 pt-1">
-                                <h6>Email Account :</h6>
-                            </Col>
-                            <Col xs={9} className="px-1">
-                                <div className='comse-select'>
-                                    <Select
-                                        value={SelectedEmailAccountUser}
-                                        onChange={SelectEmailAccountUser}
-                                    >
-                                        {
-                                            EmailAccountUsers.map((row) => (
-                                                <MenuItem value={row?.AccountID}>{row?.Email}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='subcompose px-3'>
-                        <Row className='px-3'>
-                            <Col xs={2} className="px-0">
-                                <h6>To :</h6>
-                            </Col>
-                            <Col xs={7} className="px-0">
-                                <Input className='input-clend' id='To' name='To' />
 
-                            </Col>
-                            <Col xs={3} className='col text-right d-flex px-0'>
-                                <Button className='lable-btn' onClick={OpenCcReply}>Cc</Button>
-                                <Button className='lable-btn' onClick={OpenBccReply}>Bcc</Button>
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='subcompose cc px-3' id='CcReply'>
-                        <Row className='px-3'>
-                            <Col xs={2} className="px-0">
-                                <h6>Cc :</h6>
-                            </Col>
-                            <Col xs={10} className="px-0">
-                                <Input className='input-clend' id='CC' name='Cc' />
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='subcompose bcc px-3' id='BccReply'>
-                        <Row className='px-3'>
-                            <Col xs={2} className="px-0">
-                                <h6>Bcc :</h6>
-                            </Col>
-                            <Col xs={10} className="px-0">
-                                <Input className='input-clend' id='BCC' name='Bcc' />
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='subcompose px-3'>
-                        <Row className='px-3'>
-                            <Col xs={2} className="px-0">
-                                <h6>Subject :</h6>
-                            </Col>
-                            <Col xs={10} className="px-0">
-                                <Input className='input-clend' id='Subject' name='Subject' />
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='bodycompose'>
-                        <Row className='pt-2'>
-                            <Col>
-                                <div className='FroalaEditor'>
-                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
-                                </div>
-                            </Col>
-                        </Row>
-                    </div> 
-            
+
+            <div className='hcompose px-3'>
+                <Row>
+                    <Col><h4>Reply Message</h4></Col>
+                    <Col className='col text-right'>
+                        <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                            <Button onClick={mincomposeonReply} className="minicon">
+                                <img src={Minimize} />
+                            </Button>
+                            <Button onClick={maxcomposeonReply} className="maxicon">
+                                <img src={Maximize} />
+                            </Button>
+                            <Button onClick={CloseComposeReply}>
+                                <img src={Close} />
+                            </Button>
+                        </ButtonGroup>
+                    </Col>
+                </Row>
+            </div>
+            <div className='subcompose px-3 py-1'>
+                <Row className='px-3'>
+                    <Col xs={3} className="px-0 pt-1">
+                        <h6>Email Account :</h6>
+                    </Col>
+                    <Col xs={9} className="px-1">
+                        <div className='comse-select'>
+                            <Select
+                                value={SelectedEmailAccountUser}
+                                onChange={SelectEmailAccountUser}
+                            >
+                                {
+                                    EmailAccountUsers.map((row) => (
+                                        <MenuItem value={row?.AccountID}>{row?.Email}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+            <div className='subcompose px-3'>
+                <Row className='px-3'>
+                    <Col xs={2} className="px-0">
+                        <h6>To :</h6>
+                    </Col>
+                    <Col xs={7} className="px-0">
+                        <Input className='input-clend' id='To' name='To' />
+
+                    </Col>
+                    <Col xs={3} className='col text-right d-flex px-0'>
+                        <Button className='lable-btn' onClick={OpenCcReply}>Cc</Button>
+                        <Button className='lable-btn' onClick={OpenBccReply}>Bcc</Button>
+                    </Col>
+                </Row>
+            </div>
+            <div className='subcompose cc px-3' id='CcReply'>
+                <Row className='px-3'>
+                    <Col xs={2} className="px-0">
+                        <h6>Cc :</h6>
+                    </Col>
+                    <Col xs={10} className="px-0">
+                        <Input className='input-clend' id='CC' name='Cc' />
+                    </Col>
+                </Row>
+            </div>
+            <div className='subcompose bcc px-3' id='BccReply'>
+                <Row className='px-3'>
+                    <Col xs={2} className="px-0">
+                        <h6>Bcc :</h6>
+                    </Col>
+                    <Col xs={10} className="px-0">
+                        <Input className='input-clend' id='BCC' name='Bcc' />
+                    </Col>
+                </Row>
+            </div>
+            <div className='subcompose px-3'>
+                <Row className='px-3'>
+                    <Col xs={2} className="px-0">
+                        <h6>Subject :</h6>
+                    </Col>
+                    <Col xs={10} className="px-0">
+                        <Input className='input-clend' id='Subject' name='Subject' />
+                    </Col>
+                </Row>
+            </div>
+            <div className='bodycompose'>
+                <Row className='pt-2'>
+                    <Col>
+                        <div className='FroalaEditor'>
+                            <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+
         </>
     );
 }
- 

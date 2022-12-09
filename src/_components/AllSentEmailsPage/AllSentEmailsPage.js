@@ -211,49 +211,49 @@ export default function AllSentEmailsPage(props) {
   };
   //End Open Message Details
 
-    // Start PopModel Open and Close and Delete Message
-    const OpenDeletePopModel = () => {
-      SetDeletePopModel(true);
-    }
-    const CloseDeletePopModel = () => {
-      SetDeletePopModel(false);
-    }
-    const DeleteMessage = (ID) => {
-      if (ID != '') {
-              var DeleteArray = []
-              DeleteArray.push(ID)
-              var Data = {
-                IDs: DeleteArray,
-                LastUpdatedBy: -1
-              };
-              const ResponseApi = Axios({
-                url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
-                method: "POST",
-                data: Data,
-              });
-              ResponseApi.then((Result) => {
-                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                  toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
-                  CloseDeletePopModel();
-                  OpenMessageDetails('')
-                  LoaderShow()
-                  if (props !== undefined) {
-                    const ID = props.location.state;
-                    if (ID != "" && ID != null && ID != "undefined") {
-                      GetAllSent(ClientID, UserID, Page, ID);
-                    }
-                    else {
-                      GetAllSent(ClientID, UserID, Page, 0)
-                    }
-                  }
-                 
-                } else {
-                  toast.error(Result?.data?.Message);
-                }
-              });
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetAllSent(ClientID, UserID, Page, ID);
             }
+            else {
+              GetAllSent(ClientID, UserID, Page, 0)
+            }
+          }
+
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
     }
-    // End PopModel Open and Close and Delete Message
+  }
+  // End PopModel Open and Close and Delete Message
 
   // Start Search
   const SearchBox = (e) => {
@@ -266,8 +266,8 @@ export default function AllSentEmailsPage(props) {
   }
   // End Search
 
-   // Start Update Star Message and model open and close
-   const OpenStarPopModel = () => {
+  // Start Update Star Message and model open and close
+  const OpenStarPopModel = () => {
     SetStarPopModel(true);
   }
   const CloseStarPopModel = () => {
@@ -275,42 +275,42 @@ export default function AllSentEmailsPage(props) {
   }
   const UpdateStarMessage = (ID) => {
     if (ID != '') {
-            var Data = {
-              _id: ID,
-              IsStarred: true,
-              LastUpdatedBy: -1
-            };
-            const ResponseApi = Axios({
-              url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryStatusUpdate",
-              method: "POST",
-              data: Data,
-            });
-            ResponseApi.then((Result) => {
-              if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
-                CloseStarPopModel();
-                OpenMessageDetails('')
-                LoaderShow()
-                if (props !== undefined) {
-                  const ID = props.location.state;
-                  if (ID != "" && ID != null && ID != "undefined") {
-                    GetAllSent(ClientID, UserID, Page, ID);
-                  }
-                  else {
-                    GetAllSent(ClientID, UserID, Page, 0)
-                  }
-                }
-              } else {
-                toast.error(Result?.data?.Message);
-              }
-            });
+      var Data = {
+        _id: ID,
+        IsStarred: true,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/SentEmailHistoryStatusUpdate",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
+          CloseStarPopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetAllSent(ClientID, UserID, Page, ID);
+            }
+            else {
+              GetAllSent(ClientID, UserID, Page, 0)
+            }
           }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
   }
   // End Update Star Message and model open and close
 
   return (
     <>
-    <Modal className="modal-pre"
+      <Modal className="modal-pre"
         open={StarPopModel}
         onClose={CloseStarPopModel}
         aria-labelledby="modal-modal-title"
@@ -344,7 +344,7 @@ export default function AllSentEmailsPage(props) {
         </Box>
       </Modal>
 
-     <Modal className="modal-pre"
+      <Modal className="modal-pre"
         open={DeletePopModel}
         onClose={CloseDeletePopModel}
         aria-labelledby="modal-modal-title"
@@ -416,7 +416,12 @@ export default function AllSentEmailsPage(props) {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       onClick={() => OpenMessageDetails(item._id, index)}
                     >
-                      <TableCell width={'35px'}><StarBorderIcon /></TableCell>
+                      <TableCell width={'35px'}>
+                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <StarBorderIcon className='starone' />
+                          <StarIcon className='selectedstart startwo' />
+                        </ToggleButton>
+                      </TableCell>
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
                       <TableCell>{item.FromEmail}</TableCell>
@@ -460,7 +465,7 @@ export default function AllSentEmailsPage(props) {
                       <Button>
                         <a><img src={iconsarrow1} /></a>
                       </Button>
-                      {<Button  onClick={OpenDeletePopModel}>
+                      {<Button onClick={OpenDeletePopModel}>
                         <a><img src={icondelete} /></a>
                       </Button>}
                       <Button>

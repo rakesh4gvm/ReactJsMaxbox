@@ -440,55 +440,73 @@ export default function UnansweredResponsesPage(props) {
   }
   // End Other inbox  Message and model open and close
 
+  const [ReplyDetails, SetReplyDetails] = useState("")
+
   // start replay code
   // Open Compose
-  const OpenComposeReply = (e) => { 
+  const OpenComposeReply = (e) => {
     document.getElementById("To").value = ""
     document.getElementById("Subject").value = ""
     document.getElementById("CC").value = ""
     document.getElementById("BCC").value = ""
 
+    const Data = {
+      ID: OpenMessage._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetReplyDetails(Result?.data?.Data)
+      } else {
+        // toast.error(Result?.data?.Message);
+      }
+    })
 
     const element = document.getElementById("UserComposeReply")
 
     if (element.classList.contains("show")) {
-        element.classList.remove("show");
+      element.classList.remove("show");
     }
     else {
-        element.classList.add("show");
+      element.classList.add("show");
     }
 
-    const elementreply = document.getElementById("UserCompose")  
-    elementreply.classList.remove("show"); 
-    const elementreplytwo = document.getElementById("UserComposeForward")  
-    elementreplytwo.classList.remove("show"); 
-  }; 
+    const elementreply = document.getElementById("UserCompose")
+    elementreply.classList.remove("show");
+    const elementreplytwo = document.getElementById("UserComposeForward")
+    elementreplytwo.classList.remove("show");
+  };
   // end replay code
+
 
   // start replay code
   // Open Compose
-  const OpenComposeForward = (e) => { 
+  const OpenComposeForward = (e) => {
     document.getElementById("To").value = ""
     document.getElementById("Subject").value = ""
     document.getElementById("CC").value = ""
     document.getElementById("BCC").value = ""
 
+   
 
     const element = document.getElementById("UserComposeForward")
 
     if (element.classList.contains("show")) {
-        element.classList.remove("show");
+      element.classList.remove("show");
     }
     else {
-        element.classList.add("show");
+      element.classList.add("show");
     }
 
-    const elementforward = document.getElementById("UserCompose")   
-    elementforward.classList.remove("show"); 
+    const elementforward = document.getElementById("UserCompose")
+    elementforward.classList.remove("show");
 
-    const elementforwardtwo = document.getElementById("UserComposeReply")   
-    elementforwardtwo.classList.remove("show"); 
-  }; 
+    const elementforwardtwo = document.getElementById("UserComposeReply")
+    elementforwardtwo.classList.remove("show");
+  };
   // end replay code
 
   return (
@@ -751,15 +769,16 @@ export default function UnansweredResponsesPage(props) {
       </div>
       <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
 
-      <div className='composebody' id='maxcomposeReply'> 
-        <div className="usercompose userdefual" id="UserComposeReply">
-        <UnansweredResponsesReplyPage GetUnansweredResponcesList={GetUnansweredResponcesList}  />
+      <Button onClick={() => OpenComposeReply(OpenMessage)}>
+        <div className='composebody' id='maxcomposeReply'>
+          <div className="usercompose userdefual" id="UserComposeReply">
+            <UnansweredResponsesReplyPage GetUnansweredResponcesList={GetUnansweredResponcesList} ReplyDetails={OpenMessage._id}  />
+          </div>
         </div>
-      </div>
-
-      <div className='composebody' id='maxcomposeForward'> 
+      </Button>
+      <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
-        <UnansweredResponsesForwardPage GetUnansweredResponcesList={GetUnansweredResponcesList}  />
+          <UnansweredResponsesForwardPage GetUnansweredResponcesList={GetUnansweredResponcesList} />
         </div>
       </div>
     </>
