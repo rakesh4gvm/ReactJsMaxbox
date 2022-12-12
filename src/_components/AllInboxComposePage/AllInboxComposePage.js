@@ -73,6 +73,8 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
     const [expanded, setExpanded] = React.useState(false);
     const [ObjectData, SetAllObjectData] = useState([])
     const [TemplateData, SetAllTemplateData] = useState([])
+    const [TemplateID, SetTemplateID] = React.useState("");
+    const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -98,6 +100,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             BodyData.split(ClientData).map(function (address, index) {
                 if (index == 0) {
                     body = address
+                    SetTemplateID("");
                 }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
@@ -105,8 +108,10 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             var NewData = "";
             if (body != "" && chckEmptyBody != "") {
                 NewData = body + DivData.BodyText + ClientData;
+                SetTemplateID(TemplateID);
             } else {
                 NewData = DivData.BodyText + BodyData
+                SetTemplateID(TemplateID);
             }
             SetSignature({ Data: NewData });
             LoaderHide()
@@ -128,6 +133,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             BodyData.split(ClientData).map(function (address, index) {
                 if (index == 0) {
                     body = address
+                    SetObjectIDTemplateID("")
                 }
             });
             var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
@@ -135,8 +141,10 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             var NewData = "";
             if (body != "" && chckEmptyBody != "") {
                 NewData = body + DivData.BodyText + ClientData;
+                SetObjectIDTemplateID(ObjectionTemplateID)
             } else {
                 NewData = DivData.BodyText + BodyData
+                SetObjectIDTemplateID(ObjectionTemplateID)
             }
             SetSignature({ Data: NewData });
             LoaderHide()
@@ -319,7 +327,9 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                 IsSpamMail: false,
                 IsDraftMail: false,
                 IsAllSentEmails: false,
-                CreatedBy: 1
+                CreatedBy: 1,
+                TemplateID : TemplateID,
+                ObjectIDTemplateID : ObjectIDTemplateID
             }
             Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
