@@ -183,7 +183,8 @@ export default function Navigation() {
   const [UserDetails, SetUserDetails] = useState();
   const [expanded, SetExpanded] = useState([]);
   const [AllTotalRecords, SetAllTotalRecords] = useState()
-
+  const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
+  const [TotalCount, SetTotalCount] = React.useState(0);
   // const handleChange = (event) => {
   //   setClient(event.target.value);
   // };
@@ -192,7 +193,7 @@ export default function Navigation() {
 
     GetClientDropdown();
     GetClientID()
-  }, [expanded]);
+  }, []);
 
   
   // Get Client ID
@@ -203,11 +204,64 @@ export default function Navigation() {
       SetUserID(UserDetails.UserID);
     }
     GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+    GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
+    GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
   }
 
+ // Get All Sent Emails Total Count
+ const GetAllSentEmailsTotalCount = (CID, UID) => {
+  LoaderShow()
+  const Data = {
+      ClientID: CID,
+      UserID: UID,
+  }
+  const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+      method: "POST",
+      data: Data,
+  });
+  ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          SetAllSentTotalRecords(Result.data)
+      } else {
+          toast.error(Result?.data?.Message);
+      }
+  });
+  LoaderHide()
+}
 
+ // Get Total Total Record Count
+ const GetTotalRecordCount = (CID, UID) => {
+  LoaderShow()
+  const Data = {
+      ClientID: CID,
+      UserID: UID,
+      IsInbox: false,
+      IsStarred: false,
+      IsFollowUp: false,
+      IsSpam: false,
+      IsOtherInbox: true,
+  }
+  Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/AllInboxTotalRecordCount",
+      method: "POST",
+      data: Data,
+  }).then((Result) => {
+    debugger
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.TotalCount >= 0) {
+              SetTotalCount(Result.data.TotalCount);
+          } else {
+              SetTotalCount(0);
+              toast.error(Result?.data?.Message);
+          }
+      }
+  })
+  LoaderHide()
+}
 
   const GetAllTotalCount = (CID,UID) => {
+    debugger
     LoaderShow()
     const Data = {
         ClientID: CID,
@@ -222,6 +276,8 @@ export default function Navigation() {
         data: Data,
     });
     ResponseApi.then((Result) => {
+      debugger
+      console.log(Result.data)
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             SetAllTotalRecords(Result.data)
         } else {
@@ -492,65 +548,65 @@ export default function Navigation() {
           <TreeItem nodeId="1" className='text-bold' label="All Account">
             <TreeItem nodeId="2" label="Inbox">
               <TreeItem nodeId="7" label="All">
-                <TreeItem nodeId="8" label="New">
+                <TreeItem nodeId="8" label={"All Inbox("+TotalCount+")"}>
                   {/* <Link to="/AllInbox">All Inbox</Link> */}
                   <TreeItem nodeId="81" label="All Inbox" onClick={() => RedirectLink('', "AllInbox", '')} />
                 </TreeItem>
-                <TreeItem nodeId="9" label="Starred">
+                <TreeItem nodeId="9" label={"Starred("+AllTotalRecords?.AllStarredCount+")"}>
                   {/* <Link to="/Starred">Starred</Link> */}
                   <TreeItem nodeId="91" label="Starred" onClick={() => RedirectLink('', "Starred", '')} />
                 </TreeItem>
               </TreeItem>
 
-              <TreeItem nodeId="10" label="Focused">
+              {/* <TreeItem nodeId="10" label="Focused">
                 <Link to="/">Focused 1</Link>
                 <Link to="/">Focused 2</Link>
-              </TreeItem>
+              </TreeItem> */}
 
-              <TreeItem nodeId="11" label="Other Inbox">
+              <TreeItem nodeId="11" label={"Other Inbox("+AllTotalRecords?.AllOtherInboxCount+")"}>
                 <TreeItem nodeId="111" label="Other Inbox" onClick={() => RedirectLink('', "Other Inbox", '')} />
                 {/* <Link to="/OtherInboxPage">Other Inbox </Link> */}
               </TreeItem>
 
-              <TreeItem nodeId="12" label="Follow Up Later">
+              <TreeItem nodeId="12" label={"Follow Up Later("+AllTotalRecords?.AllFollowUpLaterCount+")"}>
               <TreeItem nodeId="121" label="Follow Up Later" onClick={() => RedirectLink('', "Follow Up Later", '')} />
                 {/* <Link to="/FollowUpLater">Follow Up Later 1</Link> */}
               </TreeItem>
 
-              <TreeItem nodeId="13" label="Junk">
+              {/* <TreeItem nodeId="13" label="Junk">
                 <Link to="/">Junk 1</Link>
                 <Link to="/">Junk 2</Link>
-              </TreeItem>
+              </TreeItem> */}
 
-              <TreeItem nodeId="14" label="Trash">
+              {/* <TreeItem nodeId="14" label="Trash">
                 <Link to="/">Trash 1</Link>
                 <Link to="/">Trash 2</Link>
-              </TreeItem>
+              </TreeItem> */}
             </TreeItem>
 
             <TreeItem nodeId="18" label="Outbox">
-              <TreeItem nodeId="19" label="All Sent">
+              <TreeItem nodeId="19" label={"All Sent("+AllSentTotalRecords?.AllSentEmailsCount+")"}>
                 {/* <Link to="/AllSentEmails">All Sent</Link> */}
                 <TreeItem nodeId="191" label="All Sent" onClick={() => RedirectLink('', "AllSent", '')} />
               </TreeItem>
-              <TreeItem nodeId="20" label="Unanswered">
+              <TreeItem nodeId="20" label={"Unanswered Responses("+AllTotalRecords?.AllUnansweredResponsesCount+")"}>
                 {/* <Link to="/UnansweredResponses">Unanswered</Link> */}
                 <TreeItem nodeId="191" label="Unanswered Responses" onClick={() => RedirectLink('', "Unanswered Responses", '')} />
               </TreeItem>
-              <TreeItem nodeId="21" label="Scheuled">
+              {/* <TreeItem nodeId="21" label="Scheuled">
                 <Link to="/">Scheuled 1</Link>
                 <Link to="/">Scheuled 2</Link>
                 <Link to="/">Scheuled 3</Link>
-              </TreeItem>
-              <TreeItem nodeId="22" label="Draft">
-              <TreeItem nodeId="221" label="Draft" onClick={() => RedirectLink('', "Draft", '')} />
+              </TreeItem> */}
+              <TreeItem nodeId="22" label={"Drafts("+AllTotalRecords?.AllDraftCount+")"}>
+              <TreeItem nodeId="221" label="Drafts" onClick={() => RedirectLink('', "Draft", '')} />
                 {/* <Link to="/Drafts">Draft</Link> */}
               </TreeItem>
-              <TreeItem nodeId="23" label="Spam">
+              <TreeItem nodeId="23" label={"Spam("+AllTotalRecords?.AllSpamCount+")"}>
               <TreeItem nodeId="231" label="Spam" onClick={() => RedirectLink('', "Spam", '')} />
                 {/* <Link to="/Spam">Spam</Link> */}
               </TreeItem>
-              <TreeItem nodeId="24" label="UnansweredReplies">
+              <TreeItem nodeId="24" label={"Unanswered Replies("+AllSentTotalRecords?.AllUnansweredRepliesCount+")"}>
                 {/* <Link to="/UnansweredReplies">UnansweredReplies</Link> */}
                 <TreeItem nodeId="241" label="Unanswered Replies" onClick={() => RedirectLink('', "UnansweredReplies", '')} />
               </TreeItem>
@@ -571,10 +627,10 @@ export default function Navigation() {
                   </TreeItem>
                 </TreeItem>
 
-                <TreeItem nodeId={"f5" + item._id} label="Focused">
+                {/* <TreeItem nodeId={"f5" + item._id} label="Focused">
                   <Link to="/">Focused 1</Link>
                   <Link to="/">Focused 2</Link>
-                </TreeItem>
+                </TreeItem> */}
 
                 <TreeItem nodeId={"f6" + item._id} label="Other Inbox">
                   <TreeItem nodeId={"f60" + item._id} label="Other Inbox" onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
@@ -587,31 +643,31 @@ export default function Navigation() {
 
 
 
-                <TreeItem nodeId={"f8" + item._id} label="Junk">
+                {/* <TreeItem nodeId={"f8" + item._id} label="Junk">
                   <Link to="/">Junk 1</Link>
                   <Link to="/">Junk 2</Link>
-                </TreeItem>
+                </TreeItem> */}
 
-                <TreeItem nodeId={"f9" + item._id} label="Trash">
+                {/* <TreeItem nodeId={"f9" + item._id} label="Trash">
                   <Link to="/">Trash 1</Link>
                   <Link to="/">Trash 2</Link>
-                </TreeItem>
+                </TreeItem> */}
               </TreeItem>
 
               <TreeItem nodeId={"f10" + item._id} label="Outbox">
                 <TreeItem nodeId={"f11" + item._id} label="All Sent">
                   <TreeItem nodeId={"f160" + item._id} label="AllSent" onClick={() => RedirectLink(item.AccountID, "AllSent")} />
                 </TreeItem>
-                <TreeItem nodeId={"f13" + item._id} label="Unanswered">
+                {/* <TreeItem nodeId={"f13" + item._id} label="Unanswered">
                   <Link to="/">Unanswered 1</Link>
                   <Link to="/">Unanswered 2</Link>
                   <Link to="/">Unanswered 3</Link>
-                </TreeItem>
-                <TreeItem nodeId={"f14" + item._id} label="Scheuled">
+                </TreeItem> */}
+                {/* <TreeItem nodeId={"f14" + item._id} label="Scheuled">
                   <Link to="/">Scheuled 1</Link>
                   <Link to="/">Scheuled 2</Link>
                   <Link to="/">Scheuled 3</Link>
-                </TreeItem>
+                </TreeItem> */}
                 <TreeItem nodeId={"f15" + item._id} label="Draft">
                   <TreeItem nodeId={"f150" + item._id} label="Draft" onClick={() => RedirectLink(item.AccountID, "Draft")} />
                 </TreeItem>
