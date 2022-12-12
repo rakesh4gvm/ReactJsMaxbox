@@ -968,9 +968,9 @@ div.modal-prein {
 }
 
 .imgupload {
-    width: 206px;
-    height: 206px;
-    background-color: #4E63DA;
+    width: 176px;
+    height: 176px; 
+    background-color: #e49273;
     margin: 0 auto;
     border-radius: 150px;
     border: 5px solid #FFFFFF;
@@ -993,7 +993,7 @@ div.modal-prein {
 .uploadedimg {
     width: 45px;
     height: 45px;
-    background: #647AF7;
+    background: #d17e60;
     border-radius: 72px;
     position: absolute;
     bottom: 10px;
@@ -1899,7 +1899,7 @@ img.width36{
     min-height: 47px !important;
 }
 .listcardman > .MuiAccordion-root.activetemplate{
-    border: 1px solid #4E63DA; 
+    border: 1px solid #e49273; 
 }
 
 .cardtemplate{
@@ -1913,7 +1913,7 @@ img.width36{
     position: relative;
 }
 .cardtemplate.active{
-    border: 1px solid #4E63DA; 
+    border: 1px solid  #e49273; 
 }
 .cardtemplate .MuiPaper-root {
     border: none;
@@ -2259,7 +2259,7 @@ html, body {
     width: 100%;
     background-color: #FFF7F7;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 3px 15px;
+    padding: 3px 55px 3px 15px;
     display: table;
 }
 .serchinbox {
@@ -2526,6 +2526,38 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
     color: #e49273;
 }  
+.profilebox {
+    background-color: #f7f0f0;
+    width: 42px;
+    height: 42px;
+    position: fixed;
+    z-index: 999;
+    right: 0;
+    text-align: center;
+    line-height: 42px;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+.bodsetting .py-3 {
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+}
+.bodsetting.bgdarkprim {
+    background-color: rgb(255 239 239);
+}
+.MuiSwitch-root .MuiSwitch-switchBase.Mui-checked span{
+    color: #e49273;
+}
+.MuiSwitch-root .MuiSwitch-switchBase.Mui-checked + span.MuiSwitch-track{
+    background-color: #e49273;
+}
+.MuiModal-root.modal-lister {
+    z-index: 9999;
+}
+
+
+
+
+
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;

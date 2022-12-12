@@ -23,6 +23,7 @@ import Switch from '@mui/material/Switch';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import Navigation from '../Navigation/Navigation';
 
 
 toast.configure();
@@ -345,121 +346,136 @@ export default function ProfileSettingPage() {
         <img src={MaxboxLoading} />
       </div>
 
-      <div className='bodymain'>
-        <Row className='bodsetting'><div className='imgbgset'><img src={BgProfile} /></div>
-          <Col className='text-center py-5' style={{ minHeight: '230px' }}>
-            <h4>Profile Setting</h4>
-          </Col>
-        </Row>
-
-
-        <Row className='text-center mt-5'>
-          <Col>
-            <div className='imguploadmain'>
-              <div className='imgupload'>
-                {/* <img src={User?.UserImage} alt="img" /> */}
-                <img src={ImagePreview ? URL.createObjectURL(ImagePreview) : User?.UserImage} alt={ImagePreview ? ImagePreview.name : null} />
-              </div>
-              <div className='uploadedimg'>
-                <img src={Cameraicons} width="20px" />
-                <input type='file' onChange={(e) => UploadImage(e)} accept="image/*" />
-              </div>
-            </div>
-            <div className='mt-4'>
-              <h5>{User?.FirstName} {User?.LastName}</h5>
-              <a>{User?.Email}</a>
-            </div>
-          </Col>
-        </Row>
-
-        <div className='sm-container mt-5'>
-          <Row>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName}  onChange={handleChange}/>
-                {FirstNameError && <p style={{ color: "red" }}>{FirstNameError}</p>}
-              </div>
-            </Col>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} onChange={handleChange}/>
-                {LastNameError && <p style={{ color: "red" }}>{LastNameError}</p>}
-              </div>
-            </Col>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} readonly="readonly" />
-                
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='text' placeholder='Phone Number' id='phone' defaultValue={User?.PhoneNumber} />
-              </div>
-            </Col>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='text' placeholder='Zip code' id='zip' defaultValue={User?.ZipCode} />
-              </div>
-            </Col>
-            <Col sm={4}>
-              <div className='select-box'>
-                <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
-                  {Country?.map((row) => (
-                    <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
-                  ))}
-                </Select>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='Password' placeholder='Password' id='password' name="password" defaultValue={User?.Password} onChange={handleChange} />
-                {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
-              </div>
-            </Col>
-            <Col sm={4}>
-              <div className='input-box'>
-                <input type='Password' placeholder='Confirm Password' id='confirmpassword' name="confirmpassword" defaultValue={User?.Password} onChange={handleChange}/> 
-                {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
-                 </div>
-            </Col>
-            <Col sm={4}>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={4}>
-              <div className='input-box'>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={Checked}
-                      onChange={HandleTwoWayFactor}
-                    />
-                  }
-                  label="Two way factor" />
-              </div>
-            </Col>
-            <Col sm={4}>
-            </Col>
-            <Col sm={4}>
-            </Col>
-          </Row>
-        </div>
-
-        <div className='btnprofile my-5'>
-          <ButtonGroup variant="text" aria-label="text button group">
-            <Button variant="contained btn btn-primary smallbtn mx-4" onClick={UpdateUser}> Save</Button>
-            <Button variant="contained btn btn-orang smallbtn" onClick={CancelUser}> Cancel</Button>
-          </ButtonGroup>
-        </div>
-
+      <div className='lefter'>
+        <Navigation />
       </div>
 
-      <FooterBottom />
+      <div className='righter'> 
+
+        <div className='px-3'> 
+            <Row className='bodsetting px-4'>
+                <Col className='py-3'>
+                  <h5 className="my-0">Profile Setting</h5>
+                </Col>
+            </Row>
+        </div>
+
+        <div className='px-3'>
+          <Row className='bodsetting bgdarkprim'> 
+            <Col className='text-center py-5' style={{ minHeight: '230px' }}>
+              <h4>Profile Setting</h4>
+            </Col>
+          </Row>
+
+
+          <Row className='text-center mt-5'>
+            <Col>
+              <div className='imguploadmain'>
+                <div className='imgupload'>
+                  {/* <img src={User?.UserImage} alt="img" /> */}
+                  <img src={ImagePreview ? URL.createObjectURL(ImagePreview) : User?.UserImage} alt={ImagePreview ? ImagePreview.name : null} />
+                </div>
+                <div className='uploadedimg'>
+                  <img src={Cameraicons} width="20px" />
+                  <input type='file' onChange={(e) => UploadImage(e)} accept="image/*" />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <h5>{User?.FirstName} {User?.LastName}</h5>
+                <a>{User?.Email}</a>
+              </div>
+            </Col>
+          </Row>
+
+          <div className='sm-container mt-5'>
+            <Row>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName}  onChange={handleChange}/>
+                  {FirstNameError && <p style={{ color: "red" }}>{FirstNameError}</p>}
+                </div>
+              </Col>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} onChange={handleChange}/>
+                  {LastNameError && <p style={{ color: "red" }}>{LastNameError}</p>}
+                </div>
+              </Col>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} readonly="readonly" />
+                  
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='text' placeholder='Phone Number' id='phone' defaultValue={User?.PhoneNumber} />
+                </div>
+              </Col>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='text' placeholder='Zip code' id='zip' defaultValue={User?.ZipCode} />
+                </div>
+              </Col>
+              <Col sm={4}>
+                <div className='select-box'>
+                  <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
+                    {Country?.map((row) => (
+                      <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
+                    ))}
+                  </Select>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='Password' placeholder='Password' id='password' name="password" defaultValue={User?.Password} onChange={handleChange} />
+                  {PasswordError && <p style={{ color: "red" }}>{PasswordError}</p>}
+                </div>
+              </Col>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <input type='Password' placeholder='Confirm Password' id='confirmpassword' name="confirmpassword" defaultValue={User?.Password} onChange={handleChange}/> 
+                  {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
+                  </div>
+              </Col>
+              <Col sm={4}>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={4}>
+                <div className='input-box'>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={Checked}
+                        onChange={HandleTwoWayFactor}
+                      />
+                    }
+                    label="Two way factor" />
+                </div>
+              </Col>
+              <Col sm={4}>
+              </Col>
+              <Col sm={4}>
+              </Col>
+            </Row>
+          </div>
+
+          <div className='btnprofile my-5'>
+            <ButtonGroup variant="text" aria-label="text button group">
+              <Button variant="contained btn btn-primary smallbtn mx-4" onClick={UpdateUser}> Save</Button>
+              <Button variant="contained btn btn-orang smallbtn" onClick={CancelUser}> Cancel</Button>
+            </ButtonGroup>
+          </div>
+
+        </div>
+      </div>
+
+     
 
     </>
   );

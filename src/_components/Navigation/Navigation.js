@@ -25,7 +25,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
-import Xlogo from "../../images/Xlogo.jpg";
+import Xlogo from "../../images/Xlogo.jpg";  
+import Usericon from '../../images/icons/users.svg';
 
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -468,6 +469,10 @@ export default function Navigation() {
   useOutsideAlerter(WrapperRef);
   return (
     <Box sx={{ display: 'flex' }}>
+      <Link to="/ProfileSetting"><div className='profilebox'>
+        <img src={Usericon} />
+      </div></Link>
+
       <div className='orangbody'>
         <img src={Xlogo} width="100%" />
 
