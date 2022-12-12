@@ -393,35 +393,43 @@ export default function AllSentEmailsPage(props) {
 
   // Sent Mail Starts
   const ReplySendMail = async () => {
-    var ToEmail = OpenMessage.FromEmail;
-    var ToName = OpenMessage.FromName
+    var ToEmail = OpenMessage.ToEmail;
+    var ToName = OpenMessage.ToName
+    var FromEmail = OpenMessage.FromEmail;
+    var FromName = OpenMessage.FromName
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
-    LoaderShow()
-    var Data = {
-      ToEmail: ToEmail,
-      ToName: ToName,
-      ID: ID,
-      Subject: Subject,
-      Body: Body
-    };
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/SentPageReplyMessage",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.success(<div>All Sent Emails <br />Reply mail send successfully.</div>);
-        SetSignature({ Data: "" })
-        LoaderHide()
-      }
-      else {
-        toast.error(Result?.data?.Message);
-        LoaderHide()
-      }
-    });
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    } else {
+      LoaderShow()
+      var Data = {
+        ToEmail: ToEmail,
+        ToName: ToName,
+        FromEmail: FromEmail,
+        FromName: FromName,
+        ID: ID,
+        Subject: Subject,
+        Body: Body
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/sent_email_history/AllSentReplyMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>All Sent Emails <br />Reply mail send successfully.</div>);
+          SetSignature({ Data: "" })
+          LoaderHide()
+        } else {
+          toast.error(Result?.data?.Message);
+          LoaderHide()
+        }
+      });
+    }
   }
   // Sent Mail Ends
 
