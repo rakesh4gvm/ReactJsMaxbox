@@ -996,7 +996,8 @@ export default function UnansweredResponsesPage(props) {
 
       <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
 
-      <Button onClick={() => OpenComposeReply(OpenMessage)}>
+      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}>   </Button> */}
+
         <div className='composebody' id='maxcomposeReply'>
           <div className="usercompose userdefual" id="UserComposeReply">
             <div className='hcompose px-3'>
@@ -1018,7 +1019,7 @@ export default function UnansweredResponsesPage(props) {
               </Row>
             </div>
             <div className='subcompose px-3'>
-              <Row className='px-3'>
+              <Row className='px-3 py-1'>
                 <Col xs={2} className="px-0">
                   <h6>To :</h6>
                 </Col>
@@ -1038,7 +1039,7 @@ export default function UnansweredResponsesPage(props) {
             </div>
           </div>
         </div>
-      </Button>
+   
 
       {/* <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">

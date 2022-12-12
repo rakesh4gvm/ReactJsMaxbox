@@ -326,7 +326,7 @@ export default function TemplatesListPage() {
                             <TableCell>{parseInt(row.IsOpenCount) > 0 ? (parseInt(row.IsSentCount) / parseInt(row.IsOpenCount)) * 100 : 0 } % </TableCell>
                             {/* <TableCell>Replies %</TableCell> */}
 
-                            <TableCell align="right">
+                            <TableCell align="left">
                               <ButtonGroup variant="text" aria-label="text button group">
                                 <Button className="iconbtntable" onClick={() => EditTemplate(row._id)}><EditIcon /></Button>
                                 <Button className='iconbtntable' onClick={() => OpenEyesPopModel(row._id, parse(row.BodyText))}>

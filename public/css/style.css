@@ -704,7 +704,7 @@ ul.d-flex.flexlist {
     left: 0px;
     bottom: 0px;
     width: 100%;
-    max-width: 550px;
+    max-width: 600px;
     padding: 0;
     display: none;
 }
@@ -747,11 +747,7 @@ ul.d-flex.flexlist {
 .hcompose button {
     min-width: 25px;
 }
-
-.hcompose .btn-group {
-    margin-top: 5px;
-}
-
+ 
 .subcompose {
     border: 1px solid #E5E5E5;
 }
@@ -2107,7 +2103,7 @@ div.modal-prein.wd-600{
 .largebox.composebody .userdefual .composeion .maxicon{
     transform: rotate(180deg);
     border-right: none;
-    border-left: 1px solid rgba(25, 118, 210, 0.5);
+    border-left: 1px solid rgb(228 146 115 / 50%);
 }
 .composeion {
     margin-top: 3px;
@@ -2553,9 +2549,24 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .MuiModal-root.modal-lister {
     z-index: 9999;
 }
-
-
-
+.composeion > button.btn.btn-primary {
+    border: none;
+    box-shadow: none !important;
+    border-radius: 0; 
+}  
+.usercompose .composeion button.btn,
+.usercompose .composeion button.btn:focus,
+.usercompose .composeion button:not(:disabled):not(.disabled):active:focus {
+    font-size: inherit !important;
+    height: inherit !important; 
+    background: #e49273;
+    width: 42px; 
+    border: #f7ad92;
+    border-radius: 0;
+}
+.FroalaEditor *{
+    word-break: break-all;
+}
 
 
 @media screen and (max-width:990px) {

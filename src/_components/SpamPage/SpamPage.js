@@ -950,7 +950,7 @@ export default function SpamPage(props) {
         </div>
       </div>
       <SpamComposePage GetSpamList={GetSpamList} />
-      <Button onClick={() => OpenComposeReply(OpenMessage)}>
+      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}> */}
         <div className='composebody' id='maxcomposeReply'>
           <div className="usercompose userdefual" id="UserComposeReply">
             <div className='hcompose px-3'>
@@ -971,7 +971,7 @@ export default function SpamPage(props) {
                 </Col>
               </Row>
             </div>
-            <div className='subcompose px-3'>
+            <div className='subcompose px-3 py-1'>
               <Row className='px-3'>
                 <Col xs={2} className="px-0">
                   <h6>To :</h6>
@@ -992,7 +992,7 @@ export default function SpamPage(props) {
             </div>
           </div>
         </div>
-      </Button>
+      {/* </Button> */}
     </>
   );
 }
