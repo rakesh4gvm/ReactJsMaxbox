@@ -56,6 +56,11 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 toast.configure();
 
 const Style = {
@@ -151,6 +156,65 @@ export default function UnansweredResponsesPage(props) {
   const [Signature, SetSignature] = useState({
     Data: ""
   })
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleTemOpen = () => setTemOpen(true);
+  const handleTemClose = () => setTemOpen(false);
+  const [ClientData, SetClientData] = useState()
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    console.log(panel);
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const SelectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var TemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleTemClose()
+    } else {
+      toast.error("Please select template");
+      LoaderHide()
+    }
+  }
+
+  const SelectObjectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleClose()
+    } else {
+      toast.error("Please select object template");
+      LoaderHide()
+    }
+  }
+
+  const ActiveClass = (panel) => () => {
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if (elementcs.length > 0) {
+      for (var i = elementcs.length - 1; i >= 0; i--) {
+        elementcs[i].classList.remove("active");
+      }
+    }
+    element.classList.add("active");
+  }
 
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
@@ -615,7 +679,7 @@ export default function UnansweredResponsesPage(props) {
     refreshOnShow: function ($btn, $dropdown) {
     }
   });
-  Froalaeditor.RegisterCommand('TemplatesOption', {
+  Froalaeditor.RegisterCommand('TemplatesOptions', {
     title: 'Templates Option',
     type: 'dropdown',
     focus: false,
@@ -720,7 +784,7 @@ export default function UnansweredResponsesPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -738,6 +802,99 @@ export default function UnansweredResponsesPage(props) {
   return (
 
     <>
+
+      <Modal className="modal-lister"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className='m-head'>
+            <Typography id="modal-modal-title" variant="h4" component="h4">
+              Select Objection
+            </Typography>
+          </div>
+          <div className='m-body'>
+            <div className='listcardman'>
+              {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
+                <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
+                  <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel2bh-content"
+                      id="panel2bh-header"
+                    >
+                    </AccordionSummary>
+                    <AccordionDetails >
+                      <Typography >
+                        {parse(row.BodyText)}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+
+              ))}
+
+
+            </div>
+
+          </div>
+          <div className='m-fotter' align="right">
+            <ButtonGroup variant="text" aria-label="text button group">
+              <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleClose}> Cancel</Button>
+              <Button variant="contained btn btn-primary smallbtn" onClick={SelectObjectTemplate}> Select</Button>
+            </ButtonGroup>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal className="modal-lister"
+        open={temopen}
+        onClose={handleTemClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className='m-head'>
+            <Typography id="modal-modal-title" variant="h4" component="h4">
+              Select Template
+            </Typography>
+          </div>
+          <div className='m-body'>
+            <div className='listcardman'>
+
+              {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
+                <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
+                  <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel2bh-content"
+                      id="panel2bh-header"
+                    >
+                    </AccordionSummary>
+                    <AccordionDetails >
+                      <Typography >
+                        {parse(row.BodyText)}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+              ))}
+            </div>
+
+          </div>
+          <div className='m-fotter' align="right">
+            <ButtonGroup variant="text" aria-label="text button group">
+              <Button variant="contained btn btn-orang smallbtn mr-3" onClick={handleTemClose}> Cancel</Button>
+              <Button variant="contained btn btn-primary smallbtn" onClick={SelectTemplate}> Select</Button>
+            </ButtonGroup>
+          </div>
+        </Box>
+      </Modal>
+
 
       <Modal className="modal-pre"
         open={StarPopModel}
@@ -998,48 +1155,48 @@ export default function UnansweredResponsesPage(props) {
 
       {/* <Button onClick={() => OpenComposeReply(OpenMessage)}>   </Button> */}
 
-        <div className='composebody' id='maxcomposeReply'>
-          <div className="usercompose userdefual" id="UserComposeReply">
-            <div className='hcompose px-3'>
-              <Row>
-                <Col><h4>Reply Message</h4></Col>
-                <Col className='col text-right'>
-                  <ButtonGroup className='composeion' variant="text" aria-label="text button group">
-                    <Button onClick={mincomposeonReply} className="minicon">
-                      <img src={Minimize} />
-                    </Button>
-                    <Button onClick={maxcomposeonReply} className="maxicon">
-                      <img src={Maximize} />
-                    </Button>
-                    <Button onClick={CloseComposeReply}>
-                      <img src={Close} />
-                    </Button>
-                  </ButtonGroup>
-                </Col>
-              </Row>
-            </div>
-            <div className='subcompose px-3'>
-              <Row className='px-3 py-1'>
-                <Col xs={2} className="px-0">
-                  <h6>To :</h6>
-                </Col>
-                <Col xs={7} className="px-0">
-                  <Input className='input-clend' id='To' name='To' value={OpenMessage?.FromEmail} disabled />
-                </Col>
-              </Row>
-            </div>
-            <div className='bodycompose'>
-              <Row className='pt-2'>
-                <Col>
-                  <div className='FroalaEditor'>
-                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
-                  </div>
-                </Col>
-              </Row>
-            </div>
+      <div className='composebody' id='maxcomposeReply'>
+        <div className="usercompose userdefual" id="UserComposeReply">
+          <div className='hcompose px-3'>
+            <Row>
+              <Col><h4>Reply Message</h4></Col>
+              <Col className='col text-right'>
+                <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                  <Button onClick={mincomposeonReply} className="minicon">
+                    <img src={Minimize} />
+                  </Button>
+                  <Button onClick={maxcomposeonReply} className="maxicon">
+                    <img src={Maximize} />
+                  </Button>
+                  <Button onClick={CloseComposeReply}>
+                    <img src={Close} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </div>
+          <div className='subcompose px-3'>
+            <Row className='px-3 py-1'>
+              <Col xs={2} className="px-0">
+                <h6>To :</h6>
+              </Col>
+              <Col xs={7} className="px-0">
+                <Input className='input-clend' id='To' name='To' value={OpenMessage?.FromEmail} disabled />
+              </Col>
+            </Row>
+          </div>
+          <div className='bodycompose'>
+            <Row className='pt-2'>
+              <Col>
+                <div className='FroalaEditor'>
+                  <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                </div>
+              </Col>
+            </Row>
           </div>
         </div>
-   
+      </div>
+
 
       {/* <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
