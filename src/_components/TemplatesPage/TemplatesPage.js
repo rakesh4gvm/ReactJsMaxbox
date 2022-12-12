@@ -297,9 +297,9 @@ export default function TemplatesListPage() {
                         <TableCell>Body</TableCell>
                         <TableCell>Send</TableCell>
                         <TableCell>Open</TableCell>
-                        <TableCell>Replies</TableCell>
+                        {/* <TableCell>Replies</TableCell> */}
                         <TableCell>Open %</TableCell>
-                        <TableCell>Replies %</TableCell>
+                        {/* <TableCell>Replies %</TableCell> */}
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
@@ -320,11 +320,11 @@ export default function TemplatesListPage() {
                               <div className='hidtextmax' style={{  width: 320}}>{parse(row.BodyText)}</div>
                             </TableCell>
 
-                            <TableCell><img src={SmallSend} /> Send</TableCell>
-                            <TableCell><img src={MailMultipal} /> Open</TableCell>
-                            <TableCell><img src={InboxRounded} /> Replies</TableCell>
-                            <TableCell>Open %</TableCell>
-                            <TableCell>Replies %</TableCell>
+                            <TableCell><img src={SmallSend} /> {row.IsSentCount}</TableCell>
+                            <TableCell><img src={MailMultipal} /> {row.IsOpenCount}</TableCell>
+                            {/* <TableCell><img src={InboxRounded} /> Replies</TableCell> */}
+                            <TableCell>{parseInt(row.IsOpenCount) > 0 ? (parseInt(row.IsSentCount) / parseInt(row.IsOpenCount)) * 100 : 0 } % </TableCell>
+                            {/* <TableCell>Replies %</TableCell> */}
 
                             <TableCell align="right">
                               <ButtonGroup variant="text" aria-label="text button group">
