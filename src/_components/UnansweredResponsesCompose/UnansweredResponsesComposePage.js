@@ -82,7 +82,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     };
 
     const SelectTemplate = () => {
-        debugger
         var GetByClass = document.getElementsByClassName('active');
         LoaderShow()
         if (GetByClass.length > 0) {
@@ -229,8 +228,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
         const elementreply = document.getElementById("UserComposeReply")  
         elementreply.classList.remove("show");
-        const elementreplytwo = document.getElementById("UserComposeForward")  
-        elementreplytwo.classList.remove("show");
+        // const elementreplytwo = document.getElementById("UserComposeForward")  
+        // elementreplytwo.classList.remove("show");
     };
 
     // Close Compose
