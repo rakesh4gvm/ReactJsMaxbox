@@ -7,11 +7,9 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, ValidateEmail, EditorVariableNames, LoaderShow, IsGreaterDate } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
-import UnansweredResponsesReplyPage from '../UnansweredResponsesReply/UnansweredResponsesReplyPage';
-import UnansweredResponsesForwardPage from '../UnansweredResponsesReply/UnansweredResponsesForwardPage';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -48,6 +46,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -55,11 +60,6 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 toast.configure();
 
@@ -153,68 +153,17 @@ export default function UnansweredResponsesPage(props) {
   const [ObjectData, SetAllObjectData] = useState([])
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
-  const [Signature, SetSignature] = useState({
-    Data: ""
-  })
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
   const [ClientData, SetClientData] = useState()
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const SelectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var TemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleTemClose()
-    } else {
-      toast.error("Please select template");
-      LoaderHide()
-    }
-  }
-
-  const SelectObjectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleClose()
-    } else {
-      toast.error("Please select object template");
-      LoaderHide()
-    }
-  }
-
-  const ActiveClass = (panel) => () => {
-    const element = document.getElementById(panel)
-    const elementcs = document.getElementsByClassName("active")
-    if (elementcs.length > 0) {
-      for (var i = elementcs.length - 1; i >= 0; i--) {
-        elementcs[i].classList.remove("active");
-      }
-    }
-    element.classList.add("active");
-  }
+  const [ForwardSignature, SetForwardSignature] = useState({
+    Data: ""
+  })
+  const [Signature, SetSignature] = useState({
+    Data: ""
+  })
 
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
@@ -517,7 +466,69 @@ export default function UnansweredResponsesPage(props) {
   }
   // End Other inbox  Message and model open and close
 
-  // start replay code
+
+  // Starts Handle Change
+  const HandleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  // End Handle Change
+
+  // Select Template Starts
+  const SelectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var TemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleTemClose()
+    } else {
+      toast.error("Please select template");
+      LoaderHide()
+    }
+  }
+  // Select Template Starts
+
+  // Select Object Templates Starts
+  const SelectObjectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleClose()
+    } else {
+      toast.error("Please select object template");
+      LoaderHide()
+    }
+  }
+  // Select Object Templates Ends
+
+  // Active Class Starts
+  const ActiveClass = (panel) => () => {
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if (elementcs.length > 0) {
+      for (var i = elementcs.length - 1; i >= 0; i--) {
+        elementcs[i].classList.remove("active");
+      }
+    }
+    element.classList.add("active");
+  }
+  // Active Class Ends
+
+
+  // Starts Reply Send Mail
   // Open Compose
   const OpenComposeReply = (e) => {
 
@@ -549,35 +560,6 @@ export default function UnansweredResponsesPage(props) {
     // const elementreplytwo = document.getElementById("UserComposeForward")
     // elementreplytwo.classList.remove("show");
   };
-  // end replay code
-
-  // start replay code
-  // // Open Compose
-  // const OpenComposeForward = (e) => {
-  //   document.getElementById("To").value = ""
-  //   document.getElementById("Subject").value = ""
-  //   document.getElementById("CC").value = ""
-  //   document.getElementById("BCC").value = ""
-
-
-
-  //   const element = document.getElementById("UserComposeForward")
-
-  //   if (element.classList.contains("show")) {
-  //     element.classList.remove("show");
-  //   }
-  //   else {
-  //     element.classList.add("show");
-  //   }
-
-  //   const elementforward = document.getElementById("UserCompose")
-  //   elementforward.classList.remove("show");
-
-  //   const elementforwardtwo = document.getElementById("UserComposeReply")
-  //   elementforwardtwo.classList.remove("show");
-  // };
-  // // end replay code
-
 
   /* start navcode */
   const mincomposeonReply = () => {
@@ -630,7 +612,7 @@ export default function UnansweredResponsesPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Unanswered Responses <br />Mail send successfully.</div>);
+        toast.success(<div>Unanswered Responses <br />Reply Mail send successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -798,6 +780,195 @@ export default function UnansweredResponsesPage(props) {
     editor.button.buildList();
   })
   // Frola Editor Ends
+  // Ends Reply Send Mail
+
+
+  // Starts Forward Reply Send Mail
+  // Open Compose
+  const OpenComposeForward = (e) => {
+    document.getElementById("ToForward").value = ""
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetForwardMssageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+
+    const element = document.getElementById("UserComposeForward")
+
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+
+    const elementforward = document.getElementById("UserCompose")
+    elementforward.classList.remove("show");
+
+    const elementforwardtwo = document.getElementById("UserComposeReply")
+    elementforwardtwo.classList.remove("show");
+  };
+
+  // Close Compose
+  const CloseComposeForward = () => {
+    const element = document.getElementById("UserComposeForward")
+    element.classList.remove("show");
+  }
+
+  /* start navcode */
+  const mincomposeonForward = () => {
+    const element = document.getElementById("maxcomposeForward")
+    if (element.classList.contains("minmusbox")) {
+      element.classList.remove("minmusbox");
+    }
+    else {
+      element.classList.add("minmusbox");
+      element.classList.remove("largebox");
+    }
+  }
+
+  const maxcomposeonForward = () => {
+    const element = document.getElementById("maxcomposeForward")
+    if (element.classList.contains("largebox")) {
+      element.classList.remove("largebox");
+    }
+    else {
+      element.classList.add("largebox");
+      element.classList.remove("minmusbox");
+    }
+  }
+  /* end code*/
+
+  // Forward Send Mail Starts
+  const ForwardSendMail = () => {
+    var ToEmail = document.getElementById("ToForward").value;
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = ForwardSignature.Data
+
+    const IsEmailValid = ValidateEmail(ToEmail)
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    } else if (ToEmail == "") {
+      toast.error("Please Enter Email")
+    }
+
+    else {
+      if (IsEmailValid) {
+        LoaderShow()
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: ForwardSignature.Data
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
+            CloseComposeForward()
+            SetForwardSignature({ Data: "" })
+            LoaderHide()
+          }
+          else {
+            CloseComposeForward()
+            toast.error(Result?.data?.Message);
+            LoaderHide()
+          }
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
+    }
+  }
+  // Forward Send Mail Ends
+
+  // Forward  Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('ForwardReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ForwardSendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+
+    }
+  });
+  const forwardconfig = {
+    quickInsertEnabled: false,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+    imageUploadRemoteUrls: false,
+  }
+  const ForwardHandleModelChange = (Model) => {
+    SetForwardSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Forward  Reply Frola Editor Ends
+  // Ends Forward Reply Send Mail
 
   return (
 
@@ -820,7 +991,7 @@ export default function UnansweredResponsesPage(props) {
               {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -849,7 +1020,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-lister"
         open={temopen}
         onClose={handleTemClose}
@@ -868,7 +1038,7 @@ export default function UnansweredResponsesPage(props) {
               {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -894,8 +1064,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </Box>
       </Modal>
-
-
       <Modal className="modal-pre"
         open={StarPopModel}
         onClose={CloseStarPopModel}
@@ -929,7 +1097,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-pre"
         open={FollowupPopModel}
         onClose={FollowupPopClose}
@@ -970,7 +1137,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal
         open={OtherInboxPopModel}
         onClose={CloseOtherInboxPopModel}
@@ -997,7 +1163,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-pre"
         open={DeletePopModel}
         onClose={CloseDeletePopModel}
@@ -1129,8 +1294,7 @@ export default function UnansweredResponsesPage(props) {
                             <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            {/* <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a> */}
-                            <a><img src={iconsarrow1} /></a>
+                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
                             <img src={icondelete} title="Delete" />
@@ -1198,11 +1362,48 @@ export default function UnansweredResponsesPage(props) {
       </div>
 
 
-      {/* <div className='composebody' id='maxcomposeForward'>
+      <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
-          <UnansweredResponsesForwardPage GetUnansweredResponcesList={GetUnansweredResponcesList} />
+          <div className='hcompose px-3'>
+            <Row>
+              <Col><h4>Forward Message</h4></Col>
+              <Col className='col text-right'>
+                <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                  <Button onClick={mincomposeonForward} className="minicon">
+                    <img src={Minimize} />
+                  </Button>
+                  <Button onClick={maxcomposeonForward} className="maxicon">
+                    <img src={Maximize} />
+                  </Button>
+                  <Button onClick={CloseComposeForward}>
+                    <img src={Close} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </div>
+          <div className='subcompose px-3'>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>To :</h6>
+              </Col>
+              <Col xs={7} className="px-0">
+                <Input className='input-clend' id='ToForward' name='ToForward' />
+              </Col>
+            </Row>
+          </div>
+          <div className='bodycompose'>
+            <Row className='pt-2'>
+              <Col>
+                <div className='FroalaEditor'>
+                  {/* <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> */}
+                  <FroalaEditor tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div> */}
+      </div>
     </>
   );
 }

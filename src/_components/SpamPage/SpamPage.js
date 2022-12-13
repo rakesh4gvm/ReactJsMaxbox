@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import SpamComposePage from '../SpamComposePage/SpamComposePage';
 
@@ -149,6 +149,9 @@ export default function SpamPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [ForwardSignature, SetForwardSignature] = useState({
+    Data: ""
+  })
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -598,11 +601,12 @@ export default function SpamPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Spam <br />Mail send successfully.</div>);
+        toast.success(<div>Spam <br />Reply mail send successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
       } else {
+        CloseComposeReply()
         toast.error(Result?.data?.Message);
         LoaderHide()
       }
@@ -767,6 +771,192 @@ export default function SpamPage(props) {
   })
   // Frola Editor Ends
 
+  // Starts Forward Reply Send Mail
+  // Open Compose
+  const OpenComposeForward = (e) => {
+    document.getElementById("ToForward").value = ""
+
+    const Data = {
+      ID: OpenMessage?._id,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetForwardMssageDetails",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetForwardSignature({ Data: Result?.data?.Data })
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+
+    const element = document.getElementById("UserComposeForward")
+
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    }
+    else {
+      element.classList.add("show");
+    }
+
+    const elementforward = document.getElementById("UserCompose")
+    elementforward.classList.remove("show");
+
+    const elementforwardtwo = document.getElementById("UserComposeReply")
+    elementforwardtwo.classList.remove("show");
+  };
+
+  // Close Compose
+  const CloseComposeForward = () => {
+    const element = document.getElementById("UserComposeForward")
+    element.classList.remove("show");
+  }
+
+  /* start navcode */
+  const mincomposeonForward = () => {
+    const element = document.getElementById("maxcomposeForward")
+    if (element.classList.contains("minmusbox")) {
+      element.classList.remove("minmusbox");
+    }
+    else {
+      element.classList.add("minmusbox");
+      element.classList.remove("largebox");
+    }
+  }
+
+  const maxcomposeonForward = () => {
+    const element = document.getElementById("maxcomposeForward")
+    if (element.classList.contains("largebox")) {
+      element.classList.remove("largebox");
+    }
+    else {
+      element.classList.add("largebox");
+      element.classList.remove("minmusbox");
+    }
+  }
+  /* end code*/
+
+  // Forward Send Mail Starts
+  const ForwardSendMail = () => {
+    var ToEmail = document.getElementById("ToForward").value;
+    var ID = OpenMessage._id
+    var Subject = OpenMessage.Subject;
+    var Body = ForwardSignature.Data
+
+    const IsEmailValid = ValidateEmail(ToEmail)
+
+    if (Body == "") {
+      toast.error("Please Enter Body");
+    } else if (ToEmail == "") {
+      toast.error("Please Enter Email")
+    }
+
+    else {
+      if (IsEmailValid) {
+        LoaderShow()
+        var Data = {
+          ToEmail: ToEmail,
+          ToName: "",
+          ID: ID,
+          Subject: Subject,
+          Body: ForwardSignature.Data
+        };
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            toast.success(<div>Spam <br />Forward mail send successfully.</div>);
+            CloseComposeForward()
+            SetForwardSignature({ Data: "" })
+            LoaderHide()
+          }
+          else {
+            CloseComposeForward()
+            toast.error(Result?.data?.Message);
+            LoaderHide()
+          }
+        });
+      } else {
+        toast.error("Please Enter Valid Email");
+      }
+    }
+  }
+  // Forward Send Mail Ends
+
+  // Forward  Reply Frola Editor Starts
+  Froalaeditor.RegisterCommand('ForwardReply', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ForwardSendMail
+  });
+  Froalaeditor.RegisterCommand('Delete', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    align: 'right',
+    buttonsVisible: 2,
+    title: 'Delete',
+  });
+  Froalaeditor.RegisterCommand('Sendoption', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+
+    }
+  });
+  Froalaeditor.RegisterCommand('moreMisc', {
+    title: '',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+
+    }
+  });
+  const forwardconfig = {
+    quickInsertEnabled: false,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
+    imageUploadRemoteUrls: false,
+  }
+  const ForwardHandleModelChange = (Model) => {
+    SetForwardSignature({
+      Data: Model
+    });
+  }
+  var editor = new FroalaEditor('.send', {}, function () {
+    editor.button.buildList();
+  })
+  // Forward  Reply Frola Editor Ends
+  // Ends Forward Reply Send Mail
 
   return (
 
@@ -1098,7 +1288,7 @@ export default function SpamPage(props) {
                             <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow1} /></a>
+                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
                             <img src={icondelete} title="Delete" />
@@ -1163,6 +1353,49 @@ export default function SpamPage(props) {
         </div>
       </div>
       {/* </Button> */}
+      <div className='composebody' id='maxcomposeForward'>
+        <div className="usercompose userdefual" id="UserComposeForward">
+          <div className='hcompose px-3'>
+            <Row>
+              <Col><h4>Forward Message</h4></Col>
+              <Col className='col text-right'>
+                <ButtonGroup className='composeion' variant="text" aria-label="text button group">
+                  <Button onClick={mincomposeonForward} className="minicon">
+                    <img src={Minimize} />
+                  </Button>
+                  <Button onClick={maxcomposeonForward} className="maxicon">
+                    <img src={Maximize} />
+                  </Button>
+                  <Button onClick={CloseComposeForward}>
+                    <img src={Close} />
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </div>
+          <div className='subcompose px-3'>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>To :</h6>
+              </Col>
+              <Col xs={7} className="px-0">
+                <Input className='input-clend' id='ToForward' name='ToForward' />
+              </Col>
+            </Row>
+          </div>
+          <div className='bodycompose'>
+            <Row className='pt-2'>
+              <Col>
+                <div className='FroalaEditor'>
+                  {/* <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /> */}
+                  <FroalaEditor tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      </div>
+
     </>
   );
 }
