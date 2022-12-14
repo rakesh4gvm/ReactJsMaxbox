@@ -235,11 +235,11 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open CC
     const OpenCc = () => {
         if (Ccflag == false) {
-            document.getElementById("Cc").style.display = 'block'
+            document.getElementById("FlagCC").style.display = 'block'
             SetCcflag(true);
         }
         else {
-            document.getElementById("Cc").style.display = 'none'
+            document.getElementById("FlagCC").style.display = 'none'
             SetCcflag(false);
         }
     };
@@ -247,11 +247,11 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open BCC
     const OpenBcc = () => {
         if (Bccflag == false) {
-            document.getElementById("Bcc").style.display = 'block'
+            document.getElementById("FlagBCC").style.display = 'block'
             SetBccflag(true);
         }
         else {
-            document.getElementById("Bcc").style.display = 'none'
+            document.getElementById("FlagBCC").style.display = 'none'
             SetBccflag(false);
         }
     };

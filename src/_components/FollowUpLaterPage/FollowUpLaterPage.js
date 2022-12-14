@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -31,29 +31,30 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@material-ui/core';
 import ToggleButton from '@mui/material/ToggleButton';
 import StarIcon from '@material-ui/icons/Star';
+import { Input } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
 import Close from '../../images/icons/w-close.svg';
-
-import { Input } from '@mui/material';
 import Emailinbox from '../../images/email_inbox_img.png';
 import inbox from '../../images/inbox.svg';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
-import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import { toast } from "react-toastify";
 
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+toast.configure();
 
 const style = {
   position: 'absolute',
@@ -66,9 +67,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-
-toast.configure();
 
 const Style = {
   position: 'absolute',
@@ -154,60 +152,6 @@ export default function FollowUpLater(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
-  const [ClientData, SetClientData] = useState()
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const SelectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var TemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleTemClose()
-    } else {
-      toast.error("Please select template");
-      LoaderHide()
-    }
-  }
-
-  const SelectObjectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleClose()
-    } else {
-      toast.error("Please select object template");
-      LoaderHide()
-    }
-  }
-
-  const ActiveClass = (panel) => () => {
-    const element = document.getElementById(panel)
-    const elementcs = document.getElementsByClassName("active")
-    if (elementcs.length > 0) {
-      for (var i = elementcs.length - 1; i >= 0; i--) {
-        elementcs[i].classList.remove("active");
-      }
-    }
-    element.classList.add("active");
-  }
 
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
@@ -462,6 +406,66 @@ export default function FollowUpLater(props) {
   }
   // End PopModel Open and Close And Delete Message
 
+  // Starts HandleChange
+  const HandleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  // Ends HandleChange
+
+  // Starts Select Template
+  const SelectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var TemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleTemClose()
+    } else {
+      toast.error("Please select template");
+      LoaderHide()
+    }
+  }
+  // Ends Select Template
+
+  // Starts Select Object Template 
+  const SelectObjectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleClose()
+    } else {
+      toast.error("Please select object template");
+      LoaderHide()
+    }
+  }
+  // Starts Select Object Template 
+
+  // Starts Active Class 
+  const ActiveClass = (panel) => () => {
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if (elementcs.length > 0) {
+      for (var i = elementcs.length - 1; i >= 0; i--) {
+        elementcs[i].classList.remove("active");
+      }
+    }
+    element.classList.add("active");
+  }
+  // Starts Active Class 
+
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
@@ -565,17 +569,13 @@ export default function FollowUpLater(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ReplySendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteReply', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
     callback: function (cmd, val) {
       CloseComposeReply()
-      const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
-      const elementfr = document.getElementsByClassName("user_editor_frwd")
-      elementfr[0].classList.add("d-none");
     },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
@@ -702,7 +702,7 @@ export default function FollowUpLater(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -839,11 +839,14 @@ export default function FollowUpLater(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ForwardSendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteForward', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeForward()
+    },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -889,7 +892,7 @@ export default function FollowUpLater(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -925,7 +928,7 @@ export default function FollowUpLater(props) {
               {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -973,7 +976,7 @@ export default function FollowUpLater(props) {
               {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -1193,7 +1196,7 @@ export default function FollowUpLater(props) {
                             <label>{MailNumber} / {FollowUpList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className='startselct' title={"Starred"} value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>
@@ -1202,17 +1205,14 @@ export default function FollowUpLater(props) {
                             <img src={inbox} className="inboxicon" title={"Other Inbox"} />
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                            <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
+                            <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
                             <img src={icondelete} title="Delete" />
                           </Button>}
-                          <Button>
-                            <a><img src={iconmenu} /></a>
-                          </Button>
                         </ButtonGroup>
                     }
                   </Col>

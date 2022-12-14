@@ -22,25 +22,6 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { styled, alpha } from '@material-ui/core/styles';
 import { Input } from '@mui/material';
-
-import Maximize from '../../images/icons/w-maximize.svg';
-import Minimize from '../../images/icons/w-minimize.svg';
-import Close from '../../images/icons/w-close.svg';
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
-import iconstar from '../../images/icon_star.svg';
-
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "react-toastify/dist/ReactToastify.css";
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import Froalaeditor from 'froala-editor';
-import FroalaEditor from 'react-froala-wysiwyg';
-
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
@@ -48,6 +29,25 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import Maximize from '../../images/icons/w-maximize.svg';
+import Minimize from '../../images/icons/w-minimize.svg';
+import Close from '../../images/icons/w-close.svg';
+import iconsarrow1 from '../../images/icons_arrow_1.svg';
+import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import icondelete from '../../images/icon_delete.svg';
+import Emailinbox from '../../images/email_inbox_img.png';
+
+import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
+import { toast } from "react-toastify";
+
+toast.configure();
 
 const style = {
   position: 'absolute',
@@ -60,6 +60,19 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -119,70 +132,18 @@ export default function OtherInboxPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [Signature, SetSignature] = useState({
     Data: ""
   })
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
-  const [ClientData, SetClientData] = useState()
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const SelectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var TemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleTemClose()
-    } else {
-      toast.error("Please select template");
-      LoaderHide()
-    }
-  }
-
-  const SelectObjectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleClose()
-    } else {
-      toast.error("Please select object template");
-      LoaderHide()
-    }
-  }
-
-  const ActiveClass = (panel) => () => {
-    const element = document.getElementById(panel)
-    const elementcs = document.getElementsByClassName("active")
-    if (elementcs.length > 0) {
-      for (var i = elementcs.length - 1; i >= 0; i--) {
-        elementcs[i].classList.remove("active");
-      }
-    }
-    element.classList.add("active");
-  }
 
   useEffect(() => {
     if (props.location.search != undefined) {
@@ -310,6 +271,100 @@ export default function OtherInboxPage(props) {
   }
   // End Search
 
+  // Start PopModel Open and Close and Delete Message
+  const OpenDeletePopModel = () => {
+    SetDeletePopModel(true);
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+  }
+  const DeleteMessage = (ID) => {
+    if (ID != '') {
+      var DeleteArray = []
+      DeleteArray.push(ID)
+      var Data = {
+        IDs: DeleteArray,
+        LastUpdatedBy: -1
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryDelete",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Unanswered Responses <br />Delete mail successfully.</div>);
+          CloseDeletePopModel();
+          OpenMessageDetails('')
+          LoaderShow()
+          if (props !== undefined) {
+            const ID = props.location.state;
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetAllInboxList(ClientID, UserID, Page, ID);
+            } else {
+              GetAllInboxList(ClientID, UserID, Page, 0)
+            }
+          }
+        } else {
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
+  // End PopModel Open and Close and Delete Message
+
+  const HandleChange = (panel) => (event, isExpanded) => {
+    console.log(panel);
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const SelectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var TemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleTemClose()
+    } else {
+      toast.error("Please select template");
+      LoaderHide()
+    }
+  }
+
+  const SelectObjectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleClose()
+    } else {
+      toast.error("Please select object template");
+      LoaderHide()
+    }
+  }
+
+  const ActiveClass = (panel) => () => {
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if (elementcs.length > 0) {
+      for (var i = elementcs.length - 1; i >= 0; i--) {
+        elementcs[i].classList.remove("active");
+      }
+    }
+    element.classList.add("active");
+  }
 
   // start replay code
   // Open Compose
@@ -414,17 +469,13 @@ export default function OtherInboxPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ReplySendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteReply', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
     callback: function (cmd, val) {
       CloseComposeReply()
-      const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
-      const elementfr = document.getElementsByClassName("user_editor_frwd")
-      elementfr[0].classList.add("d-none");
     },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
@@ -550,7 +601,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -686,11 +737,14 @@ export default function OtherInboxPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ForwardSendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteForward', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeForward()
+    },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -736,7 +790,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -772,7 +826,7 @@ export default function OtherInboxPage(props) {
               {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -801,7 +855,6 @@ export default function OtherInboxPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-lister"
         open={temopen}
         onClose={handleTemClose}
@@ -820,7 +873,7 @@ export default function OtherInboxPage(props) {
               {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -846,7 +899,32 @@ export default function OtherInboxPage(props) {
           </div>
         </Box>
       </Modal>
-
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure ?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              you want to delete a email ?
+            </Typography>
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { DeleteMessage(OpenMessage._id); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseDeletePopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
 
       <div className='lefter'>
         <Navigation />
@@ -931,20 +1009,14 @@ export default function OtherInboxPage(props) {
                             <label>{MailNumber} / {AllInboxList.length}</label>
                           </Button>
                           <Button>
-                            <a><img src={iconstar} title={"Starred"} /></a>
+                            <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                            <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                           </Button>
-                          <Button>
-                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
-                          </Button>
-                          {<Button>
-                            <a><img src={icondelete} /></a>
+                          {<Button onClick={OpenDeletePopModel}>
+                            <img src={icondelete} title="Delete" />
                           </Button>}
-                          <Button>
-                            <a><img src={iconmenu} /></a>
-                          </Button>
                         </ButtonGroup>
                     }
                   </Col>
@@ -957,8 +1029,6 @@ export default function OtherInboxPage(props) {
           </SplitPane>
         </div>
       </div>
-      <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
-      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}> */}
       <div className='composebody' id='maxcomposeReply'>
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
@@ -1000,7 +1070,6 @@ export default function OtherInboxPage(props) {
           </div>
         </div>
       </div>
-      {/* </Button> */}
       <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
           <div className='hcompose px-3'>
@@ -1042,6 +1111,7 @@ export default function OtherInboxPage(props) {
           </div>
         </div>
       </div>
+      <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
     </>
   );
 }
@@ -1231,7 +1301,7 @@ export default function OtherInboxPage(props) {
 //   const [TemplateData, SetAllTemplateData] = useState([])
 //   const [ClientData, SetClientData] = useState()
 
-//   const handleChange = (panel) => (event, isExpanded) => {
+//   const HandleChange = (panel) => (event, isExpanded) => {
 //     console.log(panel);
 //     setExpanded(isExpanded ? panel : false);
 //   };
@@ -2305,7 +2375,7 @@ export default function OtherInboxPage(props) {
 //                 {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
 //                   <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
 //                     <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-//                     <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+//                     <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
 //                       <AccordionSummary
 //                         expandIcon={<ExpandMoreIcon />}
 //                         aria-controls="panel2bh-content"
@@ -2353,7 +2423,7 @@ export default function OtherInboxPage(props) {
 //                 {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
 //                   <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
 //                     <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-//                     <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+//                     <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
 //                       <AccordionSummary
 //                         expandIcon={<ExpandMoreIcon />}
 //                         aria-controls="panel2bh-content"

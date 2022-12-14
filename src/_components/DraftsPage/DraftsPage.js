@@ -11,10 +11,8 @@ import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import DraftComposePage from '../DraftComposePage/DraftComposePage';
 
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
+
 import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -308,7 +306,7 @@ export default function OtherInboxPage(props) {
                     <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                     <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
                     <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
+                    <TableCell component="th">To Email</TableCell>
                     <TableCell component="th">Date</TableCell>
                   </TableRow>
                 </TableHead>
@@ -322,8 +320,8 @@ export default function OtherInboxPage(props) {
                       <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell>
                       <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      <TableCell>{item.MailTo}</TableCell>
+                      <TableCell>{Moment(item.CreatedDate).format("DD/MM/YYYY")}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -339,30 +337,21 @@ export default function OtherInboxPage(props) {
                         <b>From</b>
                         {OpenMessage.FromEmail}
                       </label>
-                      <label><b>To</b>{OpenMessage.ToEmail}</label>
+                      <label><b>To</b>{OpenMessage.MailTo}</label>
                       <label><b>Subject</b>{OpenMessage.Subject}</label>
                     </div>
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.CreatedDate).format("LLL")}</lable>
                     </div>
                     <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
                       <Button>
                         <label>{MailNumber} / {DraftList.length}</label>
                       </Button>
-                      <Button>
-                        <a><img src={iconsarrow2} /></a>
-                      </Button>
-                      <Button>
-                        <a><img src={iconsarrow1} /></a>
-                      </Button>
                       {<Button onClick={OpenDeletePopModel}>
                         <img src={icondelete} title={"Delete"} />
                       </Button>}
-                      <Button>
-                        <a><img src={iconmenu} /></a>
-                      </Button>
                     </ButtonGroup>
                   </Col>
                 </Row>

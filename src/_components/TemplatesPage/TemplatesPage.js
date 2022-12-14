@@ -315,7 +315,10 @@ export default function TemplatesListPage() {
                                 {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
                               </IconButton>
                             </TableCell> */}
-                            <TableCell><img className='mr-2' src={Templatecarbon} width="38" /> {row.Subject}</TableCell>
+                            <TableCell style={{maxWidth: 320}}><img className='mr-2' src={Templatecarbon} width="38" /> 
+                            <span style={{ maxWidth: 320}}>{row.Subject}</span>
+                            </TableCell>
+                            
                             <TableCell sx={{ minWidth: 320 }}>
                               <div className='hidtextmax' style={{  width: 320}}>{parse(row.BodyText)}</div>
                             </TableCell>

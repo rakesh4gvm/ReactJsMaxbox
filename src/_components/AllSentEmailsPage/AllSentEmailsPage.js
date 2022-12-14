@@ -520,17 +520,13 @@ export default function AllSentEmailsPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ReplySendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteReply', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
     callback: function (cmd, val) {
       CloseComposeReply()
-      const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
-      const elementfr = document.getElementsByClassName("user_editor_frwd")
-      elementfr[0].classList.add("d-none");
     },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
@@ -657,7 +653,7 @@ export default function AllSentEmailsPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -794,11 +790,14 @@ export default function AllSentEmailsPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ForwardSendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteForward', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeForward()
+    },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -844,7 +843,7 @@ export default function AllSentEmailsPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -1104,23 +1103,20 @@ export default function AllSentEmailsPage(props) {
                             <label>{MailNumber} / {AllSentList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className='startselct' title={"Starred"} value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                            <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
+                            <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
-                            <a><img src={icondelete} /></a>
+                            <a><img src={icondelete} title={"Delete"} /></a>
                           </Button>}
-                          <Button>
-                            <a><img src={iconmenu} /></a>
-                          </Button>
                         </ButtonGroup>
                     }
                   </Col>

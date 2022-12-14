@@ -22,23 +22,10 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { styled, alpha } from '@material-ui/core/styles';
 
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
-
 import ToggleButton from '@mui/material/ToggleButton';
 import StarIcon from '@material-ui/icons/Star';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Emailinbox from '../../images/email_inbox_img.png';
-import Emailcall from '../../images/email_call_img.png';
-import icontimer from '../../images/icon_timer.svg';
-import inbox from '../../images/icons/inbox.svg';
-import Maximize from '../../images/icons/w-maximize.svg';
-import Minimize from '../../images/icons/w-minimize.svg';
-import Close from '../../images/icons/w-close.svg';
-
 import { Input } from '@mui/material';
 import { Box } from '@material-ui/core';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -50,20 +37,29 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
-import { toast } from "react-toastify";
+import iconsarrow1 from '../../images/icons_arrow_1.svg';
+import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import icondelete from '../../images/icon_delete.svg';
+import Emailinbox from '../../images/email_inbox_img.png';
+import Emailcall from '../../images/email_call_img.png';
+import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/icons/inbox.svg';
+import Maximize from '../../images/icons/w-maximize.svg';
+import Minimize from '../../images/icons/w-minimize.svg';
+import Close from '../../images/icons/w-close.svg';
+
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import { toast } from "react-toastify";
 
 toast.configure();
 
-const Style = {
+const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -75,7 +71,7 @@ const Style = {
   p: 4,
 };
 
-const style = {
+const Style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -153,17 +149,17 @@ export default function UnansweredResponsesPage(props) {
   const [ObjectData, SetAllObjectData] = useState([])
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleTemOpen = () => setTemOpen(true);
-  const handleTemClose = () => setTemOpen(false);
-  const [ClientData, SetClientData] = useState()
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
   const [Signature, SetSignature] = useState({
     Data: ""
   })
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleTemOpen = () => setTemOpen(true);
+  const handleTemClose = () => setTemOpen(false);
 
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
@@ -466,7 +462,6 @@ export default function UnansweredResponsesPage(props) {
   }
   // End Other inbox  Message and model open and close
 
-
   // Starts Handle Change
   const HandleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -526,7 +521,6 @@ export default function UnansweredResponsesPage(props) {
     element.classList.add("active");
   }
   // Active Class Ends
-
 
   // Starts Reply Send Mail
   // Open Compose
@@ -629,17 +623,13 @@ export default function UnansweredResponsesPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ReplySendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteReply', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
     callback: function (cmd, val) {
       CloseComposeReply()
-      const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
-      const elementfr = document.getElementsByClassName("user_editor_frwd")
-      elementfr[0].classList.add("d-none");
     },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
@@ -766,7 +756,7 @@ export default function UnansweredResponsesPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -781,7 +771,6 @@ export default function UnansweredResponsesPage(props) {
   })
   // Frola Editor Ends
   // Ends Reply Send Mail
-
 
   // Starts Forward Reply Send Mail
   // Open Compose
@@ -904,11 +893,14 @@ export default function UnansweredResponsesPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ForwardSendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteForward', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeForward()
+    },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -954,7 +946,7 @@ export default function UnansweredResponsesPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -971,9 +963,7 @@ export default function UnansweredResponsesPage(props) {
   // Ends Forward Reply Send Mail
 
   return (
-
     <>
-
       <Modal className="modal-lister"
         open={open}
         onClose={handleClose}
@@ -1193,7 +1183,6 @@ export default function UnansweredResponsesPage(props) {
       <div className='lefter'>
         <Navigation />
       </div>
-
       <div className='righter'>
         <header className='minisearchhed'>
           <Row>
@@ -1279,7 +1268,7 @@ export default function UnansweredResponsesPage(props) {
                             <label>{MailNumber} / {FollowUpList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className='startselct' title={"Starred"} value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>
@@ -1291,17 +1280,14 @@ export default function UnansweredResponsesPage(props) {
                             <img src={inbox} title={"Other Inbox"} />
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                            <a><img src={iconsarrow2} onClick={OpenComposeReply} title={"Reply"} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
+                            <a><img src={iconsarrow1} onClick={OpenComposeForward} title={"Forward"} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
                             <img src={icondelete} title="Delete" />
                           </Button>}
-                          <Button>
-                            <a><img src={iconmenu} /></a>
-                          </Button>
                         </ButtonGroup>
                     }
                   </Col>
@@ -1314,11 +1300,6 @@ export default function UnansweredResponsesPage(props) {
           </SplitPane>
         </div>
       </div>
-
-      <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
-
-      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}>   </Button> */}
-
       <div className='composebody' id='maxcomposeReply'>
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
@@ -1360,8 +1341,6 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </div>
       </div>
-
-
       <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
           <div className='hcompose px-3'>
@@ -1404,6 +1383,7 @@ export default function UnansweredResponsesPage(props) {
           </div>
         </div>
       </div>
+      <UnansweredResponsesComposePage GetUnansweredResponcesList={GetUnansweredResponcesList} />
     </>
   );
 }

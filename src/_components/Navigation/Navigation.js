@@ -290,7 +290,7 @@ export default function Navigation() {
     const Data = {
       ClientID: CID,
       UserID: UID,
-      SearchDate : "2022-12-12"
+      SearchDate: Moment().format("YYYY-MM-DD")
     }
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetEmailTotalRecords",

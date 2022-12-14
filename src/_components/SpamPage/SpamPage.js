@@ -21,31 +21,33 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { styled, alpha } from '@material-ui/core/styles';
-
-import iconsarrow1 from '../../images/icons_arrow_1.svg';
-import iconsarrow2 from '../../images/icons_arrow_2.svg';
-import icondelete from '../../images/icon_delete.svg';
-import iconmenu from '../../images/icon_menu.svg';
-import Maximize from '../../images/icons/w-maximize.svg';
-import Minimize from '../../images/icons/w-minimize.svg';
-import Close from '../../images/icons/w-close.svg';
-
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Input } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import StarIcon from '@material-ui/icons/Star';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Emailinbox from '../../images/email_inbox_img.png';
-import Emailcall from '../../images/email_call_img.png';
-import icontimer from '../../images/icon_timer.svg';
-import inbox from '../../images/icons/inbox.svg';
 import { Box } from '@material-ui/core';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { toast } from "react-toastify";
+
+import Emailinbox from '../../images/email_inbox_img.png';
+import Emailcall from '../../images/email_call_img.png';
+import icontimer from '../../images/icon_timer.svg';
+import inbox from '../../images/icons/inbox.svg';
+import iconsarrow1 from '../../images/icons_arrow_1.svg';
+import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import icondelete from '../../images/icon_delete.svg';
+import Maximize from '../../images/icons/w-maximize.svg';
+import Minimize from '../../images/icons/w-minimize.svg';
+import Close from '../../images/icons/w-close.svg';
+
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -53,11 +55,9 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import { toast } from "react-toastify";
 
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+toast.configure();
 
 const style = {
   position: 'absolute',
@@ -71,9 +71,6 @@ const style = {
   p: 4,
 };
 
-
-toast.configure();
-
 const Style = {
   position: 'absolute',
   top: '50%',
@@ -85,7 +82,6 @@ const Style = {
   boxShadow: 24,
   p: 4,
 };
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -160,60 +156,8 @@ export default function SpamPage(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
-  const [ClientData, SetClientData] = useState()
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
-    setExpanded(isExpanded ? panel : false);
-  };
 
-  const SelectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var TemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleTemClose()
-    } else {
-      toast.error("Please select template");
-      LoaderHide()
-    }
-  }
-
-  const SelectObjectTemplate = () => {
-    var GetByClass = document.getElementsByClassName('active');
-    LoaderShow()
-    if (GetByClass.length > 0) {
-      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
-      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
-      var BodyData = Signature.Data;
-      document.getElementById("Subject").value = DivData.Subject;
-      var NewData = DivData.BodyText + BodyData
-      SetSignature({ Data: NewData });
-      LoaderHide()
-      handleClose()
-    } else {
-      toast.error("Please select object template");
-      LoaderHide()
-    }
-  }
-
-  const ActiveClass = (panel) => () => {
-    const element = document.getElementById(panel)
-    const elementcs = document.getElementsByClassName("active")
-    if (elementcs.length > 0) {
-      for (var i = elementcs.length - 1; i >= 0; i--) {
-        elementcs[i].classList.remove("active");
-      }
-    }
-    element.classList.add("active");
-  }
 
   useEffect(() => {
     document.title = 'Spam | MAXBOX';
@@ -516,6 +460,59 @@ export default function SpamPage(props) {
   }
   // End PopModel Open and Close And Delete Message
 
+  const HandleChange = (panel) => (event, isExpanded) => {
+    console.log(panel);
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const SelectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var TemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = BodyData + '</br>' + DivData.BodyText;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleTemClose()
+    } else {
+      toast.error("Please select template");
+      LoaderHide()
+    }
+  }
+
+  const SelectObjectTemplate = () => {
+    var GetByClass = document.getElementsByClassName('active');
+    LoaderShow()
+    if (GetByClass.length > 0) {
+      var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
+      var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
+      var BodyData = Signature.Data;
+      document.getElementById("Subject").value = DivData.Subject;
+      var NewData = DivData.BodyText + BodyData
+      SetSignature({ Data: NewData });
+      LoaderHide()
+      handleClose()
+    } else {
+      toast.error("Please select object template");
+      LoaderHide()
+    }
+  }
+
+  const ActiveClass = (panel) => () => {
+    const element = document.getElementById(panel)
+    const elementcs = document.getElementsByClassName("active")
+    if (elementcs.length > 0) {
+      for (var i = elementcs.length - 1; i >= 0; i--) {
+        elementcs[i].classList.remove("active");
+      }
+    }
+    element.classList.add("active");
+  }
+
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
@@ -619,17 +616,13 @@ export default function SpamPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ReplySendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteReply', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
     callback: function (cmd, val) {
       CloseComposeReply()
-      const element = document.getElementsByClassName("user_editor")
-      element[0].classList.add("d-none");
-      const elementfr = document.getElementsByClassName("user_editor_frwd")
-      elementfr[0].classList.add("d-none");
     },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
@@ -756,7 +749,7 @@ export default function SpamPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['Delete']],
+    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -892,11 +885,14 @@ export default function SpamPage(props) {
     colorsButtons: ["colorsBack", "|", "-"],
     callback: ForwardSendMail
   });
-  Froalaeditor.RegisterCommand('Delete', {
+  Froalaeditor.RegisterCommand('DeleteForward', {
     colorsButtons: ["colorsBack", "|", "-"],
     align: 'right',
     buttonsVisible: 2,
     title: 'Delete',
+    callback: function (cmd, val) {
+      CloseComposeForward()
+    },
   });
   Froalaeditor.RegisterCommand('Sendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -942,7 +938,7 @@ export default function SpamPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -961,7 +957,6 @@ export default function SpamPage(props) {
   return (
 
     <>
-
       <Modal className="modal-lister"
         open={open}
         onClose={handleClose}
@@ -979,7 +974,7 @@ export default function SpamPage(props) {
               {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -1008,7 +1003,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-lister"
         open={temopen}
         onClose={handleTemClose}
@@ -1027,7 +1021,7 @@ export default function SpamPage(props) {
               {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -1053,7 +1047,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-pre"
         open={StarPopModel}
         onClose={CloseStarPopModel}
@@ -1087,7 +1080,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-pre"
         open={FollowupPopModel}
         onClose={CloseFollowupPopModel}
@@ -1128,7 +1120,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
       <Modal className="modal-pre"
         open={OtherInboxPopModel}
         onClose={CloseOtherInboxPopModel}
@@ -1155,8 +1146,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
-
       <Modal className="modal-pre"
         open={DeletePopModel}
         onClose={CloseDeletePopModel}
@@ -1183,7 +1172,6 @@ export default function SpamPage(props) {
           </div>
         </Box>
       </Modal>
-
 
       <div className='lefter'>
         <Navigation />
@@ -1273,7 +1261,7 @@ export default function SpamPage(props) {
                             <label>{MailNumber} / {SpamPage.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className='startselct' value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className='startselct' value="check" title={"Starred"} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>
@@ -1285,17 +1273,14 @@ export default function SpamPage(props) {
                             <img src={inbox} className="inboxicon" title={"Other Inbox"} />
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow2} onClick={OpenComposeReply} /></a>
+                            <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={iconsarrow1} onClick={OpenComposeForward} /></a>
+                            <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                           </Button>
                           {<Button onClick={OpenDeletePopModel}>
                             <img src={icondelete} title="Delete" />
                           </Button>}
-                          <Button>
-                            <a><img src={iconmenu} /></a>
-                          </Button>
                         </ButtonGroup>
                     }
                   </Col>
@@ -1309,8 +1294,6 @@ export default function SpamPage(props) {
           </SplitPane>
         </div>
       </div>
-      <SpamComposePage GetSpamList={GetSpamList} />
-      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}> */}
       <div className='composebody' id='maxcomposeReply'>
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
@@ -1352,7 +1335,6 @@ export default function SpamPage(props) {
           </div>
         </div>
       </div>
-      {/* </Button> */}
       <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
           <div className='hcompose px-3'>
@@ -1395,7 +1377,7 @@ export default function SpamPage(props) {
           </div>
         </div>
       </div>
-
+      <SpamComposePage GetSpamList={GetSpamList} />
     </>
   );
 }
