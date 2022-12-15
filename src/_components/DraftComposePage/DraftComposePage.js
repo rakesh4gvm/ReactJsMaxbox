@@ -209,13 +209,16 @@ export default function DraftComposePage({ GetDraftList }) {
     // Open Compose
     const OpenCompose = (e) => {
 
+        const el = document.getElementById("DraftCompose")
+        el.classList.remove("show");
+
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
         document.getElementById("ComposeTo").value = ""
         document.getElementById("ComposeSubject").value = ""
         document.getElementById("ComposeCC").value = ""
         document.getElementById("ComposeBCC").value = ""
-        
+
         const element = document.getElementById("UserCompose")
 
         if (element.classList.contains("show")) {
@@ -319,8 +322,8 @@ export default function DraftComposePage({ GetDraftList }) {
                 IsDraftMail: true,
                 IsAllSentEmails: false,
                 CreatedBy: 1,
-                TemplateID : TemplateID,
-                ObjectIDTemplateID : ObjectIDTemplateID
+                TemplateID: TemplateID,
+                ObjectIDTemplateID: ObjectIDTemplateID
             }
             Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
@@ -358,10 +361,6 @@ export default function DraftComposePage({ GetDraftList }) {
         title: 'Delete',
         callback: function (cmd, val) {
             CloseCompose()
-            const element = document.getElementsByClassName("user_editor")
-            element[0].classList.add("d-none");
-            const elementfr = document.getElementsByClassName("user_editor_frwd")
-            elementfr[0].classList.add("d-none");
         },
     });
     Froalaeditor.RegisterCommand('Sendoption', {

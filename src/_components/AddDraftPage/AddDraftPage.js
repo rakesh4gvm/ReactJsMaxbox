@@ -129,13 +129,13 @@ export default function DraftComposePage({ GetDraftList }) {
         colorsButtons: ["colorsBack", "|", "-"],
         callback: AddDraftTemplate
     });
-    // Froalaeditor.RegisterCommand('DraftCompose Delete', {
-    //     colorsButtons: ["colorsBack", "|", "-"],
-    //     align: 'right',
-    //     buttonsVisible: 2,
-    //     title: 'Delete',
-    //     callback: CloseDraftCompose
-    // });
+    Froalaeditor.RegisterCommand('DeleteDraft', {
+        colorsButtons: ["colorsBack", "|", "-"],
+        align: 'right',
+        buttonsVisible: 2,
+        title: 'Delete',
+        callback: CloseDraftCompose
+    });
     Froalaeditor.RegisterCommand('Sendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
         title: '',
@@ -177,7 +177,7 @@ export default function DraftComposePage({ GetDraftList }) {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['Delete']],
+        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteDraft']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
