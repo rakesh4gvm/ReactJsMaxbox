@@ -700,7 +700,7 @@ ul.d-flex.flexlist {
     bottom: 0;
     right: 0;
     padding: 12px;
-    z-index: 9999;
+    z-index: 99999;
 }
 
 .usercompose {
@@ -728,7 +728,7 @@ ul.d-flex.flexlist {
     left: 0px;
     bottom: 0px;
     width: 100%;
-    max-width: 840px;
+    max-width: 600px;
     padding: 0;
     display: none;
 }
@@ -2768,6 +2768,9 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .cardtemplate>p {
     height: 31px;
     overflow: hidden;
+}
+.draftinx{
+    z-index: 9999;
 }
 
 @media screen and (max-width:990px) {

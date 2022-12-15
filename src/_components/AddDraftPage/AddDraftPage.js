@@ -221,7 +221,7 @@ export default function DraftComposePage({ GetDraftList }) {
 
     return (
         <>
-            <div className='composebody' id='maxcompose'>
+            <div className='composebody draftinx' id='maxcompose'>
                 <Button className='small-font-size' variant="contained btn btn-primary largbtn btn-draft" onClick={OpenDraftCompose}  >  Draft</Button>
                 {/* <Button variant="contained btn btn-primary largbtn" onClick={OpenDraftCompose}> + Compose</Button> */}
                 <div className="draftCompose userdefual" id="DraftCompose" ref={WrapperRef}>
@@ -245,10 +245,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose px-3 py-2'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>To :</h6>
                             </Col>
-                            <Col xs={9} className="px-0">
+                            <Col xs={8} className="px-0">
                                 <Input className='input-clend' id='ToEmail' name='ToEmail' />
 
                             </Col>
@@ -256,10 +256,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose px-3 py-2'>
                         <Row className='px-3'>
-                            <Col xs={1} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>Subject :</h6>
                             </Col>
-                            <Col xs={11} className="px-0">
+                            <Col xs={10} className="px-0">
                                 <Input className='input-clend' id='DraftSubject' name='DraftSubject' />
                             </Col>
                         </Row>
