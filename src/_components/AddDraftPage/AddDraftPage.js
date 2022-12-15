@@ -222,7 +222,7 @@ export default function DraftComposePage({ GetDraftList }) {
     return (
         <>
             <div className='composebody' id='maxcompose'>
-                <Button variant="contained btn btn-primary largbtn btn-draft" onClick={OpenDraftCompose} >  + Draft</Button>
+                <Button className='small-font-size' variant="contained btn btn-primary largbtn btn-draft" onClick={OpenDraftCompose}  >  Draft</Button>
                 {/* <Button variant="contained btn btn-primary largbtn" onClick={OpenDraftCompose}> + Compose</Button> */}
                 <div className="draftCompose userdefual" id="DraftCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>

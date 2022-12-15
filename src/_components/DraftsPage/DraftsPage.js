@@ -10,7 +10,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import DraftComposePage from '../DraftComposePage/DraftComposePage';
-
+import AddDraftPage from "../AddDraftPage/AddDraftPage"
 
 import icondelete from '../../images/icon_delete.svg';
 
@@ -364,6 +364,7 @@ export default function OtherInboxPage(props) {
         </div>
       </div>
       <DraftComposePage GetDraftList={GetDraftList} />
+      <AddDraftPage GetDraftList={GetDraftList} />
     </>
   );
 }
