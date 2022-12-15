@@ -211,7 +211,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
-        document.getElementById("To").value = ""
+        document.getElementById("ToEmail").value = ""
         document.getElementById("Subject").value = ""
         document.getElementById("CC").value = ""
         document.getElementById("BCC").value = ""
@@ -226,7 +226,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             element.classList.add("show");
         }
 
-        const elementreply = document.getElementById("UserComposeReply")  
+        const elementreply = document.getElementById("UserComposeReply")
         elementreply.classList.remove("show");
         // const elementreplytwo = document.getElementById("UserComposeForward")  
         // elementreplytwo.classList.remove("show");
@@ -276,7 +276,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     // Sent Mail Starts
     const SentMail = async () => {
 
-        var ToEmail = document.getElementById("To").value;
+        var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
@@ -325,8 +325,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                 IsDraftMail: false,
                 IsAllSentEmails: false,
                 CreatedBy: 1,
-                TemplateID : TemplateID,
-                ObjectIDTemplateID : ObjectIDTemplateID
+                TemplateID: TemplateID,
+                ObjectIDTemplateID: ObjectIDTemplateID
             }
             Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
@@ -339,7 +339,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     CloseCompose()
                     LoaderHide()
                     // GetUnansweredResponsesList()
-                    document.getElementById("To").value = ""
+                    document.getElementById("ToEmail").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
                     document.getElementById("BCC").value = ""
@@ -534,7 +534,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     /* end code*/
 
 
-     
+
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
@@ -544,7 +544,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             <div id="hideloding" className="loding-display">
                 <img src={MaxboxLoading} />
             </div>
-            
+
             <Modal className="modal-lister"
                 open={open}
                 onClose={handleClose}
@@ -636,7 +636,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                 </Box>
             </Modal>
- 
+
             <div className='composebody' id='maxcompose'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
@@ -685,7 +685,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={7} className="px-0">
-                                <Input className='input-clend' id='To' name='To' />
+                                <Input className='input-clend' id='ToEmail' name='ToEmail' />
 
                             </Col>
                             <Col xs={3} className='col text-right d-flex px-0'>
@@ -735,7 +735,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                 </div>
             </div>
- 
+
 
         </>
     );

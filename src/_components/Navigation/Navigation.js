@@ -473,13 +473,20 @@ export default function Navigation() {
     }
     if (PageName == "AllInbox") {
       if (ID != "" && ID != null) {
-        if (history.location.pathname === "/AllInbox") {
-          window.location.href = "http://localhost:3001/AllInbox?" + encodeURIComponent(JSON.stringify(ID))
-        }
+        history.push("/AllInbox", ID);
       } else {
-        window.location.href = "http://localhost:3001/AllInbox"
+        history.push("/AllInbox");
       }
     }
+    // if (PageName == "AllInbox") {
+    //   if (ID != "" && ID != null) {
+    //     if (history.location.pathname === "/AllInbox") {
+    //       window.location.href = "http://localhost:3001/AllInbox?" + encodeURIComponent(JSON.stringify(ID))
+    //     }
+    //   } else {
+    //     window.location.href = "http://localhost:3001/AllInbox"
+    //   }
+    // }
     if (PageName == "AllSent") {
       if (ID != "" && ID != null) {
         history.push("/AllSentEmails", ID);

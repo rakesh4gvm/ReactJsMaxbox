@@ -219,7 +219,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
 
         SetSelectedEmailAccountUser(0);
         SetSignature({ Data: "" });
-        document.getElementById("To").value = ""
+        document.getElementById("ToEmail").value = ""
         document.getElementById("Subject").value = ""
         document.getElementById("CC").value = ""
         document.getElementById("BCC").value = ""
@@ -279,7 +279,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
     // Sent Mail Starts
     const SentMail = async () => {
 
-        var ToEmail = document.getElementById("To").value;
+        var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
         var BCC = document.getElementById("BCC").value;
@@ -342,7 +342,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                     CloseCompose()
                     LoaderHide()
                     // GetAllInboxList()
-                    document.getElementById("To").value = ""
+                    document.getElementById("ToEmail").value = ""
                     document.getElementById("Subject").value = ""
                     document.getElementById("CC").value = ""
                     document.getElementById("BCC").value = ""
@@ -686,7 +686,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={7} className="px-0">
-                                <Input className='input-clend' id='To' name='To' />
+                                <Input className='input-clend' id='ToEmail' name='ToEmail' />
 
                             </Col>
                             <Col xs={3} className='col text-right d-flex px-0'>
