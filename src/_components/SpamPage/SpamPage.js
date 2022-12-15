@@ -151,6 +151,24 @@ export default function SpamPage(props) {
   const [Signature, SetSignature] = useState({
     Data: ""
   })
+  const [TotalCount, SetTotalCount] = useState(0)
+  const [IsBottom, SetIsBottom] = useState(false)
+
+  const HandleScroll = (e) => {
+    const target = e.target
+    if (target.scrollHeight - target.scrollTop === target.clientHeight && SpamPage?.length < TotalCount) {
+      SetPage(Page + 1)
+      SetIsBottom(true)
+    }
+  }
+
+  useEffect(() => {
+    if (IsBottom) {
+      GetSpamList(ClientID, UserID, Page, 0);
+      SetIsBottom(false)
+    }
+  }, [IsBottom])
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -211,7 +229,8 @@ export default function SpamPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetSpamList(Result.data.PageData)
+          SetSpamList([...SpamPage, ...Result.data.PageData])
+          SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           LoaderHide()
@@ -1201,7 +1220,7 @@ export default function SpamPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>

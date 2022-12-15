@@ -144,6 +144,24 @@ export default function AllSentEmailsPage(props) {
   const [Signature, SetSignature] = useState({
     Data: ""
   })
+  const [TotalCount,SetTotalCount] = useState(0)
+  const [IsBottom,SetIsBottom] = useState(false)
+
+  const HandleScroll = (e) => {
+    const target = e.target
+    if(target.scrollHeight - target.scrollTop === target.clientHeight && AllSentList?.length < TotalCount ){ 
+      SetPage(Page + 1)
+      SetIsBottom(true)
+    }
+  }
+
+  useEffect(() => {
+    if(IsBottom){
+      GetAllSent(ClientID, UserID, Page, 0);
+      SetIsBottom(false)
+    }
+  },[IsBottom])
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -151,8 +169,7 @@ export default function AllSentEmailsPage(props) {
   const handleTemClose = () => setTemOpen(false);
   const [ClientData, SetClientData] = useState()
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
+  const HandleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -257,7 +274,8 @@ export default function AllSentEmailsPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllSentList(Result.data.PageData)
+          SetAllSentList([...AllSentList, ...Result.data.PageData])
+          SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           LoaderHide()
@@ -880,7 +898,7 @@ export default function AllSentEmailsPage(props) {
               {ObjectData?.length > 0 && ObjectData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.ObjectionTemplateID)} id={row.ObjectionTemplateID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={handleChange(row.ObjectionTemplateID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.ObjectionTemplateID} onChange={HandleChange(row.ObjectionTemplateID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -928,7 +946,7 @@ export default function AllSentEmailsPage(props) {
               {TemplateData?.length > 0 && TemplateData?.map((row, index) => (
                 <div className='cardtemplate' onClick={ActiveClass(row.TemplatesID)} id={row.TemplatesID} >
                   <Typography className='upperlable' sx={{ width: '33%', flexShrink: 0 }}>{row.Subject}</Typography>
-                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={handleChange(row.TemplatesID)}>
+                  <Accordion className='activetemplate' expanded={expanded === row.TemplatesID} onChange={HandleChange(row.TemplatesID)}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel2bh-content"
@@ -1043,7 +1061,7 @@ export default function AllSentEmailsPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>

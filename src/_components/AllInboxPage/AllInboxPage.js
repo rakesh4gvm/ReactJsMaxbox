@@ -139,6 +139,23 @@ export default function OtherInboxPage(props) {
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
+  const [TotalCount, SetTotalCount] = useState(0)
+  const [IsBottom, SetIsBottom] = useState(false)
+
+  const HandleScroll = (e) => {
+    const target = e.target
+    if (target.scrollHeight - target.scrollTop === target.clientHeight && AllInboxList?.length < TotalCount) {
+      SetPage(Page + 1)
+      SetIsBottom(true)
+    }
+  }
+
+  useEffect(() => {
+    if (IsBottom) {
+      GetAllInboxList(ClientID, UserID, Page, 0);
+      SetIsBottom(false)
+    }
+  }, [IsBottom])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -209,7 +226,8 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllInboxList(Result.data.PageData)
+          SetAllInboxList([...AllInboxList, ...Result.data.PageData])
+          SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           LoaderHide()
@@ -946,7 +964,6 @@ export default function OtherInboxPage(props) {
             </Col>
           </Row>
         </header>
-
         <div className='bodyview' >
           <SplitPane
             split="horizontal "
@@ -954,7 +971,7 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>

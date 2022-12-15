@@ -145,6 +145,24 @@ export default function AllUnansweredRepliesPage(props) {
     Data: ""
   })
 
+  const [TotalCount, SetTotalCount] = useState(0)
+  const [IsBottom, SetIsBottom] = useState(false)
+
+  const HandleScroll = (e) => {
+    const target = e.target
+    if (target.scrollHeight - target.scrollTop === target.clientHeight && AllUnansweredRepliesList?.length < TotalCount) {
+      SetPage(Page + 1)
+      SetIsBottom(true)
+    }
+  }
+
+  useEffect(() => {
+    if (IsBottom) {
+      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0);
+      SetIsBottom(false)
+    }
+  }, [IsBottom])
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -257,7 +275,8 @@ export default function AllUnansweredRepliesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllUnanswereRepliesList(Result.data.PageData)
+          SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData])
+          SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           LoaderHide()
@@ -1041,7 +1060,7 @@ export default function AllUnansweredRepliesPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -97,6 +97,23 @@ export default function OtherInboxPage(props) {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [TotalCount, SetTotalCount] = useState(0)
+  const [IsBottom, SetIsBottom] = useState(false)
+
+  const HandleScroll = (e) => {
+    const target = e.target
+    if (target.scrollHeight - target.scrollTop === target.clientHeight && DraftList?.length < TotalCount) {
+      SetPage(Page + 1)
+      SetIsBottom(true)
+    }
+  }
+
+  useEffect(() => {
+    if (IsBottom) {
+      GetDraftList(ClientID, UserID, Page);
+      SetIsBottom(false)
+    }
+  }, [IsBottom])
 
 
   useEffect(() => {
@@ -142,7 +159,8 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetDraftList(Result.data.PageData);
+          SetDraftList([...DraftList, ...Result.data.PageData])
+          SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           LoaderHide()
@@ -299,7 +317,7 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
