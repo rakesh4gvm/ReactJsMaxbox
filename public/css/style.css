@@ -2102,7 +2102,7 @@ img.width36 {
 }
 
 div#menu- {
-    z-index: 9999 !important;
+    z-index: 99999 !important;
 }
 
 .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded {
@@ -2736,7 +2736,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 }
 
 .MuiModal-root.modal-lister {
-    z-index: 9999;
+    z-index: 99999;
 }
 
 .composeion>button.btn.btn-primary {
