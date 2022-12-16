@@ -788,6 +788,22 @@ button.lable-btn {
     border-radius: 72px;
 }
 
+div .composebody button.btnclean.btn.btn-primary, .composebody .btn-primary.btnclean:not(:disabled):not(.disabled):active:focus {
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 22px;
+    color: #242424;
+    text-transform: capitalize;
+    border-radius: 72px;
+    border: none;
+    background: transparent;
+    height: auto;
+    box-shadow: none;
+    line-height: initial;
+    width: auto;
+    padding: .375rem .75rem;
+}
+
 button.smallbtn,
 .ftcompose-btn button.smallbtn {
     padding: 6px 26px;
@@ -1777,12 +1793,13 @@ div.erorr-msg>*>* {
 .composebody button.btn.largbtn:focus,
 .composebody .btn-primary:not(:disabled):not(.disabled):active:focus {
     box-shadow: 0px 4px 14px 6px #e6c8bc;
-    width: 50px;
+    width: 64px;
     font-size: 50px;
     height: 64px;
     border-radius: 5px;
     padding: 0;
     background: #e49273;
+    line-height: 64px;
 }
 
 .columlistdrop {
