@@ -161,7 +161,7 @@ export default function OtherInboxPage(props) {
 
   useEffect(() => {
     if (IsBottom) {
-      GetDraftList(ClientID, UserID, Page);
+      GetDraftList(ClientID, UserID, Page, "scroll");
       SetIsBottom(false)
     }
   }, [IsBottom])
@@ -189,9 +189,9 @@ export default function OtherInboxPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
-        GetDraftList(UserDetails.ClientID, UserDetails.UserID, Page);
+        GetDraftList(UserDetails.ClientID, UserDetails.UserID, Page, "");
       } else {
-        GetDraftList(UserDetails.ClientID, UserDetails.UserID, Page)
+        GetDraftList(UserDetails.ClientID, UserDetails.UserID, Page, "")
       }
     }
     GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
@@ -199,7 +199,7 @@ export default function OtherInboxPage(props) {
   }
 
   // Start Get Draft List
-  const GetDraftList = (CID, UID, PN) => {
+  const GetDraftList = (CID, UID, PN, str) => {
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -219,7 +219,11 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetDraftList([...DraftList, ...Result.data.PageData])
+          if (str === "scroll") {
+            SetDraftList([...DraftList, ...Result.data.PageData])
+          } else {
+            SetDraftList(Result.data.PageData)
+          }
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id, false);
           SetMailNumber(1)
@@ -351,9 +355,9 @@ export default function OtherInboxPage(props) {
           if (props !== undefined) {
             const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
-              GetDraftList(ClientID, UserID, Page);
+              GetDraftList(ClientID, UserID, Page, "");
             } else {
-              GetDraftList(ClientID, UserID, Page)
+              GetDraftList(ClientID, UserID, Page, "")
             }
           }
         } else {
@@ -428,7 +432,7 @@ export default function OtherInboxPage(props) {
           toast.success(<div>Draft <br />Mail send successfully.</div>);
           CloseCompose()
           LoaderHide()
-          GetDraftList(ClientID, UserID, Page)
+          GetDraftList(ClientID, UserID, Page, "")
           document.getElementById("ComposeTo").value = ""
           document.getElementById("ComposeSubject").value = ""
           document.getElementById("ComposeCC").value = ""

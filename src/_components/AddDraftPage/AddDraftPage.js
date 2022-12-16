@@ -109,7 +109,6 @@ export default function DraftComposePage({ GetDraftList }) {
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                     toast.success(<div>Draft<br />Draft added successfully.</div>)
-                    OpenDraftCompose();
                     CloseDraftCompose()
                     LoaderHide()
                     GetDraftList(ClientID, UserID, 1, "")
