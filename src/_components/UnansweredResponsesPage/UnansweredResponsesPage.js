@@ -38,6 +38,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Pagination from '@mui/material/Pagination';
+import TablePagination from '@mui/material/TablePagination';
 
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
@@ -151,6 +152,7 @@ export default function UnansweredResponsesPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [CountPage, SetCountPage] = React.useState(0);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -218,10 +220,13 @@ export default function UnansweredResponsesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
+          debugger
           // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
           SetFollowUpList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetCountPage(Result.data.PageCount);
+          
+          SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           LoaderHide()
         } else {
@@ -229,6 +234,7 @@ export default function UnansweredResponsesPage(props) {
           SetOpenMessageDetails([]);
           SetCountPage(0)
           LoaderHide()
+          SetTotalRecord(0);
         }
       }
     })
@@ -967,14 +973,33 @@ export default function UnansweredResponsesPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
-  const HandleChangePage = (Event, NewPage) => {
-    SetPage(NewPage);
+  // const HandleChangePage = (Event, NewPage) => {
+  //   debugger
+  //   SetPage(NewPage);
+  //   // if (props !== undefined) {
+  //   //   const ID = props.location.state;
+  //   //   if (ID != "" && ID != null && ID != "undefined") {
+  //   //     GetUnansweredResponcesList(ClientID, UserID, NewPage, ID);
+  //   //   } else {
+  //   //     GetUnansweredResponcesList(ClientID, UserID, NewPage, 0)
+  //   //   }
+  //   // }
+  // };
+
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
-        GetUnansweredResponcesList(ClientID, UserID, NewPage, ID);
+        GetUnansweredResponcesList(ClientID, UserID, pn, ID);
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, NewPage, 0)
+        GetUnansweredResponcesList(ClientID, UserID, pn, 0)
       }
     }
   };
@@ -1256,9 +1281,18 @@ export default function UnansweredResponsesPage(props) {
                   ))}
                 </TableBody>
               </Table>
-              <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
-              </Stack>
+              {console.log(CountPage)}
+              {/* <Stack className='my-4 page-dec' spacing={2}> */}
+              <TablePagination
+                component="div"
+  count={TotalRecord}
+  page={parseInt(Page) - 1}
+  rowsPerPage="10"
+  onPageChange={HandleChangePage}
+ 
+/>
+                {/* <Pagination onChange={HandleChangePage} variant="outlined" shape="rounded" /> */}
+              {/* </Stack> */}
             </div>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
