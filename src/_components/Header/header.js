@@ -164,39 +164,39 @@ export default function Header() {
 
     // Get Client Dropdown
     const GetClientDropdown = () => {
-        var UserID
-        var Details = GetUserDetails();
-        if (Details != null) {
-            UserID = Details.UserID
-            SetUserImage(Details.UserImage)
-        }
-        var Data = {
-            UserID: UserID,
-        }
-        const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
-            method: "POST",
-            data: Data,
-        });
-        ResponseApi.then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                if (Result.data.Data.length > 0) {
-                    SetClientDropdown(Result.data.Data);
-                    if (Details.ClientID == null) {
-                        UpdateUserDetails((Result.data.Data[0].ClientID))
-                        SetSelectedClient(Result.data.Data[0]._id)
-                    }
-                    else {
-                        SetSelectedClient(Details.ClientID)
-                    }
-                }
-                else {
-                    UpdateUserDetails('')
-                }
-            } else {
-                toast.error(Result?.data?.Message);
-            }
-        });
+        // var UserID
+        // var Details = GetUserDetails();
+        // if (Details != null) {
+        //     UserID = Details.UserID
+        //     SetUserImage(Details.UserImage)
+        // }
+        // var Data = {
+        //     UserID: UserID,
+        // }
+        // const ResponseApi = Axios({
+        //     url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+        //     method: "POST",
+        //     data: Data,
+        // });
+        // ResponseApi.then((Result) => {
+        //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        //         if (Result.data.Data.length > 0) {
+        //             SetClientDropdown(Result.data.Data);
+        //             if (Details.ClientID == null) {
+        //                 UpdateUserDetails((Result.data.Data[0].ClientID))
+        //                 SetSelectedClient(Result.data.Data[0]._id)
+        //             }
+        //             else {
+        //                 SetSelectedClient(Details.ClientID)
+        //             }
+        //         }
+        //         else {
+        //             UpdateUserDetails('')
+        //         }
+        //     } else {
+        //         toast.error(Result?.data?.Message);
+        //     }
+        // });
     }
 
     const GetSpamTotalRecordCount = (CID, UID) => {

@@ -410,7 +410,7 @@ export default function Navigation() {
           SetFromEmailDropdownList(Result.data.PageData);
 
         } else {
-          toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
+          // toast.error(<div>Unanswered Responses <br />Please add email configuration.</div>)
         }
       }
       else {
@@ -665,7 +665,7 @@ export default function Navigation() {
 
                 <TreeItem nodeId={"f2" + item._id} label={"All Inbox(" + TotalCount + ")"}>
                   <TreeItem nodeId={"f3" + item._id} label="New">
-                    <TreeItem nodeId={"f60" + item._id} label="AllInbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
+                    <TreeItem nodeId={"f60" + item._id} label="All Inbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
                   </TreeItem>
                   <TreeItem
                     nodeId={"f4" + item._id}

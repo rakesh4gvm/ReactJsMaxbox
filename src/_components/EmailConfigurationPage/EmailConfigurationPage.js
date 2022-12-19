@@ -132,7 +132,7 @@ export default function EmailConfigurationPage() {
       ClientID: CID,
       UserID: UID,
     };
-
+    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGet",
       method: "POST",
@@ -293,88 +293,88 @@ export default function EmailConfigurationPage() {
       <div className='lefter'>
         <Navigation />
       </div>
-      
-      <div className='righter'> 
 
-        <div className='px-3'> 
+      <div className='righter'>
+
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Email Configuration</h5>
             </Col>
           </Row>
-        </div> 
-
-      <div className='container'> 
-        <Stack sx={{ width: '100%' }} spacing={2}>
-          {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
-          {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
-          {IsEmailAuthExist == true ? <Alert severity="info" onClose={() => { SetIsEmailAuthExist(false); }}> <strong>Oops!</strong> Email already exist, please try again with other email!</Alert> : ""}
-        </Stack>
-
-
-        <div className='sm-container mt-5'>
-          <Row className='mb-5'>
-            <Col align="right">
-              {ClientID != "" ?
-                <Button className='btnaccount' onClick={AddEmailAccount}>
-                  <AddIcon /> Add Account
-                </Button>
-                : ""}
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <TableContainer className='tablename' component={Paper}>
-                <Table sx={{ minWidth: 750 }} aria-label="caption table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell onClick={() => { SortData("FirstName") }}>First Name</TableCell>
-                      <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
-                      <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
-                      <TableCell align="right">Working</TableCell>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="center">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {EmailAccountList.map((row) => (
-
-                      <TableRow>
-                        <TableCell>{row.FirstName}</TableCell>
-                        <TableCell>{row.LastName}</TableCell>
-                        <TableCell scope="row">{row.Email}</TableCell>
-                        <TableCell align="right">
-                          <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                            {row.IsWorking == true ? <Button className='btn-success'>
-                              Yes
-                            </Button> : <Button className='btn-success'>
-                              NO
-                            </Button>}
-                          </ButtonGroup>
-                        </TableCell>
-
-                        <TableCell align="right">{row.IsWorking == true ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
-                        <TableCell>
-                          <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
-                            <img src={DeleteIcon} />
-                          </Button>
-                          <Button className="iconbtntable" onClick={() => EditEmailConfiguration(row._id)}><EditIcon /></Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-
-              <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
-              </Stack>
-            </Col>
-          </Row>
         </div>
 
-      </div> 
-      </div> 
+        <div className='container'>
+          <Stack sx={{ width: '100%' }} spacing={2}>
+            {IsEmailAuthSucess == true ? <Alert severity="success" onClose={() => { SetIsEmailAuthSucess(false) }}>   <strong> Well done!</strong> Authentication of your account is done.</Alert> : ""}
+            {IsEmailAuthFail == true ? <Alert severity="error" onClose={() => { SetIsEmailAuthFail(false); }}> <strong>Oops!</strong> Something went wrong while authentication, please try again!</Alert> : ""}
+            {IsEmailAuthExist == true ? <Alert severity="info" onClose={() => { SetIsEmailAuthExist(false); }}> <strong>Oops!</strong> Email already exist, please try again with other email!</Alert> : ""}
+          </Stack>
+
+
+          <div className='sm-container mt-5'>
+            <Row className='mb-5'>
+              <Col align="right">
+                {ClientID != "" ?
+                  <Button className='btnaccount' onClick={AddEmailAccount}>
+                    <AddIcon /> Add Account
+                  </Button>
+                  : ""}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <TableContainer className='tablename' component={Paper}>
+                  <Table sx={{ minWidth: 750 }} aria-label="caption table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell onClick={() => { SortData("FirstName") }}>First Name</TableCell>
+                        <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
+                        <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
+                        <TableCell align="right">Working</TableCell>
+                        <TableCell align="right"></TableCell>
+                        <TableCell align="center">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {EmailAccountList.map((row) => (
+
+                        <TableRow>
+                          <TableCell>{row.FirstName}</TableCell>
+                          <TableCell>{row.LastName}</TableCell>
+                          <TableCell scope="row">{row.Email}</TableCell>
+                          <TableCell align="right">
+                            <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
+                              {row.IsWorking == true ? <Button className='btn-success'>
+                                Yes
+                              </Button> : <Button className='btn-success'>
+                                NO
+                              </Button>}
+                            </ButtonGroup>
+                          </TableCell>
+
+                          <TableCell align="right">{row.IsWorking == true ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
+                          <TableCell>
+                            <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
+                              <img src={DeleteIcon} />
+                            </Button>
+                            <Button className="iconbtntable" onClick={() => EditEmailConfiguration(row._id)}><EditIcon /></Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Stack className='my-4 page-dec' spacing={2}>
+                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                </Stack>
+              </Col>
+            </Row>
+          </div>
+
+        </div>
+      </div>
     </>
   );
 }

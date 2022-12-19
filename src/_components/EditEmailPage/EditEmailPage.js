@@ -9,19 +9,19 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import BgProfile from '../../images/bg-profile.png';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
-
+import MaxboxLoading from '../../images/Maxbox-Loading.gif';
 
 
 
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 var atob = require('atob');
@@ -47,7 +47,7 @@ export default function EditEmailPage(props) {
   }, []);
 
   useEffect(() => {
-  }, [ClientID, UserID, Isworking,Refreshtoken]);
+  }, [ClientID, UserID, Isworking, Refreshtoken]);
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -100,7 +100,6 @@ export default function EditEmailPage(props) {
 
   // // Update Email
   const UpdateEmailConfiguration = () => {
-    debugger
     var FirstName = document.getElementById("firstName").value;
     var LastName = document.getElementById("lastName").value;
     var Email = document.getElementById("email").value;
@@ -114,16 +113,19 @@ export default function EditEmailPage(props) {
       NewRefereshToken: Refreshtoken,
       IsWorking: true,
     }
+    LoaderShow()
     Axios({
       url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountUpdate",
       method: "POST",
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        LoaderHide()
         toast.success(<div>Edit Email <br />Email configuration updated successfully.</div>);
         history.push("/EmailConfiguration");
-      }else{
+      } else {
         toast.error(Result?.data?.Message);
+        LoaderHide()
       }
     })
   }
@@ -152,12 +154,16 @@ export default function EditEmailPage(props) {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
+      <div id="hideloding" className="loding-display">
+        <img src={MaxboxLoading} />
+      </div>
 
-        <div className='px-3'> 
+      <div className='righter'>
+
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-                <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
+              <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
             </Col>
           </Row>
         </div>
@@ -208,7 +214,7 @@ export default function EditEmailPage(props) {
                 </div>
               </Col>
             </Row>
-          </div> 
+          </div>
         </div>
 
 
