@@ -37,6 +37,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Pagination from '@mui/material/Pagination';
 
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
@@ -149,32 +150,13 @@ export default function UnansweredResponsesPage(props) {
   const [ObjectData, SetAllObjectData] = useState([])
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
+  const [CountPage, SetCountPage] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
   const [Signature, SetSignature] = useState({
     Data: ""
   })
-
-
-  const [TotalCount, SetTotalCount] = useState(0)
-  const [IsBottom, SetIsBottom] = useState(false)
-
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && FollowUpList?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetUnansweredResponcesList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
-
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -236,14 +218,16 @@ export default function UnansweredResponsesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetFollowUpList([...FollowUpList, ...Result.data.PageData])
-          SetTotalCount(Result.data.TotalCount)
+          // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
+          SetFollowUpList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
+          SetCountPage(Result.data.PageCount);
           SetMailNumber(1)
           LoaderHide()
         } else {
           SetFollowUpList([])
           SetOpenMessageDetails([]);
+          SetCountPage(0)
           LoaderHide()
         }
       }
@@ -983,6 +967,18 @@ export default function UnansweredResponsesPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  const HandleChangePage = (Event, NewPage) => {
+    SetPage(NewPage);
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetUnansweredResponcesList(ClientID, UserID, NewPage, ID);
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, NewPage, 0)
+      }
+    }
+  };
+
   return (
     <>
       <Modal className="modal-lister"
@@ -1228,7 +1224,7 @@ export default function UnansweredResponsesPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
+            <div className="simulationDiv">
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -1260,6 +1256,9 @@ export default function UnansweredResponsesPage(props) {
                   ))}
                 </TableBody>
               </Table>
+              <Stack className='my-4 page-dec' spacing={2}>
+                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+              </Stack>
             </div>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
