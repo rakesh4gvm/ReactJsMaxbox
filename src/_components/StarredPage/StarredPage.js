@@ -34,6 +34,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TablePagination from '@mui/material/TablePagination';
+
 
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
@@ -141,6 +143,7 @@ export default function OtherInboxPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -227,14 +230,16 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetStarredList([...StarredList, ...Result.data.PageData])
+          SetStarredList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          SetTotalRecord(Result.data.TotalCount);
           LoaderHide()
         } else {
           SetStarredList([])
           SetOpenMessageDetails([]);
+          SetTotalRecord(0);
           LoaderHide()
         }
       }
@@ -932,6 +937,24 @@ export default function OtherInboxPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+ 
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetStarredList(ClientID, UserID, pn, ID);
+      } else {
+        GetStarredList(ClientID, UserID, pn, 0)
+      }
+    }
+  };
+
   return (
     <>
       <Modal className="modal-lister"
@@ -1145,7 +1168,19 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
+            <>
+              <div className='pagination-pa' >
+            <TablePagination
+                component="div"
+                count={TotalRecord}
+                page={parseInt(Page) - 1}
+                rowsPerPage="10"
+                onPageChange={HandleChangePage}
+              
+              />
+            </div>
+
+            <div className="simulationDiv" >
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -1173,6 +1208,7 @@ export default function OtherInboxPage(props) {
                 </TableBody>
               </Table>
             </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>

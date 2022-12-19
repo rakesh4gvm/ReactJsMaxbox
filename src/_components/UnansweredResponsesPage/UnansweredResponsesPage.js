@@ -220,7 +220,6 @@ export default function UnansweredResponsesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          debugger
           // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
           SetFollowUpList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
