@@ -2789,6 +2789,37 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .draftinx{
     z-index: 9999;
 }
+.pagination-pa {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+.pagination-pa + div{
+    padding-top: 32px;
+}
+.pagination-pa .MuiTablePagination-toolbar{
+    background-color: #e49273;
+    min-height: 30px; 
+    color: #f1eaea;
+}
+.pagination-pa .MuiTablePagination-toolbar p {
+    margin: 0;
+}
+.pagination-pa .MuiTablePagination-actions button{
+    padding: 1px; 
+    color: #f1eaea;
+}
+.pagination-pa .MuiTablePagination-actions button.Mui-disabled{
+    color: #f5baa4;
+}
+.pagination-pa .MuiInputBase-root .MuiSvgIcon-root{
+    color: #f1eaea;
+}
+.pagination-pa .MuiTablePagination-selectLabel,
+.pagination-pa .MuiTablePagination-selectLabel + div {
+    display: none;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

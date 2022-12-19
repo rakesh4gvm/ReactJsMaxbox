@@ -1249,7 +1249,18 @@ export default function UnansweredResponsesPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv">
+            <>
+            <div className='pagination-pa' >
+            <TablePagination
+                component="div"
+                count={TotalRecord}
+                page={parseInt(Page) - 1}
+                rowsPerPage="10"
+                onPageChange={HandleChangePage}
+              
+              />
+            </div>
+            <div className="simulationDiv"> 
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -1282,18 +1293,12 @@ export default function UnansweredResponsesPage(props) {
                 </TableBody>
               </Table>
               {console.log(CountPage)}
-              {/* <Stack className='my-4 page-dec' spacing={2}> */}
-              <TablePagination
-                component="div"
-  count={TotalRecord}
-  page={parseInt(Page) - 1}
-  rowsPerPage="10"
-  onPageChange={HandleChangePage}
- 
-/>
+              
+              {/* <Stack className='my-4 page-dec' spacing={2}> */} 
                 {/* <Pagination onChange={HandleChangePage} variant="outlined" shape="rounded" /> */}
               {/* </Stack> */}
             </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>
