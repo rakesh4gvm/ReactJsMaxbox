@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import SplitPane from "react-split-pane";
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 import MaxboxLoading from '../../images/Maxbox-Loading.gif';
-
+import TablePagination from '@mui/material/TablePagination';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -143,6 +143,7 @@ export default function OtherInboxPage(props) {
   const [TemplateID, SetTemplateID] = React.useState("");
   const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -219,18 +220,20 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          if (str === "scroll") {
-            SetDraftList([...DraftList, ...Result.data.PageData])
-          } else {
+          // if (str === "scroll") {
+          //   SetDraftList([...DraftList, ...Result.data.PageData])
+          // } else {
             SetDraftList(Result.data.PageData)
-          }
+          // }
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id, false);
           SetMailNumber(1)
+          SetTotalRecord(Result.data.TotalCount);
           LoaderHide()
         } else {
           SetDraftList([]);
           SetOpenMessageDetails([]);
+          SetTotalRecord(0);
           LoaderHide()
         }
       }
@@ -776,6 +779,24 @@ export default function OtherInboxPage(props) {
     }
   };
 
+  
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetDraftList(ClientID, UserID, pn, "");
+      } else {
+        GetDraftList(ClientID, UserID, pn, "")
+      }
+    }
+  };
 
   return (
 
@@ -838,7 +859,18 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
+             <>
+            <div className='pagination-pa' >
+            <TablePagination
+                component="div"
+                count={TotalRecord}
+                page={parseInt(Page) - 1}
+                rowsPerPage="10"
+                onPageChange={HandleChangePage}
+              
+              />
+            </div>
+            <div className="simulationDiv" >
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -866,7 +898,7 @@ export default function OtherInboxPage(props) {
                 </TableBody>
               </Table>
             </div>
-
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>
