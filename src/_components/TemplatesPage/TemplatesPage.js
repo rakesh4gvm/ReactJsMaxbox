@@ -326,7 +326,8 @@ export default function TemplatesListPage() {
                             <TableCell><img src={SmallSend} /> {row.IsSentCount}</TableCell>
                             <TableCell><img src={MailMultipal} /> {row.IsOpenCount}</TableCell>
                             {/* <TableCell><img src={InboxRounded} /> Replies</TableCell> */}
-                            <TableCell>{parseInt(row.IsOpenCount) > 0 ? (parseInt(row.IsSentCount) / parseInt(row.IsOpenCount)) * 100 : 0 } % </TableCell>
+                            
+                            <TableCell>{parseInt(row.IsSentCount) > 0 ? (parseInt(row.IsOpenCount) / parseInt(row.IsSentCount)) * 100 : 0 } % </TableCell>
                             {/* <TableCell>Replies %</TableCell> */}
 
                             <TableCell align="left">
