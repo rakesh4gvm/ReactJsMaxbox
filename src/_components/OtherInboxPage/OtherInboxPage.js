@@ -36,6 +36,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TablePagination from '@mui/material/TablePagination';
+
 
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
@@ -144,6 +146,7 @@ export default function OtherInboxPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -229,15 +232,17 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetFollowUpList([...FollowUpList, ...Result.data.PageData])
+          SetFollowUpList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
+          SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           LoaderHide()
         } else {
           SetFollowUpList([])
           SetOpenMessageDetails([]);
           LoaderHide()
+          SetTotalRecord(0);
         }
       }
     })
@@ -927,6 +932,26 @@ export default function OtherInboxPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  // Starts Pagination
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetOtherInboxList(ClientID, UserID, pn, ID);
+      } else {
+        GetOtherInboxList(ClientID, UserID, pn, 0)
+      }
+    }
+  };
+  // Ends Pagination 
+
   return (
     <>
       <Modal className="modal-lister"
@@ -1147,39 +1172,51 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv"  onScroll={HandleScroll}>
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {FollowUpList.map((item, index) => (
-                    <TableRow
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}>
-                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </TableCell>
-                      <TableCell width={'35px'}></TableCell>
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+            <>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
+
+                />
+              </div>
+              <div className="simulationDiv" >
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {FollowUpList.map((item, index) => (
+                      <TableRow
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        <TableCell width={'35px'}>
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
+                        <TableCell width={'35px'}></TableCell>
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>

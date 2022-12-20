@@ -231,7 +231,7 @@ export default function SpamPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetSpamList([...SpamPage, ...Result.data.PageData])
+          SetSpamList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -977,6 +977,26 @@ export default function SpamPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  // Starts Pagination
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetSpamList(ClientID, UserID, pn, ID);
+      } else {
+        GetSpamList(ClientID, UserID, pn, 0)
+      }
+    }
+  };
+  // Ends Pagination
+
   return (
 
     <>
@@ -1224,39 +1244,52 @@ export default function SpamPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {SpamPage.map((item, index) => (
-                    <TableRow className="SelectionSubject"
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}>
-                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </TableCell>
-                      <TableCell width={'35px'}></TableCell>
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+            <>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
+
+                />
+              </div>
+              <div className="simulationDiv" >
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {SpamPage.map((item, index) => (
+                      <TableRow className="SelectionSubject"
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        <TableCell width={'35px'}>
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
+                        <TableCell width={'35px'}></TableCell>
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>

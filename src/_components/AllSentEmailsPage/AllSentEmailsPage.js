@@ -21,6 +21,7 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { styled, alpha } from '@material-ui/core/styles';
+import TablePagination from '@mui/material/TablePagination';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import StarIcon from '@material-ui/icons/Star';
@@ -138,29 +139,30 @@ export default function AllSentEmailsPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
   const [Signature, SetSignature] = useState({
     Data: ""
   })
-  const [TotalCount,SetTotalCount] = useState(0)
-  const [IsBottom,SetIsBottom] = useState(false)
+  const [TotalCount, SetTotalCount] = useState(0)
+  const [IsBottom, SetIsBottom] = useState(false)
 
   const HandleScroll = (e) => {
     const target = e.target
-    if(target.scrollHeight - target.scrollTop === target.clientHeight && AllSentList?.length < TotalCount ){ 
+    if (target.scrollHeight - target.scrollTop === target.clientHeight && AllSentList?.length < TotalCount) {
       SetPage(Page + 1)
       SetIsBottom(true)
     }
   }
 
   useEffect(() => {
-    if(IsBottom){
+    if (IsBottom) {
       GetAllSent(ClientID, UserID, Page, 0);
       SetIsBottom(false)
     }
-  },[IsBottom])
+  }, [IsBottom])
 
 
   const handleOpen = () => setOpen(true);
@@ -274,15 +276,17 @@ export default function AllSentEmailsPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllSentList([...AllSentList, ...Result.data.PageData])
+          SetAllSentList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
+          SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           LoaderHide()
         } else {
           SetAllSentList([])
           SetOpenMessageDetails([]);
           LoaderHide()
+          SetTotalRecord(0);
         }
       }
     })
@@ -877,6 +881,25 @@ export default function AllSentEmailsPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  // Starts Pagination
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllSent(ClientID, UserID, pn, ID);
+      } else {
+        GetAllSent(ClientID, UserID, pn, 0)
+      }
+    }
+  };
+  // Ends Pagination
 
   return (
     <>
@@ -1061,39 +1084,51 @@ export default function AllSentEmailsPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {AllSentList.map((item, index) => (
-                    <TableRow className="SelectionSubject"
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}>
-                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </TableCell>
-                      <TableCell width={'35px'}></TableCell>
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+            <>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
+
+                />
+              </div>
+              <div className="simulationDiv">
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {AllSentList.map((item, index) => (
+                      <TableRow className="SelectionSubject"
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        <TableCell width={'35px'}>
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
+                        <TableCell width={'35px'}></TableCell>
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>
