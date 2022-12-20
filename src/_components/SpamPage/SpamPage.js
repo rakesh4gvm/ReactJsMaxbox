@@ -1260,7 +1260,7 @@ export default function SpamPage(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                      <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
+                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
                       <TableCell component="th">Date</TableCell>
@@ -1279,7 +1279,7 @@ export default function SpamPage(props) {
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
-                        <TableCell width={'35px'}></TableCell>
+                        {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row"> {item.Subject} </TableCell>
                         <TableCell>{item.FromEmail}</TableCell>
                         <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>

@@ -944,7 +944,7 @@ export default function OtherInboxPage(props) {
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
- 
+
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
@@ -1170,44 +1170,44 @@ export default function OtherInboxPage(props) {
           >
             <>
               <div className='pagination-pa' >
-            <TablePagination
-                component="div"
-                count={TotalRecord}
-                page={parseInt(Page) - 1}
-                rowsPerPage="10"
-                onPageChange={HandleChangePage}
-              
-              />
-            </div>
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
 
-            <div className="simulationDiv" >
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {StarredList.map((item, index) => (
-                    <TableRow
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}><StarBorderIcon /></TableCell>
-                      <TableCell width={'35px'}></TableCell>
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                />
+              </div>
+
+              <div className="simulationDiv" >
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
+                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {StarredList.map((item, index) => (
+                      <TableRow
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell>
+                      <TableCell width={'35px'}></TableCell> */}
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
