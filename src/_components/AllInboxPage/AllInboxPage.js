@@ -10,6 +10,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
+import TablePagination from '@mui/material/TablePagination';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -133,6 +134,7 @@ export default function OtherInboxPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -229,11 +231,13 @@ export default function OtherInboxPage(props) {
           SetAllInboxList([...AllInboxList, ...Result.data.PageData])
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
+          SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           LoaderHide()
         } else {
           SetAllInboxList([])
           SetOpenMessageDetails([]);
+          SetTotalRecord(0);
           LoaderHide()
         }
       }
@@ -824,6 +828,25 @@ export default function OtherInboxPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllInboxList(ClientID, UserID, pn, ID);
+      } else {
+        GetAllInboxList(ClientID, UserID, pn, 0)
+      }
+    }
+  };
+
+
   return (
 
     <>
@@ -971,6 +994,19 @@ export default function OtherInboxPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
+
+<>
+            <div className='pagination-pa' >
+            <TablePagination
+                component="div"
+                count={TotalRecord}
+                page={parseInt(Page) - 1}
+                rowsPerPage="10"
+                onPageChange={HandleChangePage}
+              
+              />
+            </div>
+
             <div className="simulationDiv" onScroll={HandleScroll}>
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
@@ -999,6 +1035,7 @@ export default function OtherInboxPage(props) {
                 </TableBody>
               </Table>
             </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>
