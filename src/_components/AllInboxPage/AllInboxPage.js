@@ -198,7 +198,7 @@ export default function OtherInboxPage(props) {
   const GetAllInboxList = (CID, UID, PN, ID) => {
     let AccountIDs = []
     if (ID?.length > 0) {
-      AccountIDs = ID
+      AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
@@ -228,7 +228,7 @@ export default function OtherInboxPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllInboxList([...AllInboxList, ...Result.data.PageData])
+          SetAllInboxList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetTotalRecord(Result.data.TotalCount);
@@ -315,7 +315,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses <br />Delete mail successfully.</div>);
+          toast.success(<div>All Inbox <br />Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -995,46 +995,46 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
 
-<>
-            <div className='pagination-pa' >
-            <TablePagination
-                component="div"
-                count={TotalRecord}
-                page={parseInt(Page) - 1}
-                rowsPerPage="10"
-                onPageChange={HandleChangePage}
-              
-              />
-            </div>
+            <>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
 
-            <div className="simulationDiv" >
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
-                    {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {AllInboxList.map((item, index) => (
-                    <TableRow
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
-                      {/* <TableCell width={'35px'}></TableCell> */}
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                />
+              </div>
+
+              <div className="simulationDiv" >
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
+                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {AllInboxList.map((item, index) => (
+                      <TableRow
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
+                        {/* <TableCell width={'35px'}></TableCell> */}
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
