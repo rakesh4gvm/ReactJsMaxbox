@@ -36,6 +36,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import TablePagination from '@mui/material/TablePagination';
 
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
@@ -145,6 +146,7 @@ export default function SpamPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -233,10 +235,12 @@ export default function SpamPage(props) {
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          SetTotalRecord(Result.data.TotalCount);
           LoaderHide()
         } else {
           SetSpamList([])
           SetOpenMessageDetails([]);
+          SetTotalRecord(0);
           LoaderHide()
         }
       }

@@ -27,6 +27,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { styled, alpha } from '@material-ui/core/styles';
 import { Input } from '@mui/material';
+import TablePagination from '@mui/material/TablePagination';
 
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
@@ -138,6 +139,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [TemplateData, SetAllTemplateData] = useState([])
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -275,14 +277,16 @@ export default function AllUnansweredRepliesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
-          SetAllUnanswereRepliesList([...AllUnansweredRepliesList, ...Result.data.PageData])
+          SetAllUnanswereRepliesList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
+          SetTotalRecord(Result.data.TotalCount);
           LoaderHide()
         } else {
           SetAllUnanswereRepliesList([])
           SetOpenMessageDetails([]);
+          SetTotalRecord(0);
           LoaderHide()
         }
       }
@@ -876,6 +880,24 @@ export default function AllUnansweredRepliesPage(props) {
   // Forward  Reply Frola Editor Ends
   // Ends Forward Reply Send Mail
 
+  const HandleChangePage = (
+    event,
+    newPage,
+  ) => {
+    SetPage(newPage + 1);
+
+    var pn = newPage + 1;
+ 
+    if (props !== undefined) {
+      const ID = props.location.state;
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllUnansweredRepliesList(ClientID,UserID, pn, ID);
+      } else {
+        GetAllUnansweredRepliesList(ClientID,UserID, pn, 0)
+      }
+    }
+  };
+
   return (
     <>
 
@@ -1060,7 +1082,18 @@ export default function AllUnansweredRepliesPage(props) {
             maxSize={-200}
             defaultSize={"40%"}
           >
-            <div className="simulationDiv" onScroll={HandleScroll}>
+            <>
+             <div className='pagination-pa' >
+            <TablePagination
+                component="div"
+                count={TotalRecord}
+                page={parseInt(Page) - 1}
+                rowsPerPage="10"
+                onPageChange={HandleChangePage}
+              
+              />
+            </div>
+            <div className="simulationDiv">
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
@@ -1093,6 +1126,7 @@ export default function AllUnansweredRepliesPage(props) {
                 </TableBody>
               </Table>
             </div>
+            </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>
                 <Row>
