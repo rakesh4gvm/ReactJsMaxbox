@@ -1202,6 +1202,7 @@ export default function FollowUpLater(props) {
                           </label>
                           <label><b>To</b>{OpenMessage.ToEmail}</label>
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
+                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("LLL")}</label>
                         </div>
                     }
                   </Col>
@@ -1249,7 +1250,6 @@ export default function FollowUpLater(props) {
 
       <FollowUpLaterComposePage GetFollowUpLaterList={GetFollowUpLaterList} />
 
-      {/* <Button onClick={() => OpenComposeReply(OpenMessage)}> */}
       <div className='composebody' id='maxcomposeReply'>
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
@@ -1291,7 +1291,6 @@ export default function FollowUpLater(props) {
           </div>
         </div>
       </div>
-      {/* </Button> */}
 
       <div className='composebody' id='maxcomposeForward'>
         <div className="usercompose userdefual" id="UserComposeForward">
