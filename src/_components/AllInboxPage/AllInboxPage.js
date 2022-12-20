@@ -1007,7 +1007,7 @@ export default function OtherInboxPage(props) {
               />
             </div>
 
-            <div className="simulationDiv" onScroll={HandleScroll}>
+            <div className="simulationDiv" >
               <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
