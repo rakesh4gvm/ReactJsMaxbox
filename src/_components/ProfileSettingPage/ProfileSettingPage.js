@@ -32,7 +32,7 @@ export default function ProfileSettingPage() {
   const [DropdownValue, SetDropdownValue] = useState([])
   const [User, SetUser] = useState()
   const [Country, SetCountry] = useState([])
-  
+
   const [Base64Image, SetBase64Image] = useState()
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
@@ -175,7 +175,7 @@ export default function ProfileSettingPage() {
       SetLastNameError("Please enter last name")
       Isvalid = false
     }
-   
+
     if (Password === "") {
       SetPasswordError("Please enter password");
       Isvalid = false
@@ -184,13 +184,13 @@ export default function ProfileSettingPage() {
       SetConfirmPasswordError("Please enter confirm password")
       Isvalid = false
     }
-   
+
 
 
     var IsValidPassword = validatePassword(Password);
     var IsValidCPassword = validateConfirmPassword();
 
-   
+
 
     if (IsValidPassword == false) {
       Isvalid = false
@@ -203,7 +203,7 @@ export default function ProfileSettingPage() {
   };
 
   function handleChange(e) {
-    
+
     const { name, value } = e.target;
     console.log(value)
     console.log(name)
@@ -217,7 +217,7 @@ export default function ProfileSettingPage() {
         SetLastNameError("")
       }
     }
-  
+
     else if (name == "password") {
       if (value != "") {
         validatePassword(value);
@@ -230,7 +230,7 @@ export default function ProfileSettingPage() {
         validateConfirmPassword()
       }
     }
-    
+
 
   };
 
@@ -263,58 +263,60 @@ export default function ProfileSettingPage() {
     LoaderShow()
     const Valid = FromValidation();
     if (Valid) {
-    var FirstName = document.getElementById("firstName").value;
-    var LastName = document.getElementById("lastName").value;
-    var Email = document.getElementById("email").value;
-    var PhoneNumber = document.getElementById("phone").value;
-    var ZipCode = document.getElementById("zip").value;
-    var Password = document.getElementById("password").value;
+      var FirstName = document.getElementById("firstName").value;
+      var LastName = document.getElementById("lastName").value;
+      var Email = document.getElementById("email").value;
+      var PhoneNumber = document.getElementById("phone").value;
+      var ZipCode = document.getElementById("zip").value;
+      var Password = document.getElementById("password").value;
 
-    var CheckData = await CheckEmailExists(Email)
+      var CheckData = await CheckEmailExists(Email)
 
-    let CountryId
-    if (DropdownValue === null) {
-      CountryId = User?.CountryID?._id
+      let CountryId
+      if (DropdownValue === null) {
+        CountryId = User?.CountryID?._id
+      }
+      else {
+        CountryId = DropdownValue
+      }
+
+      let Data = {
+        UserID: UserID,
+        FirstName: FirstName,
+        LastName: LastName,
+        Email: Email,
+        PhoneNumber: PhoneNumber,
+        ZipCode: ZipCode,
+        CountryID: CountryId,
+        Password: Password,
+        UserProfile: Base64Image,
+        TwoWayFactor: Checked
+      }
+
+      if (CheckData === "SUCCESS") {
+        Axios({
+          url: CommonConstants.MOL_APIURL + "/user/UserUpdate",
+          method: "POST",
+          data: Data,
+        }).then((Result) => {
+          if (Result.data.StatusMessage === "SUCCESS") {
+            const GetLoginData = localStorage.getItem("LoginData")
+            const Image = JSON.parse(GetLoginData)
+            Image.UserImage = Base64Image
+
+            localStorage.setItem("LoginData", JSON.stringify(Image))
+            toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
+
+            GetUserList(UserID);
+          } else {
+            toast.error(Result?.data?.Message);
+            LoaderHide()
+          }
+        })
+      }
+
     }
-    else {
-      CountryId = DropdownValue
-    }
-
-    let Data = {
-      UserID: UserID,
-      FirstName: FirstName,
-      LastName: LastName,
-      Email: Email,
-      PhoneNumber: PhoneNumber,
-      ZipCode: ZipCode,
-      CountryID: CountryId,
-      Password: Password,
-      UserProfile: Base64Image,
-      TwoWayFactor: Checked
-    }
-
-    if (CheckData === "SUCCESS") {
-      Axios({
-        url: CommonConstants.MOL_APIURL + "/user/UserUpdate",
-        method: "POST",
-        data: Data,
-      }).then((Result) => {
-        if (Result.data.StatusMessage === "SUCCESS") {
-          const GetLoginData = localStorage.getItem("LoginData")
-          const Image = JSON.parse(GetLoginData)
-          Image.UserImage = Base64Image
-
-          localStorage.setItem("LoginData", JSON.stringify(Image))
-          toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
-         
-          GetUserList(UserID);
-        } else {
-          toast.error(Result?.data?.Message);
-        }
-      })
-    }
-
-  }
+    LoaderHide()
   }
 
   const CancelUser = async () => {
@@ -350,18 +352,18 @@ export default function ProfileSettingPage() {
         <Navigation />
       </div>
 
-      <div className='righter'> 
+      <div className='righter'>
 
-        <div className='px-3'> 
-            <Row className='bodsetting px-4'>
-                <Col className='py-3'>
-                  <h5 className="my-0">Profile Setting</h5>
-                </Col>
-            </Row>
+        <div className='px-3'>
+          <Row className='bodsetting px-4'>
+            <Col className='py-3'>
+              <h5 className="my-0">Profile Setting</h5>
+            </Col>
+          </Row>
         </div>
 
         <div className='px-3'>
-          <Row className='bodsetting bgdarkprim'> 
+          <Row className='bodsetting bgdarkprim'>
             <Col className='text-center py-5' style={{ minHeight: '230px' }}>
               <h4>Profile Setting</h4>
             </Col>
@@ -391,20 +393,20 @@ export default function ProfileSettingPage() {
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName}  onChange={handleChange}/>
+                  <input type='text' placeholder='First Name' id='firstName' name="firstName" defaultValue={User?.FirstName} onChange={handleChange} />
                   {FirstNameError && <p style={{ color: "red" }}>{FirstNameError}</p>}
                 </div>
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} onChange={handleChange}/>
+                  <input type='text' placeholder='Last Name' id='lastName' name="lastName" defaultValue={User?.LastName} onChange={handleChange} />
                   {LastNameError && <p style={{ color: "red" }}>{LastNameError}</p>}
                 </div>
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
                   <input type='email' placeholder='Email' id='email' defaultValue={User?.Email} readonly="readonly" />
-                  
+
                 </div>
               </Col>
             </Row>
@@ -438,9 +440,9 @@ export default function ProfileSettingPage() {
               </Col>
               <Col sm={4}>
                 <div className='input-box'>
-                  <input type='Password' placeholder='Confirm Password' id='confirmpassword' name="confirmpassword" defaultValue={User?.Password} onChange={handleChange}/> 
+                  <input type='Password' placeholder='Confirm Password' id='confirmpassword' name="confirmpassword" defaultValue={User?.Password} onChange={handleChange} />
                   {ConfirmPasswordError && <p style={{ color: "red" }}>{ConfirmPasswordError}</p>}
-                  </div>
+                </div>
               </Col>
               <Col sm={4}>
               </Col>
@@ -475,7 +477,7 @@ export default function ProfileSettingPage() {
         </div>
       </div>
 
-     
+
 
     </>
   );
