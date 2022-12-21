@@ -329,7 +329,7 @@ export default function OtherInboxComposePage({ GetOtherInboxList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Other Inbox <br />Mail send successfully.</div>);
+                    toast.success(<div>Mail sent successfully.</div>);
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()

@@ -309,7 +309,7 @@ export default function UnansweredResponsesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses <br />Delete mail successfully.</div>);
+          toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -360,7 +360,7 @@ export default function UnansweredResponsesPage(props) {
           });
           ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              toast.success(<div>Unanswered Responses  <br />Follow up later updated successfully.</div>);
+              toast.success(<div>Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
@@ -378,10 +378,10 @@ export default function UnansweredResponsesPage(props) {
             }
           });
         } else {
-          toast.error(<div>Unanswered Responses <br />Please enter valid date.</div>)
+          toast.error(<div>Please enter valid date.</div>)
         }
       } else {
-        toast.error(<div>Unanswered Responses <br />Please enter date.</div>)
+        toast.error(<div>Please enter date.</div>)
       }
     }
   }
@@ -408,7 +408,7 @@ export default function UnansweredResponsesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses <br />Starred  updated successfully.</div>);
+          toast.success(<div>Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -615,7 +615,7 @@ export default function UnansweredResponsesPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Unanswered Responses <br />Reply Mail send successfully.</div>);
+        toast.success(<div>Reply Mail sent successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -879,7 +879,7 @@ export default function UnansweredResponsesPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Unanswered Responses <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

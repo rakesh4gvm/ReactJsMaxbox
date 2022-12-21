@@ -334,7 +334,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Unanswered Responses <br />Mail send successfully.</div>);
+                    toast.success(<div>Mail sent successfully.</div>);
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()

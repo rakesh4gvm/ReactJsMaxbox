@@ -328,7 +328,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>All Sent Emails<br />Mail send successfully.</div>)
+                    toast.success(<div>Mail sent successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()

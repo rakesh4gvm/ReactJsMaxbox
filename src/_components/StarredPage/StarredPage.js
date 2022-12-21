@@ -317,7 +317,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred <br />Delete mail successfully.</div>);
+          toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -358,7 +358,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred <br />Other inbox updated successfully.</div>);
+          toast.success(<div>Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -411,7 +411,7 @@ export default function OtherInboxPage(props) {
           });
           ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              toast.success(<div>Starred <br />Follow up later updated successfully.</div>);
+              toast.success(<div>Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
@@ -428,10 +428,10 @@ export default function OtherInboxPage(props) {
             }
           });
         } else {
-          toast.error(<div>Starred <br />Please enter valid date.</div>)
+          toast.error(<div>Please enter valid date.</div>)
         }
       } else {
-        toast.error(<div>Starred <br />Please enter date.</div>)
+        toast.error(<div>Please enter date.</div>)
       }
     }
   }
@@ -582,7 +582,7 @@ export default function OtherInboxPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Starred <br />Reply mail send successfully.</div>);
+        toast.success(<div>Reply mail sent successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -845,7 +845,7 @@ export default function OtherInboxPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Starred <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

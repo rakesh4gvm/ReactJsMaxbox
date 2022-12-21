@@ -352,7 +352,7 @@ export default function AllSentEmailsPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Sent Emails <br />Mail deleted successfully.</div>);
+          toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -523,7 +523,7 @@ export default function AllSentEmailsPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Sent Emails <br />Reply mail send successfully.</div>);
+          toast.success(<div>Reply mail sent successfully.</div>);
           CloseComposeReply()
           SetSignature({ Data: "" })
           LoaderHide()
@@ -789,7 +789,7 @@ export default function AllSentEmailsPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>All Sent Emails <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

@@ -369,7 +369,7 @@ export default function SpamPage(props) {
           });
           ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              toast.success(<div>Spam <br />Follow up later updated successfully.</div>);
+              toast.success(<div>Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
@@ -387,10 +387,10 @@ export default function SpamPage(props) {
             }
           });
         } else {
-          toast.error(<div>Spam <br />Please enter valid date.</div>)
+          toast.error(<div>Please enter valid date.</div>)
         }
       } else {
-        toast.error(<div>Spam <br />Please enter date.</div>)
+        toast.error(<div>Please enter date.</div>)
       }
     }
   }
@@ -462,7 +462,7 @@ export default function SpamPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Spam <br />Spam mail deleted successfully.</div>);
+          toast.success(<div>Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -621,7 +621,7 @@ export default function SpamPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Spam <br />Reply mail send successfully.</div>);
+        toast.success(<div>Reply mail sent successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -885,7 +885,7 @@ export default function SpamPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Spam <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

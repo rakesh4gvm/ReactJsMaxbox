@@ -331,7 +331,7 @@ export default function DraftComposePage({ GetDraftList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Draft <br />Mail send successfully.</div>);
+                    toast.success(<div>Mail sent successfully.</div>);
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()

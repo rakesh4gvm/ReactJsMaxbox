@@ -320,8 +320,8 @@ export default function SpamComposePage({ GetSpamList }) {
                 IsDraftMail: false,
                 IsAllSentEmails: false,
                 CreatedBy: 1,
-                TemplateID : TemplateID,
-                ObjectIDTemplateID : ObjectIDTemplateID
+                TemplateID: TemplateID,
+                ObjectIDTemplateID: ObjectIDTemplateID
             }
             Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
@@ -329,7 +329,7 @@ export default function SpamComposePage({ GetSpamList }) {
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Spam<br />Mail send successfully.</div>)
+                    toast.success(<div>Mail sent successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()

@@ -317,7 +317,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Inbox <br />Delete mail successfully.</div>);
+          toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -475,7 +475,7 @@ export default function OtherInboxPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>All Inbox <br />Reply mail send successfully.</div>);
+        toast.success(<div>Reply mail sent successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -738,7 +738,7 @@ export default function OtherInboxPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>All Inbox <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

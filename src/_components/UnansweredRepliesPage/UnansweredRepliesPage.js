@@ -364,6 +364,7 @@ export default function AllUnansweredRepliesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -405,7 +406,7 @@ export default function AllUnansweredRepliesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Replies  <br />Starred  updated successfully.</div>);
+          toast.success(<div>Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -523,7 +524,7 @@ export default function AllUnansweredRepliesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Replies <br />Reply mail send successfully.</div>);
+          toast.success(<div>Reply mail sent successfully.</div>);
           CloseComposeReply()
           SetSignature({ Data: "" })
           LoaderHide()
@@ -788,7 +789,7 @@ export default function AllUnansweredRepliesPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Unanswered Replies <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()
@@ -887,13 +888,13 @@ export default function AllUnansweredRepliesPage(props) {
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
- 
+
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllUnansweredRepliesList(ClientID,UserID, pn, ID);
+        GetAllUnansweredRepliesList(ClientID, UserID, pn, ID);
       } else {
-        GetAllUnansweredRepliesList(ClientID,UserID, pn, 0)
+        GetAllUnansweredRepliesList(ClientID, UserID, pn, 0)
       }
     }
   };
@@ -1083,49 +1084,49 @@ export default function AllUnansweredRepliesPage(props) {
             defaultSize={"40%"}
           >
             <>
-             <div className='pagination-pa' >
-            <TablePagination
-                component="div"
-                count={TotalRecord}
-                page={parseInt(Page) - 1}
-                rowsPerPage="10"
-                onPageChange={HandleChangePage}
-              
-              />
-            </div>
-            <div className="simulationDiv">
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {AllUnansweredRepliesList.map((item, index) => (
-                    <TableRow className="SelectionSubject"
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}>
-                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </TableCell>
-                      {/* <TableCell width={'35px'}></TableCell> */}
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
+
+                />
+              </div>
+              <div className="simulationDiv">
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHead>
+                  <TableBody>
+                    {AllUnansweredRepliesList.map((item, index) => (
+                      <TableRow className="SelectionSubject"
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        <TableCell width={'35px'}>
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
+                        {/* <TableCell width={'35px'}></TableCell> */}
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>

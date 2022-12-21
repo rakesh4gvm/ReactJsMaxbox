@@ -322,7 +322,7 @@ export default function FollowUpLater(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Follow Up Later <br />Starred  updated successfully.</div>);
+          toast.success(<div>Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -364,7 +364,7 @@ export default function FollowUpLater(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Follow Up Later <br />Other inbox updated successfully.</div>);
+          toast.success(<div>Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -409,7 +409,7 @@ export default function FollowUpLater(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Follow Up Later <br />Delete mail successfully.</div>);
+          toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -575,7 +575,7 @@ export default function FollowUpLater(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        toast.success(<div>Follow Up Later <br />Reply mail send successfully.</div>);
+        toast.success(<div>Reply mail sent successfully.</div>);
         OpenComposeReply();
         CloseComposeReply()
         LoaderHide()
@@ -840,7 +840,7 @@ export default function FollowUpLater(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Follow Up Later <br />Forward mail send successfully.</div>);
+            toast.success(<div>Forward mail sent successfully.</div>);
             CloseComposeForward()
             SetForwardSignature({ Data: "" })
             LoaderHide()

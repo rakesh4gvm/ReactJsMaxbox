@@ -351,7 +351,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Draft <br />Draft template deleted successfully.</div>);
+          toast.success(<div>Draft template deleted successfully.</div>);
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -432,7 +432,7 @@ export default function OtherInboxPage(props) {
         data: Data,
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-          toast.success(<div>Draft <br />Mail send successfully.</div>);
+          toast.success(<div>Mail send successfully.</div>);
           CloseCompose()
           LoaderHide()
           GetDraftList(ClientID, UserID, Page, "")
