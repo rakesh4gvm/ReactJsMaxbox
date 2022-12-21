@@ -607,6 +607,11 @@ Button.iconbtn {
     display: flex;
 }
 
+.dropdec a, .dropdec a:hover {
+    color: #fff;
+    background-color: transparent;
+}
+
 .notifimen {
     width: 67px;
     height: 30px;
@@ -1377,6 +1382,9 @@ Button.btntemplateround:hover {
 .sign-main a {
     color: #E49273;
 }
+.sign-main a:hover {
+    color: #ca7352;
+}
 
 .bgsigner {
     position: absolute;
@@ -1397,7 +1405,7 @@ Button.btntemplateround:hover {
     margin-top: 41px;
 } */
 .header-white {
-    background-color: #fff;
+    background-color: #e49273;
     position: fixed;
     top: 0;
     right: 0;
@@ -2819,6 +2827,9 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .pagination-pa .MuiTablePagination-selectLabel,
 .pagination-pa .MuiTablePagination-selectLabel + div {
     display: none;
+}
+.imgXlogos{
+    width: 50px;
 }
 
 @media screen and (max-width:990px) {

@@ -4,7 +4,7 @@ import Axios from "axios";
 import parse from "html-react-parser";
 import SplitPane from "react-split-pane";
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import TablePagination from '@mui/material/TablePagination';
 
 import { CommonConstants } from "../../_constants/common.constants";

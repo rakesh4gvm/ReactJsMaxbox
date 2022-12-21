@@ -24,7 +24,7 @@ import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow, EditorVariableNa
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';

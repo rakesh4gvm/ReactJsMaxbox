@@ -29,7 +29,7 @@ import FooterBottom from '../Footer/footer';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 import Navigation from '../Navigation/Navigation'; 
 

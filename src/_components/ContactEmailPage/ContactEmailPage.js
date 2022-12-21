@@ -38,7 +38,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import InputBase from '@mui/material/InputBase';
 import "react-toastify/dist/ReactToastify.css";
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import { MenuItem } from '@mui/material';
 
 import OutlinedInput from '@mui/material/OutlinedInput';

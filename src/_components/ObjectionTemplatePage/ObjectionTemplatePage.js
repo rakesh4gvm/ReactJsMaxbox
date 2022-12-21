@@ -35,7 +35,7 @@ import "react-toastify/dist/ReactToastify.css";
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 import Templatecarbon from '../../images/icons/table-template.svg';
 import SmallSend from '../../images/icons/small_send.svg';
