@@ -254,7 +254,7 @@ export default function RegisterPage() {
           <img className='bgsigner' src={BgSign} />
 
           <div className='sm-container pt-5'>
-            <h2>Register</h2>
+            <h2 className='pt-5'>Register</h2>
             <Row>
               <Col sm={4}>
                 <div className='input-box'>

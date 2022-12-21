@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<g transform="translate(50 50)">
+  <g>
+    <animateTransform attributeName="transform" type="rotate" calcMode="discrete" values="0;90;180;270;360" keyTimes="0;0.25;0.5;0.75;1" dur="2.5s" repeatCount="indefinite"></animateTransform>
+    <path d="M-40 0A40 40 0 1 0 40 0" fill="#db815f">
+      <animate attributeName="fill" calcMode="discrete" values="#db815f;#e49273;#f5ad92;#ffc7b2;#db815f" keyTimes="0;0.24;0.49;0.74;0.99" dur="2.5s" repeatCount="indefinite"></animate>
+    </path>
+    <path d="M-40 0A40 40 0 0 1 40 0" fill="#e49273">
+      <animate attributeName="fill" calcMode="discrete" values="#e49273;#f5ad92;#ffc7b2;#db815f;#e49273" keyTimes="0;0.25;0.5;0.75;1" dur="2.5s" repeatCount="indefinite"></animate>
+    </path>
+    <path d="M-39 0L39 0" stroke="#b34e28" stroke-width="2">
+      <animate attributeName="stroke" values="#db815f;#b34e28;#c95327;#e49273;#c95327;#eb5c27;#f5ad92;#eb5c27;#ff6930;#ffc7b2;#ff6930;#b34e28;#db815f" keyTimes="0;0.124;0.125;0.25;0.374;0.375;0.5;0.624;0.625;0.75;0.874;0.875;1" dur="2.5s" repeatCount="indefinite"></animate>
+    </path>
+    <g>
+      <path d="M-40 0A40 40 0 0 1 40 0Z" fill="#b34e28">
+        <animate attributeName="fill" values="#db815f;#b34e28;#c95327;#e49273;#c95327;#eb5c27;#f5ad92;#eb5c27;#ff6930;#ffc7b2;#ff6930;#b34e28;#db815f" keyTimes="0;0.124;0.125;0.25;0.374;0.375;0.5;0.624;0.625;0.75;0.874;0.875;1" dur="2.5s" repeatCount="indefinite"></animate>
+      <animateTransform attributeName="transform" type="scale" values="1 1;1 0;1 -1;1 1" keyTimes="0;0.5;0.999;1" dur="0.625s" repeatCount="indefinite"></animateTransform>
+    </path></g>
+  </g>
+</g>
+</svg>

@@ -9,7 +9,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import BgProfile from '../../images/bg-profile.png';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 
 

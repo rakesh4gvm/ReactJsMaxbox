@@ -23,7 +23,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 
 
@@ -251,7 +251,7 @@ export default function LoginPage() {
           <img className='bgsigner' src={BgSign} />
 
           <div className='sm-container pt-5'>
-            <h2>Login</h2>
+            <h2 className='pt-5'>Login</h2>
             <Row>
               <Col sm={5}>
                 <div className='input-box'>

@@ -22,7 +22,7 @@ import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MaxboxLoading from '../../images/Maxbox-Loading.gif';
+import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import { MenuItem } from '@mui/material';
 
 import Navigation from '../Navigation/Navigation';
