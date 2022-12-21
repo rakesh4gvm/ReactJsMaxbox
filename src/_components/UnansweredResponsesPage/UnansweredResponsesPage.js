@@ -190,8 +190,8 @@ export default function UnansweredResponsesPage(props) {
   // Start Get Follow Up Later List
   const GetUnansweredResponcesList = (CID, UID, PN, ID) => {
     let AccountIDs = []
-    if (ID?.ID?.length > 0) {
-      AccountIDs.push(ID?.ID)
+    if (ID.length > 0) {
+      AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
@@ -224,7 +224,6 @@ export default function UnansweredResponsesPage(props) {
           SetFollowUpList(Result.data.PageData)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetCountPage(Result.data.PageCount);
-          
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           LoaderHide()
@@ -716,7 +715,7 @@ export default function UnansweredResponsesPage(props) {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          debugger
+          
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             if (Result.data.PageData.length > 0) {
               setExpanded(false);
@@ -973,7 +972,7 @@ export default function UnansweredResponsesPage(props) {
   // Ends Forward Reply Send Mail
 
   // const HandleChangePage = (Event, NewPage) => {
-  //   debugger
+  //   
   //   SetPage(NewPage);
   //   // if (props !== undefined) {
   //   //   const ID = props.location.state;
@@ -1249,54 +1248,54 @@ export default function UnansweredResponsesPage(props) {
             defaultSize={"40%"}
           >
             <>
-            <div className='pagination-pa' >
-            <TablePagination
-                component="div"
-                count={TotalRecord}
-                page={parseInt(Page) - 1}
-                rowsPerPage="10"
-                onPageChange={HandleChangePage}
-              
-              />
-            </div>
-            <div className="simulationDiv"> 
-              <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
-                    {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                    <TableCell component="th">Subject</TableCell>
-                    <TableCell component="th">From Email</TableCell>
-                    <TableCell component="th">Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {FollowUpList.map((item, index) => (
-                    <TableRow className="SelectionSubject"
-                      key={item.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => OpenMessageDetails(item._id, index)}
-                    >
-                      <TableCell width={'35px'}>
-                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                          <StarBorderIcon className='starone' />
-                          <StarIcon className='selectedstart startwo' />
-                        </ToggleButton>
-                      </TableCell>
-                      {/* <TableCell width={'35px'}></TableCell> */}
-                      <TableCell scope="row"> {item.Subject} </TableCell>
-                      <TableCell>{item.FromEmail}</TableCell>
-                      <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+              <div className='pagination-pa' >
+                <TablePagination
+                  component="div"
+                  count={TotalRecord}
+                  page={parseInt(Page) - 1}
+                  rowsPerPage="10"
+                  onPageChange={HandleChangePage}
+
+                />
+              </div>
+              <div className="simulationDiv">
+                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                      <TableCell component="th">Subject</TableCell>
+                      <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Date</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              {console.log(CountPage)}
-              
-              {/* <Stack className='my-4 page-dec' spacing={2}> */} 
+                  </TableHead>
+                  <TableBody>
+                    {FollowUpList.map((item, index) => (
+                      <TableRow className="SelectionSubject"
+                        key={item.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        onClick={() => OpenMessageDetails(item._id, index)}
+                      >
+                        <TableCell width={'35px'}>
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
+                        {/* <TableCell width={'35px'}></TableCell> */}
+                        <TableCell scope="row"> {item.Subject} </TableCell>
+                        <TableCell>{item.FromEmail}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                {console.log(CountPage)}
+
+                {/* <Stack className='my-4 page-dec' spacing={2}> */}
                 {/* <Pagination onChange={HandleChangePage} variant="outlined" shape="rounded" /> */}
-              {/* </Stack> */}
-            </div>
+                {/* </Stack> */}
+              </div>
             </>
             <div className="statisticsDiv">
               <div className='composehead px-3'>

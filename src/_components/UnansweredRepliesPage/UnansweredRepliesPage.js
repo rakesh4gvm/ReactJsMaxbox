@@ -252,8 +252,8 @@ export default function AllUnansweredRepliesPage(props) {
   // Start Get Follow Up Later List
   const GetAllUnansweredRepliesList = (CID, UID, PN, ID) => {
     let AccountIDs = []
-    if (ID?.ID?.length > 0) {
-      AccountIDs.push(ID?.ID)
+    if (ID.length > 0) {
+      AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }

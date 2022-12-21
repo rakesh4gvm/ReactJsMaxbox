@@ -185,7 +185,7 @@ export default function Navigation() {
   const [expanded, SetExpanded] = useState([]);
   const [AllTotalRecords, SetAllTotalRecords] = useState()
   const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
-  const [TotalCount, SetTotalCount] = React.useState(0);
+  const [TotalCount, SetTotalCount] = React.useState();
   const [EmailTotalRecords, SetEmailTotalRecords] = useState()
   const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
 
@@ -249,7 +249,7 @@ export default function Navigation() {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.TotalCount >= 0) {
-          SetTotalCount(Result.data.TotalCount);
+          SetTotalCount(Result.data);
         } else {
           SetTotalCount(0);
           toast.error(Result?.data?.Message);
@@ -506,6 +506,7 @@ export default function Navigation() {
 
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <Link to="/ProfileSetting"><div className='profilebox'>
@@ -587,7 +588,7 @@ export default function Navigation() {
           <TreeItem nodeId="1" className='text-bold' label="All Account">
 
             <TreeItem nodeId="2" label="Inbox">
-              <TreeItem nodeId="8" label={"All Inbox(" + TotalCount + ")"}>
+              <TreeItem nodeId="8" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"}>
                 <TreeItem nodeId="81" label="All Inbox" onClick={() => RedirectLink('', "AllInbox", '')} />
               </TreeItem>
               <TreeItem nodeId="20" label={"Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")"}>
@@ -641,13 +642,12 @@ export default function Navigation() {
 
               <TreeItem nodeId={"f1" + item._id} label="Inbox">
 
-                <TreeItem nodeId={"f2" + item._id} label={"All Inbox(" + TotalCount + ")"}>
+                <TreeItem nodeId={"f2" + item._id}
+                  label={TotalCount.ReceiveEmailHistoryData.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount.ReceiveEmailHistoryData.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
+                >
                   {/* <TreeItem nodeId={"f3" + item._id} label="New"> */}
                   <TreeItem nodeId={"f60" + item._id} label="All Inbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
                   {/* </TreeItem> */}
-
-
-
 
                 </TreeItem>
 

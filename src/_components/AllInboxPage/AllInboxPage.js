@@ -165,17 +165,18 @@ export default function OtherInboxPage(props) {
   const handleTemClose = () => setTemOpen(false);
 
   useEffect(() => {
-    if (props.location.search != undefined) {
-      const Response = decodeURIComponent(props.location.search)
-      const Decoded = Response.split("?")[1]
-      const ID = Decoded?.slice(1, -1)
-      SetIDs([ID])
-      document.title = 'All Inbox | MAXBOX';
-      GetClientID([ID]);
-    } else {
-      GetClientID([-1]);
-    }
-
+    // if (props.location.search != undefined) {
+    //   const Response = decodeURIComponent(props.location.search)
+    //   const Decoded = Response.split("?")[1]
+    //   const ID = Decoded?.slice(1, -1)
+    //   SetIDs([ID])
+    //   document.title = 'All Inbox | MAXBOX';
+    //   GetClientID([ID]);
+    // } else {
+    //   GetClientID([-1]);
+    // }
+    document.title = 'All Inbox | MAXBOX';
+    GetClientID();
   }, [SearchInbox])
 
   // Get Client ID
@@ -186,6 +187,7 @@ export default function OtherInboxPage(props) {
       SetUserID(UserDetails.UserID);
     }
     if (props !== undefined) {
+      const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
         GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
