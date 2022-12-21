@@ -588,7 +588,7 @@ export default function Navigation() {
           <TreeItem nodeId="1" className='text-bold' label="All Account">
 
             <TreeItem nodeId="2" label="Inbox">
-              <TreeItem nodeId="8" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"}>
+              <TreeItem nodeId="8" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"}>
                 <TreeItem nodeId="81" label="All Inbox" onClick={() => RedirectLink('', "AllInbox", '')} />
               </TreeItem>
               <TreeItem nodeId="20" label={"Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")"}>
@@ -643,7 +643,7 @@ export default function Navigation() {
               <TreeItem nodeId={"f1" + item._id} label="Inbox">
 
                 <TreeItem nodeId={"f2" + item._id}
-                  label={TotalCount.ReceiveEmailHistoryData.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount.ReceiveEmailHistoryData.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
+                  label={TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
                 >
                   {/* <TreeItem nodeId={"f3" + item._id} label="New"> */}
                   <TreeItem nodeId={"f60" + item._id} label="All Inbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
