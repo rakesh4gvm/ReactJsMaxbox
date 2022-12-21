@@ -281,9 +281,12 @@ export default function TemplatesListPage() {
           <div className='sm-container-bix pt-5'>
             <Row className='mb-5'>
               <Col align="right">
-                <Button className='btnaccount' onClick={AddTemplate}>
-                  <AddIcon /> Create Templates
-                </Button>
+                {
+                  ClientID != "" ?
+                    <Button className='btnaccount' onClick={AddTemplate}>
+                      <AddIcon /> Create Templates
+                    </Button> : ""
+                }
               </Col>
             </Row>
             <Row>
