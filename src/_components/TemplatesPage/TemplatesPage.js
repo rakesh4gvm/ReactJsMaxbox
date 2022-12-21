@@ -43,7 +43,7 @@ import MailMultipal from '../../images/icons/mail_multipal.svg';
 import InboxRounded from '../../images/icons/inbox_rounded.svg';
 import EyesView from '../../images/icons/eyes_view.svg';
 
-import Navigation from '../Navigation/Navigation';  
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 
@@ -268,8 +268,8 @@ export default function TemplatesListPage() {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
-        <div className='px-3'> 
+      <div className='righter'>
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Template</h5>
@@ -277,7 +277,7 @@ export default function TemplatesListPage() {
           </Row>
         </div>
 
-          <div className='container'>
+        <div className='container'>
           <div className='sm-container-bix pt-5'>
             <Row className='mb-5'>
               <Col align="right">
@@ -315,19 +315,19 @@ export default function TemplatesListPage() {
                                 {open[row._id] ? <><RemoveCircleIcon /></> : <><AddCircleIcon /></>}
                               </IconButton>
                             </TableCell> */}
-                            <TableCell style={{maxWidth: 320}}><img className='mr-2' src={Templatecarbon} width="38" /> 
-                            <span style={{ maxWidth: 320}}>{row.Subject}</span>
+                            <TableCell style={{ maxWidth: 320 }}><img className='mr-2' src={Templatecarbon} width="38" />
+                              <span style={{ maxWidth: 320 }}>{row.Subject}</span>
                             </TableCell>
-                            
+
                             <TableCell sx={{ minWidth: 320 }}>
-                              <div className='hidtextmax' style={{  width: 320}}>{parse(row.BodyText)}</div>
+                              <div className='hidtextmax' style={{ width: 320 }}>{parse(row.BodyText)}</div>
                             </TableCell>
 
                             <TableCell><img src={SmallSend} /> {row.IsSentCount}</TableCell>
                             <TableCell><img src={MailMultipal} /> {row.IsOpenCount}</TableCell>
                             {/* <TableCell><img src={InboxRounded} /> Replies</TableCell> */}
-                            
-                            <TableCell>{parseInt(row.IsSentCount) > 0 ? (parseInt(row.IsOpenCount) / parseInt(row.IsSentCount)) * 100 : 0 } % </TableCell>
+
+                            <TableCell>{parseInt(row.IsSentCount) > 0 ? ((parseInt(row.IsOpenCount) / parseInt(row.IsSentCount)) * 100).toFixed(0) : 0} % </TableCell>
                             {/* <TableCell>Replies %</TableCell> */}
 
                             <TableCell align="left">
@@ -376,8 +376,8 @@ export default function TemplatesListPage() {
 
 
 
-      
- 
+
+
     </>
   );
 }
