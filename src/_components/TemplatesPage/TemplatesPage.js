@@ -277,7 +277,7 @@ export default function TemplatesListPage() {
           </Row>
         </div>
 
-        <div className='container'>
+        <div className='container px-3'>
           <div className='sm-container-bix pt-5'>
             <Row className='mb-5'>
               <Col align="right">

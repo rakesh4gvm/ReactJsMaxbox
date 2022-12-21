@@ -978,8 +978,14 @@ div.modal-prein {
     background: rgb(255 247 247);
     color: #333;
     overflow: hidden;
-    position: relative;
+    position: fixed;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    top: 0;
+    width: 100%; 
+    z-index: 9999;
+}
+.bodsetting + div {
+    margin-top: 20px;
 }
 
 .bodsetting h5 {
@@ -1580,7 +1586,7 @@ div.erorr-msg>*>* {
     left: 8px; 
 }*/
 .FroalaEditor .fr-toolbar .fr-btn-grp .fr-command.fr-btn:nth-child(2)+.fr-dropdown-menu {
-    top: calc(-100% + -15px) !important;
+    top: calc(-100% + 15px) !important;
 }
 
 .composebody.inxfirst {
@@ -1721,6 +1727,8 @@ div.erorr-msg>*>* {
 
 .FroalaEditor div.fr-dropdown-menu {
     top: calc(-100% + 20px) !important;
+    max-height: 75px;
+    overflow-y: auto !important;
 }
 
 .FroalaEditor .fr-toolbar .fr-popup {
@@ -2185,7 +2193,7 @@ div.modal-prein.wd-600 {
 
 .hidtextmax {
     max-width: 100%;
-    max-height: 42px;
+    max-height: 22px;
     overflow: hidden;
 }
 
@@ -2665,11 +2673,11 @@ div.css-dhopo2 {
     padding: 10px;
     overflow-y: auto !important;
     height: calc(100% - 74px);
-    min-height: 100%;
+    min-height: calc(100% - 74px);
 }
 
 .Pane.horizontal.Pane2 {
-    height: 100%;
+    height: 1px; 
 }
 
 .container-xs {
@@ -2736,7 +2744,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     width: 42px;
     height: 42px;
     position: fixed;
-    z-index: 999;
+    z-index: 99999;
     right: 0;
     text-align: center;
     line-height: 42px;
@@ -2750,8 +2758,12 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 
 .bodsetting.bgdarkprim {
     background-color: rgb(255 239 239);
+    position: relative;
+    z-index: 0;
 }
-
+.indexone{
+    z-index: 1;
+}
 .MuiSwitch-root .MuiSwitch-switchBase.Mui-checked span {
     color: #e49273;
 }
@@ -2830,7 +2842,18 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 }
 .imgXlogos{
     width: 50px;
+} 
+.righter > div + div.container{
+    padding-top: 40px;
 }
+.MxWidth-100.container{
+    max-width: 100%;
+}
+.MuiModal-root.modal-pre.css-79ws1d-MuiModal-root {
+    z-index: 99999;
+}
+
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

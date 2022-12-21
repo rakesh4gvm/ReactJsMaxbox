@@ -1326,7 +1326,7 @@ export default function SpamPage(props) {
                             <img src={icontimer} />
                           </Button>
                           <Button onClick={OpenOtherInboxPopModel}>
-                            <img src={inbox} className="inboxicon" title={"Other Inbox"} />
+                            <img src={inbox} title={"Other Inbox"} />
                           </Button>
                           <Button>
                             <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>

@@ -355,22 +355,22 @@ export default function ProfileSettingPage() {
       <div className='righter'>
 
         <div className='px-3'>
-          <Row className='bodsetting px-4'>
+          <Row className='bodsetting px-4 indexone'>
             <Col className='py-3'>
               <h5 className="my-0">Profile Setting</h5>
             </Col>
           </Row>
         </div>
 
-        <div className='px-3'>
-          <Row className='bodsetting bgdarkprim'>
+        <div className='container px-0 MxWidth-100'>
+          <Row className='bodsetting bgdarkprim mx-0'>
             <Col className='text-center py-5' style={{ minHeight: '230px' }}>
               <h4>Profile Setting</h4>
             </Col>
           </Row>
 
 
-          <Row className='text-center mt-5'>
+          <Row className='text-center mt-5 mx-0 px-4'>
             <Col>
               <div className='imguploadmain'>
                 <div className='imgupload'>
@@ -389,7 +389,7 @@ export default function ProfileSettingPage() {
             </Col>
           </Row>
 
-          <div className='sm-container mt-5'>
+          <div className='sm-container mt-5 px-4'>
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
