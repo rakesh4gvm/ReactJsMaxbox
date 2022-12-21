@@ -223,7 +223,7 @@ span.userpic img {
 .MuiButtonBase-root.startselct {
     padding: 0;
     border: none;
-    background: transparent;
+    background: transparent !important;
     float: right;
 }
 
@@ -2855,8 +2855,10 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 }
 .MuiModal-root.modal-pre.css-79ws1d-MuiModal-root {
     z-index: 99999;
+} 
+.Toastify__toast-container {
+    z-index: 99999;
 }
-
 
 
 @media screen and (max-width:990px) {
