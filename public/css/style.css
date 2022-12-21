@@ -217,7 +217,7 @@ span.userpic img {
 }
 
 .selectedstart {
-    color: #FFC107;
+    color: #e49273;
 }
 
 .MuiButtonBase-root.startselct {
@@ -2487,8 +2487,11 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 }
 
 .tablelister tr svg {
-    color: rgb(169, 169, 169);
+    background-color: snow;
     width: 18px;
+}
+.tablelister tr svg:focus {
+    background-color: snow;
 }
 
 .carsetting {
