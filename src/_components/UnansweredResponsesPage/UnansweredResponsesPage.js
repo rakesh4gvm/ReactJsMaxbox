@@ -449,7 +449,7 @@ export default function UnansweredResponsesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Unanswered Responses  <br />Other inbox updated successfully.</div>);
+          toast.success(<div>Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()

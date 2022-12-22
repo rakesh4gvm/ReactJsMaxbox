@@ -698,7 +698,7 @@ export default function Navigation() {
                   nodeId={"f11" + item._id}
                   label={SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`}
                 >
-                  <TreeItem nodeId={"f160" + item._id} label="AllSent" onClick={() => RedirectLink(item.AccountID, "AllSent")} />
+                  <TreeItem nodeId={"f160" + item._id} label="All Sent" onClick={() => RedirectLink(item.AccountID, "AllSent")} />
                 </TreeItem>
 
                 <TreeItem

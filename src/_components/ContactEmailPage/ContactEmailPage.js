@@ -45,7 +45,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 const Style = {
   position: 'absolute',
@@ -244,12 +244,12 @@ export default function ContactEmailPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderShow()
-        GetContactList(ClientID, UserID, [], Page)
-        toast.success(<div>Delete mail successfully.</div>);
+        GetContactList(ClientID, UserID, AccountIDs, Page)
+        toast.success(<div>Contact email deleted successfully.</div>);
         SetDeletePopModel(false);
       }
       else {
-        GetContactList(ClientID, UserID, [], Page)
+        GetContactList(ClientID, UserID, AccountIDs, Page)
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -312,7 +312,7 @@ export default function ContactEmailPage() {
                 Are you sure ?
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                you want to delete a email ?
+                you want to delete an email contact?
               </Typography>
             </div>
             <div className='d-flex btn-50'>
@@ -330,119 +330,119 @@ export default function ContactEmailPage() {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
+      <div className='righter'>
 
-        <div className='px-3'> 
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-            <h5 className='my-0'>Email Contacts</h5> 
+              <h5 className='my-0'>Email Contacts</h5>
             </Col>
           </Row>
         </div>
 
-      <div className='container'> 
+        <div className='container'>
 
-        <div className='sm-container mt-5'>
-          <Row className='mb-5'>
-            <Col sm={5}>
-              <FormControl className='dropemailbox'>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={personName}
-                  onChange={handleChange}
-                  input={<OutlinedInput label="Tag" />}
-                  MenuProps={MenuProps}
-                  displayEmpty
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <>Select Authed Email</>;
-                    }
-                    return selected.join(', ');
-                  }}
-                >
-                  {AccountList.map((data) => (
-                    <MenuItem key={data.AccountID} name={data.Email} value={data.Email}>
-                      <Checkbox checked={personName.indexOf(data.Email) > -1} />
-                      {/* <Checkbox defaultChecked={data.AccountID == AccountIDs ? true : false} /> */}
-                      <ListItemText primary={data.Email} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-
-
-            </Col>
-            <Col sm={4}>
-              <div className='textbox-dek serchdek'>
-                <Search onKeyUp={(e) => SearchBox(e, this)}>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    defaultValue={SearchInbox}
-                    placeholder="Search…"
-                    inputProps={{ 'aria-label': 'search' }}
-                  />
-                </Search>
-              </div>
-            </Col>
-            <Col sm={3} align="right">
-              <Button className='btnaccount' onClick={AddContact}>
-                <AddIcon /> Add Contact
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-
-              <TableContainer className='tablename' component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Contact Email</TableCell>
-                      <TableCell align="right">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {ContactList.map((row) => (
-                      <TableRow
-                        key={row.ContactEmail}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.EmailAccount.Email}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row.ContactEmail}
-                        </TableCell>
-                        <TableCell align="right">
-                          <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row?._id)}
-                          >
-                            <img src={DeleteIcon} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
+          <div className='sm-container mt-5'>
+            <Row className='mb-5'>
+              <Col sm={5}>
+                <FormControl className='dropemailbox'>
+                  <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    multiple
+                    value={personName}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Tag" />}
+                    MenuProps={MenuProps}
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <>Select Authed Email</>;
+                      }
+                      return selected.join(', ');
+                    }}
+                  >
+                    {AccountList.map((data) => (
+                      <MenuItem key={data.AccountID} name={data.Email} value={data.Email}>
+                        <Checkbox checked={personName.indexOf(data.Email) > -1} />
+                        {/* <Checkbox defaultChecked={data.AccountID == AccountIDs ? true : false} /> */}
+                        <ListItemText primary={data.Email} />
+                      </MenuItem>
                     ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                  </Select>
+                </FormControl>
 
-              <Stack className='my-4 page-dec' spacing={2}>
-                <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
-              </Stack>
 
-            </Col>
-          </Row>
+
+              </Col>
+              <Col sm={4}>
+                <div className='textbox-dek serchdek'>
+                  <Search onKeyUp={(e) => SearchBox(e, this)}>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      defaultValue={SearchInbox}
+                      placeholder="Search…"
+                      inputProps={{ 'aria-label': 'search' }}
+                    />
+                  </Search>
+                </div>
+              </Col>
+              <Col sm={3} align="right">
+                <Button className='btnaccount' onClick={AddContact}>
+                  <AddIcon /> Add Contact
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+
+                <TableContainer className='tablename' component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Contact Email</TableCell>
+                        <TableCell align="right">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {ContactList.map((row) => (
+                        <TableRow
+                          key={row.ContactEmail}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {row.EmailAccount.Email}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {row.ContactEmail}
+                          </TableCell>
+                          <TableCell align="right">
+                            <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row?._id)}
+                            >
+                              <img src={DeleteIcon} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Stack className='my-4 page-dec' spacing={2}>
+                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                </Stack>
+
+              </Col>
+            </Row>
+          </div>
+
+
         </div>
-
-
       </div>
-      </div>
- 
+
     </>
   );
 }
