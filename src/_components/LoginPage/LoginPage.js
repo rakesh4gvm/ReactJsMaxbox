@@ -147,28 +147,28 @@ export default function LoginPage() {
 
       const IsTwoWayFactor = await GetDataByEmail()
 
-      if (IsTwoWayFactor) {
+      // if (IsTwoWayFactor) {
 
-        const Data = {
-          ToEmail: Email,
-        }
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            history.push({
-              pathname: '/OTPConfirm',
-              state: { Email: Email, Password: Password }
-            });
+      //   const Data = {
+      //     ToEmail: Email,
+      //   }
+      //   const ResponseApi = Axios({
+      //     url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
+      //     method: "POST",
+      //     data: Data,
+      //   });
+      //   ResponseApi.then((Result) => {
+      //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+      //       history.push({
+      //         pathname: '/OTPConfirm',
+      //         state: { Email: Email, Password: Password }
+      //       });
 
-          }
-        })
-        LoaderHide()
-      }
-      else {
+      //     }
+      //   })
+      //   LoaderHide()
+      // }
+      // else {
 
         const Data = { Email: Email, Password: Password }
         const ResponseApi = Axios({
@@ -179,6 +179,27 @@ export default function LoginPage() {
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             if (Result.data.Data.length > 0) {
+              if (IsTwoWayFactor) {
+
+                const Data = {
+                  ToEmail: Email,
+                }
+                const ResponseApi = Axios({
+                  url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
+                  method: "POST",
+                  data: Data,
+                });
+                ResponseApi.then((Result) => {
+                  if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    history.push({
+                      pathname: '/OTPConfirm',
+                      state: { Email: Email, Password: Password }
+                    });
+        
+                  }
+                })
+                LoaderHide()
+              }else{
               var LoginDetails = Result.data.Data[0];
               var ObjLoginData = {
                 "UserID": LoginDetails._id,
@@ -190,15 +211,15 @@ export default function LoginPage() {
               SetClientID(LoginDetails._id, LoginDetails.UserImage);
               LoaderHide()
               //  history.push('/OtherInboxPage');
-            }
+            }}
             else {
               setUserPassword("User does not exists")
             }
           }
         });
-      }
+      // }
     }
-    LoaderHide()
+    // LoaderHide()
   }
 
   const PasswordValue = () => {
