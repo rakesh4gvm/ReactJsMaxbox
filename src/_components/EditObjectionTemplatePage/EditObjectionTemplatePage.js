@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 
@@ -94,6 +94,7 @@ export default function EditObjectionTemplatePage(props) {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html'],
+        imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     }
     const HandleModelChange = (Model) => {
         SetBody({
@@ -127,7 +128,7 @@ export default function EditObjectionTemplatePage(props) {
                     data: Data,
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        toast.success(<div>Object Template <br />Object template updated successfully.</div>);
+                        toast.success(<div>Object template updated successfully.</div>);
                         LoaderHide()
                         history.push("/ObjectionTemplate");
                     } else {
@@ -189,8 +190,8 @@ export default function EditObjectionTemplatePage(props) {
             <div className='lefter'>
                 <Navigation />
             </div>
-            <div className='righter'>  
-                <div className='px-3'> 
+            <div className='righter'>
+                <div className='px-3'>
                     <Row className='bodsetting px-4'>
                         <Col className='py-3'>
                             <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
@@ -198,7 +199,7 @@ export default function EditObjectionTemplatePage(props) {
                     </Row>
                 </div>
 
-                <div className='container'> 
+                <div className='container'>
                     <div className='sm-container'>
                         <Row>
                             <Col>

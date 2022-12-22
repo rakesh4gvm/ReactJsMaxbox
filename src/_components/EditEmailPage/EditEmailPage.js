@@ -121,7 +121,7 @@ export default function EditEmailPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderHide()
-        toast.success(<div>Edit Email <br />Email configuration updated successfully.</div>);
+        toast.success(<div>Email configuration updated successfully.</div>);
         history.push("/EmailConfiguration");
       } else {
         toast.error(Result?.data?.Message);

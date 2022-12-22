@@ -28,7 +28,7 @@ import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
 
-import Navigation from '../Navigation/Navigation';  
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 
@@ -114,6 +114,7 @@ export default function CreateTemplatesPage({ children }) {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
   }
 
   // FromValidation Start
@@ -168,7 +169,7 @@ export default function CreateTemplatesPage({ children }) {
           data: Data,
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-            toast.success(<div>Template <br />Template added successfully.</div>);
+            toast.success(<div>Template added successfully.</div>);
             LoaderHide()
             history.push("/Templates");
           } else {
@@ -208,65 +209,65 @@ export default function CreateTemplatesPage({ children }) {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
-      
+      <div className='righter'>
 
-      <div id="hideloding" className="loding-display">
-        <img src={MaxboxLoading} />
-      </div>
 
-      <div className='px-3'>   
-        <Row className='bodsetting'>
-          <Col className='py-3'> 
-            <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
-          </Col>
-        </Row>
-      </div>
+        <div id="hideloding" className="loding-display">
+          <img src={MaxboxLoading} />
+        </div>
 
-      <div className='container'>  
-        <div className='sm-container mt-5'>
-          <Row>
-            <Col>
-              <Row className='input-boxbg'>
-                <Col sm={2}>
-                  <label>Subject  :</label>
-                </Col>
-                <Col sm={8}>
-                  <input type='text' placeholder='Subject ' name='subject' id='subject' onChange={HandleChange} />
-                  {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
-                </Col>
-              </Row>
-              <Row className='input-boxbg'>
-                <Col sm={2}>
-                  <label>Body  :</label>
-                </Col>
-                <Col sm={8}>
-                  <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} />
-                  {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={2}>
-            </Col>
-            <Col>
-              <div className='btnprofile my-5 left'>
-                <ButtonGroup variant="text" aria-label="text button group">
-                  <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddTemplate}> Save</Button>
-                  <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddTemplate}> Cancel</Button>
-                </ButtonGroup>
-              </div>
+        <div className='px-3'>
+          <Row className='bodsetting'>
+            <Col className='py-3'>
+              <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
             </Col>
           </Row>
         </div>
 
+        <div className='container'>
+          <div className='sm-container mt-5'>
+            <Row>
+              <Col>
+                <Row className='input-boxbg'>
+                  <Col sm={2}>
+                    <label>Subject  :</label>
+                  </Col>
+                  <Col sm={8}>
+                    <input type='text' placeholder='Subject ' name='subject' id='subject' onChange={HandleChange} />
+                    {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
+                  </Col>
+                </Row>
+                <Row className='input-boxbg'>
+                  <Col sm={2}>
+                    <label>Body  :</label>
+                  </Col>
+                  <Col sm={8}>
+                    <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} />
+                    {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={2}>
+              </Col>
+              <Col>
+                <div className='btnprofile my-5 left'>
+                  <ButtonGroup variant="text" aria-label="text button group">
+                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddTemplate}> Save</Button>
+                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddTemplate}> Cancel</Button>
+                  </ButtonGroup>
+                </div>
+              </Col>
+            </Row>
+          </div>
 
+
+
+        </div>
 
       </div>
 
-      </div>
- 
 
     </>
   );

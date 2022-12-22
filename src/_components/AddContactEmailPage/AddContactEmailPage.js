@@ -192,7 +192,7 @@ export default function AddContactEmailPage(props) {
         });
         ResponseApi.then((Result) => {
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Contacts <br />Mail added successfully.</div>);
+            toast.success(<div>Mail added successfully.</div>);
             history.push("/ContactEmail");
           }
           else {
@@ -233,61 +233,61 @@ export default function AddContactEmailPage(props) {
       <div className='lefter'>
         <Navigation />
       </div>
-      
-      <div className='righter'> 
 
-        <div className='px-3'> 
+      <div className='righter'>
+
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5> 
+              <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5>
             </Col>
           </Row>
-        </div> 
+        </div>
 
-      <div className='container'> 
-        <div className='sm-container mt-5'>
-          <Row className='mb-5'>
-            <Col sm={6}>
-              <FormControl className='dropemailbox'>
-                <Select onChange={SelectEmailAccount} inputProps={{ 'aria-label': 'Without label' }}  >
-                  <MenuItem value="">select  email</MenuItem>
-                  {AccountList.map((data) => (
-                    <MenuItem name={data.Email} value={data.AccountID}>
-                      {data.Email}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {EmailAccountError && <p style={{ color: "red" }}>{EmailAccountError}</p>}
-              </FormControl>
-            </Col>
-            <Col sm={6} align="right">
-            </Col>
-          </Row>
-          <Row className='mt-5'>
-            <Col>
-              <div className='listlable'>
-                <label>Email</label>
-                <p>{Email}</p>
-              </div>
-            </Col>
-          </Row>
-          <Row className='mt-5'>
-            <Col sm={6}>
-              <div className='input-box'>
-                <input type='email' placeholder='Contact Email' id='contactemail' onChange={handleChange} />
-                {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
-              </div>
-            </Col>
-          </Row>
-          <div className='btnprofile my-3 float-left'>
-            <ButtonGroup variant="text" aria-label="text button group">
-              <Button variant="contained btn btn-primary smallbtn mr-4" onClick={SaveContact}> Save</Button>
-              <Button variant="contained btn btn-orang smallbtn" onClick={CancelContact}> Cancel</Button>
-            </ButtonGroup>
+        <div className='container'>
+          <div className='sm-container mt-5'>
+            <Row className='mb-5'>
+              <Col sm={6}>
+                <FormControl className='dropemailbox'>
+                  <Select onChange={SelectEmailAccount} inputProps={{ 'aria-label': 'Without label' }}  >
+                    <MenuItem value="">select  email</MenuItem>
+                    {AccountList.map((data) => (
+                      <MenuItem name={data.Email} value={data.AccountID}>
+                        {data.Email}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {EmailAccountError && <p style={{ color: "red" }}>{EmailAccountError}</p>}
+                </FormControl>
+              </Col>
+              <Col sm={6} align="right">
+              </Col>
+            </Row>
+            <Row className='mt-5'>
+              <Col>
+                <div className='listlable'>
+                  <label>Email</label>
+                  <p>{Email}</p>
+                </div>
+              </Col>
+            </Row>
+            <Row className='mt-5'>
+              <Col sm={6}>
+                <div className='input-box'>
+                  <input type='email' placeholder='Contact Email' id='contactemail' onChange={handleChange} />
+                  {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
+                </div>
+              </Col>
+            </Row>
+            <div className='btnprofile my-3 float-left'>
+              <ButtonGroup variant="text" aria-label="text button group">
+                <Button variant="contained btn btn-primary smallbtn mr-4" onClick={SaveContact}> Save</Button>
+                <Button variant="contained btn btn-orang smallbtn" onClick={CancelContact}> Cancel</Button>
+              </ButtonGroup>
+            </div>
           </div>
         </div>
       </div>
-      </div> 
     </>
   );
 }

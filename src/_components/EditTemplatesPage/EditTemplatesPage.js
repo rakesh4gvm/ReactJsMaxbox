@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 
@@ -107,6 +107,7 @@ export default function EditTemplatesPage(props) {
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html'],
+        imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     }
     const HandleModelChange = (Model) => {
         SetBody({
@@ -140,7 +141,7 @@ export default function EditTemplatesPage(props) {
                     data: Data,
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        toast.success(<div>Template <br />Template updated successfully.</div>);
+                        toast.success(<div>Template updated successfully.</div>);
                         LoaderHide()
                         history.push("/Templates");
                     } else {
@@ -211,8 +212,8 @@ export default function EditTemplatesPage(props) {
             <div className='lefter'>
                 <Navigation />
             </div>
-            <div className='righter'>  
-                <div className='px-3'> 
+            <div className='righter'>
+                <div className='px-3'>
                     <Row className='bodsetting px-4'>
                         <Col className='py-3'>
                             <h5 onClick={CancelEditTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Template</h5>
@@ -220,45 +221,45 @@ export default function EditTemplatesPage(props) {
                     </Row>
                 </div>
 
-            <div className='container'> 
-                <div className='sm-container mt-5'>
-                    <Row>
-                        <Col>
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={2}>
-                                    <label>Subject  :</label>
-                                </Col>
+                <div className='container'>
+                    <div className='sm-container mt-5'>
+                        <Row>
+                            <Col>
+                                <Row className='input-boxbg mt-5'>
+                                    <Col sm={2}>
+                                        <label>Subject  :</label>
+                                    </Col>
 
-                                <Col sm={8}>
-                                    <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={TemplateIDDetails[0]?.Subject} />
-                                    {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
-                                </Col>
-                            </Row>
+                                    <Col sm={8}>
+                                        <input type='text' placeholder='Enter Subject' name='subject' id='subject' onChange={HandleChange} defaultValue={TemplateIDDetails[0]?.Subject} />
+                                        {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
+                                    </Col>
+                                </Row>
 
-                            <Row className='input-boxbg mt-5'>
-                                <Col sm={2}>
-                                    <label>Body  :</label>
-                                </Col>
+                                <Row className='input-boxbg mt-5'>
+                                    <Col sm={2}>
+                                        <label>Body  :</label>
+                                    </Col>
 
-                                <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
-                                {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={2}>
-                        </Col>
-                        <Col>
-                            <div className='btnprofile my-5 left'>
-                                <ButtonGroup variant="text" aria-label="text button group">
-                                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateTemplate} > Save</Button>
-                                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditTemplate}> Cancel</Button>
-                                </ButtonGroup>
-                            </div>
-                        </Col>
-                    </Row>
+                                    <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
+                                    {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={2}>
+                            </Col>
+                            <Col>
+                                <div className='btnprofile my-5 left'>
+                                    <ButtonGroup variant="text" aria-label="text button group">
+                                        <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={UpdateTemplate} > Save</Button>
+                                        <Button variant="contained btn btn-orang smallbtn" onClick={CancelEditTemplate}> Cancel</Button>
+                                    </ButtonGroup>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
-            </div>
             </div>
 
         </>

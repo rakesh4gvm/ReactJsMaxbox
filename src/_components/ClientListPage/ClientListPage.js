@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 toast.configure();
 
@@ -140,7 +140,7 @@ export default function ClientListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.success(<div>Client <br />Client deleted successfully.</div>);
+        toast.success(<div>Client deleted successfully.</div>);
         LoaderShow()
         GetClientList(ClientID, UserID, Page)
         SetDeletePopModel(false);
@@ -210,9 +210,9 @@ export default function ClientListPage() {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
+      <div className='righter'>
 
-        <div className='px-3'> 
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Client</h5>
@@ -220,7 +220,7 @@ export default function ClientListPage() {
           </Row>
         </div>
 
-        <div className='container'> 
+        <div className='container'>
           <div className='sm-container mt-5'>
             <Row className='mb-5'>
               <Col align="right">
@@ -264,8 +264,8 @@ export default function ClientListPage() {
               </Col>
             </Row>
           </div>
-        </div> 
-      </div> 
+        </div>
+      </div>
 
     </>
   );

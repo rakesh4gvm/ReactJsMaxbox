@@ -172,7 +172,7 @@ export default function TemplatesListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.success(<div>Template <br />Template deleted successfully.</div>);
+        toast.success(<div>Template deleted successfully.</div>);
         LoaderShow()
         GetTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);

@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
-import Navigation from '../Navigation/Navigation'; 
+import Navigation from '../Navigation/Navigation';
 
 
 toast.configure();
@@ -195,15 +195,14 @@ export default function AddClientPage({ children }) {
             data: Data,
           }).then((Result) => {
             if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-              toast.success(<div>Client <br />Client added successfully.</div>);
+              toast.success(<div>Client added successfully.</div>);
               LoaderHide()
               var UserDetails = GetUserDetails();
               if (UserDetails != null) {
-                if(UserDetails.ClientID == '')
-                {
+                if (UserDetails.ClientID == '') {
                   UpdateUserDetails((Result.data.Data.ClientID))
                 }
-               
+
               }
               window.location.href = "/ClientList";
               //history.push("/ClientList");
@@ -237,9 +236,9 @@ export default function AddClientPage({ children }) {
       <div className='lefter'>
         <Navigation />
       </div>
-      <div className='righter'> 
+      <div className='righter'>
 
-        <div className='px-3'> 
+        <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
@@ -247,59 +246,59 @@ export default function AddClientPage({ children }) {
           </Row>
         </div>
 
-      <div className='container'> 
-        <div className='sm-container'>
-          <Row>
-            <Col>
-              <Row className='input-boxbg mt-5'>
-                <Col sm={4}>
-                  <label>Name  :</label>
-                </Col>
-                <Col sm={8}>
-                </Col>
-                <Col sm={8}>
-                  <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} />
-                  {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
-                </Col>
-              </Row>
-              <Row className='input-boxbg mt-5'>
-                <Col sm={2}>
-                  <label>BCC email  :</label>
-                </Col>
-                <Col sm={8}>
-                </Col>
-                <Col sm={8}>
-                  <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} />
-                  {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
-                </Col>
-              </Row>
-              <Row className='input-boxbg mt-5'>
-                <Col sm={4}>
-                  <label>Email Signature Text  :</label>
-                </Col>
-                <Col sm={8}>
-                </Col>
-                <Col sm={12} className="vardroper">
-                  <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
-                  {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                  {/* <FroalaEditor config={config} /> */}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className='btnprofile my-5 left'>
-                <ButtonGroup variant="text" aria-label="text button group">
-                  <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddClient} > Save</Button>
-                  <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddCLient}> Cancel</Button>
-                </ButtonGroup>
-              </div>
-            </Col>
-          </Row>
+        <div className='container'>
+          <div className='sm-container'>
+            <Row>
+              <Col>
+                <Row className='input-boxbg mt-5'>
+                  <Col sm={4}>
+                    <label>Name  :</label>
+                  </Col>
+                  <Col sm={8}>
+                  </Col>
+                  <Col sm={8}>
+                    <input type='text' placeholder='Enter Client Name' name='name' id='name' onChange={HandleChange} />
+                    {ClientNameError && <p style={{ color: "red" }}>{ClientNameError}</p>}
+                  </Col>
+                </Row>
+                <Row className='input-boxbg mt-5'>
+                  <Col sm={2}>
+                    <label>BCC email  :</label>
+                  </Col>
+                  <Col sm={8}>
+                  </Col>
+                  <Col sm={8}>
+                    <input type='text' placeholder='Enter BCC email' name='bccEmail' id='bccEmail' onChange={HandleChange} />
+                    {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
+                  </Col>
+                </Row>
+                <Row className='input-boxbg mt-5'>
+                  <Col sm={4}>
+                    <label>Email Signature Text  :</label>
+                  </Col>
+                  <Col sm={8}>
+                  </Col>
+                  <Col sm={12} className="vardroper">
+                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                    {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                    {/* <FroalaEditor config={config} /> */}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className='btnprofile my-5 left'>
+                  <ButtonGroup variant="text" aria-label="text button group">
+                    <Button variant="contained btn btn-primary smallbtn mx-4 ml-0" onClick={AddClient} > Save</Button>
+                    <Button variant="contained btn btn-orang smallbtn" onClick={CancelAddCLient}> Cancel</Button>
+                  </ButtonGroup>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
-    </div>
 
     </>
   );

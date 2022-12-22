@@ -173,7 +173,7 @@ export default function ObjectionTemplateListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.success(<div>Object Template <br />Object template deleted successfully.</div>);
+        toast.success(<div>Object template deleted successfully.</div>);
         LoaderShow()
         GetObjectionTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);

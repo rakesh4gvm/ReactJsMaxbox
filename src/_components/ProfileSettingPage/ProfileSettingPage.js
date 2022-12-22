@@ -305,7 +305,7 @@ export default function ProfileSettingPage() {
             Image.UserImage = Base64Image
 
             localStorage.setItem("LoginData", JSON.stringify(Image))
-            toast.success(<div>Profile Setting <br />Profile setting updated successfully.</div>);
+            toast.success(<div>Profile setting updated successfully.</div>);
 
             GetUserList(UserID);
           } else {

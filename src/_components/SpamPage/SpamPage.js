@@ -317,7 +317,7 @@ export default function SpamPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Spam  <br />Starred  updated successfully.</div>);
+          toast.success(<div>Starred  updated successfully.</div>);
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -417,7 +417,7 @@ export default function SpamPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Spam  <br />Other inbox updated successfully.</div>);
+          toast.success(<div>Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()

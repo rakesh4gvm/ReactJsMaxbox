@@ -245,7 +245,7 @@ export default function ContactEmailPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderShow()
         GetContactList(ClientID, UserID, [], Page)
-        toast.success(<div>Contacts <br />Delete mail successfully.</div>);
+        toast.success(<div>Delete mail successfully.</div>);
         SetDeletePopModel(false);
       }
       else {
