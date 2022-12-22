@@ -2680,6 +2680,10 @@ div.css-dhopo2 {
     min-height: calc(100% - 74px);
 }
 
+.emailbodybox > *{
+    overflow-y: auto;
+}
+
 .Pane.horizontal.Pane2 {
     height: 1px; 
 }
