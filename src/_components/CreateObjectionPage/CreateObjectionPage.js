@@ -171,7 +171,7 @@ export default function CreateObjectionTemplatePage({ children }) {
           data: Data,
         }).then((Result) => {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-            toast.success(<div>Object template added successfully.</div>);
+            toast.success(<div>Objection template added successfully.</div>);
             LoaderHide()
             history.push("/ObjectionTemplate");
           } else {

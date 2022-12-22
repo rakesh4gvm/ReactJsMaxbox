@@ -129,7 +129,8 @@ export default function TemplatesListPage() {
           SetCountPage(Result.data.PageCount);
           LoaderHide()
         } else {
-          toast.error(<div>Templates <br />No Data.</div>)
+          SetTemplateList([])
+          toast.error(<div>No Data.</div>)
           LoaderHide()
         }
       }

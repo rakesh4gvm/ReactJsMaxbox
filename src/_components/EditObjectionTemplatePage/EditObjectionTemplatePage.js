@@ -128,7 +128,7 @@ export default function EditObjectionTemplatePage(props) {
                     data: Data,
                 }).then((Result) => {
                     if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                        toast.success(<div>Object template updated successfully.</div>);
+                        toast.success(<div>Objection template updated successfully.</div>);
                         LoaderHide()
                         history.push("/ObjectionTemplate");
                     } else {

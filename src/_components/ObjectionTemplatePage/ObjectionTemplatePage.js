@@ -130,8 +130,9 @@ export default function ObjectionTemplateListPage() {
           SetCountPage(Result.data.PageCount);
           LoaderHide()
         } else {
-          toast.error(<div>Objection Templation <br />No Data.</div>)
+          toast.error(<div>No Data.</div>)
           LoaderHide()
+          SetObjectionTemplateList([])
         }
       }
       else {
@@ -173,7 +174,7 @@ export default function ObjectionTemplateListPage() {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        toast.success(<div>Object template deleted successfully.</div>);
+        toast.success(<div>Objection template deleted successfully.</div>);
         LoaderShow()
         GetObjectionTemplateList(ClientID, UserID, Page)
         SetDeletePopModel(false);
