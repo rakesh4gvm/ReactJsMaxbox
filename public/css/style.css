@@ -1815,8 +1815,11 @@ div.erorr-msg>*>* {
     height: 64px;
     border-radius: 5px;
     padding: 0;
-    background: #e49273;
-    line-height: 64px;
+    background: #e49273; 
+}
+
+.btn-primary:not(:disabled):not(.disabled):active { 
+    background: #e49273; 
 }
 
 .columlistdrop {
@@ -2680,8 +2683,9 @@ div.css-dhopo2 {
     min-height: calc(100% - 74px);
 }
 
-.emailbodybox > *{
+.emailbodybox > *:first-child{
     overflow-y: auto;
+    height: auto;
 }
 
 .Pane.horizontal.Pane2 {
@@ -2862,6 +2866,24 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 } 
 .Toastify__toast-container {
     z-index: 99999;
+}
+div[role="dialog"] {
+    z-index: 99999;
+}
+.ligh64{
+    line-height: 64px !important;
+}
+div .btn-primary:not(:disabled):not(.disabled).active, 
+div .btn-primary:not(:disabled):not(.disabled):active, 
+div .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #cc7a5b;
+    border-color: #cc7a5b;
+}
+div .btn-primary:not(:disabled):not(.disabled).active:focus, 
+div .btn-primary:not(:disabled):not(.disabled):active:focus, 
+div .show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(204 122 91 / 50%);
 }
 
 

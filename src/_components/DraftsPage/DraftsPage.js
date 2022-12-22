@@ -1024,7 +1024,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
+        <Button variant="contained btn btn-primary largbtn ligh64" onClick={OpenCompose}> + </Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>
