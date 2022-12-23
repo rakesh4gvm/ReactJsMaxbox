@@ -588,51 +588,51 @@ export default function Navigation() {
           <TreeItem nodeId="1" className='text-bold' label="All Account">
 
             <TreeItem nodeId="2" label="Inbox">
-              <TreeItem nodeId="8" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"}>
-                <TreeItem nodeId="81" label="All Inbox" onClick={() => RedirectLink('', "AllInbox", '')} />
-              </TreeItem>
-              <TreeItem nodeId="20" label={"Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")"}>
-                <TreeItem nodeId="191" label="Unanswered Responses" onClick={() => RedirectLink('', "Unanswered Responses", '')} />
-              </TreeItem>
+              {/* <TreeItem nodeId="8" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"}> */}
+                <TreeItem nodeId="81" label={"All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")"} onClick={() => RedirectLink('', "AllInbox", '')} />
+              {/* </TreeItem> */}
+              {/* <TreeItem nodeId="20" label={"Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")"}> */}
+                <TreeItem nodeId="191" label={"Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")"} onClick={() => RedirectLink('', "Unanswered Responses", '')} />
+              {/* </TreeItem> */}
             </TreeItem>
 
             {/* <TreeItem nodeId="3" label="Starred"> */}
-            <TreeItem nodeId="9" label={"Starred(" + AllTotalRecords?.AllStarredCount + ")"}>
-              <TreeItem nodeId="91" label="Starred" onClick={() => RedirectLink('', "Starred", '')} />
-            </TreeItem>
+            {/* <TreeItem nodeId="9" label={"Starred(" + AllTotalRecords?.AllStarredCount + ")"}> */}
+              <TreeItem nodeId="91" label={"Starred(" + AllTotalRecords?.AllStarredCount + ")"} onClick={() => RedirectLink('', "Starred", '')} />
+            {/* </TreeItem> */}
             {/* </TreeItem> */}
 
             {/* <TreeItem nodeId="4" label="Spam"> */}
-            <TreeItem nodeId="23" label={"Spam(" + AllTotalRecords?.AllSpamCount + ")"}>
-              <TreeItem nodeId="231" label="Spam" onClick={() => RedirectLink('', "Spam", '')} />
-            </TreeItem>
+            {/* <TreeItem nodeId="23" label={"Spam(" + AllTotalRecords?.AllSpamCount + ")"}> */}
+              <TreeItem nodeId="231" label={"Spam(" + AllTotalRecords?.AllSpamCount + ")"} onClick={() => RedirectLink('', "Spam", '')} />
+            {/* </TreeItem> */}
             {/* </TreeItem> */}
 
             {/* <TreeItem nodeId="5" label="Other Inbox"> */}
-            <TreeItem nodeId="11" label={"Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")"}>
-              <TreeItem nodeId="111" label="Other Inbox" onClick={() => RedirectLink('', "Other Inbox", '')} />
-            </TreeItem>
+            {/* <TreeItem nodeId="11" label={"Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")"}> */}
+              <TreeItem nodeId="111" label={"Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")"} onClick={() => RedirectLink('', "Other Inbox", '')} />
+            {/* </TreeItem> */}
             {/* </TreeItem> */}
 
             {/* <TreeItem nodeId="6" label="Follow Up Later"> */}
-            <TreeItem nodeId="12" label={"Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")"}>
-              <TreeItem nodeId="121" label="Follow Up Later" onClick={() => RedirectLink('', "Follow Up Later", '')} />
-            </TreeItem>
+            {/* <TreeItem nodeId="12" label={"Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")"}> */}
+              <TreeItem nodeId="121" label={"Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")"} onClick={() => RedirectLink('', "Follow Up Later", '')} />
+            {/* </TreeItem> */}
             {/* </TreeItem> */}
 
             {/* <TreeItem nodeId="888" label="Drafts"> */}
-            <TreeItem nodeId="22" label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}>
-              <TreeItem nodeId="221" label="Drafts" onClick={() => RedirectLink('', "Draft", '')} />
-            </TreeItem>
+            {/* <TreeItem nodeId="22" label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}> */}
+              <TreeItem nodeId="221" label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"} onClick={() => RedirectLink('', "Draft", '')} />
+            {/* </TreeItem> */}
             {/* </TreeItem> */}
 
             <TreeItem nodeId="18" label="Outbox">
-              <TreeItem nodeId="19" label={"All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")"}>
-                <TreeItem nodeId="191" label="All Sent" onClick={() => RedirectLink('', "AllSent", '')} />
-              </TreeItem>
-              <TreeItem nodeId="24" label={"Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")"}>
-                <TreeItem nodeId="241" label="Unanswered Replies" onClick={() => RedirectLink('', "UnansweredReplies", '')} />
-              </TreeItem>
+              {/* <TreeItem nodeId="19" label={"All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")"}> */}
+                <TreeItem nodeId="191" label={"All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")"} onClick={() => RedirectLink('', "AllSent", '')} />
+              {/* </TreeItem> */}
+              {/* <TreeItem nodeId="24" label={"Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")"}> */}
+                <TreeItem nodeId="241" label={"Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")"} onClick={() => RedirectLink('', "UnansweredReplies", '')} />
+              {/* </TreeItem> */}
             </TreeItem>
           </TreeItem>
 
@@ -642,71 +642,89 @@ export default function Navigation() {
 
               <TreeItem nodeId={"f1" + item._id} label="Inbox">
 
-                <TreeItem nodeId={"f2" + item._id}
+                {/* <TreeItem nodeId={"f2" + item._id}
                   label={TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
-                >
+                > */}
                   {/* <TreeItem nodeId={"f3" + item._id} label="New"> */}
-                  <TreeItem nodeId={"f60" + item._id} label="All Inbox" onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
+                  <TreeItem nodeId={"f60" + item._id} 
+                  label={TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
+                   onClick={() => RedirectLink(item.AccountID, "AllInbox", item._id)} />
                   {/* </TreeItem> */}
 
-                </TreeItem>
+                {/* </TreeItem> */}
 
-                <TreeItem
+                {/* <TreeItem
                   nodeId={"f16" + item._id}
                   label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Unanswered Responses (0)` : `Unanswered Responses (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
-                >
-                  <TreeItem nodeId={"f160" + item._id} label="Unanswered Responses" onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
-                </TreeItem>
+                > */}
+                  <TreeItem nodeId={"f160" + item._id}
+                   label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Unanswered Responses (0)` : `Unanswered Responses (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
+                   onClick={() => RedirectLink(item.AccountID, "Unanswered Responses")} />
+                {/* </TreeItem> */}
 
               </TreeItem>
 
-              <TreeItem
+              {/* <TreeItem
                 nodeId={"f4" + item._id}
                 label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`}
-              >
-                <TreeItem nodeId={"f60" + item._id} label="Starred" onClick={() => RedirectLink(item.AccountID, "Starred")} />
-              </TreeItem>
+              > */}
+                <TreeItem nodeId={"f60" + item._id} 
+                label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`} 
+                onClick={() => RedirectLink(item.AccountID, "Starred")} />
+              {/* </TreeItem> */}
 
-              <TreeItem
+              {/* <TreeItem
                 nodeId={"f17" + item._id}
                 label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
-              >
-                <TreeItem nodeId={"f170"} label="Spam" onClick={() => RedirectLink(item.AccountID, "Spam")} selected />
-              </TreeItem>
+              > */}
+                <TreeItem nodeId={"f170"+ item._id} 
+                label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
+                onClick={() => RedirectLink(item.AccountID, "Spam")} selected />
+              {/* </TreeItem> */}
 
-              <TreeItem
+              {/* <TreeItem
                 nodeId={"f6" + item._id}
                 label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`}
-              >
-                <TreeItem nodeId={"f60" + item._id} label="Other Inbox" onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
-              </TreeItem>
+              > */}
+                <TreeItem nodeId={"f60" + item._id} 
+                label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`}
+                onClick={() => RedirectLink(item.AccountID, "Other Inbox")} />
+              {/* </TreeItem> */}
 
-              <TreeItem
+              {/* <TreeItem
                 nodeId={"f7" + item._id}
                 label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
-              >
-                <TreeItem nodeId={"f70" + item._id} label="Follow Up Later" onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} />
-              </TreeItem>
+              > */}
+                <TreeItem nodeId={"f70" + item._id} 
+               label={EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
+                onClick={() => RedirectLink(item.AccountID, "Follow Up Later")} />
+              {/* </TreeItem> */}
 
-              <TreeItem nodeId={"f15" + item._id} label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}>
-                <TreeItem nodeId={"f150" + item._id} label="Draft" onClick={() => RedirectLink(item.AccountID, "Draft")} />
-              </TreeItem>
+              {/* <TreeItem nodeId={"f15" + item._id} label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}> */}
+                <TreeItem nodeId={"f150" + item._id} 
+                label={"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}
+                onClick={() => RedirectLink(item.AccountID, "Draft")} />
+              {/* </TreeItem> */}
 
               <TreeItem nodeId={"f10" + item._id} label="Outbox">
 
-                <TreeItem
+                {/* <TreeItem
                   nodeId={"f11" + item._id}
                   label={SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`}
-                >
-                  <TreeItem nodeId={"f160" + item._id} label="All Sent" onClick={() => RedirectLink(item.AccountID, "AllSent")} />
-                </TreeItem>
+                > */}
+                  <TreeItem nodeId={"f160" + item._id} 
+                  label={SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`}
+                  onClick={() => RedirectLink(item.AccountID, "AllSent")} />
+                {/* </TreeItem> */}
 
-                <TreeItem
+                {/* <TreeItem
                   nodeId={"f18" + item._id}
                   label={SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered Replies (0)` : `Unanswered Replies (` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
-                >
-                  <TreeItem nodeId={"f180"} label="UnansweredReplies" onClick={() => RedirectLink(item.AccountID, "UnansweredReplies")} selected />
-                </TreeItem>
+                > */}
+                  <TreeItem nodeId={"f180"+ item._id} 
+                  label={SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered Replies (0)` : `Unanswered Replies (` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
+                  onClick={() => RedirectLink(item.AccountID, "UnansweredReplies")} selected />
+                {/* </TreeItem> */}
 
               </TreeItem>
             </TreeItem>
