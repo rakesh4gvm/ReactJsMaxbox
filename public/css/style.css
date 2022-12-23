@@ -2828,7 +2828,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     z-index: 1;
 }
 .pagination-pa + div{
-    padding-top: 32px;
+    padding-top: 30px;
 }
 .pagination-pa .MuiTablePagination-toolbar{
     background-color: #e49273;
@@ -2886,6 +2886,18 @@ div .show>.btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem rgb(204 122 91 / 50%);
 }
 
+div.iconsboxcd .btn-primary:not(:disabled):not(.disabled).active, 
+div.iconsboxcd .btn-primary:not(:disabled):not(.disabled):active, 
+div.iconsboxcd .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: transparent;
+    border-color: transparent;
+}
+div.iconsboxcd .btn-primary:not(:disabled):not(.disabled).active:focus, 
+div.iconsboxcd .btn-primary:not(:disabled):not(.disabled):active:focus, 
+div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(204 122 91 / 50%);
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
