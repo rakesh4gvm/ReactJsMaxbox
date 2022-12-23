@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Axios from "axios";
 
 import { Col, Row } from 'react-bootstrap';
@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import TablePagination from '@mui/material/TablePagination';
 
 import FooterBottom from '../Footer/footer';
 
@@ -124,12 +125,12 @@ export default function ContactEmailPage() {
   const [UserID, SetUserID] = React.useState(0);
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [DeleteID, SetDeleteID] = React.useState()
-
+  const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [PageValue, SetPageValue] = React.useState(1)
 
   useEffect(() => {
     GetClientID();
   }, [SearchInbox, SortedBy, SortField]);
-
 
   // Get Client ID
   const GetClientID = () => {
@@ -143,7 +144,7 @@ export default function ContactEmailPage() {
   }
 
   // Start Get Objection Template List
-  const GetContactList = (CID, UID, IDs, PN) => {
+  const GetContactList = async (CID, UID, IDs, PN) => {
     LoaderShow()
     var Data = {
       Page: PN,
@@ -156,21 +157,25 @@ export default function ContactEmailPage() {
       UserID: UID,
       AccountIDs: IDs
     };
-
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/contact/ContactGet",
       method: "POST",
       data: Data,
     });
-    ResponseApi.then((Result) => {
+
+    await ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetContactList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        SetTotalRecord(Result.data.TotalCount);
+        SetPageValue(PN)
         LoaderHide()
       }
       else {
         SetContactList([])
         SetCountPage(0)
+        SetTotalRecord(0);
+        SetPageValue(0)
         LoaderHide()
         toast.error(Result?.data?.Message);
       }
@@ -215,6 +220,7 @@ export default function ContactEmailPage() {
 
   const HandleChangePage = (Event, NewPage) => {
     SetPage(NewPage);
+    SetPageValue(NewPage)
     GetContactList(ClientID, UserID, AccountIDs, NewPage);
   };
 
@@ -244,7 +250,11 @@ export default function ContactEmailPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderShow()
-        GetContactList(ClientID, UserID, AccountIDs, Page)
+        if (ContactList.length - 1 == 0) {
+          GetContactList(ClientID, UserID, AccountIDs, 1)
+        } else {
+          GetContactList(ClientID, UserID, AccountIDs, Page)
+        }
         toast.success(<div>Contact email deleted successfully.</div>);
         SetDeletePopModel(false);
       }
@@ -265,7 +275,6 @@ export default function ContactEmailPage() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
-
     var Ids = []
 
     for (var i = 0; i < value.length; i++) {
@@ -279,9 +288,10 @@ export default function ContactEmailPage() {
     } else {
       res = [-1]
     }
+    GetContactList(ClientID, UserID, res, 1)
     SetAccountIDs(res)
-    GetContactList(ClientID, UserID, res, Page)
   };
+
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
       LoaderShow()
@@ -291,6 +301,7 @@ export default function ContactEmailPage() {
       LoaderHide()
     }
   }
+
   return (
     <>
 
@@ -372,8 +383,6 @@ export default function ContactEmailPage() {
                   </Select>
                 </FormControl>
 
-
-
               </Col>
               <Col sm={4}>
                 <div className='textbox-dek serchdek'>
@@ -408,7 +417,7 @@ export default function ContactEmailPage() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {ContactList.map((row) => (
+                      {ContactList?.map((row) => (
                         <TableRow
                           key={row.ContactEmail}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -432,7 +441,7 @@ export default function ContactEmailPage() {
                 </TableContainer>
 
                 <Stack className='my-4 page-dec' spacing={2}>
-                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                  <Pagination count={CountPage} page={PageValue} onChange={HandleChangePage} variant="outlined" shape="rounded" />
                 </Stack>
 
               </Col>
