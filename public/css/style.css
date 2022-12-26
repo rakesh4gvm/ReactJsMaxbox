@@ -2899,6 +2899,44 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem rgb(204 122 91 / 50%);
 }
 
+.listclick.MuiList-root {
+    padding-left: 20px;
+}
+.listclick > .MuiListItemButton-gutters{
+    padding-left: 0;
+}
+.listclick .MuiListItemButton-gutters,
+.listclick .MuiList-padding {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 0.9rem;
+}
+.listclick .MuiListItemButton-gutters{ 
+    padding-bottom: 2px; 
+    padding-top: 2px; 
+}
+.listclick .MuiListItemButton-gutters b {
+    font-weight: 600;
+}
+.listclick svg.MuiSvgIcon-root {
+    position: absolute;
+    margin-left: -24px;
+    width: 0.8em;
+}
+
+.listclick .css-behmn9-MuiButtonBase-root-MuiListItemButton-root:hover { 
+    background-color: transparent;
+}
+.Mui-selected, .Mui-selected:hover {
+    color: rgb(228 146 115) !important;
+    background-color: transparent !important;
+}
+.listclick a:hover{
+    color: #555;
+    background-color: transparent !important; 
+    text-decoration: none !important;
+}
+
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;

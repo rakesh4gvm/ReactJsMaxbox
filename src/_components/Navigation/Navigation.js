@@ -28,6 +28,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import Xlogo from "../../images/Xlogo.jpg";
 import Usericon from '../../images/icons/users.svg';
 
+import ExpandDown from '@material-ui/icons/NavigateNext';
+import ArrowRight from '@material-ui/icons/ExpandMore';
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -158,7 +160,8 @@ const addNavClick = () => {
 
 
 
-export default function Navigation() {
+export default function Navigation(props) { 
+  const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -170,7 +173,7 @@ export default function Navigation() {
   };
 
 
-  const [navopen, setNavOpen] = React.useState(false);
+  const [navopen, setNavOpen] = React.useState(true);
   const [navopenone, setNavOneOpen] = React.useState(true);
   const [navopenonenew, setNavOneOpenNew] = React.useState(true);
   const [openstarred, setopenstarredNew] = React.useState(true);
@@ -188,11 +191,68 @@ export default function Navigation() {
   const [TotalCount, SetTotalCount] = React.useState();
   const [EmailTotalRecords, SetEmailTotalRecords] = useState()
   const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
+  const [SelectMenuItem, SetSelectMenuItem] = React.useState("/kpis");
+
+
 
   useEffect(() => {
     GetClientDropdown();
     GetClientID()
-  }, []);
+    debugger;
+    var SelectedPage = props.menupage;
+    console.log(props);
+
+    if(SelectedPage == undefined){ 
+      SetSelectMenuItem("/AllInbox")
+      setNavOpen(true); 
+      setNavOneOpen(true);
+      setopenstarredNew(false);
+    }else{
+      SetSelectMenuItem(SelectedPage)
+      if(SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses"){ 
+        setNavOpen(true); 
+        setNavOneOpen(true); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/Starred" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      } 
+      if(SelectedPage == "/Spam" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/OtherInboxPage" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/FollowUpLater" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/Drafts" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/AllSentEmails" || SelectedPage == "/UnansweredReplies"){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(true);
+      } 
+    } 
+
+  }, [SelectMenuItem]);
+
+  
+  const handleListItemClick = (event, index) => {
+    console.log(index)
+    SetSelectMenuItem(index);
+  };
 
   // Get Client ID
   const GetClientID = () => {
@@ -579,8 +639,105 @@ export default function Navigation() {
           </Select>
         </FormControl>
 
+
+        <List sx={{ pl: 0 }} className='listclick'> 
+        <ListItemButton onClick={OnehandleClick}>
+          {navopen ? <ExpandMore /> : <ExpandDown />}
+          <b>All Accounts</b>
+        </ListItemButton>
+
+        <Collapse in={navopen} timeout="auto" unmountOnExit>
+          <List component="div">  
+          
+            <List component="div">  
+              <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickInOne}> 
+                {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
+              </ListItemButton> 
+
+              <Collapse in={navopenone} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>  
+
+               <ListItem button  sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
+                 component={Link} to="/AllInbox"
+                 selected={SelectMenuItem === "/AllInbox"}> 
+                    All Inbox(23)
+                </ListItem> 
+
+                <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses")}
+                 component={Link} to="/UnansweredResponses"
+                 selected={SelectMenuItem === "/UnansweredResponses"}> 
+                   Unanswered Responses(0)
+                </ListItem> 
+
+                </List> 
+              </Collapse> 
+            </List>
+
+
+            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Starred")}
+                 component={Link} to="/Starred"
+                 selected={SelectMenuItem === "/Starred"}> 
+                Starred(2)
+            </ListItemButton>
+
+            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
+                 component={Link} to="/Spam"
+                 selected={SelectMenuItem === "/Spam"}> 
+                 Spam(0)
+            </ListItemButton>
+
+            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
+                 component={Link} to="/OtherInboxPage"
+                 selected={SelectMenuItem === "/OtherInboxPage"}> 
+                Other Inbox(2)
+            </ListItemButton>
+
+            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
+                 component={Link} to="/FollowUpLater"
+                 selected={SelectMenuItem === "/FollowUpLater"}> 
+               Follow Up Later(0)
+            </ListItemButton>
+
+            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
+                 component={Link} to="/Drafts"
+                 selected={SelectMenuItem === "/Drafts"}>
+               Drafts(0)
+            </ListItemButton>
+
+            <List component="div">  
+              <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}> 
+                {openstarred ? <ExpandMore /> : <ExpandDown />}
+                Starred
+              </ListItemButton>
+
+              <Collapse in={openstarred} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+ 
+                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails")}
+                 component={Link} to="/AllSentEmails"
+                 selected={SelectMenuItem === "/AllSentEmails"}> 
+                    All Sent(2)
+                  </ListItemButton>
+
+                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies")}
+                 component={Link} to="/UnansweredReplies"
+                 selected={SelectMenuItem === "/UnansweredReplies"}> 
+                    Unanswered Replies(2)
+                  </ListItemButton> 
+                  
+                </List> 
+              </Collapse> 
+            </List>
+
+          </List>
+        </Collapse>
+      </List>
+      
+
+
+
         <TreeView
-          defaultExpanded={['1', '2', '7', '8']}
+          //defaultExpanded={['1', '2', '7', '8']}
           defaultCollapseIcon={<ExpandMore />}
           defaultExpandIcon={<ChevronRightIcon />}
           sx={{ height: 216, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
@@ -731,62 +888,10 @@ export default function Navigation() {
           ))}
 
         </TreeView>
+
+
+        
         {/* 
-
-       <List> 
-       <ListItemButton onClick={OnehandleClick}>
-        {navopen ? <ExpandLess /> : <ExpandMore />}
-        All Accounts
-      </ListItemButton>
-
-      <Collapse in={navopen} timeout="auto" unmountOnExit>
-        <List component="div"> 
-          <List component="div">  
-            <ListItemButton sx={{ pl: 4 }} onClick={OnehandleClickInOne}> 
-              {!navopenone ? <ExpandLess /> : <ExpandMore />}
-              Test 2
-            </ListItemButton>
-
-            <Collapse in={!navopenone} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding> 
-                <List component="div">  
-                  <ListItemButton sx={{ pl: 6 }} onClick={OnehandleClickInNew}> 
-                    {!navopenonenew ? <ExpandLess /> : <ExpandMore />}
-                    New
-                  </ListItemButton>
-
-                  <Collapse in={!navopenonenew} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 8 }}> 
-                        <ListItemText primary="Starred" />
-                      </ListItemButton>
-                    </List> 
-                  </Collapse> 
-                </List>
-
-                <List component="div">  
-                  <ListItemButton sx={{ pl: 6 }} onClick={OnehandleClickStarred}> 
-                    {!openstarred ? <ExpandLess /> : <ExpandMore />}
-                    Starred
-                  </ListItemButton>
-
-                  <Collapse in={!openstarred} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 8 }}> 
-                        <ListItemText primary="Starred" />
-                      </ListItemButton>
-                    </List> 
-                  </Collapse> 
-                </List>
-
-              </List> 
-            </Collapse> 
-          </List>
-
-        </List>
-      </Collapse>
-      
-
       <ListItem button >
         <Link to="/ckpis"> 
         KPIs

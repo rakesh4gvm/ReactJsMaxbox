@@ -1070,7 +1070,7 @@ export default function AllSentEmailsPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation />
+        <Navigation menupage="/AllSentEmails" />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

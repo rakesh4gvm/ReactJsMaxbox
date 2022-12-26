@@ -1150,7 +1150,7 @@ export default function FollowUpLater(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation />
+        <Navigation menupage="/FollowUpLater" />
       </div>
 
       <div className='righter'>
