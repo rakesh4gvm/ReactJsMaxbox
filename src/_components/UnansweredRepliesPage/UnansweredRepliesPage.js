@@ -149,6 +149,7 @@ export default function AllUnansweredRepliesPage(props) {
 
   const [TotalCount, SetTotalCount] = useState(0)
   const [IsBottom, SetIsBottom] = useState(false)
+  const [PageValue, SetPageValue] = React.useState(1)
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -280,13 +281,15 @@ export default function AllUnansweredRepliesPage(props) {
           SetAllUnanswereRepliesList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
-          SetMailNumber(1)
           SetTotalRecord(Result.data.TotalCount);
+          SetMailNumber(1)
+          SetPageValue(PN)
           LoaderHide()
         } else {
           SetAllUnanswereRepliesList([])
           SetOpenMessageDetails([]);
           SetTotalRecord(0);
+          SetPageValue(0)
           LoaderHide()
         }
       }
@@ -371,10 +374,18 @@ export default function AllUnansweredRepliesPage(props) {
           if (props !== undefined) {
             const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
-              GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+              if (AllUnansweredRepliesList.length - 1 == 0) {
+                GetAllUnansweredRepliesList(ClientID, UserID, 1, ID);
+              } else {
+                GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+              }
             }
             else {
-              GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+              if (AllUnansweredRepliesList.length - 1 == 0) {
+                GetAllUnansweredRepliesList(ClientID, UserID, 1, 0)
+              } else {
+                GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+              }
             }
           }
         } else {
@@ -1084,16 +1095,18 @@ export default function AllUnansweredRepliesPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='pagination-pa' >
-                <TablePagination
-                  component="div"
-                  count={TotalRecord}
-                  page={parseInt(Page) - 1}
-                  rowsPerPage="10"
-                  onPageChange={HandleChangePage}
-
-                />
-              </div>
+              {
+                OpenMessage?.length == 0 ? "" :
+                  <div className='pagination-pa' >
+                    <TablePagination
+                      component="div"
+                      count={TotalRecord}
+                      page={parseInt(PageValue) - 1}
+                      rowsPerPage="10"
+                      onPageChange={HandleChangePage}
+                    />
+                  </div>
+              }
               <div className="simulationDiv">
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

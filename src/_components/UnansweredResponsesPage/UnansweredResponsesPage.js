@@ -153,6 +153,7 @@ export default function UnansweredResponsesPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [CountPage, SetCountPage] = React.useState(0);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [PageValue, SetPageValue] = React.useState(1)
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -226,13 +227,15 @@ export default function UnansweredResponsesPage(props) {
           SetCountPage(Result.data.PageCount);
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
+          SetPageValue(PN)
           LoaderHide()
         } else {
           SetFollowUpList([])
           SetOpenMessageDetails([]);
           SetCountPage(0)
-          LoaderHide()
           SetTotalRecord(0);
+          SetPageValue(0)
+          LoaderHide()
         }
       }
     })
@@ -316,9 +319,17 @@ export default function UnansweredResponsesPage(props) {
           if (props !== undefined) {
             const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+              if (FollowUpList?.length - 1 == 0) {
+                GetUnansweredResponcesList(ClientID, UserID, 1, ID);
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+              }
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+              if (FollowUpList?.length - 1 == 0) {
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0)
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+              }
             }
           }
         } else {
@@ -715,7 +726,6 @@ export default function UnansweredResponsesPage(props) {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             if (Result.data.PageData.length > 0) {
               setExpanded(false);
@@ -1248,16 +1258,19 @@ export default function UnansweredResponsesPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='pagination-pa' >
-                <TablePagination
-                  component="div"
-                  count={TotalRecord}
-                  page={parseInt(Page) - 1}
-                  rowsPerPage="10"
-                  onPageChange={HandleChangePage}
+              {
+                OpenMessage?.length == 0 ? "" :
+                  <div className='pagination-pa' >
+                    <TablePagination
+                      component="div"
+                      count={TotalRecord}
+                      page={parseInt(PageValue) - 1}
+                      rowsPerPage="10"
+                      onPageChange={HandleChangePage}
 
-                />
-              </div>
+                    />
+                  </div>
+              }
               <div className="simulationDiv">
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

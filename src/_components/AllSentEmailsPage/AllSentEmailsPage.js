@@ -148,6 +148,8 @@ export default function AllSentEmailsPage(props) {
   })
   const [TotalCount, SetTotalCount] = useState(0)
   const [IsBottom, SetIsBottom] = useState(false)
+  const [PageValue, SetPageValue] = React.useState(1)
+
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -281,12 +283,14 @@ export default function AllSentEmailsPage(props) {
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
+          SetPageValue(PN)
           LoaderHide()
         } else {
           SetAllSentList([])
           SetOpenMessageDetails([]);
-          LoaderHide()
           SetTotalRecord(0);
+          SetPageValue(0)
+          LoaderHide()
         }
       }
     })
@@ -359,10 +363,18 @@ export default function AllSentEmailsPage(props) {
           if (props !== undefined) {
             const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
-              GetAllSent(ClientID, UserID, Page, ID);
+              if (AllSentList?.length - 1 == 0) {
+                GetAllSent(ClientID, UserID, 1, ID);
+              } else {
+                GetAllSent(ClientID, UserID, Page, ID);
+              }
             }
             else {
-              GetAllSent(ClientID, UserID, Page, 0)
+              if (AllSentList.length - 1 == 0) {
+                GetAllSent(ClientID, UserID, 1, 0)
+              } else {
+                GetAllSent(ClientID, UserID, Page, 0)
+              }
             }
           }
 
@@ -1085,16 +1097,18 @@ export default function AllSentEmailsPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='pagination-pa' >
-                <TablePagination
-                  component="div"
-                  count={TotalRecord}
-                  page={parseInt(Page) - 1}
-                  rowsPerPage="10"
-                  onPageChange={HandleChangePage}
-
-                />
-              </div>
+              {
+                OpenMessage?.length == 0 ? "" :
+                  <div className='pagination-pa' >
+                    <TablePagination
+                      component="div"
+                      count={TotalRecord}
+                      page={parseInt(PageValue) - 1}
+                      rowsPerPage="10"
+                      onPageChange={HandleChangePage}
+                    />
+                  </div>
+              }
               <div className="simulationDiv">
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

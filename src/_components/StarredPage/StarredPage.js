@@ -144,6 +144,7 @@ export default function OtherInboxPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [PageValue, SetPageValue] = React.useState(1)
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -235,11 +236,13 @@ export default function OtherInboxPage(props) {
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
           SetTotalRecord(Result.data.TotalCount);
+          SetPageValue(PN)
           LoaderHide()
         } else {
           SetStarredList([])
           SetOpenMessageDetails([]);
           SetTotalRecord(0);
+          SetPageValue(0)
           LoaderHide()
         }
       }
@@ -324,9 +327,17 @@ export default function OtherInboxPage(props) {
           if (props !== undefined) {
             const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
-              GetStarredList(ClientID, UserID, Page, ID);
+              if (StarredList?.length - 1 == 0) {
+                GetStarredList(ClientID, UserID, 1, ID);
+              } else {
+                GetStarredList(ClientID, UserID, Page, ID);
+              }
             } else {
-              GetStarredList(ClientID, UserID, Page, 0)
+              if (StarredList?.length - 1 == 0) {
+                GetStarredList(ClientID, UserID, 1, 0)
+              } else {
+                GetStarredList(ClientID, UserID, Page, 0)
+              }
             }
           }
         } else {
@@ -1169,16 +1180,19 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='pagination-pa' >
-                <TablePagination
-                  component="div"
-                  count={TotalRecord}
-                  page={parseInt(Page) - 1}
-                  rowsPerPage="10"
-                  onPageChange={HandleChangePage}
+              {
+                OpenMessage?.length == 0 ? "" :
+                  <div className='pagination-pa' >
+                    <TablePagination
+                      component="div"
+                      count={TotalRecord}
+                      page={parseInt(PageValue) - 1}
+                      rowsPerPage="10"
+                      onPageChange={HandleChangePage}
 
-                />
-              </div>
+                    />
+                  </div>
+              }
 
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
