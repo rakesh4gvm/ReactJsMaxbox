@@ -75,6 +75,7 @@ export default function TemplatesListPage() {
   const [DeleteID, SetDeleteID] = React.useState()
   const [open, setOpen] = React.useState(false);
   const [PopupBody, SetPopupBody] = React.useState(false);
+  const [PageValue, SetPageValue] = React.useState(1)
 
   useEffect(() => {
     document.title = 'Template | MAXBOX';
@@ -105,6 +106,7 @@ export default function TemplatesListPage() {
 
   // Start Get Template List
   const GetTemplateList = (CID, UID, PN) => {
+    
     let Data
     Data = {
       Page: PN,
@@ -123,15 +125,18 @@ export default function TemplatesListPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
+      
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetTemplateList(Result.data.PageData);
           SetCountPage(Result.data.PageCount);
+          SetPageValue(PN)
           LoaderHide()
         } else {
           SetTemplateList([])
           toast.error(<div>No Data.</div>)
           LoaderHide()
+          SetPageValue(0)
         }
       }
       else {
@@ -175,7 +180,12 @@ export default function TemplatesListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Template deleted successfully.</div>);
         LoaderShow()
-        GetTemplateList(ClientID, UserID, Page)
+        // GetTemplateList(ClientID, UserID, Page)
+        if (TemplateList.length - 1 == 0) {
+          GetTemplateList(ClientID, UserID,  1)
+        } else {
+          GetTemplateList(ClientID, UserID,  Page)
+        }
         SetDeletePopModel(false);
       }
       else {
@@ -370,7 +380,7 @@ export default function TemplatesListPage() {
                 </TableContainer>
 
                 <Stack className='my-4 page-dec' spacing={2}>
-                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                  <Pagination count={CountPage} page={PageValue} onChange={HandleChangePage} variant="outlined" shape="rounded" />
                 </Stack>
               </Col>
             </Row>

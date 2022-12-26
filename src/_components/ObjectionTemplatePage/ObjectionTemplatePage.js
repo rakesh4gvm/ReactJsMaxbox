@@ -75,6 +75,7 @@ export default function ObjectionTemplateListPage() {
   const [DeleteID, SetDeleteID] = React.useState()
   const [open, setOpen] = React.useState(false);
   const [PopupBody, SetPopupBody] = React.useState(false);
+  const [PageValue, SetPageValue] = React.useState(1)
 
   useEffect(() => {
     document.title = 'Objection Template | MAXBOX';
@@ -128,10 +129,12 @@ export default function ObjectionTemplateListPage() {
         if (Result.data.PageData.length > 0) {
           SetObjectionTemplateList(Result.data.PageData);
           SetCountPage(Result.data.PageCount);
+          SetPageValue(PN)
           LoaderHide()
         } else {
           toast.error(<div>No Data.</div>)
           LoaderHide()
+          SetPageValue(0)
           SetObjectionTemplateList([])
         }
       }
@@ -175,9 +178,14 @@ export default function ObjectionTemplateListPage() {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Objection template deleted successfully.</div>);
-        LoaderShow()
-        GetObjectionTemplateList(ClientID, UserID, Page)
+        if (ObjectionTemplateList.length - 1 == 0) {
+          GetObjectionTemplateList(ClientID, UserID,  1)
+        } else {
+          GetObjectionTemplateList(ClientID, UserID,  Page)
+        }
+       
         SetDeletePopModel(false);
+        LoaderShow()
       }
       else {
         GetObjectionTemplateList(ClientID, UserID, Page)
@@ -375,7 +383,7 @@ export default function ObjectionTemplateListPage() {
                 </TableContainer>
 
                 <Stack className='my-4 page-dec' spacing={2}>
-                  <Pagination count={CountPage} onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                  <Pagination count={CountPage} page={PageValue}  onChange={HandleChangePage} variant="outlined" shape="rounded" />
                 </Stack>
               </Col>
             </Row>
