@@ -192,6 +192,9 @@ export default function Navigation(props) {
   const [EmailTotalRecords, SetEmailTotalRecords] = useState()
   const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
   const [SelectMenuItem, SetSelectMenuItem] = React.useState("/kpis");
+  const [EID, SetEID] = React.useState("");
+  const [OpemID, SetEOpenID] = React.useState("");
+
 
 
 
@@ -209,8 +212,9 @@ export default function Navigation(props) {
       setNavOneOpen(true);
       setopenstarredNew(false);
     }else{
-      if(SelectedID == undefined){
+      if(SelectedID == ""){
       SetSelectMenuItem(SelectedPage)
+      debugger
       if(SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses"){ 
         setNavOpen(true); 
         setNavOneOpen(true); 
@@ -252,9 +256,10 @@ export default function Navigation(props) {
 
     SetSelectMenuItem(pageid)
     if(pageid == "/AllInbox"+ SelectedID|| SelectedPage == "/UnansweredResponses"+SelectedID){ 
-      setNavOpen(true); 
-      setNavOneOpen(true); 
-      setopenstarredNew(false);
+      // setNavOpen(true); 
+      // setNavOneOpen(true); 
+      // setopenstarredNew(false);
+      handleClick("0"+props.MenuID)
     }
 
     if(SelectedPage == "/Starred"+SelectedID ){ 
@@ -561,6 +566,17 @@ export default function Navigation(props) {
 
   const OnehandleClick = () => {
     setNavOpen(!navopen);
+    SetEID(0);
+  };
+
+  const handleOneClick = (item)=>{
+    SetEOpenID(item)
+  }
+
+  const handleClick = (itemID) => {
+    setNavOpen(false);
+    SetEID(itemID);
+
   };
 
   const OnehandleClickInOne = () => {
@@ -858,17 +874,17 @@ export default function Navigation(props) {
       
       {FromEmailDropdownList?.map((item) => (
       <List sx={{ pl: item._id }} className='listclick'> 
-        <ListItemButton onClick={OnehandleClick}>
-          {navopen ? <ExpandMore /> : <ExpandDown />}
+        <ListItemButton onClick={() => handleClick("0"+item._id)}key={"0"+item._id}> 
+          {EID == "0"+item._id ?  <ExpandMore />:<ExpandDown /> }
           <b>{item.Email}</b>
         </ListItemButton>
 
-        <Collapse in={navopen} timeout="auto" unmountOnExit>
+        <Collapse in={EID == "0"+item._id} timeout="auto" unmountOnExit>
           <List component="div">  
           
             <List component="div">  
-              <ListItemButton sx={{ pl: item._id }} onClick={OnehandleClickInOne}> 
-                {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
+              <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1"+item._id)} key={"1"+item._id}> 
+                {EID == "1"+item._id ? <ExpandMore /> : <ExpandDown />} Inbox
               </ListItemButton> 
 
               <Collapse in={navopenone} timeout="auto" unmountOnExit>
@@ -890,31 +906,31 @@ export default function Navigation(props) {
               </Collapse> 
             </List>
 
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Starred",item._id)}
+            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Starred",item._id)}
                  component={Link} 
                  selected={SelectMenuItem === "/Starred"+item._id}> 
                 {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`} 
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam",item._id)}
+            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Spam",item._id)}
                  component={Link} 
                  selected={SelectMenuItem === "/Spam"+item._id}> 
                 {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage",item._id)}
+            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage",item._id)}
                  component={Link} 
                  selected={SelectMenuItem === "/OtherInboxPage"+item._id}> 
                {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`}
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater",item._id)}
+            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/FollowUpLater",item._id)}
                  component={Link} 
                  selected={SelectMenuItem === "/FollowUpLater"+item._id}> 
                {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts",item._id)}
+            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Drafts",item._id)}
                  component={Link} 
                  selected={SelectMenuItem === "/Drafts"+item._id}>
               {"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}
