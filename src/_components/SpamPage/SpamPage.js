@@ -148,6 +148,7 @@ export default function SpamPage(props) {
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [MenuID, SetMenuID] = React.useState("");
+  const [Active, SetActive] = useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -270,10 +271,12 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            SetActive(ID);
             LoaderHide()
           } else {
             SetSpamList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -1230,7 +1233,7 @@ export default function SpamPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation  menupage="/Spam" MenuID={MenuID}/>
+        <Navigation menupage="/Spam" MenuID={MenuID} />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
@@ -1283,7 +1286,8 @@ export default function SpamPage(props) {
                   </TableHead>
                   <TableBody>
                     {SpamPage.map((item, index) => (
-                      <TableRow className="SelectionSubject"
+                      <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

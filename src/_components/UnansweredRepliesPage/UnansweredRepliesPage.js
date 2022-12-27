@@ -140,6 +140,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [Active, SetActive] = useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -316,10 +317,12 @@ export default function AllUnansweredRepliesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            SetActive(ID);
             LoaderHide()
           } else {
             SetAllUnanswereRepliesList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -1071,7 +1074,7 @@ export default function AllUnansweredRepliesPage(props) {
       </Modal>
       <div className='lefter'>
         <Navigation menupage="/UnansweredReplies" />
-        <Navigation  menupage="/UnansweredReplies" MenuID={MenuID}/>
+        <Navigation menupage="/UnansweredReplies" MenuID={MenuID} />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
@@ -1123,7 +1126,8 @@ export default function AllUnansweredRepliesPage(props) {
                   </TableHead>
                   <TableBody>
                     {AllUnansweredRepliesList.map((item, index) => (
-                      <TableRow className="SelectionSubject"
+                      <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

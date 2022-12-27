@@ -155,6 +155,7 @@ export default function UnansweredResponsesPage(props) {
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [PageValue, SetPageValue] = React.useState(1)
   const [MenuID, SetMenuID] = React.useState("");
+  const [Active, SetActive] = useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -261,10 +262,12 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            SetActive(ID);
             LoaderHide()
           } else {
             SetFollowUpList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -380,7 +383,7 @@ export default function UnansweredResponsesPage(props) {
               if (props !== undefined) {
                 const ID = props.location.state;
                 if (ID != "" && ID != null && ID != "undefined") {
-                  
+
                   GetUnansweredResponcesList(ClientID, UserID, Page, ID);
                 } else {
                   GetUnansweredResponcesList(ClientID, UserID, Page, 0)
@@ -1234,7 +1237,7 @@ export default function UnansweredResponsesPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/UnansweredResponses"  MenuID={MenuID}/>
+        <Navigation menupage="/UnansweredResponses" MenuID={MenuID} />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
@@ -1287,7 +1290,8 @@ export default function UnansweredResponsesPage(props) {
                   </TableHead>
                   <TableBody>
                     {FollowUpList.map((item, index) => (
-                      <TableRow className="SelectionSubject"
+                      <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

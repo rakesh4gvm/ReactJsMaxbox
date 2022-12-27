@@ -146,6 +146,7 @@ export default function OtherInboxPage(props) {
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [MenuID, SetMenuID] = React.useState("");
   const [PageValue, SetPageValue] = React.useState(1)
+  const [Active, SetActive] = useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -269,10 +270,12 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            SetActive(ID);
             LoaderHide()
           } else {
             SetStarredList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -1154,7 +1157,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation  menupage="/Starred" MenuID={MenuID}/>
+        <Navigation menupage="/Starred" MenuID={MenuID} />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
@@ -1210,6 +1213,7 @@ export default function OtherInboxPage(props) {
                   <TableBody>
                     {StarredList.map((item, index) => (
                       <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

@@ -153,6 +153,7 @@ export default function FollowUpLater(props) {
   const [TotalCount, SetTotalCount] = useState(0)
   const [IsBottom, SetIsBottom] = useState(false)
   const [PageValue, SetPageValue] = React.useState(1)
+  const [Active, SetActive] = useState("");
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -272,10 +273,12 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
+            SetActive(ID);
             LoaderHide()
           } else {
             SetFollowUpList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -1152,7 +1155,7 @@ export default function FollowUpLater(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation  menupage="/FollowUpLater" MenuID={MenuID}/>
+        <Navigation menupage="/FollowUpLater" MenuID={MenuID} />
       </div>
 
       <div className='righter'>
@@ -1222,6 +1225,7 @@ export default function FollowUpLater(props) {
                   <TableBody>
                     {FollowUpList.map((item, index) => (
                       <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

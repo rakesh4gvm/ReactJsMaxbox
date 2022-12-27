@@ -145,6 +145,7 @@ export default function OtherInboxPage(props) {
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [PageValue, SetPageValue] = React.useState(1)
+  const [Active, SetActive] = useState("");
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -261,6 +262,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data != "" && Result.data.Data != null && Result.data.Data != undefined) {
             SetOpenMessageDetails(Result.data.Data);
+            SetActive(ID);
             if (IsComposeData) {
               OpenCompose(ID, Result.data.Data)
             }
@@ -268,6 +270,7 @@ export default function OtherInboxPage(props) {
           } else {
             SetDraftList([])
             SetOpenMessageDetails([]);
+            SetActive("");
             LoaderHide()
           }
         }
@@ -884,6 +887,7 @@ export default function OtherInboxPage(props) {
                   <TableBody>
                     {DraftList.map((item, index) => (
                       <TableRow
+                        className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index, true)}
