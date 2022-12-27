@@ -2384,7 +2384,7 @@ div#root {
 .orangbody+div>div {
     margin-left: 70px;
     background-color: #FFF7F7;
-    padding: 15px;
+    padding: 15px 0px 15px 15px;
 }
 
 .righter {
@@ -2422,7 +2422,7 @@ div#root {
     display: table;
     color: #666;
     padding: 0 0 0 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .sidenavtree .MuiTreeItem-label {
@@ -2490,7 +2490,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 }
 
 .tablelister tr svg {
-    background-color: snow;
+    background-color: transparent;
     width: 18px;
 }
 .tablelister tr svg:focus {
@@ -2935,6 +2935,9 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
     color: #555;
     background-color: transparent !important; 
     text-decoration: none !important;
+}
+tr.selected-row{
+    background: #faecec;
 }
 
 @media screen and (max-width:990px) {
