@@ -149,6 +149,7 @@ export default function AllUnansweredRepliesPage(props) {
 
   const [TotalCount, SetTotalCount] = useState(0)
   const [IsBottom, SetIsBottom] = useState(false)
+  const [MenuID, SetMenuID] = React.useState("");
   const [PageValue, SetPageValue] = React.useState(1)
 
   const HandleScroll = (e) => {
@@ -241,6 +242,7 @@ export default function AllUnansweredRepliesPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
         GetAllUnansweredRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       }
       else {
@@ -1069,6 +1071,7 @@ export default function AllUnansweredRepliesPage(props) {
       </Modal>
       <div className='lefter'>
         <Navigation menupage="/UnansweredReplies" />
+        <Navigation  menupage="/UnansweredReplies" MenuID={MenuID}/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

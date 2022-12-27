@@ -154,6 +154,7 @@ export default function UnansweredResponsesPage(props) {
   const [CountPage, SetCountPage] = React.useState(0);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [PageValue, SetPageValue] = React.useState(1)
+  const [MenuID, SetMenuID] = React.useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -181,6 +182,7 @@ export default function UnansweredResponsesPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
         GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
         GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
@@ -378,6 +380,7 @@ export default function UnansweredResponsesPage(props) {
               if (props !== undefined) {
                 const ID = props.location.state;
                 if (ID != "" && ID != null && ID != "undefined") {
+                  
                   GetUnansweredResponcesList(ClientID, UserID, Page, ID);
                 } else {
                   GetUnansweredResponcesList(ClientID, UserID, Page, 0)
@@ -1231,7 +1234,7 @@ export default function UnansweredResponsesPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/UnansweredResponses" />
+        <Navigation menupage="/UnansweredResponses"  MenuID={MenuID}/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

@@ -147,6 +147,7 @@ export default function OtherInboxPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [MenuID, SetMenuID] = React.useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -193,6 +194,7 @@ export default function OtherInboxPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
         GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
         GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
@@ -1156,7 +1158,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/OtherInboxPage" />
+      <Navigation  menupage="/OtherInboxPage" MenuID={MenuID}/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

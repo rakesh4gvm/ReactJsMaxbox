@@ -143,6 +143,7 @@ export default function FollowUpLater(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [MenuID, SetMenuID] = React.useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -190,6 +191,7 @@ export default function FollowUpLater(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
         GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       }
       else {
@@ -1150,7 +1152,7 @@ export default function FollowUpLater(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/FollowUpLater" />
+        <Navigation  menupage="/FollowUpLater" MenuID={MenuID}/>
       </div>
 
       <div className='righter'>

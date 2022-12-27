@@ -140,6 +140,7 @@ export default function AllSentEmailsPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [MenuID, SetMenuID] = React.useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -241,6 +242,7 @@ export default function AllSentEmailsPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID)
         GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       }
       else {
@@ -1070,7 +1072,8 @@ export default function AllSentEmailsPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/AllSentEmails" />
+        {/* <Navigation menupage="/AllSentEmails" /> */}
+        <Navigation  menupage="/AllSentEmails" MenuID={MenuID}/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

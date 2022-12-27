@@ -147,6 +147,7 @@ export default function SpamPage(props) {
   const [temopen, setTemOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
+  const [MenuID, SetMenuID] = React.useState("");
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -195,6 +196,7 @@ export default function SpamPage(props) {
     if (props !== undefined) {
       const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
         GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       }
       else {
@@ -1228,7 +1230,7 @@ export default function SpamPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/Spam"/>
+        <Navigation  menupage="/Spam" MenuID={MenuID}/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
