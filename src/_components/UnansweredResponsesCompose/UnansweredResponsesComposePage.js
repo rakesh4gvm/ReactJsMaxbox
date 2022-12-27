@@ -275,7 +275,8 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
     // Sent Mail Starts
     const SentMail = async () => {
-
+        debugger
+        console.log("Signature inside Sentmail======", Signature.Data)
         var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;
@@ -328,7 +329,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                 TemplateID: TemplateID,
                 ObjectIDTemplateID: ObjectIDTemplateID
             }
-            Axios({
+            await Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
                 method: "POST",
                 data: Data,
@@ -370,17 +371,17 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             elementfr[0].classList.add("d-none");
         },
     });
-    Froalaeditor.RegisterCommand('Sendoption', {
+    Froalaeditor.RegisterCommand('Sendoptions', {
         colorsButtons: ["colorsBack", "|", "-"],
         title: '',
         type: 'dropdown',
-        focus: false,
+        // focus: true,
         undo: false,
         refreshAfterCallback: true,
         options: EditorVariableNames(),
         callback: function (cmd, val) {
             var editorInstance = this;
-            editorInstance.html.insert("{" + val + "}");
+            editorInstance.html.insert("{" + val + "}" + '&nbsp;' + "<br/>");
         },
         // Callback on refresh.
         refresh: function ($btn) {
@@ -444,7 +445,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     data: Data,
                 });
                 ResponseApi.then((Result) => {
-                    debugger
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                         if (Result.data.PageData.length > 0) {
                             setExpanded(false);
@@ -472,34 +472,35 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         refreshOnShow: function ($btn, $dropdown) {
         }
     });
-    Froalaeditor.RegisterCommand('moreMisc', {
-        title: '',
-        type: 'dropdown',
-        focus: false,
-        undo: false,
-        refreshAfterCallback: true,
-        options: EditorVariableNames(),
-        callback: function (cmd, val) {
-            var editorInstance = this;
-            editorInstance.html.insert("{" + val + "}");
-        },
-        // Callback on refresh.
-        refresh: function ($btn) {
-        },
-        // Callback on dropdown show.
-        refreshOnShow: function ($btn, $dropdown) {
-        }
-    });
+    // Froalaeditor.RegisterCommand('moreMisc', {
+    //     title: '',
+    //     type: 'dropdown',
+    //     focus: false,
+    //     undo: false,
+    //     refreshAfterCallback: true,
+    //     options: EditorVariableNames(),
+    //     callback: function (cmd, val) {
+    //         var editorInstance = this;
+    //         editorInstance.html.insert("{" + val + "}");
+    //     },
+    //     // Callback on refresh.
+    //     refresh: function ($btn) {
+    //     },
+    //     // Callback on dropdown show.
+    //     refreshOnShow: function ($btn, $dropdown) {
+    //     }
+    // });
     const config = {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
+        toolbarButtons: [['Send', 'Sendoptions', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
     }
     const HandleModelChange = (Model) => {
+        console.log("Model======", Model)
         SetSignature({
             Data: Model
         });
@@ -508,6 +509,10 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         editor.button.buildList();
     })
     // Frola Editor Ends
+
+    console.log("Signature======", Signature.Data)
+
+
 
     /* start navcode */
     const mincomposeon = () => {
