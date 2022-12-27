@@ -1152,7 +1152,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/Spam" />
+        <Navigation menupage="/Starred" />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>

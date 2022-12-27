@@ -1228,7 +1228,7 @@ export default function SpamPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation />
+        <Navigation menupage="/Spam"/>
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
