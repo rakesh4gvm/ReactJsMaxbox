@@ -194,6 +194,7 @@ export default function Navigation(props) {
   const [SelectMenuItem, SetSelectMenuItem] = React.useState("/kpis");
   const [EID, SetEID] = React.useState("");
   const [OpemID, SetEOpenID] = React.useState("");
+  const [OutBoxID, SetOutBoxID] = React.useState("");
 
 
 
@@ -253,44 +254,42 @@ export default function Navigation(props) {
     } 
   else{
     var pageid  = SelectedPage+SelectedID
-
     SetSelectMenuItem(pageid)
-    if(pageid == "/AllInbox"+ SelectedID|| SelectedPage == "/UnansweredResponses"+SelectedID){ 
-      // setNavOpen(true); 
-      // setNavOneOpen(true); 
-      // setopenstarredNew(false);
+    if(pageid == "/AllInbox"+ SelectedID|| pageid == "/UnansweredResponses"+SelectedID){ 
       handleClick("0"+props.MenuID)
+      handleOneClick("1"+props.MenuID)
+      
     }
 
-    if(SelectedPage == "/Starred"+SelectedID ){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(false);
+    if(pageid == "/Starred"+SelectedID ){ 
+      handleClick("0"+props.MenuID);
+      handleOneClick("0")
     } 
-    if(SelectedPage == "/Spam"+SelectedID ){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(false);
-    }
-    if(SelectedPage == "/OtherInboxPage"+SelectedID ){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(false);
-    }
-    if(SelectedPage == "/FollowUpLater" +SelectedID){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(false);
-    }
-    if(SelectedPage == "/Drafts"+SelectedID ){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(false);
-    }
-    if(SelectedPage == "/AllSentEmails"+SelectedID || SelectedPage == "/UnansweredReplies"+SelectedID){ 
-      setNavOpen(true); 
-      setNavOneOpen(false); 
-      setopenstarredNew(true);
+    // if(SelectedPage == "/Spam"+SelectedID ){ 
+    //   setNavOpen(true); 
+    //   setNavOneOpen(false); 
+    //   setopenstarredNew(false);
+    // }
+    // if(SelectedPage == "/OtherInboxPage"+SelectedID ){ 
+    //   setNavOpen(true); 
+    //   setNavOneOpen(false); 
+    //   setopenstarredNew(false);
+    // }
+    // if(SelectedPage == "/FollowUpLater" +SelectedID){ 
+    //   setNavOpen(true); 
+    //   setNavOneOpen(false); 
+    //   setopenstarredNew(false);
+    // }
+    // if(SelectedPage == "/Drafts"+SelectedID ){ 
+    //   setNavOpen(true); 
+    //   setNavOneOpen(false); 
+    //   setopenstarredNew(false);
+    // }
+    if(pageid == "/AllSentEmails"+SelectedID || pageid == "/UnansweredReplies"+SelectedID){ 
+      if(SelectedID != undefined){
+      handleClick("0"+SelectedID)
+      OnehandleClickOutBox("2"+SelectedID)
+      }
     } 
   }
   }
@@ -366,7 +365,7 @@ export default function Navigation(props) {
     //     window.location.href = "http://localhost:3001/AllInbox"
     //   }
     // }
-    if (PageName == "/AllSent") {
+    if (PageName == "/AllSentEmails") {
       if (ID != "" && ID != null) {
         history.push("/AllSentEmails", ID);
       } else {
@@ -588,6 +587,10 @@ export default function Navigation(props) {
   };
   const OnehandleClickStarred = () => {
     setopenstarredNew(!openstarred);
+  };
+
+  const OnehandleClickOutBox = (ids) => {
+    SetOutBoxID(ids)
   };
 
   // Start From Email List
@@ -884,10 +887,10 @@ export default function Navigation(props) {
           
             <List component="div">  
               <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1"+item._id)} key={"1"+item._id}> 
-                {EID == "1"+item._id ? <ExpandMore /> : <ExpandDown />} Inbox
+                {OpemID == "1"+item._id ? <ExpandMore /> : <ExpandDown />} Inbox
               </ListItemButton> 
 
-              <Collapse in={navopenone} timeout="auto" unmountOnExit>
+              <Collapse in={OpemID == "1"+item._id } timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>  
 
                <ListItem button  sx={{ pl: item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox",item._id)}
@@ -936,12 +939,12 @@ export default function Navigation(props) {
               {"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}
             </ListItemButton>
             <List component="div">  
-              <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}> 
-                {openstarred ? <ExpandMore /> : <ExpandDown />}
+              <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2"+item._id)}key={"2"+item._id}> 
+                {OutBoxID == "2"+item._id ? <ExpandMore /> : <ExpandDown />}
                 OutBox
               </ListItemButton>
               </List>
-            <Collapse in={openstarred} timeout="auto" unmountOnExit>
+            <Collapse in={OutBoxID == "2"+item._id} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
  
                   <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails",item._id)}
