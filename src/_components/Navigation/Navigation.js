@@ -202,97 +202,8 @@ export default function Navigation(props) {
   useEffect(() => {
     GetClientDropdown();
     GetClientID()
-    debugger;
-    var SelectedPage = props.menupage;
-    var SelectedID = props.MenuID;
-    console.log(props);
-
-    if(SelectedPage == undefined){ 
-      SetSelectMenuItem("/AllInbox")
-      setNavOpen(true); 
-      setNavOneOpen(true);
-      setopenstarredNew(false);
-    }else{
-      if(SelectedID == ""){
-      SetSelectMenuItem(SelectedPage)
-      debugger
-      if(SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses"){ 
-        setNavOpen(true); 
-        setNavOneOpen(true); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/Starred" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      } 
-      if(SelectedPage == "/Spam" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/OtherInboxPage" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/FollowUpLater" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/Drafts" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/AllSentEmails" || SelectedPage == "/UnansweredReplies"){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(true);
-      } 
-    } 
-  else{
-    var pageid  = SelectedPage+SelectedID
-    SetSelectMenuItem(pageid)
-    if(pageid == "/AllInbox"+ SelectedID|| pageid == "/UnansweredResponses"+SelectedID){ 
-      handleClick("0"+props.MenuID)
-      handleOneClick("1"+props.MenuID)
-      
-    }
-
-    if(pageid == "/Starred"+SelectedID ){ 
-      handleClick("0"+props.MenuID);
-      handleOneClick("0")
-    } 
-    // if(SelectedPage == "/Spam"+SelectedID ){ 
-    //   setNavOpen(true); 
-    //   setNavOneOpen(false); 
-    //   setopenstarredNew(false);
-    // }
-    // if(SelectedPage == "/OtherInboxPage"+SelectedID ){ 
-    //   setNavOpen(true); 
-    //   setNavOneOpen(false); 
-    //   setopenstarredNew(false);
-    // }
-    // if(SelectedPage == "/FollowUpLater" +SelectedID){ 
-    //   setNavOpen(true); 
-    //   setNavOneOpen(false); 
-    //   setopenstarredNew(false);
-    // }
-    // if(SelectedPage == "/Drafts"+SelectedID ){ 
-    //   setNavOpen(true); 
-    //   setNavOneOpen(false); 
-    //   setopenstarredNew(false);
-    // }
-    if(pageid == "/AllSentEmails"+SelectedID || pageid == "/UnansweredReplies"+SelectedID){ 
-      if(SelectedID != undefined){
-      handleClick("0"+SelectedID)
-      OnehandleClickOutBox("2"+SelectedID)
-      }
-    } 
-  }
-  }
+    
+   
   }, [SelectMenuItem]);
 
   
@@ -319,7 +230,7 @@ export default function Navigation(props) {
         history.push("/Starred");
       }
     }
-    if (PageName == "/Follow Up Later") {
+    if (PageName == "/FollowUpLater") {
       if (ID != "" && ID != null) {
         history.push("/FollowUpLater", ID);
       }
@@ -335,7 +246,7 @@ export default function Navigation(props) {
         history.push("/Drafts");
       }
     }
-    if (PageName == "/Other Inbox") {
+    if (PageName == "/OtherInboxPage") {
       if (ID != "" && ID != null) {
         history.push("/OtherInboxPage", ID);
       } else {
@@ -393,6 +304,97 @@ export default function Navigation(props) {
     GetSentEmailsTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+    OnLoad()
+  }
+
+  const OnLoad=()=>{
+    var SelectedPage = props.menupage;
+    var SelectedID = props.MenuID;
+    console.log(props);
+
+    if(SelectedPage == undefined){ 
+      SetSelectMenuItem("/AllInbox")
+      setNavOpen(true); 
+      setNavOneOpen(true);
+      setopenstarredNew(false);
+    }else{
+      if(SelectedID == ""){
+      SetSelectMenuItem(SelectedPage)
+      
+      if(SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses"){ 
+        setNavOpen(true); 
+        setNavOneOpen(true); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/Starred" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      } 
+      if(SelectedPage == "/Spam" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/OtherInboxPage" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/FollowUpLater" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/Drafts" ){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(false);
+      }
+      if(SelectedPage == "/AllSentEmails" || SelectedPage == "/UnansweredReplies"){ 
+        setNavOpen(true); 
+        setNavOneOpen(false); 
+        setopenstarredNew(true);
+      } 
+    } 
+  else{
+    var pageid  = SelectedPage+SelectedID
+    SetSelectMenuItem(pageid)
+    if(pageid == "/AllInbox"+ SelectedID|| pageid == "/UnansweredResponses"+SelectedID){ 
+      
+      handleClick("0"+SelectedID,0)
+      handleOneClick("1"+SelectedID,0)
+      
+    }
+
+    if(pageid == "/Starred"+SelectedID ){ 
+      handleClick("0"+props.MenuID,0);
+      handleOneClick("0",0)
+    } 
+    if(pageid == "/Spam"+SelectedID ){ 
+      handleClick("0"+props.MenuID,0);
+      handleOneClick("0",0)
+    }
+    if(pageid == "/OtherInboxPage"+SelectedID ){ 
+      handleClick("0"+props.MenuID,0);
+      handleOneClick("0",0)
+    }
+    if(pageid == "/FollowUpLater" +SelectedID){ 
+      handleClick("0"+props.MenuID,0);
+      handleOneClick("0",0)
+    }
+    if(pageid == "/Drafts"+SelectedID ){ 
+      handleClick("0"+props.MenuID,0);
+      handleOneClick("0",0)
+    }
+    if(pageid == "/AllSentEmails"+SelectedID || pageid == "/UnansweredReplies"+SelectedID){ 
+      if(SelectedID != undefined){
+      handleClick("0"+SelectedID,0)
+      OnehandleClickOutBox("2"+SelectedID,0)
+      }
+    } 
+  }
+  }
   }
 
   // Get All Sent Emails Total Count
@@ -565,21 +567,33 @@ export default function Navigation(props) {
 
   const OnehandleClick = () => {
     setNavOpen(!navopen);
+    
     SetEID(0);
   };
 
-  const handleOneClick = (item)=>{
+  const handleOneClick = (item,cnt)=>{
+    if(cnt==0){
     SetEOpenID(item)
+  }else{
+    SetEOpenID(OpemID !== item?item:"")
+  }
+  SetOutBoxID("0")
   }
 
-  const handleClick = (itemID) => {
+  const handleClick = (itemID,cnt) => {
     setNavOpen(false);
-    SetEID(itemID);
+   
+    if(cnt==0){
+      SetEID(itemID)
+    }else{
+    SetEID(EID !== itemID ? itemID: "" );
+  }
 
   };
 
   const OnehandleClickInOne = () => {
     setNavOneOpen(!navopenone);
+    setopenstarredNew(!openstarred);
   };
 
   const OnehandleClickInNew = () => {
@@ -587,10 +601,16 @@ export default function Navigation(props) {
   };
   const OnehandleClickStarred = () => {
     setopenstarredNew(!openstarred);
+    setNavOneOpen(!navopenone);
   };
 
-  const OnehandleClickOutBox = (ids) => {
+  const OnehandleClickOutBox = (ids,cnt) => {
+    if(cnt==0){
     SetOutBoxID(ids)
+  }else{
+    SetOutBoxID(OutBoxID !== ids ? ids: "" );
+  }
+  SetEOpenID("0")
   };
 
   // Start From Email List
@@ -626,85 +646,85 @@ export default function Navigation(props) {
 
   }
 
-  const RedirectLink = (ID, PageName, MenuID) => {
-    if (PageName == "Unanswered Responses") {
-      if (ID != "" && ID != null) {
-        history.push("/UnansweredResponses", ID);
-      } else {
-        history.push("/UnansweredResponses");
-      }
-    }
-    if (PageName == "Starred") {
-      if (ID != "" && ID != null) {
-        history.push("/Starred", ID);
-      } else {
-        history.push("/Starred");
-      }
-    }
-    if (PageName == "Follow Up Later") {
-      if (ID != "" && ID != null) {
-        history.push("/FollowUpLater", ID);
-      }
-      else {
-        history.push("/FollowUpLater");
-      }
-    }
-    if (PageName == "Draft") {
-      if (ID != "" && ID != null) {
+  // const RedirectLink = (ID, PageName, MenuID) => {
+  //   if (PageName == "Unanswered Responses") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/UnansweredResponses", ID);
+  //     } else {
+  //       history.push("/UnansweredResponses");
+  //     }
+  //   }
+  //   if (PageName == "Starred") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/Starred", ID);
+  //     } else {
+  //       history.push("/Starred");
+  //     }
+  //   }
+  //   if (PageName == "Follow Up Later") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/FollowUpLater", ID);
+  //     }
+  //     else {
+  //       history.push("/FollowUpLater");
+  //     }
+  //   }
+  //   if (PageName == "Draft") {
+  //     if (ID != "" && ID != null) {
 
-        history.push("/Drafts", ID);
-      } else {
-        history.push("/Drafts");
-      }
-    }
-    if (PageName == "Other Inbox") {
-      if (ID != "" && ID != null) {
-        history.push("/OtherInboxPage", ID);
-      } else {
-        history.push("/OtherInboxPage");
-      }
-    }
-    if (PageName == "Spam") {
-      if (ID != "" && ID != null) {
-        history.push("/Spam", ID);
-      } else {
-        history.push("/Spam");
-      }
-    }
-    if (PageName == "AllInbox") {
-      if (ID != "" && ID != null) {
-        history.push("/AllInbox", ID);
-      } else {
-        history.push("/AllInbox");
-      }
-    }
-    // if (PageName == "AllInbox") {
-    //   if (ID != "" && ID != null) {
-    //     if (history.location.pathname === "/AllInbox") {
-    //       window.location.href = "http://localhost:3001/AllInbox?" + encodeURIComponent(JSON.stringify(ID))
-    //     }
-    //   } else {
-    //     window.location.href = "http://localhost:3001/AllInbox"
-    //   }
-    // }
-    if (PageName == "AllSent") {
-      if (ID != "" && ID != null) {
-        history.push("/AllSentEmails", ID);
-      } else {
-        history.push("/AllSentEmails");
-      }
-    }
-    if (PageName == "UnansweredReplies") {
-      if (ID != "" && ID != null) {
-        history.push("/UnansweredReplies", ID);
-      } else {
-        history.push("/UnansweredReplies");
-      }
-    }
-    var items = ['1', '2', '11']
-    // localStorage.setItem("items", JSON.stringify(items));
-    SetExpanded(items);
-  }
+  //       history.push("/Drafts", ID);
+  //     } else {
+  //       history.push("/Drafts");
+  //     }
+  //   }
+  //   if (PageName == "Other Inbox") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/OtherInboxPage", ID);
+  //     } else {
+  //       history.push("/OtherInboxPage");
+  //     }
+  //   }
+  //   if (PageName == "Spam") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/Spam", ID);
+  //     } else {
+  //       history.push("/Spam");
+  //     }
+  //   }
+  //   if (PageName == "AllInbox") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/AllInbox", ID);
+  //     } else {
+  //       history.push("/AllInbox");
+  //     }
+  //   }
+  //   // if (PageName == "AllInbox") {
+  //   //   if (ID != "" && ID != null) {
+  //   //     if (history.location.pathname === "/AllInbox") {
+  //   //       window.location.href = "http://localhost:3001/AllInbox?" + encodeURIComponent(JSON.stringify(ID))
+  //   //     }
+  //   //   } else {
+  //   //     window.location.href = "http://localhost:3001/AllInbox"
+  //   //   }
+  //   // }
+  //   if (PageName == "AllSent") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/AllSentEmails", ID);
+  //     } else {
+  //       history.push("/AllSentEmails");
+  //     }
+  //   }
+  //   if (PageName == "UnansweredReplies") {
+  //     if (ID != "" && ID != null) {
+  //       history.push("/UnansweredReplies", ID);
+  //     } else {
+  //       history.push("/UnansweredReplies");
+  //     }
+  //   }
+  //   var items = ['1', '2', '11']
+  //   // localStorage.setItem("items", JSON.stringify(items));
+  //   SetExpanded(items);
+  // }
 
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
@@ -877,7 +897,7 @@ export default function Navigation(props) {
       
       {FromEmailDropdownList?.map((item) => (
       <List sx={{ pl: item._id }} className='listclick'> 
-        <ListItemButton onClick={() => handleClick("0"+item._id)}key={"0"+item._id}> 
+        <ListItemButton onClick={() => handleClick("0"+item._id,1)}key={"0"+item._id}> 
           {EID == "0"+item._id ?  <ExpandMore />:<ExpandDown /> }
           <b>{item.Email}</b>
         </ListItemButton>
@@ -886,7 +906,7 @@ export default function Navigation(props) {
           <List component="div">  
           
             <List component="div">  
-              <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1"+item._id)} key={"1"+item._id}> 
+              <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1"+item._id,1)} key={"1"+item._id}> 
                 {OpemID == "1"+item._id ? <ExpandMore /> : <ExpandDown />} Inbox
               </ListItemButton> 
 
@@ -933,13 +953,9 @@ export default function Navigation(props) {
                {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Drafts",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Drafts"+item._id}>
-              {"Drafts(" + AllTotalRecords?.AllDraftCount + ")"}
-            </ListItemButton>
+       
             <List component="div">  
-              <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2"+item._id)}key={"2"+item._id}> 
+              <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2"+item._id,1)}key={"2"+item._id}> 
                 {OutBoxID == "2"+item._id ? <ExpandMore /> : <ExpandDown />}
                 OutBox
               </ListItemButton>
