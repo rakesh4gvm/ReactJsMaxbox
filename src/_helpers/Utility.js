@@ -32,10 +32,10 @@ export function UpdateUserDetails(ClientID) {
     }
 }
 export function Logout() {
-   
+
     localStorage.removeItem("LoginData");
     window.location.href = CommonConstants.LoginPage;
-   
+
     // history.push('/');
 }
 
@@ -77,9 +77,5 @@ export function LoaderHide() {
 }
 
 export function IsGreaterDate(Date) {
-    if (Moment(Date).format("DD-MM-YYYY") < Moment().format("DD-MM-YYYY")) {
-        return false
-    } else {
-        return true
-    }
+    return Moment(Date).isSameOrAfter(Moment(), 'day')
 }
