@@ -168,7 +168,7 @@ export default function ConfirmpasswordPage() {
                   <Col sm={4}>
                     <div className='btnprofile left'>
                       <ButtonGroup variant="text" aria-label="text button group">
-                        <Button variant="contained btn btn-primary smallbtn" onClick={Update}>submit</Button>
+                        <Button variant="contained btn btn-primary smallbtn mr-4" onClick={Update}>submit</Button>
                         <Button variant="contained btn smallbtn">Cancel</Button>
                       </ButtonGroup>
                     </div>

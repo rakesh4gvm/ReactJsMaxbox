@@ -129,7 +129,7 @@ export default function CreateObjectionTemplatePage({ children }) {
     }
 
     if (Body.Data === "") {
-      SetSignatureError("Please Enter Signature Body")
+      SetSignatureError("Please Enter Body")
       Isvalid = false
     }
 

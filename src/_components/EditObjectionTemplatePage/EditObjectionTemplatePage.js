@@ -173,7 +173,7 @@ export default function EditObjectionTemplatePage(props) {
         }
 
         if (Body.Data === "") {
-            SetSignatureError("Please Enter Signature Body")
+            SetSignatureError("Please Enter Body")
             Isvalid = false
         }
 
