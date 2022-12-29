@@ -160,7 +160,7 @@ const addNavClick = () => {
 
 
 
-export default function Navigation(props) { 
+export default function Navigation(props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -202,20 +202,20 @@ export default function Navigation(props) {
   useEffect(() => {
     GetClientDropdown();
     GetClientID()
-    
-   
-  }, [SelectMenuItem]);
 
-  
-  const handleListItemClick = (event, PageName,ID) => {
-    debugger
-    if(ID != undefined && ID!="")
-    {
-      var pg = PageName+ID
-    SetSelectMenuItem(pg);
-  }else{
-    SetSelectMenuItem(PageName);
-  }
+
+  }, []);
+
+
+  const handleListItemClick = (event, PageName, ID) => {
+    if (ID != undefined && ID != "") {
+      var pg = PageName + ID
+      SetSelectMenuItem(pg);
+      localStorage.setItem("NavigationID", ID)
+    } else {
+      SetSelectMenuItem(PageName);
+      localStorage.setItem("NavigationID", "")
+    }
     if (PageName == "/UnansweredResponses") {
       if (ID != "" && ID != null) {
         history.push("/UnansweredResponses", ID);
@@ -307,94 +307,95 @@ export default function Navigation(props) {
     OnLoad()
   }
 
-  const OnLoad=()=>{
+  const OnLoad = () => {
     var SelectedPage = props.menupage;
-    var SelectedID = props.MenuID;
+    const NavigationID = localStorage.getItem("NavigationID")
+    var SelectedID = NavigationID
     console.log(props);
 
-    if(SelectedPage == undefined){ 
+    if (SelectedPage == undefined) {
       SetSelectMenuItem("/AllInbox")
-      setNavOpen(true); 
+      setNavOpen(true);
       setNavOneOpen(true);
       setopenstarredNew(false);
-    }else{
-      if(SelectedID == ""){
-      SetSelectMenuItem(SelectedPage)
-      
-      if(SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses"){ 
-        setNavOpen(true); 
-        setNavOneOpen(true); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/Starred" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      } 
-      if(SelectedPage == "/Spam" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/OtherInboxPage" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/FollowUpLater" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/Drafts" ){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(false);
-      }
-      if(SelectedPage == "/AllSentEmails" || SelectedPage == "/UnansweredReplies"){ 
-        setNavOpen(true); 
-        setNavOneOpen(false); 
-        setopenstarredNew(true);
-      } 
-    } 
-  else{
-    var pageid  = SelectedPage+SelectedID
-    SetSelectMenuItem(pageid)
-    if(pageid == "/AllInbox"+ SelectedID|| pageid == "/UnansweredResponses"+SelectedID){ 
-      
-      handleClick("0"+SelectedID,0)
-      handleOneClick("1"+SelectedID,0)
-      
-    }
+    } else {
+      if (SelectedID == "") {
+        SetSelectMenuItem(SelectedPage)
 
-    if(pageid == "/Starred"+SelectedID ){ 
-      handleClick("0"+props.MenuID,0);
-      handleOneClick("0",0)
-    } 
-    if(pageid == "/Spam"+SelectedID ){ 
-      handleClick("0"+props.MenuID,0);
-      handleOneClick("0",0)
-    }
-    if(pageid == "/OtherInboxPage"+SelectedID ){ 
-      handleClick("0"+props.MenuID,0);
-      handleOneClick("0",0)
-    }
-    if(pageid == "/FollowUpLater" +SelectedID){ 
-      handleClick("0"+props.MenuID,0);
-      handleOneClick("0",0)
-    }
-    if(pageid == "/Drafts"+SelectedID ){ 
-      handleClick("0"+props.MenuID,0);
-      handleOneClick("0",0)
-    }
-    if(pageid == "/AllSentEmails"+SelectedID || pageid == "/UnansweredReplies"+SelectedID){ 
-      if(SelectedID != undefined){
-      handleClick("0"+SelectedID,0)
-      OnehandleClickOutBox("2"+SelectedID,0)
+        if (SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses") {
+          setNavOpen(true);
+          setNavOneOpen(true);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/Starred") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/Spam") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/OtherInboxPage") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/FollowUpLater") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/Drafts") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(false);
+        }
+        if (SelectedPage == "/AllSentEmails" || SelectedPage == "/UnansweredReplies") {
+          setNavOpen(true);
+          setNavOneOpen(false);
+          setopenstarredNew(true);
+        }
       }
-    } 
-  }
-  }
+      else {
+        var pageid = SelectedPage + SelectedID
+        SetSelectMenuItem(pageid)
+        if (pageid == "/AllInbox" + SelectedID || pageid == "/UnansweredResponses" + SelectedID) {
+
+          handleClick("0" + SelectedID, 0)
+          handleOneClick("1" + SelectedID, 0)
+
+        }
+
+        if (pageid == "/Starred" + SelectedID) {
+          handleClick("0" + NavigationID, 0);
+          handleOneClick("0", 0)
+        }
+        if (pageid == "/Spam" + SelectedID) {
+          handleClick("0" + NavigationID, 0);
+          handleOneClick("0", 0)
+        }
+        if (pageid == "/OtherInboxPage" + SelectedID) {
+          handleClick("0" + NavigationID, 0);
+          handleOneClick("0", 0)
+        }
+        if (pageid == "/FollowUpLater" + SelectedID) {
+          handleClick("0" + NavigationID, 0);
+          handleOneClick("0", 0)
+        }
+        if (pageid == "/Drafts" + SelectedID) {
+          handleClick("0" + NavigationID, 0);
+          handleOneClick("0", 0)
+        }
+        if (pageid == "/AllSentEmails" + SelectedID || pageid == "/UnansweredReplies" + SelectedID) {
+          if (SelectedID != undefined) {
+            handleClick("0" + SelectedID, 0)
+            OnehandleClickOutBox("2" + SelectedID, 0)
+          }
+        }
+      }
+    }
   }
 
   // Get All Sent Emails Total Count
@@ -567,27 +568,27 @@ export default function Navigation(props) {
 
   const OnehandleClick = () => {
     setNavOpen(!navopen);
-    
+
     SetEID(0);
   };
 
-  const handleOneClick = (item,cnt)=>{
-    if(cnt==0){
-    SetEOpenID(item)
-  }else{
-    SetEOpenID(OpemID !== item?item:"")
-  }
-  SetOutBoxID("0")
+  const handleOneClick = (item, cnt) => {
+    if (cnt == 0) {
+      SetEOpenID(item)
+    } else {
+      SetEOpenID(OpemID !== item ? item : "")
+    }
+    SetOutBoxID("0")
   }
 
-  const handleClick = (itemID,cnt) => {
+  const handleClick = (itemID, cnt) => {
     setNavOpen(false);
-   
-    if(cnt==0){
+
+    if (cnt == 0) {
       SetEID(itemID)
-    }else{
-    SetEID(EID !== itemID ? itemID: "" );
-  }
+    } else {
+      SetEID(EID !== itemID ? itemID : "");
+    }
 
   };
 
@@ -604,13 +605,13 @@ export default function Navigation(props) {
     setNavOneOpen(!navopenone);
   };
 
-  const OnehandleClickOutBox = (ids,cnt) => {
-    if(cnt==0){
-    SetOutBoxID(ids)
-  }else{
-    SetOutBoxID(OutBoxID !== ids ? ids: "" );
-  }
-  SetEOpenID("0")
+  const OnehandleClickOutBox = (ids, cnt) => {
+    if (cnt == 0) {
+      SetOutBoxID(ids)
+    } else {
+      SetOutBoxID(OutBoxID !== ids ? ids : "");
+    }
+    SetEOpenID("0")
   };
 
   // Start From Email List
@@ -802,190 +803,190 @@ export default function Navigation(props) {
         </FormControl>
 
 
-        <List sx={{ pl: 0 }} className='listclick'> 
-        <ListItemButton onClick={OnehandleClick}>
-          {navopen ? <ExpandMore /> : <ExpandDown />}
-          <b>All Accounts</b>
-        </ListItemButton>
+        <List sx={{ pl: 0 }} className='listclick'>
+          <ListItemButton onClick={OnehandleClick}>
+            {navopen ? <ExpandMore /> : <ExpandDown />}
+            <b>All Accounts</b>
+          </ListItemButton>
 
-        <Collapse in={navopen} timeout="auto" unmountOnExit>
-          <List component="div">  
-          
-            <List component="div">  
-              <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickInOne}> 
-                {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
-              </ListItemButton> 
+          <Collapse in={navopen} timeout="auto" unmountOnExit>
+            <List component="div">
 
-              <Collapse in={navopenone} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>  
+              <List component="div">
+                <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickInOne}>
+                  {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
+                </ListItemButton>
 
-               <ListItem button  sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/AllInbox"}> 
-                    { TotalCount?.ReceiveEmailHistoryData!= undefined ?"All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")":"All Inbox(0)"}
-                </ListItem> 
+                <Collapse in={navopenone} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
 
-                <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/UnansweredResponses"}> 
-                  {AllTotalRecords?.AllStarredCount != undefined? "Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")":"Unanswered Responses(0)"}
-                </ListItem> 
+                    <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
+                      component={Link}
+                      selected={SelectMenuItem === "/AllInbox"}>
+                      {TotalCount?.ReceiveEmailHistoryData != undefined ? "All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
+                    </ListItem>
 
-                </List> 
-              </Collapse> 
-            </List>
+                    <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses")}
+                      component={Link}
+                      selected={SelectMenuItem === "/UnansweredResponses"}>
+                      {AllTotalRecords?.AllStarredCount != undefined ? "Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Unanswered Responses(0)"}
+                    </ListItem>
 
-
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Starred")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Starred"}> 
-                {AllTotalRecords?.AllStarredCount != undefined? "Starred(" + AllTotalRecords?.AllStarredCount + ")": "Starred(0)"}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Spam"}> 
-                 {AllTotalRecords?.AllSpamCount != undefined?"Spam(" + AllTotalRecords?.AllSpamCount + ")":"Spam(0)"}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/OtherInboxPage"}> 
-               {AllTotalRecords?.AllOtherInboxCount != undefined? "Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")":"Other Inbox(0)"}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/FollowUpLater"}> 
-              {AllTotalRecords?.AllFollowUpLaterCount!=undefined? "Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")":"Follow Up Later(0)"}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Drafts"}>
-              {AllTotalRecords?.AllDraftCount != undefined?"Drafts(" + AllTotalRecords?.AllDraftCount + ")":"Drafts(0)"} 
-            </ListItemButton>
-
-            <List component="div">  
-              <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}> 
-                {openstarred ? <ExpandMore /> : <ExpandDown />}
-                OutBox
-              </ListItemButton>
-
-              <Collapse in={openstarred} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
- 
-                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails")}
-                 component={Link} to="/AllSentEmails"
-                 selected={SelectMenuItem === "/AllSentEmails"}> 
-                  {AllSentTotalRecords?.AllSentEmailsCount!= undefined?"All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")":"All Sent(0)"}
-                  </ListItemButton>
-
-                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies")}
-                 component={Link} to="/UnansweredReplies"
-                 selected={SelectMenuItem === "/UnansweredReplies"}> 
-                  {AllSentTotalRecords?.AllUnansweredRepliesCount != undefined?"Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")":"Unanswered Replies(0)"}
-                  </ListItemButton> 
-                  
-                </List> 
-              </Collapse> 
-            </List>
-
-          </List>
-        </Collapse>
-      </List>
-      
-      {FromEmailDropdownList?.map((item) => (
-      <List sx={{ pl: item._id }} className='listclick'> 
-        <ListItemButton onClick={() => handleClick("0"+item._id,1)}key={"0"+item._id}> 
-          {EID == "0"+item._id ?  <ExpandMore />:<ExpandDown /> }
-          <b>{item.Email}</b>
-        </ListItemButton>
-
-        <Collapse in={EID == "0"+item._id} timeout="auto" unmountOnExit>
-          <List component="div">  
-          
-            <List component="div">  
-              <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1"+item._id,1)} key={"1"+item._id}> 
-                {OpemID == "1"+item._id ? <ExpandMore /> : <ExpandDown />} Inbox
-              </ListItemButton> 
-
-              <Collapse in={OpemID == "1"+item._id } timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>  
-
-               <ListItem button  sx={{ pl: item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/AllInbox"+item._id}> 
-                   {TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
-                </ListItem> 
-
-                <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/UnansweredResponses"+item._id}> 
-                   {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Unanswered Responses (0)` : `Unanswered Responses (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
-                </ListItem> 
-
-                </List> 
-              </Collapse> 
-            </List>
-
-            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Starred",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Starred"+item._id}> 
-                {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`} 
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/Spam",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/Spam"+item._id}> 
-                {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/OtherInboxPage"+item._id}> 
-               {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`}
-            </ListItemButton>
-
-            <ListItemButton sx={{ pl: "2"+item._id }} onClick={(event) => handleListItemClick(event, "/FollowUpLater",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/FollowUpLater"+item._id}> 
-               {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
-            </ListItemButton>
-
-       
-            <List component="div">  
-              <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2"+item._id,1)}key={"2"+item._id}> 
-                {OutBoxID == "2"+item._id ? <ExpandMore /> : <ExpandDown />}
-                OutBox
-              </ListItemButton>
+                  </List>
+                </Collapse>
               </List>
-            <Collapse in={OutBoxID == "2"+item._id} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
- 
-                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/AllSentEmails"+item._id}> 
-                   {SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`}
+
+
+              <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Starred")}
+                component={Link}
+                selected={SelectMenuItem === "/Starred"}>
+                {AllTotalRecords?.AllStarredCount != undefined ? "Starred(" + AllTotalRecords?.AllStarredCount + ")" : "Starred(0)"}
+              </ListItemButton>
+
+              <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
+                component={Link}
+                selected={SelectMenuItem === "/Spam"}>
+                {AllTotalRecords?.AllSpamCount != undefined ? "Spam(" + AllTotalRecords?.AllSpamCount + ")" : "Spam(0)"}
+              </ListItemButton>
+
+              <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
+                component={Link}
+                selected={SelectMenuItem === "/OtherInboxPage"}>
+                {AllTotalRecords?.AllOtherInboxCount != undefined ? "Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")" : "Other Inbox(0)"}
+              </ListItemButton>
+
+              <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
+                component={Link}
+                selected={SelectMenuItem === "/FollowUpLater"}>
+                {AllTotalRecords?.AllFollowUpLaterCount != undefined ? "Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")" : "Follow Up Later(0)"}
+              </ListItemButton>
+
+              <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
+                component={Link}
+                selected={SelectMenuItem === "/Drafts"}>
+                {AllTotalRecords?.AllDraftCount != undefined ? "Drafts(" + AllTotalRecords?.AllDraftCount + ")" : "Drafts(0)"}
+              </ListItemButton>
+
+              <List component="div">
+                <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}>
+                  {openstarred ? <ExpandMore /> : <ExpandDown />}
+                  OutBox
+                </ListItemButton>
+
+                <Collapse in={openstarred} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+
+                    <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails")}
+                      component={Link} to="/AllSentEmails"
+                      selected={SelectMenuItem === "/AllSentEmails"}>
+                      {AllSentTotalRecords?.AllSentEmailsCount != undefined ? "All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")" : "All Sent(0)"}
+                    </ListItemButton>
+
+                    <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies")}
+                      component={Link} to="/UnansweredReplies"
+                      selected={SelectMenuItem === "/UnansweredReplies"}>
+                      {AllSentTotalRecords?.AllUnansweredRepliesCount != undefined ? "Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")" : "Unanswered Replies(0)"}
+                    </ListItemButton>
+
+                  </List>
+                </Collapse>
+              </List>
+
+            </List>
+          </Collapse>
+        </List>
+
+        {FromEmailDropdownList?.map((item) => (
+          <List sx={{ pl: item._id }} className='listclick'>
+            <ListItemButton onClick={() => handleClick("0" + item._id, 1)} key={"0" + item._id}>
+              {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
+              <b>{item.Email}</b>
+            </ListItemButton>
+
+            <Collapse in={EID == "0" + item._id} timeout="auto" unmountOnExit>
+              <List component="div">
+
+                <List component="div">
+                  <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1" + item._id, 1)} key={"1" + item._id}>
+                    {OpemID == "1" + item._id ? <ExpandMore /> : <ExpandDown />} Inbox
                   </ListItemButton>
 
-                  <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies",item._id)}
-                 component={Link} 
-                 selected={SelectMenuItem === "/UnansweredReplies"+item._id}> 
-{SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered Replies (0)` : `Unanswered Replies (` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
-                  </ListItemButton> 
-                  
-                </List> 
-              </Collapse> 
+                  <Collapse in={OpemID == "1" + item._id} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+
+                      <ListItem button sx={{ pl: item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox", item._id)}
+                        component={Link}
+                        selected={SelectMenuItem === "/AllInbox" + item._id}>
+                        {TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
+                      </ListItem>
+
+                      <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses", item._id)}
+                        component={Link}
+                        selected={SelectMenuItem === "/UnansweredResponses" + item._id}>
+                        {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Unanswered Responses (0)` : `Unanswered Responses (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
+                      </ListItem>
+
+                    </List>
+                  </Collapse>
+                </List>
+
+                <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Starred", item._id)}
+                  component={Link}
+                  selected={SelectMenuItem === "/Starred" + item._id}>
+                  {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`}
+                </ListItemButton>
+
+                <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Spam", item._id)}
+                  component={Link}
+                  selected={SelectMenuItem === "/Spam" + item._id}>
+                  {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
+                </ListItemButton>
+
+                <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage", item._id)}
+                  component={Link}
+                  selected={SelectMenuItem === "/OtherInboxPage" + item._id}>
+                  {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`}
+                </ListItemButton>
+
+                <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/FollowUpLater", item._id)}
+                  component={Link}
+                  selected={SelectMenuItem === "/FollowUpLater" + item._id}>
+                  {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`}
+                </ListItemButton>
+
+
+                <List component="div">
+                  <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2" + item._id, 1)} key={"2" + item._id}>
+                    {OutBoxID == "2" + item._id ? <ExpandMore /> : <ExpandDown />}
+                    OutBox
+                  </ListItemButton>
+                </List>
+                <Collapse in={OutBoxID == "2" + item._id} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+
+                    <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails", item._id)}
+                      component={Link}
+                      selected={SelectMenuItem === "/AllSentEmails" + item._id}>
+                      {SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`}
+                    </ListItemButton>
+
+                    <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies", item._id)}
+                      component={Link}
+                      selected={SelectMenuItem === "/UnansweredReplies" + item._id}>
+                      {SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered Replies (0)` : `Unanswered Replies (` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
+                    </ListItemButton>
+
+                  </List>
+                </Collapse>
+              </List>
+            </Collapse>
           </List>
-        </Collapse>
-      </List>
- ))}
+        ))}
 
 
 
 
-        
+
         {/* 
       <ListItem button >
         <Link to="/ckpis"> 
