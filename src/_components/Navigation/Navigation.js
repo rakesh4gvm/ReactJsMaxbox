@@ -208,7 +208,7 @@ export default function Navigation(props) {
 
   
   const handleListItemClick = (event, PageName,ID) => {
-    
+    debugger
     if(ID != undefined && ID!="")
     {
       var pg = PageName+ID
@@ -238,7 +238,7 @@ export default function Navigation(props) {
         history.push("/FollowUpLater");
       }
     }
-    if (PageName == "/Draft") {
+    if (PageName == "/Drafts") {
       if (ID != "" && ID != null) {
 
         history.push("/Drafts", ID);
