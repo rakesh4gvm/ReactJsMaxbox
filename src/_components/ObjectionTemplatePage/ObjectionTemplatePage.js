@@ -135,12 +135,14 @@ export default function ObjectionTemplateListPage() {
           toast.error(<div>No Data.</div>)
           LoaderHide()
           SetPageValue(0)
+          SetCountPage(0)
           SetObjectionTemplateList([])
         }
       }
       else {
         SetObjectionTemplateList([])
         SetCountPage(0)
+        SetPageValue(0)
         LoaderHide()
         toast.error(Result?.data?.Message);
       }

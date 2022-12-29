@@ -137,13 +137,16 @@ export default function TemplatesListPage() {
           toast.error(<div>No Data.</div>)
           LoaderHide()
           SetPageValue(0)
+          SetCountPage(0)
         }
       }
       else {
         SetTemplateList([])
         SetCountPage(0)
         LoaderHide()
+        SetPageValue(0)
         toast.error(Result?.data?.Message);
+
       }
     });
   };
