@@ -25,7 +25,8 @@ export function UpdateUserDetails(ClientID) {
     if (ObjLoginData && ObjLoginData != null) {
         ObjLoginData.ClientID = ClientID;
         localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
-
+        localStorage.setItem("NavigationID", "")
+        window.location.reload();
         return ObjLoginData;
     } else {
         return null;
@@ -34,6 +35,7 @@ export function UpdateUserDetails(ClientID) {
 export function Logout() {
 
     localStorage.removeItem("LoginData");
+    localStorage.setItem("NavigationID", "")
     window.location.href = CommonConstants.LoginPage;
 
     // history.push('/');

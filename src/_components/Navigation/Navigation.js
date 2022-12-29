@@ -308,10 +308,11 @@ export default function Navigation(props) {
   }
 
   const OnLoad = () => {
+    debugger
     var SelectedPage = props.menupage;
     const NavigationID = localStorage.getItem("NavigationID")
     var SelectedID = NavigationID
-    console.log(props);
+    
 
     if (SelectedPage == undefined) {
       SetSelectMenuItem("/AllInbox")
@@ -563,7 +564,7 @@ export default function Navigation(props) {
   const SelectClient = (e) => {
     SetSelectedClient(e.target.value)
     UpdateUserDetails(e.target.value)
-    window.location.reload(false);
+    
   }
 
   const OnehandleClick = () => {
