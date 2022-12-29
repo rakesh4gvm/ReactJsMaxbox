@@ -2662,8 +2662,9 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     display: none;
 }
 
-.MuiCalendarPicker-root .Mui-selected {
+div .MuiCalendarPicker-root .Mui-selected {
     background-color: #e49273 !important;
+    color: #fff !important;
 }
 
 div.css-dhopo2 {
