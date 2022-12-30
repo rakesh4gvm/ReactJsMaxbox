@@ -1,6 +1,10 @@
 import { history } from '../_helpers';
 import { CommonConstants } from "../_constants/common.constants";
 import Moment from "moment";
+var CryptoJS = require("crypto-js");
+var FrontEndUrl = "http://localhost:3001";
+
+
 
 export function GetUserDetails() {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
@@ -8,6 +12,31 @@ export function GetUserDetails() {
         return ObjLoginData;
     } else {
         return null;
+    }
+}
+
+export function encrypt(ID){
+    try{
+    var UID = CryptoJS.AES.encrypt(
+        JSON.stringify(ID),
+        "my-secret-key@123"
+      ).toString();
+    return UID
+    }
+    catch{
+        return "";
+    }
+}
+
+export function decrypt(ID){
+    debugger
+    try{
+        var bytes = CryptoJS.AES.decrypt(ID, 'my-secret-key@123');
+        var UID = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return UID
+    }
+    catch{
+        return "";
     }
 }
 
@@ -21,7 +50,7 @@ export function CheckLocalStorage() {
 }
 export function UpdateUserDetails(ClientID) {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
-    debugger
+    
     if (ObjLoginData && ObjLoginData != null) {
         ObjLoginData.ClientID = ClientID;
         localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
@@ -29,6 +58,16 @@ export function UpdateUserDetails(ClientID) {
         return ObjLoginData;
     } else {
         return null;
+    }
+}
+
+
+export function Locate(PageName,ID){
+    
+    if(ID!=""){
+    window.location.href = FrontEndUrl + PageName+"?" + encrypt(ID)
+    }else{
+        window.location.href = FrontEndUrl + PageName;
     }
 }
 

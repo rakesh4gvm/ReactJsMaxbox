@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllSentEmailsComposePage from '../AllSentEmailsComposePage/AllSentEmailsComposePage';
 
@@ -239,8 +239,10 @@ export default function AllSentEmailsPage(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID)
         GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, ID);
@@ -248,7 +250,7 @@ export default function AllSentEmailsPage(props) {
       else {
         GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, 0)
       }
-    }
+    
   }
   // End Get Client ID
 
@@ -364,8 +366,10 @@ export default function AllSentEmailsPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          if (ID !== undefined && ID!="") {
             if (ID != "" && ID != null && ID != "undefined") {
               if (AllSentList?.length - 1 == 0) {
                 GetAllSent(ClientID, UserID, 1, ID);
@@ -426,15 +430,17 @@ export default function AllSentEmailsPage(props) {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+         
             if (ID != "" && ID != null && ID != "undefined") {
               GetAllSent(ClientID, UserID, Page, ID);
             }
             else {
               GetAllSent(ClientID, UserID, Page, 0)
             }
-          }
+          
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -906,14 +912,16 @@ export default function AllSentEmailsPage(props) {
 
     var pn = newPage + 1;
 
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+
       if (ID != "" && ID != null && ID != "undefined") {
         GetAllSent(ClientID, UserID, pn, ID);
       } else {
         GetAllSent(ClientID, UserID, pn, 0)
       }
-    }
+    
   };
   // Ends Pagination
 

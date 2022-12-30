@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail,decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
 
@@ -180,15 +180,17 @@ export default function UnansweredResponsesPage(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    if (props !== undefined) {
-      const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
         GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
       }
-    }
+    // }
   }
 
   // Start Get Follow Up Later List
@@ -321,8 +323,10 @@ export default function UnansweredResponsesPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               if (FollowUpList?.length - 1 == 0) {
                 GetUnansweredResponcesList(ClientID, UserID, 1, ID);
@@ -336,7 +340,7 @@ export default function UnansweredResponsesPage(props) {
                 GetUnansweredResponcesList(ClientID, UserID, Page, 0)
               }
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -380,15 +384,17 @@ export default function UnansweredResponsesPage(props) {
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
-              if (props !== undefined) {
-                const ID = props.location.state;
+              var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+              // if (props !== undefined) {
+              //   const ID = props.location.state;
                 if (ID != "" && ID != null && ID != "undefined") {
 
                   GetUnansweredResponcesList(ClientID, UserID, Page, ID);
                 } else {
                   GetUnansweredResponcesList(ClientID, UserID, Page, 0)
                 }
-              }
+              // }
             }
             else {
               toast.error(Result?.data?.Message);
@@ -429,14 +435,16 @@ export default function UnansweredResponsesPage(props) {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               GetUnansweredResponcesList(ClientID, UserID, Page, ID);
             } else {
               GetUnansweredResponcesList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -470,14 +478,16 @@ export default function UnansweredResponsesPage(props) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               GetUnansweredResponcesList(ClientID, UserID, Page, ID);
             } else {
               GetUnansweredResponcesList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         }
         else {
           CloseOtherInboxPopModel();
@@ -1007,9 +1017,10 @@ export default function UnansweredResponsesPage(props) {
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
-
-    if (props !== undefined) {
-      const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    if (ID !== undefined && ID!="") {
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
         GetUnansweredResponcesList(ClientID, UserID, pn, ID);
       } else {

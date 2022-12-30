@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import FollowUpLaterComposePage from '../FollowUpLaterComposePage/FollowUpLaterComposePage';
 
@@ -189,8 +189,10 @@ export default function FollowUpLater(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
@@ -198,7 +200,7 @@ export default function FollowUpLater(props) {
       else {
         GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
       }
-    }
+    // }
   }
 
   // Start Get Follow Up Later List
@@ -336,15 +338,17 @@ export default function FollowUpLater(props) {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID !== undefined && ID!="") {
             if (ID != "" && ID != null && ID != "undefined") {
               GetFollowUpLaterList(ClientID, UserID, Page, ID);
             }
             else {
               GetFollowUpLaterList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -378,15 +382,17 @@ export default function FollowUpLater(props) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID !== undefined && ID!="") {
             if (ID != "" && ID != null && ID != "undefined") {
               GetFollowUpLaterList(ClientID, UserID, Page, ID);
             }
             else {
               GetFollowUpLaterList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         }
         else {
           CloseOtherInboxPopModel();
@@ -423,8 +429,10 @@ export default function FollowUpLater(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID !== undefined && ID!="") {
             if (ID != "" && ID != null && ID != "undefined") {
               if (FollowUpList.length - 1 == 0) {
                 GetFollowUpLaterList(ClientID, UserID, 1, ID);
@@ -439,7 +447,7 @@ export default function FollowUpLater(props) {
                 GetFollowUpLaterList(ClientID, UserID, Page, 0)
               }
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -959,14 +967,16 @@ export default function FollowUpLater(props) {
 
     var pn = newPage + 1;
 
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
       if (ID != "" && ID != null && ID != "undefined") {
         GetFollowUpLaterList(ClientID, UserID, pn, ID);
       } else {
         GetFollowUpLaterList(ClientID, UserID, pn, 0)
       }
-    }
+    // }
   };
   // Ends Pagination 
 

@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import StarredComposePage from '../StarredComposePage/StarredComposePage';
 
@@ -123,7 +123,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function OtherInboxPage(props) {
-
   const [StarredList, SetStarredList] = useState([])
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
@@ -189,15 +188,17 @@ export default function OtherInboxPage(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
       } else {
         GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
       }
-    }
+    // }
   }
   // End Get Client ID
 
@@ -329,8 +330,10 @@ export default function OtherInboxPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID !== undefined && ID!="") {
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               if (StarredList?.length - 1 == 0) {
                 GetStarredList(ClientID, UserID, 1, ID);
@@ -344,7 +347,7 @@ export default function OtherInboxPage(props) {
                 GetStarredList(ClientID, UserID, Page, 0)
               }
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -378,14 +381,16 @@ export default function OtherInboxPage(props) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID !== undefined && ID!="") {
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               GetStarredList(ClientID, UserID, Page, ID);
             } else {
               GetStarredList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         }
         else {
           CloseOtherInboxPopModel();
@@ -431,14 +436,16 @@ export default function OtherInboxPage(props) {
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
-              if (props !== undefined) {
-                const ID = props.location.state;
+              var ID = decrypt(props.location.search.replace('?', ''))
+              // if (ID !== undefined && ID!="") {
+              // if (props !== undefined) {
+              //   const ID = props.location.state;
                 if (ID != "" && ID != null && ID != "undefined") {
                   GetStarredList(ClientID, UserID, Page, ID);
                 } else {
                   GetStarredList(ClientID, UserID, Page, 0)
                 }
-              }
+              // }
             } else {
               toast.error(Result?.data?.Message);
             }
@@ -960,15 +967,16 @@ export default function OtherInboxPage(props) {
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
-
-    if (props !== undefined) {
-      const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
+    // if (ID !== undefined && ID!="") {
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
         GetStarredList(ClientID, UserID, pn, ID);
       } else {
         GetStarredList(ClientID, UserID, pn, 0)
       }
-    }
+    // }
   };
 
   return (

@@ -53,7 +53,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow } from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow,Locate } from '../../_helpers/Utility'
 
 toast.configure();
 
@@ -216,57 +216,58 @@ export default function Navigation(props) {
       SetSelectMenuItem(PageName);
       localStorage.setItem("NavigationID", "")
     }
-    if (PageName == "/UnansweredResponses") {
-      if (ID != "" && ID != null) {
-        history.push("/UnansweredResponses", ID);
-      } else {
-        history.push("/UnansweredResponses");
-      }
-    }
-    if (PageName == "/Starred") {
-      if (ID != "" && ID != null) {
-        history.push("/Starred", ID);
-      } else {
-        history.push("/Starred");
-      }
-    }
-    if (PageName == "/FollowUpLater") {
-      if (ID != "" && ID != null) {
-        history.push("/FollowUpLater", ID);
-      }
-      else {
-        history.push("/FollowUpLater");
-      }
-    }
-    if (PageName == "/Drafts") {
-      if (ID != "" && ID != null) {
+    // if (PageName == "/UnansweredResponses") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/UnansweredResponses", ID);
+    //   } else {
+    //     history.push("/UnansweredResponses");
+    //   }
+    // }
+    // if (PageName == "/Starred") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/Starred", ID);
+    //   } else {
+    //     history.push("/Starred");
+    //   }
+    // }
+    // if (PageName == "/FollowUpLater") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/FollowUpLater", ID);
+    //   }
+    //   else {
+    //     history.push("/FollowUpLater");
+    //   }
+    // }
+    // if (PageName == "/Drafts") {
+    //   if (ID != "" && ID != null) {
 
-        history.push("/Drafts", ID);
-      } else {
-        history.push("/Drafts");
-      }
-    }
-    if (PageName == "/OtherInboxPage") {
+    //     history.push("/Drafts", ID);
+    //   } else {
+    //     history.push("/Drafts");
+    //   }
+    // }
+    // if (PageName == "/OtherInboxPage") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/OtherInboxPage", ID);
+    //   } else {
+    //     history.push("/OtherInboxPage");
+    //   }
+    // }
+    // if (PageName == "/Spam") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/Spam", ID);
+    //   } else {
+    //     history.push("/Spam");
+    //   }
+    // }
+    // if (PageName == "/AllInbox") {
       if (ID != "" && ID != null) {
-        history.push("/OtherInboxPage", ID);
+        // history.push("/AllInbox", ID);
+        Locate(PageName,ID)
       } else {
-        history.push("/OtherInboxPage");
+        Locate(PageName,"")
       }
-    }
-    if (PageName == "/Spam") {
-      if (ID != "" && ID != null) {
-        history.push("/Spam", ID);
-      } else {
-        history.push("/Spam");
-      }
-    }
-    if (PageName == "/AllInbox") {
-      if (ID != "" && ID != null) {
-        history.push("/AllInbox", ID);
-      } else {
-        history.push("/AllInbox");
-      }
-    }
+    // }
     // if (PageName == "AllInbox") {
     //   if (ID != "" && ID != null) {
     //     if (history.location.pathname === "/AllInbox") {
@@ -276,20 +277,20 @@ export default function Navigation(props) {
     //     window.location.href = "http://localhost:3001/AllInbox"
     //   }
     // }
-    if (PageName == "/AllSentEmails") {
-      if (ID != "" && ID != null) {
-        history.push("/AllSentEmails", ID);
-      } else {
-        history.push("/AllSentEmails");
-      }
-    }
-    if (PageName == "/UnansweredReplies") {
-      if (ID != "" && ID != null) {
-        history.push("/UnansweredReplies", ID);
-      } else {
-        history.push("/UnansweredReplies");
-      }
-    }
+    // if (PageName == "/AllSentEmails") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/AllSentEmails", ID);
+    //   } else {
+    //     history.push("/AllSentEmails");
+    //   }
+    // }
+    // if (PageName == "/UnansweredReplies") {
+    //   if (ID != "" && ID != null) {
+    //     history.push("/UnansweredReplies", ID);
+    //   } else {
+    //     history.push("/UnansweredReplies");
+    //   }
+    // }
   };
 
   // Get Client ID
