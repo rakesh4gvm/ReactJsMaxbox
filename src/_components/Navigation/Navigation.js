@@ -53,7 +53,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import { UpdateUserDetails, GetUserDetails, Logout, LoaderHide, LoaderShow } from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow } from '../../_helpers/Utility'
 
 toast.configure();
 
@@ -308,11 +308,11 @@ export default function Navigation(props) {
   }
 
   const OnLoad = () => {
-    debugger
+
     var SelectedPage = props.menupage;
     const NavigationID = localStorage.getItem("NavigationID")
     var SelectedID = NavigationID
-    
+
 
     if (SelectedPage == undefined) {
       SetSelectMenuItem("/AllInbox")
@@ -564,7 +564,7 @@ export default function Navigation(props) {
   const SelectClient = (e) => {
     SetSelectedClient(e.target.value)
     UpdateUserDetails(e.target.value)
-    
+    ClientChnage()
   }
 
   const OnehandleClick = () => {
@@ -983,10 +983,6 @@ export default function Navigation(props) {
             </Collapse>
           </List>
         ))}
-
-
-
-
 
         {/* 
       <ListItem button >
