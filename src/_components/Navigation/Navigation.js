@@ -53,7 +53,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow,Locate } from '../../_helpers/Utility'
+import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow, Locate } from '../../_helpers/Utility'
 
 toast.configure();
 
@@ -198,6 +198,10 @@ export default function Navigation(props) {
 
 
 
+  const [SpamTotalCount, SetSpamTotalCount] = useState()
+  const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
+
+
 
   useEffect(() => {
     GetClientDropdown();
@@ -261,12 +265,12 @@ export default function Navigation(props) {
     //   }
     // }
     // if (PageName == "/AllInbox") {
-      if (ID != "" && ID != null) {
-        // history.push("/AllInbox", ID);
-        Locate(PageName,ID)
-      } else {
-        Locate(PageName,"")
-      }
+    if (ID != "" && ID != null) {
+      // history.push("/AllInbox", ID);
+      Locate(PageName, ID)
+    } else {
+      Locate(PageName, "")
+    }
     // }
     // if (PageName == "AllInbox") {
     //   if (ID != "" && ID != null) {
@@ -302,6 +306,8 @@ export default function Navigation(props) {
     }
     GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
+    GetSpamTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+    GetSpamEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetSentEmailsTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
@@ -512,6 +518,51 @@ export default function Navigation(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetSentEmailTotalRecords(Result.data)
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
+
+
+  const GetSpamTotalRecordCount = (CID, UID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamTotalRecordCount",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSpamTotalCount(Result.data)
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
+
+
+  const GetSpamEmailTotalRecords = (CID, UID) => {
+
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/spamemailhistory/EmailSpamTotalRecordCount",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSpamEmailTotalCount(Result.data)
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -848,7 +899,7 @@ export default function Navigation(props) {
               <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
                 component={Link}
                 selected={SelectMenuItem === "/Spam"}>
-                {AllTotalRecords?.AllSpamCount != undefined ? "Spam(" + AllTotalRecords?.AllSpamCount + ")" : "Spam(0)"}
+                {SpamTotalCount?.TotalCount != undefined ? "Spam(" + SpamTotalCount?.TotalCount + ")" : "Spam(0)"}
               </ListItemButton>
 
               <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
@@ -941,7 +992,7 @@ export default function Navigation(props) {
                 <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Spam", item._id)}
                   component={Link}
                   selected={SelectMenuItem === "/Spam" + item._id}>
-                  {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
+                  {SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage", item._id)}

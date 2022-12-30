@@ -22,7 +22,7 @@ import { history } from "../../_helpers";
 import Emailinbox from '../../images/email_inbox_img.png';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderShow, LoaderHide } from "../../_helpers/Utility";
+import { GetUserDetails, UpdateUserDetails, LoaderShow, LoaderHide, ClientChnage } from "../../_helpers/Utility";
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 import FooterBottom from '../Footer/footer';
@@ -84,11 +84,11 @@ export default function ClientListPage() {
       SetUserID(UserDetails.UserID);
     }
     CheckAccountAuthonicate()
-    GetClientList(UserDetails.ClientID, UserDetails.UserID, Page)
+    GetClientList(UserDetails.ClientID, UserDetails.UserID, Page, "")
   }
 
   // Start Get Client List
-  const GetClientList = (CID, UID, PN) => {
+  const GetClientList = (CID, UID, PN, str) => {
     let Data
     Data = {
       Page: PN,
@@ -110,6 +110,13 @@ export default function ClientListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetClientList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        if (Result.data.PageData.length > 0 && str === "del") {
+          UpdateUserDetails(Result.data.PageData[0]?.ClientID)
+          ClientChnage()
+        }
+        if (Result.data.PageData.length === 0 && str === "del") {
+          ClientChnage()
+        }
         LoaderHide()
       }
       else {
@@ -142,11 +149,11 @@ export default function ClientListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Client deleted successfully.</div>);
         LoaderShow()
-        GetClientList(ClientID, UserID, Page)
+        GetClientList(ClientID, UserID, Page, "del")
         SetDeletePopModel(false);
       }
       else {
-        GetClientList(ClientID, UserID, Page)
+        GetClientList(ClientID, UserID, Page, "")
         SetDeletePopModel(false);
         toast.error(Result?.data?.Message);
       }
@@ -158,7 +165,7 @@ export default function ClientListPage() {
   const HandleChangePage = (Event, NewPage) => {
     LoaderShow()
     SetPage(NewPage)
-    GetClientList(ClientID, UserID, NewPage)
+    GetClientList(ClientID, UserID, NewPage, "")
   }
   // Pagination Ends
 

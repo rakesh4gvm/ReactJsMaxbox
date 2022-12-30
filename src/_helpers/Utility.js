@@ -29,7 +29,7 @@ export function encrypt(ID){
 }
 
 export function decrypt(ID){
-    debugger
+    
     try{
         var bytes = CryptoJS.AES.decrypt(ID, 'my-secret-key@123');
         var UID = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
