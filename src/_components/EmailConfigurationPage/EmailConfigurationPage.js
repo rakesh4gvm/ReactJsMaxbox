@@ -244,6 +244,7 @@ export default function EmailConfigurationPage() {
         LoaderShow()
         GetEmailAccountList(ClientID, UserID, Page)
         SetDeletePopModel(false);
+        window.location.reload(true)
       }
       else {
         GetEmailAccountList(ClientID, UserID, Page)
