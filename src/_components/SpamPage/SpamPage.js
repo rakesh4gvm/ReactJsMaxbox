@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import SpamComposePage from '../SpamComposePage/SpamComposePage';
 
@@ -194,8 +194,9 @@ export default function SpamPage(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
@@ -204,7 +205,7 @@ export default function SpamPage(props) {
         GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
       }
     }
-  }
+  // }
   // End Get Client ID
 
   // Start Get Follow Up Later List
@@ -329,15 +330,16 @@ export default function SpamPage(props) {
           CloseStarPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
             if (ID != "" && ID != null && ID != "undefined") {
               GetSpamList(ClientID, UserID, Page, ID);
             }
             else {
               GetSpamList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -381,15 +383,16 @@ export default function SpamPage(props) {
               CloseFollowupPopModel();
               OpenMessageDetails('')
               LoaderShow()
-              if (props !== undefined) {
-                const ID = props.location.state;
+              var ID = decrypt(props.location.search.replace('?', ''))
+              // if (props !== undefined) {
+              //   const ID = props.location.state;
                 if (ID != "" && ID != null && ID != "undefined") {
                   GetSpamList(ClientID, UserID, Page, ID);
                 }
                 else {
                   GetSpamList(ClientID, UserID, Page, 0)
                 }
-              }
+              // }
             } else {
               toast.error(Result?.data?.Message);
             }
@@ -429,15 +432,16 @@ export default function SpamPage(props) {
           CloseOtherInboxPopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
             if (ID != "" && ID != null && ID != "undefined") {
               GetSpamList(ClientID, UserID, Page, ID);
             }
             else {
               GetSpamList(ClientID, UserID, Page, 0)
             }
-          }
+          // }
         }
         else {
           CloseOtherInboxPopModel();
@@ -474,8 +478,9 @@ export default function SpamPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          if (props !== undefined) {
-            const ID = props.location.state;
+          // if (props !== undefined) {
+          //   const ID = props.location.state;
+          var ID = decrypt(props.location.search.replace('?', ''))
             if (ID != "" && ID != null && ID != "undefined") {
               if (SpamPage.length - 1 == 0) {
                 GetSpamList(ClientID, UserID, 1, ID);
@@ -490,7 +495,7 @@ export default function SpamPage(props) {
                 GetSpamList(ClientID, UserID, Page, 0)
               }
             }
-          }
+          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1002,14 +1007,15 @@ export default function SpamPage(props) {
 
     var pn = newPage + 1;
 
-    if (props !== undefined) {
-      const ID = props.location.state;
+    // if (props !== undefined) {
+    //   const ID = props.location.state;
+    var ID = decrypt(props.location.search.replace('?', ''))
       if (ID != "" && ID != null && ID != "undefined") {
         GetSpamList(ClientID, UserID, pn, ID);
       } else {
         GetSpamList(ClientID, UserID, pn, 0)
       }
-    }
+    // }
   };
   // Ends Pagination
 
