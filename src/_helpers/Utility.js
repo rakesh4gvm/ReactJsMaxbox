@@ -72,7 +72,7 @@ export function Locate(PageName,ID){
 }
 
 export function ClientChnage() {
-    window.location.href = FrontEndUrl + PageName;
+    window.location.href = FrontEndUrl + "/AllInbox";
     // window.location.reload(true)
 }
 export function Logout() {
