@@ -230,7 +230,7 @@ export default function AllSentEmailsPage(props) {
   useEffect(() => {
     document.title = 'All Sent | MAXBOX';
     GetClientID();
-  }, [])
+  }, [SearchInbox])
 
   // Starts Get Client ID
   const GetClientID = () => {

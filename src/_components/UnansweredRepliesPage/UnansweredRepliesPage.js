@@ -231,7 +231,7 @@ export default function AllUnansweredRepliesPage(props) {
   useEffect(() => {
     document.title = 'Unanswered Replies | MAXBOX';
     GetClientID();
-  }, [])
+  }, [SearchInbox])
 
   // Starts Get Client ID
   const GetClientID = () => {
