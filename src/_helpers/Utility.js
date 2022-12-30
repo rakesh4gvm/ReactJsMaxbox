@@ -72,7 +72,8 @@ export function Locate(PageName,ID){
 }
 
 export function ClientChnage() {
-    window.location.reload(true)
+    window.location.href = FrontEndUrl + PageName;
+    // window.location.reload(true)
 }
 export function Logout() {
 
