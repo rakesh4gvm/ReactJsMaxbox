@@ -1018,7 +1018,7 @@ export default function UnansweredResponsesPage(props) {
 
     var pn = newPage + 1;
     var ID = decrypt(props.location.search.replace('?', ''))
-    if (ID !== undefined && ID!="") {
+    // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
       if (ID != "" && ID != null && ID != "undefined") {
@@ -1026,7 +1026,7 @@ export default function UnansweredResponsesPage(props) {
       } else {
         GetUnansweredResponcesList(ClientID, UserID, pn, 0)
       }
-    }
+    // }
   };
 
   return (
