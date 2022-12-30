@@ -2,7 +2,7 @@ import { history } from '../_helpers';
 import { CommonConstants } from "../_constants/common.constants";
 import Moment from "moment";
 var CryptoJS = require("crypto-js");
-var FrontEndUrl = "http://localhost:3001";
+var FrontEndUrl = "https://frontend.maxbox.com";
 
 
 
