@@ -2384,7 +2384,7 @@ div#root {
 .orangbody+div>div {
     margin-left: 70px;
     background-color: #FFF7F7;
-    padding: 15px 0px 15px 15px;
+    padding: 10px;
 }
 
 .righter {
@@ -2902,6 +2902,8 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 
 .listclick.MuiList-root {
     padding-left: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .listclick > .MuiListItemButton-gutters{
     padding-left: 0;
