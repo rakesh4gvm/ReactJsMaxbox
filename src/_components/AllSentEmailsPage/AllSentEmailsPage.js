@@ -1239,7 +1239,7 @@ export default function AllSentEmailsPage(props) {
                 <h6>To :</h6>
               </Col>
               <Col xs={7} className="px-0">
-                <Input className='input-clend' id='To' name='To' value={OpenMessage?.FromEmail} disabled />
+                <Input className='input-clend' id='To' name='To' value={OpenMessage?.ToEmail} disabled />
               </Col>
             </Row>
           </div>
