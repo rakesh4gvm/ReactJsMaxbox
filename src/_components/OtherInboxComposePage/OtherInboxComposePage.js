@@ -376,6 +376,9 @@ export default function OtherInboxComposePage({ GetOtherInboxList }) {
         callback: function (cmd, val) {
             var editorInstance = this;
             editorInstance.html.insert("{" + val + "}");
+            SetSignature({
+                Data: editorInstance.html.get()
+            });
         },
         // Callback on refresh.
         refresh: function ($btn) {

@@ -275,7 +275,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
     // Sent Mail Starts
     const SentMail = async () => {
-        debugger
+        
         console.log("Signature inside Sentmail======", Signature.Data)
         var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
@@ -382,6 +382,13 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         callback: function (cmd, val) {
             var editorInstance = this;
             editorInstance.html.insert("{" + val + "}" + '&nbsp;' + "<br/>");
+            SetSignature({
+                Data: editorInstance.html.get()
+            });
+            // editorInstance.cursor.isAtEnd()
+            // clicked()
+           
+
         },
         // Callback on refresh.
         refresh: function ($btn) {
@@ -500,17 +507,17 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         imageUploadRemoteUrls: false,
     }
     const HandleModelChange = (Model) => {
-        console.log("Model======", Model)
-        SetSignature({
-            Data: Model
-        });
+        // console.log("Model======", Model)
+        // SetSignature({
+        //     Data: Model
+        // });
     }
     var editor = new FroalaEditor('.send', {}, function () {
         editor.button.buildList();
     })
     // Frola Editor Ends
 
-    console.log("Signature======", Signature.Data)
+   
 
 
 
@@ -641,7 +648,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                 </Box>
             </Modal>
-
             <div className='composebody' id='maxcompose'>
                 <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
@@ -696,6 +702,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                             <Col xs={3} className='col text-right d-flex px-0'>
                                 <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
                                 <Button className='lable-btn' onClick={OpenBcc}>Bcc</Button>
+                                
                             </Col>
                         </Row>
                     </div>
