@@ -275,7 +275,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
     // Sent Mail Starts
     const SentMail = async () => {
-        
+
         console.log("Signature inside Sentmail======", Signature.Data)
         var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
@@ -387,7 +387,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             });
             // editorInstance.cursor.isAtEnd()
             // clicked()
-           
+
 
         },
         // Callback on refresh.
@@ -507,17 +507,16 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         imageUploadRemoteUrls: false,
     }
     const HandleModelChange = (Model) => {
-        // console.log("Model======", Model)
-        // SetSignature({
-        //     Data: Model
-        // });
+        SetSignature({
+            Data: Model
+        });
     }
     var editor = new FroalaEditor('.send', {}, function () {
         editor.button.buildList();
     })
     // Frola Editor Ends
 
-   
+
 
 
 
@@ -702,7 +701,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                             <Col xs={3} className='col text-right d-flex px-0'>
                                 <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
                                 <Button className='lable-btn' onClick={OpenBcc}>Bcc</Button>
-                                
+
                             </Col>
                         </Row>
                     </div>
