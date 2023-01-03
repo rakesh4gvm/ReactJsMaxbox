@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import FollowUpLaterComposePage from '../FollowUpLaterComposePage/FollowUpLaterComposePage';
 
@@ -193,13 +193,13 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
-      }
-      else {
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    }
+    else {
+      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+    }
     // }
   }
 
@@ -342,12 +342,12 @@ export default function FollowUpLater(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetFollowUpLaterList(ClientID, UserID, Page, ID);
-            }
-            else {
-              GetFollowUpLaterList(ClientID, UserID, Page, 0)
-            }
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetFollowUpLaterList(ClientID, UserID, Page, ID);
+          }
+          else {
+            GetFollowUpLaterList(ClientID, UserID, Page, 0)
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -386,12 +386,12 @@ export default function FollowUpLater(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetFollowUpLaterList(ClientID, UserID, Page, ID);
-            }
-            else {
-              GetFollowUpLaterList(ClientID, UserID, Page, 0)
-            }
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetFollowUpLaterList(ClientID, UserID, Page, ID);
+          }
+          else {
+            GetFollowUpLaterList(ClientID, UserID, Page, 0)
+          }
           // }
         }
         else {
@@ -433,20 +433,20 @@ export default function FollowUpLater(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              if (FollowUpList.length - 1 == 0) {
-                GetFollowUpLaterList(ClientID, UserID, 1, ID);
-              } else {
-                GetFollowUpLaterList(ClientID, UserID, Page, ID);
-              }
+          if (ID != "" && ID != null && ID != "undefined") {
+            if (FollowUpList.length - 1 == 0) {
+              GetFollowUpLaterList(ClientID, UserID, 1, ID);
+            } else {
+              GetFollowUpLaterList(ClientID, UserID, Page, ID);
             }
-            else {
-              if (FollowUpList.length - 1 == 0) {
-                GetFollowUpLaterList(ClientID, UserID, 1, 0)
-              } else {
-                GetFollowUpLaterList(ClientID, UserID, Page, 0)
-              }
+          }
+          else {
+            if (FollowUpList.length - 1 == 0) {
+              GetFollowUpLaterList(ClientID, UserID, 1, 0)
+            } else {
+              GetFollowUpLaterList(ClientID, UserID, Page, 0)
             }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -628,7 +628,7 @@ export default function FollowUpLater(props) {
       CloseComposeReply()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ReplySendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -639,6 +639,9 @@ export default function FollowUpLater(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -752,7 +755,7 @@ export default function FollowUpLater(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
+    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -898,7 +901,7 @@ export default function FollowUpLater(props) {
       CloseComposeForward()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ForwardSendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -909,6 +912,9 @@ export default function FollowUpLater(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetForwardSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -942,7 +948,7 @@ export default function FollowUpLater(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
+    toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -971,11 +977,11 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-      if (ID != "" && ID != null && ID != "undefined") {
-        GetFollowUpLaterList(ClientID, UserID, pn, ID);
-      } else {
-        GetFollowUpLaterList(ClientID, UserID, pn, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      GetFollowUpLaterList(ClientID, UserID, pn, ID);
+    } else {
+      GetFollowUpLaterList(ClientID, UserID, pn, 0)
+    }
     // }
   };
   // Ends Pagination 

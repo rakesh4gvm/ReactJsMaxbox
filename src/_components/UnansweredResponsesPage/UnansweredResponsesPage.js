@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail,decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
 
@@ -184,12 +184,12 @@ export default function UnansweredResponsesPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
-      } else {
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    } else {
+      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+    }
     // }
   }
 
@@ -324,22 +324,22 @@ export default function UnansweredResponsesPage(props) {
           OpenMessageDetails('')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
+          // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-              if (FollowUpList?.length - 1 == 0) {
-                GetUnansweredResponcesList(ClientID, UserID, 1, ID);
-              } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, ID);
-              }
+          if (ID != "" && ID != null && ID != "undefined") {
+            if (FollowUpList?.length - 1 == 0) {
+              GetUnansweredResponcesList(ClientID, UserID, 1, ID);
             } else {
-              if (FollowUpList?.length - 1 == 0) {
-                GetUnansweredResponcesList(ClientID, UserID, 1, 0)
-              } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0)
-              }
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID);
             }
+          } else {
+            if (FollowUpList?.length - 1 == 0) {
+              GetUnansweredResponcesList(ClientID, UserID, 1, 0)
+            } else {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+            }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -385,15 +385,15 @@ export default function UnansweredResponsesPage(props) {
               OpenMessageDetails('')
               LoaderShow()
               var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
+              // if (ID !== undefined && ID!="") {
               // if (props !== undefined) {
               //   const ID = props.location.state;
-                if (ID != "" && ID != null && ID != "undefined") {
+              if (ID != "" && ID != null && ID != "undefined") {
 
-                  GetUnansweredResponcesList(ClientID, UserID, Page, ID);
-                } else {
-                  GetUnansweredResponcesList(ClientID, UserID, Page, 0)
-                }
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+              }
               // }
             }
             else {
@@ -436,14 +436,14 @@ export default function UnansweredResponsesPage(props) {
           OpenMessageDetails('')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
+          // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID);
-            } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0)
-            }
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+          } else {
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -479,14 +479,14 @@ export default function UnansweredResponsesPage(props) {
           OpenMessageDetails('')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
+          // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID);
-            } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0)
-            }
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+          } else {
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+          }
           // }
         }
         else {
@@ -668,7 +668,7 @@ export default function UnansweredResponsesPage(props) {
       CloseComposeReply()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ReplySendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -679,6 +679,9 @@ export default function UnansweredResponsesPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -791,7 +794,7 @@ export default function UnansweredResponsesPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
+    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -937,7 +940,7 @@ export default function UnansweredResponsesPage(props) {
       CloseComposeForward()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ForwardSendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -948,6 +951,9 @@ export default function UnansweredResponsesPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetForwardSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -981,7 +987,7 @@ export default function UnansweredResponsesPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
+    toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -1021,11 +1027,11 @@ export default function UnansweredResponsesPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-      if (ID != "" && ID != null && ID != "undefined") {
-        GetUnansweredResponcesList(ClientID, UserID, pn, ID);
-      } else {
-        GetUnansweredResponcesList(ClientID, UserID, pn, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      GetUnansweredResponcesList(ClientID, UserID, pn, ID);
+    } else {
+      GetUnansweredResponcesList(ClientID, UserID, pn, 0)
+    }
     // }
   };
 

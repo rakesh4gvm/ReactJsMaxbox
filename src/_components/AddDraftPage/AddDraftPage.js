@@ -135,7 +135,7 @@ export default function DraftComposePage({ GetDraftList }) {
         title: 'Delete',
         callback: CloseDraftCompose
     });
-    Froalaeditor.RegisterCommand('Sendoption', {
+    Froalaeditor.RegisterCommand('AddDrfatSendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
         title: '',
         type: 'dropdown',
@@ -146,6 +146,9 @@ export default function DraftComposePage({ GetDraftList }) {
         callback: function (cmd, val) {
             var editorInstance = this;
             editorInstance.html.insert("{" + val + "}");
+            SetDraftSignature({
+                Data: editorInstance.html.get()
+            });
         },
         // Callback on refresh.
         refresh: function ($btn) {
@@ -176,7 +179,7 @@ export default function DraftComposePage({ GetDraftList }) {
         quickInsertEnabled: false,
         placeholderText: 'Edit Your Content Here!',
         charCounterCount: false,
-        toolbarButtons: [['Save', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteDraft']],
+        toolbarButtons: [['Save', 'AddDrfatSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteDraft']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,

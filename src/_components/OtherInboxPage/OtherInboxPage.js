@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
 
@@ -195,14 +195,14 @@ export default function OtherInboxPage(props) {
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
-   
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
-      } else {
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
-      }
-    
+
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    } else {
+      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+    }
+
   }
 
   // Start Get Follow Up Later List
@@ -336,12 +336,12 @@ export default function OtherInboxPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetOtherInboxList(ClientID, UserID, Page, ID);
-            } else {
-              GetOtherInboxList(ClientID, UserID, Page, 0)
-            }
+          // if (ID !== undefined && ID!="") {
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetOtherInboxList(ClientID, UserID, Page, ID);
+          } else {
+            GetOtherInboxList(ClientID, UserID, Page, 0)
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -388,12 +388,12 @@ export default function OtherInboxPage(props) {
               // if (props !== undefined) {
               //   const ID = props.location.state;
               var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
-                if (ID != "" && ID != null && ID != "undefined") {
-                  GetOtherInboxList(ClientID, UserID, Page, ID);
-                } else {
-                  GetOtherInboxList(ClientID, UserID, Page, 0)
-                }
+              // if (ID !== undefined && ID!="") {
+              if (ID != "" && ID != null && ID != "undefined") {
+                GetOtherInboxList(ClientID, UserID, Page, ID);
+              } else {
+                GetOtherInboxList(ClientID, UserID, Page, 0)
+              }
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -438,20 +438,20 @@ export default function OtherInboxPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
-    // if (ID !== undefined && ID!="") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              if (FollowUpList.length - 1 == 0) {
-                GetOtherInboxList(ClientID, UserID, 1, ID);
-              } else {
-                GetOtherInboxList(ClientID, UserID, Page, ID);
-              }
+          // if (ID !== undefined && ID!="") {
+          if (ID != "" && ID != null && ID != "undefined") {
+            if (FollowUpList.length - 1 == 0) {
+              GetOtherInboxList(ClientID, UserID, 1, ID);
             } else {
-              if (FollowUpList.length - 1 == 0) {
-                GetOtherInboxList(ClientID, UserID, 1, 0)
-              } else {
-                GetOtherInboxList(ClientID, UserID, Page, 0)
-              }
+              GetOtherInboxList(ClientID, UserID, Page, ID);
             }
+          } else {
+            if (FollowUpList.length - 1 == 0) {
+              GetOtherInboxList(ClientID, UserID, 1, 0)
+            } else {
+              GetOtherInboxList(ClientID, UserID, Page, 0)
+            }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -626,7 +626,7 @@ export default function OtherInboxPage(props) {
       CloseComposeReply()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ReplySendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -637,6 +637,9 @@ export default function OtherInboxPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -750,7 +753,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
+    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -896,7 +899,7 @@ export default function OtherInboxPage(props) {
       CloseComposeForward()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ForwardSendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -907,6 +910,9 @@ export default function OtherInboxPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetForwardSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -940,7 +946,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
+    toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -969,11 +975,11 @@ export default function OtherInboxPage(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-      if (ID != "" && ID != null && ID != "undefined") {
-        GetOtherInboxList(ClientID, UserID, pn, ID);
-      } else {
-        GetOtherInboxList(ClientID, UserID, pn, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      GetOtherInboxList(ClientID, UserID, pn, ID);
+    } else {
+      GetOtherInboxList(ClientID, UserID, pn, 0)
+    }
     // }
   };
   // Ends Pagination 

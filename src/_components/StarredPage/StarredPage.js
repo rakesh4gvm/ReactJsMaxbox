@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail,decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import StarredComposePage from '../StarredComposePage/StarredComposePage';
 
@@ -192,12 +192,12 @@ export default function OtherInboxPage(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
-      } else {
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    } else {
+      GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+    }
     // }
   }
   // End Get Client ID
@@ -334,19 +334,19 @@ export default function OtherInboxPage(props) {
           // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-              if (StarredList?.length - 1 == 0) {
-                GetStarredList(ClientID, UserID, 1, ID);
-              } else {
-                GetStarredList(ClientID, UserID, Page, ID);
-              }
+          if (ID != "" && ID != null && ID != "undefined") {
+            if (StarredList?.length - 1 == 0) {
+              GetStarredList(ClientID, UserID, 1, ID);
             } else {
-              if (StarredList?.length - 1 == 0) {
-                GetStarredList(ClientID, UserID, 1, 0)
-              } else {
-                GetStarredList(ClientID, UserID, Page, 0)
-              }
+              GetStarredList(ClientID, UserID, Page, ID);
             }
+          } else {
+            if (StarredList?.length - 1 == 0) {
+              GetStarredList(ClientID, UserID, 1, 0)
+            } else {
+              GetStarredList(ClientID, UserID, Page, 0)
+            }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -385,11 +385,11 @@ export default function OtherInboxPage(props) {
           // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetStarredList(ClientID, UserID, Page, ID);
-            } else {
-              GetStarredList(ClientID, UserID, Page, 0)
-            }
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetStarredList(ClientID, UserID, Page, ID);
+          } else {
+            GetStarredList(ClientID, UserID, Page, 0)
+          }
           // }
         }
         else {
@@ -440,11 +440,11 @@ export default function OtherInboxPage(props) {
               // if (ID !== undefined && ID!="") {
               // if (props !== undefined) {
               //   const ID = props.location.state;
-                if (ID != "" && ID != null && ID != "undefined") {
-                  GetStarredList(ClientID, UserID, Page, ID);
-                } else {
-                  GetStarredList(ClientID, UserID, Page, 0)
-                }
+              if (ID != "" && ID != null && ID != "undefined") {
+                GetStarredList(ClientID, UserID, Page, ID);
+              } else {
+                GetStarredList(ClientID, UserID, Page, 0)
+              }
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -632,7 +632,7 @@ export default function OtherInboxPage(props) {
       CloseComposeReply()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ReplySendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -643,6 +643,9 @@ export default function OtherInboxPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -755,7 +758,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
+    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -900,7 +903,7 @@ export default function OtherInboxPage(props) {
       CloseComposeForward()
     },
   });
-  Froalaeditor.RegisterCommand('Sendoption', {
+  Froalaeditor.RegisterCommand('ForwardSendoption', {
     colorsButtons: ["colorsBack", "|", "-"],
     title: '',
     type: 'dropdown',
@@ -911,6 +914,9 @@ export default function OtherInboxPage(props) {
     callback: function (cmd, val) {
       var editorInstance = this;
       editorInstance.html.insert("{" + val + "}");
+      SetForwardSignature({
+        Data: editorInstance.html.get()
+      });
     },
     // Callback on refresh.
     refresh: function ($btn) {
@@ -944,7 +950,7 @@ export default function OtherInboxPage(props) {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['ForwardReply', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
+    toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
@@ -971,11 +977,11 @@ export default function OtherInboxPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-      if (ID != "" && ID != null && ID != "undefined") {
-        GetStarredList(ClientID, UserID, pn, ID);
-      } else {
-        GetStarredList(ClientID, UserID, pn, 0)
-      }
+    if (ID != "" && ID != null && ID != "undefined") {
+      GetStarredList(ClientID, UserID, pn, ID);
+    } else {
+      GetStarredList(ClientID, UserID, pn, 0)
+    }
     // }
   };
 
