@@ -69,6 +69,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     const [ClientData, SetClientData] = useState()
     const [TemplateID, SetTemplateID] = React.useState("");
     const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
+    const [ClientSignatureData, SetClientSignatureData] = React.useState("");
     const [Signature, SetSignature] = useState({
         Data: ""
     })
@@ -266,8 +267,13 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     const SelectEmailAccountUser = (e) => {
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        SetSignature({ Data: Signature.Data + str + ClientData })
-        // editor.events.focus();
+        if (ClientSignatureData == "") {
+            SetClientSignatureData(ClientData)
+            SetSignature({ Data: Signature.Data + str + ClientData })
+        } else {
+            Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
+            SetSignature({ Data: Signature.Data })
+        }
     }
 
     // Selected User

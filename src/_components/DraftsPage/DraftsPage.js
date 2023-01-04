@@ -146,6 +146,7 @@ export default function OtherInboxPage(props) {
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [PageValue, SetPageValue] = React.useState(1)
   const [Active, SetActive] = useState("");
+  const [ClientSignatureData, SetClientSignatureData] = React.useState("");
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -173,8 +174,13 @@ export default function OtherInboxPage(props) {
   const SelectEmailAccountUser = (e) => {
     SetSelectedEmailAccountUser(e.target.value)
     const str = "<br>"
-    SetSignature({ Data: Signature.Data + str + ClientData })
-    // editor.events.focus();
+    if (ClientSignatureData == "") {
+      SetClientSignatureData(ClientData)
+      SetSignature({ Data: Signature.Data + str + ClientData })
+    } else {
+      Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
+      SetSignature({ Data: Signature.Data })
+    }
   }
 
   useEffect(() => {
