@@ -320,7 +320,7 @@ export default function StarredComposePage({ GetStarredList }) {
                 UserID: UserID,
                 ClientID: ClientID,
                 IsUnansweredResponsesMail: false,
-                IsStarredMail: true,
+                IsStarredMail: false,
                 IsFollowUpLaterMail: false,
                 IsSpamMail: false,
                 IsDraftMail: false,
