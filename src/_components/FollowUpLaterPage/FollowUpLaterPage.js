@@ -705,7 +705,6 @@ export default function FollowUpLater(props) {
           data: Data,
         });
         ResponseApi.then((Result) => {
-          debugger
           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
             if (Result.data.PageData.length > 0) {
               setExpanded(false);

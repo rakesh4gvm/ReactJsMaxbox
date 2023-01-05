@@ -448,7 +448,6 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
                     data: Data,
                 });
                 ResponseApi.then((Result) => {
-                    debugger
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                         if (Result.data.PageData.length > 0) {
                             setExpanded(false);

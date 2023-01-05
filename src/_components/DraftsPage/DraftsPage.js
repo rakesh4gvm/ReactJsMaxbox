@@ -363,7 +363,6 @@ export default function OtherInboxPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
-          debugger
           if (DraftList.length - 1 == 0) {
             GetDraftList(ClientID, UserID, 1, "");
           } else {
