@@ -282,7 +282,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     // Sent Mail Starts
     const SentMail = async () => {
 
-        console.log("Signature inside Sentmail======", Signature.Data)
         var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("Subject").value;
         var CC = document.getElementById("CC").value;

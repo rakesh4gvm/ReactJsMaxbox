@@ -320,7 +320,7 @@ export default function ProfileSettingPage() {
   }
 
   const CancelUser = async () => {
-    history.push("/UnansweredResponses");
+    history.push("/Focused");
   }
 
   function UseOutsideAlerter(Ref) {

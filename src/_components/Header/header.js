@@ -349,7 +349,7 @@ export default function Header() {
             <header className='header-main'>
                 <Navbar expand="lg">
                     <div className='left'>
-                        <Navbar.Brand href="/UnansweredResponses">
+                        <Navbar.Brand href="/Focused">
                             <img src={Mlogo} />
                         </Navbar.Brand>
                     </div>
@@ -358,7 +358,7 @@ export default function Header() {
                         <Navbar.Collapse id="basic-navbar-nav" className='mobile-nav'>
                             <Nav className="me-auto dropdec">
                                 <NavDropdown title="Inbox" id="basic-nav-dropdown" onClick={() => CountListApi()}>
-                                    <NavDropdown.Item onClick={() => OpenPage("/UnansweredResponses")}>
+                                    <NavDropdown.Item onClick={() => OpenPage("/Focused")}>
                                         <img src={chatquestion} />Unanswered Responses
                                         <div className="notifimen">
                                             <NotificationsIcon /> {AllTotalRecords?.AllUnansweredResponsesCount}

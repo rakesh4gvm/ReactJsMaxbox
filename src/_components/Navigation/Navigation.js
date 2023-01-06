@@ -330,7 +330,7 @@ export default function Navigation(props) {
       if (SelectedID == "") {
         SetSelectMenuItem(SelectedPage)
 
-        if (SelectedPage == "/AllInbox" || SelectedPage == "/UnansweredResponses") {
+        if (SelectedPage == "/AllInbox" || SelectedPage == "/Focused") {
           setNavOpen(true);
           setNavOneOpen(true);
           setopenstarredNew(false);
@@ -369,7 +369,7 @@ export default function Navigation(props) {
       else {
         var pageid = SelectedPage + SelectedID
         SetSelectMenuItem(pageid)
-        if (pageid == "/AllInbox" + SelectedID || pageid == "/UnansweredResponses" + SelectedID) {
+        if (pageid == "/AllInbox" + SelectedID || pageid == "/Focused" + SelectedID) {
 
           handleClick("0" + SelectedID, 0)
           handleOneClick("1" + SelectedID, 0)
@@ -879,10 +879,10 @@ export default function Navigation(props) {
                       {TotalCount?.ReceiveEmailHistoryData != undefined ? "All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
                     </ListItem>
 
-                    <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses")}
+                    <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                       component={Link}
-                      selected={SelectMenuItem === "/UnansweredResponses"}>
-                      {AllTotalRecords?.AllStarredCount != undefined ? "Unanswered Responses(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Unanswered Responses(0)"}
+                      selected={SelectMenuItem === "/Focused"}>
+                      {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"}
                     </ListItem>
 
                   </List>
@@ -973,10 +973,10 @@ export default function Navigation(props) {
                         {TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`}
                       </ListItem>
 
-                      <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredResponses", item._id)}
+                      <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
                         component={Link}
-                        selected={SelectMenuItem === "/UnansweredResponses" + item._id}>
-                        {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Unanswered Responses (0)` : `Unanswered Responses (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
+                        selected={SelectMenuItem === "/Focused" + item._id}>
+                        {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Focused(0)` : `Focused(` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`}
                       </ListItem>
 
                     </List>

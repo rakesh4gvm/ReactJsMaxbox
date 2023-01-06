@@ -9,7 +9,7 @@ import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
-import UnansweredResponsesComposePage from '../UnansweredResponsesCompose/UnansweredResponsesComposePage';
+import UnansweredResponsesComposePage from '../FocusedComposePage/FocusedComposePage';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -1254,7 +1254,7 @@ export default function UnansweredResponsesPage(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/UnansweredResponses" MenuID={MenuID} />
+        <Navigation menupage="/Focused" MenuID={MenuID} />
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
@@ -1327,7 +1327,6 @@ export default function UnansweredResponsesPage(props) {
                     ))}
                   </TableBody>
                 </Table>
-                {console.log(CountPage)}
 
                 {/* <Stack className='my-4 page-dec' spacing={2}> */}
                 {/* <Pagination onChange={HandleChangePage} variant="outlined" shape="rounded" /> */}
