@@ -25,7 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
-import Xlogo from "../../images/Xlogo.jpg";
+import Xlogo from "../../images/Xlogo.png";
 import Usericon from '../../images/icons/users.svg';
 
 import ExpandDown from '@material-ui/icons/NavigateNext';

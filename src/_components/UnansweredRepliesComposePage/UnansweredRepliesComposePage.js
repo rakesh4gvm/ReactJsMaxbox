@@ -16,6 +16,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Plusion from '../../images/icons/composeion.svg';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -501,6 +502,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
+        key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
     }
     const HandleModelChange = (Model) => {
         SetSignature({
@@ -638,7 +640,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
             </Modal>
 
             <div className='composebody' id='maxcompose'>
-                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
+                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>

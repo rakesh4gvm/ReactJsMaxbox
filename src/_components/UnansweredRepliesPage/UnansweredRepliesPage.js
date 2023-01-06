@@ -28,6 +28,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { styled, alpha } from '@material-ui/core/styles';
 import { Input } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
@@ -698,6 +699,7 @@ export default function AllUnansweredRepliesPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -1107,6 +1109,7 @@ export default function AllUnansweredRepliesPage(props) {
             defaultSize={"40%"}
           >
             <>
+            <a href="" className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >

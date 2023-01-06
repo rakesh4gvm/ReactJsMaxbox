@@ -37,6 +37,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import TablePagination from '@mui/material/TablePagination';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
@@ -799,6 +800,7 @@ export default function SpamPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -1272,6 +1274,7 @@ export default function SpamPage(props) {
             defaultSize={"40%"}
           >
             <>
+            <a href="" className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >

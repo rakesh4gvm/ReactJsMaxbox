@@ -284,7 +284,7 @@ span.userpic img {
 .cardinboxlist h3 {
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 8rem;
     line-height: normal;
     color: #242424;
     margin-top: 0;
@@ -450,7 +450,7 @@ Button.iconbtn {
 
 .inxtexteditor h6 {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 8rem;
     line-height: 20px;
     color: #616B77;
     text-align: right;
@@ -505,7 +505,7 @@ Button.iconbtn {
 }
 
 .textdeclist li span .MuiTypography-body2 {
-    font-size: 14px;
+    font-size: 8rem;
     line-height: 23px;
     color: #616B77;
 }
@@ -619,7 +619,7 @@ Button.iconbtn {
     background: #FEE6DA;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 8rem;
     color: #F89665;
     line-height: 30px;
     text-align: center;
@@ -778,7 +778,7 @@ ul.d-flex.flexlist {
 
 .subcompose h6 {
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 26px;
     color: #242424;
     margin: 0 auto;
@@ -787,7 +787,7 @@ ul.d-flex.flexlist {
 
 button.lable-btn {
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 22px;
     color: #242424;
     text-transform: capitalize;
@@ -796,7 +796,7 @@ button.lable-btn {
 
 div .composebody button.btnclean.btn.btn-primary, .composebody .btn-primary.btnclean:not(:disabled):not(.disabled):active:focus {
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 22px;
     color: #242424;
     text-transform: capitalize;
@@ -990,7 +990,7 @@ div.modal-prein {
 }
 
 .bodsetting h5 {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .imguploadmain {
@@ -1160,13 +1160,13 @@ th {
     color: #616B77;
     border-color: #E5E5E5;
     white-space: nowrap;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .tablename tbody tr td {
     font-style: normal;
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 22px;
     color: #616B77;
     white-space: nowrap;
@@ -1815,7 +1815,11 @@ div.erorr-msg>*>* {
     height: 64px;
     border-radius: 5px;
     padding: 0;
-    background: #e49273; 
+    background: #e49273;
+    line-height: 0;
+}
+.composebody .hcompose button.btn  { 
+    line-height: inherit !important;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active { 
@@ -2059,7 +2063,7 @@ img.width36 {
 }
 
 .carduser_details a {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .textdeclist h5 {
@@ -2224,13 +2228,16 @@ div.modal-prein.wd-600 {
     width: 100%;
     max-width: 90%;
     padding: 0;
-    transform: translate(-50%, -50%);
-    top: 50%;
+    transform: translate(-50%,  0%);
+    top: 40px;
     display: none;
     border-radius: 15px;
     overflow: hidden;
 }
-
+.largebox.composebody .FroalaEditor .fr-box.fr-basic .fr-wrapper { 
+    height: 320px; 
+    min-height: calc(100vh - 395px);
+}
 .largebox.composebody .userdefual.show {
     display: table;
 }
@@ -2426,7 +2433,7 @@ div#root {
 }
 
 .sidenavtree .MuiTreeItem-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .minisearchhed {
@@ -2449,7 +2456,7 @@ div#root {
 
 .serchinbox>div:first-child {
     float: left;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     position: relative;
     width: 40px;
     padding: 0;
@@ -2458,7 +2465,7 @@ div#root {
 
 .serchinbox>div:last-child {
     float: left;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     width: calc(100% - 40px);
 }
 
@@ -2482,11 +2489,13 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .tablelister tr th {
     border-right: 1px solid rgba(224, 224, 224, 1);
     padding: 2px 5px;
+    font-size: 14px;
 }
 
 .tablelister tr td {
     border-bottom: none;
     padding: 2px 5px;
+    font-size: 14px;
 }
 
 .tablelister tr svg {
@@ -2677,7 +2686,7 @@ div.css-dhopo2 {
 
 .emailbodybox {
     background-color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     padding: 10px;
     overflow-y: auto !important;
     height: calc(100% - 74px);
@@ -2714,7 +2723,7 @@ div.clientselc {
     padding: 6px 14px;
     background-color: #fff;
     font-style: normal;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .clientselc fieldset {
@@ -2731,7 +2740,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 }
 
 .MuiPaper-root.MuiMenu-paper ul li {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .composeion button img {
@@ -2912,7 +2921,7 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 .listclick .MuiList-padding {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 .listclick .MuiListItemButton-gutters{ 
     padding-bottom: 2px; 
@@ -2942,7 +2951,22 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 tr.selected-row{
     background: #faecec;
 }
-
+.Refreshbtn {
+    border-right: 1px solid #d28466;
+    position: absolute;
+    z-index: 999;
+    right: 160px;
+    top: 2px;
+    border-left: 1px solid #d28466;
+    padding: 1px 8px;
+}
+.Refreshbtn:hover {
+    background-color: #d28466;
+}
+.Refreshbtn svg {
+    width: 19px;
+    color: #fff;
+}
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;

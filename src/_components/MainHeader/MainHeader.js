@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'; 
-import Xlogo from "../../images/Xlogo.jpg";
+import Xlogo from "../../images/Xlogo.png";
 
 import { history } from '../../_helpers/history';
 

@@ -52,6 +52,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 const style = {
   position: 'absolute',
@@ -703,6 +704,7 @@ export default function AllSentEmailsPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -1115,6 +1117,7 @@ export default function AllSentEmailsPage(props) {
             defaultSize={"40%"}
           >
             <>
+              <a href="" className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >

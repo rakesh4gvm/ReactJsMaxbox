@@ -30,6 +30,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
@@ -653,6 +654,7 @@ export default function OtherInboxPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -1023,12 +1025,12 @@ export default function OtherInboxPage(props) {
             minSize={150}
             maxSize={-200}
             defaultSize={"40%"}
-          >
-
+          > 
             <>
+            <a href="" className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
-                  <div className='pagination-pa' >
+                  <div className='pagination-pa' > 
                     <TablePagination
                       component="div"
                       count={TotalRecord}

@@ -21,6 +21,7 @@ import smiley_icons from '../../images/icons/smiley_icons.svg';
 import signature from '../../images/icons/signature.svg';
 import link_line from '../../images/icons/link_line.svg';
 import template from '../../images/icons/template.svg';
+import Plusion from '../../images/icons/composeion.svg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -149,7 +150,7 @@ const maxcomposeon = () => {
   return (
     <>
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + Compose</Button>
+      <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>

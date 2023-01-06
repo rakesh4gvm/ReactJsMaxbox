@@ -25,6 +25,7 @@ import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
+import Plusion from '../../images/icons/composeion.svg';
 
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -502,6 +503,7 @@ export default function StarredComposePage({ GetStarredList }) {
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
+        key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
     }
     const HandleModelChange = (Model) => {
         SetSignature({
@@ -639,7 +641,7 @@ export default function StarredComposePage({ GetStarredList }) {
             </Modal>
 
             <div className='composebody' id='maxcompose'>
-                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}> + </Button>
+                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>

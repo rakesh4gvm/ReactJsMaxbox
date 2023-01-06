@@ -17,6 +17,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Input } from '@mui/material';
@@ -25,6 +26,7 @@ import icondelete from '../../images/icon_delete.svg';
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
 import Minimize from '../../images/icons/w-minimize.svg';
+import Plusion from '../../images/icons/composeion.svg';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Table from '@mui/material/Table';
@@ -719,6 +721,7 @@ export default function OtherInboxPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -865,6 +868,7 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
             <>
+            <a href="" className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >
@@ -1033,7 +1037,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn ligh64" onClick={OpenCompose}> + </Button>
+        <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>

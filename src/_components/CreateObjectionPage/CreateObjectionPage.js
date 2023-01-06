@@ -116,6 +116,7 @@ export default function CreateObjectionTemplatePage({ children }) {
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
 
   // FromValidation Start
