@@ -2967,6 +2967,23 @@ tr.selected-row{
     width: 19px;
     color: #fff;
 }
+.startedtoggle button {
+    border: none;
+    padding: 0;
+}
+.startedtoggle button svg:first-child{ 
+    display: block;
+}
+.startedtoggle button svg:nth-child(2){ 
+    display: none;
+}
+.startedtoggle button.starselected svg:first-child{ 
+    display: none;
+}
+.startedtoggle button.starselected svg:nth-child(2){ 
+    display: block;
+}
+
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;

@@ -1162,10 +1162,12 @@ export default function AllSentEmailsPage(props) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className={IsActive ? 'starselected' : null} value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                            <StarBorderIcon className='starone' />
-                            <StarIcon className='selectedstart startwo' />
-                          </ToggleButton>
+                          <div className='startedtoggle'>
+                            <ToggleButton title="Starred" className={IsActive ? 'starselected' : null} value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </div>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index)}> {item.Subject} </TableCell>
