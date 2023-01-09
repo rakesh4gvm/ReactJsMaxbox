@@ -413,6 +413,7 @@ export default function AllSentEmailsPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
+  const [IsActive, SetIsActive] = useState(false)
   const UpdateStarMessage = (ID) => {
     if (ID != '') {
       var Data = {
@@ -427,20 +428,21 @@ export default function AllSentEmailsPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
-          var ID = decrypt(props.location.search.replace('?', ''))
+          SetIsActive(!IsActive)
+          // toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
+          // CloseStarPopModel();
+          // OpenMessageDetails('')
+          // LoaderShow()
+          // // if (props !== undefined) {
+          // //   const ID = props.location.state;
+          // var ID = decrypt(props.location.search.replace('?', ''))
 
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetAllSent(ClientID, UserID, Page, ID);
-          }
-          else {
-            GetAllSent(ClientID, UserID, Page, 0)
-          }
+          // if (ID != "" && ID != null && ID != "undefined") {
+          //   GetAllSent(ClientID, UserID, Page, ID);
+          // }
+          // else {
+          //   GetAllSent(ClientID, UserID, Page, 0)
+          // }
 
         } else {
           toast.error(Result?.data?.Message);
@@ -1158,18 +1160,17 @@ export default function AllSentEmailsPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className={IsActive ? 'starselected' : null} value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index)}> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index)}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index)}>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
