@@ -800,7 +800,7 @@ export default function SpamPage(props) {
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,
-    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+    key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -1025,6 +1025,17 @@ export default function SpamPage(props) {
     // }
   };
   // Ends Pagination
+
+  const RefreshTable = () => {
+    var ID = decrypt(props.location.search.replace('?', ''))
+
+    if (ID != "" && ID != null && ID != "undefined") {
+      GetSpamList(ClientID, UserID, Page, ID);
+    }
+    else {
+      GetSpamList(ClientID, UserID, Page, 0)
+    }
+  }
 
   return (
 
@@ -1274,7 +1285,7 @@ export default function SpamPage(props) {
             defaultSize={"40%"}
           >
             <>
-            <a href="" className='Refreshbtn'><RefreshIcon /></a>
+              <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >
