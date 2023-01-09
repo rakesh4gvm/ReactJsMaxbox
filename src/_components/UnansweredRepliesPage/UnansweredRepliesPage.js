@@ -150,25 +150,8 @@ export default function AllUnansweredRepliesPage(props) {
   })
 
   const [TotalCount, SetTotalCount] = useState(0)
-  const [IsBottom, SetIsBottom] = useState(false)
   const [MenuID, SetMenuID] = React.useState("");
   const [PageValue, SetPageValue] = React.useState(1)
-
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && AllUnansweredRepliesList?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
-
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -244,24 +227,27 @@ export default function AllUnansweredRepliesPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID);
-      GetAllUnansweredRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetAllUnansweredRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     }
     else {
-      GetAllUnansweredRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetAllUnansweredRepliesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
     // }
   }
   // End Get Client ID
 
   // Start Get Follow Up Later List
-  const GetAllUnansweredRepliesList = (CID, UID, PN, ID) => {
+  const GetAllUnansweredRepliesList = (CID, UID, PN, ID, str) => {
+   
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
-    LoaderShow()
+    if (!str == "hideloader") {
+      LoaderShow()
+    }
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -283,7 +269,11 @@ export default function AllUnansweredRepliesPage(props) {
         if (Result.data.PageData.length > 0) {
           SetAllUnanswereRepliesList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
@@ -301,10 +291,12 @@ export default function AllUnansweredRepliesPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       var Data = {
         _id: ID,
       };
@@ -374,21 +366,21 @@ export default function AllUnansweredRepliesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
             if (AllUnansweredRepliesList.length - 1 == 0) {
-              GetAllUnansweredRepliesList(ClientID, UserID, 1, ID);
+              GetAllUnansweredRepliesList(ClientID, UserID, 1, ID, "");
             } else {
-              GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+              GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "");
             }
           }
           else {
             if (AllUnansweredRepliesList.length - 1 == 0) {
-              GetAllUnansweredRepliesList(ClientID, UserID, 1, 0)
+              GetAllUnansweredRepliesList(ClientID, UserID, 1, 0, "")
             } else {
-              GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+              GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -407,7 +399,7 @@ export default function AllUnansweredRepliesPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -421,19 +413,17 @@ export default function AllUnansweredRepliesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+            // OpenMessageDetails('', '', '')
+          }
           var ID = decrypt(props.location.search.replace('?', ''))
 
           if (ID != "" && ID != null && ID != "undefined") {
-            GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+            GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "hideloader");
           }
           else {
-            GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+            GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "hideloader")
           }
 
         } else {
@@ -916,9 +906,9 @@ export default function AllUnansweredRepliesPage(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (ID != "" && ID != null && ID != "undefined") {
-      GetAllUnansweredRepliesList(ClientID, UserID, pn, ID);
+      GetAllUnansweredRepliesList(ClientID, UserID, pn, ID, "");
     } else {
-      GetAllUnansweredRepliesList(ClientID, UserID, pn, 0)
+      GetAllUnansweredRepliesList(ClientID, UserID, pn, 0, "")
     }
     // }
   };
@@ -927,10 +917,10 @@ export default function AllUnansweredRepliesPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetAllUnansweredRepliesList(ClientID, UserID, Page, ID);
+      GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0)
+      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1055,7 +1045,7 @@ export default function AllUnansweredRepliesPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1150,18 +1140,18 @@ export default function AllUnansweredRepliesPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
+
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, 'showloader')} > {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

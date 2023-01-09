@@ -246,24 +246,26 @@ export default function AllSentEmailsPage(props) {
 
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID)
-      GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     }
     else {
-      GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetAllSent(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
 
   }
   // End Get Client ID
 
   // Start Get Follow Up Later List
-  const GetAllSent = (CID, UID, PN, ID) => {
+  const GetAllSent = (CID, UID, PN, ID, str) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
-    LoaderShow()
+    if (!str == "hideloader") {
+      LoaderShow()
+    }
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -281,11 +283,16 @@ export default function AllSentEmailsPage(props) {
       data: Data,
     });
     ResponseApi.then((Result) => {
+      debugger
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetAllSentList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
@@ -303,10 +310,12 @@ export default function AllSentEmailsPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       var Data = {
         _id: ID,
       };
@@ -362,28 +371,27 @@ export default function AllSentEmailsPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
+        debugger
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID !== undefined && ID != "") {
-            if (ID != "" && ID != null && ID != "undefined") {
-              if (AllSentList?.length - 1 == 0) {
-                GetAllSent(ClientID, UserID, 1, ID);
-              } else {
-                GetAllSent(ClientID, UserID, Page, ID);
-              }
+          if (ID != "" && ID != null && ID != "undefined") {
+            if (AllSentList.length - 1 == 0) {
+              GetAllSent(ClientID, UserID, 1, ID, "");
+            } else {
+              GetAllSent(ClientID, UserID, Page, ID, "");
             }
-            else {
-              if (AllSentList.length - 1 == 0) {
-                GetAllSent(ClientID, UserID, 1, 0)
-              } else {
-                GetAllSent(ClientID, UserID, Page, 0)
-              }
+          }
+          else {
+            if (AllSentList.length - 1 == 0) {
+              GetAllSent(ClientID, UserID, 1, 0, "")
+            } else {
+              GetAllSent(ClientID, UserID, Page, 0, "")
             }
           }
 
@@ -392,6 +400,7 @@ export default function AllSentEmailsPage(props) {
         }
       });
     }
+
   }
   // End PopModel Open and Close and Delete Message
 
@@ -413,8 +422,7 @@ export default function AllSentEmailsPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const [IsActive, SetIsActive] = useState(false)
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -428,21 +436,19 @@ export default function AllSentEmailsPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          SetIsActive(!IsActive)
-          // toast.success(<div>All Sent Emails  <br />Starred  updated successfully.</div>);
-          // CloseStarPopModel();
-          // OpenMessageDetails('')
-          // LoaderShow()
-          // // if (props !== undefined) {
-          // //   const ID = props.location.state;
-          // var ID = decrypt(props.location.search.replace('?', ''))
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+            // OpenMessageDetails('', '', '')
+          }
 
-          // if (ID != "" && ID != null && ID != "undefined") {
-          //   GetAllSent(ClientID, UserID, Page, ID);
-          // }
-          // else {
-          //   GetAllSent(ClientID, UserID, Page, 0)
-          // }
+          var ID = decrypt(props.location.search.replace('?', ''))
+
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetAllSent(ClientID, UserID, Page, ID, "hideloader");
+          }
+          else {
+            GetAllSent(ClientID, UserID, Page, 0, "hideloader")
+          }
 
         } else {
           toast.error(Result?.data?.Message);
@@ -926,9 +932,9 @@ export default function AllSentEmailsPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetAllSent(ClientID, UserID, pn, ID);
+      GetAllSent(ClientID, UserID, pn, ID, "");
     } else {
-      GetAllSent(ClientID, UserID, pn, 0)
+      GetAllSent(ClientID, UserID, pn, 0, "")
     }
 
   };
@@ -938,10 +944,10 @@ export default function AllSentEmailsPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetAllSent(ClientID, UserID, Page, ID);
+      GetAllSent(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetAllSent(ClientID, UserID, Page, 0)
+      GetAllSent(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1064,7 +1070,7 @@ export default function AllSentEmailsPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1162,17 +1168,15 @@ export default function AllSentEmailsPage(props) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
                         <TableCell width={'35px'}>
-                          <div className='startedtoggle'>
-                            <ToggleButton title="Starred" className={IsActive ? 'starselected' : null} value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </div>
+                          <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index)}> {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index)}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index)}>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, "showloader")}> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
