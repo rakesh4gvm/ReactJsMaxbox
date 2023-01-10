@@ -1176,7 +1176,7 @@ export default function AllSentEmailsPage(props) {
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, "showloader")}> {item.Subject} </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{Moment(item.MailSentDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -1201,7 +1201,7 @@ export default function AllSentEmailsPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("MM/DD/YYYY")}</lable>
                     </div>
                     {
                       OpenMessage == 0 ? '' :

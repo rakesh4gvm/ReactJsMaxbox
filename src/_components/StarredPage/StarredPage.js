@@ -1250,7 +1250,7 @@ export default function OtherInboxPage(props) {
                       <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row"> {item.Subject} </TableCell>
                         <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -1275,7 +1275,7 @@ export default function OtherInboxPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY")}</lable>
                     </div>
                     {
                       OpenMessage == 0 ? '' :

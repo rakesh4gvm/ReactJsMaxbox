@@ -924,7 +924,7 @@ export default function OtherInboxPage(props) {
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row"> {item.Subject} </TableCell>
                         <TableCell>{item.MailTo}</TableCell>
-                        <TableCell>{Moment(item.CreatedDate).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell>{Moment(item.CreatedDate).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -942,7 +942,7 @@ export default function OtherInboxPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.CreatedDate).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.CreatedDate).format("MM/DD/YYYY")}</lable>
                     </div>
                     <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
                       <Button>

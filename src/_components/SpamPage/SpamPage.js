@@ -1331,7 +1331,7 @@ export default function SpamPage(props) {
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -1357,7 +1357,7 @@ export default function SpamPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY")}</lable>
                     </div>
                     {
                       OpenMessage == 0 ? '' :
