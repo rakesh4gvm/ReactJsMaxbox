@@ -222,6 +222,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             toast.error("Please add client.");
         }
         else {
+            SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
             document.getElementById("ToEmail").value = ""
@@ -272,12 +273,14 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
 
     // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
+        debugger
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         if (ClientSignatureData == "") {
             SetClientSignatureData(ClientData)
             SetSignature({ Data: Signature.Data + str + ClientData })
         } else {
+
             Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
             SetSignature({ Data: Signature.Data })
         }

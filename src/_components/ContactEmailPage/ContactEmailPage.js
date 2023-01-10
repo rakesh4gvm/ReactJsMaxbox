@@ -127,6 +127,7 @@ export default function ContactEmailPage() {
   const [DeleteID, SetDeleteID] = React.useState()
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [PageValue, SetPageValue] = React.useState(1)
+  const [IsSearch, SetIsSearch] = useState(false)
 
   useEffect(() => {
     GetClientID();
@@ -170,6 +171,7 @@ export default function ContactEmailPage() {
         SetTotalRecord(Result.data.TotalCount);
         SetPageValue(PN)
         LoaderHide()
+        SetIsSearch(false)
       }
       else {
         SetContactList([])
@@ -201,11 +203,24 @@ export default function ContactEmailPage() {
           var AccountID = Result.data.PageData[0].AccountID;
           var AccountIDArry = [];
           AccountIDArry.push(AccountID);
-          SetAccountIDs(AccountIDArry)
-          GetContactList(CID, UID, [Result.data.PageData[0].AccountID], Page)
-          setPersonName(
-            typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
-          );
+          if (IsSearch) {
+            SetAccountIDs(AccountIDs)
+          } else {
+            SetAccountIDs(AccountIDArry)
+          }
+          if (AccountIDs.length === 0) {
+            GetContactList(CID, UID, [Result.data.PageData[0].AccountID], Page)
+            setPersonName(
+              typeof Result.data.PageData[0].Email === 'string' ? Result.data.PageData[0].Email.split(',') : Result.data.PageData[0].Email,
+            );
+          } else {
+            GetContactList(CID, UID, AccountIDs, Page)
+            const FilteredEmail = Result?.data?.PageData?.filter((e) => e?.AccountID === AccountIDs[0])[0]?.Email
+            setPersonName(
+              typeof FilteredEmail === 'string' ? FilteredEmail?.split(',') : FilteredEmail,
+            );
+          }
+
         }
 
       }
@@ -295,6 +310,7 @@ export default function ContactEmailPage() {
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
       LoaderShow()
+      SetIsSearch(true)
       SetPage(1);
       SetRowsPerPage(10);
       SetSearchInbox(e.target.value)

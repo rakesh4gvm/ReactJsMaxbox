@@ -214,6 +214,7 @@ export default function StarredComposePage({ GetStarredList }) {
             toast.error("Please add client.");
         }
         else {
+            SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
             document.getElementById("ToEmail").value = ""

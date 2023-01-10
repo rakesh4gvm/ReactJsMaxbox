@@ -214,6 +214,7 @@ export default function SpamComposePage({ GetSpamList }) {
             toast.error("Please add client.");
         }
         else {
+            SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
             document.getElementById("ToEmail").value = ""

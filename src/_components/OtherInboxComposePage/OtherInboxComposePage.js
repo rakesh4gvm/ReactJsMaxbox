@@ -214,7 +214,7 @@ export default function OtherInboxComposePage({ GetOtherInboxList }) {
             toast.error("Please add client.");
         }
         else {
-
+            SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
             document.getElementById("ToEmail").value = ""

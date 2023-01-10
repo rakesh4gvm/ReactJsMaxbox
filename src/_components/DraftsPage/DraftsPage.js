@@ -300,7 +300,7 @@ export default function OtherInboxPage(props) {
       const el = document.getElementById("DraftCompose")
       el.classList.remove("show");
 
-
+      SetClientSignatureData("")
       SetSelectedEmailAccountUser(0);
       document.getElementById("ComposeTo").value = ""
       document.getElementById("ComposeSubject").value = ""

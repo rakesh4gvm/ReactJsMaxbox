@@ -213,6 +213,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
             toast.error("Please add client.");
         }
         else {
+            SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
             document.getElementById("ToEmail").value = ""
