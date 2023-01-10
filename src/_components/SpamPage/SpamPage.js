@@ -200,24 +200,26 @@ export default function SpamPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID);
-      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     }
     else {
-      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
   }
   // }
   // End Get Client ID
 
   // Start Get Follow Up Later List
-  const GetSpamList = (CID, UID, PN, ID) => {
+  const GetSpamList = (CID, UID, PN, ID, str) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
-    LoaderShow()
+    if (!str == "hideloader") {
+      LoaderShow()
+    }
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -239,7 +241,11 @@ export default function SpamPage(props) {
         if (Result.data.PageData.length > 0) {
           SetSpamList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetMailNumber(1)
           SetPageValue(PN)
           SetTotalRecord(Result.data.TotalCount);
@@ -257,10 +263,12 @@ export default function SpamPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       var Data = {
         _id: ID,
       };
@@ -313,7 +321,7 @@ export default function SpamPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -327,18 +335,16 @@ export default function SpamPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+
+          }
           var ID = decrypt(props.location.search.replace('?', ''))
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
-            GetSpamList(ClientID, UserID, Page, ID);
+            GetSpamList(ClientID, UserID, Page, ID, "hideloader");
           }
           else {
-            GetSpamList(ClientID, UserID, Page, 0)
+            GetSpamList(ClientID, UserID, Page, 0, "hideloader")
           }
           // }
         } else {
@@ -477,23 +483,23 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Spam mail deleted successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
             if (SpamPage.length - 1 == 0) {
-              GetSpamList(ClientID, UserID, 1, ID);
+              GetSpamList(ClientID, UserID, 1, ID, "");
             } else {
-              GetSpamList(ClientID, UserID, Page, ID);
+              GetSpamList(ClientID, UserID, Page, ID, "");
             }
           }
           else {
             if (SpamPage.length - 1 == 0) {
-              GetSpamList(ClientID, UserID, 1, 0)
+              GetSpamList(ClientID, UserID, 1, 0, "")
             } else {
-              GetSpamList(ClientID, UserID, Page, 0)
+              GetSpamList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -1030,10 +1036,10 @@ export default function SpamPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetSpamList(ClientID, UserID, Page, ID);
+      GetSpamList(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetSpamList(ClientID, UserID, Page, 0)
+      GetSpamList(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1154,7 +1160,7 @@ export default function SpamPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1315,18 +1321,17 @@ export default function SpamPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

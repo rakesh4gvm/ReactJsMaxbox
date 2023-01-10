@@ -196,21 +196,24 @@ export default function FollowUpLater(props) {
     // if (ID !== undefined && ID!="") {
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID);
-      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     }
     else {
-      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
     // }
   }
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (CID, UID, PN, ID) => {
+  const GetFollowUpLaterList = (CID, UID, PN, ID, str) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
+    }
+    if (!str == "hideloader") {
+      LoaderShow()
     }
     var Data = {
       Page: PN,
@@ -229,7 +232,6 @@ export default function FollowUpLater(props) {
       AccountIDs: AccountIDs,
       SearchDate: Moment(FollowUpDate).format("YYYY-MM-DD")
     };
-    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
@@ -240,10 +242,13 @@ export default function FollowUpLater(props) {
         if (Result.data.PageData.length > 0) {
           SetFollowUpList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetTotalRecord(Result.data.TotalCount);
           SetPageValue(PN)
-
           SetMailNumber(1)
           LoaderHide()
         } else {
@@ -260,13 +265,15 @@ export default function FollowUpLater(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
         _id: ID,
       };
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
         method: "POST",
@@ -321,7 +328,7 @@ export default function FollowUpLater(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -335,19 +342,15 @@ export default function FollowUpLater(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+          }
           var ID = decrypt(props.location.search.replace('?', ''))
-          // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(ClientID, UserID, Page, ID);
+            GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader");
           }
           else {
-            GetFollowUpLaterList(ClientID, UserID, Page, 0)
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "hideloader")
           }
           // }
         } else {
@@ -428,7 +431,7 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
@@ -436,16 +439,16 @@ export default function FollowUpLater(props) {
           // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList.length - 1 == 0) {
-              GetFollowUpLaterList(ClientID, UserID, 1, ID);
+              GetFollowUpLaterList(ClientID, UserID, 1, ID, "");
             } else {
-              GetFollowUpLaterList(ClientID, UserID, Page, ID);
+              GetFollowUpLaterList(ClientID, UserID, Page, ID, "");
             }
           }
           else {
             if (FollowUpList.length - 1 == 0) {
-              GetFollowUpLaterList(ClientID, UserID, 1, 0)
+              GetFollowUpLaterList(ClientID, UserID, 1, 0, "")
             } else {
-              GetFollowUpLaterList(ClientID, UserID, Page, 0)
+              GetFollowUpLaterList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -991,10 +994,10 @@ export default function FollowUpLater(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetFollowUpLaterList(ClientID, UserID, Page, ID);
+      GetFollowUpLaterList(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetFollowUpLaterList(ClientID, UserID, Page, 0)
+      GetFollowUpLaterList(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1118,7 +1121,7 @@ export default function FollowUpLater(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1257,18 +1260,17 @@ export default function FollowUpLater(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.FollowUpDate).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.FollowUpDate).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

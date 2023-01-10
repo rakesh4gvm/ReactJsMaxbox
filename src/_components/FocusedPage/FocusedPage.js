@@ -187,20 +187,23 @@ export default function UnansweredResponsesPage(props) {
     //   const ID = props.location.state;
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID);
-      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     } else {
-      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
     // }
   }
 
   // Start Get Follow Up Later List
-  const GetUnansweredResponcesList = (CID, UID, PN, ID) => {
+  const GetUnansweredResponcesList = (CID, UID, PN, ID, str) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
+    }
+    if (!str == "hideloader") {
+      LoaderShow()
     }
     var Data = {
       Page: PN,
@@ -218,7 +221,6 @@ export default function UnansweredResponsesPage(props) {
       IsSpam: false,
       AccountIDs: AccountIDs
     };
-    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
       method: "POST",
@@ -229,7 +231,11 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.PageData.length > 0) {
           // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
           SetFollowUpList(Result.data.PageData)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetCountPage(Result.data.PageCount);
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
@@ -249,13 +255,15 @@ export default function UnansweredResponsesPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
         _id: ID,
       };
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
         method: "POST",
@@ -322,7 +330,7 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
@@ -330,15 +338,15 @@ export default function UnansweredResponsesPage(props) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, ID);
+              GetUnansweredResponcesList(ClientID, UserID, 1, ID, "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "");
             }
           } else {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, 0)
+              GetUnansweredResponcesList(ClientID, UserID, 1, 0, "")
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -418,7 +426,7 @@ export default function UnansweredResponsesPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -432,18 +440,14 @@ export default function UnansweredResponsesPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+          }
           var ID = decrypt(props.location.search.replace('?', ''))
-          // if (ID !== undefined && ID!="") {
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
-            GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader");
           } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader")
           }
           // }
         } else {
@@ -1041,10 +1045,10 @@ export default function UnansweredResponsesPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+      GetUnansweredResponcesList(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+      GetUnansweredResponcesList(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1164,7 +1168,7 @@ export default function UnansweredResponsesPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1325,18 +1329,17 @@ export default function UnansweredResponsesPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

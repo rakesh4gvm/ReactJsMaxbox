@@ -199,22 +199,24 @@ export default function OtherInboxPage(props) {
 
     if (ID != "" && ID != null && ID != "undefined") {
       SetMenuID(ID);
-      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
     } else {
-      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
     }
 
   }
 
   // Start Get Follow Up Later List
-  const GetOtherInboxList = (CID, UID, PN, ID) => {
+  const GetOtherInboxList = (CID, UID, PN, ID, str) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
-    LoaderShow()
+    if (!str == "hideloader") {
+      LoaderShow()
+    }
     var Data = {
       Page: PN,
       RowsPerPage: RowsPerPage,
@@ -241,7 +243,11 @@ export default function OtherInboxPage(props) {
         if (Result.data.PageData.length > 0) {
           SetFollowUpList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
-          OpenMessageDetails(Result.data.PageData[0]._id);
+          if (!str == "hideloader") {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+          } else {
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+          }
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
@@ -259,10 +265,12 @@ export default function OtherInboxPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       var Data = {
         _id: ID,
       };
@@ -315,7 +323,7 @@ export default function OtherInboxPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID) => {
+  const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
       //setSelected(true);
       var Data = {
@@ -330,18 +338,17 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          toast.success(<div>Starred  updated successfully.</div>);
-          CloseStarPopModel();
-          OpenMessageDetails('')
-          LoaderShow()
+          if (str === "opnemodel") {
+            CloseStarPopModel();
+          }
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
-            GetOtherInboxList(ClientID, UserID, Page, ID);
+            GetOtherInboxList(ClientID, UserID, Page, ID, "hideloader");
           } else {
-            GetOtherInboxList(ClientID, UserID, Page, 0)
+            GetOtherInboxList(ClientID, UserID, Page, 0, "hideloader")
           }
           // }
         } else {
@@ -434,7 +441,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>)
           CloseDeletePopModel();
-          OpenMessageDetails('')
+          OpenMessageDetails('', '', 'showloader')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
@@ -442,15 +449,15 @@ export default function OtherInboxPage(props) {
           // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList.length - 1 == 0) {
-              GetOtherInboxList(ClientID, UserID, 1, ID);
+              GetOtherInboxList(ClientID, UserID, 1, ID, "");
             } else {
-              GetOtherInboxList(ClientID, UserID, Page, ID);
+              GetOtherInboxList(ClientID, UserID, Page, ID, "");
             }
           } else {
             if (FollowUpList.length - 1 == 0) {
-              GetOtherInboxList(ClientID, UserID, 1, 0)
+              GetOtherInboxList(ClientID, UserID, 1, 0, "")
             } else {
-              GetOtherInboxList(ClientID, UserID, Page, 0)
+              GetOtherInboxList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -989,10 +996,10 @@ export default function OtherInboxPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetOtherInboxList(ClientID, UserID, Page, ID);
+      GetOtherInboxList(ClientID, UserID, Page, ID, "");
     }
     else {
-      GetOtherInboxList(ClientID, UserID, Page, 0)
+      GetOtherInboxList(ClientID, UserID, Page, 0, "")
     }
   }
 
@@ -1112,7 +1119,7 @@ export default function OtherInboxPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1247,18 +1254,17 @@ export default function OtherInboxPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
                       >
                         <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id)} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.MessageDatetime).format("DD/MM/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
