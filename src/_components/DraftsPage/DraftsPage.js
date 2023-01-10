@@ -293,32 +293,37 @@ export default function OtherInboxPage(props) {
 
   // Open Compose
   const OpenCompose = (ID, Data) => {
-    const el = document.getElementById("DraftCompose")
-    el.classList.remove("show");
-
-
-    SetSelectedEmailAccountUser(0);
-    document.getElementById("ComposeTo").value = ""
-    document.getElementById("ComposeSubject").value = ""
-    document.getElementById("ComposeCC").value = ""
-    document.getElementById("ComposeBCC").value = ""
-
-    if (ID.length > 0) {
-      SetSignature({ Data: Data?.Body })
-      SetMailChange({ To: Data?.MailTo, Subject: Data?.Subject })
-    } else {
-      SetSignature({ Data: "" });
-      SetMailChange({ To: "", Subject: "" })
-    }
-
-
-    const element = document.getElementById("UserCompose")
-
-    if (element.classList.contains("show")) {
-      element.classList.remove("show");
+    if (ClientID == "" || ClientID == undefined || ClientID == null) {
+      toast.error("Please add client.");
     }
     else {
-      element.classList.add("show");
+      const el = document.getElementById("DraftCompose")
+      el.classList.remove("show");
+
+
+      SetSelectedEmailAccountUser(0);
+      document.getElementById("ComposeTo").value = ""
+      document.getElementById("ComposeSubject").value = ""
+      document.getElementById("ComposeCC").value = ""
+      document.getElementById("ComposeBCC").value = ""
+
+      if (ID.length > 0) {
+        SetSignature({ Data: Data?.Body })
+        SetMailChange({ To: Data?.MailTo, Subject: Data?.Subject })
+      } else {
+        SetSignature({ Data: "" });
+        SetMailChange({ To: "", Subject: "" })
+      }
+
+
+      const element = document.getElementById("UserCompose")
+
+      if (element.classList.contains("show")) {
+        element.classList.remove("show");
+      }
+      else {
+        element.classList.add("show");
+      }
     }
   };
 

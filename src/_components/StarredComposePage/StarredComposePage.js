@@ -210,22 +210,26 @@ export default function StarredComposePage({ GetStarredList }) {
 
     // Open Compose
     const OpenCompose = (e) => {
-
-        SetSelectedEmailAccountUser(0);
-        SetSignature({ Data: "" });
-        document.getElementById("ToEmail").value = ""
-        document.getElementById("Subject").value = ""
-        document.getElementById("CC").value = ""
-        document.getElementById("BCC").value = ""
-
-
-        const element = document.getElementById("UserCompose")
-
-        if (element.classList.contains("show")) {
-            element.classList.remove("show");
+        if (ClientID == "" || ClientID == undefined || ClientID == null) {
+            toast.error("Please add client.");
         }
         else {
-            element.classList.add("show");
+            SetSelectedEmailAccountUser(0);
+            SetSignature({ Data: "" });
+            document.getElementById("ToEmail").value = ""
+            document.getElementById("Subject").value = ""
+            document.getElementById("CC").value = ""
+            document.getElementById("BCC").value = ""
+
+
+            const element = document.getElementById("UserCompose")
+
+            if (element.classList.contains("show")) {
+                element.classList.remove("show");
+            }
+            else {
+                element.classList.add("show");
+            }
         }
     };
 
@@ -503,7 +507,7 @@ export default function StarredComposePage({ GetStarredList }) {
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
-        key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
     }
     const HandleModelChange = (Model) => {
         SetSignature({

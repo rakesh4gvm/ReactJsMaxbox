@@ -685,7 +685,7 @@ export default function Navigation(props) {
           SetFromEmailDropdownList(Result.data.PageData);
 
         } else {
-          toast.error(<div>Please add email configuration.</div>)
+          // toast.error(<div>Please add email configuration.</div>)
         }
       }
       else {
