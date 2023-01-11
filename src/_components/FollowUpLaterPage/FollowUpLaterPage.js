@@ -230,7 +230,7 @@ export default function FollowUpLater(props) {
       IsSpam: false,
       IsOtherInbox: false,
       AccountIDs: AccountIDs,
-      SearchDate: Moment(FollowUpDate).format("YYYY-MM-DD")
+      SearchDate: Moment(FollowUpDate).format("MM-DD-YYYY")
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -1270,7 +1270,7 @@ export default function FollowUpLater(props) {
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.FollowUpDate).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.FollowUpDate).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -1290,13 +1290,13 @@ export default function FollowUpLater(props) {
                           </label>
                           <label><b>To</b>{OpenMessage.ToEmail}</label>
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
-                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("LLL")}</label>
+                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY")}</label>
                         </div>
                     }
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY")}</lable>
                     </div>
                     {
                       OpenMessage == 0 ? '' :
