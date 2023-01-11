@@ -1,6 +1,9 @@
+html body,
+html, *, table tr td {
+    font-family: 'Arial', 'Poppins', sans-serif !important; 
+}
 body,
-html {
-    font-family: 'Poppins', sans-serif;
+html { 
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -1539,6 +1542,10 @@ div.erorr-msg>*>* {
     display: none !important;
 }
 
+.FroalaEditor .fr-box.fr-basic .fr-element{
+    min-height: 100% !important;
+}
+
 /*difulat start css*/
 .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child {
     background-color: #e49273;
@@ -2495,7 +2502,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .tablelister tr td {
     border-bottom: none;
     padding: 2px 5px;
-    font-size: 14px;
+    font-size: 0.8rem;
 }
 
 .tablelister tr svg {
@@ -2982,6 +2989,21 @@ tr.selected-row{
 }
 .startedtoggle button.starselected svg:nth-child(2){ 
     display: block;
+}
+#UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child{
+    max-width: 77px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before{
+    content: "Send";
+    position: absolute;
+    background: #e49273;
+    width: 62px;
+    display: table;
+    text-align: center;
+    line-height: 17px;
+    padding-right: 19px;
 }
 
 @media screen and (max-width:990px) {
