@@ -3005,6 +3005,36 @@ tr.selected-row{
     line-height: 17px;
     padding-right: 19px;
 }
+div.multibox-filter .MuiFilledInput-root {
+    background-color: transparent;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+div.multibox-filter .MuiFilledInput-root::before,
+div.multibox-filter .MuiFilledInput-root::after,
+div.multibox-filter .MuiFilledInput-root:hover::before,
+div.multibox-filter .MuiFilledInput-root:hover::after,
+div.multibox-filter .MuiFilledInput-root:focus::after {
+    border: none;
+}
+div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag{
+    color: #fff;
+    background: #e49273;
+    margin: 2px;
+    max-width: calc(100% - 4px);
+    height: 28px;
+}
+div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag span { 
+    padding-left: 8px;
+    padding-right: 8px; 
+    font-size: 0.7rem;
+    letter-spacing: 0.2px;
+}
+div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIcon { 
+    color: rgb(255 255 255 / 60%); 
+    color: rgb(255 255 255 / 60%);
+    width: 18px;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

@@ -41,6 +41,20 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+ 
+const top100Films = [ 
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 }, 
+];
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -717,7 +731,29 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <h6>Cc :</h6>
                             </Col>
                             <Col xs={10} className="px-0">
-                                <Input className='input-clend' id='CC' name='Cc' />
+                                {/* <Input className='input-clend' id='CC' name='Cc' />   */}
+                                <div className='multibox-filter'>
+                                    <Autocomplete
+                                        multiple
+                                        id="CC"
+                                        options={top100Films.map((option) => option.title)}
+                                        defaultValue={[top100Films[0].title]}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                        ))
+                                        }
+                                        renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="filled"
+                                            label=" "
+                                            placeholder=" "
+                                        />
+                                        )}
+                                    />
+                                </div> 
                             </Col>
                         </Row>
                     </div>
@@ -727,7 +763,29 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <h6>Bcc :</h6>
                             </Col>
                             <Col xs={10} className="px-0">
-                                <Input className='input-clend' id='BCC' name='Bcc' />
+                                {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
+                                <div className='multibox-filter'>
+                                    <Autocomplete
+                                        multiple
+                                        id="BCC"
+                                        options={top100Films.map((option) => option.title)}
+                                        defaultValue={[top100Films[0].title]}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                        ))
+                                        }
+                                        renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="filled"
+                                            label=" "
+                                            placeholder=" "
+                                        />
+                                        )}
+                                    />
+                                </div>
                             </Col>
                         </Row>
                     </div>
