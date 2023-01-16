@@ -311,7 +311,7 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
         var CCEmail = true
         var BCCEmail = true
 
-        if (Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
+        if (EmailResponse == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
         } else if (!CCEmail) {
             toast.error("Please enter valid CC email");
