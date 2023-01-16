@@ -1526,6 +1526,9 @@ div.erorr-msg>*>* {
     z-index: 99;
     width: 100%;
 }
+.FroalaEditor .fr-box.fr-basic {
+    padding-bottom: 81px;
+}
 
 .FroalaEditor .fr-toolbar.fr-top .fr-newline {
     display: none;
@@ -1534,7 +1537,7 @@ div.erorr-msg>*>* {
 .FroalaEditor .fr-box.fr-basic .fr-wrapper {
     border: none;
     height: 240px;
-    margin-bottom: 50px;
+    margin-bottom: 81px;
     overflow-y: auto;
 }
 
@@ -3041,6 +3044,7 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
 .fr-box.fr-basic.fr-top .fr-wrapper {
     border-radius: 0 0 10px 10px;
     border-color: #CCCCCC;
+    margin-bottom: 0;
 }
 
 @media screen and (max-width:990px) {
