@@ -44,15 +44,15 @@ import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
- 
-const top100Films = [ 
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 }, 
+
+const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: 'Pulp Fiction', year: 1994 },
 ];
 
 const style = {
@@ -95,6 +95,9 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
         Data: ""
     })
     const [ClientData, SetClientData] = useState()
+    const [ToEmailValue, SetToEmailValue] = React.useState([]);
+    const [CCEmailValue, SetCCEmailValue] = React.useState([]);
+    const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
 
     useEffect(() => {
         GetClientID()
@@ -239,6 +242,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
+            SetToEmailValue("")
             document.getElementById("ToEmail").value = ""
             document.getElementById("Subject").value = ""
             document.getElementById("CC").value = ""
@@ -287,7 +291,6 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
 
     // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
-        debugger
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
         if (ClientSignatureData == "") {
@@ -306,27 +309,18 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
     // Sent Mail Starts
     const SentMail = async () => {
 
-        var ToEmail = document.getElementById("ToEmail").value;
-        var Subject = document.getElementById("Subject").value;
-        var CC = document.getElementById("CC").value;
-        var BCC = document.getElementById("BCC").value;
+        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+        var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+        var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
-        const ValidToEmail = ValidateEmail(ToEmail)
+        var Subject = document.getElementById("Subject").value;
 
         var CCEmail = true
         var BCCEmail = true
 
-        if (CC != "") {
-            CCEmail = ValidateEmail(CC)
-        }
-        if (BCC != "") {
-            BCCEmail = ValidateEmail(BCC)
-        }
-
-        if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
+        if (Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
             toast.error("All Fields are Mandatory!");
-        } else if (!ValidToEmail) {
-            toast.error("Please enter valid email");
         } else if (!CCEmail) {
             toast.error("Please enter valid CC email");
         }
@@ -337,11 +331,11 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             LoaderShow()
             const Data = {
                 AccountID: SelectedUser?.AccountID,
-                ToEmail: ToEmail,
+                ToEmail: EmailResponse.toString(),
                 Subject: Subject,
                 SignatureText: Signature.Data,
-                CC: CC,
-                BCC: BCC,
+                CC: CCResponse.toString(),
+                BCC: BCCResponse.toString(),
                 FromEmail: SelectedUser.Email,
                 RefreshToken: SelectedUser.RefreshToken,
                 FirstName: SelectedUser.FirstName,
@@ -368,6 +362,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()
+                    SetToEmailValue("")
                     // GetAllInboxList()
                     document.getElementById("ToEmail").value = ""
                     document.getElementById("Subject").value = ""
@@ -722,20 +717,26 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                         multiple
                                         id="ToEmail"
                                         options={top100Films.map((option) => option.title)}
-                                        defaultValue={[top100Films[0].title]}
+                                        onChange={(event, newValue) => {
+                                            SetToEmailValue(newValue);
+                                        }}
                                         freeSolo
                                         renderTags={(value, getTagProps) =>
-                                        value.map((option, index) => (
-                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                                        ))
+                                            value.map((option, index) => {
+                                                var ValidEmail = ValidateEmail(option)
+                                                if (ValidEmail) {
+                                                    return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                }
+                                            }
+                                            )
                                         }
                                         renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="filled"
-                                            label=" "
-                                            placeholder=" "
-                                        />
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
                                         )}
                                     />
                                 </div>
@@ -758,23 +759,32 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                         multiple
                                         id="CC"
                                         options={top100Films.map((option) => option.title)}
-                                        defaultValue={[top100Films[0].title]}
+                                        onChange={(event, newValue) => {
+                                            SetCCEmailValue(newValue);
+                                        }}
                                         freeSolo
                                         renderTags={(value, getTagProps) =>
-                                        value.map((option, index) => (
-                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                                        ))
+                                            value.map((option, index) => {
+                                                var ValidEmail = ValidateEmail(option)
+                                                if (ValidEmail) {
+                                                    return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                }
+                                            }
+                                            )
                                         }
-                                        renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="filled"
-                                            label=" "
-                                            placeholder=" "
-                                        />
-                                        )}
+                                        renderInput={(params) => {
+                                            return (
+                                                <TextField
+                                                    {...params}
+                                                    variant="filled"
+                                                    label=" "
+                                                    placeholder=" "
+                                                />
+                                            )
+                                        }
+                                        }
                                     />
-                                </div> 
+                                </div>
                             </Col>
                         </Row>
                     </div>
@@ -789,21 +799,29 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                     <Autocomplete
                                         multiple
                                         id="BCC"
+                                        onChange={(event, newValue) => {
+                                            SetBCCEmailValue(newValue);
+                                        }}
                                         options={top100Films.map((option) => option.title)}
-                                        defaultValue={[top100Films[0].title]}
                                         freeSolo
                                         renderTags={(value, getTagProps) =>
-                                        value.map((option, index) => (
-                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                                        ))
+                                            value.map((option, index) => {
+                                                var ValidEmail = ValidateEmail(option)
+                                                if (ValidEmail) {
+                                                    return (
+                                                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                                    )
+                                                }
+                                            }
+                                            )
                                         }
                                         renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="filled"
-                                            label=" "
-                                            placeholder=" "
-                                        />
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
                                         )}
                                     />
                                 </div>
