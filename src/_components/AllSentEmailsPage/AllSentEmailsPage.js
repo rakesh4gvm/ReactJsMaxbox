@@ -54,6 +54,19 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+ 
+const top100Films = [ 
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 }, 
+];
 const style = {
   position: 'absolute',
   top: '50%',
@@ -1266,7 +1279,29 @@ export default function AllSentEmailsPage(props) {
                 <h6>To :</h6>
               </Col>
               <Col xs={7} className="px-0">
-                <Input className='input-clend' id='To' name='To' value={OpenMessage?.ToEmail} disabled />
+                {/* <Input className='input-clend' id='To' name='To' value={OpenMessage?.ToEmail} disabled /> */}
+                <div className='multibox-filter'>
+                    <Autocomplete
+                        multiple
+                        id="To"
+                        options={top100Films.map((option) => option.title)}
+                        defaultValue={[top100Films[0].title]}
+                        freeSolo
+                        renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                        ))
+                        }
+                        renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="filled"
+                            label=" "
+                            placeholder=" "
+                        />
+                        )}
+                    />
+                </div>
               </Col>
             </Row>
           </div>
@@ -1308,7 +1343,29 @@ export default function AllSentEmailsPage(props) {
                 <h6>To :</h6>
               </Col>
               <Col xs={7} className="px-0">
-                <Input className='input-clend' id='ToForward' name='ToForward' />
+                {/* <Input className='input-clend' id='ToForward' name='ToForward' /> */}
+                <div className='multibox-filter'>
+                    <Autocomplete
+                        multiple
+                        id="ToForward"
+                        options={top100Films.map((option) => option.title)}
+                        defaultValue={[top100Films[0].title]}
+                        freeSolo
+                        renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                        ))
+                        }
+                        renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="filled"
+                            label=" "
+                            placeholder=" "
+                        />
+                        )}
+                    />
+                </div>
               </Col>
             </Row>
           </div>
