@@ -52,15 +52,15 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
- 
-const top100Films = [ 
+
+const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
   { title: 'The Godfather', year: 1972 },
   { title: 'The Godfather: Part II', year: 1974 },
   { title: 'The Dark Knight', year: 2008 },
   { title: '12 Angry Men', year: 1957 },
   { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 }, 
+  { title: 'Pulp Fiction', year: 1994 },
 ];
 
 toast.configure();
@@ -171,6 +171,10 @@ export default function OtherInboxPage(props) {
     To: "",
     Subject: ""
   })
+  const [ToEmailValue, SetToEmailValue] = React.useState([]);
+  const [CCEmailValue, SetCCEmailValue] = React.useState([]);
+  const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
+
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -401,27 +405,19 @@ export default function OtherInboxPage(props) {
   // Sent Mail Starts
   const ComposeSentDataMail = async () => {
     LoaderShow()
-    var ToEmail = document.getElementById("ComposeTo").value;
-    var Subject = document.getElementById("ComposeSubject").value;
-    var CC = document.getElementById("ComposeCC").value;
-    var BCC = document.getElementById("ComposeBCC").value;
 
-    const ValidToEmail = ValidateEmail(ToEmail)
+    let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+
+    var Subject = document.getElementById("ComposeSubject").value;
 
     var CCEmail = true
     var BCCEmail = true
 
-    if (CC != "") {
-      CCEmail = ValidateEmail(CC)
-    }
-    if (BCC != "") {
-      BCCEmail = ValidateEmail(BCC)
-    }
-
-    if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
+    if (Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
       toast.error("All Fields are Mandatory!");
-    } else if (!ValidToEmail) {
-      toast.error("Please enter valid email");
     } else if (!CCEmail) {
       toast.error("Please enter valid CC email");
     }
@@ -432,11 +428,11 @@ export default function OtherInboxPage(props) {
       LoaderShow()
       const Data = {
         AccountID: SelectedUser?.AccountID,
-        ToEmail: ToEmail,
+        ToEmail: EmailResponse.toString(),
         Subject: Subject,
         SignatureText: Signature.Data,
-        CC: CC,
-        BCC: BCC,
+        CC: CCResponse.toString(),
+        BCC: BCCResponse.toString(),
         FromEmail: SelectedUser.Email,
         RefreshToken: SelectedUser.RefreshToken,
         FirstName: SelectedUser.FirstName,
@@ -1120,26 +1116,32 @@ export default function OtherInboxPage(props) {
               <Col xs={7} className="px-0">
                 {/* <Input className='input-clend' id='ComposeTo' name='To' value={MailChange.To} onChange={HandleMailChange} /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="ComposeTo"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
+                  <Autocomplete
+                    multiple
+                    id="ComposeTo"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetToEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
                         }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
               <Col xs={3} className='col text-right d-flex px-0'>
@@ -1156,26 +1158,32 @@ export default function OtherInboxPage(props) {
               <Col xs={10} className="px-0">
                 {/* <Input className='input-clend' id='ComposeCC' name='Cc' /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="ComposeCC"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
+                  <Autocomplete
+                    multiple
+                    id="ComposeCC"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetCCEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
                         }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
             </Row>
@@ -1188,26 +1196,34 @@ export default function OtherInboxPage(props) {
               <Col xs={10} className="px-0">
                 {/* <Input className='input-clend' id='ComposeBCC' name='Bcc' /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="ComposeBCC"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
+                  <Autocomplete
+                    multiple
+                    id="ComposeBCC"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetBCCEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (
                             <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
+                          )
                         }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
             </Row>
