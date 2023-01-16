@@ -3035,6 +3035,13 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
     color: rgb(255 255 255 / 60%);
     width: 18px;
 }
+.fr-box .fr-second-toolbar{
+    display: none;
+}
+.fr-box.fr-basic.fr-top .fr-wrapper {
+    border-radius: 0 0 10px 10px;
+    border-color: #CCCCCC;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

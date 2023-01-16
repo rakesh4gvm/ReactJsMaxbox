@@ -24,6 +24,19 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+ 
+const top100Films = [ 
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 }, 
+];
 
 toast.configure();
 
@@ -252,8 +265,29 @@ export default function DraftComposePage({ GetDraftList }) {
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={8} className="px-0">
-                                <Input className='input-clend' id='ToEmail' name='ToEmail' />
-
+                                {/* <Input className='input-clend' id='ToEmail' name='ToEmail' /> */}
+                                <div className='multibox-filter'>
+                                    <Autocomplete
+                                        multiple
+                                        id="ToEmail"
+                                        options={top100Films.map((option) => option.title)}
+                                        defaultValue={[top100Films[0].title]}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                        ))
+                                        }
+                                        renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="filled"
+                                            label=" "
+                                            placeholder=" "
+                                        />
+                                        )}
+                                    />
+                                </div>
                             </Col>
                         </Row>
                     </div>

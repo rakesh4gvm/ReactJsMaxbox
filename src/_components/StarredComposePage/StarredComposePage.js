@@ -707,8 +707,29 @@ export default function StarredComposePage({ GetStarredList }) {
                                 <h6>To :</h6>
                             </Col>
                             <Col xs={7} className="px-0">
-                                <Input className='input-clend' id='ToEmail' name='ToEmail' />
-
+                                {/* <Input className='input-clend' id='ToEmail' name='ToEmail' /> */}
+                                <div className='multibox-filter'>
+                                    <Autocomplete
+                                        multiple
+                                        id="ToEmail"
+                                        options={top100Films.map((option) => option.title)}
+                                        defaultValue={[top100Films[0].title]}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                        ))
+                                        }
+                                        renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="filled"
+                                            label=" "
+                                            placeholder=" "
+                                        />
+                                        )}
+                                    />
+                                </div>
                             </Col>
                             <Col xs={3} className='col text-right d-flex px-0'>
                                 <Button className='lable-btn' onClick={OpenCc}>Cc</Button>
