@@ -27,15 +27,15 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
- 
-const top100Films = [ 
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 }, 
+
+const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: 'Pulp Fiction', year: 1994 },
 ];
 
 toast.configure();
@@ -50,6 +50,7 @@ export default function DraftComposePage({ GetDraftList }) {
     const [DraftSignature, SetDraftSignature] = useState({
         Data: ""
     })
+    const [ToEmailValue, SetToEmailValue] = React.useState([]);
 
     useEffect(() => {
         GetClientID()
@@ -94,21 +95,21 @@ export default function DraftComposePage({ GetDraftList }) {
 
     // Sent Mail Starts
     const AddDraftTemplate = async () => {
+        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
         var ToEmail = document.getElementById("ToEmail").value;
         var Subject = document.getElementById("DraftSubject").value;
 
         const ValidToEmail = ValidateEmail(ToEmail)
 
-        if (ToEmail == "" || Subject == "" || DraftSignature.Data == "") {
+        if (EmailResponse == "" || Subject == "" || DraftSignature.Data == "") {
             toast.error("All Fields are Mandatory!");
-        } else if (!ValidToEmail) {
-            toast.error("Please enter valid email");
         }
         else {
             LoaderShow()
             const Data = {
-                MailTo: ToEmail,
+                MailTo: EmailResponse.toString(),
                 Subject: Subject,
                 Body: DraftSignature.Data,
                 UserID: UserID,
@@ -196,7 +197,7 @@ export default function DraftComposePage({ GetDraftList }) {
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
-        key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
     }
     const HandleModelChange = (Model) => {
         SetDraftSignature({
@@ -271,20 +272,26 @@ export default function DraftComposePage({ GetDraftList }) {
                                         multiple
                                         id="ToEmail"
                                         options={top100Films.map((option) => option.title)}
-                                        defaultValue={[top100Films[0].title]}
+                                        onChange={(event, newValue) => {
+                                            SetToEmailValue(newValue);
+                                        }}
                                         freeSolo
                                         renderTags={(value, getTagProps) =>
-                                        value.map((option, index) => (
-                                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                                        ))
+                                            value.map((option, index) => {
+                                                var ValidEmail = ValidateEmail(option)
+                                                if (ValidEmail) {
+                                                    return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                }
+                                            }
+                                            )
                                         }
                                         renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="filled"
-                                            label=" "
-                                            placeholder=" "
-                                        />
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
                                         )}
                                     />
                                 </div>

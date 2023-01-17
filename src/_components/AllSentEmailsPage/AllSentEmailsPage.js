@@ -57,15 +57,15 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
- 
-const top100Films = [ 
+
+const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
   { title: 'The Godfather', year: 1972 },
   { title: 'The Godfather: Part II', year: 1974 },
   { title: 'The Dark Knight', year: 2008 },
   { title: '12 Angry Men', year: 1957 },
   { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 }, 
+  { title: 'Pulp Fiction', year: 1994 },
 ];
 const style = {
   position: 'absolute',
@@ -166,9 +166,12 @@ export default function AllSentEmailsPage(props) {
   const [PageValue, SetPageValue] = React.useState(1)
   const [Active, SetActive] = useState("");
   const [Ccflag, SetCcflag] = useState(false);
-  const [Bccflag, SetBccflag] = useState(false); 
+  const [Bccflag, SetBccflag] = useState(false);
   const [CcReplyflag, SetCcReplyflag] = useState(false);
   const [BccReplyflag, SetBccReplyflag] = useState(false);
+  const [ToEmailValue, SetToEmailValue] = React.useState([]);
+  const [CCEmailValue, SetCCEmailValue] = React.useState([]);
+  const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -300,7 +303,6 @@ export default function AllSentEmailsPage(props) {
       data: Data,
     });
     ResponseApi.then((Result) => {
-      debugger
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetAllSentList(Result.data.PageData)
@@ -388,7 +390,6 @@ export default function AllSentEmailsPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
-        debugger
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
@@ -543,7 +544,12 @@ export default function AllSentEmailsPage(props) {
 
   // Sent Mail Starts
   const ReplySendMail = async () => {
-    var ToEmail = OpenMessage.ToEmail;
+    
+    let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+
     var ToName = OpenMessage.ToName
     var FromEmail = OpenMessage.FromEmail;
     var FromName = OpenMessage.FromName
@@ -551,12 +557,14 @@ export default function AllSentEmailsPage(props) {
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
 
-    if (Body == "") {
-      toast.error("Please Enter Body");
+    if (Body == "" || EmailResponse == "") {
+      toast.error("All Fields are Mandatory!");
     } else {
       LoaderShow()
       var Data = {
-        ToEmail: ToEmail,
+        ToEmail: EmailResponse.toString(),
+        CC: CCResponse.toString(),
+        BCC: BCCResponse.toString(),
         ToName: ToName,
         FromEmail: FromEmail,
         FromName: FromName,
@@ -808,55 +816,55 @@ export default function AllSentEmailsPage(props) {
   }
   /* end code*/
 
-   // Open CC
-   const OpenCcForward = () => {
+  // Open CC
+  const OpenCcForward = () => {
     if (Ccflag == false) {
-        document.getElementById("CcForward").style.display = 'block'
-        SetCcflag(true);
+      document.getElementById("CcForward").style.display = 'block'
+      SetCcflag(true);
     }
     else {
-        document.getElementById("CcForward").style.display = 'none'
-        SetCcflag(false);
+      document.getElementById("CcForward").style.display = 'none'
+      SetCcflag(false);
     }
-};
+  };
 
-// Open BCC
-const OpenBccForward = () => {
+  // Open BCC
+  const OpenBccForward = () => {
     if (Bccflag == false) {
-        document.getElementById("BccForward").style.display = 'block'
-        SetBccflag(true);
+      document.getElementById("BccForward").style.display = 'block'
+      SetBccflag(true);
     }
     else {
-        document.getElementById("BccForward").style.display = 'none'
-        SetBccflag(false);
+      document.getElementById("BccForward").style.display = 'none'
+      SetBccflag(false);
     }
-};
+  };
 
 
   // Open CC
   const OpenCcReply = () => {
     if (CcReplyflag == false) {
-        document.getElementById("CcReply").style.display = 'block'
-        SetCcReplyflag(true);
+      document.getElementById("CcReply").style.display = 'block'
+      SetCcReplyflag(true);
     }
     else {
-        document.getElementById("CcReply").style.display = 'none'
-        SetCcReplyflag(false);
+      document.getElementById("CcReply").style.display = 'none'
+      SetCcReplyflag(false);
     }
-};
+  };
 
-// Open BCC
-const OpenBccReply = () => {
+  // Open BCC
+  const OpenBccReply = () => {
     if (BccReplyflag == false) {
-        document.getElementById("BccReply").style.display = 'block'
-        SetBccReplyflag(true);
+      document.getElementById("BccReply").style.display = 'block'
+      SetBccReplyflag(true);
     }
     else {
-        document.getElementById("BccReply").style.display = 'none'
-        SetBccReplyflag(false);
+      document.getElementById("BccReply").style.display = 'none'
+      SetBccReplyflag(false);
     }
 
-};
+  };
 
   // Forward Send Mail Starts
   const ForwardSendMail = () => {
@@ -1335,97 +1343,117 @@ const OpenBccReply = () => {
               <Col xs={7} className="px-0">
                 {/* <Input className='input-clend' id='To' name='To' value={OpenMessage?.ToEmail} disabled /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="To"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
+                  <Autocomplete
+                    multiple
+                    id="To"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetToEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
                         }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
               <Col xs={3} className='col text-right d-flex px-0 btn-whitedp'>
-                  <Button className='lable-btn' onClick={OpenCcReply}>Cc</Button>
-                  <Button className='lable-btn' onClick={OpenBccReply}>Bcc</Button>
+                <Button className='lable-btn' onClick={OpenCcReply}>Cc</Button>
+                <Button className='lable-btn' onClick={OpenBccReply}>Bcc</Button>
               </Col>
             </Row>
           </div>
           <div className='subcompose cc px-3' id='CcReply'>
-              <Row className='px-3'>
-                  <Col xs={2} className="px-0">
-                      <h6>Cc :</h6>
-                  </Col>
-                  <Col xs={10} className="px-0">
-                      {/* <Input className='input-clend' id='CC' name='Cc' /> */}
-                      <div className='multibox-filter'>
-                          <Autocomplete
-                              multiple
-                              id="CC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
-                      </div>
-                  </Col>
-              </Row>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>Cc :</h6>
+              </Col>
+              <Col xs={10} className="px-0">
+                {/* <Input className='input-clend' id='CC' name='Cc' /> */}
+                <div className='multibox-filter'>
+                  <Autocomplete
+                    multiple
+                    id="CC"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetCCEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                        }
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
           <div className='subcompose bcc px-3' id='BccReply'>
-              <Row className='px-3'>
-                  <Col xs={2} className="px-0">
-                      <h6>Bcc :</h6>
-                  </Col>
-                  <Col xs={10} className="px-0">
-                      {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
-                      <div className='multibox-filter'>
-                          <Autocomplete
-                              multiple
-                              id="BCC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
-                      </div>
-                  </Col>
-              </Row>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>Bcc :</h6>
+              </Col>
+              <Col xs={10} className="px-0">
+                {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
+                <div className='multibox-filter'>
+                  <Autocomplete
+                    multiple
+                    id="BCC"
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetBCCEmailValue(newValue);
+                    }}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                          )
+                        }
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
           <div className='bodycompose'>
             <Row className='pt-2'>
@@ -1467,97 +1495,97 @@ const OpenBccReply = () => {
               <Col xs={7} className="px-0">
                 {/* <Input className='input-clend' id='ToForward' name='ToForward' /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="ToForward"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
-                        }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                  <Autocomplete
+                    multiple
+                    id="ToForward"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
-              </Col> 
+              </Col>
               <Col xs={3} className='col text-right d-flex px-0 btn-whitedp'>
-                  <Button className='lable-btn' onClick={OpenCcForward}>Cc</Button>
-                  <Button className='lable-btn' onClick={OpenBccForward}>Bcc</Button>
+                <Button className='lable-btn' onClick={OpenCcForward}>Cc</Button>
+                <Button className='lable-btn' onClick={OpenBccForward}>Bcc</Button>
               </Col>
             </Row>
           </div>
           <div className='subcompose cc px-3' id='CcForward'>
-              <Row className='px-3'>
-                  <Col xs={2} className="px-0">
-                      <h6>Cc :</h6>
-                  </Col>
-                  <Col xs={10} className="px-0">
-                      {/* <Input className='input-clend' id='CC' name='Cc' /> */}
-                      <div className='multibox-filter'>
-                          <Autocomplete
-                              multiple
-                              id="CC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
-                      </div>
-                  </Col>
-              </Row>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>Cc :</h6>
+              </Col>
+              <Col xs={10} className="px-0">
+                {/* <Input className='input-clend' id='CC' name='Cc' /> */}
+                <div className='multibox-filter'>
+                  <Autocomplete
+                    multiple
+                    id="CC"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
           <div className='subcompose bcc px-3' id='BccForward'>
-              <Row className='px-3'>
-                  <Col xs={2} className="px-0">
-                      <h6>Bcc :</h6>
-                  </Col>
-                  <Col xs={10} className="px-0">
-                      {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
-                      <div className='multibox-filter'>
-                          <Autocomplete
-                              multiple
-                              id="BCC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
-                      </div>
-                  </Col>
-              </Row>
+            <Row className='px-3'>
+              <Col xs={2} className="px-0">
+                <h6>Bcc :</h6>
+              </Col>
+              <Col xs={10} className="px-0">
+                {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
+                <div className='multibox-filter'>
+                  <Autocomplete
+                    multiple
+                    id="BCC"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
           <div className='bodycompose'>
             <Row className='pt-2'>
