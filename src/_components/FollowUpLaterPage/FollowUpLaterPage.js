@@ -1375,13 +1375,13 @@ export default function FollowUpLater(props) {
                           </label>
                           <label><b>To</b>{OpenMessage.ToEmail}</label>
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
-                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY")}</label>
+                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}</label>
                         </div>
                     }
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY")}</lable>
+                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
                     </div>
                     {
                       OpenMessage == 0 ? '' :
