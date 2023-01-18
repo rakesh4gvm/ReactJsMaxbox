@@ -3090,10 +3090,10 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
     display: block !important;
 }
 .seen-email{
-    background-color: #d8d8d8;
+    background-color: transparent;
 }
 .useen-email{
-    background-color: transparent;
+    background-color: #d8d8d8;
 }
 
 
