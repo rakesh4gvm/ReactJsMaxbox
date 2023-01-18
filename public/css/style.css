@@ -2842,14 +2842,14 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     z-index: 9999;
 }
 .pagination-pa {
-    position: absolute;
-    width: 100%;
+    position: absolute; 
     top: 0;
     z-index: 1;
+    right: 0;
 }
-.pagination-pa + div{
+/* .pagination-pa + div{
     padding-top: 30px;
-}
+} */
 .pagination-pa .MuiTablePagination-toolbar{
     background-color: #e49273;
     min-height: 30px; 
@@ -2961,12 +2961,37 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 tr.selected-row{
     background: #faecec;
 }
-.Refreshbtn {
-    border-right: 1px solid #d28466;
+.orangbg-table {
+    background-color: #e49273;
+    width: 100%;
+    height: 30px;
+} 
+.rigter-coller { 
     position: absolute;
     z-index: 999;
     right: 160px;
-    top: 2px;
+    top: 2px; 
+}
+.check-unseen{
+    margin: 0 10px;
+}
+.check-unseen .MuiCheckbox-root{
+    padding: 0 5px 0 0;
+    color: #eee;
+}
+.check-unseen .MuiCheckbox-root svg{
+    width: 0.85em;
+}
+.check-unseen .MuiCheckbox-root.Mui-checked{ 
+    color: #fff;
+}
+.check-unseen .MuiFormControlLabel-label{
+    color: #fff;
+    font-size: 0.8rem;
+    letter-spacing: 0.2px;
+}
+.Refreshbtn {
+    border-right: 1px solid #d28466;   
     border-left: 1px solid #d28466;
     padding: 1px 8px;
 }
@@ -3060,6 +3085,9 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
     height: auto !important;
     width: auto !important;
     padding: .375rem .75rem !important;
+}
+.d-block-child .Pane.horizontal.Pane1{
+    display: block !important;
 }
 
 @media screen and (max-width:990px) {

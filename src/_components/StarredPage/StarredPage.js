@@ -56,6 +56,8 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from "react-toastify";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 
 import Autocomplete from '@mui/material/Autocomplete';
@@ -1289,14 +1291,19 @@ export default function OtherInboxPage(props) {
         </header>
 
         <div className='bodyview' >
-          <SplitPane
+          <SplitPane className='d-block-child'
             split="horizontal "
             minSize={150}
             maxSize={-200}
             defaultSize={"40%"}
           >
             <>
-              <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+              <div className='orangbg-table'> 
+                <div className='rigter-coller'>
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />  
+                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                </div>
+              </div>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >
