@@ -47,6 +47,8 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 
 import Accordion from '@mui/material/Accordion';
@@ -1184,14 +1186,19 @@ export default function AllUnansweredRepliesPage(props) {
           </Row>
         </header>
         <div className='bodyview' >
-          <SplitPane
+          <SplitPane className='d-block-child'
             split="horizontal "
             minSize={150}
             maxSize={-200}
             defaultSize={"40%"}
           >
             <>
-              <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+              <div className='orangbg-table'>
+                <div className='rigter-coller'>
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                </div>
+              </div>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >

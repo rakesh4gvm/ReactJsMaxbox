@@ -1160,7 +1160,8 @@ export default function OtherInboxPage(props) {
                   <TableBody>
                     {AllInboxList.map((item, index) => (
                       <TableRow
-                        className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "useen-email" : ""}`}
+                        // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
+                        className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

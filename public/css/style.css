@@ -3089,6 +3089,13 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
 .d-block-child .Pane.horizontal.Pane1{
     display: block !important;
 }
+.seen-email{
+    background-color: #d8d8d8;
+}
+.useen-email{
+    background-color: transparent;
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
