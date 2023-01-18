@@ -949,23 +949,29 @@ export default function OtherInboxPage(props) {
               <div className='composehead px-3'>
                 <Row>
                   <Col sm={6}>
-                    <div className='lablebox'>
-                      <label><b>To</b>{OpenMessage.MailTo}</label>
-                      <label><b>Subject</b>{OpenMessage.Subject}</label>
-                    </div>
+                    {
+                      OpenMessage == 0 ? "" :
+                        <div className='lablebox'>
+                          <label><b>To</b>{OpenMessage.MailTo}</label>
+                          <label><b>Subject</b>{OpenMessage.Subject}</label>
+                        </div>
+                    }
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
                       <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.CreatedDate).format("MM/DD/YYYY hh:mm A")}</lable>
                     </div>
-                    <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
-                      <Button>
-                        <label>{MailNumber} / {DraftList.length}</label>
-                      </Button>
-                      {<Button onClick={OpenDeletePopModel}>
-                        <img src={icondelete} title={"Delete"} />
-                      </Button>}
-                    </ButtonGroup>
+                    {
+                      OpenMessage == 0 ? "" :
+                        <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
+                          <Button>
+                            <label>{MailNumber} / {DraftList.length}</label>
+                          </Button>
+                          {<Button onClick={OpenDeletePopModel}>
+                            <img src={icondelete} title={"Delete"} />
+                          </Button>}
+                        </ButtonGroup>
+                    }
                   </Col>
                 </Row>
               </div>
