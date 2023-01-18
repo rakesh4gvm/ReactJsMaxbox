@@ -279,7 +279,7 @@ export default function OtherInboxPage(props) {
     })
   }
   // End Get Follow Up Later List
-
+  const [IsSeenEmail, SetIsSeenEmail] = useState(false)
   //Start Open Message Details
   const OpenMessageDetails = (ID, index) => {
     if (ID != '') {
@@ -294,8 +294,10 @@ export default function OtherInboxPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
+        console.log("Result=====", Result.data.Data[0].IsSeen)
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
+            SetIsSeenEmail(Result.data.Data[0].IsSeen)
             SetOpenMessageDetails(Result.data.Data[0]);
             SetActive(ID);
             LoaderHide()
@@ -318,6 +320,7 @@ export default function OtherInboxPage(props) {
     }
   };
   //End Open Message Details
+  console.log("IsSeenEmail=====", IsSeenEmail)
 
   // Start Search
   const SearchBox = (e) => {
@@ -1124,12 +1127,12 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
             <>
-            <div className='orangbg-table'> 
+              <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />  
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
-            </div>
+              </div>
               {
                 OpenMessage?.length == 0 ? "" :
                   <div className='pagination-pa' >
@@ -1157,7 +1160,7 @@ export default function OtherInboxPage(props) {
                   <TableBody>
                     {AllInboxList.map((item, index) => (
                       <TableRow
-                        className={`${Active === item._id ? "selected-row" : ""}`}
+                        className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "useen-email" : ""}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}
