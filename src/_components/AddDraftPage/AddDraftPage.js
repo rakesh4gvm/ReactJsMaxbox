@@ -73,6 +73,7 @@ export default function DraftComposePage({ GetDraftList }) {
 
         SetSelectedEmailAccountUser(0);
         SetDraftSignature({ Data: "" });
+        SetToEmailValue([])
         document.getElementById("ToEmail").value = ""
         document.getElementById("DraftSubject").value = ""
 
@@ -271,6 +272,7 @@ export default function DraftComposePage({ GetDraftList }) {
                                     <Autocomplete
                                         multiple
                                         id="ToEmail"
+                                        value={ToEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetToEmailValue(newValue);

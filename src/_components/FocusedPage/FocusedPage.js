@@ -1126,6 +1126,7 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const RefreshTable = () => {
+    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
@@ -1673,28 +1674,28 @@ export default function UnansweredResponsesPage(props) {
               <Col xs={7} className="px-0">
                 {/* <Input className='input-clend' id='ToForward' name='ToForward' /> */}
                 <div className='multibox-filter'>
-                    <Autocomplete
-                        multiple
-                        id="ToForward"
-                        options={top100Films.map((option) => option.title)}
-                        defaultValue={[top100Films[0].title]}
-                        freeSolo
-                        renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                        ))
-                        }
-                        renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="filled"
-                            label=" "
-                            placeholder=" "
-                        />
-                        )}
-                    />
+                  <Autocomplete
+                    multiple
+                    id="ToForward"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
-              </Col> 
+              </Col>
               <Col xs={3} className='col text-right d-flex px-0 btn-whitedp'>
                 <Button className='lable-btn' onClick={OpenCcForward}>Cc</Button>
                 <Button className='lable-btn' onClick={OpenBccForward}>Bcc</Button>
@@ -1709,26 +1710,26 @@ export default function UnansweredResponsesPage(props) {
               <Col xs={10} className="px-0">
                 {/* <Input className='input-clend' id='CC' name='Cc' /> */}
                 <div className='multibox-filter'>
-                <Autocomplete
-                              multiple
-                              id="CC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
+                  <Autocomplete
+                    multiple
+                    id="CC"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
             </Row>
@@ -1741,26 +1742,26 @@ export default function UnansweredResponsesPage(props) {
               <Col xs={10} className="px-0">
                 {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
                 <div className='multibox-filter'>
-                <Autocomplete
-                              multiple
-                              id="BCC"
-                              options={top100Films.map((option) => option.title)}
-                              defaultValue={[top100Films[0].title]}
-                              freeSolo
-                              renderTags={(value, getTagProps) =>
-                              value.map((option, index) => (
-                                  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                              ))
-                              }
-                              renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="filled"
-                                  label=" "
-                                  placeholder=" "
-                              />
-                              )}
-                          />
+                  <Autocomplete
+                    multiple
+                    id="BCC"
+                    options={top100Films.map((option) => option.title)}
+                    defaultValue={[top100Films[0].title]}
+                    freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  />
                 </div>
               </Col>
             </Row>

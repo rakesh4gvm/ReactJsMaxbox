@@ -320,6 +320,9 @@ export default function OtherInboxPage(props) {
       el.classList.remove("show");
 
       SetClientSignatureData("")
+      SetToEmailValue([])
+      SetCCEmailValue([])
+      SetBCCEmailValue([])
       SetSelectedEmailAccountUser(0);
       document.getElementById("ComposeTo").value = ""
       document.getElementById("ComposeSubject").value = ""
@@ -1119,6 +1122,7 @@ export default function OtherInboxPage(props) {
                   <Autocomplete
                     multiple
                     id="ComposeTo"
+                    value={ToEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetToEmailValue(newValue);
@@ -1161,6 +1165,7 @@ export default function OtherInboxPage(props) {
                   <Autocomplete
                     multiple
                     id="ComposeCC"
+                    value={CCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetCCEmailValue(newValue);
@@ -1199,6 +1204,7 @@ export default function OtherInboxPage(props) {
                   <Autocomplete
                     multiple
                     id="ComposeBCC"
+                    value={BCCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetBCCEmailValue(newValue);

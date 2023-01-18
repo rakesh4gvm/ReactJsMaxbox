@@ -227,7 +227,6 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
     // Open Compose
     const OpenCompose = (e) => {
-
         if (ClientID == "" || ClientID == undefined || ClientID == null) {
             toast.error("Please add client.");
         }
@@ -235,6 +234,9 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
+            SetToEmailValue([])
+            SetCCEmailValue([])
+            SetBCCEmailValue([])
             document.getElementById("ToEmail").value = ""
             document.getElementById("Subject").value = ""
             document.getElementById("CC").value = ""
@@ -355,7 +357,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                 data: Data,
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-                    toast.success(<div>Mail sent successfully.</div>);
+                    toast.success(<div>Mail sent successfully.</div>)
                     OpenCompose();
                     CloseCompose()
                     LoaderHide()
@@ -566,7 +568,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     /* end code*/
 
 
-
+    
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);
@@ -721,6 +723,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                                     <Autocomplete
                                         multiple
                                         id="ToEmail"
+                                        value={ToEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetToEmailValue(newValue);
@@ -764,6 +767,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                                     <Autocomplete
                                         multiple
                                         id="CC"
+                                        value={CCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetCCEmailValue(newValue);
@@ -802,6 +806,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                                     <Autocomplete
                                         multiple
                                         id="BCC"
+                                        value={BCCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetBCCEmailValue(newValue);

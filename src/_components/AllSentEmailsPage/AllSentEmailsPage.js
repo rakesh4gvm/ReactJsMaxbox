@@ -329,9 +329,7 @@ export default function AllSentEmailsPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, e, index, str) => {
-    // console.log("e======", e)
-    debugger
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       if (str == "showloader") {
@@ -346,7 +344,6 @@ export default function AllSentEmailsPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
-        debugger
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
@@ -1020,6 +1017,7 @@ export default function AllSentEmailsPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
@@ -1028,55 +1026,6 @@ export default function AllSentEmailsPage(props) {
     else {
       GetAllSent(ClientID, UserID, Page, 0, "")
     }
-  }
-
-  const _handleKeyDown = (e) => {
-    debugger
-    if (e.keyCode === 13) {
-      // console.log('===do validate');
-    }
-  }
-
-  const newEnter = (id, index) => {
-    console.log(id)
-    debugger
-    const listener = event => {
-      debugger;
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-        OpenMessageDetails(id, index, "showloader")
-        
-      }
-    };
-    var rows = document.getElementById("pokemons-list").children[1].children;
-    var selectedRow = 0;
-    var abbv = rows[selectedRow];
-    document.addEventListener("keydown", listener);
-
-    document.body.onkeydown = function (e) {
-      //Prevent page scrolling on keypress
-      e.preventDefault();
-      //Clear out old row's color
-      rows[selectedRow].style.backgroundColor = "#FFFFFF";
-      //Calculate new row
-      if (e.keyCode == 38) {
-        selectedRow--;
-      } else if (e.keyCode == 40) {
-        selectedRow++;
-      }
-      if (selectedRow >= rows.length) {
-        selectedRow = 0;
-      } else if (selectedRow < 0) {
-        selectedRow = rows.length - 1;
-      }
-      //Set new row's color
-      // rows[selectedRow].style.backgroundColor = "#8888FF";
-      rows[selectedRow].style.backgroundColor = "#8888FF";
-
-
-    };
-    //Set the first row to selected color
-    var abc = rows[0].style.backgroundColor = "#8888FF";
-    rows[0].style.backgroundColor = "#8888FF";
   }
 
   return (
@@ -1290,55 +1239,8 @@ export default function AllSentEmailsPage(props) {
                   </TableHead>
                   <TableBody>
                     {AllSentList.map((item, index) => {
-                      // console.log("item, index====", item, index)
-                      // console.log("AllSentList====", AllSentList)
                       return (
                         <TableRow
-                          onClick={() => {
-                            // console.log("item._id====", item._id)
-                            newEnter(item._id, index, "showloader")
-                            // OpenMessageDetails(item._id, this, index, "showloader")
-                            // const listener = event => {
-                            //   debugger
-                            //   console.log("event====", event)
-                            //   console.log("index====", index)
-                            //   console.log("item._id====", item._id)
-
-                            //   // if (event.code === "Enter" || event.code === "NumpadEnter") {
-
-                            //   // }
-                            // };
-                            // var rows = document.getElementById("pokemons-list").children[1].children;
-                            // var selectedRow = 0;
-                            // var abbv = rows[selectedRow];
-                            // // document.addEventListener("keydown", listener);
-
-                            // document.body.onkeydown = function (e) {
-                            //   //Prevent page scrolling on keypress
-                            //   e.preventDefault();
-                            //   //Clear out old row's color
-                            //   rows[selectedRow].style.backgroundColor = "#FFFFFF";
-                            //   //Calculate new row
-                            //   if (e.keyCode == 38) {
-                            //     selectedRow--;
-                            //   } else if (e.keyCode == 40) {
-                            //     selectedRow++;
-                            //   }
-                            //   if (selectedRow >= rows.length) {
-                            //     selectedRow = 0;
-                            //   } else if (selectedRow < 0) {
-                            //     selectedRow = rows.length - 1;
-                            //   }
-                            //   //Set new row's color
-                            //   // rows[selectedRow].style.backgroundColor = "#8888FF";
-                            //   rows[selectedRow].style.backgroundColor = "#8888FF";
-
-
-                            // };
-                            // //Set the first row to selected color
-                            // var abc = rows[0].style.backgroundColor = "#8888FF";
-                            // rows[0].style.backgroundColor = "#8888FF";
-                          }}
                           className={`${Active === item._id ? "selected-row" : ""}`}
                           key={item.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -1350,9 +1252,9 @@ export default function AllSentEmailsPage(props) {
                             </ToggleButton>
                           </TableCell>
                           {/* <TableCell width={'35px'}></TableCell> */}
-                          <TableCell scope="row" > {item.Subject} </TableCell>
-                          <TableCell >{item.FromEmail}</TableCell>
-                          <TableCell >{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
+                          <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, 'showloader')}> {item.Subject} </TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{item.FromEmail}</TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
                         </TableRow>
                       )
                     })}

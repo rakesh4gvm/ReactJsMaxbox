@@ -235,6 +235,9 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
             SetClientSignatureData("")
             SetSelectedEmailAccountUser(0);
             SetSignature({ Data: "" });
+            SetToEmailValue([])
+            SetCCEmailValue([])
+            SetBCCEmailValue([])
             document.getElementById("ToEmail").value = ""
             document.getElementById("Subject").value = ""
             document.getElementById("CC").value = ""
@@ -707,6 +710,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                                     <Autocomplete
                                         multiple
                                         id="ToEmail"
+                                        value={ToEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetToEmailValue(newValue);
@@ -749,6 +753,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                                     <Autocomplete
                                         multiple
                                         id="CC"
+                                        value={CCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetCCEmailValue(newValue);
@@ -787,6 +792,7 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                                     <Autocomplete
                                         multiple
                                         id="BCC"
+                                        value={BCCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetBCCEmailValue(newValue);

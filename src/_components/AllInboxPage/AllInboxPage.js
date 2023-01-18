@@ -962,6 +962,7 @@ export default function OtherInboxPage(props) {
   };
 
   const RefreshTable = () => {
+    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
