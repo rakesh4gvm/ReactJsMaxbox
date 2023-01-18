@@ -3031,7 +3031,7 @@ tr.selected-row{
     display: table;
     text-align: center;
     line-height: 17px;
-    padding-right: 19px;
+    padding-right: 24px;
 }
 div.multibox-filter .MuiFilledInput-root {
     background-color: transparent;
