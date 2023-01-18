@@ -329,7 +329,9 @@ export default function AllSentEmailsPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index, str) => {
+  const OpenMessageDetails = (ID, e, index, str) => {
+    console.log("e======", e)
+    debugger
     if (ID != '') {
       SetMailNumber(index + 1)
       if (str == "showloader") {
@@ -344,6 +346,7 @@ export default function AllSentEmailsPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
+        debugger
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
@@ -544,7 +547,7 @@ export default function AllSentEmailsPage(props) {
 
   // Sent Mail Starts
   const ReplySendMail = async () => {
-    
+
     let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
     var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
@@ -1027,6 +1030,52 @@ export default function AllSentEmailsPage(props) {
     }
   }
 
+  const _handleKeyDown = (e) => {
+    debugger
+    if (e.keyCode === 13) {
+      console.log('===do validate');
+    }
+  }
+
+  const newEnter = () => {
+    const listener = event => {
+      debugger;
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        OpenMessageDetails("63c639e03b44a63654273824", "4", "showloader")
+      }
+    };
+    var rows = document.getElementById("pokemons-list").children[1].children;
+    var selectedRow = 0;
+    var abbv = rows[selectedRow];
+    document.addEventListener("keydown", listener);
+
+    document.body.onkeydown = function (e) {
+      //Prevent page scrolling on keypress
+      e.preventDefault();
+      //Clear out old row's color
+      rows[selectedRow].style.backgroundColor = "#FFFFFF";
+      //Calculate new row
+      if (e.keyCode == 38) {
+        selectedRow--;
+      } else if (e.keyCode == 40) {
+        selectedRow++;
+      }
+      if (selectedRow >= rows.length) {
+        selectedRow = 0;
+      } else if (selectedRow < 0) {
+        selectedRow = rows.length - 1;
+      }
+      //Set new row's color
+      // rows[selectedRow].style.backgroundColor = "#8888FF";
+      rows[selectedRow].style.backgroundColor = "#8888FF";
+
+
+    };
+    //Set the first row to selected color
+    var abc = rows[0].style.backgroundColor = "#8888FF";
+    rows[0].style.backgroundColor = "#8888FF";
+  }
+
   return (
     <>
 
@@ -1226,7 +1275,7 @@ export default function AllSentEmailsPage(props) {
                   </div>
               }
               <div className="simulationDiv">
-                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
@@ -1237,24 +1286,72 @@ export default function AllSentEmailsPage(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {AllSentList.map((item, index) => (
-                      <TableRow
-                        className={`${Active === item._id ? "selected-row" : ""}`}
-                        key={item.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell width={'35px'}>
-                          <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
-                            <StarBorderIcon className='starone' />
-                            <StarIcon className='selectedstart startwo' />
-                          </ToggleButton>
-                        </TableCell>
-                        {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, "showloader")}> {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
-                      </TableRow>
-                    ))}
+                    {AllSentList.map((item, index) => {
+                      console.log("item, index====", item, index)
+                      console.log("AllSentList====", AllSentList)
+                      return (
+                        <TableRow
+                          onClick={() => {
+                            console.log("item._id====", item._id)
+                            OpenMessageDetails(item._id, this, index, "showloader")
+                            // const listener = event => {
+                            //   debugger
+                            //   console.log("event====", event)
+                            //   console.log("index====", index)
+                            //   console.log("item._id====", item._id)
+
+                            //   // if (event.code === "Enter" || event.code === "NumpadEnter") {
+
+                            //   // }
+                            // };
+                            var rows = document.getElementById("pokemons-list").children[1].children;
+                            var selectedRow = 0;
+                            var abbv = rows[selectedRow];
+                            // document.addEventListener("keydown", listener);
+
+                            document.body.onkeydown = function (e) {
+                              //Prevent page scrolling on keypress
+                              e.preventDefault();
+                              //Clear out old row's color
+                              rows[selectedRow].style.backgroundColor = "#FFFFFF";
+                              //Calculate new row
+                              if (e.keyCode == 38) {
+                                selectedRow--;
+                              } else if (e.keyCode == 40) {
+                                selectedRow++;
+                              }
+                              if (selectedRow >= rows.length) {
+                                selectedRow = 0;
+                              } else if (selectedRow < 0) {
+                                selectedRow = rows.length - 1;
+                              }
+                              //Set new row's color
+                              // rows[selectedRow].style.backgroundColor = "#8888FF";
+                              rows[selectedRow].style.backgroundColor = "#8888FF";
+
+
+                            };
+                            //Set the first row to selected color
+                            var abc = rows[0].style.backgroundColor = "#8888FF";
+                            rows[0].style.backgroundColor = "#8888FF";
+                          }}
+                          className={`${Active === item._id ? "selected-row" : ""}`}
+                          key={item.name}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell width={'35px'}>
+                            <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </TableCell>
+                          {/* <TableCell width={'35px'}></TableCell> */}
+                          <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, "showloader")}> {item.Subject} </TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{item.FromEmail}</TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, "showloader")}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </div>
