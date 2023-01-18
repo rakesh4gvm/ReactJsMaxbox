@@ -1298,9 +1298,9 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='orangbg-table'> 
+              <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />  
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>
@@ -1332,7 +1332,8 @@ export default function OtherInboxPage(props) {
                   <TableBody>
                     {StarredList.map((item, index) => (
                       <TableRow
-                        className={`${Active === item._id ? "selected-row" : ""}`}
+                        // className={`${Active === item._id ? "selected-row" : ""}`}
+                        className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => OpenMessageDetails(item._id, index)}

@@ -1350,7 +1350,8 @@ export default function FollowUpLater(props) {
                   <TableBody>
                     {FollowUpList.map((item, index) => (
                       <TableRow
-                        className={`${Active === item._id ? "selected-row" : ""}`}
+                        // className={`${Active === item._id ? "selected-row" : ""}`}
+                        className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
