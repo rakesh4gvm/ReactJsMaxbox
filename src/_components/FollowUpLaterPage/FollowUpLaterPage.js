@@ -177,24 +177,7 @@ export default function FollowUpLater(props) {
   const [ToEmailValue, SetToEmailValue] = React.useState([]);
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
-
-
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && FollowUpList?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetFollowUpLaterList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
-
-
+  const [state, setState] = useState(true)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -204,7 +187,7 @@ export default function FollowUpLater(props) {
   useEffect(() => {
     document.title = 'Follow Up Later | MAXBOX';
     GetClientID();
-  }, [FollowUpDate, SearchInbox]);
+  }, [FollowUpDate, SearchInbox, state]);
 
   // Get ClientID
   const GetClientID = () => {
@@ -217,18 +200,26 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
-    }
-    else {
-      GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+    if (state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+      }
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+      } else {
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+      }
     }
     // }
   }
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (CID, UID, PN, ID, str) => {
+  const GetFollowUpLaterList = (CID, UID, PN, ID, str, ShowEmails) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
@@ -237,6 +228,13 @@ export default function FollowUpLater(props) {
     }
     if (!str == "hideloader") {
       LoaderShow()
+    }
+    var UnseenEmails
+
+    if (ShowEmails == "SeenEmails") {
+      UnseenEmails = true
+    } else {
+      UnseenEmails = false
     }
     var Data = {
       Page: PN,
@@ -253,6 +251,7 @@ export default function FollowUpLater(props) {
       IsSpam: false,
       IsOtherInbox: false,
       AccountIDs: AccountIDs,
+      UnseenEmails: UnseenEmails,
       SearchDate: Moment(FollowUpDate).format("MM-DD-YYYY")
     };
     const ResponseApi = Axios({
@@ -370,10 +369,10 @@ export default function FollowUpLater(props) {
           }
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader");
+            GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader", "");
           }
           else {
-            GetFollowUpLaterList(ClientID, UserID, Page, 0, "hideloader")
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "hideloader", "")
           }
           // }
         } else {
@@ -414,10 +413,10 @@ export default function FollowUpLater(props) {
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(ClientID, UserID, Page, ID);
+            GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
           }
           else {
-            GetFollowUpLaterList(ClientID, UserID, Page, 0)
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
           }
           // }
         }
@@ -462,16 +461,16 @@ export default function FollowUpLater(props) {
           // if (ID !== undefined && ID!="") {
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList.length - 1 == 0) {
-              GetFollowUpLaterList(ClientID, UserID, 1, ID, "");
+              GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "");
             } else {
-              GetFollowUpLaterList(ClientID, UserID, Page, ID, "");
+              GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
             }
           }
           else {
             if (FollowUpList.length - 1 == 0) {
-              GetFollowUpLaterList(ClientID, UserID, 1, 0, "")
+              GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "")
             } else {
-              GetFollowUpLaterList(ClientID, UserID, Page, 0, "")
+              GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
             }
           }
           // }
@@ -1068,26 +1067,51 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetFollowUpLaterList(ClientID, UserID, pn, ID);
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(ClientID, UserID, pn, ID, "", "SeenEmails");
+      } else {
+        GetFollowUpLaterList(ClientID, UserID, pn, 0, "", "SeenEmails")
+      }
     } else {
-      GetFollowUpLaterList(ClientID, UserID, pn, 0)
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(ClientID, UserID, pn, ID, "", "");
+      } else {
+        GetFollowUpLaterList(ClientID, UserID, pn, 0, "", "")
+      }
     }
     // }
   };
   // Ends Pagination 
 
   const RefreshTable = () => {
-    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
-
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetFollowUpLaterList(ClientID, UserID, Page, ID, "");
-    }
-    else {
-      GetFollowUpLaterList(ClientID, UserID, Page, 0, "")
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+      }
+    } else {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
+      } else {
+        GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
+      }
     }
   }
+
+  const handleChange = (event) => {
+    setState(event.target.checked);
+  };
 
   return (
     <>
@@ -1320,7 +1344,7 @@ export default function FollowUpLater(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

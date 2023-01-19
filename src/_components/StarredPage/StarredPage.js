@@ -179,21 +179,8 @@ export default function OtherInboxPage(props) {
   const [Bccflag, SetBccflag] = useState(false);
   const [CcReplyflag, SetCcReplyflag] = useState(false);
   const [BccReplyflag, SetBccReplyflag] = useState(false);
+  const [state, setState] = useState(true)
 
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && StarredList?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetStarredList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
@@ -202,7 +189,7 @@ export default function OtherInboxPage(props) {
   useEffect(() => {
     document.title = 'Starred | MAXBOX';
     GetClientID();
-  }, [SearchInbox])
+  }, [SearchInbox, state])
 
   // Start Get Client ID
   const GetClientID = () => {
@@ -215,23 +202,39 @@ export default function OtherInboxPage(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    if (state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails");
+      } else {
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails")
+      }
     } else {
-      GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+      } else {
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+      }
     }
     // }
   }
   // End Get Client ID
 
   // Start Get Follow Up Later List
-  const GetStarredList = (CID, UID, PN, ID) => {
+  const GetStarredList = (CID, UID, PN, ID, ShowEmails) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
+    }
+    var UnseenEmails
+
+    if (ShowEmails == "SeenEmails") {
+      UnseenEmails = true
+    } else {
+      UnseenEmails = false
     }
     var Data = {
       Page: PN,
@@ -247,7 +250,8 @@ export default function OtherInboxPage(props) {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: false,
-      AccountIDs: AccountIDs
+      AccountIDs: AccountIDs,
+      UnseenEmails: UnseenEmails
     };
     LoaderShow()
     const ResponseApi = Axios({
@@ -359,15 +363,15 @@ export default function OtherInboxPage(props) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (StarredList?.length - 1 == 0) {
-              GetStarredList(ClientID, UserID, 1, ID);
+              GetStarredList(ClientID, UserID, 1, ID, "");
             } else {
-              GetStarredList(ClientID, UserID, Page, ID);
+              GetStarredList(ClientID, UserID, Page, ID, "");
             }
           } else {
             if (StarredList?.length - 1 == 0) {
-              GetStarredList(ClientID, UserID, 1, 0)
+              GetStarredList(ClientID, UserID, 1, 0, "")
             } else {
-              GetStarredList(ClientID, UserID, Page, 0)
+              GetStarredList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -409,9 +413,9 @@ export default function OtherInboxPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
-            GetStarredList(ClientID, UserID, Page, ID);
+            GetStarredList(ClientID, UserID, Page, ID, "");
           } else {
-            GetStarredList(ClientID, UserID, Page, 0)
+            GetStarredList(ClientID, UserID, Page, 0, "")
           }
           // }
         }
@@ -464,9 +468,9 @@ export default function OtherInboxPage(props) {
               // if (props !== undefined) {
               //   const ID = props.location.state;
               if (ID != "" && ID != null && ID != "undefined") {
-                GetStarredList(ClientID, UserID, Page, ID);
+                GetStarredList(ClientID, UserID, Page, ID, "");
               } else {
-                GetStarredList(ClientID, UserID, Page, 0)
+                GetStarredList(ClientID, UserID, Page, 0, "")
               }
               // }
             } else {
@@ -1064,25 +1068,51 @@ export default function OtherInboxPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetStarredList(ClientID, UserID, pn, ID);
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(ClientID, UserID, pn, ID, "SeenEmails");
+      } else {
+        GetStarredList(ClientID, UserID, pn, 0, "SeenEmails")
+      }
     } else {
-      GetStarredList(ClientID, UserID, pn, 0)
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(ClientID, UserID, pn, ID, "");
+      } else {
+        GetStarredList(ClientID, UserID, pn, 0, "")
+      }
     }
     // }
   };
 
   const RefreshTable = () => {
-    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
-
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetStarredList(ClientID, UserID, Page, ID);
-    }
-    else {
-      GetStarredList(ClientID, UserID, Page, 0)
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
+      } else {
+        GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+      }
+    } else {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetStarredList(ClientID, UserID, Page, ID, "");
+      } else {
+        GetStarredList(ClientID, UserID, Page, 0, "")
+      }
     }
   }
+
+  const handleChange = (event) => {
+    setState(event.target.checked);
+  };
+
 
   return (
     <>
@@ -1300,7 +1330,7 @@ export default function OtherInboxPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

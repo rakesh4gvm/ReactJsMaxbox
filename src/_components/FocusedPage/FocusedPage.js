@@ -185,6 +185,7 @@ export default function UnansweredResponsesPage(props) {
   const [ToEmailValue, SetToEmailValue] = React.useState([]);
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
+  const [state, setState] = useState(true)
 
 
   const handleOpen = () => setOpen(true);
@@ -195,7 +196,7 @@ export default function UnansweredResponsesPage(props) {
   useEffect(() => {
     document.title = 'Unanswered Responses | MAXBOX';
     GetClientID();
-  }, [SearchInbox])
+  }, [SearchInbox, state])
 
   // Get Client ID
   const GetClientID = () => {
@@ -208,22 +209,39 @@ export default function UnansweredResponsesPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+    if (state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+      }
     } else {
-      GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+      } else {
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+      }
     }
+
     // }
   }
 
   // Start Get Follow Up Later List
-  const GetUnansweredResponcesList = (CID, UID, PN, ID, str) => {
+  const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
+    }
+    var UnseenEmails
+
+    if (ShowEmails == "SeenEmails") {
+      UnseenEmails = true
+    } else {
+      UnseenEmails = false
     }
     if (!str == "hideloader") {
       LoaderShow()
@@ -242,7 +260,8 @@ export default function UnansweredResponsesPage(props) {
       IsFollowUp: false,
       IsOtherInbox: false,
       IsSpam: false,
-      AccountIDs: AccountIDs
+      AccountIDs: AccountIDs,
+      UnseenEmails: UnseenEmails
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -361,15 +380,15 @@ export default function UnansweredResponsesPage(props) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, ID, "");
+              GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
             }
           } else {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, 0, "")
+              GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "")
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
             }
           }
           // }
@@ -422,9 +441,9 @@ export default function UnansweredResponsesPage(props) {
               //   const ID = props.location.state;
               if (ID != "" && ID != null && ID != "undefined") {
 
-                GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
               } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
               }
               // }
             }
@@ -468,9 +487,9 @@ export default function UnansweredResponsesPage(props) {
           }
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
-            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader");
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "");
           } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader")
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "")
           }
           // }
         } else {
@@ -511,9 +530,9 @@ export default function UnansweredResponsesPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
-            GetUnansweredResponcesList(ClientID, UserID, Page, ID);
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
           } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0)
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
           }
           // }
         }
@@ -1119,25 +1138,50 @@ export default function UnansweredResponsesPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetUnansweredResponcesList(ClientID, UserID, pn, ID);
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "SeenEmails");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "SeenEmails")
+      }
     } else {
-      GetUnansweredResponcesList(ClientID, UserID, pn, 0)
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "")
+      }
     }
     // }
   };
 
   const RefreshTable = () => {
-    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
-
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetUnansweredResponcesList(ClientID, UserID, Page, ID, "");
-    }
-    else {
-      GetUnansweredResponcesList(ClientID, UserID, Page, 0, "")
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+      }
+    } else {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+      }
     }
   }
+
+  const handleChange = (event) => {
+    setState(event.target.checked);
+  };
 
   return (
     <>
@@ -1387,7 +1431,7 @@ export default function UnansweredResponsesPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

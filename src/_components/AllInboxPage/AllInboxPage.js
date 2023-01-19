@@ -170,22 +170,7 @@ export default function OtherInboxPage(props) {
   const [ToEmailValue, SetToEmailValue] = React.useState([]);
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
-
-
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && AllInboxList?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetAllInboxList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
+  const [state, setState] = useState(true)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -205,7 +190,7 @@ export default function OtherInboxPage(props) {
     // }
     document.title = 'All Inbox | MAXBOX';
     GetClientID();
-  }, [SearchInbox])
+  }, [SearchInbox, state])
 
   // Get Client ID
   const GetClientID = (ID) => {
@@ -218,23 +203,40 @@ export default function OtherInboxPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
     // const ID = props.location.state;
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID);
+    if (state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails");
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails")
+      }
     } else {
-      GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0)
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+      }
     }
     // }
   }
 
   // Start Get Follow Up Later List
-  const GetAllInboxList = (CID, UID, PN, ID) => {
+  const GetAllInboxList = (CID, UID, PN, ID, ShowEmails) => {
     let AccountIDs = []
     if (ID?.length > 0) {
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
     }
+    var UnseenEmails
+
+    if (ShowEmails == "SeenEmails") {
+      UnseenEmails = true
+    } else {
+      UnseenEmails = false
+    }
+
     LoaderShow()
     var Data = {
       Page: PN,
@@ -250,7 +252,8 @@ export default function OtherInboxPage(props) {
       IsFollowUp: false,
       IsSpam: false,
       IsOtherInbox: false,
-      AccountIDs: AccountIDs
+      AccountIDs: AccountIDs,
+      UnseenEmails: UnseenEmails
     };
 
     const ResponseApi = Axios({
@@ -365,15 +368,15 @@ export default function OtherInboxPage(props) {
           // const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, ID);
+              GetAllInboxList(ClientID, UserID, 1, ID, "");
             } else {
-              GetAllInboxList(ClientID, UserID, Page, ID);
+              GetAllInboxList(ClientID, UserID, Page, ID, "");
             }
           } else {
             if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, 0)
+              GetAllInboxList(ClientID, UserID, 1, 0, "")
             } else {
-              GetAllInboxList(ClientID, UserID, Page, 0)
+              GetAllInboxList(ClientID, UserID, Page, 0, "")
             }
           }
           // }
@@ -958,23 +961,48 @@ export default function OtherInboxPage(props) {
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetAllInboxList(ClientID, UserID, pn, ID);
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails");
+      } else {
+        GetAllInboxList(ClientID, UserID, pn, 0, "SeenEmails")
+      }
     } else {
-      GetAllInboxList(ClientID, UserID, pn, 0)
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+
+        GetAllInboxList(ClientID, UserID, pn, ID, "");
+      } else {
+        GetAllInboxList(ClientID, UserID, pn, 0, "")
+      }
     }
     // }
   };
 
-  const RefreshTable = () => {
-    LoaderShow()
-    var ID = decrypt(props.location.search.replace('?', ''))
 
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetAllInboxList(ClientID, UserID, Page, ID);
-    }
-    else {
-      GetAllInboxList(ClientID, UserID, Page, 0)
+  const handleChange = (event) => {
+    setState(event.target.checked);
+  };
+
+
+  const RefreshTable = () => {
+    var ID = decrypt(props.location.search.replace('?', ''))
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails");
+      } else {
+        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails")
+      }
+    } else {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+
+        GetAllInboxList(ClientID, UserID, Page, ID, "");
+      } else {
+        GetAllInboxList(ClientID, UserID, Page, 0, "")
+      }
     }
   }
 
@@ -1129,7 +1157,8 @@ export default function OtherInboxPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <FormControlLabel className='check-unseen'
+                    control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

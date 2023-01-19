@@ -181,22 +181,7 @@ export default function SpamPage(props) {
   const [ToEmailValue, SetToEmailValue] = React.useState([]);
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
-
-  const HandleScroll = (e) => {
-    const target = e.target
-    if (target.scrollHeight - target.scrollTop === target.clientHeight && SpamPage?.length < TotalCount) {
-      SetPage(Page + 1)
-      SetIsBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    if (IsBottom) {
-      GetSpamList(ClientID, UserID, Page, 0);
-      SetIsBottom(false)
-    }
-  }, [IsBottom])
-
+  const [state, setState] = useState(true)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -208,7 +193,7 @@ export default function SpamPage(props) {
   useEffect(() => {
     document.title = 'Spam | MAXBOX';
     GetClientID();
-  }, [SearchInbox])
+  }, [SearchInbox, state])
 
   // Starts Get Client ID
   const GetClientID = () => {
@@ -220,19 +205,28 @@ export default function SpamPage(props) {
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+    if (state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+      }
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+      } else {
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+      }
     }
-    else {
-      GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
-    }
+
   }
   // }
   // End Get Client ID
 
   // Start Get Follow Up Later List
-  const GetSpamList = (CID, UID, PN, ID, str) => {
+  const GetSpamList = (CID, UID, PN, ID, str, ShowEmails) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
@@ -241,6 +235,13 @@ export default function SpamPage(props) {
     }
     if (!str == "hideloader") {
       LoaderShow()
+    }
+    var UnseenEmails
+
+    if (ShowEmails == "SeenEmails") {
+      UnseenEmails = true
+    } else {
+      UnseenEmails = false
     }
     var Data = {
       Page: PN,
@@ -251,7 +252,8 @@ export default function SpamPage(props) {
       Search: SearchInbox,
       ClientID: CID,
       UserID: UID,
-      AccountIDs: AccountIDs
+      AccountIDs: AccountIDs,
+      UnseenEmails: UnseenEmails
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGet",
@@ -363,10 +365,10 @@ export default function SpamPage(props) {
           }
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
-            GetSpamList(ClientID, UserID, Page, ID, "hideloader");
+            GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
           }
           else {
-            GetSpamList(ClientID, UserID, Page, 0, "hideloader")
+            GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
           }
           // }
         } else {
@@ -416,10 +418,10 @@ export default function SpamPage(props) {
               // if (props !== undefined) {
               //   const ID = props.location.state;
               if (ID != "" && ID != null && ID != "undefined") {
-                GetSpamList(ClientID, UserID, Page, ID);
+                GetSpamList(ClientID, UserID, Page, ID, "", "");
               }
               else {
-                GetSpamList(ClientID, UserID, Page, 0)
+                GetSpamList(ClientID, UserID, Page, 0, "", "")
               }
               // }
             } else {
@@ -465,10 +467,10 @@ export default function SpamPage(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
-            GetSpamList(ClientID, UserID, Page, ID);
+            GetSpamList(ClientID, UserID, Page, ID, "", "");
           }
           else {
-            GetSpamList(ClientID, UserID, Page, 0)
+            GetSpamList(ClientID, UserID, Page, 0, "", "")
           }
           // }
         }
@@ -512,16 +514,16 @@ export default function SpamPage(props) {
           var ID = decrypt(props.location.search.replace('?', ''))
           if (ID != "" && ID != null && ID != "undefined") {
             if (SpamPage.length - 1 == 0) {
-              GetSpamList(ClientID, UserID, 1, ID, "");
+              GetSpamList(ClientID, UserID, 1, ID, "", "");
             } else {
-              GetSpamList(ClientID, UserID, Page, ID, "");
+              GetSpamList(ClientID, UserID, Page, ID, "", "");
             }
           }
           else {
             if (SpamPage.length - 1 == 0) {
-              GetSpamList(ClientID, UserID, 1, 0, "")
+              GetSpamList(ClientID, UserID, 1, 0, "", "")
             } else {
-              GetSpamList(ClientID, UserID, Page, 0, "")
+              GetSpamList(ClientID, UserID, Page, 0, "", "")
             }
           }
           // }
@@ -1107,26 +1109,51 @@ export default function SpamPage(props) {
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetSpamList(ClientID, UserID, pn, ID);
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(ClientID, UserID, pn, ID, "", "SeenEmails");
+      } else {
+        GetSpamList(ClientID, UserID, pn, 0, "", "SeenEmails")
+      }
     } else {
-      GetSpamList(ClientID, UserID, pn, 0)
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(ClientID, UserID, pn, ID, "", "");
+      } else {
+        GetSpamList(ClientID, UserID, pn, 0, "", "")
+      }
     }
     // }
   };
   // Ends Pagination
 
   const RefreshTable = () => {
-    LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
-
-    if (ID != "" && ID != null && ID != "undefined") {
-      GetSpamList(ClientID, UserID, Page, ID, "");
-    }
-    else {
-      GetSpamList(ClientID, UserID, Page, 0, "")
+    if (state) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+      } else {
+        GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+      }
+    } else {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        GetSpamList(ClientID, UserID, Page, ID, "", "");
+      } else {
+        GetSpamList(ClientID, UserID, Page, 0, "", "")
+      }
     }
   }
+
+  const handleChange = (event) => {
+    setState(event.target.checked);
+  };
 
   return (
 
@@ -1378,7 +1405,7 @@ export default function SpamPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked />} label="Unseen Only" />
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>
