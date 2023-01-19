@@ -200,7 +200,7 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-    if (state) {
+    if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
@@ -545,6 +545,10 @@ export default function FollowUpLater(props) {
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
+
+    SetToEmailValue([])
+    SetCCEmailValue([])
+    SetBCCEmailValue([])
 
     const Data = {
       ID: OpenMessage?._id,
@@ -1067,7 +1071,7 @@ export default function FollowUpLater(props) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
-    if (state) {
+    if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
@@ -1090,7 +1094,7 @@ export default function FollowUpLater(props) {
 
   const RefreshTable = () => {
     var ID = decrypt(props.location.search.replace('?', ''))
-    if (state) {
+    if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
@@ -1344,7 +1348,7 @@ export default function FollowUpLater(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Seen Only" />
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="UnSeen Only" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>
@@ -1487,6 +1491,7 @@ export default function FollowUpLater(props) {
                   <Autocomplete
                     multiple
                     id="To"
+                    value={ToEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetToEmailValue(newValue);
@@ -1530,6 +1535,7 @@ export default function FollowUpLater(props) {
                   <Autocomplete
                     multiple
                     id="CC"
+                    value={CCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetCCEmailValue(newValue);
@@ -1568,6 +1574,7 @@ export default function FollowUpLater(props) {
                   <Autocomplete
                     multiple
                     id="BCC"
+                    value={BCCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetBCCEmailValue(newValue);

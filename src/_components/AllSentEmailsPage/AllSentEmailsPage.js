@@ -480,6 +480,10 @@ export default function AllSentEmailsPage(props) {
   // Open Compose
   const OpenComposeReply = (e) => {
 
+    SetToEmailValue([])
+    SetCCEmailValue([])
+    SetBCCEmailValue([])
+
     const Data = {
       ID: OpenMessage?._id,
     }
@@ -1353,6 +1357,7 @@ export default function AllSentEmailsPage(props) {
                   <Autocomplete
                     multiple
                     id="To"
+                    value={ToEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetToEmailValue(newValue);
@@ -1395,6 +1400,7 @@ export default function AllSentEmailsPage(props) {
                   <Autocomplete
                     multiple
                     id="CC"
+                    value={CCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetCCEmailValue(newValue);
@@ -1433,6 +1439,7 @@ export default function AllSentEmailsPage(props) {
                   <Autocomplete
                     multiple
                     id="BCC"
+                    value={BCCEmailValue}
                     options={top100Films.map((option) => option.title)}
                     onChange={(event, newValue) => {
                       SetBCCEmailValue(newValue);
