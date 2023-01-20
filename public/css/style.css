@@ -749,6 +749,7 @@ ul.d-flex.flexlist {
 .hcompose {
     background: #e49273;
     border-radius: 0px 15px 0px 0px;
+    overflow: hidden;
 }
 
 .hcompose h4 {
