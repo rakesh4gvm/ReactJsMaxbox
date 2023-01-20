@@ -180,6 +180,7 @@ export default function OtherInboxPage(props) {
   const [CcReplyflag, SetCcReplyflag] = useState(false);
   const [BccReplyflag, SetBccReplyflag] = useState(false);
   const [state, setState] = useState(true)
+  const [ValueMail, SetValueMail] = useState()
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -299,6 +300,8 @@ export default function OtherInboxPage(props) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
             SetActive(ID);
+            SetToEmailValue(Result.data.Data)
+            SetValueMail(Result.data.Data[0]?.FromEmail)
             LoaderHide()
           } else {
             SetStarredList([])
@@ -551,7 +554,7 @@ export default function OtherInboxPage(props) {
   // Open Compose
   const OpenComposeReply = (e) => {
 
-    SetToEmailValue([])
+    // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
 
@@ -618,8 +621,20 @@ export default function OtherInboxPage(props) {
   // Sent Mail Starts
   const ReplySendMail = async () => {
 
+    var Response
+
+    if (ToEmailValue.length > 1) {
+      var r = ToEmailValue[0]?.FromEmail
+      var s = ToEmailValue.shift()
+      Response = ToEmailValue.concat(r)
+
+    } else {
+      Response = [ToEmailValue[0].FromEmail]
+    }
+
+
     let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var EmailResponse = ToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var EmailResponse = Response.filter(e => e && e.toLowerCase().match(EmailRegex));
     var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
     var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
@@ -651,6 +666,7 @@ export default function OtherInboxPage(props) {
           toast.success(<div>Reply mail sent successfully.</div>);
           OpenComposeReply();
           CloseComposeReply()
+          SetToEmailValue([ValueMail])
           LoaderHide()
         } else {
           CloseComposeReply()
@@ -1476,9 +1492,18 @@ export default function OtherInboxPage(props) {
                     freeSolo
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
-                        var ValidEmail = ValidateEmail(option)
+                        var ValidEmail = false
+                        if (option?.FromEmail != undefined && option?.FromEmail != "") {
+                          ValidEmail = ValidateEmail(option?.FromEmail)
+                        } else {
+                          ValidEmail = ValidateEmail(option)
+                        }
                         if (ValidEmail) {
-                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                          if (option?.FromEmail != undefined && option?.FromEmail != "") {
+                            return (<Chip variant="outlined" label={option?.FromEmail} {...getTagProps({ index })} />)
+                          } else {
+                            return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                          }
                         }
                       }
                       )
