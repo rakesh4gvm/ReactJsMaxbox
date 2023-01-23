@@ -368,12 +368,24 @@ export default function SpamPage(props) {
 
           }
           var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
-          }
-          else {
-            GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
-          }
+         
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+                    GetSpamList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+                  }
+                  else {
+                    GetSpamList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+                  }
+            } else {
+              if (ID != "" && ID != null && ID != "undefined") {
+                SetMenuID(ID);
+                GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
+              } else {
+                GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
+              }
+            }
+          
+
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -421,12 +433,22 @@ export default function SpamPage(props) {
               var ID = decrypt(props.location.search.replace('?', ''))
               // if (props !== undefined) {
               //   const ID = props.location.state;
-              if (ID != "" && ID != null && ID != "undefined") {
-                GetSpamList(ClientID, UserID, Page, ID, "", "");
-              }
-              else {
-                GetSpamList(ClientID, UserID, Page, 0, "", "")
-              }
+              if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                        GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                      }
+                      else {
+                        GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                      }
+                } else {
+                  if (ID != "" && ID != null && ID != "undefined") {
+                    SetMenuID(ID);
+                    GetSpamList(ClientID, UserID, Page, ID, "", "");
+                  } else {
+                    GetSpamList(ClientID, UserID, Page, 0, "", "")
+                  }
+                }
+              
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -470,12 +492,22 @@ export default function SpamPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetSpamList(ClientID, UserID, Page, ID, "", "");
-          }
-          else {
-            GetSpamList(ClientID, UserID, Page, 0, "", "")
-          }
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+                    GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                  }
+                  else {
+                    GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                  }
+            } else {
+              if (ID != "" && ID != null && ID != "undefined") {
+                SetMenuID(ID);
+                GetSpamList(ClientID, UserID, Page, ID, "", "");
+              } else {
+                GetSpamList(ClientID, UserID, Page, ID, "", "")
+              }
+            }
+          
           // }
         }
         else {
