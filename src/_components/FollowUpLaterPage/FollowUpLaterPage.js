@@ -371,12 +371,22 @@ export default function FollowUpLater(props) {
             CloseStarPopModel();
           }
           var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader", "");
-          }
-          else {
-            GetFollowUpLaterList(ClientID, UserID, Page, 0, "hideloader", "")
-          }
+          
+	  if (!state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+      } else {
+      GetFollowUpLaterList(ClientID, UserID, Page, 0,"hideloader", "SeenEmails")
+    }
+    } else {
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      GetFollowUpLaterList(ClientID, UserID, Page, ID, "hideloader", "");
+    } else {
+      GetFollowUpLaterList(ClientID, UserID, Page, 0,"hideloader", "")
+    }
+    }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -415,12 +425,21 @@ export default function FollowUpLater(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
-          }
-          else {
-            GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
-          }
+            if (!state) {
+              if (ID != "" && ID != null && ID != "undefined") {
+                SetMenuID(ID);
+                GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "SeenEmails");
+              } else {
+                GetFollowUpLaterList(ClientID, UserID, Page, 0,"", "SeenEmails")
+              }
+            } else {
+              if (ID != "" && ID != null && ID != "undefined") {
+                SetMenuID(ID);
+                GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
+              } else {
+                GetFollowUpLaterList(ClientID, UserID, Page, 0,"",  "")
+              }
+            }
           // }
         }
         else {

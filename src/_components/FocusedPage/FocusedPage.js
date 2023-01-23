@@ -244,8 +244,6 @@ export default function UnansweredResponsesPage(props) {
     } else {
       UnseenEmails = false
     }
-    console.log('---seenEmails')
-    console.log(UnseenEmails);
     if (!str == "hideloader") {
       LoaderShow()
     }
@@ -444,12 +442,21 @@ export default function UnansweredResponsesPage(props) {
               // if (ID !== undefined && ID!="") {
               // if (props !== undefined) {
               //   const ID = props.location.state;
-              if (ID != "" && ID != null && ID != "undefined") {
-
+              
+	      if (!state) {
+		        if (ID != "" && ID != null && ID != "undefined") {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+              }
+		         }
+	      else{
+			      if (ID != "" && ID != null && ID != "undefined") {
                 GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
               } else {
                 GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
               }
+		        }
               // }
             }
             else {
@@ -542,11 +549,21 @@ export default function UnansweredResponsesPage(props) {
           // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
-          } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
-          }
+          
+	    if (!state) {
+		    if (ID != "" && ID != null && ID != "undefined") {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+              }
+		  }
+	    else{
+			  if (ID != "" && ID != null && ID != "undefined") {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+              }
+		  }
           // }
         }
         else {

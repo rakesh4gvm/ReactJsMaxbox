@@ -361,22 +361,19 @@ export default function OtherInboxPage(props) {
           OpenMessageDetails('')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
-          // if (ID !== undefined && ID!="") {
-          // if (props !== undefined) {
-          //   const ID = props.location.state;
-          if (ID != "" && ID != null && ID != "undefined") {
-            if (StarredList?.length - 1 == 0) {
-              GetStarredList(ClientID, UserID, 1, ID, "");
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
             } else {
-              GetStarredList(ClientID, UserID, Page, ID, "");
+              GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
             }
-          } else {
-            if (StarredList?.length - 1 == 0) {
-              GetStarredList(ClientID, UserID, 1, 0, "")
+        } else {
+         if (ID != "" && ID != null && ID != "undefined") {
+              GetStarredList(ClientID, UserID, Page, ID, "");
             } else {
               GetStarredList(ClientID, UserID, Page, 0, "")
             }
-          }
+       }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -415,11 +412,20 @@ export default function OtherInboxPage(props) {
           // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetStarredList(ClientID, UserID, Page, ID, "");
-          } else {
-            GetStarredList(ClientID, UserID, Page, 0, "")
-          }
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
+            } else {
+              GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+            }
+        } else {
+         if (ID != "" && ID != null && ID != "undefined") {
+              GetStarredList(ClientID, UserID, Page, ID, "");
+            } else {
+              GetStarredList(ClientID, UserID, Page, 0, "")
+            }
+       }
+
           // }
         }
         else {
@@ -467,14 +473,21 @@ export default function OtherInboxPage(props) {
               OpenMessageDetails('')
               LoaderShow()
               var ID = decrypt(props.location.search.replace('?', ''))
-              // if (ID !== undefined && ID!="") {
-              // if (props !== undefined) {
-              //   const ID = props.location.state;
-              if (ID != "" && ID != null && ID != "undefined") {
-                GetStarredList(ClientID, UserID, Page, ID, "");
-              } else {
-                GetStarredList(ClientID, UserID, Page, 0, "")
-              }
+           
+              if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                  GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
+                } else {
+                  GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+                }
+            } else {
+             if (ID != "" && ID != null && ID != "undefined") {
+                  GetStarredList(ClientID, UserID, Page, ID, "");
+                } else {
+                  GetStarredList(ClientID, UserID, Page, 0, "")
+                }
+           }
+     
               // }
             } else {
               toast.error(Result?.data?.Message);
