@@ -244,6 +244,8 @@ export default function UnansweredResponsesPage(props) {
     } else {
       UnseenEmails = false
     }
+    console.log('---seenEmails')
+    console.log(UnseenEmails);
     if (!str == "hideloader") {
       LoaderShow()
     }
@@ -489,12 +491,20 @@ export default function UnansweredResponsesPage(props) {
             CloseStarPopModel();
           }
           var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "");
-          } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "")
-          }
-          // }
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+                      GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+                    } else {
+                      GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+                    }
+               }
+             else {
+              if (ID != "" && ID != null && ID != "undefined") {
+                      GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "");
+                    } else {
+                      GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "")
+                    } 
+                  }         // }
         } else {
           toast.error(Result?.data?.Message);
         }
