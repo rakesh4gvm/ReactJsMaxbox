@@ -538,6 +538,8 @@ export default function AllUnansweredRepliesPage(props) {
       var s = ToEmailValue.shift()
       Response = ToEmailValue.concat(r)
 
+    } else if (typeof ToEmailValue[0] == "string") {
+      Response = ToEmailValue
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }

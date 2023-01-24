@@ -368,23 +368,23 @@ export default function SpamPage(props) {
 
           }
           var ID = decrypt(props.location.search.replace('?', ''))
-         
+
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
-                    GetSpamList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
-                  }
-                  else {
-                    GetSpamList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
-                  }
-            } else {
-              if (ID != "" && ID != null && ID != "undefined") {
-                SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
-              } else {
-                GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
-              }
+              GetSpamList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
             }
-          
+            else {
+              GetSpamList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+            }
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
+              SetMenuID(ID);
+              GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
+            } else {
+              GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
+            }
+          }
+
 
           // }
         } else {
@@ -435,20 +435,20 @@ export default function SpamPage(props) {
               //   const ID = props.location.state;
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
-                        GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
-                      }
-                      else {
-                        GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
-                      }
-                } else {
-                  if (ID != "" && ID != null && ID != "undefined") {
-                    SetMenuID(ID);
-                    GetSpamList(ClientID, UserID, Page, ID, "", "");
-                  } else {
-                    GetSpamList(ClientID, UserID, Page, 0, "", "")
-                  }
+                  GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
                 }
-              
+                else {
+                  GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                }
+              } else {
+                if (ID != "" && ID != null && ID != "undefined") {
+                  SetMenuID(ID);
+                  GetSpamList(ClientID, UserID, Page, ID, "", "");
+                } else {
+                  GetSpamList(ClientID, UserID, Page, 0, "", "")
+                }
+              }
+
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -494,20 +494,20 @@ export default function SpamPage(props) {
           var ID = decrypt(props.location.search.replace('?', ''))
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
-                    GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
-                  }
-                  else {
-                    GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
-                  }
-            } else {
-              if (ID != "" && ID != null && ID != "undefined") {
-                SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "", "");
-              } else {
-                GetSpamList(ClientID, UserID, Page, ID, "", "")
-              }
+              GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
             }
-          
+            else {
+              GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+            }
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
+              SetMenuID(ID);
+              GetSpamList(ClientID, UserID, Page, ID, "", "");
+            } else {
+              GetSpamList(ClientID, UserID, Page, ID, "", "")
+            }
+          }
+
           // }
         }
         else {
@@ -695,6 +695,8 @@ export default function SpamPage(props) {
   // Sent Mail Starts
   const ReplySendMail = async () => {
 
+    debugger
+
     var Response
 
     if (ToEmailValue.length > 1) {
@@ -702,6 +704,9 @@ export default function SpamPage(props) {
       var s = ToEmailValue.shift()
       Response = ToEmailValue.concat(r)
 
+    }
+    else if (typeof ToEmailValue[0] == "string") {
+      Response = ToEmailValue
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }

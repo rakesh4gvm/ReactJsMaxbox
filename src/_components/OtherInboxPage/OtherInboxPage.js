@@ -373,19 +373,19 @@ export default function OtherInboxPage(props) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-            if (!state) {
-              if (ID != "" && ID != null && ID != "undefined") {
-                 GetOtherInboxList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
-               } else {
-                 GetOtherInboxList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
-               }
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetOtherInboxList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+            } else {
+              GetOtherInboxList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+            }
           } else {
-             if (ID != "" && ID != null && ID != "undefined") {
-                 GetOtherInboxList(ClientID, UserID, Page, ID, "hideloader", "");
-               } else {
-                 GetOtherInboxList(ClientID, UserID, Page, 0, "hideloader", "")
-               }
-         }
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetOtherInboxList(ClientID, UserID, Page, ID, "hideloader", "");
+            } else {
+              GetOtherInboxList(ClientID, UserID, Page, 0, "hideloader", "")
+            }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -433,19 +433,19 @@ export default function OtherInboxPage(props) {
               //   const ID = props.location.state;
               var ID = decrypt(props.location.search.replace('?', ''))
               // if (ID !== undefined && ID!="") {
-                if (!state) {
-                  if (ID != "" && ID != null && ID != "undefined") {
-                     GetOtherInboxList(ClientID, UserID, Page, ID, "", "SeenEmails");
-                   } else {
-                     GetOtherInboxList(ClientID, UserID, Page, 0, "", "SeenEmails")
-                   }
-            } else {
-             if (ID != "" && ID != null && ID != "undefined") {
-                     GetOtherInboxList(ClientID, UserID, Page, ID, "", "");
-                   } else {
-                     GetOtherInboxList(ClientID, UserID, Page, 0, "", "")
-                   }
-             }
+              if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                  GetOtherInboxList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                } else {
+                  GetOtherInboxList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                }
+              } else {
+                if (ID != "" && ID != null && ID != "undefined") {
+                  GetOtherInboxList(ClientID, UserID, Page, ID, "", "");
+                } else {
+                  GetOtherInboxList(ClientID, UserID, Page, 0, "", "")
+                }
+              }
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -644,6 +644,8 @@ export default function OtherInboxPage(props) {
       var s = ToEmailValue.shift()
       Response = ToEmailValue.concat(r)
 
+    } else if (typeof ToEmailValue[0] == "string") {
+      Response = ToEmailValue
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }

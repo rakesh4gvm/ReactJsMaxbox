@@ -516,7 +516,8 @@ export default function OtherInboxPage(props) {
       var r = ToEmailValue[0]?.FromEmail
       var s = ToEmailValue.shift()
       Response = ToEmailValue.concat(r)
-
+    } else if (typeof ToEmailValue[0] == "string") {
+      Response = ToEmailValue
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }

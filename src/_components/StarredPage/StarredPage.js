@@ -367,13 +367,13 @@ export default function OtherInboxPage(props) {
             } else {
               GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
             }
-        } else {
-         if (ID != "" && ID != null && ID != "undefined") {
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
               GetStarredList(ClientID, UserID, Page, ID, "");
             } else {
               GetStarredList(ClientID, UserID, Page, 0, "")
             }
-       }
+          }
           // }
         } else {
           toast.error(Result?.data?.Message);
@@ -418,13 +418,13 @@ export default function OtherInboxPage(props) {
             } else {
               GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
             }
-        } else {
-         if (ID != "" && ID != null && ID != "undefined") {
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
               GetStarredList(ClientID, UserID, Page, ID, "");
             } else {
               GetStarredList(ClientID, UserID, Page, 0, "")
             }
-       }
+          }
 
           // }
         }
@@ -473,21 +473,21 @@ export default function OtherInboxPage(props) {
               OpenMessageDetails('')
               LoaderShow()
               var ID = decrypt(props.location.search.replace('?', ''))
-           
+
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
                   GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
                 } else {
                   GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
                 }
-            } else {
-             if (ID != "" && ID != null && ID != "undefined") {
+              } else {
+                if (ID != "" && ID != null && ID != "undefined") {
                   GetStarredList(ClientID, UserID, Page, ID, "");
                 } else {
                   GetStarredList(ClientID, UserID, Page, 0, "")
                 }
-           }
-     
+              }
+
               // }
             } else {
               toast.error(Result?.data?.Message);
@@ -641,6 +641,8 @@ export default function OtherInboxPage(props) {
       var s = ToEmailValue.shift()
       Response = ToEmailValue.concat(r)
 
+    } else if (typeof ToEmailValue[0] == "string") {
+      Response = ToEmailValue
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }
