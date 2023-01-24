@@ -181,6 +181,9 @@ export default function OtherInboxPage(props) {
   const [BccReplyflag, SetBccReplyflag] = useState(false);
   const [state, setState] = useState(true)
   const [ValueMail, SetValueMail] = useState()
+  const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
+  const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
+  const [ForwardBCCEmailValue, SetForwardBCCEmailValue] = useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -853,6 +856,9 @@ export default function OtherInboxPage(props) {
   // Open Compose
   const OpenComposeForward = (e) => {
     document.getElementById("ToForward").value = ""
+    SetForwardToEmailValue([])
+    SetForwardCCEmailValue([])
+    SetForwardBCCEmailValue([])
 
     const Data = {
       ID: OpenMessage?._id,
@@ -966,50 +972,49 @@ export default function OtherInboxPage(props) {
 
   // Forward Send Mail Starts
   const ForwardSendMail = () => {
+
+    let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var EmailResponse = ForwardToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var ForwardCCEmailResponse = ForwardCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+    var ForwardBCCEmailResponse = ForwardBCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
+
     var ToEmail = document.getElementById("ToForward").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = ForwardSignature.Data
 
-    const IsEmailValid = ValidateEmail(ToEmail)
-
-    if (Body == "") {
+    if (Body == "" || EmailResponse == "") {
       toast.error("Please Enter Body");
-    } else if (ToEmail == "") {
-      toast.error("Please Enter Email")
     }
-
     else {
-      if (IsEmailValid) {
-        LoaderShow()
-        var Data = {
-          ToEmail: ToEmail,
-          ToName: "",
-          ID: ID,
-          Subject: Subject,
-          Body: ForwardSignature.Data
-        };
-        const ResponseApi = Axios({
-          url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
-          method: "POST",
-          data: Data,
-        });
-        ResponseApi.then((Result) => {
-          if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-            toast.success(<div>Forward mail sent successfully.</div>);
-            CloseComposeForward()
-            SetForwardSignature({ Data: "" })
-            LoaderHide()
-          }
-          else {
-            CloseComposeForward()
-            toast.error(Result?.data?.Message);
-            LoaderHide()
-          }
-        });
-      } else {
-        toast.error("Please Enter Valid Email");
-      }
+      LoaderShow()
+      var Data = {
+        ToEmail: EmailResponse.toString(),
+        CC: ForwardCCEmailResponse.toString(),
+        BCC: ForwardBCCEmailResponse.toString(),
+        ToName: "",
+        ID: ID,
+        Subject: Subject,
+        Body: ForwardSignature.Data
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/SentForwardMessage",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          toast.success(<div>Forward mail sent successfully.</div>);
+          CloseComposeForward()
+          SetForwardSignature({ Data: "" })
+          LoaderHide()
+        }
+        else {
+          CloseComposeForward()
+          toast.error(Result?.data?.Message);
+          LoaderHide()
+        }
+      });
     }
   }
   // Forward Send Mail Ends
@@ -1663,12 +1668,18 @@ export default function OtherInboxPage(props) {
                     multiple
                     id="ToForward"
                     options={top100Films.map((option) => option.title)}
-                    defaultValue={[top100Films[0].title]}
+                    value={ForwardToEmailValue}
+                    onChange={(event, newValue) => {
+                      SetForwardToEmailValue(newValue);
+                    }}
                     freeSolo
                     renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                      ))
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                        }
+                      })
                     }
                     renderInput={(params) => (
                       <TextField
@@ -1700,12 +1711,18 @@ export default function OtherInboxPage(props) {
                     multiple
                     id="CC"
                     options={top100Films.map((option) => option.title)}
-                    defaultValue={[top100Films[0].title]}
+                    value={ForwardCCEmailValue}
+                    onChange={(event, newValue) => {
+                      SetForwardCCEmailValue(newValue);
+                    }}
                     freeSolo
                     renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                      ))
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                        }
+                      })
                     }
                     renderInput={(params) => (
                       <TextField
@@ -1732,12 +1749,18 @@ export default function OtherInboxPage(props) {
                     multiple
                     id="BCC"
                     options={top100Films.map((option) => option.title)}
-                    defaultValue={[top100Films[0].title]}
+                    value={ForwardBCCEmailValue}
+                    onChange={(event, newValue) => {
+                      SetForwardBCCEmailValue(newValue);
+                    }}
                     freeSolo
                     renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                      ))
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                        }
+                      })
                     }
                     renderInput={(params) => (
                       <TextField
