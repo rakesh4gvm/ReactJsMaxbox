@@ -286,7 +286,7 @@ export default function OtherInboxPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -305,6 +305,15 @@ export default function OtherInboxPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
+            let UpdatedList = StarredList.map(item => {
+              if (item._id == ID) {
+                return { ...item, IsSeen: true };
+              }
+              return item;
+            });
+            if (updatestr == "updatelist") {
+              SetStarredList(UpdatedList)
+            }
             LoaderHide()
           } else {
             SetStarredList([])
@@ -1406,7 +1415,7 @@ export default function OtherInboxPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
+                        onClick={() => OpenMessageDetails(item._id, index, 'updatelist')}
                       >
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell> */}

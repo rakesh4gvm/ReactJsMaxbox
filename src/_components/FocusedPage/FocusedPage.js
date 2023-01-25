@@ -176,7 +176,7 @@ export default function UnansweredResponsesPage(props) {
   const [Bccflag, SetBccflag] = useState(false);
   const [CcReplyflag, SetCcReplyflag] = useState(false);
   const [BccReplyflag, SetBccReplyflag] = useState(false);
-  const [isstarActive, setstarActive] = React.useState(false); 
+  const [isstarActive, setstarActive] = React.useState(false);
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -232,8 +232,8 @@ export default function UnansweredResponsesPage(props) {
     // }
   }
   const ToggleStartClass = () => {
-    setstarActive(!isstarActive); 
-   };
+    setstarActive(!isstarActive);
+  };
   // Start Get Follow Up Later List
   const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails) => {
     let AccountIDs = []
@@ -280,9 +280,9 @@ export default function UnansweredResponsesPage(props) {
           // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
           SetFollowUpList(Result.data.PageData)
           if (!str == "hideloader") {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
           SetCountPage(Result.data.PageCount);
           SetTotalRecord(Result.data.TotalCount);
@@ -303,7 +303,7 @@ export default function UnansweredResponsesPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index, str) => {
+  const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -324,6 +324,15 @@ export default function UnansweredResponsesPage(props) {
             SetValueMail(Result.data.Data[0]?.FromEmail)
             SetOpenMessageDetails(Result.data.Data[0]);
             SetActive(ID);
+            let UpdatedList = FollowUpList.map(item => {
+              if (item._id == ID) {
+                return { ...item, IsSeen: true };
+              }
+              return item;
+            });
+            if (updatestr == "updatelist") {
+              SetFollowUpList(UpdatedList)
+            }
             LoaderHide()
           } else {
             SetFollowUpList([])
@@ -380,7 +389,7 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('', '', 'showloader')
+          OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
@@ -1539,9 +1548,9 @@ export default function UnansweredResponsesPage(props) {
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

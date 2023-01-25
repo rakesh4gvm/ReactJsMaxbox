@@ -269,9 +269,9 @@ export default function FollowUpLater(props) {
           SetFollowUpList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
           SetTotalRecord(Result.data.TotalCount);
           SetPageValue(PN)
@@ -291,7 +291,7 @@ export default function FollowUpLater(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index, str) => {
+  const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
@@ -312,6 +312,15 @@ export default function FollowUpLater(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
+            let UpdatedList = FollowUpList.map(item => {
+              if (item._id == ID) {
+                return { ...item, IsSeen: true };
+              }
+              return item;
+            });
+            if (updatestr == "updatelist") {
+              SetFollowUpList(UpdatedList)
+            }
             LoaderHide()
           } else {
             SetFollowUpList([])
@@ -478,7 +487,7 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('', '', 'showloader')
+          OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
@@ -1432,9 +1441,9 @@ export default function FollowUpLater(props) {
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} scope="row"> {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')}>{Moment(item.FollowUpDate).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.FollowUpDate).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

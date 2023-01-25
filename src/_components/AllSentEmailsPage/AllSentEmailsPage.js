@@ -312,9 +312,9 @@ export default function AllSentEmailsPage(props) {
           SetAllSentList(Result.data.PageData)
           SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
-            OpenMessageDetails(Result.data.PageData[0]._id, '', '');
+            OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
           SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
@@ -333,7 +333,7 @@ export default function AllSentEmailsPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index, str) => {
+  const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       if (str == "showloader") {
@@ -354,6 +354,15 @@ export default function AllSentEmailsPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
+            let UpdatedList = AllSentList.map(item => {
+              if (item._id == ID) {
+                return { ...item, IsSeen: true };
+              }
+              return item;
+            });
+            if (updatestr == "updatelist") {
+              SetAllSentList(UpdatedList)
+            }
             LoaderHide()
           } else {
             SetAllSentList([])
@@ -399,7 +408,7 @@ export default function AllSentEmailsPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Mail deleted successfully.</div>);
           CloseDeletePopModel();
-          OpenMessageDetails('', '', 'showloader')
+          OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
           // if (props !== undefined) {
           //   const ID = props.location.state;
@@ -1273,7 +1282,7 @@ export default function AllSentEmailsPage(props) {
                     {AllSentList.map((item, index) => {
                       return (
                         <TableRow
-                          className={`${Active === item._id ? "selected-row" : ""}`}
+                          className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                           key={item.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
@@ -1284,9 +1293,9 @@ export default function AllSentEmailsPage(props) {
                             </ToggleButton>
                           </TableCell>
                           {/* <TableCell width={'35px'}></TableCell> */}
-                          <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, 'showloader')}> {item.Subject} </TableCell>
-                          <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{item.FromEmail}</TableCell>
-                          <TableCell onClick={() => OpenMessageDetails(item._id, index, 'showloader')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
+                          <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}> {item.Subject} </TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{item.FromEmail}</TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
                         </TableRow>
                       )
                     })}

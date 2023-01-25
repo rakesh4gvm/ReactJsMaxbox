@@ -156,7 +156,7 @@ export default function OtherInboxPage(props) {
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [MenuID, SetMenuID] = React.useState("");
-  const [isstarActive, setstarActive] = React.useState(false); 
+  const [isstarActive, setstarActive] = React.useState(false);
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -292,7 +292,7 @@ export default function OtherInboxPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index) => {
+  const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       LoaderShow()
@@ -311,6 +311,15 @@ export default function OtherInboxPage(props) {
             SetValueMail(Result.data.Data[0]?.FromEmail)
             SetOpenMessageDetails(Result.data.Data[0]);
             SetActive(ID);
+            let UpdatedList = AllInboxList.map(item => {
+              if (item._id == ID) {
+                return { ...item, IsSeen: true };
+              }
+              return item;
+            });
+            if (str == "updatelist") {
+              SetAllInboxList(UpdatedList)
+            }
             LoaderHide()
           } else {
             SetAllInboxList([])
@@ -1029,10 +1038,10 @@ export default function OtherInboxPage(props) {
       }
     }
   }
- 
+
   const ToggleStartClass = () => {
-    setstarActive(!isstarActive); 
-   };
+    setstarActive(!isstarActive);
+  };
 
   return (
 
@@ -1228,7 +1237,7 @@ export default function OtherInboxPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index)}
+                        onClick={() => OpenMessageDetails(item._id, index, "updatelist")}
                       >
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */}
