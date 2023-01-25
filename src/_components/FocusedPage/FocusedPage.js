@@ -176,6 +176,7 @@ export default function UnansweredResponsesPage(props) {
   const [Bccflag, SetBccflag] = useState(false);
   const [CcReplyflag, SetCcReplyflag] = useState(false);
   const [BccReplyflag, SetBccReplyflag] = useState(false);
+  const [isstarActive, setstarActive] = React.useState(false); 
   const [ForwardSignature, SetForwardSignature] = useState({
     Data: ""
   })
@@ -230,7 +231,9 @@ export default function UnansweredResponsesPage(props) {
 
     // }
   }
-
+  const ToggleStartClass = () => {
+    setstarActive(!isstarActive); 
+   };
   // Start Get Follow Up Later List
   const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails) => {
     let AccountIDs = []
@@ -1170,7 +1173,7 @@ export default function UnansweredResponsesPage(props) {
   // Ends Forward Reply Send Mail
 
   // const HandleChangePage = (Event, NewPage) => {
-  //   
+  //
   //   SetPage(NewPage);
   //   // if (props !== undefined) {
   //   //   const ID = props.location.state;
@@ -1486,7 +1489,14 @@ export default function UnansweredResponsesPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="UnSeen Only" />
+                  <ToggleButton title="Starred" onClick={ToggleStartClass}
+                    className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
+                    value="check" >  {/* Mui-selected */}
+                    <StarBorderIcon className='starone' />
+                    <StarIcon className='selectedstart startwo' />
+                    Starred
+                  </ToggleButton>
+                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

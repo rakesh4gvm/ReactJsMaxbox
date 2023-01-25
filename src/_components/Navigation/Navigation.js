@@ -923,7 +923,7 @@ export default function Navigation(props) {
               <List component="div">
                 <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}>
                   {openstarred ? <ExpandMore /> : <ExpandDown />}
-                  OutBox
+                  Outbox
                 </ListItemButton>
 
                 <Collapse in={openstarred} timeout="auto" unmountOnExit>
@@ -938,7 +938,7 @@ export default function Navigation(props) {
                     <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies")}
                       component={Link} to="/UnansweredReplies"
                       selected={SelectMenuItem === "/UnansweredReplies"}>
-                      {AllSentTotalRecords?.AllUnansweredRepliesCount != undefined ? "Unanswered Replies(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")" : "Unanswered Replies(0)"}
+                      {AllSentTotalRecords?.AllUnansweredRepliesCount != undefined ? "Unanswered(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")" : "Unanswered(0)"}
                     </ListItemButton>
 
                   </List>
@@ -1026,7 +1026,7 @@ export default function Navigation(props) {
                     <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies", item._id)}
                       component={Link}
                       selected={SelectMenuItem === "/UnansweredReplies" + item._id}>
-                      {SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered Replies (0)` : `Unanswered Replies (` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
+                      {SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered(0)` : `Unanswered(` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`}
                     </ListItemButton>
 
                   </List>

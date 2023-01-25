@@ -40,6 +40,9 @@ import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
 import Emailinbox from '../../images/email_inbox_img.png';
 
+import ToggleButton from '@mui/material/ToggleButton';
+import StarIcon from '@material-ui/icons/Star';
+
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -153,6 +156,7 @@ export default function OtherInboxPage(props) {
   const [DeletePopModel, SetDeletePopModel] = React.useState(false);
   const [TotalRecord, SetTotalRecord] = React.useState(0);
   const [MenuID, SetMenuID] = React.useState("");
+  const [isstarActive, setstarActive] = React.useState(false); 
   const [Signature, SetSignature] = useState({
     Data: ""
   })
@@ -1025,7 +1029,10 @@ export default function OtherInboxPage(props) {
       }
     }
   }
-
+ 
+  const ToggleStartClass = () => {
+    setstarActive(!isstarActive); 
+   };
 
   return (
 
@@ -1177,8 +1184,15 @@ export default function OtherInboxPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
+                  <ToggleButton title="Starred" onClick={ToggleStartClass}
+                    className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
+                    value="check" >  {/* Mui-selected */}
+                    <StarBorderIcon className='starone' />
+                    <StarIcon className='selectedstart startwo' />
+                    Starred
+                  </ToggleButton>
                   <FormControlLabel className='check-unseen'
-                    control={<Checkbox defaultChecked onChange={handleChange} />} label="UnSeen Only" />
+                    control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                 </div>
               </div>

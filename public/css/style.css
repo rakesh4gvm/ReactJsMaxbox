@@ -2996,9 +2996,10 @@ tr.selected-row{
     letter-spacing: 0.2px;
 }
 .Refreshbtn {
-    border-right: 1px solid #d28466;   
+    border-right: 1px solid #d28466;
     border-left: 1px solid #d28466;
-    padding: 1px 8px;
+    padding: 4px 8px;
+    margin: 4px auto;
 }
 .Refreshbtn:hover {
     background-color: #d28466;
@@ -3106,6 +3107,26 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
 }
 .hcompose > .row .col.text-right {
     padding-right: 1px;
+}
+div button.starfilter.MuiButtonBase-root {
+    float: left;
+    margin: 1px 25px 0 0;
+    text-transform: capitalize;
+    color: #fff;
+    font-size: 0.8rem;
+    border-right: 1px solid #d28466;
+    padding: 0 15px 0 10px;
+}
+div button.starfilter.MuiButtonBase-root svg{
+    width: 20px;
+    margin-right: 5px;
+}
+div button.starfilter.MuiButtonBase-root.Mui-selected{
+    color: #fff !important;
+}
+div button.starfilter.MuiButtonBase-root.Mui-selected svg.startwo{
+    display: flex;
+    color: #fff !important;
 }
 
 @media screen and (max-width:990px) {
