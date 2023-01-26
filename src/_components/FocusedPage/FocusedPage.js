@@ -231,11 +231,9 @@ export default function UnansweredResponsesPage(props) {
 
     // }
   }
-  const ToggleStartClass = () => {
-    setstarActive(!isstarActive);
-  };
+
   // Start Get Follow Up Later List
-  const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails) => {
+  const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred) => {
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
@@ -249,6 +247,17 @@ export default function UnansweredResponsesPage(props) {
     } else {
       UnseenEmails = false
     }
+
+    
+
+    var IsStarredEmails
+
+    if (IsStarred == "IsStarredEmails") {
+      IsStarredEmails = true
+    } else {
+      IsStarredEmails = false
+    }
+
     if (!str == "hideloader") {
       LoaderShow()
     }
@@ -267,7 +276,8 @@ export default function UnansweredResponsesPage(props) {
       IsOtherInbox: false,
       IsSpam: false,
       AccountIDs: AccountIDs,
-      UnseenEmails: UnseenEmails
+      UnseenEmails: UnseenEmails,
+      IsStarredEmails: IsStarredEmails
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
@@ -1250,6 +1260,33 @@ export default function UnansweredResponsesPage(props) {
     setState(event.target.checked);
   };
 
+  const ToggleStartClass = () => {
+    setstarActive(!isstarActive);
+  };
+
+  const HandleStarredChange = () => {
+
+    
+
+    var ID = decrypt(props.location.search.replace('?', ''))
+
+    if (!isstarActive) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "SeenEmails", "", "IsStarredEmails");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "SeenEmails", "", "IsStarredEmails")
+      }
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+      } else {
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+      }
+    }
+  }
+
   return (
     <>
       <Modal className="modal-lister"
@@ -1498,7 +1535,7 @@ export default function UnansweredResponsesPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <ToggleButton title="Starred" onClick={ToggleStartClass}
+                  <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
                     value="check" >  {/* Mui-selected */}
                     <StarBorderIcon className='starone' />

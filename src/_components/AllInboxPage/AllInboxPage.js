@@ -230,7 +230,7 @@ export default function OtherInboxPage(props) {
   }
 
   // Start Get Follow Up Later List
-  const GetAllInboxList = (CID, UID, PN, ID, ShowEmails) => {
+  const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred) => {
     let AccountIDs = []
     if (ID?.length > 0) {
       AccountIDs.push(ID)
@@ -243,6 +243,14 @@ export default function OtherInboxPage(props) {
       UnseenEmails = true
     } else {
       UnseenEmails = false
+    }
+
+    var IsStarredEmails
+
+    if (IsStarred == "IsStarredEmails") {
+      IsStarredEmails = true
+    } else {
+      IsStarredEmails = false
     }
 
     LoaderShow()
@@ -261,7 +269,8 @@ export default function OtherInboxPage(props) {
       IsSpam: false,
       IsOtherInbox: false,
       AccountIDs: AccountIDs,
-      UnseenEmails: UnseenEmails
+      UnseenEmails: UnseenEmails,
+      IsStarredEmails: IsStarredEmails
     };
 
     const ResponseApi = Axios({
@@ -295,7 +304,6 @@ export default function OtherInboxPage(props) {
   const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
-      LoaderShow()
       var Data = {
         _id: ID,
       };
@@ -1043,6 +1051,28 @@ export default function OtherInboxPage(props) {
     setstarActive(!isstarActive);
   };
 
+  const HandleStarredChange = () => {
+
+    
+    var ID = decrypt(props.location.search.replace('?', ''))
+
+    if (!isstarActive) {
+      LoaderShow()
+      if (ID != "" && ID != null && ID != "undefined") {
+        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+      } else {
+        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+      }
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+
+        GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+      } else {
+        GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+      }
+    }
+  }
+
   return (
 
     <>
@@ -1193,7 +1223,7 @@ export default function OtherInboxPage(props) {
             <>
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
-                  <ToggleButton title="Starred" onClick={ToggleStartClass}
+                  <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
                     value="check" >  {/* Mui-selected */}
                     <StarBorderIcon className='starone' />
