@@ -1381,22 +1381,21 @@ export default function OtherInboxPage(props) {
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                  {
+                    OpenMessage?.length == 0 ? "" :
+                      <div className='pagination-pa' >
+                        <TablePagination
+                          component="div"
+                          count={TotalRecord}
+                          page={parseInt(PageValue) - 1}
+                          rowsPerPage="10"
+                          onPageChange={HandleChangePage}
+
+                        />
+                      </div>
+                  }
                 </div>
               </div>
-              {
-                OpenMessage?.length == 0 ? "" :
-                  <div className='pagination-pa' >
-                    <TablePagination
-                      component="div"
-                      count={TotalRecord}
-                      page={parseInt(PageValue) - 1}
-                      rowsPerPage="10"
-                      onPageChange={HandleChangePage}
-
-                    />
-                  </div>
-              }
-
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
