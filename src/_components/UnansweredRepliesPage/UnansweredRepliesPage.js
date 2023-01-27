@@ -239,7 +239,7 @@ export default function AllUnansweredRepliesPage(props) {
   }
 
   useEffect(() => {
-    document.title = 'Unanswered Replies | MAXBOX';
+    document.title = 'Unanswered | MAXBOX';
     GetClientID();
   }, [SearchInbox])
 

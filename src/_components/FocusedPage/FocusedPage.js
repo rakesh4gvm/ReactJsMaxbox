@@ -198,7 +198,7 @@ export default function UnansweredResponsesPage(props) {
   const handleTemClose = () => setTemOpen(false);
 
   useEffect(() => {
-    document.title = 'Unanswered Responses | MAXBOX';
+    document.title = 'Focused | MAXBOX';
     GetClientID();
   }, [SearchInbox, state])
 

@@ -78,7 +78,7 @@ export default function ObjectionTemplateListPage() {
   const [PageValue, SetPageValue] = React.useState(1)
 
   useEffect(() => {
-    document.title = 'Objection Template | MAXBOX';
+    document.title = 'Objection | MAXBOX';
 
     GetClientID();
     // CheckAccountAuthonicate()

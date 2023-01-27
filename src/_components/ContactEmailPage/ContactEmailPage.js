@@ -130,6 +130,7 @@ export default function ContactEmailPage() {
   const [IsSearch, SetIsSearch] = useState(false)
 
   useEffect(() => {
+    document.title = 'Contacts | MAXBOX';
     GetClientID();
   }, [SearchInbox, SortedBy, SortField]);
 

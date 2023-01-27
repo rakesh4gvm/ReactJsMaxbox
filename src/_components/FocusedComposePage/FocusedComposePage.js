@@ -231,9 +231,16 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             toast.error("Please add client.");
         }
         else {
-            SetClientSignatureData("")
-            SetSelectedEmailAccountUser(0);
-            SetSignature({ Data: "" });
+            if (EmailAccountUsers.length > 0) {
+                SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
+                SetSignature({ Data: ClientData })
+                SetClientSignatureData(ClientData)
+            } else {
+                SetSelectedEmailAccountUser(0);
+            }
+            // SetClientSignatureData("")
+            // SetSelectedEmailAccountUser(0);
+            // SetSignature({ Data: "" });
             SetToEmailValue([])
             SetCCEmailValue([])
             SetBCCEmailValue([])
@@ -568,7 +575,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     /* end code*/
 
 
-    
+
 
     const WrapperRef = useRef(null);
     useOutsideAlerter(WrapperRef);

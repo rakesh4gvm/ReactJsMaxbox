@@ -291,7 +291,7 @@ export default function OtherInboxPage(props) {
             SetOpenMessageDetails(Result.data.Data);
             SetActive(ID);
             if (IsComposeData) {
-              OpenCompose(ID, Result.data.Data)
+              OpenCompose(Result.data.Data)
             }
             LoaderHide()
           } else {
@@ -311,25 +311,31 @@ export default function OtherInboxPage(props) {
   //End Open Message Details
 
   // Open Compose
-  const OpenCompose = (ID, Data) => {
+  const OpenCompose = (Data) => {
     if (ClientID == "" || ClientID == undefined || ClientID == null) {
       toast.error("Please add client.");
     }
     else {
       const el = document.getElementById("DraftCompose")
       el.classList.remove("show");
-
-      SetClientSignatureData("")
+      if (EmailAccountUsers.length > 0) {
+        SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
+        SetSignature({ Data: ClientData })
+        SetClientSignatureData(ClientData)
+      } else {
+        SetSelectedEmailAccountUser(0);
+      }
+      // SetClientSignatureData("")
+      // SetSelectedEmailAccountUser(0);
       SetToEmailValue([])
       SetCCEmailValue([])
       SetBCCEmailValue([])
-      SetSelectedEmailAccountUser(0);
       document.getElementById("ComposeTo").value = ""
       document.getElementById("ComposeSubject").value = ""
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
 
-      if (ID.length > 0) {
+      if (Data?._id?.length > 0) {
         SetSignature({ Data: Data?.Body })
         SetMailChange({ To: Data?.MailTo, Subject: Data?.Subject })
       } else {
@@ -1080,7 +1086,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
+        <Button variant="contained btn btn-primary largbtn" onClick={() => OpenCompose(OpenMessage)}><img src={Plusion} /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>
@@ -1093,7 +1099,7 @@ export default function OtherInboxPage(props) {
                   <Button onClick={maxcomposeon} className="maxicon">
                     <img src={Maximize} />
                   </Button>
-                  <Button onClick={OpenCompose}>
+                  <Button onClick={() => OpenCompose(OpenMessage)}>
                     <img src={Close} />
                   </Button>
                 </ButtonGroup>

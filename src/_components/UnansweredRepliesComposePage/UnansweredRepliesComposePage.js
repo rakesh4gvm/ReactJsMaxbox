@@ -232,9 +232,16 @@ export default function UnansweredRepliesComposePage({ GetAllUnansweredRepliesLi
             toast.error("Please add client.");
         }
         else {
-            SetClientSignatureData("")
-            SetSelectedEmailAccountUser(0);
-            SetSignature({ Data: "" });
+            if (EmailAccountUsers.length > 0) {
+                SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
+                SetSignature({ Data: ClientData })
+                SetClientSignatureData(ClientData)
+            } else {
+                SetSelectedEmailAccountUser(0);
+            }
+            // SetClientSignatureData("")
+            // SetSelectedEmailAccountUser(0);
+            // SetSignature({ Data: "" });
             SetToEmailValue([])
             SetCCEmailValue([])
             SetBCCEmailValue([])
