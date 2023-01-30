@@ -581,6 +581,9 @@ export default function OtherInboxPage(props) {
   // Open Compose
   const OpenComposeReply = (e) => {
 
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
+
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -1397,17 +1400,17 @@ export default function OtherInboxPage(props) {
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
-                      OpenMessage?.length == 0 ? "" :
-                        <div className='pagination-pa' >
-                          <TablePagination
-                            component="div"
-                            count={TotalRecord}
-                            page={parseInt(PageValue) - 1}
-                            rowsPerPage="10"
-                            onPageChange={HandleChangePage}
-                          />
-                        </div>
-                    }
+                    OpenMessage?.length == 0 ? "" :
+                      <div className='pagination-pa' >
+                        <TablePagination
+                          component="div"
+                          count={TotalRecord}
+                          page={parseInt(PageValue) - 1}
+                          rowsPerPage="10"
+                          onPageChange={HandleChangePage}
+                        />
+                      </div>
+                  }
                 </div>
               </div>
               <div className="simulationDiv" >

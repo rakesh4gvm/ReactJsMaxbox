@@ -639,6 +639,9 @@ export default function SpamPage(props) {
   // Open Compose
   const OpenComposeReply = (e) => {
 
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
+
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -1490,7 +1493,7 @@ export default function SpamPage(props) {
                       </div>
                   }
                 </div>
-              </div> 
+              </div>
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

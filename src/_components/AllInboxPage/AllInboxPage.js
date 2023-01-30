@@ -468,6 +468,8 @@ export default function OtherInboxPage(props) {
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -1053,7 +1055,7 @@ export default function OtherInboxPage(props) {
 
   const HandleStarredChange = () => {
 
-    
+
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (!isstarActive) {
@@ -1232,7 +1234,7 @@ export default function OtherInboxPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a> 
+                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
@@ -1247,7 +1249,7 @@ export default function OtherInboxPage(props) {
                   }
                 </div>
               </div>
-             
+
 
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

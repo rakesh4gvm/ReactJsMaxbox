@@ -52,8 +52,10 @@ export default function ConfirmpasswordPage() {
     if (!/^.{6,20}$/i.test(Pwd)) {
       SetPasswordError("Password must be 6 to 20 chars long")
       return false;
+    } else {
+      SetPasswordError("")
     }
-   
+
     return true;
   };
 
@@ -61,8 +63,8 @@ export default function ConfirmpasswordPage() {
     const { name, value } = e.target;
     if (name == "password") {
       if (value != "") {
-        validatePassword(value); 
-     }
+        validatePassword(value);
+      }
 
     }
 
@@ -111,6 +113,10 @@ export default function ConfirmpasswordPage() {
         }
       }
     }
+  }
+
+  const CancelButton = () => {
+    history.push("/")
   }
 
   return (
@@ -169,7 +175,7 @@ export default function ConfirmpasswordPage() {
                     <div className='btnprofile left'>
                       <ButtonGroup variant="text" aria-label="text button group">
                         <Button variant="contained btn btn-primary smallbtn mr-4" onClick={Update}>submit</Button>
-                        <Button variant="contained btn smallbtn">Cancel</Button>
+                        <Button variant="contained btn smallbtn" onClick={CancelButton}>Cancel</Button>
                       </ButtonGroup>
                     </div>
                   </Col>

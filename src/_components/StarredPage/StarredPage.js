@@ -578,7 +578,8 @@ export default function OtherInboxPage(props) {
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
-
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])

@@ -248,7 +248,7 @@ export default function UnansweredResponsesPage(props) {
       UnseenEmails = false
     }
 
-    
+
 
     var IsStarredEmails
 
@@ -662,7 +662,8 @@ export default function UnansweredResponsesPage(props) {
   // Starts Reply Send Mail
   // Open Compose
   const OpenComposeReply = (e) => {
-
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -1266,7 +1267,7 @@ export default function UnansweredResponsesPage(props) {
 
   const HandleStarredChange = () => {
 
-    
+
 
     var ID = decrypt(props.location.search.replace('?', ''))
 
@@ -1558,7 +1559,7 @@ export default function UnansweredResponsesPage(props) {
                       </div>
                   }
                 </div>
-              </div> 
+              </div>
               <div className="simulationDiv">
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

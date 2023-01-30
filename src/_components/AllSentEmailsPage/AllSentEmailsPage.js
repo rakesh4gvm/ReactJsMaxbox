@@ -495,6 +495,9 @@ export default function AllSentEmailsPage(props) {
   // Open Compose
   const OpenComposeReply = (e) => {
 
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
+
     // SetToEmailValue([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -1267,7 +1270,7 @@ export default function AllSentEmailsPage(props) {
                   }
                 </div>
               </div>
-             
+
               <div className="simulationDiv">
                 <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>

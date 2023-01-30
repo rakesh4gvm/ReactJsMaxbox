@@ -475,6 +475,10 @@ export default function AllUnansweredRepliesPage(props) {
   // start replay code
   // Open Compose
   const OpenComposeReply = (e) => {
+
+    const elementforward = document.getElementById("UserComposeForward")
+    elementforward.classList.remove("show");
+
     SetCCEmailValue([])
     SetBCCEmailValue([])
     const Data = {
