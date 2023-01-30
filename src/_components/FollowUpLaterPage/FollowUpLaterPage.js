@@ -182,6 +182,9 @@ export default function FollowUpLater(props) {
   const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
   const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
   const [ForwardBCCEmailValue, SetForwardBCCEmailValue] = useState([])
+  const [TemplateID, SetTemplateID] = React.useState("");
+  const [ClientData, SetClientData] = useState()
+  const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -200,6 +203,7 @@ export default function FollowUpLater(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    GetClientList(UserDetails.ClientID)
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
@@ -221,6 +225,25 @@ export default function FollowUpLater(props) {
     }
     // }
   }
+
+  const GetClientList = (ID) => {
+    let Data
+    Data = {
+      ID: ID
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/ClientGetByID",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetClientData(Result?.data?.Data[0]?.SignatureText)
+      }
+    });
+  };
+
 
   // Start Get Follow Up Later List
   const GetFollowUpLaterList = (CID, UID, PN, ID, str, ShowEmails) => {
@@ -530,9 +553,24 @@ export default function FollowUpLater(props) {
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
+      var body = "";
+      BodyData.split(ClientData).map(function (address, index) {
+        if (index == 0) {
+          body = address
+          SetTemplateID("");
+        }
+      });
+      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
       document.getElementById("Subject").value = DivData.Subject;
       // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = DivData.BodyText + BodyData
+      var NewData = "";
+      if (body != "" && chckEmptyBody != "") {
+        NewData = body + DivData.BodyText + ClientData;
+        SetTemplateID(TemplateID)
+      } else {
+        NewData = DivData.BodyText + BodyData
+        SetTemplateID(TemplateID)
+      }
       SetSignature({ Data: NewData });
       LoaderHide()
       handleTemClose()
@@ -551,8 +589,23 @@ export default function FollowUpLater(props) {
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
+      var body = "";
+      BodyData.split(ClientData).map(function (address, index) {
+        if (index == 0) {
+          body = address
+          SetObjectIDTemplateID("")
+        }
+      });
+      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
       document.getElementById("Subject").value = DivData.Subject;
-      var NewData = DivData.BodyText + BodyData
+      var NewData = "";
+      if (body != "" && chckEmptyBody != "") {
+        NewData = body + DivData.BodyText + ClientData;
+        SetObjectIDTemplateID(ObjectionTemplateID)
+      } else {
+        NewData = DivData.BodyText + BodyData
+        SetObjectIDTemplateID(ObjectionTemplateID)
+      }
       SetSignature({ Data: NewData });
       LoaderHide()
       handleClose()
@@ -685,7 +738,9 @@ export default function FollowUpLater(props) {
         ToName: ToName,
         ID: ID,
         Subject: Subject,
-        Body: Body
+        Body: Body,
+        TemplateID: TemplateID,
+        ObjectIDTemplateID: ObjectIDTemplateID
       };
       Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
