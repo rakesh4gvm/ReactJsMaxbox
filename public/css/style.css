@@ -788,7 +788,7 @@ ul.d-flex.flexlist {
     font-size: 0.8rem;
     color: #242424;
     margin: 0 auto;
-    line-height: 33px;
+    line-height: 37px;
 }
 
 button.lable-btn {
@@ -798,6 +798,9 @@ button.lable-btn {
     color: #242424;
     text-transform: capitalize;
     border-radius: 72px;
+}
+.comse-select {
+    margin: 3px auto 0;
 }
 
 div .composebody button.btnclean.btn.btn-primary, .composebody .btn-primary.btnclean:not(:disabled):not(.disabled):active:focus {
@@ -3068,6 +3071,9 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
     color: rgb(255 255 255 / 60%);
     width: 18px;
 }
+div.multibox-filter  div input.MuiFilledInput-input{
+    padding: 5px 4px !important;
+}
 .fr-box .fr-second-toolbar{
     display: none;
 }
@@ -3101,9 +3107,9 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIco
 .useen-email{
     background-color: #e5e5e5;
 }
-.multibox-filter input,
-.subcompose input{
+.multibox-filter input, .subcompose input {
     font-size: 0.8rem;
+    margin: 4px auto;
 }
 .hcompose > .row .col.text-right {
     padding-right: 1px;

@@ -700,10 +700,10 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                     </div>
                     <div className='subcompose px-3 py-1'>
                         <Row className='px-3'>
-                            <Col xs={3} className="px-0">
+                            <Col xs={2} className="px-0">
                                 <h6>Email Account :</h6>
                             </Col>
-                            <Col xs={9} className="px-1">
+                            <Col xs={8} className="px-1">
                                 <div className='comse-select'>
                                     <Select
                                         value={SelectedEmailAccountUser}
