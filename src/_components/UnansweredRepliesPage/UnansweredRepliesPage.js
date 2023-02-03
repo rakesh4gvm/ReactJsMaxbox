@@ -186,7 +186,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [TemplateID, SetTemplateID] = React.useState("");
   const [ClientData, SetClientData] = useState()
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
-
+  const [NewTemplateID, SetNewTemplateID] = useState([])
 
   const handleChange = (panel) => (event, isExpanded) => {
     console.log(panel);
@@ -197,6 +197,7 @@ export default function AllUnansweredRepliesPage(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewTemplateID([...NewTemplateID, document.getElementsByClassName('active')[0].id])
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
@@ -390,15 +391,15 @@ export default function AllUnansweredRepliesPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
-            let UpdatedList = AllUnansweredRepliesList.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (updatestr == "updatelist") {
-              SetAllUnanswereRepliesList(UpdatedList)
-            }
+            // let UpdatedList = AllUnansweredRepliesList.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (updatestr == "updatelist") {
+            //   SetAllUnanswereRepliesList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetAllUnanswereRepliesList([])
@@ -531,6 +532,7 @@ export default function AllUnansweredRepliesPage(props) {
     const elementforward = document.getElementById("UserComposeForward")
     elementforward.classList.remove("show");
 
+    SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
     const Data = {
@@ -638,7 +640,7 @@ export default function AllUnansweredRepliesPage(props) {
         ID: ID,
         Subject: Subject,
         Body: Body,
-        TemplateID: TemplateID,
+        TemplateID: NewTemplateID,
         ObjectIDTemplateID: ObjectIDTemplateID
       };
       const ResponseApi = Axios({

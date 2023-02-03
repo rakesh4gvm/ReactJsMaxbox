@@ -204,11 +204,13 @@ export default function AllSentEmailsPage(props) {
   const HandleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+  const [NewTemplateID, SetNewTemplateID] = useState([])
 
   const SelectTemplate = () => {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewTemplateID([...NewTemplateID, document.getElementsByClassName('active')[0].id])
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
@@ -405,15 +407,15 @@ export default function AllSentEmailsPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
-            let UpdatedList = AllSentList.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (updatestr == "updatelist") {
-              SetAllSentList(UpdatedList)
-            }
+            // let UpdatedList = AllSentList.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (updatestr == "updatelist") {
+            //   SetAllSentList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetAllSentList([])
@@ -550,6 +552,7 @@ export default function AllSentEmailsPage(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
 
@@ -657,7 +660,7 @@ export default function AllSentEmailsPage(props) {
         ID: ID,
         Subject: Subject,
         Body: Body,
-        TemplateID: TemplateID,
+        TemplateID: NewTemplateID,
         ObjectIDTemplateID: ObjectIDTemplateID
       };
       const ResponseApi = Axios({
