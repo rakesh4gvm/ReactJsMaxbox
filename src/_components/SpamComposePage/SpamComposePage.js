@@ -91,7 +91,7 @@ export default function SpamComposePage({ GetSpamList }) {
     const [ToEmailValue, SetToEmailValue] = React.useState([]);
     const [CCEmailValue, SetCCEmailValue] = React.useState([]);
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
-
+    const [NewTemplateID, SetNewTemplateID] = useState([])
 
     useEffect(() => {
         GetClientID()
@@ -105,6 +105,7 @@ export default function SpamComposePage({ GetSpamList }) {
         var GetByClass = document.getElementsByClassName('active');
         LoaderShow()
         if (GetByClass.length > 0) {
+            SetNewTemplateID([...NewTemplateID, document.getElementsByClassName('active')[0].id])
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
@@ -242,6 +243,7 @@ export default function SpamComposePage({ GetSpamList }) {
             // SetClientSignatureData("")
             // SetSelectedEmailAccountUser(0);
             // SetSignature({ Data: "" });
+            SetNewTemplateID([])
             SetToEmailValue([])
             SetCCEmailValue([])
             SetBCCEmailValue([])
@@ -352,7 +354,7 @@ export default function SpamComposePage({ GetSpamList }) {
                 IsDraftMail: false,
                 IsAllSentEmails: false,
                 CreatedBy: 1,
-                TemplateID: TemplateID,
+                TemplateID: NewTemplateID,
                 ObjectIDTemplateID: ObjectIDTemplateID
             }
             Axios({

@@ -174,7 +174,7 @@ export default function OtherInboxPage(props) {
   const [ToEmailValue, SetToEmailValue] = React.useState([]);
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
-
+  const [NewTemplateID, SetNewTemplateID] = useState([])
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -327,6 +327,7 @@ export default function OtherInboxPage(props) {
       }
       // SetClientSignatureData("")
       // SetSelectedEmailAccountUser(0);
+      SetNewTemplateID([])
       SetToEmailValue([])
       SetCCEmailValue([])
       SetBCCEmailValue([])
@@ -455,7 +456,7 @@ export default function OtherInboxPage(props) {
         IsDraftMail: true,
         IsAllSentEmails: false,
         CreatedBy: 1,
-        TemplateID: TemplateID,
+        TemplateID: NewTemplateID,
         ObjectIDTemplateID: ObjectIDTemplateID
       }
       await Axios({
@@ -510,6 +511,7 @@ export default function OtherInboxPage(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewTemplateID([...NewTemplateID, document.getElementsByClassName('active')[0].id])
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
@@ -521,7 +523,7 @@ export default function OtherInboxPage(props) {
         }
       });
       var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-      document.getElementById("Subject").value = DivData.Subject;
+      document.getElementById("ComposeSubject").value = DivData.Subject;
       var NewData = "";
       if (body != "" && chckEmptyBody != "") {
         NewData = body + DivData.BodyText + ClientData;
@@ -554,7 +556,7 @@ export default function OtherInboxPage(props) {
         }
       });
       var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-      document.getElementById("Subject").value = DivData.Subject;
+      document.getElementById("ComposeSubject").value = DivData.Subject;
       var NewData = "";
       if (body != "" && chckEmptyBody != "") {
         NewData = body + DivData.BodyText + ClientData;

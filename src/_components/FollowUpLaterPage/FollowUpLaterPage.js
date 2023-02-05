@@ -185,6 +185,7 @@ export default function FollowUpLater(props) {
   const [TemplateID, SetTemplateID] = React.useState("");
   const [ClientData, SetClientData] = useState()
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
+  const [NewTemplateID, SetNewTemplateID] = useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -550,6 +551,7 @@ export default function FollowUpLater(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewTemplateID([...NewTemplateID, document.getElementsByClassName('active')[0].id])
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
@@ -637,6 +639,7 @@ export default function FollowUpLater(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
 
@@ -739,7 +742,7 @@ export default function FollowUpLater(props) {
         ID: ID,
         Subject: Subject,
         Body: Body,
-        TemplateID: TemplateID,
+        TemplateID: NewTemplateID,
         ObjectIDTemplateID: ObjectIDTemplateID
       };
       Axios({
