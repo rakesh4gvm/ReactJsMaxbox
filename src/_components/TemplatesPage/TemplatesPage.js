@@ -106,7 +106,7 @@ export default function TemplatesListPage() {
 
   // Start Get Template List
   const GetTemplateList = (CID, UID, PN) => {
-    
+
     let Data
     Data = {
       Page: PN,
@@ -125,7 +125,7 @@ export default function TemplatesListPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
-      
+
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetTemplateList(Result.data.PageData);
@@ -185,9 +185,9 @@ export default function TemplatesListPage() {
         LoaderShow()
         // GetTemplateList(ClientID, UserID, Page)
         if (TemplateList.length - 1 == 0) {
-          GetTemplateList(ClientID, UserID,  1)
+          GetTemplateList(ClientID, UserID, 1)
         } else {
-          GetTemplateList(ClientID, UserID,  Page)
+          GetTemplateList(ClientID, UserID, Page)
         }
         SetDeletePopModel(false);
       }
@@ -316,6 +316,8 @@ export default function TemplatesListPage() {
                         <TableCell>Open</TableCell>
                         {/* <TableCell>Replies</TableCell> */}
                         <TableCell>Open %</TableCell>
+                        <TableCell>Replay</TableCell>
+                        <TableCell>Replay %</TableCell>
                         {/* <TableCell>Replies %</TableCell> */}
                         <TableCell>Action</TableCell>
                       </TableRow>
@@ -345,6 +347,8 @@ export default function TemplatesListPage() {
                             {/* <TableCell><img src={InboxRounded} /> Replies</TableCell> */}
 
                             <TableCell>{parseInt(row.IsSentCount) > 0 ? ((parseInt(row.IsOpenCount) / parseInt(row.IsSentCount)) * 100).toFixed(0) : 0} % </TableCell>
+                            <TableCell><img src={MailMultipal} /> {row.IsReplyCount}</TableCell>
+                            <TableCell>{parseInt(row.IsSentCount) > 0 ? ((parseInt(row.IsReplyCount) / parseInt(row.IsSentCount)) * 100).toFixed(0) : 0} % </TableCell>
                             {/* <TableCell>Replies %</TableCell> */}
 
                             <TableCell align="left">
