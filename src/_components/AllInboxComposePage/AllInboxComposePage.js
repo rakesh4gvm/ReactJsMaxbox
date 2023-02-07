@@ -99,31 +99,6 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
     const [CCEmailValue, SetCCEmailValue] = React.useState([]);
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
     const [NewTemplateID, SetNewTemplateID] = useState([])
-    const [subject, setSubject] = useState("");
-
-    const SubjectSubmit = async () => {
-
-        LoaderShow()
-        const Subject = document.getElementById("Subject").value;
-        var SubjectParamData = {
-            prompt: Subject,
-        };
-        await Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/ChatWithGvm",
-            // url: "http://localhost:3001/receive_email_history/ChatWithGvm",
-            method: "POST",
-            data: SubjectParamData,
-        }).then((res) => {
-            if (res.data.StatusMessage == "success") {
-                var body = res.data?.data;
-                setSubject(body)
-                SetSignature({ Data: parse(body) })
-                LoaderHide()
-            } else {
-                console.log("Loading....")
-            }
-        });
-    };
 
     useEffect(() => {
         GetClientID()
@@ -874,9 +849,6 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                             </Col>
                             <Col xs={10} className="px-0">
                                 <Input className='input-clend' id='Subject' name='Subject' />
-                            </Col>
-                            <Col xs={10} className="px-0">
-                                <Button onClick={SubjectSubmit} >ChatGPT</Button>
                             </Col>
                         </Row>
                     </div>
