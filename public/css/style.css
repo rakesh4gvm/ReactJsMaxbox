@@ -1647,6 +1647,15 @@ div.erorr-msg>*>* {
     background-position: center;
 }
 
+.FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:nth-child(11) {
+    background-size: 24px;
+    background-repeat: no-repeat;
+    vertical-align: text-bottom;
+    width: 42px;
+    text-align: center;
+    background-position: center;
+}
+
 /*difulat start css*/
 
 /* .FroalaEditor .fr-toolbar .fr-command.fr-btn#Send-1,
@@ -2055,7 +2064,7 @@ img.width36 {
     background-color: rgba(158, 158, 158, 0.2);
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 99999;
     display: flex;
     top: 0;
     align-items: center;

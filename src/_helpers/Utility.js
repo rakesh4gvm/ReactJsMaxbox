@@ -3,8 +3,9 @@ import { CommonConstants } from "../_constants/common.constants";
 import Moment from "moment";
 var CryptoJS = require("crypto-js");
 var FrontEndUrl = "https://frontend.maxbox.com";
+// var FrontEndUrl = "http://localhost:3001";
 
-
+//   npm i react - bootstrap - typeahead
 
 export function GetUserDetails() {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
@@ -15,27 +16,27 @@ export function GetUserDetails() {
     }
 }
 
-export function encrypt(ID){
-    try{
-    var UID = CryptoJS.AES.encrypt(
-        JSON.stringify(ID),
-        "my-secret-key@123"
-      ).toString();
-    return UID
+export function encrypt(ID) {
+    try {
+        var UID = CryptoJS.AES.encrypt(
+            JSON.stringify(ID),
+            "my-secret-key@123"
+        ).toString();
+        return UID
     }
-    catch{
+    catch {
         return "";
     }
 }
 
-export function decrypt(ID){
-    
-    try{
+export function decrypt(ID) {
+
+    try {
         var bytes = CryptoJS.AES.decrypt(ID, 'my-secret-key@123');
         var UID = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    return UID
+        return UID
     }
-    catch{
+    catch {
         return "";
     }
 }
@@ -50,7 +51,7 @@ export function CheckLocalStorage() {
 }
 export function UpdateUserDetails(ClientID) {
     let ObjLoginData = JSON.parse(localStorage.getItem('LoginData'));
-    
+
     if (ObjLoginData && ObjLoginData != null) {
         ObjLoginData.ClientID = ClientID;
         localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
@@ -62,11 +63,11 @@ export function UpdateUserDetails(ClientID) {
 }
 
 
-export function Locate(PageName,ID){
-    
-    if(ID!=""){
-    window.location.href = FrontEndUrl + PageName+"?" + encrypt(ID)
-    }else{
+export function Locate(PageName, ID) {
+
+    if (ID != "") {
+        window.location.href = FrontEndUrl + PageName + "?" + encrypt(ID)
+    } else {
         window.location.href = FrontEndUrl + PageName;
     }
 }
@@ -123,4 +124,8 @@ export function LoaderHide() {
 
 export function IsGreaterDate(Date) {
     return Moment(Date).isSameOrAfter(Moment(), 'day')
+}
+
+export function Plain2HTML(text) {
+    return text = '<p>' + text.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
 }
