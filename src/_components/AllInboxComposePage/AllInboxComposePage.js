@@ -154,28 +154,24 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
-            var TemplateID = document.getElementsByClassName('active')[0].id;
+            var body = "";
+            BodyData.split(ClientData).map(function (address, index) {
+                if (index == 0) {
+                    body = address
+                    SetObjectIDTemplateID("")
+                }
+            });
+            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = DivData.BodyText + BodyData
-            SetTemplateID(TemplateID);
+            var NewData = "";
+            if (body != "" && chckEmptyBody != "") {
+                NewData = body + DivData.BodyText + ClientData;
+                SetObjectIDTemplateID(ObjectionTemplateID)
+            } else {
+                NewData = DivData.BodyText + BodyData
+                SetObjectIDTemplateID(ObjectionTemplateID)
+            }
             SetSignature({ Data: NewData });
-            // var body = "";
-            // BodyData.split(ClientData).map(function (address, index) {
-            //     if (index == 0) {
-            //         body = address
-            //         SetObjectIDTemplateID("")
-            //     }
-            // });
-            // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
-            // document.getElementById("Subject").value = DivData.Subject;
-            // var NewData = "";
-            // if (body != "" && chckEmptyBody != "") {
-            //     NewData = body + DivData.BodyText + ClientData;
-            //     SetObjectIDTemplateID(ObjectionTemplateID)
-            // } else {
-            //     NewData = DivData.BodyText + BodyData
-            //     SetObjectIDTemplateID(ObjectionTemplateID)
-            // }
             LoaderHide()
             handleClose()
         } else {
