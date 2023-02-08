@@ -656,8 +656,9 @@ export default function OtherInboxPage(props) {
 
   const ChatGPT = async () => {
     LoaderShow()
+    var GetReplyMessageDetailsData = GetReplyMessageDetails + " make reply happy and respectfull tone";
     var SubjectParamData = {
-      prompt: GetReplyMessageDetails,
+      prompt: GetReplyMessageDetailsData,
     };
     await Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
@@ -672,6 +673,7 @@ export default function OtherInboxPage(props) {
         LoaderHide()
       } else {
         toast.error("Error!")
+        LoaderHide()
       }
     });
   }
