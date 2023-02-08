@@ -690,10 +690,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose px-3'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>To :</h6>
                             </Col>
-                            <Col xs={7} className="px-0">
+                            <Col xs={8} className="px-0">
                                 {/* <Input className='input-clend' id='ComposeTo' name='To' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete
@@ -726,10 +726,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose cc px-3' id='FlagCC'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>
                             </Col>
-                            <Col xs={10} className="px-0">
+                            <Col xs={11} className="px-0">
                                 {/* <Input className='input-clend' id='ComposeCC' name='Cc' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete
@@ -758,10 +758,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose bcc px-3' id='FlagBCC'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>Bcc :</h6>
                             </Col>
-                            <Col xs={10} className="px-0">
+                            <Col xs={11} className="px-0">
                                 {/* <Input className='input-clend' id='ComposeBCC' name='Bcc' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete

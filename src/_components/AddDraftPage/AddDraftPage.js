@@ -263,10 +263,10 @@ export default function DraftComposePage({ GetDraftList }) {
                     </div>
                     <div className='subcompose px-3 py-2'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>To :</h6>
                             </Col>
-                            <Col xs={8} className="px-0">
+                            <Col xs={10} className="px-0">
                                 {/* <Input className='input-clend' id='ToEmail' name='ToEmail' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete

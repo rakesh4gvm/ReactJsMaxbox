@@ -708,10 +708,10 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
                     </div>
                     <div className='subcompose px-3'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>To :</h6>
                             </Col>
-                            <Col xs={7} className="px-0">
+                            <Col xs={8} className="px-0">
                                 {/* <Input className='input-clend' id='ToEmail' name='ToEmail' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete
@@ -751,10 +751,10 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
                     </div>
                     <div className='subcompose cc px-3' id='Cc'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>
                             </Col>
-                            <Col xs={10} className="px-0">
+                            <Col xs={11} className="px-0">
                                 {/* <Input className='input-clend' id='CC' name='Cc' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete
@@ -790,10 +790,10 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
                     </div>
                     <div className='subcompose bcc px-3' id='Bcc'>
                         <Row className='px-3'>
-                            <Col xs={2} className="px-0">
+                            <Col xs={1} className="px-0">
                                 <h6>Bcc :</h6>
                             </Col>
-                            <Col xs={10} className="px-0">
+                            <Col xs={11} className="px-0">
                                 {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete

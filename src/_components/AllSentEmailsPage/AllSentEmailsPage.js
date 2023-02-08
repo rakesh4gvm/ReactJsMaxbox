@@ -1441,10 +1441,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose px-3 py-1'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>To :</h6>
               </Col>
-              <Col xs={7} className="px-0">
+              <Col xs={8} className="px-0">
                 {/* <Input className='input-clend' id='To' name='To' value={OpenMessage?.ToEmail} disabled /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
@@ -1493,10 +1493,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose cc px-3' id='CcReply'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>Cc :</h6>
               </Col>
-              <Col xs={10} className="px-0">
+              <Col xs={11} className="px-0">
                 {/* <Input className='input-clend' id='CC' name='Cc' /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
@@ -1532,10 +1532,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose bcc px-3' id='BccReply'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>Bcc :</h6>
               </Col>
-              <Col xs={10} className="px-0">
+              <Col xs={11} className="px-0">
                 {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
@@ -1605,10 +1605,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose px-3'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>To :</h6>
               </Col>
-              <Col xs={7} className="px-0">
+              <Col xs={8} className="px-0">
                 {/* <Input className='input-clend' id='ToForward' name='ToForward' /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
@@ -1647,10 +1647,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose cc px-3' id='CcForward'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>Cc :</h6>
               </Col>
-              <Col xs={10} className="px-0">
+              <Col xs={11} className="px-0">
                 {/* <Input className='input-clend' id='CC' name='Cc' /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
@@ -1685,10 +1685,10 @@ export default function AllSentEmailsPage(props) {
           </div>
           <div className='subcompose bcc px-3' id='BccForward'>
             <Row className='px-3'>
-              <Col xs={2} className="px-0">
+              <Col xs={1} className="px-0">
                 <h6>Bcc :</h6>
               </Col>
-              <Col xs={10} className="px-0">
+              <Col xs={11} className="px-0">
                 {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
                 <div className='multibox-filter'>
                   <Autocomplete
