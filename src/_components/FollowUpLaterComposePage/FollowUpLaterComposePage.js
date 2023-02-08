@@ -109,24 +109,27 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
             var TemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
             var BodyData = Signature.Data;
-            var body = "";
-            BodyData.split(ClientData).map(function (address, index) {
-                if (index == 0) {
-                    body = address
-                    SetTemplateID("");
-                }
-            });
-            var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
             document.getElementById("Subject").value = DivData.Subject;
-            var NewData = "";
-            if (body != "" && chckEmptyBody != "") {
-                NewData = body + DivData.BodyText + ClientData;
-                SetTemplateID(TemplateID);
-            } else {
-                NewData = DivData.BodyText + BodyData
-                SetTemplateID(TemplateID);
-            }
+            var NewData = DivData.BodyText + BodyData
+            SetTemplateID(TemplateID);
             SetSignature({ Data: NewData });
+            // var body = "";
+            // BodyData.split(ClientData).map(function (address, index) {
+            //     if (index == 0) {
+            //         body = address
+            //         SetTemplateID("");
+            //     }
+            // });
+            // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+            // document.getElementById("Subject").value = DivData.Subject;
+            // var NewData = "";
+            // if (body != "" && chckEmptyBody != "") {
+            //     NewData = body + DivData.BodyText + ClientData;
+            //     SetTemplateID(TemplateID);
+            // } else {
+            //     NewData = DivData.BodyText + BodyData
+            //     SetTemplateID(TemplateID);
+            // }
             LoaderHide()
             handleTemClose()
         } else {
@@ -475,7 +478,6 @@ export default function FollowUpLaterComposePage({ GetFollowUpLaterList }) {
                     data: Data,
                 });
                 ResponseApi.then((Result) => {
-                    debugger
                     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                         if (Result.data.PageData.length > 0) {
                             setExpanded(false);
