@@ -1261,7 +1261,7 @@ export default function OtherInboxPage(props) {
                 <h6>Subject :</h6>
               </Col>
               <Col xs={10} className="px-0">
-                <Input className='input-clend' id='ComposeSubject' name='Subject' value={MailChange.Subject} onChange={HandleMailChange} />
+                <Input className='input-clend' id='ComposeSubject' name='Subject' onChange={HandleMailChange} />
               </Col>
             </Row>
           </div>

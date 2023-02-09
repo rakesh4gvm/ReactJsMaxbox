@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
 
@@ -49,7 +49,7 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
 import icondelete from '../../images/icon_delete.svg';
-
+import Chatgpt from '../../images/icons/chatgpt-icon.svg';
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -190,6 +190,8 @@ export default function OtherInboxPage(props) {
   const [ClientData, SetClientData] = useState()
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
   const [NewTemplateID, SetNewTemplateID] = useState([])
+  const [subject, setSubject] = useState()
+  const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -653,6 +655,7 @@ export default function OtherInboxPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetGetReplyMessageDetails(Result?.data?.Data)
         SetSignature({ Data: Result?.data?.Data })
       } else {
         toast.error(Result?.data?.Message);
@@ -767,6 +770,30 @@ export default function OtherInboxPage(props) {
     }
   }
   // Sent Mail Ends
+
+  const ChatGPT = async () => {
+    LoaderShow()
+    var GetReplyMessageDetailsData = GetReplyMessageDetails + " make reply happy and respectfull tone";
+    var SubjectParamData = {
+      prompt: GetReplyMessageDetailsData,
+    };
+    await Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+      method: "POST",
+      data: SubjectParamData,
+    }).then((Result) => {
+      if (Result.data.StatusMessage == "Success") {
+        var body = Result.data?.data;
+        setSubject(body)
+        var HTMLData = Plain2HTML(body)
+        SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+        LoaderHide()
+      } else {
+        toast.error("Chat Gpt is not responding")
+        LoaderHide()
+      }
+    });
+  }
 
   // Frola Editor Starts
   Froalaeditor.RegisterCommand('SendReply', {
@@ -904,11 +931,17 @@ export default function OtherInboxPage(props) {
     refreshOnShow: function ($btn, $dropdown) {
     }
   });
+  Froalaeditor.RegisterCommand('Chat', {
+    colorsButtons: ["colorsBack", "|", "-"],
+    callback: ChatGPT,
+    icon: `<img src=${Chatgpt} alt=[ALT] />`,
+    title: 'Generate auto response',
+  });
   const config = {
     quickInsertEnabled: false,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
-    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions'], ['DeleteReply']],
+    toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions', 'Chat'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
     imageUploadRemoteUrls: false,

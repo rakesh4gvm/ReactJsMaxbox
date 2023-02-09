@@ -672,7 +672,7 @@ export default function OtherInboxPage(props) {
         SetSignature({ Data: HTMLData + GetReplyMessageDetails })
         LoaderHide()
       } else {
-        toast.error("Error!")
+        toast.error("Chat Gpt is not responding")
         LoaderHide()
       }
     });
