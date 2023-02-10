@@ -184,9 +184,10 @@ export default function OtherInboxPage(props) {
   const [TemplateID, SetTemplateID] = React.useState("");
   const [ClientData, SetClientData] = useState()
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
-  const [NewTemplateID, SetNewTemplateID] = useState([])
   const [subject, setSubject] = useState()
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+  const [NewTemplateID, SetNewTemplateID] = useState([])
+  const [NewObjectionID, SetNewObjectionID] = useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -482,6 +483,7 @@ export default function OtherInboxPage(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
@@ -528,6 +530,7 @@ export default function OtherInboxPage(props) {
     const elementforward = document.getElementById("UserComposeForward")
     elementforward.classList.remove("show");
     // SetToEmailValue([])
+    SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -630,7 +633,7 @@ export default function OtherInboxPage(props) {
         Subject: Subject,
         Body: Body,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: ObjectIDTemplateID
+        ObjectIDTemplateID: NewObjectionID
       };
       Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",

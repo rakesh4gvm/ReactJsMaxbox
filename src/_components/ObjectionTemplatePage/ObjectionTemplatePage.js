@@ -181,11 +181,11 @@ export default function ObjectionTemplateListPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         toast.success(<div>Objection template deleted successfully.</div>);
         if (ObjectionTemplateList.length - 1 == 0) {
-          GetObjectionTemplateList(ClientID, UserID,  1)
+          GetObjectionTemplateList(ClientID, UserID, 1)
         } else {
-          GetObjectionTemplateList(ClientID, UserID,  Page)
+          GetObjectionTemplateList(ClientID, UserID, Page)
         }
-       
+
         SetDeletePopModel(false);
         LoaderShow()
       }
@@ -314,6 +314,8 @@ export default function ObjectionTemplateListPage() {
                         <TableCell>Open</TableCell>
                         {/* <TableCell>Replies</TableCell> */}
                         <TableCell>Open %</TableCell>
+                        <TableCell>Reply</TableCell>
+                        <TableCell>Reply %</TableCell>
                         {/* <TableCell>Replies %</TableCell> */}
                         <TableCell>Action</TableCell>
                       </TableRow>
@@ -345,6 +347,8 @@ export default function ObjectionTemplateListPage() {
                             <TableCell><img src={MailMultipal} /> {row.IsOpenCount}</TableCell>
                             {/* <TableCell><img src={InboxRounded} /> Replies</TableCell> */}
                             <TableCell>{parseInt(row.IsSentCount) > 0 ? ((parseInt(row.IsOpenCount) / parseInt(row.IsSentCount)) * 100).toFixed(0) : 0} % </TableCell>
+                            <TableCell><img src={MailMultipal} /> {row.IsReplyCount}</TableCell>
+                            <TableCell>{parseInt(row.IsSentCount) > 0 ? ((parseInt(row.IsReplyCount) / parseInt(row.IsSentCount)) * 100).toFixed(0) : 0} % </TableCell>
                             {/* <TableCell>Replies %</TableCell> */}
 
                             <TableCell align="left">
@@ -385,7 +389,7 @@ export default function ObjectionTemplateListPage() {
                 </TableContainer>
 
                 <Stack className='my-4 page-dec' spacing={2}>
-                  <Pagination count={CountPage} page={PageValue}  onChange={HandleChangePage} variant="outlined" shape="rounded" />
+                  <Pagination count={CountPage} page={PageValue} onChange={HandleChangePage} variant="outlined" shape="rounded" />
                 </Stack>
               </Col>
             </Row>
