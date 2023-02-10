@@ -1067,7 +1067,26 @@ div.modal-prein {
     line-height: 50px;
     color: #616B77;
 }
-
+.textarea-box > *{ 
+    width: 100%;  
+}
+.textarea-box textarea{
+    border: 1px solid #E5E5E5;
+    border-radius: 15px;
+    width: 100%; 
+    padding: 15px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: normal;
+    color: #616B77;
+    min-height: 100px;
+}
+.textarea-box > * fieldset{
+    border: none;
+}
+.textarea-box > * fieldset legend{
+    display: none;
+}
 .input-pasbox>div {
     border: 1px solid #E5E5E5;
     border-radius: 15px;
@@ -3142,6 +3161,14 @@ div button.starfilter.MuiButtonBase-root.Mui-selected{
 div button.starfilter.MuiButtonBase-root.Mui-selected svg.startwo{
     display: flex;
     color: #fff !important;
+}
+.max-767.modal-lister .MuiBox-root {
+    max-width: 700px;
+    width: 100%;
+}
+.textarea-box textarea.hei-50 {
+    min-height: 52px;
+    outline: 0;
 }
 
 @media screen and (max-width:990px) {

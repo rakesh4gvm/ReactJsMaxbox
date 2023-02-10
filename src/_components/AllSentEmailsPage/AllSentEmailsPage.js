@@ -182,6 +182,11 @@ export default function AllSentEmailsPage(props) {
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
   const [subject, setSubject] = useState()
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+  const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
+
+  const OpenChatGPTModel = () => SetChatGPTModel(true)
+
+  const HanleChatGPTClose = () => SetChatGPTModel(false);
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -691,27 +696,36 @@ export default function AllSentEmailsPage(props) {
   // Sent Mail Ends
 
   const ChatGPT = async () => {
-    LoaderShow()
-    var GetReplyMessageDetailsData = GetReplyMessageDetails + " make reply happy and respectfull tone";
-    var SubjectParamData = {
-      prompt: GetReplyMessageDetailsData,
-    };
-    await Axios({
-      url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-      method: "POST",
-      data: SubjectParamData,
-    }).then((Result) => {
-      if (Result.data.StatusMessage == "Success") {
-        var body = Result.data?.data;
-        setSubject(body)
-        var HTMLData = Plain2HTML(body)
-        SetSignature({ Data: HTMLData + GetReplyMessageDetails })
-        LoaderHide()
-      } else {
-        toast.error("Chat Gpt is not responding")
-        LoaderHide()
-      }
-    });
+    var VoiceOfTone = document.getElementById("tone").value
+    var EmailSummary = document.getElementById("emailsummary").value
+
+    var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+    if (VoiceOfTone.length > 0) {
+      LoaderShow()
+      var GetReplyMessageDetailsData = GetReplyMessageDetails + " make reply happy and respectfull tone";
+      var SubjectParamData = {
+        prompt: GetReplyMessageDetailsData,
+      };
+      await Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+        method: "POST",
+        data: SubjectParamData,
+      }).then((Result) => {
+        if (Result.data.StatusMessage == "Success") {
+          var body = Result.data?.data;
+          setSubject(body)
+          var HTMLData = Plain2HTML(body)
+          SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+          LoaderHide()
+          HanleChatGPTClose()
+        } else {
+          toast.error("Chat Gpt is not responding")
+          LoaderHide()
+        }
+      });
+    } else {
+      toast.error("Please Add Voice Of Tone.")
+    }
   }
 
   Froalaeditor.RegisterCommand('Chat', {
@@ -859,7 +873,7 @@ export default function AllSentEmailsPage(props) {
   });
   Froalaeditor.RegisterCommand('Chat', {
     colorsButtons: ["colorsBack", "|", "-"],
-    callback: ChatGPT,
+    callback: OpenChatGPTModel,
     icon: `<img src=${Chatgpt} alt=[ALT] />`,
     title: 'Generate auto response',
   });
@@ -1168,7 +1182,44 @@ export default function AllSentEmailsPage(props) {
 
   return (
     <>
-
+      <Modal className="modal-lister max-767"
+        open={ChatGPTMOdel}
+        onClose={HanleChatGPTClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className='m-head'>
+            <Typography id="modal-modal-title" variant="h4" component="h4">
+              Chat GPT
+            </Typography>
+          </div>
+          <div className='m-body'>
+            <Row className='mb-3 px-3'>
+              <Col xs={3} className="">
+                <h6 className='mt-2'>Tone of Voice :</h6>
+              </Col>
+              <Col xs={9} className="textarea-box my-0">
+                <textarea className='hei-50' id='tone' name='tone' />
+              </Col>
+            </Row>
+            <Row className='px-3'>
+              <Col xs={3} className="">
+                <h6>Email Summary :</h6>
+              </Col>
+              <Col xs={9} className="textarea-box">
+                <textarea id='emailsummary' name='emailsummary' />
+              </Col>
+            </Row>
+          </div>
+          <div className='m-fotter' align="right">
+            <ButtonGroup variant="text" aria-label="text button group">
+              <Button variant="contained btn btn-orang smallbtn mr-3" onClick={HanleChatGPTClose}> Cancel</Button>
+              <Button variant="contained btn btn-primary smallbtn" onClick={ChatGPT} > Request</Button>
+            </ButtonGroup>
+          </div>
+        </Box>
+      </Modal>
       <Modal className="modal-lister"
         open={open}
         onClose={handleClose}
