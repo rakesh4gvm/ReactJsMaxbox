@@ -175,6 +175,7 @@ export default function OtherInboxPage(props) {
   const [CCEmailValue, SetCCEmailValue] = React.useState([]);
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
   const [NewTemplateID, SetNewTemplateID] = useState([])
+  const [NewObjectionID, SetNewObjectionID] = useState([])
 
   const HandleScroll = (e) => {
     const target = e.target
@@ -327,6 +328,7 @@ export default function OtherInboxPage(props) {
       }
       // SetClientSignatureData("")
       // SetSelectedEmailAccountUser(0);
+      SetNewObjectionID([])
       SetNewTemplateID([])
       SetToEmailValue([])
       SetCCEmailValue([])
@@ -457,7 +459,7 @@ export default function OtherInboxPage(props) {
         IsAllSentEmails: false,
         CreatedBy: 1,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: ObjectIDTemplateID
+        ObjectIDTemplateID: NewObjectionID
       }
       await Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
@@ -548,6 +550,7 @@ export default function OtherInboxPage(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;

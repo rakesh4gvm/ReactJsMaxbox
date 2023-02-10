@@ -190,6 +190,7 @@ export default function FollowUpLater(props) {
   const [subject, setSubject] = useState()
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
+  const [NewObjectionID, SetNewObjectionID] = useState([])
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -596,6 +597,7 @@ export default function FollowUpLater(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
@@ -647,6 +649,7 @@ export default function FollowUpLater(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -752,7 +755,7 @@ export default function FollowUpLater(props) {
         Subject: Subject,
         Body: Body,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: ObjectIDTemplateID
+        ObjectIDTemplateID: NewObjectionID
       };
       Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",

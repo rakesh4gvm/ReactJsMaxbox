@@ -92,6 +92,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
     const [CCEmailValue, SetCCEmailValue] = React.useState([]);
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
     const [NewTemplateID, SetNewTemplateID] = useState([])
+    const [NewObjectionID, SetNewObjectionID] = useState([])
 
     useEffect(() => {
         GetClientID()
@@ -142,6 +143,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
         var GetByClass = document.getElementsByClassName('active');
         LoaderShow()
         if (GetByClass.length > 0) {
+            SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
@@ -245,6 +247,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
             // SetClientSignatureData("")
             // SetSelectedEmailAccountUser(0);
             // SetSignature({ Data: "" });
+            SetNewObjectionID([])
             SetNewTemplateID([])
             SetToEmailValue([])
             SetCCEmailValue([])
@@ -356,7 +359,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
                 IsAllSentEmails: true,
                 CreatedBy: 1,
                 TemplateID: NewTemplateID,
-                ObjectIDTemplateID: ObjectIDTemplateID
+                ObjectIDTemplateID: NewObjectionID
             }
             Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",

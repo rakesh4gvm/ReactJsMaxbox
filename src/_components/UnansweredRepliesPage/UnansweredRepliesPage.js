@@ -175,6 +175,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
   const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
   const [ForwardBCCEmailValue, SetForwardBCCEmailValue] = useState([])
+  const [NewObjectionID, SetNewObjectionID] = useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -240,6 +241,7 @@ export default function AllUnansweredRepliesPage(props) {
     var GetByClass = document.getElementsByClassName('active');
     LoaderShow()
     if (GetByClass.length > 0) {
+      SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
@@ -540,6 +542,7 @@ export default function AllUnansweredRepliesPage(props) {
     const elementforward = document.getElementById("UserComposeForward")
     elementforward.classList.remove("show");
 
+    SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])
     SetBCCEmailValue([])
@@ -650,7 +653,7 @@ export default function AllUnansweredRepliesPage(props) {
         Subject: Subject,
         Body: Body,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: ObjectIDTemplateID
+        ObjectIDTemplateID: NewObjectionID
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/sent_email_history/AllSentReplyMessage",

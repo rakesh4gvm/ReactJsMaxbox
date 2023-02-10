@@ -92,6 +92,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     const [CCEmailValue, SetCCEmailValue] = React.useState([]);
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
     const [NewTemplateID, SetNewTemplateID] = useState([])
+    const [NewObjectionID, SetNewObjectionID] = useState([])
 
     useEffect(() => {
         GetClientID()
@@ -142,6 +143,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         var GetByClass = document.getElementsByClassName('active');
         LoaderShow()
         if (GetByClass.length > 0) {
+            SetNewObjectionID([...NewObjectionID, document.getElementsByClassName('active')[0].id])
             var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
             var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
             var BodyData = Signature.Data;
@@ -246,6 +248,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
             // SetClientSignatureData("")
             // SetSelectedEmailAccountUser(0);
             // SetSignature({ Data: "" });
+            SetNewObjectionID([])
             SetNewTemplateID([])
             SetToEmailValue([])
             SetCCEmailValue([])
@@ -362,7 +365,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                 IsAllSentEmails: false,
                 CreatedBy: 1,
                 TemplateID: NewTemplateID,
-                ObjectIDTemplateID: ObjectIDTemplateID
+                ObjectIDTemplateID: NewObjectionID
             }
             await Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentMail",
