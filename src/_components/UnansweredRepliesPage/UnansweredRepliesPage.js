@@ -59,6 +59,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -1379,6 +1381,8 @@ export default function AllUnansweredRepliesPage(props) {
           >
             <>
               <div className='orangbg-table'>
+                <FormControlLabel className='check-mark'
+                    control={<Checkbox defaultChecked />} label="Mark" /> 
                 <div className='rigter-coller'>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
@@ -1399,6 +1403,9 @@ export default function AllUnansweredRepliesPage(props) {
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox color="primary"  />
+                      </TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
@@ -1414,6 +1421,9 @@ export default function AllUnansweredRepliesPage(props) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 
                       >
+                        <TableCell padding="checkbox">
+                          <Checkbox color="primary"  />
+                        </TableCell>
                         <TableCell width={'35px'}>
                           <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />

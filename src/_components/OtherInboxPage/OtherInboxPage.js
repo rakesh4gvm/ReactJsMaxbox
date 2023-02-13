@@ -1548,6 +1548,8 @@ export default function OtherInboxPage(props) {
           >
             <>
               <div className='orangbg-table'>
+                <FormControlLabel className='check-mark'
+                    control={<Checkbox defaultChecked />} label="Mark" /> 
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
@@ -1569,6 +1571,9 @@ export default function OtherInboxPage(props) {
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox color="primary"  />
+                      </TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
@@ -1584,6 +1589,9 @@ export default function OtherInboxPage(props) {
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
+                      <TableCell padding="checkbox">
+                        <Checkbox color="primary"  />
+                      </TableCell>
                         <TableCell width={'35px'}>
                           <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
