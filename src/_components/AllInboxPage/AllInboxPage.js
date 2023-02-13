@@ -457,25 +457,28 @@ export default function OtherInboxPage(props) {
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
-      var body = "";
-      BodyData.split(ClientData).map(function (address, index) {
-        if (index == 0) {
-          body = address
-          SetTemplateID("");
-        }
-      });
-      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
       document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = "";
-      if (body != "" && chckEmptyBody != "") {
-        NewData = body + DivData.BodyText + ClientData;
-        SetTemplateID(TemplateID)
-      } else {
-        NewData = DivData.BodyText + BodyData
-        SetTemplateID(TemplateID)
-      }
+      var NewData = DivData.BodyText + BodyData
+      SetTemplateID(TemplateID);
       SetSignature({ Data: NewData });
+      // var body = "";
+      // BodyData.split(ClientData).map(function (address, index) {
+      //   if (index == 0) {
+      //     body = address
+      //     SetTemplateID("");
+      //   }
+      // });
+      // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      // document.getElementById("Subject").value = DivData.Subject;
+      // // var NewData = BodyData + '</br>' + DivData.BodyText;
+      // var NewData = "";
+      // if (body != "" && chckEmptyBody != "") {
+      //   NewData = body + DivData.BodyText + ClientData;
+      //   SetTemplateID(TemplateID)
+      // } else {
+      //   NewData = DivData.BodyText + BodyData
+      //   SetTemplateID(TemplateID)
+      // }
       LoaderHide()
       handleTemClose()
     } else {
@@ -492,24 +495,27 @@ export default function OtherInboxPage(props) {
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
-      var body = "";
-      BodyData.split(ClientData).map(function (address, index) {
-        if (index == 0) {
-          body = address
-          SetObjectIDTemplateID("")
-        }
-      });
-      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      var NewData = DivData.BodyText + BodyData
       document.getElementById("Subject").value = DivData.Subject;
-      var NewData = "";
-      if (body != "" && chckEmptyBody != "") {
-        NewData = body + DivData.BodyText + ClientData;
-        SetObjectIDTemplateID(ObjectionTemplateID)
-      } else {
-        NewData = DivData.BodyText + BodyData
-        SetObjectIDTemplateID(ObjectionTemplateID)
-      }
+      SetObjectIDTemplateID(ObjectionTemplateID)
       SetSignature({ Data: NewData });
+      // var body = "";
+      // BodyData.split(ClientData).map(function (address, index) {
+      //   if (index == 0) {
+      //     body = address
+      //     SetObjectIDTemplateID("")
+      //   }
+      // });
+      // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      // document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = "";
+      // if (body != "" && chckEmptyBody != "") {
+      //   NewData = body + DivData.BodyText + ClientData;
+      //   SetObjectIDTemplateID(ObjectionTemplateID)
+      // } else {
+      //   NewData = DivData.BodyText + BodyData
+      //   SetObjectIDTemplateID(ObjectionTemplateID)
+      // }
       LoaderHide()
       handleClose()
     } else {
@@ -1206,8 +1212,8 @@ export default function OtherInboxPage(props) {
               <Col xs={3} className="">
                 <h6 className='mt-2'>Tone of Voice :</h6>
               </Col>
-              <Col xs={9} className="textarea-box my-0"> 
-                  <textarea className='hei-50' id='tone' name='tone' />
+              <Col xs={9} className="textarea-box my-0">
+                <textarea className='hei-50' id='tone' name='tone' />
               </Col>
             </Row>
             <Row className='px-3'>
@@ -1217,7 +1223,7 @@ export default function OtherInboxPage(props) {
               <Col xs={9} className="textarea-box">
                 <textarea id='emailsummary' name='emailsummary' />
               </Col>
-              </Row>
+            </Row>
           </div>
           <div className='m-fotter' align="right">
             <ButtonGroup variant="text" aria-label="text button group">

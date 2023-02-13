@@ -568,25 +568,28 @@ export default function OtherInboxPage(props) {
       var TemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = TemplateData.find(data => data.TemplatesID === TemplateID);
       var BodyData = Signature.Data;
-      var body = "";
-      BodyData.split(ClientData).map(function (address, index) {
-        if (index == 0) {
-          body = address
-          SetTemplateID("");
-        }
-      });
-      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
       document.getElementById("Subject").value = DivData.Subject;
-      // var NewData = BodyData + '</br>' + DivData.BodyText;
-      var NewData = "";
-      if (body != "" && chckEmptyBody != "") {
-        NewData = body + DivData.BodyText + ClientData;
-        SetTemplateID(TemplateID)
-      } else {
-        NewData = DivData.BodyText + BodyData
-        SetTemplateID(TemplateID)
-      }
+      var NewData = DivData.BodyText + BodyData
+      SetTemplateID(TemplateID);
       SetSignature({ Data: NewData });
+      // var body = "";
+      // BodyData.split(ClientData).map(function (address, index) {
+      //   if (index == 0) {
+      //     body = address
+      //     SetTemplateID("");
+      //   }
+      // });
+      // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      // document.getElementById("Subject").value = DivData.Subject;
+      // // var NewData = BodyData + '</br>' + DivData.BodyText;
+      // var NewData = "";
+      // if (body != "" && chckEmptyBody != "") {
+      //   NewData = body + DivData.BodyText + ClientData;
+      //   SetTemplateID(TemplateID)
+      // } else {
+      //   NewData = DivData.BodyText + BodyData
+      //   SetTemplateID(TemplateID)
+      // }
       LoaderHide()
       handleTemClose()
     } else {
@@ -603,24 +606,27 @@ export default function OtherInboxPage(props) {
       var ObjectionTemplateID = document.getElementsByClassName('active')[0].id;
       var DivData = ObjectData.find(data => data.ObjectionTemplateID === ObjectionTemplateID);
       var BodyData = Signature.Data;
-      var body = "";
-      BodyData.split(ClientData).map(function (address, index) {
-        if (index == 0) {
-          body = address
-          SetObjectIDTemplateID("")
-        }
-      });
-      var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      var NewData = DivData.BodyText + BodyData
       document.getElementById("Subject").value = DivData.Subject;
-      var NewData = "";
-      if (body != "" && chckEmptyBody != "") {
-        NewData = body + DivData.BodyText + ClientData;
-        SetObjectIDTemplateID(ObjectionTemplateID)
-      } else {
-        NewData = DivData.BodyText + BodyData
-        SetObjectIDTemplateID(ObjectionTemplateID)
-      }
+      SetObjectIDTemplateID(ObjectionTemplateID)
       SetSignature({ Data: NewData });
+      // var body = "";
+      // BodyData.split(ClientData).map(function (address, index) {
+      //   if (index == 0) {
+      //     body = address
+      //     SetObjectIDTemplateID("")
+      //   }
+      // });
+      // var chckEmptyBody = body.replace(/<[\/]{0,1}(p)[^><]*>/ig, '').replace(/<\/?[^>]+(>|$)/g, "").trim()
+      // document.getElementById("Subject").value = DivData.Subject;
+      // var NewData = "";
+      // if (body != "" && chckEmptyBody != "") {
+      //   NewData = body + DivData.BodyText + ClientData;
+      //   SetObjectIDTemplateID(ObjectionTemplateID)
+      // } else {
+      //   NewData = DivData.BodyText + BodyData
+      //   SetObjectIDTemplateID(ObjectionTemplateID)
+      // }
       LoaderHide()
       handleClose()
     } else {
