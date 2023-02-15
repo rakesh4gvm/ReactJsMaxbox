@@ -735,7 +735,7 @@ export default function AllSentEmailsPage(props) {
         }
       });
     } else {
-      toast.error("Please Add Voice Of Tone.")
+      toast.error("Please Add Tone of Voice.")
     }
   }
 
@@ -1414,8 +1414,6 @@ export default function AllSentEmailsPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                <FormControlLabel className='check-mark'
-                    control={<Checkbox defaultChecked />} label="Mark" /> 
                 <div className='rigter-coller'>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
@@ -1437,9 +1435,6 @@ export default function AllSentEmailsPage(props) {
                 <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox color="primary"  />
-                      </TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
@@ -1455,9 +1450,6 @@ export default function AllSentEmailsPage(props) {
                           key={item.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                        <TableCell padding="checkbox">
-                          <Checkbox color="primary"  />
-                        </TableCell>
                           <TableCell width={'35px'}>
                             <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                               <StarBorderIcon className='starone' />

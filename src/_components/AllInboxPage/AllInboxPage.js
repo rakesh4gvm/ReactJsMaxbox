@@ -189,6 +189,8 @@ export default function OtherInboxPage(props) {
   const [NewTemplateID, SetNewTemplateID] = useState([])
   const [NewObjectionID, SetNewObjectionID] = useState([])
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
+  const [CheckedID, SetCheckedID] = useState([])
+  const [isChecked, setIsChecked] = useState(false);
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -697,7 +699,7 @@ export default function OtherInboxPage(props) {
         }
       });
     } else {
-      toast.error("Please Add Voice Of Tone.")
+      toast.error("Please Add Tone of Voice.")
     }
   }
 
@@ -1191,6 +1193,42 @@ export default function OtherInboxPage(props) {
   }
 
 
+  const HandleCheckedID = (event, ID) => {
+    const { checked } = event.target;
+
+    if (checked) {
+      SetCheckedID([...CheckedID, ID])
+    } else {
+      SetCheckedID(state => state.filter((el) => el !== ID));
+    }
+  }
+
+  const MarkUnreadEmails = () => {
+
+    if (CheckedID.length > 0) {
+      LoaderShow()
+      var Data = {
+        EmailsIds: CheckedID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkUnreadEmails",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          LoaderHide()
+          setIsChecked(false);
+          SetCheckedID([])
+        }
+      });
+    } else {
+      toast.error("Please checked email.")
+    }
+
+  }
+
+
 
   return (
 
@@ -1380,8 +1418,9 @@ export default function OtherInboxPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                <FormControlLabel className='check-mark'
-                    control={<Checkbox defaultChecked />} label="Mark" /> 
+                {/* <FormControlLabel className='check-mark'
+                  control={<Checkbox defaultChecked />} label="Mark" /> */}
+                <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button>
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -1389,7 +1428,7 @@ export default function OtherInboxPage(props) {
                     <StarBorderIcon className='starone' />
                     <StarIcon className='selectedstart startwo' />
                     Starred
-                  </ToggleButton> 
+                  </ToggleButton>
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
@@ -1416,7 +1455,7 @@ export default function OtherInboxPage(props) {
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell padding="checkbox">
-                        <Checkbox color="primary"  />
+                        <input type='checkbox' />
                       </TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
@@ -1431,16 +1470,17 @@ export default function OtherInboxPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index, "updatelist")}
+
                       >
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell padding="checkbox">
-                          <Checkbox color="primary"  />
+                          <input type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                          {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

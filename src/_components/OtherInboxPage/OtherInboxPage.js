@@ -194,6 +194,8 @@ export default function OtherInboxPage(props) {
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
   const [NewObjectionID, SetNewObjectionID] = useState([])
+  const [CheckedID, SetCheckedID] = useState([])
+  const [isChecked, setIsChecked] = useState(false);
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -814,7 +816,7 @@ export default function OtherInboxPage(props) {
         }
       });
     } else {
-      toast.error("Please Add Voice Of Tone.")
+      toast.error("Please Add Tone of Voice.")
     }
   }
 
@@ -1288,6 +1290,41 @@ export default function OtherInboxPage(props) {
   };
 
 
+  const HandleCheckedID = (event, ID) => {
+    const { checked } = event.target;
+
+    if (checked) {
+      SetCheckedID([...CheckedID, ID])
+    } else {
+      SetCheckedID(state => state.filter((el) => el !== ID));
+    }
+  }
+
+  const MarkUnreadEmails = () => {
+
+    if (CheckedID.length > 0) {
+      LoaderShow()
+      var Data = {
+        EmailsIds: CheckedID,
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkUnreadEmails",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          LoaderHide()
+          SetCheckedID([])
+        }
+      });
+    } else {
+      toast.error("Please checked email.")
+    }
+
+  }
+
+
   return (
     <>
       <Modal className="modal-lister max-767"
@@ -1548,8 +1585,7 @@ export default function OtherInboxPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                <FormControlLabel className='check-mark'
-                    control={<Checkbox defaultChecked />} label="Mark" /> 
+                <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button>
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
@@ -1572,7 +1608,7 @@ export default function OtherInboxPage(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell padding="checkbox">
-                        <Checkbox color="primary"  />
+                        <input type='checkbox' />
                       </TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
@@ -1589,9 +1625,10 @@ export default function OtherInboxPage(props) {
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
-                      <TableCell padding="checkbox">
-                        <Checkbox color="primary"  />
-                      </TableCell>
+                        <TableCell padding="checkbox">
+                          <input type="checkbox" checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                          {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
+                        </TableCell>
                         <TableCell width={'35px'}>
                           <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />

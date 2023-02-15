@@ -3194,6 +3194,16 @@ div button.starfilter.MuiButtonBase-root.Mui-selected svg.startwo{
 .tablelister .MuiCheckbox-indeterminate {
     color: #e49273 !important;
 }
+button.btn-mark.btn.btn-primary {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 4px 9px;
+    outline: 0;
+    border: 0;
+    font-size: 0.9rem;
+    border-left: 1px solid #cf7553;
+    border-right: 1px solid #cf7553;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
