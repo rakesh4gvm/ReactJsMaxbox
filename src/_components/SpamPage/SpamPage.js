@@ -1685,7 +1685,6 @@ export default function SpamPage(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell padding="checkbox">
-                        <input type='checkbox' />
                       </TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}

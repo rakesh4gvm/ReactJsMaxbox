@@ -1455,7 +1455,7 @@ export default function OtherInboxPage(props) {
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell padding="checkbox">
-                        <input type='checkbox' />
+                        
                       </TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
