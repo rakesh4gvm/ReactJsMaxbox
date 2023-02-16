@@ -191,6 +191,7 @@ export default function OtherInboxPage(props) {
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
   const [CheckedID, SetCheckedID] = useState([])
   const [isChecked, setIsChecked] = useState(false);
+  const [ShowCheckBox, SetShowCheckBox] = useState("")
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -278,6 +279,8 @@ export default function OtherInboxPage(props) {
     } else {
       UnseenEmails = false
     }
+
+    SetShowCheckBox(UnseenEmails)
 
     var IsStarredEmails
 
@@ -1420,7 +1423,9 @@ export default function OtherInboxPage(props) {
               <div className='orangbg-table'>
                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
-                <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button>
+                {
+                  ShowCheckBox ? <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button> : <Button className='btn-mark' disabled >Mark as unread</Button>
+                }
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -1455,7 +1460,7 @@ export default function OtherInboxPage(props) {
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell padding="checkbox">
-                        
+
                       </TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
@@ -1475,7 +1480,9 @@ export default function OtherInboxPage(props) {
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell padding="checkbox">
-                          <input type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                          {
+                            ShowCheckBox ? <input type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
+                          }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item.Subject} </TableCell>

@@ -202,6 +202,7 @@ export default function UnansweredResponsesPage(props) {
   const [NewObjectionID, SetNewObjectionID] = useState([])
   const [CheckedID, SetCheckedID] = useState([])
   const [isChecked, setIsChecked] = useState(false);
+  const [ShowCheckBox, SetShowCheckBox] = useState("")
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -282,7 +283,7 @@ export default function UnansweredResponsesPage(props) {
       UnseenEmails = false
     }
 
-
+    SetShowCheckBox(UnseenEmails)
 
     var IsStarredEmails
 
@@ -1729,7 +1730,10 @@ export default function UnansweredResponsesPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button>
+                {
+                  ShowCheckBox ? <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button> : <Button className='btn-mark' disabled >Mark as unread</Button>
+                }
+
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -1777,7 +1781,9 @@ export default function UnansweredResponsesPage(props) {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
                         <TableCell padding="checkbox">
-                          <input type="checkbox" checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                          {
+                            ShowCheckBox ? <input type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
+                          }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
                         <TableCell width={'35px'}>

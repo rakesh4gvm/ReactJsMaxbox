@@ -3303,6 +3303,12 @@ button.btn-mark.btn.btn-primary {
     position: absolute;
 }
 
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #e49273 !important;
+}
+
 .my-checkbox {
     margin-top: 5px;
 }
