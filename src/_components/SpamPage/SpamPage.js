@@ -339,7 +339,8 @@ export default function SpamPage(props) {
         _id: ID,
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGetByID",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        // url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGetByID",
         method: "POST",
         data: Data,
       });
