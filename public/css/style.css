@@ -2829,12 +2829,12 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 .profilebox {
     background-color: #f7f0f0;
     width: 42px;
-    height: 42px;
+    height: 41px;
     position: fixed;
     z-index: 9999;
     right: 0;
     text-align: center;
-    line-height: 42px;
+    line-height: 41px;
     border-left: 1px solid rgba(0, 0, 0, 0.12);
 }
 
@@ -3051,7 +3051,7 @@ tr.selected-row {
     background-color: #e49273;
     width: 100%;
     height: 30px;
-    padding: 0 25px 0;
+    padding: 0;
 }
 
 .rigter-coller {
@@ -3286,16 +3286,21 @@ div button.starfilter.MuiButtonBase-root.Mui-selected svg.startwo {
 .tablelister .MuiCheckbox-indeterminate {
     color: #e49273 !important;
 }
-
 button.btn-mark.btn.btn-primary {
+    color: #fff;
     border-radius: 0;
+    font-size: 13px;
+    padding: 3px 9px;
     box-shadow: none;
-    padding: 4px 9px;
-    outline: 0;
     border: 0;
-    font-size: 0.9rem;
-    border-left: 1px solid #cf7553;
-    border-right: 1px solid #cf7553;
+    border-right: 1px solid #d28466;
+}
+button.btn-mark.btn.btn-primary svg{
+    width: 17px;
+}
+button.btn-mark.btn.btn-primary.disabled, 
+button.btn-mark.btn.btn-primary:disabled {
+    opacity: 0.69; 
 }
 
 .Toastify {
@@ -3312,6 +3317,17 @@ button.btn-mark.btn.btn-primary {
 .my-checkbox {
     margin-top: 5px;
 }
+
+.remember input[type=checkbox]:checked + label::before{
+    content: '';
+    background-color: #7b519d;
+}
+.w-0{
+    width: 0;
+}
+
+
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

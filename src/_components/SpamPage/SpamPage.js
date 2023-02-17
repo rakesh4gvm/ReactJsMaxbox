@@ -64,6 +64,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -1668,7 +1669,7 @@ export default function SpamPage(props) {
             <>
               <div className='orangbg-table'>
                 {
-                  ShowCheckBox ? <Button className='btn-mark' onClick={MarkUnreadEmails} >Mark as unread</Button> : <Button className='btn-mark' disabled >Mark as unread</Button>
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon  /> </Button> :<Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
@@ -1691,8 +1692,7 @@ export default function SpamPage(props) {
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
-                      </TableCell>
+                      <TableCell component="th" className='px-0 w-0'></TableCell>
                       <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
@@ -1710,7 +1710,7 @@ export default function SpamPage(props) {
                       >
                         <TableCell padding="checkbox">
                           {
-                            ShowCheckBox ? <input type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
+                            ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
                           }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
