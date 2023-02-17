@@ -340,8 +340,8 @@ export default function SpamPage(props) {
         _id: ID,
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
-        // url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGetByID",
+        // url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",
+        url: CommonConstants.MOL_APIURL + "/spamemailhistory/SpamEmailHistoryGetByID",
         method: "POST",
         data: Data,
       });
@@ -1373,6 +1373,8 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+        } else {
+          LoaderHide()
         }
       });
     } else {
@@ -1669,7 +1671,7 @@ export default function SpamPage(props) {
             <>
               <div className='orangbg-table'>
                 {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon  /> </Button> :<Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
