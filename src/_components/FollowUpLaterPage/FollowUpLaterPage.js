@@ -296,6 +296,7 @@ export default function FollowUpLater(props) {
       IsOtherInbox: false,
       AccountIDs: AccountIDs,
       UnseenEmails: UnseenEmails,
+      IsStarredEmails: false,
       SearchDate: Moment(FollowUpDate).format("MM-DD-YYYY")
     };
     const ResponseApi = Axios({
@@ -811,7 +812,7 @@ export default function FollowUpLater(props) {
           var body = Result.data?.data;
           setSubject(body)
           var HTMLData = Plain2HTML(body)
-          SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+          SetSignature({ Data: HTMLData + GetReplyMessageDetails + Signature.Data })
           LoaderHide()
           HanleChatGPTClose()
         } else {
@@ -1596,7 +1597,7 @@ export default function FollowUpLater(props) {
             <>
               <div className='orangbg-table'>
                 {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon  /> </Button> :<Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />

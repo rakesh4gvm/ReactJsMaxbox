@@ -869,7 +869,7 @@ export default function SpamPage(props) {
           var body = Result.data?.data;
           setSubject(body)
           var HTMLData = Plain2HTML(body)
-          SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+          SetSignature({ Data: HTMLData + GetReplyMessageDetails + Signature.Data })
           LoaderHide()
           HanleChatGPTClose()
         } else {

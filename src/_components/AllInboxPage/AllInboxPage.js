@@ -694,7 +694,7 @@ export default function OtherInboxPage(props) {
           var body = Result.data?.data;
           setSubject(body)
           var HTMLData = Plain2HTML(body)
-          SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+          SetSignature({ Data: HTMLData + GetReplyMessageDetails + Signature.Data })
           LoaderHide()
           HanleChatGPTClose()
         } else {
@@ -1425,7 +1425,7 @@ export default function OtherInboxPage(props) {
                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
                 {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon  /> </Button> :<Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
                 }
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}

@@ -935,7 +935,7 @@ export default function UnansweredResponsesPage(props) {
           var body = Result.data?.data;
           setSubject(body)
           var HTMLData = Plain2HTML(body)
-          SetSignature({ Data: HTMLData + GetReplyMessageDetails })
+          SetSignature({ Data: HTMLData + GetReplyMessageDetails + Signature.Data })
           LoaderHide()
           HanleChatGPTClose()
         } else {
@@ -1385,25 +1385,17 @@ export default function UnansweredResponsesPage(props) {
 
   const HandleStarredChange = () => {
 
-
-
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (!isstarActive) {
       LoaderShow()
-
-
-
       if (ID != "" && ID != null && ID != "undefined") {
         GetUnansweredResponcesList(ClientID, UserID, Page, ID, "SeenEmails", "", "IsStarredEmails");
       } else {
         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "SeenEmails", "", "IsStarredEmails")
       }
     } else {
-
-
       if (ID != "" && ID != null && ID != "undefined") {
-
         GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
       } else {
         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
@@ -1732,7 +1724,7 @@ export default function UnansweredResponsesPage(props) {
             <>
               <div className='orangbg-table'>
                 {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon  /> </Button> :<Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
                 }
 
                 <div className='rigter-coller'>
