@@ -242,7 +242,7 @@ export default function ListInbox() {
             <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                  <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
                   <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell>
                   <TableCell component="th">Subject</TableCell>
                   <TableCell component="th">From Email</TableCell>
@@ -255,7 +255,7 @@ export default function ListInbox() {
                     key={item.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell width={'35px'}><StarBorderIcon /></TableCell>
+                    <TableCell width={'35px'} align="center"><StarBorderIcon /></TableCell>
                     <TableCell width={'35px'}></TableCell>
                     <TableCell scope="row"> {item.Subject} </TableCell>
                     <TableCell>{item.FromEmail}</TableCell>

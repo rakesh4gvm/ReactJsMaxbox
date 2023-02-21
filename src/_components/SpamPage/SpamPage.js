@@ -1695,7 +1695,7 @@ export default function SpamPage(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" className='px-0 w-0'></TableCell>
-                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
@@ -1710,13 +1710,13 @@ export default function SpamPage(props) {
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
-                        <TableCell padding="checkbox">
+                        <TableCell align='center'>
                           {
                             ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
                           }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
-                        <TableCell width={'35px'}>
+                        <TableCell width={'35px'} align="center">
                           <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />

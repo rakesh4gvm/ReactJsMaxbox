@@ -1435,7 +1435,7 @@ export default function AllSentEmailsPage(props) {
                 <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
-                      <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
@@ -1450,7 +1450,7 @@ export default function AllSentEmailsPage(props) {
                           key={item.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                          <TableCell width={'35px'}>
+                          <TableCell width={'35px'} align="center">
                             <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />

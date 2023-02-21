@@ -1599,8 +1599,7 @@ export default function OtherInboxPage(props) {
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
-                    <TableRow>
-                      <TableCell component="th" className='px-0 w-0'></TableCell>
+                    <TableRow> 
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
@@ -1619,7 +1618,7 @@ export default function OtherInboxPage(props) {
                       >
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell> */}
-                        <TableCell padding="checkbox">
+                        <TableCell align='center'>
                           {
                             ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
                           }

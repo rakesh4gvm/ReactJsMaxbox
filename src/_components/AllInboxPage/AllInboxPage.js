@@ -1478,7 +1478,7 @@ export default function OtherInboxPage(props) {
                       >
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell className='px-0'>
+                        <TableCell align='center'>
                           {
                             ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
                           }

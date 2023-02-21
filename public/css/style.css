@@ -3314,8 +3314,8 @@ button.btn-mark.btn.btn-primary:disabled {
     background-color: #e49273 !important;
 }
 
-.my-checkbox {
-    margin-top: 5px;
+.my-checkbox.MuiCheckbox-root {
+    padding: 0;
 }
 
 .remember input[type=checkbox]:checked + label::before{
