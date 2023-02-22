@@ -456,15 +456,71 @@ export default function FollowUpLater(props) {
   const CloseOtherInboxPopModel = () => {
     SetOtherInboxPopModel(false);
   }
+  // const UpdateOtherInbox = (ID) => {
+  //   if (ID != '') {
+  //     var Data = {
+  //       _id: ID,
+  //       IsOtherInbox: true,
+  //       LastUpdatedBy: -1
+  //     };
+  //     const ResponseApi = Axios({
+  //       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+  //       method: "POST",
+  //       data: Data,
+  //     });
+  //     ResponseApi.then((Result) => {
+  //       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+  //         toast.success(<div>Other inbox updated successfully.</div>);
+  //         CloseOtherInboxPopModel();
+  //         OpenMessageDetails('')
+  //         LoaderShow()
+  //         // if (props !== undefined) {
+  //         //   const ID = props.location.state;
+  //         var ID = decrypt(props.location.search.replace('?', ''))
+  //         // if (ID !== undefined && ID!="") {
+  //         if (!state) {
+  //           if (ID != "" && ID != null && ID != "undefined") {
+  //             SetMenuID(ID);
+  //             GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "SeenEmails");
+  //           } else {
+  //             GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+  //           }
+  //         } else {
+  //           if (ID != "" && ID != null && ID != "undefined") {
+  //             SetMenuID(ID);
+  //             GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
+  //           } else {
+  //             GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
+  //           }
+  //         }
+  //         // }
+  //       }
+  //       else {
+  //         CloseOtherInboxPopModel();
+  //         toast.error(Result?.data?.Message);
+  //       }
+  //     });
+  //   }
+  // }
+  // // End Followup Message
+
+  // New Update Other Inbox Api
   const UpdateOtherInbox = (ID) => {
     if (ID != '') {
+      var IsStarred
+      if (OpenMessage.IsStarred == true) {
+        IsStarred = true
+      } else {
+        IsStarred = false
+      }
       var Data = {
-        _id: ID,
+        ID: ID,
         IsOtherInbox: true,
-        LastUpdatedBy: -1
+        LastUpdatedBy: -1,
+        IsStarred: IsStarred
       };
       const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/UpdateOtherInbox",
         method: "POST",
         data: Data,
       });
@@ -502,7 +558,7 @@ export default function FollowUpLater(props) {
       });
     }
   }
-  // End Followup Message
+  // End Followup Message New Api
 
   // Start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {

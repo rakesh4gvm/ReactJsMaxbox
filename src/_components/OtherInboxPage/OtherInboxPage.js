@@ -456,18 +456,82 @@ export default function OtherInboxPage(props) {
   const SelectFollowupDate = (NewValue) => {
     SetFollowupDate(NewValue);
   };
+  // const UpdateFollowupMessage = (ID) => {
+  //   const IsValidDate = Moment(FollowupDate).isValid()
+  //   const IsGreater = IsGreaterDate(FollowupDate)
+  //   if (ID != '') {
+  //     if (FollowupDate != null) {
+  //       if (IsValidDate && IsGreater) {
+  //         var Data = {
+  //           ID: ID,
+  //           IsFollowUp: true,
+  //           FollowupDate: FollowupDate,
+  //           IsOtherInbox: false,
+  //           LastUpdatedBy: -1
+  //         };
+  //         const ResponseApi = Axios({
+  //           url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
+  //           method: "POST",
+  //           data: Data,
+  //         });
+  //         ResponseApi.then((Result) => {
+  //           if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+  //             toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
+  //             CloseFollowupPopModel();
+  //             OpenMessageDetails('')
+  //             LoaderShow()
+  //             // if (props !== undefined) {
+  //             //   const ID = props.location.state;
+  //             var ID = decrypt(props.location.search.replace('?', ''))
+  //             // if (ID !== undefined && ID!="") {
+  //             if (!state) {
+  //               if (ID != "" && ID != null && ID != "undefined") {
+  //                 GetOtherInboxList(ClientID, UserID, Page, ID, "", "SeenEmails");
+  //               } else {
+  //                 GetOtherInboxList(ClientID, UserID, Page, 0, "", "SeenEmails")
+  //               }
+  //             } else {
+  //               if (ID != "" && ID != null && ID != "undefined") {
+  //                 GetOtherInboxList(ClientID, UserID, Page, ID, "", "");
+  //               } else {
+  //                 GetOtherInboxList(ClientID, UserID, Page, 0, "", "")
+  //               }
+  //             }
+  //             // }
+  //           } else {
+  //             toast.error(Result?.data?.Message);
+  //           }
+  //         });
+  //       } else {
+  //         toast.error(<div>Please enter valid date.</div>)
+  //       }
+  //     } else {
+  //       toast.error(<div>Please enter date.</div>)
+  //     }
+  //   }
+  // }
+  // // End Followup Message
+
+  // New Update Follow Up Message
   const UpdateFollowupMessage = (ID) => {
     const IsValidDate = Moment(FollowupDate).isValid()
     const IsGreater = IsGreaterDate(FollowupDate)
     if (ID != '') {
       if (FollowupDate != null) {
         if (IsValidDate && IsGreater) {
+          var IsStarred
+          if (OpenMessage.IsStarred == true) {
+            IsStarred = true
+          } else {
+            IsStarred = false
+          }
           var Data = {
             ID: ID,
             IsFollowUp: true,
             FollowupDate: FollowupDate,
             IsOtherInbox: false,
-            LastUpdatedBy: -1
+            LastUpdatedBy: -1,
+            IsStarred: IsStarred
           };
           const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",
@@ -510,7 +574,8 @@ export default function OtherInboxPage(props) {
       }
     }
   }
-  // End Followup Message
+  // End Followup Message New Api
+
 
   // start PopModel Open and Close and Delete Message
   const OpenDeletePopModel = () => {

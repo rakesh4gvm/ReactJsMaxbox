@@ -1446,7 +1446,7 @@ export default function AllSentEmailsPage(props) {
                     {AllSentList.map((item, index) => {
                       return (
                         <TableRow
-                          className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                          className={`${Active === item._id ? "selected-row" : ""}`}
                           key={item.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
