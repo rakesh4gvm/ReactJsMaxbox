@@ -432,24 +432,44 @@ export default function OtherInboxPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
+          // var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID != "" && ID != null && ID != "undefined") {
+          //   if (AllInboxList.length - 1 == 0) {
+          //     GetAllInboxList(ClientID, UserID, 1, ID, "", "");
+          //   } else {
+          //     GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+          //   }
+          // } else {
+          //   if (AllInboxList.length - 1 == 0) {
+          //     GetAllInboxList(ClientID, UserID, 1, 0, "", "")
+          //   } else {
+          //     GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+          //   }
+          // }
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
-          // if (props !== undefined) {
           // const ID = props.location.state;
-          if (ID != "" && ID != null && ID != "undefined") {
-            if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, ID, "", "");
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+              }
             } else {
-              GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+              }
             }
           } else {
-            if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, 0, "", "")
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetAllInboxList(ClientID, UserID, Page, ID, "", "");
             } else {
               GetAllInboxList(ClientID, UserID, Page, 0, "", "")
             }
           }
-          // }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1206,10 +1226,14 @@ export default function OtherInboxPage(props) {
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
-
         GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
+        // GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
+        if (!state) {
+          GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
+        } else {
+          GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+        }
       }
     }
   }
