@@ -232,16 +232,24 @@ export default function OtherInboxPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails");
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        }
       } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails")
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
       } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
       }
     }
     // }
@@ -430,15 +438,15 @@ export default function OtherInboxPage(props) {
           // const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, ID, "");
+              GetAllInboxList(ClientID, UserID, 1, ID, "", "");
             } else {
-              GetAllInboxList(ClientID, UserID, Page, ID, "");
+              GetAllInboxList(ClientID, UserID, Page, ID, "", "");
             }
           } else {
             if (AllInboxList.length - 1 == 0) {
-              GetAllInboxList(ClientID, UserID, 1, 0, "")
+              GetAllInboxList(ClientID, UserID, 1, 0, "", "")
             } else {
-              GetAllInboxList(ClientID, UserID, Page, 0, "")
+              GetAllInboxList(ClientID, UserID, Page, 0, "", "")
             }
           }
           // }
@@ -1128,17 +1136,17 @@ export default function OtherInboxPage(props) {
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails");
+        GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, pn, 0, "SeenEmails")
+        GetAllInboxList(ClientID, UserID, pn, 0, "SeenEmails", "")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
 
-        GetAllInboxList(ClientID, UserID, pn, ID, "");
+        GetAllInboxList(ClientID, UserID, pn, ID, "", "");
       } else {
-        GetAllInboxList(ClientID, UserID, pn, 0, "")
+        GetAllInboxList(ClientID, UserID, pn, 0, "", "")
       }
     }
     // }
@@ -1155,17 +1163,17 @@ export default function OtherInboxPage(props) {
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails");
+        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails")
+        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
 
-        GetAllInboxList(ClientID, UserID, Page, ID, "");
+        GetAllInboxList(ClientID, UserID, Page, ID, "", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "")
+        GetAllInboxList(ClientID, UserID, Page, 0, "", "")
       }
     }
   }
@@ -1182,16 +1190,26 @@ export default function OtherInboxPage(props) {
     if (!isstarActive) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        // GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        if (!state) {
+          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+        }
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+        // GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+        if (!state) {
+          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+        }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
 
-        GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
       }
     }
   }
@@ -1425,7 +1443,7 @@ export default function OtherInboxPage(props) {
                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
                 {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon  /> </Button> 
+                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
                 }
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}

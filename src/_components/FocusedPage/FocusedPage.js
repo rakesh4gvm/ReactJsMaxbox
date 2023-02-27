@@ -234,16 +234,26 @@ export default function UnansweredResponsesPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+        } else {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
+        }
       } else {
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+        } else {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
+        }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "");
       } else {
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "")
       }
     }
 
@@ -443,15 +453,15 @@ export default function UnansweredResponsesPage(props) {
           //   const ID = props.location.state;
           if (ID != "" && ID != null && ID != "undefined") {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "");
+              GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
             }
           } else {
             if (FollowUpList?.length - 1 == 0) {
-              GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "")
+              GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
             }
           }
           // }
@@ -505,16 +515,16 @@ export default function UnansweredResponsesPage(props) {
 
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
-                  GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                  GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
                 } else {
-                  GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                  GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
                 }
               }
               else {
                 if (ID != "" && ID != null && ID != "undefined") {
-                  GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+                  GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
                 } else {
-                  GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+                  GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
                 }
               }
               // }
@@ -560,16 +570,16 @@ export default function UnansweredResponsesPage(props) {
           var ID = decrypt(props.location.search.replace('?', ''))
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
             }
           }
           else {
             if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
             }
           }         // }
         } else {
@@ -612,16 +622,16 @@ export default function UnansweredResponsesPage(props) {
 
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
             }
           }
           else {
             if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
             }
           }
           // }
@@ -1338,17 +1348,17 @@ export default function UnansweredResponsesPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "SeenEmails");
+        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "SeenEmails", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "SeenEmails")
+        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "SeenEmails", "")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "");
+        GetUnansweredResponcesList(ClientID, UserID, pn, ID, "", "", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "")
+        GetUnansweredResponcesList(ClientID, UserID, pn, 0, "", "", "")
       }
     }
     // }
@@ -1360,17 +1370,17 @@ export default function UnansweredResponsesPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails");
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails")
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "");
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "")
+        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
       }
     }
   }
@@ -1384,21 +1394,35 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const HandleStarredChange = () => {
-
     var ID = decrypt(props.location.search.replace('?', ''))
-
+    debugger
     if (!isstarActive) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "SeenEmails", "", "IsStarredEmails");
+        // GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+        if (!state) {
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+        } else {
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+        }
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "SeenEmails", "", "IsStarredEmails")
+        // GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+        if (!state) {
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+        } else {
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+        }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+        // GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+        if (!state) {
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+        } else {
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+        }
       }
     }
   }
