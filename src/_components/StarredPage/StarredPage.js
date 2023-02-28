@@ -1312,6 +1312,11 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+          toast.success("Mails are unread successfully.")
+          var ID = decrypt(props.location.search.replace('?', ''))
+          GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+        } else {
+          LoaderHide()
         }
       });
     } else {
@@ -1599,9 +1604,10 @@ export default function OtherInboxPage(props) {
               <div className="simulationDiv" >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
-                    <TableRow> 
+                    <TableRow>
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                      <TableCell component="th" className='px-0 w-0'></TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
                       <TableCell component="th">Date</TableCell>

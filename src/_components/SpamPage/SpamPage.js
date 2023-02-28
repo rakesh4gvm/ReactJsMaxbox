@@ -1373,6 +1373,9 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+          toast.success("Mails are unread successfully.")
+          var ID = decrypt(props.location.search.replace('?', ''))
+          GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
         } else {
           LoaderHide()
         }

@@ -1376,6 +1376,11 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+          toast.success("Mails are unread successfully.")
+          var ID = decrypt(props.location.search.replace('?', ''))
+          GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+        } else {
+          LoaderHide()
         }
       });
     } else {

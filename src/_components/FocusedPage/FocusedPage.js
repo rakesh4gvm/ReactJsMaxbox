@@ -1473,6 +1473,11 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+          toast.success("Mails are unread successfully.")
+          var ID = decrypt(props.location.search.replace('?', ''))
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+        } else {
+          LoaderHide()
         }
       });
     } else {

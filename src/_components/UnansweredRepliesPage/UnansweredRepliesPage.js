@@ -334,13 +334,31 @@ export default function AllUnansweredRepliesPage(props) {
   };
 
   // Start Get Follow Up Later List
-  const GetAllUnansweredRepliesList = (CID, UID, PN, ID, str) => {
+  const GetAllUnansweredRepliesList = async (CID, UID, PN, ID, str) => {
 
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
     } else {
-      AccountIDs = [-1]
+      var Data = {
+        ClientID: CID,
+        UserID: UID
+      };
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+        method: "POST",
+        data: Data,
+      });
+      await ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if (Result.data.PageData.length > 0) {
+            AccountIDs = Result.data.PageData?.map(e => e._id)
+          }
+        }
+        else {
+          toast.error(Result?.data?.Message);
+        }
+      });
     }
     if (!str == "hideloader") {
       LoaderShow()
