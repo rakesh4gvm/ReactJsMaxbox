@@ -325,13 +325,15 @@ export default function OtherInboxPage(props) {
   // End Get Follow Up Later List
 
   //Start Open Message Details
-  const OpenMessageDetails = (ID, index, updatestr) => {
+  const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
       var Data = {
         _id: ID,
       };
-      LoaderShow()
+      if (str == "showloader") {
+        LoaderShow()
+      }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/starredemailhistory/StarredEmailHistoryGetByID",
         method: "POST",
@@ -1620,7 +1622,6 @@ export default function OtherInboxPage(props) {
                         className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={() => OpenMessageDetails(item._id, index, 'updatelist')}
                       >
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell> */}
@@ -1630,9 +1631,9 @@ export default function OtherInboxPage(props) {
                           }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
-                        <TableCell scope="row"> {item.Subject} </TableCell>
-                        <TableCell>{item.FromEmail}</TableCell>
-                        <TableCell>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.Subject} </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{item.FromEmail}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
