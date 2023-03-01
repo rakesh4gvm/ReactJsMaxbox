@@ -1419,7 +1419,7 @@ export default function AllUnansweredRepliesPage(props) {
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
-                      <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'} align="center"></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>

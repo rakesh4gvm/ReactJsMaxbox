@@ -253,7 +253,11 @@ export default function UnansweredResponsesPage(props) {
         SetMenuID(ID);
         GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "");
       } else {
-        GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "")
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "IsStarredEmails")
+        } else {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "")
+        }
       }
     }
 
@@ -1431,7 +1435,7 @@ export default function UnansweredResponsesPage(props) {
         if (!state) {
           GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
         } else {
-          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "IsStarredEmails")
         }
       }
     } else {
@@ -1807,7 +1811,7 @@ export default function UnansweredResponsesPage(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" className='px-0 w-0'></TableCell>
-                      <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'} align="center"></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>

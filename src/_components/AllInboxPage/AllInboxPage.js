@@ -249,7 +249,11 @@ export default function OtherInboxPage(props) {
         SetMenuID(ID);
         GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
       } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        }
       }
     }
     // }
@@ -1221,7 +1225,7 @@ export default function OtherInboxPage(props) {
         if (!state) {
           GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
         } else {
-          GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+          GetAllInboxList(ClientID, UserID, Page, ID, "", "IsStarredEmails");
         }
       }
     } else {

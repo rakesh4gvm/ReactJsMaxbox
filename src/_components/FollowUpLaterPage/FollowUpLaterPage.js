@@ -1682,7 +1682,7 @@ export default function FollowUpLater(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" className='px-0 w-0'></TableCell>
-                      <TableCell component="th" width={'30px'} align="center"><StarBorderIcon /></TableCell>
+                      <TableCell component="th" width={'30px'} align="center"></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
