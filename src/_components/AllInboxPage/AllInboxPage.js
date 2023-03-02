@@ -247,7 +247,11 @@ export default function OtherInboxPage(props) {
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
+        }
       } else {
         if (isstarActive) {
           GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
@@ -726,7 +730,7 @@ export default function OtherInboxPage(props) {
           var body = Result.data?.data;
           setSubject(body)
           var HTMLData = Plain2HTML(body)
-          SetSignature({ Data: HTMLData + GetReplyMessageDetails + Signature.Data })
+          SetSignature({ Data: HTMLData + Signature.Data })
           LoaderHide()
           HanleChatGPTClose()
         } else {
@@ -1218,7 +1222,7 @@ export default function OtherInboxPage(props) {
         if (!state) {
           GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
         } else {
-          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+          GetAllInboxList(ClientID, UserID, Page, ID, "", "IsStarredEmails");
         }
       } else {
         // GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
@@ -1230,7 +1234,11 @@ export default function OtherInboxPage(props) {
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+        if (!state) {
+          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "")
+        } else {
+          GetAllInboxList(ClientID, UserID, Page, ID, "", "")
+        }
       } else {
         // GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
         if (!state) {
