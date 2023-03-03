@@ -230,16 +230,16 @@ export default function SpamPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails");
       } else {
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails")
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "");
       } else {
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "")
       }
     }
 
@@ -273,7 +273,7 @@ export default function SpamPage(props) {
     } else {
       AccountIDs = [-1]
     }
-    if (!str == "hideloader") {
+    if (str == "showloader") {
       LoaderShow()
     }
     var UnseenEmails
@@ -331,6 +331,7 @@ export default function SpamPage(props) {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID, index, str, updatestr) => {
+    debugger
     if (ID != '') {
       SetMailNumber(index + 1)
       if (str == "showloader") {

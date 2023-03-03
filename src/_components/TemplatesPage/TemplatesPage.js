@@ -119,6 +119,8 @@ export default function TemplatesListPage() {
       UserID: UID,
     };
 
+    LoaderShow()
+
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/templates/TemplateGet",
       method: "POST",

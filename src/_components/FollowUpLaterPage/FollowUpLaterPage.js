@@ -225,16 +225,16 @@ export default function FollowUpLater(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails");
       } else {
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails")
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "");
       } else {
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "")
       }
     }
     // }
@@ -267,7 +267,7 @@ export default function FollowUpLater(props) {
     } else {
       AccountIDs = [-1]
     }
-    if (!str == "hideloader") {
+    if (str == "showloader") {
       LoaderShow()
     }
     var UnseenEmails

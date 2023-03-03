@@ -228,16 +228,16 @@ export default function OtherInboxPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails");
+        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails");
       } else {
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails")
+        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails")
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "");
       } else {
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "")
       }
     }
 
@@ -270,7 +270,7 @@ export default function OtherInboxPage(props) {
     } else {
       AccountIDs = [-1]
     }
-    if (!str == "hideloader") {
+    if (str == "showloader") {
       LoaderShow()
     }
     var UnseenEmails

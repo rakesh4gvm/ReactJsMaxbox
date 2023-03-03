@@ -118,7 +118,7 @@ export default function ObjectionTemplateListPage() {
       ClientID: CID,
       UserID: UID,
     };
-
+    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/objection_template/ObjectionTemplateGet",
       method: "POST",

@@ -236,31 +236,31 @@ export default function UnansweredResponsesPage(props) {
         SetMenuID(ID);
         // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
         if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
         } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
         }
       } else {
         // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
         if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
         } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
         }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
         if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "IsStarredEmails")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "IsStarredEmails")
         } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "")
         }
       } else {
         if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "IsStarredEmails")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "IsStarredEmails")
         } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "", "")
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
         }
       }
     }
@@ -312,7 +312,7 @@ export default function UnansweredResponsesPage(props) {
       IsStarredEmails = false
     }
 
-    if (!str == "hideloader") {
+    if (str == "showloader") {
       LoaderShow()
     }
     var Data = {
@@ -1429,31 +1429,31 @@ export default function UnansweredResponsesPage(props) {
       if (ID != "" && ID != null && ID != "undefined") {
         // GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
         if (!state) {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
         } else {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "IsStarredEmails");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "", "IsStarredEmails");
         }
       } else {
         // GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
         if (!state) {
-          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
         } else {
-          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "IsStarredEmails")
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "showloader", "", "IsStarredEmails")
         }
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         if (!state) {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "SeenEmails", "");
         } else {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "", "");
         }
       } else {
         // GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
         if (!state) {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "SeenEmails", "");
         } else {
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "showloader", "", "");
         }
       }
     }

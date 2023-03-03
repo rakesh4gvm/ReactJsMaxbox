@@ -100,7 +100,7 @@ export default function ClientListPage() {
       ClientID: CID,
       UserID: UID,
     };
-
+    LoaderShow()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/client/ClientGet",
       method: "POST",
