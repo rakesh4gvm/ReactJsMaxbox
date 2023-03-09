@@ -331,7 +331,6 @@ export default function SpamPage(props) {
 
   //Start Open Message Details
   const OpenMessageDetails = (ID, index, str, updatestr) => {
-    debugger
     if (ID != '') {
       SetMailNumber(index + 1)
       if (str == "showloader") {
