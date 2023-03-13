@@ -204,6 +204,7 @@ export default function UnansweredResponsesPage(props) {
   const [CheckedID, SetCheckedID] = useState([])
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -286,8 +287,69 @@ export default function UnansweredResponsesPage(props) {
     });
   };
 
+   // Start From Email List
+   const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
+    debugger
+    var Data = {
+      ClientID: CID,
+      UserID: UID
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        debugger
+        if (Result.data.PageData.length > 0) {
+          debugger
+          SetFromEmailDropdownList(Result.data.PageData);
+          if (ID?.length > 0) {
+            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+            if (ShowEmails == "SeenEmails" && IsStarred == "") {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+            } else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+            } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+            }
+
+
+            SetTotalRecord(total);
+          } else {
+            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            if (ShowEmails == "SeenEmails" && IsStarred == "") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+
+            }
+            else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+
+            }
+            else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            }
+            SetTotalRecord(total);
+          }
+        } else {
+          SetTotalRecord(0);
+          // toast.error(<div>Please add email configuration.</div>)
+        }
+      }
+      else {
+        SetFromEmailDropdownList([]);
+        SetTotalRecord(0);
+        toast.error(Result?.data?.Message);
+      }
+    });
+
+
+  }
+
   // Start Get Follow Up Later List
   const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred) => {
+    FromEmailList(CID, UID, ID, ShowEmails, IsStarred);
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)

@@ -199,7 +199,7 @@ export default function SpamPage(props) {
   const [CheckedID, SetCheckedID] = useState([])
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
-
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -264,9 +264,60 @@ export default function SpamPage(props) {
       }
     });
   };
+  const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
+    var Data = {
+      ClientID: CID,
+      UserID: UID
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.PageData.length > 0) {
+          SetFromEmailDropdownList(Result.data.PageData);
+          if (ID?.length > 0) {
+            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
+            if (ShowEmails == "SeenEmails" ) {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
+            }
 
+
+            SetTotalRecord(total);
+          } else {
+            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+            if (ShowEmails == "SeenEmails") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+
+            }
+            // else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+
+            // }
+            // else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            // }
+            SetTotalRecord(total);
+          }
+        } else {
+          SetTotalRecord(0);
+          // toast.error(<div>Please add email configuration.</div>)
+        }
+      }
+      else {
+        SetFromEmailDropdownList([]);
+        SetTotalRecord(0);
+        toast.error(Result?.data?.Message);
+      }
+    });
+
+
+  }
   // Start Get Follow Up Later List
   const GetSpamList = (CID, UID, PN, ID, str, ShowEmails) => {
+    FromEmailList(CID, UID, ID, ShowEmails);
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
@@ -307,7 +358,7 @@ export default function SpamPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetSpamList(Result.data.PageData)
-          SetTotalCount(Result.data.TotalCount)
+          // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
             OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
@@ -315,7 +366,7 @@ export default function SpamPage(props) {
           }
           SetMailNumber(1)
           SetPageValue(PN)
-          SetTotalRecord(Result.data.TotalCount);
+          // SetTotalRecord(Result.data.TotalCount);
           LoaderHide()
         } else {
           SetSpamList([])
