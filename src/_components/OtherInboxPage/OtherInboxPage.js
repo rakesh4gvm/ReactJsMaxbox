@@ -531,7 +531,8 @@ export default function OtherInboxPage(props) {
             FollowupDate: FollowupDate,
             IsOtherInbox: false,
             LastUpdatedBy: -1,
-            IsStarred: IsStarred
+            IsStarred: IsStarred,
+            IsOtherInboxPage: true
           };
           const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/FollowupUpdate",

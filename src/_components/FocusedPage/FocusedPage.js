@@ -524,6 +524,7 @@ export default function UnansweredResponsesPage(props) {
             IsFollowUp: true,
             FollowupDate: FollowupDate,
             IsInbox: false,
+            IsFocusedPage: true,
             LastUpdatedBy: -1
           };
           const ResponseApi = Axios({
@@ -584,6 +585,7 @@ export default function UnansweredResponsesPage(props) {
       var Data = {
         _id: ID,
         IsStarred: true,
+        IsFocusedPage: true,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
@@ -631,6 +633,7 @@ export default function UnansweredResponsesPage(props) {
       var Data = {
         _id: ID,
         IsOtherInbox: true,
+        IsFocusedPage: true,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
