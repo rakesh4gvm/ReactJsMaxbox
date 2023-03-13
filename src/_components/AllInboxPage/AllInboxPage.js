@@ -300,6 +300,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.PageData.length > 0) {
           debugger
           SetFromEmailDropdownList(Result.data.PageData);
+          
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
             if (ShowEmails == "SeenEmails" && IsStarred == "") {
@@ -308,6 +309,10 @@ export default function OtherInboxPage(props) {
               total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
             } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+            }else if(ShowEmails == "" && IsStarred == ""){
+              var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+              var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
+              total = InboxCount - SeenInboxCount;
             }
 
 
@@ -324,6 +329,10 @@ export default function OtherInboxPage(props) {
             }
             else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            }else if(ShowEmails == "" && IsStarred == ""){
+              var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
+              total = InboxCount - SeenInboxCount
             }
             SetTotalRecord(total);
           }

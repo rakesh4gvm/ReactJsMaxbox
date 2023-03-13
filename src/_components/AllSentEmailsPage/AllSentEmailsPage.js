@@ -186,7 +186,8 @@ export default function AllSentEmailsPage(props) {
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
   const [NewObjectionID, SetNewObjectionID] = useState([])
-
+  const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
+  const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -351,12 +352,64 @@ export default function AllSentEmailsPage(props) {
     });
   };
 
+  // Get All Sent Emails Total Count
+  const GetAllSentEmailsTotalCount = (CID, UID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+
+        var total = Result.data?.AllSentEmailsCount != undefined ? Result.data?.AllSentEmailsCount : 0;
+        SetTotalRecord(total)
+        console.log(Result.data)
+      } else {
+        SetTotalRecord(0)
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
+
+  const GetSentEmailsTotalRecords = (CID, UID, ID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        var total = Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent == undefined ? Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent : 0;
+        SetTotalRecord(total)
+      } else {
+        SetTotalRecord(0)
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
+
   // Start Get Follow Up Later List
   const GetAllSent = (CID, UID, PN, ID, str) => {
+
     let AccountIDs = []
     if (ID.length > 0) {
+      GetSentEmailsTotalRecords(CID, UID, ID)
       AccountIDs.push(ID)
     } else {
+      GetAllSentEmailsTotalCount(CID, UID)
       AccountIDs = [-1]
     }
     if (str == "showloader") {
@@ -382,13 +435,13 @@ export default function AllSentEmailsPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetAllSentList(Result.data.PageData)
-          SetTotalCount(Result.data.TotalCount)
+          // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
             OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
             OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
-          SetTotalRecord(Result.data.TotalCount);
+          // SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
           LoaderHide()

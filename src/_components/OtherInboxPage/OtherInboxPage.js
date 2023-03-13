@@ -198,6 +198,7 @@ export default function OtherInboxPage(props) {
   const [CheckedID, SetCheckedID] = useState([])
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -260,10 +261,70 @@ export default function OtherInboxPage(props) {
       }
     });
   };
+  const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
+    var Data = {
+      ClientID: CID,
+      UserID: UID
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.PageData.length > 0) {
+          SetFromEmailDropdownList(Result.data.PageData);
+          if (ID?.length > 0) {
+            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount : 0
+            if (ShowEmails == "SeenEmails" ) {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
+            }
+            else if(ShowEmails == "" ){
+              var OtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount : 0
+              var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
+              total = OtherInboxCount - SeenOtherInboxCount;
+            }
 
+            SetTotalRecord(total);
+          } else {
+            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            if (ShowEmails == "SeenEmails") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+
+            }
+            else if(ShowEmails == ""){
+              var OtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+              total = OtherInboxCount - SeenOtherInboxCount
+            }
+            // else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+
+            // }
+            // else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            // }
+            SetTotalRecord(total);
+          }
+        } else {
+          SetTotalRecord(0);
+          // toast.error(<div>Please add email configuration.</div>)
+        }
+      }
+      else {
+        SetFromEmailDropdownList([]);
+        SetTotalRecord(0);
+        toast.error(Result?.data?.Message);
+      }
+    });
+
+
+  }
 
   // Start Get Follow Up Later List
   const GetOtherInboxList = (CID, UID, PN, ID, str, ShowEmails) => {
+    FromEmailList(CID, UID, ID, ShowEmails);
     let AccountIDs = []
     if (ID.length > 0) {
       AccountIDs.push(ID)
@@ -310,13 +371,13 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetFollowUpList(Result.data.PageData)
-          SetTotalCount(Result.data.TotalCount)
+          // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
             OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
             OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
-          SetTotalRecord(Result.data.TotalCount);
+          // SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
           LoaderHide()

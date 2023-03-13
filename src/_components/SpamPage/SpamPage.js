@@ -283,6 +283,11 @@ export default function SpamPage(props) {
             if (ShowEmails == "SeenEmails" ) {
               total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
             }
+            else if(ShowEmails == "" ){
+              var SpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
+              var SeenSpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
+              total = SpamCount - SeenSpamCount;
+            }
 
 
             SetTotalRecord(total);
@@ -291,6 +296,11 @@ export default function SpamPage(props) {
             if (ShowEmails == "SeenEmails") {
               total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
 
+            }
+            else if(ShowEmails == ""){
+              var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+              total = SpamCount - SeenSpamCount
             }
             // else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
             //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
