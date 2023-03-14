@@ -284,7 +284,7 @@ export default function OtherInboxPage(props) {
 
   // Start From Email List
   const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
-    debugger
+    
     var Data = {
       ClientID: CID,
       UserID: UID
@@ -296,9 +296,9 @@ export default function OtherInboxPage(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        debugger
+        
         if (Result.data.PageData.length > 0) {
-          debugger
+          
           SetFromEmailDropdownList(Result.data.PageData);
           
           if (ID?.length > 0) {
@@ -1257,6 +1257,7 @@ export default function OtherInboxPage(props) {
 
 
   const handleChange = (event) => {
+    SetPage(1);
     setState(event.target.checked);
   };
 
@@ -1287,7 +1288,7 @@ export default function OtherInboxPage(props) {
 
   const HandleStarredChange = () => {
 
-
+    SetPage(1)
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (!isstarActive) {
