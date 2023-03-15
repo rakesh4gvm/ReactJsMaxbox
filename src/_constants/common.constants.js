@@ -1,6 +1,9 @@
 
 const database = 'http://localhost:3000';
 
+const FRONTENDURL = "http://localhost:3001";
+// const FRONTENDURL = "https://frontend.maxbox.com";
+
 //Google API email Authantication Start
 const CLIENT_ID = '70271022962-vclajnhvde7gr2ssj9tn2sv0oi6anu0k.apps.googleusercontent.com'
 const CLIENT_KEY = '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'
@@ -30,5 +33,5 @@ export const CommonConstants = {
     LoginPage:LoginPage,
     Title:' | MaxBox', //Title of page
     show_rows:[10,20,50,100],  //For rows show in table
-
+    FRONTENDURL:FRONTENDURL
 };

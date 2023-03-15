@@ -2,7 +2,7 @@ import { history } from '../_helpers';
 import { CommonConstants } from "../_constants/common.constants";
 import Moment from "moment";
 var CryptoJS = require("crypto-js");
-var FrontEndUrl = "https://frontend.maxbox.com";
+// var FrontEndUrl = "https://frontend.maxbox.com";
 // var FrontEndUrl = "http://localhost:3001";
 
 //   npm i react - bootstrap - typeahead
@@ -66,14 +66,14 @@ export function UpdateUserDetails(ClientID) {
 export function Locate(PageName, ID) {
 
     if (ID != "") {
-        window.location.href = FrontEndUrl + PageName + "?" + encrypt(ID)
+        window.location.href = CommonConstants.FRONTENDURL + PageName + "?" + encrypt(ID)
     } else {
-        window.location.href = FrontEndUrl + PageName;
+        window.location.href = CommonConstants.FRONTENDURL + PageName;
     }
 }
 
 export function ClientChnage() {
-    window.location.href = FrontEndUrl + "/AllInbox";
+    window.location.href = CommonConstants.FRONTENDURL + "/AllInbox";
     // window.location.reload(true)
 }
 export function Logout() {
