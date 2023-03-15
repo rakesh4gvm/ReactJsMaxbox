@@ -420,7 +420,7 @@ export default function UnansweredResponsesPage(props) {
             OpenMessageDetails(Result.data.PageData[0]._id, '', '', '');
           }
           SetCountPage(Result.data.PageCount);
-          SetTotalRecord(Result.data.TotalCount);
+          // SetTotalRecord(Result.data.TotalCount);
           SetMailNumber(1)
           SetPageValue(PN)
           LoaderHide()
@@ -1876,6 +1876,7 @@ export default function UnansweredResponsesPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                  {console.log("TotalRecord======", TotalRecord)}
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
