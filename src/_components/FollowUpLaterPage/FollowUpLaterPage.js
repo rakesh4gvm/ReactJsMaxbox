@@ -275,10 +275,11 @@ export default function FollowUpLater(props) {
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount : 0
-            if (ShowEmails == "SeenEmails" ) {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
-            }
-            else if(ShowEmails == "" ){
+            // if (ShowEmails == "SeenEmails" ) {
+            //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
+            // }
+            // else 
+            if (ShowEmails == "") {
               var FollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount : 0
               var SeenFollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
               total = FollowUpLaterCount - SeenFollowUpLaterCount;
@@ -287,11 +288,12 @@ export default function FollowUpLater(props) {
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
-            if (ShowEmails == "SeenEmails") {
-              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            // if (ShowEmails == "SeenEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
 
-            }
-            else if(ShowEmails == ""){
+            // }
+            // else
+            if (ShowEmails == "") {
               var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
               total = FollowUpLaterCount - SeenFollowUpLaterCount

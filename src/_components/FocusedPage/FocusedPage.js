@@ -287,9 +287,9 @@ export default function UnansweredResponsesPage(props) {
     });
   };
 
-   // Start From Email List
-   const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
-    
+  // Start From Email List
+  const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
+
     var Data = {
       ClientID: CID,
       UserID: UID
@@ -301,40 +301,42 @@ export default function UnansweredResponsesPage(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        
+
         if (Result.data.PageData.length > 0) {
-        
+
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
-            if (ShowEmails == "SeenEmails" && IsStarred == "") {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
-            } else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
-            } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
-            }else if(ShowEmails == "" && IsStarred == ""){
-              var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
-              var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
-              total = FocusedCount - SeenFocusedCount;
-            }
+            // if (ShowEmails == "SeenEmails" && IsStarred == "") {
+            //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+            // } else
+              if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+                total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+              } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+                total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
+              } else if (ShowEmails == "" && IsStarred == "") {
+                var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+                var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+                total = FocusedCount - SeenFocusedCount;
+              }
 
 
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
-            if (ShowEmails == "SeenEmails" && IsStarred == "") {
-              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            // if (ShowEmails == "SeenEmails" && IsStarred == "") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
 
-            }
-            else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+            // }
+            // else 
+            if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
 
             }
             else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
             }
-            else if(ShowEmails == "" && IsStarred == ""){
+            else if (ShowEmails == "" && IsStarred == "") {
               var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
               total = FocusedCount - SeenFocusedCount

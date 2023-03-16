@@ -282,9 +282,10 @@ export default function OtherInboxPage(props) {
             SetFromEmailDropdownList(Result.data.PageData);
             if (ID?.length > 0) {
               var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-              if (ShowEmails == "SeenEmails" ) {
-                total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
-              }else if(ShowEmails ==""){
+              // if (ShowEmails == "SeenEmails" ) {
+              //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+              // }else 
+              if(ShowEmails ==""){
                   var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
                   var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                   total = StarredCount - SeenStarredCount;
@@ -294,11 +295,12 @@ export default function OtherInboxPage(props) {
               SetTotalRecord(total);
             } else {
               var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
-              if (ShowEmails == "SeenEmails") {
-                total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+              // if (ShowEmails == "SeenEmails") {
+              //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
   
-              }
-              else if(ShowEmails ==""){
+              // }
+              // else
+               if(ShowEmails ==""){
                 var StarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
                 var SeenStarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
                 total = StarredCount - SeenStarredCount;

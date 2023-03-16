@@ -280,10 +280,11 @@ export default function SpamPage(props) {
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
-            if (ShowEmails == "SeenEmails" ) {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
-            }
-            else if(ShowEmails == "" ){
+            // if (ShowEmails == "SeenEmails" ) {
+            //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
+            // }
+            // else
+             if(ShowEmails == "" ){
               var SpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
               var SeenSpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
               total = SpamCount - SeenSpamCount;
@@ -293,11 +294,12 @@ export default function SpamPage(props) {
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
-            if (ShowEmails == "SeenEmails") {
-              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+            // if (ShowEmails == "SeenEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
 
-            }
-            else if(ShowEmails == ""){
+            // }
+            // else 
+            if(ShowEmails == ""){
               var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
               total = SpamCount - SeenSpamCount

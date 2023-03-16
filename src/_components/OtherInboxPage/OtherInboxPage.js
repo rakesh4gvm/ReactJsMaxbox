@@ -277,10 +277,11 @@ export default function OtherInboxPage(props) {
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount : 0
-            if (ShowEmails == "SeenEmails" ) {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
-            }
-            else if(ShowEmails == "" ){
+            // if (ShowEmails == "SeenEmails" ) {
+            //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
+            // }
+            // else 
+            if (ShowEmails == "") {
               var OtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount : 0
               var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
               total = OtherInboxCount - SeenOtherInboxCount;
@@ -289,11 +290,12 @@ export default function OtherInboxPage(props) {
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
-            if (ShowEmails == "SeenEmails") {
-              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            // if (ShowEmails == "SeenEmails") {
+            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
 
-            }
-            else if(ShowEmails == ""){
+            // }
+            // else 
+            if (ShowEmails == "") {
               var OtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
               total = OtherInboxCount - SeenOtherInboxCount
