@@ -310,15 +310,15 @@ export default function UnansweredResponsesPage(props) {
             // if (ShowEmails == "SeenEmails" && IsStarred == "") {
             //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
             // } else
-              if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
-                total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
-              } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
-                total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
-              } else if (ShowEmails == "" && IsStarred == "") {
-                var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
-                var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
-                total = FocusedCount - SeenFocusedCount;
-              }
+            if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+            } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
+              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
+            } else if (ShowEmails == "" && IsStarred == "") {
+              var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+              var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+              total = FocusedCount - SeenFocusedCount;
+            }
 
 
             SetTotalRecord(total);
@@ -592,12 +592,19 @@ export default function UnansweredResponsesPage(props) {
     if (ID != '') {
       if (FollowupDate != null) {
         if (IsValidDate & IsGreater) {
+          var IsStarred
+          if (OpenMessage.IsStarred == true) {
+            IsStarred = true
+          } else {
+            IsStarred = false
+          }
           var Data = {
             ID: ID,
             IsFollowUp: true,
             FollowupDate: FollowupDate,
             IsInbox: false,
             IsFocusedPage: true,
+            IsStarred: IsStarred,
             LastUpdatedBy: -1
           };
           const ResponseApi = Axios({
