@@ -591,6 +591,7 @@ export default function SpamPage(props) {
       var Data = {
         _id: ID,
         IsOtherInbox: true,
+        IsOtherInboxPage: true,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
