@@ -527,9 +527,16 @@ export default function SpamPage(props) {
     if (ID != '') {
       if (FollowupDate != null) {
         if (IsValidDate && IsGreater) {
+          var IsStarred
+          if (OpenMessage.IsStarred == true) {
+            IsStarred = true
+          } else {
+            IsStarred = false
+          }
           var Data = {
             ID: ID,
             IsFollowUp: true,
+            IsStarred: IsStarred,
             FollowupDate: FollowupDate,
             IsOtherInbox: false,
             LastUpdatedBy: -1
