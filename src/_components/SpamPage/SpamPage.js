@@ -277,6 +277,7 @@ export default function SpamPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
+
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
@@ -284,7 +285,7 @@ export default function SpamPage(props) {
             //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
             // }
             // else
-             if(ShowEmails == "" ){
+            if (ShowEmails == "") {
               var SpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
               var SeenSpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
               total = SpamCount - SeenSpamCount;
@@ -299,7 +300,7 @@ export default function SpamPage(props) {
 
             // }
             // else 
-            if(ShowEmails == ""){
+            if (ShowEmails == "") {
               var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
               total = SpamCount - SeenSpamCount
@@ -1439,9 +1440,15 @@ export default function SpamPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           LoaderHide()
           SetCheckedID([])
+          debugger
           toast.success("Mails are unread successfully.")
           var ID = decrypt(props.location.search.replace('?', ''))
-          GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails")
+          } else {
+            GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+
+          }
         } else {
           LoaderHide()
         }
