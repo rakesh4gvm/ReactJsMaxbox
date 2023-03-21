@@ -445,6 +445,7 @@ export default function UnansweredResponsesPage(props) {
       SetMailNumber(index + 1)
       var Data = {
         _id: ID,
+        IsFocusedPage: true,
       };
       if (str == "showloader") {
         LoaderShow()
