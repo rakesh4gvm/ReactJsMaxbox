@@ -1446,7 +1446,11 @@ export default function FollowUpLater(props) {
           SetCheckedID([])
           toast.success("Mails are unread successfully.")
           var ID = decrypt(props.location.search.replace('?', ''))
-          GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "SeenEmails")
+          } else {
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+          }
         } else {
           LoaderHide()
         }

@@ -1574,7 +1574,11 @@ export default function UnansweredResponsesPage(props) {
           SetCheckedID([])
           toast.success("Mails are unread successfully.")
           var ID = decrypt(props.location.search.replace('?', ''))
-          GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+          } else {
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "");
+          }
         } else {
           LoaderHide()
         }

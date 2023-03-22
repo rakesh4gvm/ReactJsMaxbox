@@ -1358,7 +1358,11 @@ export default function OtherInboxPage(props) {
           SetCheckedID([])
           toast.success("Mails are unread successfully.")
           var ID = decrypt(props.location.search.replace('?', ''))
-          GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+          } else {
+            GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "");
+          }
         } else {
           LoaderHide()
         }

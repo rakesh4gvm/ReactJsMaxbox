@@ -279,7 +279,7 @@ export default function OtherInboxPage(props) {
 
         if (Result.data.PageData.length > 0) {
 
-          
+
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
@@ -1394,7 +1394,11 @@ export default function OtherInboxPage(props) {
           SetCheckedID([])
           toast.success("Mails are unread successfully.")
           var ID = decrypt(props.location.search.replace('?', ''))
-          GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+          if (ID != "" && ID != null && ID != "undefined") {
+            GetStarredList(ClientID, UserID, Page, ID, "SeenEmails")
+          } else {
+            GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+          }
         } else {
           LoaderHide()
         }
