@@ -735,7 +735,8 @@ export default function AllSentEmailsPage(props) {
         Subject: Subject,
         Body: Body,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: NewObjectionID
+        ObjectIDTemplateID: NewObjectionID,
+        IsSentPage: true
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/sent_email_history/AllSentReplyMessage",

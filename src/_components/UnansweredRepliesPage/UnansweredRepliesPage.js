@@ -333,54 +333,54 @@ export default function AllUnansweredRepliesPage(props) {
     });
   };
 
-    // Get All Sent Emails Total Count
-    const GetAllSentEmailsTotalCount = (CID, UID) => {
-      LoaderShow()
-      const Data = {
-        ClientID: CID,
-        UserID: UID,
-      }
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-  
-          var total = Result.data?.AllUnansweredRepliesCount != undefined ? Result.data?.AllUnansweredRepliesCount : 0;
-          SetTotalRecord(total)
-          console.log(Result.data)
-        } else {
-          SetTotalRecord(0)
-          toast.error(Result?.data?.Message);
-        }
-      });
-      LoaderHide()
+  // Get All Sent Emails Total Count
+  const GetAllSentEmailsTotalCount = (CID, UID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
     }
-  
-    const GetSentEmailsTotalRecords = (CID, UID, ID) => {
-      LoaderShow()
-      const Data = {
-        ClientID: CID,
-        UserID: UID,
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+
+        var total = Result.data?.AllUnansweredRepliesCount != undefined ? Result.data?.AllUnansweredRepliesCount : 0;
+        SetTotalRecord(total)
+        console.log(Result.data)
+      } else {
+        SetTotalRecord(0)
+        toast.error(Result?.data?.Message);
       }
-      const ResponseApi = Axios({
-        url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
-        method: "POST",
-        data: Data,
-      });
-      ResponseApi.then((Result) => {
-        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          var total = Result.data?.AllUnansweredRepliesCount.filter((e) => e._id === ID)[0]?.IsUnansweredReplies == undefined ? Result.data?.AllUnansweredRepliesCount.filter((e) => e._id === ID)[0]?.IsUnansweredReplies : 0;
-          SetTotalRecord(total)
-        } else {
-          SetTotalRecord(0)
-          toast.error(Result?.data?.Message);
-        }
-      });
-      LoaderHide()
+    });
+    LoaderHide()
+  }
+
+  const GetSentEmailsTotalRecords = (CID, UID, ID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
     }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        var total = Result.data?.AllUnansweredRepliesCount.filter((e) => e._id === ID)[0]?.IsUnansweredReplies == undefined ? Result.data?.AllUnansweredRepliesCount.filter((e) => e._id === ID)[0]?.IsUnansweredReplies : 0;
+        SetTotalRecord(total)
+      } else {
+        SetTotalRecord(0)
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
 
   // Start Get Follow Up Later List
   const GetAllUnansweredRepliesList = async (CID, UID, PN, ID, str) => {
@@ -730,7 +730,8 @@ export default function AllUnansweredRepliesPage(props) {
         Subject: Subject,
         Body: Body,
         TemplateID: NewTemplateID,
-        ObjectIDTemplateID: NewObjectionID
+        ObjectIDTemplateID: NewObjectionID,
+        IsSentPage: true
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/sent_email_history/AllSentReplyMessage",
