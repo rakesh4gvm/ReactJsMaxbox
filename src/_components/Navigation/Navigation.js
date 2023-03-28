@@ -859,7 +859,9 @@ export default function Navigation(props) {
         <List sx={{ pl: 0 }} className='listclick'>
           <ListItemButton onClick={OnehandleClick}>
             {navopen ? <ExpandMore /> : <ExpandDown />}
-            <b>All Accounts</b>
+            <b>
+              {FromEmailDropdownList != undefined ? "All Accounts (" + FromEmailDropdownList?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Accounts (0)"}
+            </b>
           </ListItemButton>
 
           <Collapse in={navopen} timeout="auto" unmountOnExit>
@@ -959,7 +961,10 @@ export default function Navigation(props) {
           <List sx={{ pl: item._id }} className='listclick'>
             <ListItemButton onClick={() => handleClick("0" + item._id, 1)} key={"0" + item._id}>
               {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
-              <b>{item.Email}</b>
+              <b>
+                {item.Email}
+                {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? `(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount + `)` : `(` + 0 + `)`}
+              </b>
             </ListItemButton>
 
             <Collapse in={EID == "0" + item._id} timeout="auto" unmountOnExit>
