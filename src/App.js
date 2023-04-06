@@ -43,7 +43,7 @@ function App() {
 
   return (
     <div className="App">
-      {window.location.pathname != '/' && isAuth == true ? <HeaderTop /> : null}
+      {/* {window.location.pathname != '/' && isAuth == true ? <HeaderTop /> : null} */}
 
       <Router history={history}>
         <Switch>
