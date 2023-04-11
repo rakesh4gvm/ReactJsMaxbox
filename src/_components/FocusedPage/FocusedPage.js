@@ -404,7 +404,8 @@ export default function UnansweredResponsesPage(props) {
       IsSpam: false,
       AccountIDs: AccountIDs,
       UnseenEmails: UnseenEmails,
-      IsStarredEmails: IsStarredEmails
+      IsStarredEmails: IsStarredEmails,
+      IsFocued: true
     };
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGet",
