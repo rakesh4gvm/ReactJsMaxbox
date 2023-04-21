@@ -781,6 +781,12 @@ export default function Navigation(props) {
   //   SetExpanded(items);
   // }
 
+  const logout = () => {
+    localStorage.removeItem("LoginData");
+    localStorage.removeItem("id");
+    history.push('/login');
+  }
+
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
 
@@ -819,7 +825,8 @@ export default function Navigation(props) {
             <li><a href="/EmailConfiguration">Email Settings</a></li>
             <li><a href="/ClientList">Clients</a></li>
             <li><a href="/ContactEmail">Contacts</a></li>
-            <li><a href="/">Logout</a></li>
+            {/* <li><a href="/">Logout</a></li> */}
+            <li><a onClick={logout}>Logout</a></li>
           </ul>
         </div>
       </div>

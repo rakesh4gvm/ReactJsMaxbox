@@ -41,12 +41,15 @@ import NewInboxPage from '../src/_components/NewInboxPage/NewInboxPage';
 function App() {
   const [isAuth, setIsAuth] = useState(CheckLocalStorage());
 
+  var LoginData = localStorage.getItem("LoginData")
+
   return (
     <div className="App">
       {/* {window.location.pathname != '/' && isAuth == true ? <HeaderTop /> : null} */}
 
       <Router history={history}>
         <Switch>
+
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
           <Route exact path="/Focused" component={FocusedPage} />
           <Route exact path="/Starred" component={StarredPage} />
@@ -72,14 +75,20 @@ function App() {
           <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
           <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
           <Route exact path="/OTPConfirm" component={OTPConfirmPage} />
-          <Route exact path="/" component={LoginPage} />
+          <Route exact path="/login" component={LoginPage} />
           <Route exact path="/ContactEmail" component={ContactEmailPage} />
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
           <Route exact path="/AllInbox" component={AllInboxPage} />
           <Route exact path="/NewInbox" component={NewInboxPage} />
-
-
-          <Redirect from="*" to="/" />
+          <Route exact path="/" render={() => (
+            LoginData ? (
+              <Redirect to="/Focused" />
+            ) : (
+              <Redirect to="/login" />
+            )
+          )} />
+          {/* <IndexRoute component={HomePage} /> */}
+          <Redirect from="*" to="/Focused" />
 
         </Switch>
         {/* {(window.location.pathname == '/ClientList' || 

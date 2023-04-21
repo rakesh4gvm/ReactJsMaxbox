@@ -2614,6 +2614,8 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     overflow-y: auto;
 }
 
+
+
 .statisticsDiv {}
 
 .Resizer {
@@ -3286,6 +3288,7 @@ div button.starfilter.MuiButtonBase-root.Mui-selected svg.startwo {
 .tablelister .MuiCheckbox-indeterminate {
     color: #e49273 !important;
 }
+
 button.btn-mark.btn.btn-primary {
     color: #fff;
     border-radius: 0;
@@ -3295,12 +3298,14 @@ button.btn-mark.btn.btn-primary {
     border: 0;
     border-right: 1px solid #d28466;
 }
-button.btn-mark.btn.btn-primary svg{
+
+button.btn-mark.btn.btn-primary svg {
     width: 17px;
 }
-button.btn-mark.btn.btn-primary.disabled, 
+
+button.btn-mark.btn.btn-primary.disabled,
 button.btn-mark.btn.btn-primary:disabled {
-    opacity: 0.69; 
+    opacity: 0.69;
 }
 
 .Toastify {
@@ -3318,16 +3323,18 @@ button.btn-mark.btn.btn-primary:disabled {
     padding: 0;
 }
 
-.remember input[type=checkbox]:checked + label::before{
+.remember input[type=checkbox]:checked+label::before {
     content: '';
     background-color: #7b519d;
 }
-.w-0{
+
+.w-0 {
     width: 0;
 }
 
-
-
+.carsetting ul li a:not([href]):not([class]) {
+    color: #fff;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
