@@ -188,6 +188,7 @@ export default function AllSentEmailsPage(props) {
   const [NewObjectionID, SetNewObjectionID] = useState([])
   const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
   const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
+  const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -378,38 +379,81 @@ export default function AllSentEmailsPage(props) {
     LoaderHide()
   }
 
-  const GetSentEmailsTotalRecords = (CID, UID, ID) => {
-    LoaderShow()
-    const Data = {
+  // const GetSentEmailsTotalRecords = (CID, UID, ID) => {
+  //   LoaderShow()
+  //   const Data = {
+  //     ClientID: CID,
+  //     UserID: UID,
+  //   }
+  //   const ResponseApi = Axios({
+  //     url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
+  //     method: "POST",
+  //     data: Data,
+  //   });
+  //   ResponseApi.then((Result) => {
+  //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+  //       var total = Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent == undefined ? Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent : 0;
+  //       SetTotalRecord(total)
+  //     } else {
+  //       SetTotalRecord(0)
+  //       toast.error(Result?.data?.Message);
+  //     }
+  //   });
+  //   LoaderHide()
+  // }
+
+  // Start From Email List
+  const FromEmailList = async (CID, UID, ID) => {
+
+    var Data = {
       ClientID: CID,
-      UserID: UID,
-    }
+      UserID: UID
+    };
     const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
       method: "POST",
       data: Data,
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        var total = Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent == undefined ? Result.data?.AllSentEmailsCount.filter((e) => e._id === ID)[0]?.IsAllSent : 0;
-        SetTotalRecord(total)
-      } else {
-        SetTotalRecord(0)
+
+        if (Result.data.PageData.length > 0) {
+
+          SetFromEmailDropdownList(Result.data.PageData);
+
+          if (ID?.length > 0) {
+            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SentCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SentCount : 0
+
+            SetTotalRecord(total);
+          } else {
+            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SentCount)?.reduce((a, b) => a + b, 0) : 0
+            
+            SetTotalRecord(total);
+          }
+        } else {
+          SetTotalRecord(0);
+          // toast.error(<div>Please add email configuration.</div>)
+        }
+      }
+      else {
+        SetFromEmailDropdownList([]);
+        SetTotalRecord(0);
         toast.error(Result?.data?.Message);
       }
     });
-    LoaderHide()
+
+
   }
 
   // Start Get Follow Up Later List
   const GetAllSent = (CID, UID, PN, ID, str) => {
+    FromEmailList(CID, UID, ID);
 
     let AccountIDs = []
     if (ID.length > 0) {
-      GetSentEmailsTotalRecords(CID, UID, ID)
+      
       AccountIDs.push(ID)
     } else {
-      GetAllSentEmailsTotalCount(CID, UID)
       AccountIDs = [-1]
     }
     if (str == "showloader") {
