@@ -497,7 +497,7 @@ export default function UnansweredResponsesPage(props) {
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
       SetPage(1);
-      SetRowsPerPage(10);
+      SetRowsPerPage(50);
       SetFollowUpList([])
       SetSearchInbox(e.target.value)
     }
@@ -1899,7 +1899,7 @@ export default function UnansweredResponsesPage(props) {
                           component="div"
                           count={TotalRecord}
                           page={parseInt(PageValue) - 1}
-                          rowsPerPage="10"
+                          rowsPerPage="50"
                           onPageChange={HandleChangePage}
 
                         />

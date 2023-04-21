@@ -145,7 +145,7 @@ export default function AllUnansweredRepliesPage(props) {
   const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
   const [MailNumber, SetMailNumber] = React.useState(1);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(50);
   const [SortField, SetsortField] = React.useState("MailSentDatetime");
   const [SortedBy, SetSortedBy] = React.useState(-1);
   const [SearchInbox, SetSearchInbox] = React.useState("");
@@ -554,7 +554,7 @@ export default function AllUnansweredRepliesPage(props) {
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
       SetPage(1);
-      SetRowsPerPage(10);
+      SetRowsPerPage(50);
       SetAllUnanswereRepliesList([])
       SetSearchInbox(e.target.value)
     }
@@ -1504,7 +1504,7 @@ export default function AllUnansweredRepliesPage(props) {
                           component="div"
                           count={TotalRecord}
                           page={parseInt(PageValue) - 1}
-                          rowsPerPage="10"
+                          rowsPerPage="50"
                           onPageChange={HandleChangePage}
                         />
                       </div>
