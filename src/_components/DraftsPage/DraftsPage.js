@@ -137,7 +137,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function OtherInboxPage(props) {
   const [DraftList, SetDraftList] = React.useState([]);
   const [Page, SetPage] = React.useState(1);
-  const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+  const [RowsPerPage, SetRowsPerPage] = React.useState(50);
   const [SearchInbox, SetSearchInbox] = React.useState("");
   const [SortField, SetSortField] = React.useState("MailTo");
   const [SortedBy, SetSortedBy] = React.useState(1);
@@ -370,7 +370,7 @@ export default function OtherInboxPage(props) {
   const SearchBox = (e) => {
     if (e.keyCode == 13) {
       SetPage(1);
-      SetRowsPerPage(10);
+      SetRowsPerPage(50);
       SetDraftList([])
       SetSearchInbox(e.target.value)
     }
@@ -931,7 +931,7 @@ export default function OtherInboxPage(props) {
                           component="div"
                           count={TotalRecord}
                           page={parseInt(PageValue) - 1}
-                          rowsPerPage="10"
+                          rowsPerPage="50"
                           onPageChange={HandleChangePage}
 
                         />
