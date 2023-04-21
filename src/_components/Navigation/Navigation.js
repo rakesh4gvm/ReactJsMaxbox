@@ -601,7 +601,6 @@ export default function Navigation(props) {
           }
         }
         else {
-          toast.error("Please add client")
           UpdateUserDetails('')
           FromEmailList('');
         }
