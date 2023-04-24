@@ -350,16 +350,18 @@ export default function EmailConfigurationPage() {
                           
 
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                              {row.IsInboxMailReadFirstTime == false ? 
+                              {(row.IsInboxMailReadFirstTime == false && row.IsSentMailReadFirstTime == false && row.IsSpamMailReadFirstTime == false) ? 
                               // <Button className='btn-success'> Process </Button>  
-                              <div className='barprogress primarycl'>
-                                <CircularProgress value={70} /> <label>processing</label>
-                              </div>
-                              : 
-                              // <Button className='btn-success'> Completed </Button> 
                               <div className='barprogress successbar'>
                                 <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
                               </div>
+                              : 
+                              // <Button className='btn-success'> Completed </Button> 
+                              <div className='barprogress primarycl'>
+                              <CircularProgress value={70} /> <label>processing</label>
+                            </div>
+
+                             
                               }
                             </ButtonGroup>
                           </TableCell>
