@@ -3336,12 +3336,12 @@ button.btn-mark.btn.btn-primary:disabled {
     color: #fff;
 }
 .barprogress {
-    display: inline-block;
+    display: flex;
     align-items: center;
     margin: 0 auto;
 }
 .barprogress label{
-    margin-top: 3px;
+    margin-top: 7px;
 }
 .barprogress span {
     width: 30px !important;
