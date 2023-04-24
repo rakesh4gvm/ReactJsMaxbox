@@ -350,7 +350,7 @@ export default function EmailConfigurationPage() {
                           
 
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                              {row.IsInboxMailReadFirstTime == true ? 
+                              {row.IsInboxMailReadFirstTime == false ? 
                               // <Button className='btn-success'> Process </Button>  
                               <div className='barprogress primarycl'>
                                 <CircularProgress value={70} /> <label>processing</label>
@@ -366,7 +366,7 @@ export default function EmailConfigurationPage() {
                           <TableCell align="right">
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
                               {row.IsWorking == true ? <Button className='btn-success'>
-                                Yes
+                                Working
                               </Button> : <Button className='btn-success'>
                                 NO
                               </Button>}
