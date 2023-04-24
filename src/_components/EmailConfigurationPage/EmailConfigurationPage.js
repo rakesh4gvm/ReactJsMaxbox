@@ -32,6 +32,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Navigation from '../Navigation/Navigation';
 
@@ -253,7 +254,7 @@ export default function EmailConfigurationPage() {
       }
     });
   }
-  // end email account delete
+  // end email account delete 
 
 
   return (
@@ -346,12 +347,20 @@ export default function EmailConfigurationPage() {
                           <TableCell>{row.LastName}</TableCell>
                           <TableCell scope="row">{row.Email}</TableCell>
                           <TableCell align="right">
+                          
+
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                              {row.IsInboxMailReadFirstTime == true ? <Button className='btn-success'>
-                                Process
-                              </Button> : <Button className='btn-success'>
-                                Completed
-                              </Button>}
+                              {row.IsInboxMailReadFirstTime == true ? 
+                              // <Button className='btn-success'> Process </Button>  
+                              <div className='barprogress primarycl'>
+                                <CircularProgress value={70} /> <label>processing</label>
+                              </div>
+                              : 
+                              // <Button className='btn-success'> Completed </Button> 
+                              <div className='barprogress successbar'>
+                                <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
+                              </div>
+                              }
                             </ButtonGroup>
                           </TableCell>
                           <TableCell align="right">

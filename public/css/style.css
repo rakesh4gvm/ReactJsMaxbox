@@ -3335,6 +3335,42 @@ button.btn-mark.btn.btn-primary:disabled {
 .carsetting ul li a:not([href]):not([class]) {
     color: #fff;
 }
+.barprogress {
+    display: inline-block;
+    align-items: center;
+    margin: 0 auto;
+}
+.barprogress label{
+    margin-top: 3px;
+}
+.barprogress span {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 5px;
+    float: left;
+    position: relative;
+} 
+.barprogress.primarycl span, .primarycl{  
+    color: #e49273;
+    font-weight: 600;
+}
+.barprogress.successbar span, .successbar {
+    color: #5CC078;
+    font-weight: 600;
+}
+.barprogress.successbar span::before {
+    content: "100%";
+    font-weight: 600;
+    position: absolute;
+    transform: rotate(90deg);
+    left: 0px;
+    font-size: 8px;
+    letter-spacing: normal;
+    top: -5px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+} 
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
