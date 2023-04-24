@@ -332,7 +332,8 @@ export default function EmailConfigurationPage() {
                         <TableCell onClick={() => { SortData("FirstName") }}>First Name</TableCell>
                         <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
                         <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
-                        <TableCell align="right">Working</TableCell>
+                        <TableCell align="center">Process</TableCell>
+                        <TableCell align="right">Authetication Status</TableCell>
                         <TableCell align="right"></TableCell>
                         <TableCell align="center">Action</TableCell>
                       </TableRow>
@@ -344,6 +345,15 @@ export default function EmailConfigurationPage() {
                           <TableCell>{row.FirstName}</TableCell>
                           <TableCell>{row.LastName}</TableCell>
                           <TableCell scope="row">{row.Email}</TableCell>
+                          <TableCell align="right">
+                            <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
+                              {row.IsInboxMailReadFirstTime == true ? <Button className='btn-success'>
+                                Process
+                              </Button> : <Button className='btn-success'>
+                                Completed
+                              </Button>}
+                            </ButtonGroup>
+                          </TableCell>
                           <TableCell align="right">
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
                               {row.IsWorking == true ? <Button className='btn-success'>
