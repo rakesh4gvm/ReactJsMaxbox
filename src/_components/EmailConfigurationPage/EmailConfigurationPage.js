@@ -376,7 +376,7 @@ export default function EmailConfigurationPage() {
                           </TableCell>
 
                           <TableCell align="right">{row.IsWorking == true ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
-                          <TableCell>
+                          <TableCell className='d-flex'>
                             <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
                               <img src={DeleteIcon} />
                             </Button>
