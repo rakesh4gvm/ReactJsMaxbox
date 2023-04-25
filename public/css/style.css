@@ -2554,6 +2554,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 
 .tablelister tr {
     border-bottom: 1px solid #f3f0f0;
+    cursor: pointer;
 }
 
 .tablelister tr td {
