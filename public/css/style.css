@@ -1208,9 +1208,10 @@ th {
     font-size: 0.8rem;
     line-height: 22px;
     color: #616B77;
-    white-space: nowrap;
     border-color: #E5E5E5;
     overflow: hidden;
+    width: auto;
+    white-space: nowrap;
 }
 
 button.small-font-size {
@@ -1492,6 +1493,7 @@ div.erorr-msg>*>* {
 .comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
     padding: 5px 15px;
     min-width: 300px;
+    width: 100%;
 }
 
 .comse-select div fieldset legend {
@@ -1500,6 +1502,7 @@ div.erorr-msg>*>* {
 
 .comse-select div fieldset {
     top: -1px;
+    min-width: 300px;
 }
 
 .cc,
@@ -3337,7 +3340,7 @@ button.btn-mark.btn.btn-primary:disabled {
     color: #fff;
 }
 .barprogress {
-    display: flex;
+    display: inherit;
     align-items: center;
     margin: 0 auto;
 }
