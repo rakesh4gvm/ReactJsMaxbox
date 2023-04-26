@@ -66,6 +66,7 @@ import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import io from 'socket.io-client';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -223,12 +224,61 @@ export default function UnansweredResponsesPage(props) {
   // Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
+
+    var ID = decrypt(props.location.search.replace('?', ''))
+
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+
+    console.log('====socket code execueting')
+    console.log('====url', CommonConstants.SocketIP + CommonConstants.SocketPort)
+    const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
+    // Listen for incoming messages
+
+    // Join a room
+    socket.emit('joinRoom', UserDetails.UserID);
+    socket.on('message', (message) => {
+      debugger;
+      if (!state) {
+        if (ID != "" && ID != null && ID != "undefined") {
+          SetMenuID(ID);
+          // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
+          if (isstarActive) {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
+          } else {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
+          }
+        } else {
+          // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
+          if (isstarActive) {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
+          } else {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
+          }
+        }
+      } else {
+        if (ID != "" && ID != null && ID != "undefined") {
+          SetMenuID(ID);
+          if (isstarActive) {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "IsStarredEmails")
+          } else {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "")
+          }
+        } else {
+          if (isstarActive) {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "IsStarredEmails")
+          } else {
+            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
+          }
+        }
+      }
+      console.log(`====Received message: ${message}`);
+    });
+
+
     GetClientList(UserDetails.ClientID)
-    var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
     // if (props !== undefined) {
     //   const ID = props.location.state;
