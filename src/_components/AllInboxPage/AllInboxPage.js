@@ -60,6 +60,7 @@ import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import io from 'socket.io-client';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -222,12 +223,56 @@ export default function OtherInboxPage(props) {
   // Get Client ID
   const GetClientID = (ID) => {
     var UserDetails = GetUserDetails();
+    var ID = decrypt(props.location.search.replace('?', ''))
+
+    console.log('====socket code execueting')
+    console.log('====url', CommonConstants.SocketIP + CommonConstants.SocketPort)
+    const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
+    // Listen for incoming messages
+
+    // Join a room
+    socket.emit('joinRoom', UserDetails.UserID);
+    socket.on('message', (message) => {
+      debugger;
+      if (!state) {
+        if (ID != "" && ID != null && ID != "undefined") {
+          SetMenuID(ID);
+          if (isstarActive) {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+          } else {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+          }
+        } else {
+          if (isstarActive) {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+          } else {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+          }
+        }
+      } else {
+        if (ID != "" && ID != null && ID != "undefined") {
+          SetMenuID(ID);
+          if (isstarActive) {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
+          } else {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
+          }
+        } else {
+          if (isstarActive) {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+          } else {
+            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+          }
+        }
+      }
+      console.log(`====Received message: ${message}`);
+    });
+
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
     GetClientList(UserDetails.ClientID)
-    var ID = decrypt(props.location.search.replace('?', ''))
     // if (ID !== undefined && ID!="") {
     // const ID = props.location.state;
     if (!state) {
@@ -1579,7 +1624,6 @@ export default function OtherInboxPage(props) {
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
-                  {console.log("TotalRecord======", TotalRecord)}
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >

@@ -334,7 +334,7 @@ export default function EmailConfigurationPage() {
                         <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
                         <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
                         <TableCell align="center">Process</TableCell>
-                        <TableCell align="right">Authetication Status</TableCell>
+                        <TableCell align="right">Authentication Status</TableCell>
                         <TableCell align="right"></TableCell>
                         <TableCell align="center">Action</TableCell>
                       </TableRow>

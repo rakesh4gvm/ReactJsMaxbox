@@ -10,28 +10,33 @@ const CLIENT_KEY = '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'
 //Google API Ends
 
 //Google Scope Start
-const SCOPE="https://mail.google.com https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.other.readonly"
+const SCOPE = "https://mail.google.com https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.other.readonly"
 //Google Scope End
 
 // redirect url start
-const REDIRECT_URL="http://localhost:3000/email_account/AuthCallback"
+const REDIRECT_URL = "http://localhost:3000/email_account/AuthCallback"
 // redirect url end
 
 // redirect url start
-const HomePage="http://localhost:3001/Focused"
-const LoginPage="http://localhost:3001"
+const HomePage = "http://localhost:3001/Focused"
+const LoginPage = "http://localhost:3001"
 // redirect url end
 
+// socket url
+const SocketIP = "http://localhost:"
+const SocketPort = "3005"
 
 export const CommonConstants = {
     MOL_APIURL: database,
-    CLIENT_ID:CLIENT_ID,
-    CLIENT_KEY:CLIENT_KEY,
-    SCOPE:SCOPE,
-    REDIRECT_URL:REDIRECT_URL,
-    HomePage:HomePage,
-    LoginPage:LoginPage,
-    Title:' | MaxBox', //Title of page
-    show_rows:[10,20,50,100],  //For rows show in table
-    FRONTENDURL:FRONTENDURL
+    CLIENT_ID: CLIENT_ID,
+    CLIENT_KEY: CLIENT_KEY,
+    SCOPE: SCOPE,
+    REDIRECT_URL: REDIRECT_URL,
+    HomePage: HomePage,
+    LoginPage: LoginPage,
+    Title: ' | MaxBox', //Title of page
+    show_rows: [10, 20, 50, 100],  //For rows show in table
+    FRONTENDURL: FRONTENDURL,
+    SocketIP: SocketIP,
+    SocketPort: SocketPort,
 };
