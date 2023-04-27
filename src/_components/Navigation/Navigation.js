@@ -206,8 +206,6 @@ export default function Navigation(props) {
   useEffect(() => {
     GetClientDropdown();
     GetClientID()
-
-
   }, []);
 
 
@@ -227,21 +225,8 @@ export default function Navigation(props) {
     //     history.push("/UnansweredResponses");
     //   }
     // }
-    // if (PageName == "/Starred") {
-    //   if (ID != "" && ID != null) {
-    //     history.push("/Starred", ID);
-    //   } else {
-    //     history.push("/Starred");
-    //   }
-    // }
-    // if (PageName == "/FollowUpLater") {
-    //   if (ID != "" && ID != null) {
-    //     history.push("/FollowUpLater", ID);
-    //   }
-    //   else {
-    //     history.push("/FollowUpLater");
-    //   }
-    // }
+
+    // 
     // if (PageName == "/Drafts") {
     //   if (ID != "" && ID != null) {
 
@@ -257,21 +242,53 @@ export default function Navigation(props) {
     //     history.push("/OtherInboxPage");
     //   }
     // }
-    // if (PageName == "/Spam") {
-    //   if (ID != "" && ID != null) {
-    //     history.push("/Spam", ID);
-    //   } else {
-    //     history.push("/Spam");
-    //   }
-    // }
-    // if (PageName == "/AllInbox") {
-    if (ID != "" && ID != null) {
-      // history.push("/AllInbox", ID);
-      Locate(PageName, ID)
-    } else {
-      Locate(PageName, "")
+    if (PageName == "/AllInbox") {
+      if (ID != "" && ID != null) {
+        history.push("/AllInboxByID/" + ID);
+        // history.push({ pathname: "/AllInboxByID/" + ID, });
+        // Locate(PageName, ID)
+      } else {
+        history.push("/AllInbox");
+        // Locate(PageName, "")
+        // history.push({ pathname: "/AllInbox" });
+      }
     }
-    // }
+    if (PageName == "/Focused") {
+      if (ID != "" && ID != null) {
+        history.push("/FocusedByID/" + ID);
+      } else {
+        history.push("/Focused");
+      }
+    }
+    if (PageName == "/Starred") {
+      if (ID != "" && ID != null) {
+        history.push("/StarredByID/" + ID);
+      } else {
+        history.push("/Starred");
+      }
+    }
+    if (PageName == "/Spam") {
+      if (ID != "" && ID != null) {
+        history.push("/SpamByID/" + ID);
+      } else {
+        history.push("/Spam");
+      }
+    }
+    if (PageName == "/OtherInboxPage") {
+      if (ID != "" && ID != null) {
+        history.push("/OtherInboxByID/" + ID);
+      } else {
+        history.push("/OtherInboxPage");
+      }
+    }
+    if (PageName == "/FollowUpLater") {
+      if (ID != "" && ID != null) {
+        history.push("/FollowUpLaterByID/" + ID);
+      }
+      else {
+        history.push("/FollowUpLater");
+      }
+    }
     // if (PageName == "AllInbox") {
     //   if (ID != "" && ID != null) {
     //     if (history.location.pathname === "/AllInbox") {
@@ -304,6 +321,7 @@ export default function Navigation(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
+    
     GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetSpamTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)

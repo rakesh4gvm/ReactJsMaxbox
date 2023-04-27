@@ -28,6 +28,7 @@ import EditClientPage from './_components/EditClientPage/EditClientPage';
 import UnansweredRepliesPage from './_components/UnansweredRepliesPage/UnansweredRepliesPage';
 import AllSentEmailsPage from './_components/AllSentEmailsPage/AllSentEmailsPage';
 import AllInboxPage from './_components/AllInboxPage/AllInboxPage';
+import AllInboxByID from './_components/AllInboxByID/AllInboxByID';
 import HeaderTop from './_components/Header/header';
 import FooterBottom from './_components/Footer/footer';
 import { CheckLocalStorage } from "./_helpers/Utility";
@@ -36,6 +37,11 @@ import OTPConfirmPage from './_components/OTPConfirmPage/OTPConfirmPage';
 import ContactEmailPage from '../src/_components/ContactEmailPage/ContactEmailPage';
 import AddContactEmailPage from '../src/_components/AddContactEmailPage/AddContactEmailPage';
 import NewInboxPage from '../src/_components/NewInboxPage/NewInboxPage';
+import FocusedByID from './_components/FocusedByID/FocusedByID';
+import StarredByID from './_components/StarredByID/StarredByID';
+import SpamByID from './_components/SpamByID/SpamByID';
+import OtherInboxByID from './_components/OtherInboxByID/OtherInboxByID';
+import FollowUpLaterByID from './_components/FollowUpLaterByID/FollowUpLaterByID';
 
 
 function App() {
@@ -51,11 +57,16 @@ function App() {
         <Switch>
 
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
+          <Route path="/OtherInboxByID/:id" component={OtherInboxByID} />
           <Route exact path="/Focused" component={FocusedPage} />
+          <Route path="/FocusedByID/:id" component={FocusedByID} />
           <Route exact path="/Starred" component={StarredPage} />
+          <Route path="/StarredByID/:id" component={StarredByID} />
           <Route exact path="/FollowUpLater" component={FollowUpLaterPage} />
+          <Route path="/FollowUpLaterByID/:id" component={FollowUpLaterByID} />
           <Route exact path="/Drafts" component={DraftsPage} />
           <Route exact path="/Spam" component={SpamPage} />
+          <Route path="/SpamByID/:id" component={SpamByID} />
           <Route exact path="/ProfileSetting" component={ProfileSettingPage} />
           <Route exact path="/EmailConfiguration" component={EmailConfigurationPage} />
           <Route exact path="/UnansweredReplies" component={UnansweredRepliesPage} />
@@ -79,6 +90,7 @@ function App() {
           <Route exact path="/ContactEmail" component={ContactEmailPage} />
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
           <Route exact path="/AllInbox" component={AllInboxPage} />
+          <Route path="/AllInboxByID/:id" component={AllInboxByID} />
           <Route exact path="/NewInbox" component={NewInboxPage} />
           <Route exact path="/" render={() => (
             LoginData ? (
