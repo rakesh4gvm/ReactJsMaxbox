@@ -24,7 +24,7 @@ const LoginPage = "http://localhost:3001"
 
 // socket url
 const SocketIP = "http://localhost:"
-const SocketPort = "3005"
+const SocketPort = "3006"
 
 export const CommonConstants = {
     MOL_APIURL: database,

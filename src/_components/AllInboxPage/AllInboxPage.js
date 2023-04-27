@@ -138,6 +138,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
+console.log(socket)
 export default function OtherInboxPage(props) {
 
 
@@ -204,7 +206,7 @@ export default function OtherInboxPage(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
-
+ 
   useEffect(() => {
     // if (props.location.search != undefined) {
     //   const Response = decodeURIComponent(props.location.search)
@@ -220,20 +222,54 @@ export default function OtherInboxPage(props) {
     GetClientID();
   }, [SearchInbox, state])
 
+ 
+  socket.on('message', (message,roomid) => {
+    debugger;
+    GetClientID();
+  })
+
+ const GetAccountDetailsusingSocket=(ID)=>{
+  
+  var UserDetails = GetUserDetails();
+  if (!state) {
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      if (isstarActive) {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+      }
+    } else {
+      if (isstarActive) {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+      }
+    }
+  } else {
+    if (ID != "" && ID != null && ID != "undefined") {
+      SetMenuID(ID);
+      if (isstarActive) {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
+      }
+    } else {
+      if (isstarActive) {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+      } else {
+        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+      }
+    }
+  }
+  }
   // Get Client ID
   const GetClientID = (ID) => {
     var UserDetails = GetUserDetails();
     var ID = decrypt(props.location.search.replace('?', ''))
-
-    console.log('====socket code execueting')
-    console.log('====url', CommonConstants.SocketIP + CommonConstants.SocketPort)
-    const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
-    // Listen for incoming messages
-
-    // Join a room
     socket.emit('joinRoom', UserDetails.UserID);
-    socket.on('message', (message) => {
-      debugger;
+ 
+   
       if (!state) {
         if (ID != "" && ID != null && ID != "undefined") {
           SetMenuID(ID);
@@ -265,9 +301,7 @@ export default function OtherInboxPage(props) {
           }
         }
       }
-      console.log(`====Received message: ${message}`);
-    });
-
+   
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
