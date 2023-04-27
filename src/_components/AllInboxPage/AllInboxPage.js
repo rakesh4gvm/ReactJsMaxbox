@@ -224,12 +224,10 @@ export default function OtherInboxPage(props) {
 
  
   socket.on('message', (message,roomid) => {
-    debugger;
-    GetClientID();
+    GetAccountDetailsusingSocket('')
   })
 
  const GetAccountDetailsusingSocket=(ID)=>{
-  
   var UserDetails = GetUserDetails();
   if (!state) {
     if (ID != "" && ID != null && ID != "undefined") {
