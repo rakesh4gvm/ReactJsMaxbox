@@ -3398,6 +3398,9 @@ button.btn-mark.btn.btn-primary:disabled {
     height: 30px;
     line-height: 30px;
 } 
+.listclick .MuiList-padding > .MuiList-root a {
+    padding-left: 30px;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
