@@ -66,7 +66,6 @@ import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import io from 'socket.io-client';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -232,15 +231,8 @@ export default function UnansweredResponsesPage(props) {
       SetUserID(UserDetails.UserID);
     }
 
-    console.log('====socket code execueting')
-    console.log('====url', CommonConstants.SocketIP + CommonConstants.SocketPort)
-    const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
+    
     // Listen for incoming messages
-
-    // Join a room
-    socket.emit('joinRoom', UserDetails.UserID);
-    socket.on('message', (message) => {
-      debugger;
       if (!state) {
         if (ID != "" && ID != null && ID != "undefined") {
           SetMenuID(ID);
@@ -274,8 +266,8 @@ export default function UnansweredResponsesPage(props) {
           }
         }
       }
-      console.log(`====Received message: ${message}`);
-    });
+      
+   
 
 
     GetClientList(UserDetails.ClientID)
