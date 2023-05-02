@@ -63,6 +63,7 @@ export default function LoginPage() {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         Login()
+        LoaderHide()
       }
     };
     document.addEventListener("keydown", listener);
