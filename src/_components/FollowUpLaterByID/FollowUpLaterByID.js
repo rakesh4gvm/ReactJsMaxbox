@@ -212,7 +212,7 @@ export default function FollowUpLaterByID(props) {
     useEffect(() => {
         document.title = 'Follow Up Later | MAXBOX';
         GetClientID();
-    }, [FollowUpDate, SearchInbox, state, CheckedID, id]);
+    }, [FollowUpDate, SearchInbox, state, id]);
 
     // Get ClientID
     const GetClientID = () => {
