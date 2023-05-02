@@ -195,13 +195,9 @@ export default function Navigation(props) {
   const [EID, SetEID] = React.useState("");
   const [OpemID, SetEOpenID] = React.useState("");
   const [OutBoxID, SetOutBoxID] = React.useState("");
-
-
-
+  const [DraftTotalCount, SetDraftTotalCount] = useState()
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
-
-
 
   useEffect(() => {
     GetClientDropdown();
@@ -227,14 +223,7 @@ export default function Navigation(props) {
     // }
 
     // 
-    // if (PageName == "/Drafts") {
-    //   if (ID != "" && ID != null) {
 
-    //     history.push("/Drafts", ID);
-    //   } else {
-    //     history.push("/Drafts");
-    //   }
-    // }
     // if (PageName == "/OtherInboxPage") {
     //   if (ID != "" && ID != null) {
     //     history.push("/OtherInboxPage", ID);
@@ -289,6 +278,13 @@ export default function Navigation(props) {
         history.push("/FollowUpLater");
       }
     }
+    if (PageName == "/Drafts") {
+      if (ID != "" && ID != null) {
+        history.push("/Drafts", ID);
+      } else {
+        history.push("/Drafts");
+      }
+    }
     if (PageName == "/AllSentEmails") {
       if (ID != "" && ID != null) {
         history.push("/AllSentEmailsByID/" + ID);
@@ -321,7 +317,6 @@ export default function Navigation(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-
     GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetSpamTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
@@ -329,6 +324,7 @@ export default function Navigation(props) {
     GetSentEmailsTotalRecords(UserDetails.ClientID, UserDetails.UserID)
     GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
     GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+    GetDraftTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     OnLoad()
   }
 
@@ -424,6 +420,28 @@ export default function Navigation(props) {
     }
   }
 
+  // Get Draft Total Count
+  const GetDraftTotalRecordCount = (CID, UID) => {
+    LoaderShow()
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/draft_template/DraftTotalRecordCount",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetDraftTotalCount(Result.data)
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    });
+    LoaderHide()
+  }
+
   // Get All Sent Emails Total Count
   const GetAllSentEmailsTotalCount = (CID, UID) => {
     LoaderShow()
@@ -431,18 +449,18 @@ export default function Navigation(props) {
       ClientID: CID,
       UserID: UID,
     }
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetAllSentTotalRecords(Result.data)
-      } else {
-        toast.error(Result?.data?.Message);
-      }
-    });
+    // const ResponseApi = Axios({
+    //   url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+    //   method: "POST",
+    //   data: Data,
+    // });
+    // ResponseApi.then((Result) => {
+    //   if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+    //     SetAllSentTotalRecords(Result.data)
+    //   } else {
+    //     toast.error(Result?.data?.Message);
+    //   }
+    // });
     LoaderHide()
   }
 
@@ -564,6 +582,8 @@ export default function Navigation(props) {
     // });
     LoaderHide()
   }
+
+
 
 
   const GetSpamEmailTotalRecords = (CID, UID) => {
@@ -952,7 +972,7 @@ export default function Navigation(props) {
               <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
                 component={Link}
                 selected={SelectMenuItem === "/Drafts"}>
-                {AllTotalRecords?.AllDraftCount != undefined ? "Drafts(" + AllTotalRecords?.AllDraftCount + ")" : "Drafts(0)"}
+                {DraftTotalCount?.TotalCount != undefined ? "Drafts(" + DraftTotalCount?.TotalCount + ")" : "Drafts(0)"}
               </ListItemButton>
 
               <List component="div">

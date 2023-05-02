@@ -341,8 +341,10 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeBCC").value = ""
 
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: "" })
-        SetMailChange({ To: "", Subject: "" })
+        SetSignature({ Data: ClientData })
+        SetToEmailValue([Data?.MailTo])
+        document.getElementById("ComposeSubject").value = Data.Subject
+        // SetMailChange({ To: "", Subject: "" })
       } else {
         SetSignature({ Data: "" });
         SetMailChange({ To: "", Subject: "" })
@@ -921,7 +923,7 @@ export default function OtherInboxPage(props) {
             defaultSize={"40%"}
           >
             <>
-              <div className='orangbg-table'> 
+              <div className='orangbg-table'>
                 <div className='rigter-coller'>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
