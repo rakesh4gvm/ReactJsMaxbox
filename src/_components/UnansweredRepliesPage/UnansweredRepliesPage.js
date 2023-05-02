@@ -403,11 +403,11 @@ export default function AllUnansweredRepliesPage(props) {
           SetFromEmailDropdownList(Result.data.PageData);
 
           if (ID?.length > 0) {
-            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SentCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SentCount : 0
+            var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].UnansweredRepliesCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].UnansweredRepliesCount : 0
 
             SetTotalRecord(total);
           } else {
-            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SentCount)?.reduce((a, b) => a + b, 0) : 0
+            var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.UnansweredRepliesCount)?.reduce((a, b) => a + b, 0) : 0
             
             SetTotalRecord(total);
           }

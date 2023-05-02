@@ -42,6 +42,8 @@ import StarredByID from './_components/StarredByID/StarredByID';
 import SpamByID from './_components/SpamByID/SpamByID';
 import OtherInboxByID from './_components/OtherInboxByID/OtherInboxByID';
 import FollowUpLaterByID from './_components/FollowUpLaterByID/FollowUpLaterByID';
+import AllSentEmailByID from './_components/AllSentEmailByID/AllSentEmailByID';
+import UnansweredRepliesByID from './_components/UnansweredRepliesByID/UnansweredRepliesByID';
 
 
 function App() {
@@ -70,7 +72,9 @@ function App() {
           <Route exact path="/ProfileSetting" component={ProfileSettingPage} />
           <Route exact path="/EmailConfiguration" component={EmailConfigurationPage} />
           <Route exact path="/UnansweredReplies" component={UnansweredRepliesPage} />
+          <Route exact path="/UnansweredRepliesByID/:id" component={UnansweredRepliesByID} />
           <Route exact path="/AllSentEmails" component={AllSentEmailsPage} />
+          <Route exact path="/AllSentEmailsByID/:id" component={AllSentEmailByID} />
           <Route exact path="/Templates" component={TemplatesPage} />
           <Route exact path="/ObjectionTemplate" component={ObjectionTemplatePage} />
           <Route exact path="/SelectTemplates" component={SelectTemplatesPage} />
