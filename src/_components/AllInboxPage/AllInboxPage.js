@@ -204,7 +204,7 @@ export default function OtherInboxPage(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
- 
+
   useEffect(() => {
     // if (props.location.search != undefined) {
     //   const Response = decodeURIComponent(props.location.search)
@@ -220,86 +220,86 @@ export default function OtherInboxPage(props) {
     GetClientID();
   }, [SearchInbox, state])
 
- 
 
 
- const GetAccountDetailsusingSocket=(ID)=>{
-  var UserDetails = GetUserDetails();
-  if (!state) {
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      if (isstarActive) {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+
+  const GetAccountDetailsusingSocket = (ID) => {
+    var UserDetails = GetUserDetails();
+    if (!state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        }
       } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        }
       }
     } else {
-      if (isstarActive) {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
+        }
       } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        }
       }
     }
-  } else {
-    if (ID != "" && ID != null && ID != "undefined") {
-      SetMenuID(ID);
-      if (isstarActive) {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
-      } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
-      }
-    } else {
-      if (isstarActive) {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
-      } else {
-        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
-      }
-    }
-  }
   }
   // Get Client ID
   const GetClientID = (ID) => {
     var UserDetails = GetUserDetails();
     var ID = decrypt(props.location.search.replace('?', ''))
-    
+
     if (!state) {
-        if (ID != "" && ID != null && ID != "undefined") {
-          SetMenuID(ID);
-          if (isstarActive) {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
-          } else {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
-          }
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
         } else {
-          if (isstarActive) {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
-          } else {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
-          }
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
         }
       } else {
-        if (ID != "" && ID != null && ID != "undefined") {
-          SetMenuID(ID);
-          if (isstarActive) {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
-          } else {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
-          }
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
         } else {
-          if (isstarActive) {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
-          } else {
-            GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
-          }
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
         }
       }
-   
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
+        }
+      } else {
+        if (isstarActive) {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+        } else {
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+        }
+      }
+    }
+
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
     GetClientList(UserDetails.ClientID)
-    
+
   }
 
   const GetClientList = (ID) => {
@@ -1616,7 +1616,7 @@ export default function OtherInboxPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                    <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
+                  <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
                     OpenMessage?.length == 0 ? "" :
@@ -1691,7 +1691,7 @@ export default function OtherInboxPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
+                      <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</label>
                     </div>
                     {
                       OpenMessage == 0 ? '' :

@@ -383,8 +383,8 @@ export default function AllUnansweredRepliesPage(props) {
   //   LoaderHide()
   // }
 
-   // Start From Email List
-   const FromEmailList = async (CID, UID, ID) => {
+  // Start From Email List
+  const FromEmailList = async (CID, UID, ID) => {
 
     var Data = {
       ClientID: CID,
@@ -408,7 +408,7 @@ export default function AllUnansweredRepliesPage(props) {
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.UnansweredRepliesCount)?.reduce((a, b) => a + b, 0) : 0
-            
+
             SetTotalRecord(total);
           }
         } else {
@@ -1565,7 +1565,7 @@ export default function AllUnansweredRepliesPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
+                      <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("MM/DD/YYYY hh:mm A")}</label>
                     </div>
                     {
                       OpenMessage == 0 ? '' :

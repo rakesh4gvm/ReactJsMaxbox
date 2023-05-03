@@ -1816,7 +1816,7 @@ export default function OtherInboxByID(props) {
                                     </Col>
                                     <Col sm={6}>
                                         <div className='lablebox text-right'>
-                                            <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
+                                            <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</label>
                                         </div>
                                         {
                                             OpenMessage == 0 ? '' :

@@ -340,7 +340,7 @@ export default function StarredByID(props) {
 
     // Start Get Follow Up Later List
     const GetStarredList = (CID, UID, PN, ID, ShowEmails) => {
-        
+
         FromEmailList(CID, UID, id, ShowEmails);
         let AccountIDs = [id]
         // if (ID.length > 0) {
@@ -1745,7 +1745,7 @@ export default function StarredByID(props) {
                                     </Col>
                                     <Col sm={6}>
                                         <div className='lablebox text-right'>
-                                            <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
+                                            <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("MM/DD/YYYY hh:mm A")}</label>
                                         </div>
                                         {
                                             OpenMessage == 0 ? '' :

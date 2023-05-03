@@ -281,7 +281,7 @@ export default function ListInbox() {
                 </Col>
                 <Col sm={6}>
                   <div className='lablebox text-right'>
-                    <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</lable>
+                    <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MessageDatetime).format("LLL")}</label>
                   </div>
                   <ButtonGroup className='iconsboxcd' variant="text" aria-label="text button group">
                     <Button>

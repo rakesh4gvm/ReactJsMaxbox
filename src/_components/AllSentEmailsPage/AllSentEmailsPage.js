@@ -427,7 +427,7 @@ export default function AllSentEmailsPage(props) {
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SentCount)?.reduce((a, b) => a + b, 0) : 0
-            
+
             SetTotalRecord(total);
           }
         } else {
@@ -451,7 +451,7 @@ export default function AllSentEmailsPage(props) {
 
     let AccountIDs = []
     if (ID.length > 0) {
-      
+
       AccountIDs.push(ID)
     } else {
       AccountIDs = [-1]
@@ -1586,7 +1586,7 @@ export default function AllSentEmailsPage(props) {
                   </Col>
                   <Col sm={6}>
                     <div className='lablebox text-right'>
-                      <lable>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("MM/DD/YYYY hh:mm A")}</lable>
+                      <label>{OpenMessage == 0 ? '' : Moment(OpenMessage.MailSentDatetime).format("MM/DD/YYYY hh:mm A")}</label>
                     </div>
                     {
                       OpenMessage == 0 ? '' :
