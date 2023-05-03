@@ -231,43 +231,43 @@ export default function UnansweredResponsesPage(props) {
       SetUserID(UserDetails.UserID);
     }
 
-    
+
     // Listen for incoming messages
-      if (!state) {
-        if (ID != "" && ID != null && ID != "undefined") {
-          SetMenuID(ID);
-          // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
-          if (isstarActive) {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
-          } else {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
-          }
+    if (!state) {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
         } else {
-          // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
-          if (isstarActive) {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
-          } else {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
-          }
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
         }
       } else {
-        if (ID != "" && ID != null && ID != "undefined") {
-          SetMenuID(ID);
-          if (isstarActive) {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "IsStarredEmails")
-          } else {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "")
-          }
+        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
         } else {
-          if (isstarActive) {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "IsStarredEmails")
-          } else {
-            GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
-          }
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
         }
       }
-      
-   
+    } else {
+      if (ID != "" && ID != null && ID != "undefined") {
+        SetMenuID(ID);
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "IsStarredEmails")
+        } else {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "")
+        }
+      } else {
+        if (isstarActive) {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "IsStarredEmails")
+        } else {
+          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
+        }
+      }
+    }
+
+
 
 
     GetClientList(UserDetails.ClientID)
@@ -706,6 +706,7 @@ export default function UnansweredResponsesPage(props) {
   }
   const UpdateStarMessage = (ID, str) => {
     if (ID != '') {
+
       var Data = {
         _id: ID,
         IsStarred: true,
@@ -727,14 +728,22 @@ export default function UnansweredResponsesPage(props) {
             if (ID != "" && ID != null && ID != "undefined") {
               GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
+              if (isstarActive == true) {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
+              }
             }
           }
           else {
             if (ID != "" && ID != null && ID != "undefined") {
               GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "", "");
             } else {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
+              if (isstarActive == true) {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
+              }
             }
           }         // }
         } else {
@@ -1933,7 +1942,6 @@ export default function UnansweredResponsesPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
-                  {console.log("TotalRecord======", TotalRecord)}
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
