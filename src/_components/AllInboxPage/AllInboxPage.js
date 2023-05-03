@@ -60,7 +60,7 @@ import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import io from 'socket.io-client';
+
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -138,8 +138,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const socket = io(CommonConstants.SocketIP + CommonConstants.SocketPort, { transports: ['websocket', 'polling', 'flashsocket'] });
-console.log(socket)
 export default function OtherInboxPage(props) {
 
 
@@ -223,9 +221,7 @@ export default function OtherInboxPage(props) {
   }, [SearchInbox, state])
 
  
-  socket.on('message', (message,roomid) => {
-    GetAccountDetailsusingSocket('')
-  })
+
 
  const GetAccountDetailsusingSocket=(ID)=>{
   var UserDetails = GetUserDetails();
@@ -265,10 +261,8 @@ export default function OtherInboxPage(props) {
   const GetClientID = (ID) => {
     var UserDetails = GetUserDetails();
     var ID = decrypt(props.location.search.replace('?', ''))
-    socket.emit('joinRoom', UserDetails.UserID);
- 
-   
-      if (!state) {
+    
+    if (!state) {
         if (ID != "" && ID != null && ID != "undefined") {
           SetMenuID(ID);
           if (isstarActive) {
@@ -305,40 +299,7 @@ export default function OtherInboxPage(props) {
       SetUserID(UserDetails.UserID);
     }
     GetClientList(UserDetails.ClientID)
-    // if (ID !== undefined && ID!="") {
-    // const ID = props.location.state;
-    if (!state) {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        if (isstarActive) {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
-        } else {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
-        }
-      } else {
-        if (isstarActive) {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
-        } else {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
-        }
-      }
-    } else {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        if (isstarActive) {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
-        } else {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
-        }
-      } else {
-        if (isstarActive) {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
-        } else {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
-        }
-      }
-    }
-    // }
+    
   }
 
   const GetClientList = (ID) => {

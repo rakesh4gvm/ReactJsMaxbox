@@ -55,6 +55,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import io from 'socket.io-client';
 
 import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow, Locate } from '../../_helpers/Utility'
 
@@ -162,6 +163,7 @@ const addNavClick = () => {
 // });
 
 
+const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
 
 export default function Navigation(props) {
   const { window } = props;
@@ -201,12 +203,23 @@ export default function Navigation(props) {
   const [DraftTotalCount, SetDraftTotalCount] = useState()
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
+  const [count, setCount] = useState(0)
 
+  
   useEffect(() => {
+    var UserDetails = GetUserDetails();
+    socket.emit('joinRoom', UserDetails.UserID);
     GetClientDropdown();
     GetClientID()
+    setCount(count + 1)
   }, []);
 
+  
+  socket.on('message', (message,roomid) => {
+    var Details = GetUserDetails();
+    FromEmailList(Details.ClientID, Details.UserID);
+      toast.error("You have new mail ");
+       }) 
 
   const handleListItemClick = (event, PageName, ID) => {
     if (ID != undefined && ID != "") {
@@ -834,11 +847,12 @@ export default function Navigation(props) {
   return (
     <>
     <Box sx={{ display: 'flex' }}>
-        <Stack className='alertpostion' spacing={2}>
+      
+        {/* <Stack className='alertpostion' spacing={2}>
           <Alert icon={false} severity="success">
               You have new mail 
           </Alert>
-        </Stack>
+        </Stack> */}
 
       <Link to="/ProfileSetting"><div className='profilebox'>
         <img src={Usericon} />
