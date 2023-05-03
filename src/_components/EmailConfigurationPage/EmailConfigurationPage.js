@@ -35,6 +35,8 @@ import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import Navigation from '../Navigation/Navigation';
+import Usericon from '../../images/icons/users.svg';
+import { Link } from 'react-router-dom';
 
 toast.configure();
 
@@ -302,6 +304,13 @@ export default function EmailConfigurationPage() {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Email Configuration</h5>
+            </Col>
+            <Col>
+              <Link to="/ProfileSetting">
+                <div className='profilebox'>
+                  <img src={Usericon} />
+                </div>
+              </Link>
             </Col>
           </Row>
         </div>

@@ -22,6 +22,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Navigation from '../Navigation/Navigation';
+import Usericon from '../../images/icons/users.svg';
+import { Link } from 'react-router-dom';
 
 toast.configure();
 var atob = require('atob');
@@ -164,6 +166,13 @@ export default function EditEmailPage(props) {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit Email Configuration</h5>
+            </Col>
+            <Col>
+              <Link to="/ProfileSetting">
+                <div className='profilebox'>
+                  <img src={Usericon} />
+                </div>
+              </Link>
             </Col>
           </Row>
         </div>

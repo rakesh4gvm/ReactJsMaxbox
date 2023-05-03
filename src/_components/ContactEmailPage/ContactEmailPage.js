@@ -47,6 +47,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 
 import Navigation from '../Navigation/Navigation';
+import Usericon from '../../images/icons/users.svg';
+import { Link } from 'react-router-dom';
 
 const Style = {
   position: 'absolute',
@@ -364,6 +366,13 @@ export default function ContactEmailPage() {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Email Contacts</h5>
+            </Col>
+            <Col>
+              <Link to="/ProfileSetting">
+                <div className='profilebox'>
+                  <img src={Usericon} />
+                </div>
+              </Link>
             </Col>
           </Row>
         </div>

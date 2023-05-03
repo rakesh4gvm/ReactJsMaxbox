@@ -26,6 +26,8 @@ import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import { MenuItem } from '@mui/material';
 
 import Navigation from '../Navigation/Navigation';
+import Usericon from '../../images/icons/users.svg';
+import { Link } from 'react-router-dom';
 
 toast.configure();
 
@@ -240,6 +242,13 @@ export default function AddContactEmailPage(props) {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5>
+            </Col>
+            <Col>
+              <Link to="/ProfileSetting">
+                <div className='profilebox'>
+                  <img src={Usericon} />
+                </div>
+              </Link>
             </Col>
           </Row>
         </div>
