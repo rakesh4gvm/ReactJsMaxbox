@@ -339,7 +339,6 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeSubject").value = ""
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
-
       if (Data?._id?.length > 0) {
         SetSignature({ Data: ClientData })
         SetToEmailValue([Data?.MailTo])
@@ -1103,7 +1102,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn" onClick={() => OpenCompose(OpenMessage)}><img src={Plusion} /></Button>
+        <Button variant="contained btn btn-primary largbtn" onClick={() => OpenCompose("")}><img src={Plusion} /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>
