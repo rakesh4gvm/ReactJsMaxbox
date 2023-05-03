@@ -3401,6 +3401,41 @@ button.btn-mark.btn.btn-primary:disabled {
 .listclick .MuiList-padding > .MuiList-root a {
     padding-left: 30px;
 }
+.alertpostion{
+    position: fixed;
+    right: 22px;
+    z-index: 99999;
+    margin: 5px 25px;
+    left: auto;
+    width: auto;
+    top: 1px;
+}
+.alertpostion .MuiAlert-standard{
+    background-color: rgb(192 228 192);
+    padding: 4px 10px;
+}
+.alertpostion .MuiAlert-message{
+    padding: 0;
+}
+.alertpostion .MuiAlert-icon{
+    padding: 0;
+    margin-right: 5px;
+}
+.roundgreenemail {
+    width: 8px;
+    height: 8px;
+    background-color: #58eb56;
+    animation: example  1s infinite;
+    border-radius: 72px;
+    float: left;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+@keyframes example {
+  from {background-color: #58eb56;}
+  to {background-color: rgb(0, 149, 255);}
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

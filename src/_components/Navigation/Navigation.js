@@ -42,6 +42,9 @@ import { history } from "../../_helpers";
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import CheckIcon from '@material-ui/icons/Check';
 
 
 import { toast } from "react-toastify";
@@ -829,7 +832,14 @@ export default function Navigation(props) {
   useOutsideAlerter(WrapperRef);
 
   return (
+    <>
     <Box sx={{ display: 'flex' }}>
+        <Stack className='alertpostion' spacing={2}>
+          <Alert icon={false} severity="success">
+              You have new mail 
+          </Alert>
+        </Stack>
+
       <Link to="/ProfileSetting"><div className='profilebox'>
         <img src={Usericon} />
       </div></Link>
@@ -1126,6 +1136,7 @@ export default function Navigation(props) {
            */}
       </Drawer>
     </Box >
+    </>
   );
 }
 
