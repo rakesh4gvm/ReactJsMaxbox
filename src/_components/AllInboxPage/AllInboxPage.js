@@ -205,7 +205,6 @@ export default function OtherInboxPage(props) {
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
 
-  const [NewMAil, SetNewMail] = useState("")
   useEffect(() => {
     // if (props.location.search != undefined) {
     //   const Response = decodeURIComponent(props.location.search)
@@ -217,13 +216,6 @@ export default function OtherInboxPage(props) {
     // } else {
     //   GetClientID([-1]);
     // }
-
-    var s = localStorage.getItem("NewMail")
-    if (s == "You have new mail") {
-      SetNewMail(s)
-    } else {
-      SetNewMail("")
-    }
 
     document.title = 'All Inbox | MAXBOX';
     GetClientID();

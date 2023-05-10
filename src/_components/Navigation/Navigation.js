@@ -219,8 +219,6 @@ export default function Navigation(props) {
     const handleMessage = (message, roomid) => {
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
-      var NewData = "You have new mail"
-      localStorage.setItem("NewMail", NewData)
       toast.error("You have new mail ");
       var element = document.getElementById("Refreshpanel")
       element.style.display = "block";
