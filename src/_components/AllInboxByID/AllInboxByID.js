@@ -1278,6 +1278,9 @@ export default function AllInboxByID(props) {
 
 
     const RefreshTable = () => {
+        var element = document.getElementById("AllInoxRefreshpanel")
+        element.style.display = "none";
+
         var ID = decrypt(props.location.search.replace('?', ''))
         if (!state) {
             LoaderShow()
@@ -1591,7 +1594,7 @@ export default function AllInboxByID(props) {
                                     </ToggleButton>
                                     <FormControlLabel className='check-unseen'
                                         control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                                    <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
+                                    <a onClick={RefreshTable} className='Refreshbtn' id="AllInoxRefreshpanel" style={{ display: "none" }}><RefreshIcon /><span className='roundgreenemail'></span></a>
                                     <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :

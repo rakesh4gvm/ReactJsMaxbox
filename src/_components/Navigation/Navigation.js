@@ -219,9 +219,16 @@ export default function Navigation(props) {
     const handleMessage = (message, roomid) => {
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
-      toast.error("You have new mail ");
-      var element = document.getElementById("Refreshpanel")
-      element.style.display = "block";
+      if(message == "inboxnotification"){
+        toast.error("You have new mail for inbox");
+        var element = document.getElementById("AllInoxRefreshpanel")
+        element.style.display = "block";
+      }
+      else if(message == "spamnotification"){
+        toast.error("You have new mail for spam");
+        var element = document.getElementById("AllSpamRefreshpanel")
+        element.style.display = "block";
+      }
     };
     // Add the event listener when the component mounts
     socket.on('message', handleMessage);

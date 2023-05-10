@@ -1397,6 +1397,9 @@ export default function SpamPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    var element = document.getElementById("AllSpamRefreshpanel")
+    element.style.display = "none";
+
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
@@ -1759,7 +1762,7 @@ export default function SpamPage(props) {
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
+                  <a onClick={RefreshTable} className='Refreshbtn' id="AllSpamRefreshpanel" style={{ display: "none" }}><RefreshIcon /><span className='roundgreenemail'></span></a>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
                     OpenMessage?.length == 0 ? "" :
