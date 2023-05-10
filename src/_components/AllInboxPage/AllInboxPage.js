@@ -205,6 +205,7 @@ export default function OtherInboxPage(props) {
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
 
+  const [NewMAil, SetNewMail] = useState("")
   useEffect(() => {
     // if (props.location.search != undefined) {
     //   const Response = decodeURIComponent(props.location.search)
@@ -216,11 +217,18 @@ export default function OtherInboxPage(props) {
     // } else {
     //   GetClientID([-1]);
     // }
+
+    var s = localStorage.getItem("NewMail")
+    if (s == "You have new mail") {
+      SetNewMail(s)
+    } else {
+      SetNewMail("")
+    }
+
     document.title = 'All Inbox | MAXBOX';
     GetClientID();
+
   }, [SearchInbox, state])
-
-
 
 
   const GetAccountDetailsusingSocket = (ID) => {
@@ -259,6 +267,9 @@ export default function OtherInboxPage(props) {
   }
   // Get Client ID
   const GetClientID = (ID) => {
+
+
+
     var UserDetails = GetUserDetails();
     var ID = decrypt(props.location.search.replace('?', ''))
 
@@ -1303,6 +1314,8 @@ export default function OtherInboxPage(props) {
 
 
   const RefreshTable = () => {
+    var element = document.getElementById("Refreshpanel")
+    element.style.display = "none";
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
@@ -1364,6 +1377,11 @@ export default function OtherInboxPage(props) {
         }
       }
     }
+  }
+
+  const HandleRefreshNewMail = () => {
+    var element = document.getElementById("Refreshpanel")
+    element.style.display = "none";
   }
 
 
@@ -1616,8 +1634,14 @@ export default function OtherInboxPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
-                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                  {/* {
+                    NewMAil == undefined || NewMAil == "" ? <a className='hide-email'><RefreshIcon disabled /><span className='hide-email'></span></a>
+                      : <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
+                  } */}
+
+                  <a onClick={HandleRefreshNewMail} className='Refreshbtn' id="Refreshpanel" style={{ display: "none" }} > <RefreshIcon /><span className='roundgreenemail'  ></span></a>
+
+                  <a onClick={RefreshTable} id="Refreshpanel" className='Refreshbtn'><RefreshIcon /></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
