@@ -3438,6 +3438,43 @@ button.btn-mark.btn.btn-primary:disabled {
   to {background-color: rgb(0, 149, 255);}
 }
 
+
+div .toast-message {
+    background: #fff;
+    color: #444;
+    font-size: 15px;
+    padding: 0px 30px;
+    filter: drop-shadow(7px 0px 20px #d7d7d7);
+    border-radius: 10px;
+    min-height: auto;
+}
+div .toast-message > div {
+    padding: 16px 0;
+}
+div .toast-message > button {
+    color: #444;
+    margin: 20px 0 20px 20px;
+}
+.emailicon > div {
+    margin-left: 40px;
+    position: relative;
+}
+.emailicon > div::before { 
+    background: url(../src/images/inbox.svg); 
+    width: 25px;
+    height: 25px;
+    position: absolute; 
+    content: "";
+    left: -40px;
+    top: 50%;
+    transform: translate(0, -50%);
+    background-size: cover;
+}
+div .Toastify__toast-container {
+    width: auto;
+}
+
+
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;
