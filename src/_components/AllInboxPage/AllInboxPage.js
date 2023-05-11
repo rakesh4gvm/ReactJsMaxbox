@@ -1621,13 +1621,6 @@ export default function OtherInboxPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen'
                     control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  {/* {
-                    NewMAil == undefined || NewMAil == "" ? <a className='hide-email'><RefreshIcon disabled /><span className='hide-email'></span></a>
-                      : <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
-                  } */}
-
-                  {/* <a onClick={RefreshTable} className='Refreshbtn' id="AllInoxRefreshpanel"  > <RefreshIcon /><span className='roundgreenemail'  ></span></a> */}
-
                   <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :

@@ -1499,7 +1499,6 @@ export default function UnansweredRepliesByID(props) {
                         <>
                             <div className='orangbg-table'>
                                 <div className='rigter-coller'>
-                                    <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
                                     <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :
