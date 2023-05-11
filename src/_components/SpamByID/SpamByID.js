@@ -1763,8 +1763,7 @@ export default function SpamByID(props) {
                                 }
                                 <div className='rigter-coller'>
                                     <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                                    <a onClick={RefreshTable} className='Refreshbtn' id="AllSpamRefreshpanel" style={{ display: "none" }}><RefreshIcon /><span className='roundgreenemail'></span></a>
-                                    <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                                    <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllSpamRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :
                                             <div className='pagination-pa' >

@@ -3140,6 +3140,7 @@ tr.selected-row {
     border-left: 1px solid #d28466;
     padding: 1px 8px;
     margin: 0px auto;
+    position: relative;
 }
 
 .Refreshbtn:hover {

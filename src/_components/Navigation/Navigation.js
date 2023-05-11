@@ -220,12 +220,12 @@ export default function Navigation(props) {
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
       if(message == "inboxnotification"){
-        toast.error("You have new mail for inbox");
+        toast.error("You have new email for inbox");
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "block";
       }
       else if(message == "spamnotification"){
-        toast.error("You have new mail for spam");
+        toast.error("You have new email for spam");
         var element = document.getElementById("AllSpamRefreshpanel")
         element.style.display = "block";
       }

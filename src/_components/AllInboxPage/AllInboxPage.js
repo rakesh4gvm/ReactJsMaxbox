@@ -1626,9 +1626,9 @@ export default function OtherInboxPage(props) {
                       : <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
                   } */}
 
-                  <a onClick={RefreshTable} className='Refreshbtn' id="AllInoxRefreshpanel" style={{ display: "none" }} > <RefreshIcon /><span className='roundgreenemail'  ></span></a>
+                  {/* <a onClick={RefreshTable} className='Refreshbtn' id="AllInoxRefreshpanel"  > <RefreshIcon /><span className='roundgreenemail'  ></span></a> */}
 
-                  <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >

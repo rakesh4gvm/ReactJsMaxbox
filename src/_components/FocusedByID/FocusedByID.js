@@ -1484,6 +1484,8 @@ export default function FocusedByID(props) {
     };
 
     const RefreshTable = () => {
+        var element = document.getElementById("AllInoxRefreshpanel")
+        element.style.display = "none";
         var ID = decrypt(props.location.search.replace('?', ''))
         if (!state) {
             LoaderShow()
@@ -1893,9 +1895,7 @@ export default function FocusedByID(props) {
                                         Starred
                                     </ToggleButton>
                                     <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                                    <a className='Refreshbtn'><RefreshIcon /><span className='roundgreenemail'></span></a>
-                                    <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
-                                    {console.log("TotalRecord======", TotalRecord)}
+                                    <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :
                                             <div className='pagination-pa' >
