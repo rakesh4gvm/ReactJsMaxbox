@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Axios from "axios";
 
 import { Col, Row } from 'react-bootstrap';
@@ -69,13 +69,31 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(false);
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(false);
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
+  const [IsProcees, SetIsProcess] = useState(true)
+
   useEffect(() => {
     document.title = 'Email Settings | MAXBOX';
+
     GetClientID();
-    // CheckAccountAuthonicate()
-    // GetEmailAccountList()
 
   }, [SortedBy, SortField]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      var UserDetails = GetUserDetails();
+
+      if (IsProcees) {
+        IsProcessStatusCheck(UserDetails.ClientID, UserDetails.UserID, Page)
+      }
+
+      if (!IsProcees) {
+        clearInterval(interval); // Stop the interval
+      }
+    }, 5000)
+    return () => {
+      clearInterval(interval); // Clean up the interval on component unmount
+    };
+  }, [IsProcees])
 
   const CheckAccountAuthonicate = () => {
 
@@ -112,6 +130,8 @@ export default function EmailConfigurationPage() {
 
     }
   }
+
+
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
@@ -120,6 +140,8 @@ export default function EmailConfigurationPage() {
     }
     CheckAccountAuthonicate()
     GetEmailAccountList(UserDetails.ClientID, UserDetails.UserID, Page)
+
+
   }
 
   // Start Get EmailAccount
@@ -145,6 +167,15 @@ export default function EmailConfigurationPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetEmailAccountList(Result.data.PageData);
         SetCountPage(Result.data.PageCount);
+        var counter = 0
+        for (var i = 0; i <= Result.data.TotalCount; i++) {
+          if (Result.data.TotalCount === counter) {
+            SetIsProcess(false)
+          }
+          if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
+            counter = counter + 1
+          }
+        }
         LoaderHide()
       } else {
         LoaderHide()
@@ -153,6 +184,45 @@ export default function EmailConfigurationPage() {
     });
   };
   // End Get EmailAccount
+
+  const IsProcessStatusCheck = (CID, UID, PN) => {
+    let Data
+    Data = {
+      Page: PN,
+      RowsPerPage: RowsPerPage,
+      sort: true,
+      Field: SortField,
+      Sortby: SortedBy,
+      Search: '',
+      ClientID: CID,
+      UserID: UID,
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetEmailAccountList(Result.data.PageData);
+        SetCountPage(Result.data.PageCount);
+        var counter = 0
+        for (var i = 0; i <= Result.data.TotalCount; i++) {
+          if (Result.data.TotalCount === counter) {
+            SetIsProcess(false)
+          }
+          if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
+            counter = counter + 1
+          }
+        }
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    });
+  };
+
+
+
 
   //change Page
   const HandleChangePage = (Event, NewPage) => {
@@ -258,7 +328,6 @@ export default function EmailConfigurationPage() {
   }
   // end email account delete 
 
-
   return (
     <>
 
@@ -356,21 +425,22 @@ export default function EmailConfigurationPage() {
                           <TableCell>{row.LastName}</TableCell>
                           <TableCell scope="row">{row.Email}</TableCell>
                           <TableCell align="right">
-                          
+
 
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
-                              {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? 
-                              // <Button className='btn-success'> Process </Button>  
-                              <div className='barprogress successbar'>
-                                <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
-                              </div>
-                              : 
-                              // <Button className='btn-success'> Completed </Button> 
-                              <div className='barprogress primarycl'>
-                              <CircularProgress value={70} /> <label>processing</label>
-                            </div>
+                              {/* {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? */}
+                              {(row?.IsInboxProcess == false && row?.IsSentProcess == false && row?.IsSpamProcess == false) ?
+                                // <Button className='btn-success'> Process </Button>  
+                                <div className='barprogress successbar'>
+                                  <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
+                                </div>
+                                :
+                                // <Button className='btn-success'> Completed </Button> 
+                                <div className='barprogress primarycl'>
+                                  <CircularProgress value={70} /> <label>processing</label>
+                                </div>
 
-                             
+
                               }
                             </ButtonGroup>
                           </TableCell>
