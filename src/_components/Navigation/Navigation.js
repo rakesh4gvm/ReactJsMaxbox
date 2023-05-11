@@ -216,18 +216,12 @@ export default function Navigation(props) {
 
 
   useEffect(() => {
-  //   toast.error( "You have new email for inbox", {
-  //     position: toast.POSITION.BOTTOM_LEFT,
-  //     className: 'toast-message emailicon',
-  //     autoClose: false, 
-  //  });
     const handleMessage = (message, roomid) => {
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
       if(message == "inboxnotification"){
         toast.error("You have new email for inbox", {
-          position: toast.POSITION.BOTTOM_LEFT,
-          className: 'toast-message emailicon',
+          className: 'toast-message emailicon', 
        });
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "block";
