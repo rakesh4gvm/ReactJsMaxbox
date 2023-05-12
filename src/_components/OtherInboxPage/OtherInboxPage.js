@@ -1406,17 +1406,17 @@ export default function OtherInboxPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(ClientID, UserID, Page, ID, "", "SeenEmails");
+        GetOtherInboxList(ClientID, UserID, 1, ID, "", "SeenEmails");
       } else {
-        GetOtherInboxList(ClientID, UserID, Page, 0, "", "SeenEmails")
+        GetOtherInboxList(ClientID, UserID, 1, 0, "", "SeenEmails")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(ClientID, UserID, Page, ID, "", "");
+        GetOtherInboxList(ClientID, UserID, 1, ID, "", "");
       } else {
-        GetOtherInboxList(ClientID, UserID, Page, 0, "", "")
+        GetOtherInboxList(ClientID, UserID, 1, 0, "", "")
       }
     }
   }

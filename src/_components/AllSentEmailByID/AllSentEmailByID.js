@@ -1287,10 +1287,10 @@ export default function AllSentEmailByID(props) {
         var ID = decrypt(props.location.search.replace('?', ''))
 
         if (ID != "" && ID != null && ID != "undefined") {
-            GetAllSent(ClientID, UserID, Page, ID, "");
+            GetAllSent(ClientID, UserID, 1, ID, "");
         }
         else {
-            GetAllSent(ClientID, UserID, Page, 0, "")
+            GetAllSent(ClientID, UserID, 1, 0, "")
         }
     }
 

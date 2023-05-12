@@ -1350,17 +1350,17 @@ export default function StarredByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(ClientID, UserID, Page, ID, "SeenEmails");
+                GetStarredList(ClientID, UserID, 1, ID, "SeenEmails");
             } else {
-                GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+                GetStarredList(ClientID, UserID, 1, 0, "SeenEmails")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(ClientID, UserID, Page, ID, "");
+                GetStarredList(ClientID, UserID, 1, ID, "");
             } else {
-                GetStarredList(ClientID, UserID, Page, 0, "")
+                GetStarredList(ClientID, UserID, 1, 0, "")
             }
         }
     }

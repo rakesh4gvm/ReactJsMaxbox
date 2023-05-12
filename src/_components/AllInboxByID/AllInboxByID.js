@@ -1285,17 +1285,17 @@ export default function AllInboxByID(props) {
         if (!state) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
-                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+                GetAllInboxList(ClientID, UserID, 1, ID, "SeenEmails", "");
             } else {
-                GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
+                GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
 
-                GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+                GetAllInboxList(ClientID, UserID, 1, ID, "", "");
             } else {
-                GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+                GetAllInboxList(ClientID, UserID, 1, 0, "", "")
             }
         }
     }
@@ -1594,7 +1594,7 @@ export default function AllInboxByID(props) {
                                     </ToggleButton>
                                     <FormControlLabel className='check-unseen'
                                         control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                                    
+
                                     <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :

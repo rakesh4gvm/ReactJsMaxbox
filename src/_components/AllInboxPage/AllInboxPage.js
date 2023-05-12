@@ -1308,14 +1308,13 @@ export default function OtherInboxPage(props) {
   const RefreshTable = () => {
     var element = document.getElementById("AllInoxRefreshpanel")
     element.style.display = "none";
-
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "")
+        GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
       }
     } else {
       LoaderShow()
@@ -1323,7 +1322,7 @@ export default function OtherInboxPage(props) {
 
         GetAllInboxList(ClientID, UserID, Page, ID, "", "");
       } else {
-        GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+        GetAllInboxList(ClientID, UserID, 1, 0, "", "")
       }
     }
   }

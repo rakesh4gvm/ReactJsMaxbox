@@ -1539,17 +1539,17 @@ export default function UnansweredResponsesPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
+        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
       } else {
-        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
       }
     }
   }
@@ -1943,7 +1943,7 @@ export default function UnansweredResponsesPage(props) {
                     Starred
                   </ToggleButton>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  
+
                   <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :

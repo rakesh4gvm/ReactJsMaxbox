@@ -853,10 +853,10 @@ export default function OtherInboxPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetDraftList(ClientID, UserID, Page, ID);
+      GetDraftList(ClientID, UserID, 1, ID);
     }
     else {
-      GetDraftList(ClientID, UserID, Page, 0)
+      GetDraftList(ClientID, UserID, 1, 0)
     }
   }
 
@@ -925,6 +925,7 @@ export default function OtherInboxPage(props) {
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
+                  {console.log("TotalRecord====", TotalRecord)}
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >

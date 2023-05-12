@@ -1401,17 +1401,17 @@ export default function FollowUpLaterByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "SeenEmails");
             } else {
-                GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "SeenEmails")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetFollowUpLaterList(ClientID, UserID, Page, ID, "", "");
+                GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "");
             } else {
-                GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
+                GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "")
             }
         }
     }

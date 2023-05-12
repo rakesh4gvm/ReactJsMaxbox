@@ -1265,10 +1265,10 @@ export default function AllUnansweredRepliesPage(props) {
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
-      GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "");
+      GetAllUnansweredRepliesList(ClientID, UserID, 1, ID, "");
     }
     else {
-      GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "")
+      GetAllUnansweredRepliesList(ClientID, UserID, 1, 0, "")
     }
   }
 

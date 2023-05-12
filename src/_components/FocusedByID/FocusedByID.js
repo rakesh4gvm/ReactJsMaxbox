@@ -1491,17 +1491,17 @@ export default function FocusedByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
             } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
             } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
             }
         }
     }

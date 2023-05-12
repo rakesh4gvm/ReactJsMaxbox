@@ -1405,17 +1405,17 @@ export default function SpamPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+        GetSpamList(ClientID, UserID, 1, ID, "", "SeenEmails");
       } else {
-        GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+        GetSpamList(ClientID, UserID, 1, 0, "", "SeenEmails")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(ClientID, UserID, Page, ID, "", "");
+        GetSpamList(ClientID, UserID, 1, ID, "", "");
       } else {
-        GetSpamList(ClientID, UserID, Page, 0, "", "")
+        GetSpamList(ClientID, UserID, 1, 0, "", "")
       }
     }
   }
