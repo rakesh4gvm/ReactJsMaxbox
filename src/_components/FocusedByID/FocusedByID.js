@@ -688,14 +688,22 @@ export default function FocusedByID(props) {
                         if (ID != "" && ID != null && ID != "undefined") {
                             GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails", "");
                         } else {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
+                            if (isstarActive == true) {
+                                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+                            } else {
+                                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
+                            }
                         }
                     }
                     else {
                         if (ID != "" && ID != null && ID != "undefined") {
                             GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "", "");
                         } else {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
+                            if (isstarActive == true) {
+                                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+                            } else {
+                                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
+                            }
                         }
                     }         // }
                 } else {
@@ -1494,6 +1502,9 @@ export default function FocusedByID(props) {
                 GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
             } else {
                 GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
+                if (isstarActive) {
+                    setstarActive(false)
+                }
             }
         } else {
             LoaderShow()
@@ -1502,6 +1513,9 @@ export default function FocusedByID(props) {
                 GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
             } else {
                 GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
+                if (isstarActive) {
+                    setstarActive(false)
+                }
             }
         }
     }
@@ -1813,7 +1827,7 @@ export default function FocusedByID(props) {
                             Are you sure ?
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            Are you sure for move this E-mail into Other Inbox ?
+                            you want to move this E-mail into Other Inbox ?
                         </Typography>
                     </div>
                     <div className='d-flex btn-50'>

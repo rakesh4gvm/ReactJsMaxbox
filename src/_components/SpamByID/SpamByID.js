@@ -1688,7 +1688,7 @@ export default function SpamByID(props) {
                             Are you sure ?
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            Are you sure  for move this E-mail into Other Inbox ?
+                            you want to move this E-mail into Other Inbox ?
                         </Typography>
                     </div>
                     <div className='d-flex btn-50'>

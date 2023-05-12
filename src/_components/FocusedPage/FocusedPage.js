@@ -1542,6 +1542,9 @@ export default function UnansweredResponsesPage(props) {
         GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
       } else {
         GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
+        if (isstarActive) {
+          setstarActive(false)
+        }
       }
     } else {
       LoaderShow()
@@ -1550,6 +1553,9 @@ export default function UnansweredResponsesPage(props) {
         GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
       } else {
         GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
+        if (isstarActive) {
+          setstarActive(false)
+        }
       }
     }
   }
@@ -1861,7 +1867,7 @@ export default function UnansweredResponsesPage(props) {
               Are you sure ?
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Are you sure for move this E-mail into Other Inbox ?
+              you want to move this E-mail into Other Inbox ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>

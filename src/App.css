@@ -1,25 +1,26 @@
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 
@@ -3363,29 +3364,37 @@ button.btn-mark.btn.btn-primary:disabled {
 .carsetting ul li a:not([href]):not([class]) {
     color: #fff;
 }
+
 .barprogress {
     display: flex;
     align-items: center;
     margin: 0 auto;
 }
-.barprogress label{
+
+.barprogress label {
     margin-top: 7px;
 }
+
 .barprogress span {
     width: 30px !important;
     height: 30px !important;
     margin: 0 5px;
     float: left;
     position: relative;
-} 
-.barprogress.primarycl span, .primarycl{  
+}
+
+.barprogress.primarycl span,
+.primarycl {
     color: #e49273;
     font-weight: 600;
 }
-.barprogress.successbar span, .successbar {
+
+.barprogress.successbar span,
+.successbar {
     color: #5CC078;
     font-weight: 600;
 }
+
 .barprogress.successbar span::before {
     content: "100%";
     font-weight: 600;
@@ -3398,11 +3407,13 @@ button.btn-mark.btn.btn-primary:disabled {
     width: 30px;
     height: 30px;
     line-height: 30px;
-} 
-.listclick .MuiList-padding > .MuiList-root a {
+}
+
+.listclick .MuiList-padding>.MuiList-root a {
     padding-left: 30px;
 }
-.alertpostion{
+
+.alertpostion {
     position: fixed;
     right: 22px;
     z-index: 99999;
@@ -3411,31 +3422,41 @@ button.btn-mark.btn.btn-primary:disabled {
     width: auto;
     top: 1px;
 }
-.alertpostion .MuiAlert-standard{
+
+.alertpostion .MuiAlert-standard {
     background-color: rgb(192 228 192);
     padding: 4px 10px;
 }
-.alertpostion .MuiAlert-message{
+
+.alertpostion .MuiAlert-message {
     padding: 0;
 }
-.alertpostion .MuiAlert-icon{
+
+.alertpostion .MuiAlert-icon {
     padding: 0;
     margin-right: 5px;
 }
+
 .roundgreenemail {
     width: 8px;
     height: 8px;
     background-color: #58eb56;
-    animation: example  1s infinite;
+    animation: example 1s infinite;
     border-radius: 72px;
     float: left;
     position: absolute;
     right: 3px;
     top: 3px;
 }
+
 @keyframes example {
-  from {background-color: #58eb56;}
-  to {background-color: rgb(0, 149, 255);}
+    from {
+        background-color: #58eb56;
+    }
+
+    to {
+        background-color: rgb(0, 149, 255);
+    }
 }
 
 
@@ -3449,30 +3470,36 @@ div .toast-message {
     border-radius: 10px;
     min-height: auto;
 }
-div .toast-message > .Toastify__toast-body {
+
+div .toast-message>.Toastify__toast-body {
     padding: 16px 0;
 }
-div .toast-message > button {
+
+div .toast-message>button {
     color: #444;
     margin: 20px 0 20px 20px;
 }
-.emailicon > .Toastify__toast-body {
+
+.emailicon>.Toastify__toast-body {
     margin-left: 40px;
     position: relative;
 }
-.emailicon > .Toastify__toast-body::before { 
-    background: url(../src/images/inbox.svg); 
+
+.emailicon>.Toastify__toast-body::before {
+    background: url(../src/images/inbox.svg);
     width: 25px;
     height: 25px;
-    position: absolute; 
+    position: absolute;
     content: "";
     left: -40px;
     top: 50%;
     transform: translate(0, -50%);
     background-size: cover;
 }
+
 div .Toastify__toast-container {
     width: auto;
+    min-width: 250px;
 }
 
 @media screen and (max-width:990px) {

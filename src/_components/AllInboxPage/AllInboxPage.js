@@ -1315,6 +1315,9 @@ export default function OtherInboxPage(props) {
         GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
         GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
+        if (isstarActive) {
+          setstarActive(false)
+        }
       }
     } else {
       LoaderShow()
@@ -1323,6 +1326,9 @@ export default function OtherInboxPage(props) {
         GetAllInboxList(ClientID, UserID, Page, ID, "", "");
       } else {
         GetAllInboxList(ClientID, UserID, 1, 0, "", "")
+        if (isstarActive) {
+          setstarActive(false)
+        }
       }
     }
   }
