@@ -150,7 +150,7 @@ export default function FocusedByID(props) {
     const [OpenMessage, SetOpenMessageDetails] = React.useState([]);
     const [MailNumber, SetMailNumber] = React.useState(1);
     const [Page, SetPage] = React.useState(1);
-    const [RowsPerPage, SetRowsPerPage] = React.useState(10);
+    const [RowsPerPage, SetRowsPerPage] = React.useState(50);
     const [SortField, SetsortField] = React.useState("MessageDatetime");
     const [SortedBy, SetSortedBy] = React.useState(-1);
     const [SearchInbox, SetSearchInbox] = React.useState("");
@@ -1501,10 +1501,10 @@ export default function FocusedByID(props) {
                 SetMenuID(ID);
                 GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
             } else {
-                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
                 if (isstarActive) {
                     setstarActive(false)
                 }
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
             }
         } else {
             LoaderShow()
@@ -1512,10 +1512,10 @@ export default function FocusedByID(props) {
                 SetMenuID(ID);
                 GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
             } else {
-                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
                 if (isstarActive) {
                     setstarActive(false)
                 }
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
             }
         }
     }

@@ -1314,10 +1314,10 @@ export default function OtherInboxPage(props) {
       if (ID != "" && ID != null && ID != "undefined") {
         GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
       } else {
-        GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
         if (isstarActive) {
           setstarActive(false)
         }
+        GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
       }
     } else {
       LoaderShow()
@@ -1325,10 +1325,10 @@ export default function OtherInboxPage(props) {
 
         GetAllInboxList(ClientID, UserID, Page, ID, "", "");
       } else {
-        GetAllInboxList(ClientID, UserID, 1, 0, "", "")
         if (isstarActive) {
           setstarActive(false)
         }
+        GetAllInboxList(ClientID, UserID, 1, 0, "", "")
       }
     }
   }

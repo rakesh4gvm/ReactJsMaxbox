@@ -1287,20 +1287,20 @@ export default function AllInboxByID(props) {
             if (ID != "" && ID != null && ID != "undefined") {
                 GetAllInboxList(ClientID, UserID, 1, ID, "SeenEmails", "");
             } else {
-                GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
                 if (isstarActive) {
                     setstarActive(false)
                 }
+                GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 GetAllInboxList(ClientID, UserID, 1, ID, "", "");
             } else {
-                GetAllInboxList(ClientID, UserID, 1, 0, "", "")
                 if (isstarActive) {
                     setstarActive(false)
                 }
+                GetAllInboxList(ClientID, UserID, 1, 0, "", "")
             }
         }
     }
