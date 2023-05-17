@@ -266,49 +266,7 @@ export default function UnansweredResponsesPage(props) {
         }
       }
     }
-
-
-
-
     GetClientList(UserDetails.ClientID)
-    // if (ID !== undefined && ID!="") {
-    // if (props !== undefined) {
-    //   const ID = props.location.state;
-    if (!state) {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "SeenEmails", "");
-        if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "IsStarredEmails");
-        } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
-        }
-      } else {
-        // GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "SeenEmails", "")
-        if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "IsStarredEmails")
-        } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
-        }
-      }
-    } else {
-      if (ID != "" && ID != null && ID != "undefined") {
-        SetMenuID(ID);
-        if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "IsStarredEmails")
-        } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "")
-        }
-      } else {
-        if (isstarActive) {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "IsStarredEmails")
-        } else {
-          GetUnansweredResponcesList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
-        }
-      }
-    }
-
-    // }
   }
 
   const GetClientList = (ID) => {
