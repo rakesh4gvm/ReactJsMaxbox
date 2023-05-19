@@ -1516,7 +1516,7 @@ div.erorr-msg>*>* {
     margin: 0;
 }
 
-.comse-select .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+.comse-select .MuiSelect-select {
     padding: 5px 15px;
     min-width: 300px;
 }
@@ -2851,8 +2851,8 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     border-color: #e49273;
 }
 
-.sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
-.sign-main .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+.sign-main .MuiCheckbox-root.Mui-checked,
+.sign-main .MuiCheckbox-root.MuiCheckbox-indeterminate {
     color: #e49273;
 }
 
