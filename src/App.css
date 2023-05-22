@@ -2533,7 +2533,7 @@ div#root {
 
 .serchinbox {
     background-color: transparent;
-    max-width: 250px;
+    max-width: 767px;
     border: none;
     display: table;
     width: 100% !important;
@@ -2554,6 +2554,9 @@ div#root {
     float: left;
     font-size: 0.8rem;
     width: calc(100% - 40px);
+}
+.serchinbox>div:last-child input{
+    width: 100% !important;
 }
 
 div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
