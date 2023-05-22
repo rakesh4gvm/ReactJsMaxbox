@@ -607,7 +607,7 @@ export default function OtherInboxByID(props) {
                     });
                     ResponseApi.then((Result) => {
                         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                            toast.success(<div>Other Inbox  <br />Follow up later updated successfully.</div>);
+                            toast.success(<div>Follow up later updated successfully.</div>);
                             CloseFollowupPopModel();
                             OpenMessageDetails('')
                             LoaderShow()
