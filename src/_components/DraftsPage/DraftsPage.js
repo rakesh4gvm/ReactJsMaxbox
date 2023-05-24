@@ -323,7 +323,7 @@ export default function OtherInboxPage(props) {
       el.classList.remove("show");
       if (EmailAccountUsers.length > 0) {
         SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-        SetSignature({ Data: ClientData })
+        SetSignature({ Data: ClientData + OpenMessage?.Body })
         SetClientSignatureData(ClientData)
       } else {
         SetSelectedEmailAccountUser(0);
@@ -340,7 +340,7 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: ClientData })
+        SetSignature({ Data: ClientData + OpenMessage?.Body })
         SetToEmailValue([Data?.MailTo])
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
