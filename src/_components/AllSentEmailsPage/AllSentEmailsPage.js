@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -208,6 +208,7 @@ export default function AllSentEmailsPage(props) {
     }
   }, [IsBottom])
 
+  const ContainerRef = useRef(null)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -1262,6 +1263,8 @@ export default function AllSentEmailsPage(props) {
     event,
     newPage,
   ) => {
+
+    ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
@@ -1531,7 +1534,7 @@ export default function AllSentEmailsPage(props) {
                 </div>
               </div>
 
-              <div className="simulationDiv">
+              <div className="simulationDiv" ref={ContainerRef}>
                 <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>

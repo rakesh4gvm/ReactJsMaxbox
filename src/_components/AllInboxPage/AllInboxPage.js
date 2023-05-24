@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -206,22 +206,12 @@ export default function OtherInboxPage(props) {
   const handleTemClose = () => setTemOpen(false);
 
   useEffect(() => {
-    // if (props.location.search != undefined) {
-    //   const Response = decodeURIComponent(props.location.search)
-    //   const Decoded = Response.split("?")[1]
-    //   const ID = Decoded?.slice(1, -1)
-    //   SetIDs([ID])
-    //   document.title = 'All Inbox | MAXBOX';
-    //   GetClientID([ID]);
-    // } else {
-    //   GetClientID([-1]);
-    // }
-
     document.title = 'All Inbox | MAXBOX';
     GetClientID();
 
   }, [SearchInbox, state])
 
+  const ContainerRef = useRef(null);
 
   const GetAccountDetailsusingSocket = (ID) => {
     var UserDetails = GetUserDetails();
@@ -1272,6 +1262,7 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
+    ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
@@ -1643,7 +1634,7 @@ export default function OtherInboxPage(props) {
               </div>
 
 
-              <div className="simulationDiv" >
+              <div className="simulationDiv" ref={ContainerRef}>
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>

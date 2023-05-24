@@ -194,6 +194,8 @@ export default function OtherInboxPage(props) {
     }
   }, [IsBottom])
 
+  const ContainerRef = useRef(null)
+
   // Selected Email Account User
   const SelectEmailAccountUser = (e) => {
     SetSelectedEmailAccountUser(e.target.value)
@@ -835,6 +837,8 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
+
+    ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
     var pn = newPage + 1;
@@ -850,6 +854,7 @@ export default function OtherInboxPage(props) {
   };
 
   const RefreshTable = () => {
+    
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
@@ -925,7 +930,6 @@ export default function OtherInboxPage(props) {
               <div className='orangbg-table'>
                 <div className='rigter-coller'>
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
-                  {console.log("TotalRecord====", TotalRecord)}
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
@@ -941,7 +945,7 @@ export default function OtherInboxPage(props) {
                   }
                 </div>
               </div>
-              <div className="simulationDiv" >
+              <div className="simulationDiv" ref={ContainerRef} >
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
