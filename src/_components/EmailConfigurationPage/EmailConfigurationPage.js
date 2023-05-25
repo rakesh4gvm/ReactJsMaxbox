@@ -411,7 +411,7 @@ export default function EmailConfigurationPage() {
                         <TableCell onClick={() => { SortData("FirstName") }}>First Name</TableCell>
                         <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
                         <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
-                        <TableCell align="center">Process</TableCell>
+                        <TableCell >Process</TableCell>
                         <TableCell align="right">Authentication Status</TableCell>
                         <TableCell align="right"></TableCell>
                         <TableCell align="center">Action</TableCell>
@@ -427,18 +427,27 @@ export default function EmailConfigurationPage() {
                           <TableCell align="right">
 
 
-                            <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
+                            <ButtonGroup className='table-btn w-100' variant="text" aria-label="text button group">
                               {/* {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? */}
                               {(row?.IsInboxProcess == false && row?.IsSentProcess == false && row?.IsSpamProcess == false) ?
-                                // <Button className='btn-success'> Process </Button>  
+                                // <Button className='btn-success'> Process </Button>    
                                 <div className='barprogress successbar'>
                                   <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
                                 </div>
                                 :
                                 // <Button className='btn-success'> Completed </Button> 
-                                <div className='barprogress primarycl'>
+                               
+
+                              <div className='d-table'> 
+                               <div className='barprogress primarycl'>
                                   <CircularProgress value={70} /> <label>processing</label>
                                 </div>
+                              <div className='d-flex listboxtab'>
+                                <div>Inbox (10)</div>
+                                <div>Sent (100)</div>
+                                <div>Spam (1100)</div> 
+                              </div>
+                              </div> 
 
 
                               }
@@ -455,11 +464,13 @@ export default function EmailConfigurationPage() {
                           </TableCell>
 
                           <TableCell align="right">{row.IsWorking == true ? '' : <Button className='btnauthenticate' onClick={() => ReAuthenticate(row)}><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button>}</TableCell>
-                          <TableCell className='d-flex'>
-                            <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
-                              <img src={DeleteIcon} />
-                            </Button>
-                            <Button className="iconbtntable" onClick={() => EditEmailConfiguration(row._id)}><EditIcon /></Button>
+                          <TableCell>
+                            <div className='d-flex'>
+                              <Button className='iconbtntable' onClick={() => OpenEmailAccountDeletePopModel(row)}>
+                                <img src={DeleteIcon} />
+                              </Button>
+                              <Button className="iconbtntable" onClick={() => EditEmailConfiguration(row._id)}><EditIcon /></Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}

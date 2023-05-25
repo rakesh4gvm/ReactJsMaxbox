@@ -3371,7 +3371,7 @@ button.btn-mark.btn.btn-primary:disabled {
 .barprogress {
     display: flex;
     align-items: center;
-    margin: 0 auto;
+    margin: 0 0 0 -5px;
 }
 
 .barprogress label {
@@ -3503,6 +3503,9 @@ div .toast-message>button {
 div .Toastify__toast-container {
     width: auto;
     min-width: 250px;
+}
+.listboxtab div{
+    margin-right: 15px;
 }
 
 @media screen and (max-width:990px) {
