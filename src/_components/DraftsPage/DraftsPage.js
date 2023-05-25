@@ -293,7 +293,7 @@ export default function OtherInboxPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data != "" && Result.data.Data != null && Result.data.Data != undefined) {
-            SetOpenMessageDetails(Result.data.Data);
+            SetOpenMessageDetails(Result?.data?.Data);
             SetActive(ID);
             if (IsComposeData) {
               OpenCompose(Result.data.Data)
@@ -315,6 +315,8 @@ export default function OtherInboxPage(props) {
   }
   //End Open Message Details
 
+
+
   // Open Compose
   const OpenCompose = (Data) => {
     if (ClientID == "" || ClientID == undefined || ClientID == null) {
@@ -325,13 +327,11 @@ export default function OtherInboxPage(props) {
       el.classList.remove("show");
       if (EmailAccountUsers.length > 0) {
         SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-        SetSignature({ Data: ClientData + OpenMessage?.Body })
+        SetSignature({ Data: ClientData + Data.Body })
         SetClientSignatureData(ClientData)
       } else {
         SetSelectedEmailAccountUser(0);
       }
-      // SetClientSignatureData("")
-      // SetSelectedEmailAccountUser(0);
       SetNewObjectionID([])
       SetNewTemplateID([])
       SetToEmailValue([])
@@ -342,7 +342,7 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: ClientData + OpenMessage?.Body })
+        SetSignature({ Data: ClientData + Data.Body })
         SetToEmailValue([Data?.MailTo])
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
@@ -854,7 +854,7 @@ export default function OtherInboxPage(props) {
   };
 
   const RefreshTable = () => {
-    
+
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (ID != "" && ID != null && ID != "undefined") {
