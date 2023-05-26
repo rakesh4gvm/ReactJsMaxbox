@@ -1283,6 +1283,7 @@ export default function AllSentEmailsPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    ContainerRef.current.scrollTop = 0;
     LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))
 

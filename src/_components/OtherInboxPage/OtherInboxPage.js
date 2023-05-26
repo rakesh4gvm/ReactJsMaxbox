@@ -1405,6 +1405,7 @@ export default function OtherInboxPage(props) {
   // Ends Pagination 
 
   const RefreshTable = () => {
+    ContainerRef.current.scrollTop = 0;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()

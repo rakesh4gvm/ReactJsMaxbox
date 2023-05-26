@@ -1268,6 +1268,7 @@ export default function UnansweredRepliesByID(props) {
     };
 
     const RefreshTable = () => {
+        ContainerRef.current.scrollTop = 0;
         LoaderShow()
         var ID = decrypt(props.location.search.replace('?', ''))
 

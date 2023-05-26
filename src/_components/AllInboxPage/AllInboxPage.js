@@ -1297,6 +1297,7 @@ export default function OtherInboxPage(props) {
 
 
   const RefreshTable = () => {
+    ContainerRef.current.scrollTop = 0;
     var element = document.getElementById("AllInoxRefreshpanel")
     element.style.display = "none";
     var ID = decrypt(props.location.search.replace('?', ''))

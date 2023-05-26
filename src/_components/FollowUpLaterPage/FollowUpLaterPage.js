@@ -1397,6 +1397,7 @@ export default function FollowUpLater(props) {
   // Ends Pagination 
 
   const RefreshTable = () => {
+    ContainerRef.current.scrollTop = 0;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()

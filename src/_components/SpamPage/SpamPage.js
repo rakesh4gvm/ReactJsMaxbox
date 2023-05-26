@@ -1401,6 +1401,7 @@ export default function SpamPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    ContainerRef.current.scrollTop = 0;
     var element = document.getElementById("AllSpamRefreshpanel")
     element.style.display = "none";
 

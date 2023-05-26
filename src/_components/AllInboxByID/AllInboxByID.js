@@ -1270,6 +1270,7 @@ export default function AllInboxByID(props) {
 
 
     const RefreshTable = () => {
+        ContainerRef.current.scrollTop = 0;
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "none";
 
