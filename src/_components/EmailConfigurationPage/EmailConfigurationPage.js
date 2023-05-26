@@ -71,6 +71,7 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   const [IsProcees, SetIsProcess] = useState(true)
 
+
   useEffect(() => {
     document.title = 'Email Settings | MAXBOX';
 
@@ -175,8 +176,24 @@ export default function EmailConfigurationPage() {
           if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
             counter = counter + 1
           }
+          if (Result.data.TotalCount != counter) {
+            var AccountID = Result.data.PageData[i] != null ? Result.data.PageData[i].AccountID : "";
+            const elementInbox = document.getElementById("Inbox" + AccountID);
+            const elementSent = document.getElementById("Sent" + AccountID);
+            const elementSpam = document.getElementById("Spam" + AccountID);
+            if (elementInbox) {
+              document.getElementById("Inbox" + AccountID).innerText = Result.data.PageData[i].InboxCount
+            }
+            if (elementSent) {
+              document.getElementById("Sent" + AccountID).innerText = Result.data.PageData[i].SentCount
+            }
+            if (elementSpam) {
+              document.getElementById("Spam" + AccountID).innerText = Result.data.PageData[i].SpamCount
+            }
+          }
         }
         LoaderHide()
+
       } else {
         LoaderHide()
         toast.error(Result?.data?.Message);
@@ -213,6 +230,21 @@ export default function EmailConfigurationPage() {
           }
           if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
             counter = counter + 1
+          }
+          if (Result.data.TotalCount != counter) {
+            var AccountID = Result.data.PageData[i] != null ? Result.data.PageData[i].AccountID : "";
+            const elementInbox = document.getElementById("Inbox" + AccountID);
+            const elementSent = document.getElementById("Sent" + AccountID);
+            const elementSpam = document.getElementById("Spam" + AccountID);
+            if (elementInbox) {
+              document.getElementById("Inbox" + AccountID).innerText = Result.data.PageData[i].InboxCount
+            }
+            if (elementSent) {
+              document.getElementById("Sent" + AccountID).innerText = Result.data.PageData[i].SentCount
+            }
+            if (elementSpam) {
+              document.getElementById("Spam" + AccountID).innerText = Result.data.PageData[i].SpamCount
+            }
           }
         }
       } else {
@@ -436,18 +468,18 @@ export default function EmailConfigurationPage() {
                                 </div>
                                 :
                                 // <Button className='btn-success'> Completed </Button> 
-                               
 
-                              <div className='d-table'> 
-                               <div className='barprogress primarycl'>
-                                  <CircularProgress value={70} /> <label>processing</label>
+
+                                <div className='d-table'>
+                                  <div className='barprogress primarycl'>
+                                    <CircularProgress value={70} /> <label>processing</label>
+                                  </div>
+                                  <div className='d-flex listboxtab'>
+                                    <div>Inbox (<span id={"Inbox" + row?.AccountID}>0</span>)</div>
+                                    <div>Sent (<span id={"Sent" + row?.AccountID}>0</span>)</div>
+                                    <div>Spam (<span id={"Spam" + row?.AccountID}>0</span>)</div>
+                                  </div>
                                 </div>
-                              <div className='d-flex listboxtab'>
-                                <div>Inbox (10)</div>
-                                <div>Sent (100)</div>
-                                <div>Spam (1100)</div> 
-                              </div>
-                              </div> 
 
 
                               }
