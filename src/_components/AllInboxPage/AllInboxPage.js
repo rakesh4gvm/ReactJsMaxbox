@@ -466,6 +466,7 @@ export default function OtherInboxPage(props) {
       SetMailNumber(index + 1)
       var Data = {
         _id: ID,
+        IsAllInboxPage: true
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryGetByID",

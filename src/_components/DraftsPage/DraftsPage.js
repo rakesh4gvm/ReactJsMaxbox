@@ -347,7 +347,7 @@ export default function OtherInboxPage(props) {
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
       } else {
-        SetSignature({ Data: "" });
+        SetSignature({ Data: ClientData });
         SetMailChange({ To: "", Subject: "" })
       }
 
