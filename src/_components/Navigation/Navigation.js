@@ -217,17 +217,18 @@ export default function Navigation(props) {
 
   useEffect(() => {
     const handleMessage = (message, roomid) => {
+      var msg = message.split("_");
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
-      if(message == "inboxnotification"){
-        toast.error("You have new email for inbox", {
+      if(msg[1] == "inboxnotification"){
+        toast.error(msg[0]+" : You have new email for inbox", {
           className: 'toast-message emailicon', 
        });
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "block";
       }
-      else if(message == "spamnotification"){
-        toast.error("You have new email for spam");
+      else if(msg[1] == "spamnotification"){
+        toast.error(msg[0]+" : You have new email for spam");
         var element = document.getElementById("AllSpamRefreshpanel", {
           className: 'toast-message emailicon'
         });
