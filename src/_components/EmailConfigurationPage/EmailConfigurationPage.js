@@ -173,7 +173,7 @@ export default function EmailConfigurationPage() {
           if (Result.data.TotalCount === counter) {
             SetIsProcess(false)
           }
-          if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
+          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == true && Result?.data?.PageData[i]?.IsSentProcessWeb == true && Result?.data?.PageData[i]?.IsSpamProcessWeb == true) {
             counter = counter + 1
           }
           if (Result.data.TotalCount != counter) {
@@ -228,7 +228,7 @@ export default function EmailConfigurationPage() {
           if (Result.data.TotalCount === counter) {
             SetIsProcess(false)
           }
-          if (Result?.data?.PageData[i]?.IsInboxProcess == false && Result?.data?.PageData[i]?.IsSpamProcess == false && Result?.data?.PageData[i]?.IsSentProcess == false) {
+          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == true && Result?.data?.PageData[i]?.IsSentProcessWeb == true && Result?.data?.PageData[i]?.IsSpamProcessWeb == true) {
             counter = counter + 1
           }
           if (Result.data.TotalCount != counter) {
@@ -461,7 +461,7 @@ export default function EmailConfigurationPage() {
 
                             <ButtonGroup className='table-btn w-100' variant="text" aria-label="text button group">
                               {/* {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? */}
-                              {(row?.IsInboxProcess == false && row?.IsSentProcess == false && row?.IsSpamProcess == false) ?
+                              {(row?.IsInboxProcessWeb == true && row?.IsSentProcessWeb == true && row?.IsSpamProcessWeb == true) ?
                                 // <Button className='btn-success'> Process </Button>    
                                 <div className='barprogress successbar'>
                                   <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
