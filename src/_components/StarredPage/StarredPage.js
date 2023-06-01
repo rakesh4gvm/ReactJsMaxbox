@@ -1596,7 +1596,7 @@ export default function OtherInboxPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to move this E-mail into Other Inbox ?
@@ -1622,7 +1622,7 @@ export default function OtherInboxPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to delete a email ?

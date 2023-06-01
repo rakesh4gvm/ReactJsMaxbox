@@ -205,6 +205,12 @@ export default function UnansweredResponsesPage(props) {
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [User, SetUser] = useState()
+  const [ClientArray, SetClientArray] = useState([])
+
+
+  const regex = /(<([^>]+)>)/ig;
+  const Result = ClientData?.replace(regex, '');
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -225,7 +231,7 @@ export default function UnansweredResponsesPage(props) {
   // Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
-
+    SetUser(UserDetails)
     var ID = decrypt(props.location.search.replace('?', ''))
 
     if (UserDetails != null) {
@@ -285,6 +291,7 @@ export default function UnansweredResponsesPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetClientData(Result?.data?.Data[0]?.SignatureText)
+        SetClientArray(Result?.data?.Data)
       }
     });
   };
@@ -1767,7 +1774,7 @@ export default function UnansweredResponsesPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             {
               OpenMessage?.IsStarred === false ?
@@ -1840,7 +1847,7 @@ export default function UnansweredResponsesPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to move this E-mail into Other Inbox ?
@@ -1866,7 +1873,7 @@ export default function UnansweredResponsesPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to delete a email ?
@@ -1926,7 +1933,7 @@ export default function UnansweredResponsesPage(props) {
                   </ToggleButton>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
 
-                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
+                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className={Result == ClientArray?.filter((e) => e?.ClientID == User?.ClientID)[0]?.Name ? 'roundgreenemail' : ''}  ></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
