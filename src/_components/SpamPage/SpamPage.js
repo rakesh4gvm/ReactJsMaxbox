@@ -200,6 +200,12 @@ export default function SpamPage(props) {
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [User, SetUser] = useState()
+  const [ClientArray, SetClientArray] = useState([])
+
+
+  const regex = /(<([^>]+)>)/ig;
+  const Result = ClientData?.replace(regex, '');
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -221,6 +227,7 @@ export default function SpamPage(props) {
   // Starts Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
+    SetUser(UserDetails)
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
@@ -263,6 +270,7 @@ export default function SpamPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetClientData(Result?.data?.Data[0]?.SignatureText)
+        SetClientArray(Result?.data?.Data)
       }
     });
   };
@@ -1370,7 +1378,7 @@ export default function SpamPage(props) {
     event,
     newPage,
   ) => {
-    
+
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
@@ -1615,7 +1623,7 @@ export default function SpamPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             {
               OpenMessage?.IsStarred === false ?
@@ -1688,7 +1696,7 @@ export default function SpamPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to move this E-mail into Other Inbox ?
@@ -1714,7 +1722,7 @@ export default function SpamPage(props) {
           <div className='p-5 text-center'>
             <img src={Emailinbox} width="130" className='mb-4' />
             <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure ?
+              Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               you want to delete a email ?
@@ -1766,7 +1774,7 @@ export default function SpamPage(props) {
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllSpamRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
+                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllSpamRefreshpanel" style={{ display: "none" }} className={Result == ClientArray?.filter((e) => e?.ClientID == User?.ClientID)[0]?.Name ? 'roundgreenemail' : ''}   ></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >
