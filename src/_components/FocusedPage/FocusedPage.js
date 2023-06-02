@@ -696,29 +696,36 @@ export default function UnansweredResponsesPage(props) {
           if (str === "opnemodel") {
             CloseStarPopModel();
           }
-          var ID = decrypt(props.location.search.replace('?', ''))
           if (!state) {
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails", "");
+            if (isstarActive == true) {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
             } else {
-              if (isstarActive == true) {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
-              } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "")
+              var element = document.getElementById("star_" + ID);
+              var className = element.className;
+              var isStar = className.includes("Mui-selected")
+              if(isStar){
+                element.classList.remove("Mui-selected");
+              } 
+              else{
+                element.classList.add("Mui-selected");
               }
             }
           }
           else {
-            if (ID != "" && ID != null && ID != "undefined") {
-              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "hideloader", "", "");
+            if (isstarActive == true) {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
             } else {
-              if (isstarActive == true) {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
-              } else {
-                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "")
+              var element = document.getElementById("star_" + ID);
+              var className = element.className;
+              var isStar = className.includes("Mui-selected")
+              if(isStar){
+                element.classList.remove("Mui-selected");
+              } 
+              else{
+                element.classList.add("Mui-selected");
               }
             }
-          }         // }
+          }
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1969,7 +1976,7 @@ export default function UnansweredResponsesPage(props) {
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
                         <TableCell width={'35px'} align="center">
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
