@@ -220,10 +220,21 @@ export default function Navigation(props) {
       var msg = message.split("_");
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
-      if(msg[1] == "inboxnotification"){
-        toast.error(msg[0]+" : You have new email for inbox", {
-          className: 'toast-message emailicon', 
-       });
+      if (msg[1] == "inboxnotification") {
+        toast.error(msg[0] + " : You have new email for inbox", {
+          className: 'toast-message emailicon',
+        });
+
+        var element = document.getElementById("AllInoxRefreshpanel");
+        var SelectedClientID = document.getElementById("selectedclientid").textContent
+
+        if (SelectedClientID == msg[0]) {
+          element.classList.add("roundgreenemail");
+        }
+        else {
+          element.classList.remove("roundgreenemail");
+        }
+
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "block";
       }
@@ -932,6 +943,7 @@ export default function Navigation(props) {
           <FormControl className='clientselc'>
 
             <Select
+              id='selectedclientid'
               value={SelectedClient}
               onChange={SelectClient}
               displayEmpty

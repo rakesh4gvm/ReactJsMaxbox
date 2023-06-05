@@ -200,12 +200,6 @@ export default function SpamPage(props) {
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
-  const [User, SetUser] = useState()
-  const [ClientArray, SetClientArray] = useState([])
-
-
-  const regex = /(<([^>]+)>)/ig;
-  const Result = ClientData?.replace(regex, '');
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -227,7 +221,6 @@ export default function SpamPage(props) {
   // Starts Get Client ID
   const GetClientID = () => {
     var UserDetails = GetUserDetails();
-    SetUser(UserDetails)
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
@@ -270,7 +263,6 @@ export default function SpamPage(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetClientData(Result?.data?.Data[0]?.SignatureText)
-        SetClientArray(Result?.data?.Data)
       }
     });
   };
@@ -955,7 +947,7 @@ export default function SpamPage(props) {
           LoaderHide()
           HanleChatGPTClose()
         } else {
-          toast.error("Chat Gpt is not responding")
+          toast.error("ChatGPT is not responding")
           LoaderHide()
         }
       });
@@ -1774,7 +1766,7 @@ export default function SpamPage(props) {
                 }
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
-                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllSpamRefreshpanel" style={{ display: "none" }} className={Result == ClientArray?.filter((e) => e?.ClientID == User?.ClientID)[0]?.Name ? 'roundgreenemail' : ''}   ></span></a>
+                  <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllSpamRefreshpanel" style={{ display: "none" }} className='roundgreenemail'></span></a>
                   {
                     OpenMessage?.length == 0 ? "" :
                       <div className='pagination-pa' >

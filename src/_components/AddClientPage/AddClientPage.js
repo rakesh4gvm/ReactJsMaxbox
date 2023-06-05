@@ -95,7 +95,7 @@ export default function AddClientPage({ children }) {
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
     imageUploadRemoteUrls: false,
-    key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+    key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
     SetSignature({
@@ -109,8 +109,7 @@ export default function AddClientPage({ children }) {
 
   // Check Client Exists
   const CheckExistClient = async (ClientName) => {
-
-    var Data = { Name: ClientName }
+    var Data = { Name: ClientName, UserID: UserID }
 
     const ResponseApi = await Axios({
       url: CommonConstants.MOL_APIURL + "/client/ClientExists",
@@ -245,7 +244,7 @@ export default function AddClientPage({ children }) {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
-            </Col> 
+            </Col>
             <Col>
               <Link to="/ProfileSetting">
                 <div className='profilebox'>

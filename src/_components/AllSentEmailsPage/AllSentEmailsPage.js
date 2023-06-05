@@ -829,7 +829,7 @@ export default function AllSentEmailsPage(props) {
           LoaderHide()
           HanleChatGPTClose()
         } else {
-          toast.error("Chat Gpt is not responding")
+          toast.error("ChatGPT is not responding")
           LoaderHide()
         }
       });

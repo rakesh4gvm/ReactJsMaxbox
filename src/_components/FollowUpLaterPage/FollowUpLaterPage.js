@@ -938,7 +938,7 @@ export default function FollowUpLater(props) {
           LoaderHide()
           HanleChatGPTClose()
         } else {
-          toast.error("Chat Gpt is not responding")
+          toast.error("ChatGPT is not responding")
           LoaderHide()
         }
       });
@@ -1754,7 +1754,7 @@ export default function FollowUpLater(props) {
                   }
                 </div>
               </div>
-              <div className="simulationDiv"  ref={ContainerRef}>
+              <div className="simulationDiv" ref={ContainerRef}>
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
