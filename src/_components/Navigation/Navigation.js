@@ -952,8 +952,8 @@ export default function Navigation(props) {
               <MenuItem value="">
                 <em>Select Client</em>
               </MenuItem>
-              {ClientDropdown?.map((row) => (
-                <MenuItem value={row?.ClientID}>{row?.Name}</MenuItem>
+              {ClientDropdown?.map((row, index) => (
+                <MenuItem value={row?.ClientID} key={index}>{row?.Name}</MenuItem>
 
               ))}
             </Select>
@@ -984,14 +984,13 @@ export default function Navigation(props) {
                         component={Link}
                         selected={SelectMenuItem === "/AllInbox"}>
                         {/* {TotalCount?.ReceiveEmailHistoryData != undefined ? "All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */}
-                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
+                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
                       </ListItem>
-
                       <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                         component={Link}
                         selected={SelectMenuItem === "/Focused"}>
                         {/* {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"} */}
-                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}
+                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}
                       </ListItem>
 
                     </List>
@@ -1003,28 +1002,28 @@ export default function Navigation(props) {
                   component={Link}
                   selected={SelectMenuItem === "/Starred"}>
                   {/* {AllTotalRecords?.AllStarredCount != undefined ? "Starred(" + AllTotalRecords?.AllStarredCount + ")" : "Starred(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"}
+                  {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
                   component={Link}
                   selected={SelectMenuItem === "/Spam"}>
                   {/* {SpamTotalCount?.TotalCount != undefined ? "Spam(" + SpamTotalCount?.TotalCount + ")" : "Spam(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
+                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e,index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
                   component={Link}
                   selected={SelectMenuItem === "/OtherInboxPage"}>
                   {/* {AllTotalRecords?.AllOtherInboxCount != undefined ? "Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")" : "Other Inbox(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"}
+                  {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
                   component={Link}
                   selected={SelectMenuItem === "/FollowUpLater"}>
                   {/* {AllTotalRecords?.AllFollowUpLaterCount != undefined ? "Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")" : "Follow Up Later(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"}
+                  {FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
@@ -1045,14 +1044,14 @@ export default function Navigation(props) {
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails")}
                         component={Link} to="/AllSentEmails"
                         selected={SelectMenuItem === "/AllSentEmails"}>
-                        {FromEmailDropdownList != undefined ? "All Sent(" + FromEmailDropdownList?.map((e) => e?.SentCount)?.reduce((a, b) => a + b, 0) + ")" : "All Sent(0)"}
+                        {FromEmailDropdownList != undefined ? "All Sent(" + FromEmailDropdownList?.map((e, index) => e?.SentCount)?.reduce((a, b) => a + b, 0) + ")" : "All Sent(0)"}
                         {/* {AllSentTotalRecords?.AllSentEmailsCount != undefined ? "All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")" : "All Sent(0)"} */}
                       </ListItemButton>
 
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies")}
                         component={Link} to="/UnansweredReplies"
                         selected={SelectMenuItem === "/UnansweredReplies"}>
-                        {FromEmailDropdownList != undefined ? "Unanswered(" + FromEmailDropdownList?.map((e) => e?.UnansweredRepliesCount)?.reduce((a, b) => a + b, 0) + ")" : "Unanswered(0)"}
+                        {FromEmailDropdownList != undefined ? "Unanswered(" + FromEmailDropdownList?.map((e, index) => e?.UnansweredRepliesCount)?.reduce((a, b) => a + b, 0) + ")" : "Unanswered(0)"}
                         {/* {AllSentTotalRecords?.AllUnansweredRepliesCount != undefined ? "Unanswered(" + AllSentTotalRecords?.AllUnansweredRepliesCount + ")" : "Unanswered(0)"} */}
                       </ListItemButton>
 
@@ -1064,8 +1063,8 @@ export default function Navigation(props) {
             </Collapse>
           </List>
 
-          {FromEmailDropdownList?.map((item) => (
-            <List sx={{ pl: item._id }} className='listclick'>
+          {FromEmailDropdownList?.map((item, index) => (
+            <List sx={{ pl: item._id }} className='listclick' key={index}>
               <ListItemButton onClick={() => handleClick("0" + item._id, 1)} key={"0" + item._id}>
                 {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
                 <b>{item.Email}</b>

@@ -1754,7 +1754,7 @@ export default function SpamPage(props) {
 
         <div className='bodyview' >
           <SplitPane className='d-block-child'
-            split="horizontal "
+            split="horizontal"
             minSize={150}
             maxSize={-200}
             defaultSize={"40%"}
