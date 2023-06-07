@@ -55,7 +55,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow, Locate } from '../../_helpers/Utility'
 
@@ -163,7 +163,7 @@ const addNavClick = () => {
 // });
 
 
-const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
+// const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
 
 export default function Navigation(props) {
   const { window } = props;
@@ -207,15 +207,68 @@ export default function Navigation(props) {
 
 
   useEffect(() => {
-    var UserDetails = GetUserDetails();
-    socket.emit('joinRoom', UserDetails.UserID);
+    // var UserDetails = GetUserDetails();
+    // socket.emit('joinRoom', UserDetails.UserID);
     GetClientDropdown();
     GetClientID()
     setCount(count + 1)
   }, []);
 
-
+  // Start SSE code 
   useEffect(() => {
+    var UserDetails = GetUserDetails();
+    var UserId = UserDetails.UserID;
+    const eventSource = new EventSource(`http://localhost:3007/see/${UserId}`);
+
+    eventSource.onmessage = (event) => {
+      console.log(event.data)
+      const data = JSON.parse(event.data);
+      SendNotification(data);
+    };
+
+    eventSource.onerror = (error) => {
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+  // SSE code end
+
+  const SendNotification = (data) => {
+    var msg = data.message.split("_");
+    var Details = GetUserDetails();
+    FromEmailList(Details.ClientID, Details.UserID);
+    if (msg[1] == "inboxnotification") {
+      toast.error(msg[0] + " : You have new email for inbox", {
+        className: 'toast-message emailicon',
+      });
+
+      var element = document.getElementById("AllInoxRefreshpanel");
+      var SelectedClientID = document.getElementById("selectedclientid").textContent
+
+      if (SelectedClientID == msg[0]) {
+        element.classList.add("roundgreenemail");
+      }
+      else {
+        element.classList.remove("roundgreenemail");
+      }
+
+      var element = document.getElementById("AllInoxRefreshpanel")
+      element.style.display = "block";
+    }
+    else if(msg[1] == "spamnotification"){
+      toast.error(msg[0]+" : You have new email for spam");
+      var element = document.getElementById("AllSpamRefreshpanel", {
+        className: 'toast-message emailicon'
+      });
+      element.style.display = "block";
+    }
+  }
+
+
+  /* useEffect(() => {
     const handleMessage = (message, roomid) => {
       var msg = message.split("_");
       var Details = GetUserDetails();
@@ -252,7 +305,7 @@ export default function Navigation(props) {
     return () => {
       socket.off('message', handleMessage);
     };
-  }, []); // Empty dependency array to ensure the effect runs only once
+  }, []); // Empty dependency array to ensure the effect runs only once */
 
   const handleListItemClick = (event, PageName, ID) => {
     if (ID != undefined && ID != "") {
