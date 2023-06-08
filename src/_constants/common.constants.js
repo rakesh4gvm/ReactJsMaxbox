@@ -23,8 +23,11 @@ const LoginPage = "http://localhost:3001"
 // redirect url end
 
 // socket url
-const SocketIP = "http://localhost:"
-const SocketPort = "3006"
+// const SocketIP = "http://localhost:"
+// const SocketPort = "3006"
+
+// socket url
+const SSEIP = "http://localhost:3007"
 
 export const CommonConstants = {
     MOL_APIURL: database,
@@ -37,6 +40,7 @@ export const CommonConstants = {
     Title: ' | MaxBox', //Title of page
     show_rows: [10, 20, 50, 100],  //For rows show in table
     FRONTENDURL: FRONTENDURL,
-    SocketIP: SocketIP,
-    SocketPort: SocketPort,
+    SSEIP: SSEIP
+    // SocketIP: SocketIP,
+    // SocketPort: SocketPort,
 };

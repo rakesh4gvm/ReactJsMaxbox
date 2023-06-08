@@ -218,10 +218,9 @@ export default function Navigation(props) {
   useEffect(() => {
     var UserDetails = GetUserDetails();
     var UserId = UserDetails.UserID;
-    const eventSource = new EventSource(`http://localhost:3007/see/${UserId}`);
+    const eventSource = new EventSource(`${CommonConstants.SSEIP}/see/${UserId}`);
 
     eventSource.onmessage = (event) => {
-      console.log(event.data)
       const data = JSON.parse(event.data);
       SendNotification(data);
     };
