@@ -239,6 +239,7 @@ export default function Navigation(props) {
     var msg = data.message.split("_");
     var Details = GetUserDetails();
     FromEmailList(Details.ClientID, Details.UserID);
+    
     if (msg[1] == "inboxnotification") {
       toast.error(msg[0] + " : You have new email for inbox", {
         className: 'toast-message emailicon',
@@ -257,11 +258,23 @@ export default function Navigation(props) {
       var element = document.getElementById("AllInoxRefreshpanel")
       element.style.display = "block";
     }
-    else if(msg[1] == "spamnotification"){
-      toast.error(msg[0]+" : You have new email for spam");
+    else if (msg[1] == "spamnotification") {
+      toast.error(msg[0] + " : You have new email for spam");
       var element = document.getElementById("AllSpamRefreshpanel", {
         className: 'toast-message emailicon'
       });
+
+      var element = document.getElementById("AllSpamRefreshpanel");
+      var SelectedClientID = document.getElementById("selectedclientid").textContent
+      
+
+      if (SelectedClientID == msg[0]) {
+        element.classList.add("roundgreenemail");
+      }
+      else {
+        element.classList.remove("roundgreenemail");
+      }
+
       element.style.display = "block";
     }
   }
@@ -1061,7 +1074,7 @@ export default function Navigation(props) {
                   component={Link}
                   selected={SelectMenuItem === "/Spam"}>
                   {/* {SpamTotalCount?.TotalCount != undefined ? "Spam(" + SpamTotalCount?.TotalCount + ")" : "Spam(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e,index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
+                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
