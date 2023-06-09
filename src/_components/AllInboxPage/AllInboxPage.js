@@ -1402,7 +1402,11 @@ export default function OtherInboxPage(props) {
           if (ID != "" && ID != null && ID != "undefined") {
             GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
           } else {
-            GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails");
+            if (isstarActive) {
+              GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails");
+            } else {
+              GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "");
+            }
           }
         } else {
           LoaderHide()
@@ -1428,7 +1432,7 @@ export default function OtherInboxPage(props) {
         <Box sx={style}>
           <div className='m-head'>
             <Typography id="modal-modal-title" variant="h4" component="h4">
-              Chat GPT
+              ChatGPT
             </Typography>
           </div>
           <div className='m-body'>

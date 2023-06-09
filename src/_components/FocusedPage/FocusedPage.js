@@ -1619,7 +1619,12 @@ export default function UnansweredResponsesPage(props) {
           if (ID != "" && ID != null && ID != "undefined") {
             GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
           } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
+            debugger
+            if (isstarActive) {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
+            } else {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "");
+            }
           }
         } else {
           LoaderHide()
@@ -1643,7 +1648,7 @@ export default function UnansweredResponsesPage(props) {
         <Box sx={style}>
           <div className='m-head'>
             <Typography id="modal-modal-title" variant="h4" component="h4">
-              Chat GPT
+              ChatGPT
             </Typography>
           </div>
           <div className='m-body'>
