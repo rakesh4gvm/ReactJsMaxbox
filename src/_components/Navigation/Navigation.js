@@ -974,7 +974,7 @@ export default function Navigation(props) {
             <ChevronLeftIcon />
           </IconButton>
 
-          <div onClick={addNavClick} className='Settingsbd'>
+          <div onClick={addNavClick} id='setting' className='Settingsbd'>
             <SettingsIcon />
           </div>
 
