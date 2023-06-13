@@ -1619,7 +1619,12 @@ export default function UnansweredResponsesPage(props) {
           if (ID != "" && ID != null && ID != "undefined") {
             GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
           } else {
-            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
+            debugger
+            if (isstarActive) {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
+            } else {
+              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "");
+            }
           }
         } else {
           LoaderHide()
@@ -1643,7 +1648,7 @@ export default function UnansweredResponsesPage(props) {
         <Box sx={style}>
           <div className='m-head'>
             <Typography id="modal-modal-title" variant="h4" component="h4">
-              Chat GPT
+              ChatGPT
             </Typography>
           </div>
           <div className='m-body'>
@@ -2005,7 +2010,15 @@ export default function UnansweredResponsesPage(props) {
                             <b>From</b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To</b>{OpenMessage.ToEmail}</label>
+                          <label><b>To</b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                          {
+                            OpenMessage?.CcNameEmail?.length > 0 ?
+                              <label><b>CC</b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
+                          {
+                            OpenMessage?.BccNameEmail?.length > 0 ?
+                              <label><b>BCC</b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
                         </div>
                     }

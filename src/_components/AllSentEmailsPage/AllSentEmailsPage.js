@@ -1306,7 +1306,7 @@ export default function AllSentEmailsPage(props) {
         <Box sx={style}>
           <div className='m-head'>
             <Typography id="modal-modal-title" variant="h4" component="h4">
-              Chat GPT
+              ChatGPT
             </Typography>
           </div>
           <div className='m-body'>
