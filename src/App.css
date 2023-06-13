@@ -27,7 +27,7 @@
 
 html body,
 html,
-*,
+body *,
 table tr td {
     font-family: 'Arial', 'Poppins', sans-serif !important;
 }
@@ -783,7 +783,7 @@ ul.d-flex.flexlist {
 }
 
 .hcompose h4 {
-    color: #fff;
+    color: #fff !important;
     font-weight: 600;
     font-size: 1rem;
     line-height: 28px;
@@ -3190,7 +3190,7 @@ tr.selected-row {
     width: 62px;
     display: table;
     text-align: center;
-    line-height: 17px;
+    line-height: 24px;
     padding-right: 24px;
 }
 
@@ -3507,6 +3507,66 @@ div .Toastify__toast-container {
 .listboxtab div{
     margin-right: 15px;
 }
+.introjs-tooltip.tooltipmaxbox {
+    background-color: #e49273;
+    min-width: 360px;
+    border: 3px solid #cd7d5e;
+    color: #fff;
+} 
+.tooltipmaxbox .introjs-tooltipbuttons{
+    border-top: 2px solid #cd7d5e;
+}
+.tooltipmaxbox .introjs-button {
+    padding: 4px 14px;
+    background-color: #cd7d5e;
+    text-shadow: none !important;
+    color: #fff;
+    border: none;
+} 
+.tooltipmaxbox .introjs-button:hover,
+.tooltipmaxbox .introjs-button:focus { 
+    background-color: #af6041; 
+    text-shadow: none !important;
+    color: #fff;
+} 
+.tooltipmaxbox .introjs-arrow.left-bottom {
+    left: -26px;
+    bottom: 10px; 
+    border-right-color: #e49273;
+}
+.tooltipmaxbox .introjs-arrow.right-bottom {
+    bottom: 10px;
+    right: -26px;
+    border-left-color: #e49273;
+}
+.tooltipmaxbox .introjs-arrow {
+    border: 16px solid transparent; 
+}
+div.bgwhiter {
+    box-shadow: rgb(114 91 83 / 65%) 0px 0px 1px 2px, rgb(114 91 83 / 65%) 0px 0px 0px 5000px !important;
+} 
+.tooltipmaxbox .introjs-tooltip-header h1{
+    font-size: 18px;
+    font-family: 'Arial', 'Poppins', sans-serif !important;
+    color: #fff !important;
+}
+.tooltipmaxbox .introjs-tooltiptext {
+    padding: 10px 20px;
+    color: #f7eeea;
+    font-family: 'Arial', 'Poppins', sans-serif !important;
+}
+.tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover{
+    color: #fff;
+}
+.tooltipmaxbox .introjs-bullets ul li a.active,
+.tooltipmaxbox .introjs-bullets ul li a:hover {
+    width: 15px;
+    background: #2b2b2b5f;
+}
+.tooltipmaxbox .introjs-bullets ul li a { 
+    background: #2b2b2b23; 
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
@@ -3514,8 +3574,7 @@ div .Toastify__toast-container {
         margin-left: 0;
         overflow: hidden;
         display: table;
-    }
-
+    } 
     .mobile-nav {
         background-color: #212529;
         position: absolute !important;

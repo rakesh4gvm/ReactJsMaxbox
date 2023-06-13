@@ -59,6 +59,12 @@ import Select from '@mui/material/Select';
 
 import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow, Locate } from '../../_helpers/Utility'
 
+ 
+import IntroJs from 'intro.js';
+import 'intro.js/introjs.css';
+import { IntroJsReact } from 'react-intro.js';
+ 
+
 toast.configure();
 
 function useOutsideAlerter(ref) {
@@ -161,6 +167,7 @@ const addNavClick = () => {
 //       container.classList.remove("show");
 //     }
 // });
+ 
 
 
 // const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
@@ -203,7 +210,65 @@ export default function Navigation(props) {
   const [DraftTotalCount, SetDraftTotalCount] = useState()
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0) 
+  useEffect(() => {
+      const intro = IntroJs();   
+      
+      intro.onafterchange(function(targetElement) {
+        const currentStepIndex = intro._currentStep; 
+        if (currentStepIndex === 0) {
+          const element = document.getElementById("OpenNavigation"); 
+          element.classList.add("show"); 
+        }
+      });
+
+      intro.setOptions({ 
+        steps: [
+          {
+            element: '#one-step', 
+            title: 'Add your client',
+            intro: 'Click on Add client, You can create your client here',
+            intro1: 'Click on Add client, You can create your client here',
+            tooltipClass: 'tooltipmaxbox',
+            highlightClass: 'bgwhiter', 
+            position: 'right', 
+            
+          },
+          {
+            element: '#two-step',
+            title: 'Email configure',
+            intro: 'Click on add account, You can configure your email for client here',
+            tooltipClass: 'tooltipmaxbox',
+            highlightClass: 'bgwhiter', 
+            position: 'right',
+          },
+          {
+            element: '.three-step',
+            title: 'Compose',
+            intro: 'Click on compose button, You can write your mail here ',
+            tooltipClass: 'tooltipmaxbox',
+            highlightClass: 'bgwhiter', 
+            position: 'left',
+          },
+          {
+            element: '#fore-step',
+            title: 'Template',
+            intro: 'Create Template, You can create your template here',
+            tooltipClass: 'tooltipmaxbox',
+            highlightClass: 'bgwhiter', 
+            position: 'right',
+          },
+        ],
+      });
+
+      intro.oncomplete(function() {
+        const element = document.getElementById("OpenNavigation"); 
+        element.classList.remove("show");
+      });
+
+      intro.start();
+    });
+
 
 
   useEffect(() => {
@@ -944,8 +1009,9 @@ export default function Navigation(props) {
 
   return (
     <>
+    
       <Box sx={{ display: 'flex' }}>
-
+ 
         {/* <Stack className='alertpostion' spacing={2}>
           <Alert icon={false} severity="success">
               You have new mail 
@@ -957,8 +1023,8 @@ export default function Navigation(props) {
         </div></Link>
 
         <div className='orangbody'>
-          <img src={Xlogo} width="100%" />
-
+          <img src={Xlogo}  width="100%" />
+ 
           <IconButton className='mx-1'
             color="inherit"
             aria-label="open drawer"
@@ -980,10 +1046,10 @@ export default function Navigation(props) {
 
           <div id='OpenNavigation' className='carsetting'>
             <ul>
-              <li><a href="/Templates">Templates</a></li>
+              <div id="fore-step"><li><a href="/Templates">Templates</a></li></div>
               <li><a href="/ObjectionTemplate">Objections</a></li>
-              <li><a href="/EmailConfiguration">Email Settings</a></li>
-              <li><a href="/ClientList">Clients</a></li>
+              <div id="two-step"><li><a href="/EmailConfiguration">Email Settings</a></li></div>
+              <div id="one-step"><li><a href="/ClientList">Clients</a></li></div>
               <li><a href="/ContactEmail">Contacts</a></li>
               {/* <li><a href="/">Logout</a></li> */}
               <li><a onClick={logout}>Logout</a></li>
