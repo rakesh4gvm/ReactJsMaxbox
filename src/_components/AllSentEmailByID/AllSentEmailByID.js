@@ -522,6 +522,10 @@ export default function AllSentEmailByID(props) {
                 data: Data,
             });
             ResponseApi.then((Result) => {
+                var element2 = document.getElementsByClassName("temp-class")
+                if (element2.length > 0) {
+                    element2[0].classList.remove('Mui-selected')
+                }
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetOpenMessageDetails(Result.data.Data[0]);
@@ -543,6 +547,12 @@ export default function AllSentEmailByID(props) {
                         SetOpenMessageDetails([]);
                         SetActive("");
                         LoaderHide()
+                    }
+                    if (Result?.data?.Data[0]?.IsStarred == false) {
+                        element2[0].classList.remove("Mui-selected");
+                    }
+                    else {
+                        element2[0].classList.add("Mui-selected")
                     }
                 }
                 else {
@@ -648,14 +658,26 @@ export default function AllSentEmailByID(props) {
                         // OpenMessageDetails('', '', '')
                     }
 
-                    var ID = decrypt(props.location.search.replace('?', ''))
-
-                    if (ID != "" && ID != null && ID != "undefined") {
-                        GetAllSent(ClientID, UserID, Page, ID, "hideloader");
+                    var element = document.getElementById("star_" + ID);
+                    var element2 = document.getElementById("starbelow_" + ID);
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                        element2.classList.remove("Mui-selected");
                     }
                     else {
-                        GetAllSent(ClientID, UserID, Page, 0, "hideloader")
+                        element.classList.add("Mui-selected");
+                        element2.classList.add("Mui-selected");
                     }
+
+                    // var ID = decrypt(props.location.search.replace('?', ''))
+                    // if (ID != "" && ID != null && ID != "undefined") {
+                    //     GetAllSent(ClientID, UserID, Page, ID, "hideloader");
+                    // }
+                    // else {
+                    //     GetAllSent(ClientID, UserID, Page, 0, "hideloader")
+                    // }
 
                 } else {
                     toast.error(Result?.data?.Message);
@@ -1559,7 +1581,7 @@ export default function AllSentEmailByID(props) {
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell width={'35px'} align="center">
-                                                        <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                        <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
@@ -1602,7 +1624,7 @@ export default function AllSentEmailByID(props) {
                                                         <label>{MailNumber} / {AllSentList.length}</label>
                                                     </Button>
                                                     <Button>
-                                                        <ToggleButton className='startselct' title={"Starred"} value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                                                        <ToggleButton className='startselct temp-class' title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
