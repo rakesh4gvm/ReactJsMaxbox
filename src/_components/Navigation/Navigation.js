@@ -59,11 +59,11 @@ import Select from '@mui/material/Select';
 
 import { UpdateUserDetails, GetUserDetails, Logout, ClientChnage, LoaderHide, LoaderShow, Locate } from '../../_helpers/Utility'
 
- 
+
 import IntroJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { IntroJsReact } from 'react-intro.js';
- 
+
 
 toast.configure();
 
@@ -167,7 +167,7 @@ const addNavClick = () => {
 //       container.classList.remove("show");
 //     }
 // });
- 
+
 
 
 // const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
@@ -210,64 +210,71 @@ export default function Navigation(props) {
   const [DraftTotalCount, SetDraftTotalCount] = useState()
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
-  const [count, setCount] = useState(0) 
+  const [count, setCount] = useState(0)
   useEffect(() => {
-      const intro = IntroJs();   
-      
-      intro.onafterchange(function(targetElement) {
-        const currentStepIndex = intro._currentStep; 
-        if (currentStepIndex === 0) {
-          const element = document.getElementById("OpenNavigation"); 
-          element.classList.add("show"); 
-        }
-      });
+    const intro = IntroJs();
 
-      intro.setOptions({ 
-        steps: [
-          {
-            element: '#one-step', 
-            title: 'Add your client',
-            intro: 'Click on Add client, You can create your client here',
-            intro1: 'Click on Add client, You can create your client here',
-            tooltipClass: 'tooltipmaxbox',
-            highlightClass: 'bgwhiter', 
-            position: 'right', 
-            
-          },
-          {
-            element: '#two-step',
-            title: 'Email configure',
-            intro: 'Click on add account, You can configure your email for client here',
-            tooltipClass: 'tooltipmaxbox',
-            highlightClass: 'bgwhiter', 
-            position: 'right',
-          },
-          {
-            element: '.three-step',
-            title: 'Compose',
-            intro: 'Click on compose button, You can write your mail here ',
-            tooltipClass: 'tooltipmaxbox',
-            highlightClass: 'bgwhiter', 
-            position: 'left',
-          },
-          {
-            element: '#fore-step',
-            title: 'Template',
-            intro: 'Create Template, You can create your template here',
-            tooltipClass: 'tooltipmaxbox',
-            highlightClass: 'bgwhiter', 
-            position: 'right',
-          },
-        ],
-      });
-
-      intro.oncomplete(function() {
-        const element = document.getElementById("OpenNavigation"); 
-        element.classList.remove("show");
-      });
-
-      intro.start();
+    intro.onafterchange(function (targetElement) {
+      const currentStepIndex = intro._currentStep;
+      if (currentStepIndex === 0) {
+        const element = document.getElementById("OpenNavigation");
+        element.classList.add("show");
+      }
     });
+
+    intro.setOptions({
+      steps: [
+        {
+          element: '#one-step',
+          title: 'Add your client',
+          intro: 'Click on Add client, You can create your client here',
+          intro1: 'Click on Add client, You can create your client here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+
+        },
+        {
+          element: '#two-step',
+          title: 'Email configure',
+          intro: 'Click on add account, You can configure your email for client here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+        },
+        {
+          element: '.three-step',
+          title: 'Compose',
+          intro: 'Click on compose button, You can write your mail here ',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'left',
+        },
+        {
+          element: '#fore-step',
+          title: 'Template',
+          intro: 'Create Template, You can create your template here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+        },
+      ],
+    });
+
+    intro.oncomplete(function () {
+      const element = document.getElementById("OpenNavigation");
+      element.classList.remove("show");
+    });
+
+    var UserDetails = GetUserDetails()
+
+    if (UserDetails?.ClientID?.length <= 0) {
+      intro.start();
+    } else {
+      intro.exit()
+    }
+
+  });
 
 
 
@@ -304,7 +311,7 @@ export default function Navigation(props) {
     var msg = data.message.split("_");
     var Details = GetUserDetails();
     FromEmailList(Details.ClientID, Details.UserID);
-    
+
     if (msg[1] == "inboxnotification") {
       toast.error(msg[0] + " : You have new email for inbox", {
         className: 'toast-message emailicon',
@@ -331,7 +338,7 @@ export default function Navigation(props) {
 
       var element = document.getElementById("AllSpamRefreshpanel");
       var SelectedClientID = document.getElementById("selectedclientid").textContent
-      
+
 
       if (SelectedClientID == msg[0]) {
         element.classList.add("roundgreenemail");
@@ -1009,9 +1016,9 @@ export default function Navigation(props) {
 
   return (
     <>
-    
+
       <Box sx={{ display: 'flex' }}>
- 
+
         {/* <Stack className='alertpostion' spacing={2}>
           <Alert icon={false} severity="success">
               You have new mail 
@@ -1023,8 +1030,8 @@ export default function Navigation(props) {
         </div></Link>
 
         <div className='orangbody'>
-          <img src={Xlogo}  width="100%" />
- 
+          <img src={Xlogo} width="100%" />
+
           <IconButton className='mx-1'
             color="inherit"
             aria-label="open drawer"
