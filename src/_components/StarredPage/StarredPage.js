@@ -1738,7 +1738,15 @@ export default function OtherInboxPage(props) {
                             <b>From</b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To</b>{OpenMessage.ToEmail}</label>
+                          <label><b>To</b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                          {
+                            OpenMessage?.CcNameEmail?.length > 0 ?
+                              <label><b>CC</b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
+                          {
+                            OpenMessage?.BccNameEmail?.length > 0 ?
+                              <label><b>BCC</b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
                         </div>
                     }
