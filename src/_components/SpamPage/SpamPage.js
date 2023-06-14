@@ -507,7 +507,7 @@ export default function SpamPage(props) {
             element.classList.add("Mui-selected");
             element2.classList.add("Mui-selected");
           }
-          
+
           // var ID = decrypt(props.location.search.replace('?', ''))
           // if (!state) {
           //   if (ID != "" && ID != null && ID != "undefined") {
@@ -1856,7 +1856,15 @@ export default function SpamPage(props) {
                             <b>From</b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To</b>{OpenMessage.ToEmail}</label>
+                          <label><b>To</b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                          {
+                            OpenMessage?.CcNameEmail?.length > 0 ?
+                              <label><b>CC</b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
+                          {
+                            OpenMessage?.BccNameEmail?.length > 0 ?
+                              <label><b>BCC</b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                          }
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
                         </div>
                     }
