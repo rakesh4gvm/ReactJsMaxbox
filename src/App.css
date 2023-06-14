@@ -3506,38 +3506,41 @@ div .Toastify__toast-container {
 }
 .listboxtab div{
     margin-right: 15px;
-}
-.introjs-tooltip.tooltipmaxbox {
-    background-color: #e49273;
-    min-width: 360px;
-    border: 3px solid #cd7d5e;
-    color: #fff;
 } 
+.introjs-tooltip.tooltipmaxbox {
+    background-color: #fce3da;
+    min-width: 360px;
+    border: 3px solid #d2aa9a;
+    color: #fff;
+}
 .tooltipmaxbox .introjs-tooltipbuttons{
-    border-top: 2px solid #cd7d5e;
+    border-top: 2px solid #d2aa9a;
 }
 .tooltipmaxbox .introjs-button {
     padding: 4px 14px;
-    background-color: #cd7d5e;
+    background-color: #d9bfb6;
     text-shadow: none !important;
     color: #fff;
     border: none;
 } 
+.tooltipmaxbox .introjs-button + .introjs-button { 
+    background-color: #e49273; 
+} 
 .tooltipmaxbox .introjs-button:hover,
 .tooltipmaxbox .introjs-button:focus { 
-    background-color: #af6041; 
+    background-color: #a8867a; 
     text-shadow: none !important;
     color: #fff;
 } 
 .tooltipmaxbox .introjs-arrow.left-bottom {
     left: -26px;
     bottom: 10px; 
-    border-right-color: #e49273;
+    border-right-color: #fce3da;
 }
 .tooltipmaxbox .introjs-arrow.right-bottom {
     bottom: 10px;
     right: -26px;
-    border-left-color: #e49273;
+    border-left-color: #fce3da;
 }
 .tooltipmaxbox .introjs-arrow {
     border: 16px solid transparent; 
@@ -3548,12 +3551,15 @@ div.bgwhiter {
 .tooltipmaxbox .introjs-tooltip-header h1{
     font-size: 18px;
     font-family: 'Arial', 'Poppins', sans-serif !important;
-    color: #fff !important;
+    color: #201f1f !important;
+    font-weight: 700;
 }
 .tooltipmaxbox .introjs-tooltiptext {
     padding: 10px 20px;
-    color: #f7eeea;
+    color: #4b4b4b;
     font-family: 'Arial', 'Poppins', sans-serif !important;
+    font-size: 16px;
+    letter-spacing: 0.3px;
 }
 .tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover{
     color: #fff;
