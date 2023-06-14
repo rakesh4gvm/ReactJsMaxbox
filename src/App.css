@@ -3518,7 +3518,7 @@ div .Toastify__toast-container {
 }
 .tooltipmaxbox .introjs-button {
     padding: 4px 14px;
-    background-color: #d9bfb6;
+    background-color: #b69990;
     text-shadow: none !important;
     color: #fff;
     border: none;
@@ -3561,8 +3561,8 @@ div.bgwhiter {
     font-size: 16px;
     letter-spacing: 0.3px;
 }
-.tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover{
-    color: #fff;
+.tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover {
+    color: #514f4f;
 }
 .tooltipmaxbox .introjs-bullets ul li a.active,
 .tooltipmaxbox .introjs-bullets ul li a:hover {
