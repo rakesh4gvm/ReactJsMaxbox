@@ -516,6 +516,10 @@ export default function AllUnansweredRepliesPage(props) {
         data: Data,
       });
       ResponseApi.then((Result) => {
+        var element2 = document.getElementsByClassName("temp-class")
+        if (element2.length > 0) {
+          element2[0].classList.remove('Mui-selected')
+        }
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           if (Result.data.Data.length > 0) {
             SetOpenMessageDetails(Result.data.Data[0]);
@@ -537,6 +541,12 @@ export default function AllUnansweredRepliesPage(props) {
             SetOpenMessageDetails([]);
             SetActive("");
             LoaderHide()
+          }
+          if (Result?.data?.Data[0]?.IsStarred == false) {
+            element2[0].classList.remove("Mui-selected");
+          }
+          else {
+            element2[0].classList.add("Mui-selected")
           }
         }
         else {
@@ -638,14 +648,27 @@ export default function AllUnansweredRepliesPage(props) {
             CloseStarPopModel();
             // OpenMessageDetails('', '', '')
           }
-          var ID = decrypt(props.location.search.replace('?', ''))
 
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "hideloader");
+          var element = document.getElementById("star_" + ID);
+          var element2 = document.getElementById("starbelow_" + ID);
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+            element2.classList.remove("Mui-selected");
           }
           else {
-            GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "hideloader")
+            element.classList.add("Mui-selected");
+            element2.classList.add("Mui-selected");
           }
+
+          // var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID != "" && ID != null && ID != "undefined") {
+          //   GetAllUnansweredRepliesList(ClientID, UserID, Page, ID, "hideloader");
+          // }
+          // else {
+          //   GetAllUnansweredRepliesList(ClientID, UserID, Page, 0, "hideloader")
+          // }
 
         } else {
           toast.error(Result?.data?.Message);
@@ -1536,7 +1559,7 @@ export default function AllUnansweredRepliesPage(props) {
 
                       >
                         <TableCell width={'35px'} align="center">
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>
@@ -1578,7 +1601,7 @@ export default function AllUnansweredRepliesPage(props) {
                             <label>{MailNumber} / {AllUnansweredRepliesList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className='startselct' value="check" title={"Starred"} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className='startselct temp-class' value="check" title={"Starred"} id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>

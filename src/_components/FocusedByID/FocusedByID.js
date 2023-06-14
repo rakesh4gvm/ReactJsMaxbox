@@ -484,6 +484,10 @@ export default function FocusedByID(props) {
                 data: Data,
             });
             ResponseApi.then((Result) => {
+                var element2 = document.getElementsByClassName("temp-class")
+                if (element2.length > 0) {
+                    element2[0].classList.remove('Mui-selected')
+                }
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetToEmailValue(Result.data.Data)
@@ -505,6 +509,12 @@ export default function FocusedByID(props) {
                         SetOpenMessageDetails([]);
                         SetActive("");
                         LoaderHide()
+                    }
+                    if (Result?.data?.Data[0]?.IsStarred == false) {
+                        element2[0].classList.remove("Mui-selected");
+                    }
+                    else {
+                        element2[0].classList.add("Mui-selected")
                     }
                 }
                 else {
@@ -712,13 +722,18 @@ export default function FocusedByID(props) {
                             GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
                         } else {
                             var element = document.getElementById("star_" + ID);
+                            var element2 = document.getElementById("starbelow_" + ID);
+
                             var className = element.className;
                             var isStar = className.includes("Mui-selected")
+
                             if (isStar) {
                                 element.classList.remove("Mui-selected");
+                                element2.classList.remove("Mui-selected");
                             }
                             else {
                                 element.classList.add("Mui-selected");
+                                element2.classList.add("Mui-selected");
                             }
                         }
                     }
@@ -727,13 +742,18 @@ export default function FocusedByID(props) {
                             GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
                         } else {
                             var element = document.getElementById("star_" + ID);
+                            var element2 = document.getElementById("starbelow_" + ID);
+
                             var className = element.className;
                             var isStar = className.includes("Mui-selected")
+
                             if (isStar) {
                                 element.classList.remove("Mui-selected");
+                                element2.classList.remove("Mui-selected");
                             }
                             else {
                                 element.classList.add("Mui-selected");
+                                element2.classList.add("Mui-selected");
                             }
                         }
                     }
@@ -2045,7 +2065,7 @@ export default function FocusedByID(props) {
                                                         <label>{MailNumber} / {FollowUpList.length}</label>
                                                     </Button>
                                                     <Button>
-                                                        <ToggleButton className='startselct' title={"Starred"} value="check" selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                                                        <ToggleButton className='startselct temp-class' title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>

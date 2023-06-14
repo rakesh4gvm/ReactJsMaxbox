@@ -414,6 +414,10 @@ export default function SpamByID(props) {
                 data: Data,
             });
             ResponseApi.then((Result) => {
+                var element2 = document.getElementsByClassName("temp-class")
+                if (element2.length > 0) {
+                    element2[0].classList.remove('Mui-selected')
+                }
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetOpenMessageDetails(Result.data.Data[0]);
@@ -435,6 +439,12 @@ export default function SpamByID(props) {
                         SetOpenMessageDetails([]);
                         SetActive("");
                         LoaderHide()
+                    }
+                    if (Result?.data?.Data[0]?.IsStarred == false) {
+                        element2[0].classList.remove("Mui-selected");
+                    }
+                    else {
+                        element2[0].classList.add("Mui-selected")
                     }
                 }
                 else {
@@ -486,23 +496,37 @@ export default function SpamByID(props) {
                         CloseStarPopModel();
 
                     }
-                    var ID = decrypt(props.location.search.replace('?', ''))
 
-                    if (!state) {
-                        if (ID != "" && ID != null && ID != "undefined") {
-                            GetSpamList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
-                        }
-                        else {
-                            GetSpamList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
-                        }
-                    } else {
-                        if (ID != "" && ID != null && ID != "undefined") {
-                            SetMenuID(ID);
-                            GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
-                        } else {
-                            GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
-                        }
+                    var element = document.getElementById("star_" + ID);
+                    var element2 = document.getElementById("starbelow_" + ID);
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                        element2.classList.remove("Mui-selected");
                     }
+                    else {
+                        element.classList.add("Mui-selected");
+                        element2.classList.add("Mui-selected");
+                    }
+
+                    // var ID = decrypt(props.location.search.replace('?', ''))
+
+                    // if (!state) {
+                    //     if (ID != "" && ID != null && ID != "undefined") {
+                    //         GetSpamList(ClientID, UserID, Page, ID, "hideloader", "SeenEmails");
+                    //     }
+                    //     else {
+                    //         GetSpamList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails")
+                    //     }
+                    // } else {
+                    //     if (ID != "" && ID != null && ID != "undefined") {
+                    //         SetMenuID(ID);
+                    //         GetSpamList(ClientID, UserID, Page, ID, "hideloader", "");
+                    //     } else {
+                    //         GetSpamList(ClientID, UserID, Page, 0, "hideloader", "")
+                    //     }
+                    // }
 
 
                     // }
@@ -1811,7 +1835,7 @@ export default function SpamByID(props) {
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
                                                 <TableCell width={'35px'} align="center">
-                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                    <ToggleButton title="Starred" className='startselct' value="check" id={"star_" + item._id} selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "")} >
                                                         <StarBorderIcon className='starone' />
                                                         <StarIcon className='selectedstart startwo' />
                                                     </ToggleButton>
@@ -1854,7 +1878,7 @@ export default function SpamByID(props) {
                                                         <label>{MailNumber} / {SpamPage.length}</label>
                                                     </Button>
                                                     <Button>
-                                                        <ToggleButton className='startselct' value="check" title={"Starred"} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                                                        <ToggleButton className='startselct temp-class' value="check" title={"Starred"} id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
