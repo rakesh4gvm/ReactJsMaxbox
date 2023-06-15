@@ -223,71 +223,7 @@ export default function UnansweredResponsesPage(props) {
     document.title = 'Focused | MAXBOX';
     GetClientID();
   }, [SearchInbox, state])
-
-  useEffect(() => {
-    const intro = IntroJs();
-
-    intro.onafterchange(function (targetElement) {
-      const currentStepIndex = intro._currentStep;
-      if (currentStepIndex === 0) {
-        const element = document.getElementById("OpenNavigation");
-        element.classList.add("show");
-      }
-    });
-
-    intro.setOptions({
-      steps: [
-        {
-          element: '#one-step',
-          title: 'Add your client',
-          intro: 'Click on Add client, You can create your client here',
-          intro1: 'Click on Add client, You can create your client here',
-          tooltipClass: 'tooltipmaxbox',
-          highlightClass: 'bgwhiter',
-          position: 'right',
-
-        },
-        {
-          element: '#two-step',
-          title: 'Email configure',
-          intro: 'Click on add account, You can configure your email for client here',
-          tooltipClass: 'tooltipmaxbox',
-          highlightClass: 'bgwhiter',
-          position: 'right',
-        },
-        {
-          element: '.three-step',
-          title: 'Compose',
-          intro: 'Click on compose button, You can write your mail here ',
-          tooltipClass: 'tooltipmaxbox',
-          highlightClass: 'bgwhiter',
-          position: 'left',
-        },
-        {
-          element: '#fore-step',
-          title: 'Template',
-          intro: 'Create Template, You can create your template here',
-          tooltipClass: 'tooltipmaxbox',
-          highlightClass: 'bgwhiter',
-          position: 'right',
-        },
-      ],
-    });
-
-    intro.oncomplete(function () {
-      const element = document.getElementById("OpenNavigation");
-      element.classList.remove("show");
-    });
-
-    var UserDetails = GetUserDetails()
-
-    if (UserDetails?.ClientID?.length <= 0) {
-      intro.start();
-    } else {
-      intro.exit()
-    }
-
-  });
+ 
 
   const ContainerRef = useRef(null);
 
@@ -1726,6 +1662,71 @@ export default function UnansweredResponsesPage(props) {
 
   }
 
+
+  useEffect(() => {
+    const intro = IntroJs();
+
+    intro.onafterchange(function (targetElement) {
+      const currentStepIndex = intro._currentStep;
+      if (currentStepIndex === 0) {
+        const element = document.getElementById("OpenNavigation");
+        element.classList.add("show");
+      }
+    });
+
+    intro.setOptions({
+      steps: [
+        {
+          element: '#one-step',
+          title: 'Add your client',
+          intro: 'Click on Add client, You can create your client here',
+          intro1: 'Click on Add client, You can create your client here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+
+        },
+        {
+          element: '#two-step',
+          title: 'Email configure',
+          intro: 'Click on add account, You can configure your email for client here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+        },
+        {
+          element: '.three-step',
+          title: 'Compose',
+          intro: 'Click on compose button, You can write your mail here ',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'left',
+        },
+        {
+          element: '#fore-step',
+          title: 'Template',
+          intro: 'Create Template, You can create your template here',
+          tooltipClass: 'tooltipmaxbox',
+          highlightClass: 'bgwhiter',
+          position: 'right',
+        },
+      ],
+    });
+
+    intro.oncomplete(function () {
+      const element = document.getElementById("OpenNavigation");
+      element.classList.remove("show");
+    });
+
+    var UserDetails = GetUserDetails()
+
+    if (UserDetails?.ClientID?.length <= 0) {
+      intro.start();
+    } else {
+      intro.exit()
+    }
+
+  });
 
   return (
     <>

@@ -206,6 +206,7 @@ export default function AllInboxByID(props) {
     const handleClose = () => setOpen(false);
     const handleTemOpen = () => setTemOpen(true);
     const handleTemClose = () => setTemOpen(false);
+    const [showNotification, setShowNotification] = useState(false);
 
     const { id } = useParams();
 
@@ -694,6 +695,10 @@ export default function AllInboxByID(props) {
         elementreply.classList.remove("show");
         // const elementreplytwo = document.getElementById("UserComposeForward")
         // elementreplytwo.classList.remove("show");
+        setShowNotification(true);
+        setTimeout(() => {
+            // setShowNotification(false);
+        }, 5000);
     };
     // end replay code
 
@@ -1866,6 +1871,11 @@ export default function AllInboxByID(props) {
                             <Col>
                                 <div className='FroalaEditor'>
                                     <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                                    {showNotification && (
+                                        <div className="notificationchatgpt">
+                                        This is a ChatGPT. You can access ChatGPT!
+                                        </div>
+                                    )}
                                 </div>
                             </Col>
                         </Row>

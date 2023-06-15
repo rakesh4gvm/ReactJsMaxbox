@@ -987,7 +987,7 @@ export default function Navigation(props) {
             <SettingsIcon />
           </div>
 
-          <div id='OpenNavigation' className='carsetting'>
+          <div id='OpenNavigation' className='carsetting show'>
             <ul>
               <div id="fore-step"><li><a href="/Templates">Templates</a></li></div>
               <li><a href="/ObjectionTemplate">Objections</a></li>
