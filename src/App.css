@@ -3583,6 +3583,7 @@ div.bgwhiter {
     border-radius: 7px;
     font-size: 14px;
     color: #454545;
+    display: none;
 }
 .notificationchatgpt:after {
     content: "";
@@ -3595,6 +3596,22 @@ div.bgwhiter {
     left: 50%;
 }
 
+.FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:nth-child(11) { 
+    animation: zoom-in-zoom-out 1s ease infinite;
+  }
+  
+  @keyframes zoom-in-zoom-out {
+    0% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.25, 1.25) rotate(45deg);
+      filter: brightness(1.5) hue-rotate(30deg);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
