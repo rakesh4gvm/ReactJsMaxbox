@@ -3546,17 +3546,28 @@ div .Toastify__toast-container {
     right: -26px;
     border-left-color: #fce3da;
 }
+.tooltipmaxbox .introjs-arrow.bottom{ 
+    border-top-color: #fce3da !important;
+    bottom: -25px;
+}
 .tooltipmaxbox .introjs-arrow {
-    border: 16px solid transparent; 
+    border: 16px solid transparent;   
 }
 div.bgwhiter {
     box-shadow: rgb(114 91 83 / 65%) 0px 0px 1px 2px, rgb(114 91 83 / 65%) 0px 0px 0px 5000px !important;
 } 
-.tooltipmaxbox .introjs-tooltip-header h1{
+.tooltipmaxbox .introjs-tooltip-header h1 {
     font-size: 18px;
     font-family: 'Arial', 'Poppins', sans-serif !important;
     color: #201f1f !important;
     font-weight: 700;
+    /* background: #f4dbd1; */
+    padding: 10px 0px;
+    width: 100%;
+}
+.tooltipmaxbox .introjs-tooltip-header h1 svg{
+    margin-right: 5px;
+    width: 24px;
 }
 .tooltipmaxbox .introjs-tooltiptext {
     padding: 10px 20px;
@@ -3568,9 +3579,12 @@ div.bgwhiter {
 .tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover {
     color: #514f4f;
 }
-.tooltipmaxbox .introjs-bullets { 
+.tooltipmaxbox .introjs-bullets {
     padding-top: 0;
     padding-bottom: 0;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10px);
 }
 .tooltipmaxbox .introjs-bullets ul li a.active,
 .tooltipmaxbox .introjs-bullets ul li a:hover {

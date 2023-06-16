@@ -989,10 +989,10 @@ export default function Navigation(props) {
 
           <div id='OpenNavigation' className='carsetting show'>
             <ul>
-              <div id="fore-step"><li><a href="/Templates">Templates</a></li></div>
+              <div className="fore-step"><li><a href="/Templates">Templates</a></li></div>
               <li><a href="/ObjectionTemplate">Objections</a></li>
               <div id="two-step"><li><a href="/EmailConfiguration">Email Settings</a></li></div>
-              <div id="one-step"><li><a href="/ClientList">Clients</a></li></div>
+              <div className="one-step"><li><a id="one-step" href="/ClientList">Clients</a></li></div>
               <li><a href="/ContactEmail">Contacts</a></li>
               {/* <li><a href="/">Logout</a></li> */}
               <li><a onClick={logout}>Logout</a></li>
