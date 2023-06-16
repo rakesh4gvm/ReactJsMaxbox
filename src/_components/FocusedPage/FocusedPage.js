@@ -1662,9 +1662,10 @@ export default function UnansweredResponsesPage(props) {
 
   }
 
-
+  
   useEffect(() => {
     const intro = IntroJs();
+    document.getElementById("OpenNavigation").classList.add("show");
 
     intro.onafterchange(function (targetElement) {
       const currentStepIndex = intro._currentStep;
@@ -1674,6 +1675,8 @@ export default function UnansweredResponsesPage(props) {
       }
     });
 
+    
+
     intro.setOptions({
       steps: [
         {
@@ -1681,7 +1684,7 @@ export default function UnansweredResponsesPage(props) {
           title: 'Add your client',
           intro: 'Click on Add client, You can create your client here',
           intro1: 'Click on Add client, You can create your client here',
-          tooltipClass: 'tooltipmaxbox',
+          tooltipClass: 'tooltipmaxbox backbtnnon',
           highlightClass: 'bgwhiter',
           position: 'right',
 
@@ -1713,7 +1716,13 @@ export default function UnansweredResponsesPage(props) {
       ],
     });
 
+    // intro.oncomplete(function() {
+    //   intro.exit(); // Exit the tour when the "Done" button is clicked
+    // });
+    
+
     intro.oncomplete(function () {
+      intro.exit(); 
       const element = document.getElementById("OpenNavigation");
       element.classList.remove("show");
     });
@@ -1723,7 +1732,7 @@ export default function UnansweredResponsesPage(props) {
     if (UserDetails?.ClientID?.length <= 0) {
       intro.start();
     } else {
-      intro.exit()
+      intro.exit() 
     }
 
   });

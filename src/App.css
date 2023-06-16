@@ -1810,6 +1810,10 @@ div.erorr-msg>*>* {
     top: calc(-100% + -15px) !important;
 } */
 
+.fr-toolbar .fr-command.fr-btn:hover {
+    background-color: transparent !important;
+}
+
 .FroalaEditor div.fr-dropdown-menu {
     top: calc(-100% + 20px) !important;
     max-height: 75px;
@@ -3514,7 +3518,7 @@ div .Toastify__toast-container {
     color: #fff;
 }
 .tooltipmaxbox .introjs-tooltipbuttons{
-    border-top: 2px solid #d2aa9a;
+    border-top: none;
 }
 .tooltipmaxbox .introjs-button {
     padding: 4px 14px;
@@ -3564,6 +3568,10 @@ div.bgwhiter {
 .tooltipmaxbox .introjs-skipbutton, .tooltipmaxbox .introjs-skipbutton:hover {
     color: #514f4f;
 }
+.tooltipmaxbox .introjs-bullets { 
+    padding-top: 0;
+    padding-bottom: 0;
+}
 .tooltipmaxbox .introjs-bullets ul li a.active,
 .tooltipmaxbox .introjs-bullets ul li a:hover {
     width: 15px;
@@ -3612,6 +3620,10 @@ div.bgwhiter {
       transform: scale(1, 1);
     }
   }
+.backbtnnon.tooltipmaxbox .introjs-button:first-child{
+    display: none !important;
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
