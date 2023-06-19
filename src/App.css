@@ -2630,6 +2630,12 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .carsetting ul li a {
     color: #fff;
     text-decoration: none;
+    margin-bottom: 4px;
+    display: table;
+}
+.carsetting ul li a img{
+    margin-right: 12px;
+    filter: brightness(10000000%) contrast(100%);
 }
 
 .carsetting ul li a:hover {

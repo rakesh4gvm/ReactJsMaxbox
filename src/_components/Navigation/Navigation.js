@@ -27,6 +27,13 @@ import MailIcon from '@material-ui/icons/Mail';
 
 import Xlogo from "../../images/Xlogo.png";
 import Usericon from '../../images/icons/users.svg';
+import Template from '../../images/icons/template.svg';
+import EmailSettings from '../../images/icons/email-settings.svg';
+import RightObjection from '../../images/icons/right-objection.svg';
+import Client from '../../images/icons/users.svg';
+import Contact from '../../images/icons/contact-email.svg'; 
+import Logouticon from '../../images/icons/logout.svg'; 
+
 
 import ExpandDown from '@material-ui/icons/NavigateNext';
 import ArrowRight from '@material-ui/icons/ExpandMore';
@@ -989,13 +996,31 @@ export default function Navigation(props) {
 
           <div id='OpenNavigation' className='carsetting show'>
             <ul>
-              <div className="fore-step"><li><a href="/Templates">Templates</a></li></div>
-              <li><a href="/ObjectionTemplate">Objections</a></li>
-              <div id="two-step"><li><a href="/EmailConfiguration">Email Settings</a></li></div>
-              <div className="one-step"><li><a id="one-step" href="/ClientList">Clients</a></li></div>
-              <li><a href="/ContactEmail">Contacts</a></li>
+              <div className="fore-step"><li><a href="/Templates">
+                <img src={Template} width={26} />
+                Templates</a></li></div>
+
+              <li><a href="/ObjectionTemplate"> 
+                <img src={RightObjection} width={24} />
+                  Objections</a>
+              </li>
+
+              <div id="two-step"><li><a href="/EmailConfiguration">
+                <img src={EmailSettings} width={24} />
+              Email Settings</a></li></div>
+
+              <div className="one-step"><li>
+                <a id="one-step" href="/ClientList">
+                <img src={Client} width={21} />
+                  Clients</a></li></div>
+
+              <li><a href="/ContactEmail">
+              <img src={Contact} width={23} />
+                Contacts</a></li>
               {/* <li><a href="/">Logout</a></li> */}
-              <li><a onClick={logout}>Logout</a></li>
+              <li><a onClick={logout}>
+              <img src={Logouticon} width={21} /> 
+                Logout</a></li>
             </ul>
           </div>
         </div>
