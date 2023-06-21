@@ -2640,8 +2640,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 
 .carsetting ul li a:hover {
     opacity: 0.8;
-}
-
+} 
 
 /*resign devs*/
 .settingsDiv,
@@ -3574,6 +3573,7 @@ div.bgwhiter {
 .tooltipmaxbox .introjs-tooltip-header h1 svg{
     margin-right: 5px;
     width: 24px;
+    margin-top: -4px;
 }
 .tooltipmaxbox .introjs-tooltiptext {
     padding: 10px 20px;
