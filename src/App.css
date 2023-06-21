@@ -1616,7 +1616,7 @@ div.erorr-msg>*>* {
 
 /*difulat start css*/
 .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child {
-    background-color: #e49273;
+    background-color: #e49273 !important;
     box-shadow: 0px 4px 14px 6px #fcf2ee;
     color: #fff;
     padding: 6px 20px 6px 20px;
