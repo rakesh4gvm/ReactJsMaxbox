@@ -45,9 +45,8 @@ import FollowUpLaterByID from './_components/FollowUpLaterByID/FollowUpLaterByID
 import AllSentEmailByID from './_components/AllSentEmailByID/AllSentEmailByID';
 import UnansweredRepliesByID from './_components/UnansweredRepliesByID/UnansweredRepliesByID';
 import Navigation from './_components/Navigation/Navigation';
-import EmptyNavigation from './_components/Navigation/Navigation';
 
-function App(props) {
+function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(CheckLocalStorage());
 
   var LoginData = localStorage.getItem("LoginData")
@@ -62,10 +61,9 @@ function App(props) {
       {HideHeader}
         <Switch>
        
-           <Route exact path="/login" component={LoginPage} />
-           <Route exact path="/Register" component={RegisterPage} />
-            <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
-             {!isLoggedIn && HideHeader} {EmptyNavigation}
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/Register" component={RegisterPage} />
+          <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
           <Route path="/OtherInboxByID/:id" component={OtherInboxByID} />
           <Route exact path="/Focused" component={FocusedPage} />
