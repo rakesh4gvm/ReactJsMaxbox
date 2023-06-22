@@ -2514,7 +2514,8 @@ div#root {
     bottom: 15px;
 }
 
-.sidenavtree a {
+.sidenavtree a,
+.sidenavtree a:visited {
     width: 100%;
     clear: both;
     display: table;
