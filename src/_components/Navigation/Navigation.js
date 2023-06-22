@@ -31,8 +31,8 @@ import Template from '../../images/icons/template.svg';
 import EmailSettings from '../../images/icons/email-settings.svg';
 import RightObjection from '../../images/icons/right-objection.svg';
 import Client from '../../images/icons/users.svg';
-import Contact from '../../images/icons/contact-email.svg'; 
-import Logouticon from '../../images/icons/logout.svg'; 
+import Contact from '../../images/icons/contact-email.svg';
+import Logouticon from '../../images/icons/logout.svg';
 
 
 import ExpandDown from '@material-ui/icons/NavigateNext';
@@ -221,8 +221,8 @@ export default function Navigation(props) {
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
   const [count, setCount] = useState(0)
-  
 
+  const location = useLocation()
 
   useEffect(() => {
     // var UserDetails = GetUserDetails();
@@ -516,7 +516,7 @@ export default function Navigation(props) {
 
   const OnLoad = () => {
 
-    var SelectedPage = props.menupage;
+    var SelectedPage = location.pathname;
     const NavigationID = localStorage.getItem("NavigationID")
     var SelectedID = NavigationID
 
@@ -567,28 +567,30 @@ export default function Navigation(props) {
         }
       }
       else {
-        var pageid = SelectedPage + SelectedID
+        var output = SelectedPage.substring(0, SelectedPage.indexOf('/', 1));
+        var pageid = output + SelectedID
+
         SetSelectMenuItem(pageid)
-        if (pageid == "/AllInbox" + SelectedID || pageid == "/Focused" + SelectedID) {
+        if (pageid == "/AllInboxByID" + SelectedID || pageid == "/FocusedByID" + SelectedID) {
 
           handleClick("0" + SelectedID, 0)
           handleOneClick("1" + SelectedID, 0)
 
         }
 
-        if (pageid == "/Starred" + SelectedID) {
+        if (pageid == "/StarredByID" + SelectedID) {
           handleClick("0" + NavigationID, 0);
           handleOneClick("0", 0)
         }
-        if (pageid == "/Spam" + SelectedID) {
+        if (pageid == "/SpamByID" + SelectedID) {
           handleClick("0" + NavigationID, 0);
           handleOneClick("0", 0)
         }
-        if (pageid == "/OtherInboxPage" + SelectedID) {
+        if (pageid == "/OtherInboxPageByID" + SelectedID) {
           handleClick("0" + NavigationID, 0);
           handleOneClick("0", 0)
         }
-        if (pageid == "/FollowUpLater" + SelectedID) {
+        if (pageid == "/FollowUpLaterByID" + SelectedID) {
           handleClick("0" + NavigationID, 0);
           handleOneClick("0", 0)
         }
@@ -596,7 +598,7 @@ export default function Navigation(props) {
           handleClick("0" + NavigationID, 0);
           handleOneClick("0", 0)
         }
-        if (pageid == "/AllSentEmails" + SelectedID || pageid == "/UnansweredReplies" + SelectedID) {
+        if (pageid == "/AllSentEmailsByID" + SelectedID || pageid == "/UnansweredRepliesByID" + SelectedID) {
           if (SelectedID != undefined) {
             handleClick("0" + SelectedID, 0)
             OnehandleClickOutBox("2" + SelectedID, 0)
@@ -1014,9 +1016,6 @@ export default function Navigation(props) {
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
 
-
-  const location = useLocation();
-
   // Determine if the current location is the login page
   const isLoginPage = location.pathname === '/login';
 
@@ -1068,26 +1067,26 @@ export default function Navigation(props) {
                 <img src={Template} width={26} />
                 Templates</a></li></div>
 
-              <li><a href="/ObjectionTemplate"> 
+              <li><a href="/ObjectionTemplate">
                 <img src={RightObjection} width={24} />
-                  Objections</a>
+                Objections</a>
               </li>
 
               <div id="two-step"><li><a href="/EmailConfiguration">
                 <img src={EmailSettings} width={24} />
-              Email Settings</a></li></div>
+                Email Settings</a></li></div>
 
               <div className="one-step"><li>
                 <a id="one-step" href="/ClientList">
-                <img src={Client} width={21} />
+                  <img src={Client} width={21} />
                   Clients</a></li></div>
 
               <li><a href="/ContactEmail">
-              <img src={Contact} width={23} />
+                <img src={Contact} width={23} />
                 Contacts</a></li>
               {/* <li><a href="/">Logout</a></li> */}
               <li><a onClick={logout}>
-              <img src={Logouticon} width={21} /> 
+                <img src={Logouticon} width={21} />
                 Logout</a></li>
             </ul>
           </div>
