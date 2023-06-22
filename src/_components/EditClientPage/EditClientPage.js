@@ -237,7 +237,7 @@ export default function EditClientPage(props) {
 
 
             <div className='lefter'>
-                <Navigation />
+                {/* <Navigation /> */}
             </div>
             <div className='righter'>
                 <div className='px-3'>

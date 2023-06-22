@@ -72,6 +72,9 @@ import 'intro.js/introjs.css';
 import { IntroJsReact } from 'react-intro.js';
 
 
+import { useLocation } from 'react-router-dom';
+
+
 toast.configure();
 
 function useOutsideAlerter(ref) {
@@ -1011,6 +1014,17 @@ export default function Navigation(props) {
   const WrapperRef = useRef(null);
   useOutsideAlerter(WrapperRef);
 
+
+  const location = useLocation();
+
+  // Determine if the current location is the login page
+  const isLoginPage = location.pathname === '/login';
+
+  // Return null if it's the login page to hide the sidebar
+  if (isLoginPage) {
+    return null;
+  }
+
   return (
     <>
 
@@ -1048,7 +1062,7 @@ export default function Navigation(props) {
             <SettingsIcon />
           </div>
 
-          <div id='OpenNavigation' className='carsetting show'>
+          <div id='OpenNavigation' className='carsetting'>
             <ul>
               <div className="fore-step"><li><a href="/Templates">
                 <img src={Template} width={26} />

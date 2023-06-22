@@ -396,7 +396,7 @@ export default function EmailConfigurationPage() {
 
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
 
       <div className='righter'>

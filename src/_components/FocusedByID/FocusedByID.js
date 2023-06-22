@@ -1926,7 +1926,7 @@ export default function FocusedByID(props) {
             </Modal>
 
             <div className='lefter'>
-                <Navigation menupage="/Focused" MenuID={MenuID} />
+                {/* <Navigation menupage="/Focused" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

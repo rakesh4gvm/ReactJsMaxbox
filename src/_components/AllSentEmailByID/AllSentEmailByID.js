@@ -1516,7 +1516,7 @@ export default function AllSentEmailByID(props) {
 
             <div className='lefter'>
                 {/* <Navigation menupage="/AllSentEmails" /> */}
-                <Navigation menupage="/AllSentEmails" MenuID={MenuID} />
+                {/* <Navigation menupage="/AllSentEmails" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

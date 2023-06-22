@@ -213,7 +213,7 @@ export default function EditTemplatesPage(props) {
 
 
             <div className='lefter'>
-                <Navigation />
+                {/* <Navigation /> */}
             </div>
             <div className='righter'>
                 <div className='px-3'>

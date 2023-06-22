@@ -44,20 +44,28 @@ import OtherInboxByID from './_components/OtherInboxByID/OtherInboxByID';
 import FollowUpLaterByID from './_components/FollowUpLaterByID/FollowUpLaterByID';
 import AllSentEmailByID from './_components/AllSentEmailByID/AllSentEmailByID';
 import UnansweredRepliesByID from './_components/UnansweredRepliesByID/UnansweredRepliesByID';
+import Navigation from './_components/Navigation/Navigation';
+import EmptyNavigation from './_components/Navigation/Navigation';
 
-
-function App() {
-  const [isAuth, setIsAuth] = useState(CheckLocalStorage());
+function App(props) {
+  const [isLoggedIn, setIsLoggedIn] = useState(CheckLocalStorage());
 
   var LoginData = localStorage.getItem("LoginData")
+  let HideHeader = isLoggedIn ?  <div className='lefter'><Navigation /></div> : null
 
+
+  
   return (
     <div className="App">
-      {/* {window.location.pathname != '/' && isAuth == true ? <HeaderTop /> : null} */}
-
+      
       <Router history={history}>
+      {HideHeader}
         <Switch>
-
+       
+           <Route exact path="/login" component={LoginPage} />
+           <Route exact path="/Register" component={RegisterPage} />
+            <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
+             {!isLoggedIn && HideHeader} {EmptyNavigation}
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
           <Route path="/OtherInboxByID/:id" component={OtherInboxByID} />
           <Route exact path="/Focused" component={FocusedPage} />
@@ -81,7 +89,7 @@ function App() {
           <Route exact path="/CreateTemplates" component={CreateTemplatesPage} />
           <Route exact path="/CreateObjection" component={CreateObjectionPage} />
           <Route exact path="/EditObjectionTemplate" component={EditObjectionTemplatePage} />
-          <Route exact path="/Register" component={RegisterPage} />
+          
           <Route exact path="/EditEmail" component={EditEmailPage} />
           <Route exact path="/ClientList" component={ClientListPage} />
           <Route exact path="/AddClient" component={AddClientPage} />
@@ -90,21 +98,13 @@ function App() {
           <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
           <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
           <Route exact path="/OTPConfirm" component={OTPConfirmPage} />
-          <Route exact path="/login" component={LoginPage} />
+         
           <Route exact path="/ContactEmail" component={ContactEmailPage} />
           <Route exact path="/AddContactEmail" component={AddContactEmailPage} />
           <Route exact path="/AllInbox" component={AllInboxPage} />
           <Route path="/AllInboxByID/:id" component={AllInboxByID} />
           <Route exact path="/NewInbox" component={NewInboxPage} />
-          <Route exact path="/" render={() => (
-            LoginData ? (
-              <Redirect to="/Focused" />
-            ) : (
-              <Redirect to="/login" />
-            )
-          )} />
-          {/* <IndexRoute component={HomePage} /> */}
-          <Redirect from="*" to="/Focused" />
+         
 
         </Switch>
         {/* {(window.location.pathname == '/ClientList' || 

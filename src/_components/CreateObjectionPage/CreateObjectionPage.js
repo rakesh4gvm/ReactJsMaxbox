@@ -212,7 +212,7 @@ export default function CreateObjectionTemplatePage({ children }) {
     <>
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
       <div className='righter'>
 

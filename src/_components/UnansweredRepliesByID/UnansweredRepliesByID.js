@@ -1497,8 +1497,8 @@ export default function UnansweredRepliesByID(props) {
                 </Box>
             </Modal>
             <div className='lefter'>
-                <Navigation menupage="/UnansweredReplies" />
-                <Navigation menupage="/UnansweredReplies" MenuID={MenuID} />
+                {/* <Navigation menupage="/UnansweredReplies" />
+                <Navigation menupage="/UnansweredReplies" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

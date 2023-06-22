@@ -210,7 +210,7 @@ export default function CreateTemplatesPage({ children }) {
   return (
     <>
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
       <div className='righter'>
 

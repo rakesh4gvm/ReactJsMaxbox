@@ -1732,7 +1732,7 @@ export default function OtherInboxByID(props) {
             </Modal>
 
             <div className='lefter'>
-                <Navigation menupage="/OtherInboxPage" MenuID={MenuID} />
+                {/* <Navigation menupage="/OtherInboxPage" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

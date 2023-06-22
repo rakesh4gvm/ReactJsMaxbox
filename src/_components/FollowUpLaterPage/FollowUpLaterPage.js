@@ -1712,7 +1712,7 @@ export default function FollowUpLater(props) {
       </Modal>
 
       <div className='lefter'>
-        <Navigation menupage="/FollowUpLater" MenuID={MenuID} />
+        {/* <Navigation menupage="/FollowUpLater" MenuID={MenuID} /> */}
       </div>
 
       <div className='righter'>

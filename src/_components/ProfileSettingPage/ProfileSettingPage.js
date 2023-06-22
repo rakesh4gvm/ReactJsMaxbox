@@ -349,7 +349,7 @@ export default function ProfileSettingPage() {
       </div>
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
 
       <div className='righter'>

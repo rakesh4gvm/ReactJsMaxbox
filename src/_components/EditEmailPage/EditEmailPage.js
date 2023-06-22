@@ -154,7 +154,7 @@ export default function EditEmailPage(props) {
 
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
       <div id="hideloding" className="loding-display">
         <img src={MaxboxLoading} />

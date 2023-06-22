@@ -217,7 +217,7 @@ export default function ClientListPage() {
 
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
       <div className='righter'>
 

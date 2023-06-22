@@ -1559,7 +1559,7 @@ export default function AllInboxByID(props) {
             </Modal>
 
             <div className='lefter'>
-                <Navigation menupage="/AllInbox" MenuID={MenuID} />
+                {/* <Navigation menupage="/AllInbox" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

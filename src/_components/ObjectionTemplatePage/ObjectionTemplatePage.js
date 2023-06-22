@@ -279,7 +279,7 @@ export default function ObjectionTemplateListPage() {
       </Modal>
 
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
 
       <div className='righter'>

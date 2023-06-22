@@ -1759,7 +1759,7 @@ export default function SpamByID(props) {
             </Modal>
 
             <div className='lefter'>
-                <Navigation menupage="/Spam" MenuID={MenuID} />
+                {/* <Navigation menupage="/Spam" MenuID={MenuID} /> */}
             </div>
             <div className='righter'>
                 <header className='minisearchhed'>

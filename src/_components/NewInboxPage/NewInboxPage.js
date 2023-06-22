@@ -210,7 +210,7 @@ export default function NewInboxPage() {
   return (
     <>
       <div className='lefter'>
-        <Navigation />
+        {/* <Navigation /> */}
       </div>
       <div className='righter'> 
         <ListInbox />

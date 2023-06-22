@@ -899,7 +899,7 @@ export default function OtherInboxPage(props) {
         </Box>
       </Modal>
       <div className='lefter'>
-        <Navigation menupage="/Drafts" MenuID="" />
+        {/* <Navigation menupage="/Drafts" MenuID="" /> */}
       </div>
       <div className='righter'>
         <header className='minisearchhed'>
