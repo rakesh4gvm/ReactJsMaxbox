@@ -1621,8 +1621,15 @@ div.erorr-msg>*>* {
     color: #fff;
     padding: 6px 20px 6px 20px;
     border-radius: 72px !important;
+    line-height: 22px;
+    transition: 0.0s all;
 }
-
+.FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child:hover{
+    background-color: #c67254 !important;
+}
+#UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child:hover::before{
+    background-color: #c67254 !important;
+}
 .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:nth-child(2) {
     /* background-color: #647AF7 !important;
     color: #fff;
@@ -3188,20 +3195,41 @@ tr.selected-row {
 }
 
 #UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child {
-    max-width: 77px;
+    /* max-width: 77px; */
     overflow: hidden;
     white-space: nowrap;
 }
 
 #UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before {
-    content: "Send";
+    content: "Send Replay";
     position: absolute;
     background: #e49273;
-    width: 62px;
     display: table;
     text-align: center;
+    width: auto;
     line-height: 24px;
-    padding-right: 24px;
+    padding: 0 4px;
+    font-size: 0.9rem;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    white-space: nowrap;
+}
+#UserComposeForward .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before {
+    content: "Forward Reply";
+    position: absolute;
+    background: #e49273;
+    display: table;
+    text-align: center;
+    width: auto;
+    line-height: 24px;
+    padding: 0 4px;
+    font-size: 0.9rem;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    white-space: nowrap;
+}
+#UserComposeForward .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child:hover::before { 
+    background: #c67254 !important;  
 }
 
 div.multibox-filter .MuiFilledInput-root {
@@ -3517,11 +3545,20 @@ div .Toastify__toast-container {
 .listboxtab div{
     margin-right: 15px;
 } 
+.introjs-overlay,
+.introjs-tooltipReferenceLayer { 
+    z-index: 99999999999; 
+    transition: all 0s ease-out;
+}
+.MuiModal-root.modal-pre.css-79ws1d-MuiModal-root, .Toastify__toast-container, div[role=dialog]{
+    z-index: 99999999999 !important; 
+}
 .introjs-tooltip.tooltipmaxbox {
     background-color: #fce3da;
     min-width: 360px;
     border: 3px solid #d2aa9a;
     color: #fff;
+    transition: none !important;
 }
 .tooltipmaxbox .introjs-tooltipbuttons{
     border-top: none;
