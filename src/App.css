@@ -3681,7 +3681,9 @@ div.bgwhiter {
 .backbtnnon.tooltipmaxbox .introjs-button:first-child{
     display: none !important;
 }
-
+.subcompose + .subcompose .px-0.col-2 {
+    max-width: 13%;
+} 
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
