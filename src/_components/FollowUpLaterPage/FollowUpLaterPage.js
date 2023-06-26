@@ -808,6 +808,7 @@ export default function FollowUpLater(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

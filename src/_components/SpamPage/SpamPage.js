@@ -816,6 +816,7 @@ export default function SpamPage(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

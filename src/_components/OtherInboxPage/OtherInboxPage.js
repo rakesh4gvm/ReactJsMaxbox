@@ -813,6 +813,7 @@ export default function OtherInboxPage(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

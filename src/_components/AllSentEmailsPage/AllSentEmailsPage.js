@@ -691,6 +691,7 @@ export default function AllSentEmailsPage(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

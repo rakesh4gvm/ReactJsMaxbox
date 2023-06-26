@@ -688,7 +688,7 @@ export default function UnansweredRepliesByID(props) {
 
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
-
+        SetSignature({ Data: "" })
         SetNewObjectionID([])
         SetNewTemplateID([])
         SetCCEmailValue([])

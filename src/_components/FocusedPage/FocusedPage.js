@@ -1003,6 +1003,7 @@ export default function UnansweredResponsesPage(props) {
     elementforward.classList.remove("show");
 
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])
