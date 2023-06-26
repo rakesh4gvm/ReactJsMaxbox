@@ -690,6 +690,7 @@ export default function OtherInboxPage(props) {
     const elementforward = document.getElementById("UserComposeForward")
     elementforward.classList.remove("show");
     // SetToEmailValue([])
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

@@ -685,7 +685,7 @@ export default function AllUnansweredRepliesPage(props) {
 
     const elementforward = document.getElementById("UserComposeForward")
     elementforward.classList.remove("show");
-
+    SetSignature({ Data: "" })
     SetNewObjectionID([])
     SetNewTemplateID([])
     SetCCEmailValue([])

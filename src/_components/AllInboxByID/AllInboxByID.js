@@ -663,6 +663,7 @@ export default function AllInboxByID(props) {
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
         // SetToEmailValue([])
+        SetSignature({ Data: "" })
         SetNewObjectionID([])
         SetNewTemplateID([])
         SetCCEmailValue([])
@@ -1873,7 +1874,7 @@ export default function AllInboxByID(props) {
                                     <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
                                     {showNotification && (
                                         <div className="notificationchatgpt">
-                                        This is a ChatGPT. You can access ChatGPT!
+                                            This is a ChatGPT. You can access ChatGPT!
                                         </div>
                                     )}
                                 </div>

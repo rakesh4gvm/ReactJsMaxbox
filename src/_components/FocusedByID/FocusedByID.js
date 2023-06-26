@@ -926,6 +926,7 @@ export default function FocusedByID(props) {
         elementforward.classList.remove("show");
 
         // SetToEmailValue([])
+        SetSignature({ Data: "" })
         SetNewObjectionID([])
         SetNewTemplateID([])
         SetCCEmailValue([])

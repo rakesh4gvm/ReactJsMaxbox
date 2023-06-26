@@ -821,6 +821,7 @@ export default function SpamByID(props) {
         elementforward.classList.remove("show");
 
         // SetToEmailValue([])
+        SetSignature({ Data: "" })
         SetNewObjectionID([])
         SetNewTemplateID([])
         SetCCEmailValue([])
