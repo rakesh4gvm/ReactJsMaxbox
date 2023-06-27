@@ -192,7 +192,7 @@ export default function RegisterPage() {
   };
 
   function CancelButton() {
-    history.push("/Login")
+    history.push("/login")
   }
 
   // Handle Terms and Conditions

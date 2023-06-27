@@ -1018,11 +1018,12 @@ export default function Navigation(props) {
 
   // Determine if the current location is the login page
   const isLoginPage = location.pathname === '/login';
+  const isRegisterPage = location.pathname === '/Register';
 
   // Return null if it's the login page to hide the sidebar
-  if (isLoginPage) {
+  if (isLoginPage || isRegisterPage) {
     return null;
-  }
+  } 
 
   return (
     <>
