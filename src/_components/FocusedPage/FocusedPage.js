@@ -242,7 +242,7 @@ export default function UnansweredResponsesPage(props) {
         {
           element: '.one-step',
           title: '<b>Welcome</b> to MaxBox',
-          intro: 'Your gateway to efficient communication and limitless possibilities. Welcome to a world of streamlined productivity and personalized inbox magic.',
+          intro: 'Your gateway to efficient communication and limitless possibilities, welcome to a world of streamlined productivity and personalized inbox magic.',
           tooltipClass: 'tooltipmaxbox backbtnnon',
           highlightClass: 'bgwhiter',
           position: 'right',
@@ -251,7 +251,7 @@ export default function UnansweredResponsesPage(props) {
         {
           element: '.one-step',
           title: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="user"> <g> <path d="M20,21V19a4,4,0,0,0-4-4H8a4,4,0,0,0-4,4v2" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <circle cx="12" cy="7" fill="none" r="4" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> </g> </g> </g> </g></svg>  Add your client',
-          intro: 'Click on Add client, You can create your client here',
+          intro: 'Click on add client, you can create your client here',
           tooltipClass: 'tooltipmaxbox',
           highlightClass: 'bgwhiter',
           position: 'right',
@@ -260,7 +260,7 @@ export default function UnansweredResponsesPage(props) {
         {
           element: '#two-step',
           title: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="mail"> <g> <polyline fill="none" points="4 8.2 12 14.1 20 8.2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline> <rect fill="none" height="14" rx="2" ry="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="18" x="3" y="6.5"></rect> </g> </g> </g> </g></svg>  Email configure',
-          intro: 'Click on add account, You can configure your email for client here',
+          intro: 'Click on add account, you can configure your email for client here',
           tooltipClass: 'tooltipmaxbox',
           highlightClass: 'bgwhiter',
           position: 'right',
@@ -268,7 +268,7 @@ export default function UnansweredResponsesPage(props) {
         {
           element: '.three-step',
           title: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg>  Compose',
-          intro: 'Click on compose button, You can write your mail here ',
+          intro: 'Click on compose button, you can write your mail here ',
           tooltipClass: 'tooltipmaxbox',
           highlightClass: 'bgwhiter',
           position: 'left',
@@ -276,7 +276,7 @@ export default function UnansweredResponsesPage(props) {
         {
           element: '.fore-step',
           title: '<svg fill="#000000" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;}</style></defs><title>template</title><path d="M26,6v4H6V6H26m0-2H6A2,2,0,0,0,4,6v4a2,2,0,0,0,2,2H26a2,2,0,0,0,2-2V6a2,2,0,0,0-2-2Z"></path><path d="M10,16V26H6V16h4m0-2H6a2,2,0,0,0-2,2V26a2,2,0,0,0,2,2h4a2,2,0,0,0,2-2V16a2,2,0,0,0-2-2Z"></path><path d="M26,16V26H16V16H26m0-2H16a2,2,0,0,0-2,2V26a2,2,0,0,0,2,2H26a2,2,0,0,0,2-2V16a2,2,0,0,0-2-2Z"></path><rect class="cls-1" width="32" height="32"></rect></g></svg> Template',
-          intro: 'Create Template, You can create your template here',
+          intro: 'Create template, you can create your template here',
           tooltipClass: 'tooltipmaxbox',
           highlightClass: 'bgwhiter',
           position: 'bottom-right',
