@@ -3205,7 +3205,7 @@ tr.selected-row {
 }
 
 #UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before {
-    content: "Send Replay";
+    content: "Send Reply";
     position: absolute;
     background: #e49273;
     display: table;
