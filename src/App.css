@@ -2521,16 +2521,16 @@ div#root {
     bottom: 15px;
 }
 
-.sidenavtree a,
+.sidenavtree a, 
 .sidenavtree a:visited {
     width: 100%;
     clear: both;
     display: table;
-    color: #666;
+    color: #666 !important;
     padding: 0 0 0 15px;
+    font-weight: 400 !important;
     font-size: 0.85rem;
 }
-
 .sidenavtree .MuiTreeItem-label {
     font-size: 0.8rem;
 }
@@ -2608,6 +2608,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .tablelister tr svg {
     background-color: transparent;
     width: 18px;
+    color: #666;
 }
 
 .tablelister tr svg:focus {
@@ -2973,8 +2974,8 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
 
 .pagination-pa .MuiTablePagination-toolbar p {
     margin: 0;
+    color: #fff !important;
 }
-
 .pagination-pa .MuiTablePagination-actions button {
     padding: 1px;
     color: #f1eaea;
@@ -3064,15 +3065,18 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
     padding-top: 0;
     padding-bottom: 0;
     font-size: 0.8rem;
+
 }
 
 .listclick .MuiListItemButton-gutters {
     padding-bottom: 2px;
     padding-top: 2px;
+    color: #666 !important;
 }
 
 .listclick .MuiListItemButton-gutters b {
-    font-weight: 600;
+    font-weight: 600; 
+    color: #666 !important;
 }
 
 .listclick svg.MuiSvgIcon-root {
