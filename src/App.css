@@ -261,18 +261,22 @@ span.userpic img {
 
 .startselct .starone {
     display: block;
+    color: #e49273;
 }
 
 .startselct .startwo {
     display: none;
+    color: #e49273;
 }
 
 .startselct.Mui-selected .starone {
     display: none;
+    color: #e49273;
 }
 
 .startselct.Mui-selected .startwo {
-    display: block;
+    display: block; 
+    color: #e49273;
 }
 
 .col.maxcontainerix {
