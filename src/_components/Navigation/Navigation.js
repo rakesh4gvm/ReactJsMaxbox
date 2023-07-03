@@ -728,24 +728,25 @@ export default function Navigation(props) {
     LoaderHide()
   }
 
+  //  comment this api because we retrieve counts from email collection that's have no use for this api ~Shubham 
   const GetSentEmailsTotalRecords = (CID, UID) => {
     LoaderShow()
     const Data = {
       ClientID: CID,
       UserID: UID,
     }
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetSentEmailTotalRecords(Result.data)
-      } else {
-        toast.error(Result?.data?.Message);
-      }
-    });
+    // const ResponseApi = Axios({
+    //   url: CommonConstants.MOL_APIURL + "/sent_email_history/GetEmailsTotalRecords",
+    //   method: "POST",
+    //   data: Data,
+    // });
+    // ResponseApi.then((Result) => {
+    //   if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+    //     SetSentEmailTotalRecords(Result.data)
+    //   } else {
+    //     toast.error(Result?.data?.Message);
+    //   }
+    // });
     LoaderHide()
   }
 

@@ -1729,7 +1729,6 @@ export default function UnansweredResponsesPage(props) {
           if (ID != "" && ID != null && ID != "undefined") {
             GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
           } else {
-            debugger
             if (isstarActive) {
               GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
             } else {

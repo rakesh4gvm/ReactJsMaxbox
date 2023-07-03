@@ -65,7 +65,7 @@ export default function RegisterPage() {
       Isvalid = false
     }
     if (!Agree) {
-      SetAgreeError("Please change terms & privacy policy")
+      SetAgreeError("Please select  terms & privacy policy")
       Isvalid = false
     }
 

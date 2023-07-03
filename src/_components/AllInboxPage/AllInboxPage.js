@@ -292,7 +292,8 @@ export default function OtherInboxPage(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetClientList(UserDetails.ClientID)
+    //  comment this api because this api call two times  ~Shubham 
+    // GetClientList(UserDetails.ClientID)
 
   }
 

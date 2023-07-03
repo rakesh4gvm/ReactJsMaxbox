@@ -54,7 +54,7 @@ export default function ClientListPage() {
   const [Page, SetPage] = React.useState(1);
   const [RowsPerPage, SetRowsPerPage] = React.useState(10);
   const [ClientList, SetClientList] = React.useState([]);
-  const [SortField, SetSortField] = React.useState("FromName");
+  const [SortField, SetSortField] = React.useState("Name");
   const [SortedBy, SetSortedBy] = React.useState(1);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);

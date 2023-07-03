@@ -337,30 +337,30 @@ export default function AllUnansweredRepliesPage(props) {
   };
 
   // Get All Sent Emails Total Count
-  const GetAllSentEmailsTotalCount = (CID, UID) => {
-    LoaderShow()
-    const Data = {
-      ClientID: CID,
-      UserID: UID,
-    }
-    const ResponseApi = Axios({
-      url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
-      method: "POST",
-      data: Data,
-    });
-    ResponseApi.then((Result) => {
-      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+  // const GetAllSentEmailsTotalCount = (CID, UID) => {
+  //   LoaderShow()
+  //   const Data = {
+  //     ClientID: CID,
+  //     UserID: UID,
+  //   }
+  //   const ResponseApi = Axios({
+  //     url: CommonConstants.MOL_APIURL + "/sent_email_history/AllTotalRecords",
+  //     method: "POST",
+  //     data: Data,
+  //   });
+  //   ResponseApi.then((Result) => {
+  //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-        var total = Result.data?.AllUnansweredRepliesCount != undefined ? Result.data?.AllUnansweredRepliesCount : 0;
-        SetTotalRecord(total)
-        console.log(Result.data)
-      } else {
-        SetTotalRecord(0)
-        toast.error(Result?.data?.Message);
-      }
-    });
-    LoaderHide()
-  }
+  //       var total = Result.data?.AllUnansweredRepliesCount != undefined ? Result.data?.AllUnansweredRepliesCount : 0;
+  //       SetTotalRecord(total)
+  //       console.log(Result.data)
+  //     } else {
+  //       SetTotalRecord(0)
+  //       toast.error(Result?.data?.Message);
+  //     }
+  //   });
+  //   LoaderHide()
+  // }
 
   // const GetSentEmailsTotalRecords = (CID, UID, ID) => {
   //   LoaderShow()

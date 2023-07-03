@@ -136,7 +136,7 @@ export default function OTPConfirmPage(props) {
 
           <div className='sm-container pt-5'>
             <h2 class="pt-5">Verification Code</h2>
-            <p>Enter your Verification Code sent to</p>
+            <p>Please check your e-mail account for the verification code which we have just sent you and enter that code on the box below to login.</p>
             <Row>
               <Col sm={4}>
                 <div className='input-box'>
