@@ -3674,6 +3674,9 @@ div.bgwhiter {
     position: absolute;
     left: 50%;
 }
+.sidenavtree a.Mui-selected, .sidenavtree a.Mui-selected:visited {
+    color: #e49273 !important;
+}
 
 .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:nth-child(11) { 
     animation: zoom-in-zoom-out 1s ease infinite;
