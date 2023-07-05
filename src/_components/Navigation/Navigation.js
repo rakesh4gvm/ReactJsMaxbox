@@ -1157,7 +1157,7 @@ export default function Navigation(props) {
                         {/* {TotalCount?.ReceiveEmailHistoryData != undefined ? "All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */}
                         {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
                       </ListItem>
-                      <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
+                      <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                         component={Link}
                         selected={SelectMenuItem === "/Focused"}>
                         {/* {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"} */}

@@ -2534,6 +2534,8 @@ div#root {
     padding: 0 0 0 15px;
     font-weight: 400 !important;
     font-size: 0.85rem;
+    line-height: 20px !important;
+    text-decoration: none !important;
 }
 .sidenavtree .MuiTreeItem-label {
     font-size: 0.8rem;
