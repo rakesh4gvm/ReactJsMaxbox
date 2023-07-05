@@ -14,7 +14,7 @@ import BgSign from '../../images/sign-bg.png';
 import { history } from '../../_helpers/history';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { LoaderHide, LoaderShow, UpdateUserDetails } from '../../_helpers/Utility'
+import { UpdateUserDetails } from '../../_helpers/Utility'
 
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -58,12 +58,12 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = 'Login | MAXBOX';
-    LoaderHide()
+    document.getElementById("hideloding").style.display = "none";
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         Login()
-        LoaderHide()
+        document.getElementById("hideloding").style.display = "none";
       }
     };
     document.addEventListener("keydown", listener);
@@ -146,7 +146,7 @@ export default function LoginPage() {
   }
   // Login method start
   const Login = async () => {
-    LoaderShow()
+    document.getElementById("hideloding").style.display = "flex";
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
@@ -177,7 +177,7 @@ export default function LoginPage() {
 
       //     }
       //   })
-      //   LoaderHide()
+      //   document.getElementById("hideloding").style.display = "none";
       // }
       // else {
 
@@ -209,7 +209,7 @@ export default function LoginPage() {
 
                 }
               })
-              LoaderHide()
+              document.getElementById("hideloding").style.display = "none";
             } else {
               var LoginDetails = Result.data.Data[0];
               var ObjLoginData = {
@@ -220,7 +220,7 @@ export default function LoginPage() {
               }
               localStorage.setItem("LoginData", JSON.stringify(ObjLoginData));
               SetClientID(LoginDetails._id, LoginDetails.UserImage);
-              LoaderHide()
+              document.getElementById("hideloding").style.display = "none";
               //  history.push('/OtherInboxPage');
             }
           }
@@ -231,7 +231,7 @@ export default function LoginPage() {
       });
       // }
     }
-    // LoaderHide()
+    // document.getElementById("hideloding").style.display = "none";
   }
 
   const PasswordValue = () => {
