@@ -503,13 +503,13 @@ export default function Navigation(props) {
       SetClientID(UserDetails.ClientID);
       SetUserID(UserDetails.UserID);
     }
-    GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
-    GetEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
-    GetSpamTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
-    GetSpamEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
-    GetSentEmailsTotalRecords(UserDetails.ClientID, UserDetails.UserID)
-    GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
-    GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+    // GetAllTotalCount(UserDetails.ClientID, UserDetails.UserID)
+    // GetEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
+    // GetSpamTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
+    // GetSpamEmailTotalRecords(UserDetails.ClientID, UserDetails.UserID)
+    // GetSentEmailsTotalRecords(UserDetails.ClientID, UserDetails.UserID)
+    // GetAllSentEmailsTotalCount(UserDetails.ClientID, UserDetails.UserID)
+    // GetTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     GetDraftTotalRecordCount(UserDetails.ClientID, UserDetails.UserID)
     OnLoad()
   }
