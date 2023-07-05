@@ -1262,7 +1262,7 @@ export default function Navigation(props) {
                           {/* {TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`} */}
                           {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? `All Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount + `)` : `All Inbox (` + 0 + `)`}
                         </ListItem>
-                        <ListItem sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
+                        <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
                           component={Link}
                           selected={SelectMenuItem === "/Focused" + item._id}>
                           {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Focused(0)` : `Focused(` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`} */}
