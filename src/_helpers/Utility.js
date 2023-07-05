@@ -115,11 +115,21 @@ export function ValidateEmail(Email) {
 
 
 export function LoaderShow() {
-    return document.getElementById("hideloding").style.display = "flex";
+    var element = document.getElementById('hideloding');
+    
+    if (element !== null) {
+        element.style.display = "flex";
+    }
+    // return document.getElementById("hideloding").style.display = "flex";
 }
 
 export function LoaderHide() {
-    return document.getElementById("hideloding").style.display = "none";
+    var element = document.getElementById('hideloding');
+
+    if (element !== null) {
+        element.style.display = "none";
+    }
+    // return document.getElementById("hideloding").style.display = "none";
 }
 
 export function IsGreaterDate(Date) {
