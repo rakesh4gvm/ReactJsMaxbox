@@ -278,6 +278,9 @@ span.userpic img {
     display: block; 
     color: #e49273;
 }
+div button.starfilter.MuiButtonBase-root svg {
+    color: #fff;
+}
 
 .col.maxcontainerix {
     max-width: 430px;
@@ -3626,7 +3629,7 @@ div.bgwhiter {
 .tooltipmaxbox .introjs-tooltip-header h1 svg{
     margin-right: 5px;
     width: 24px;
-    margin-top: -4px;
+    margin-top: -5px;
 }
 .tooltipmaxbox .introjs-tooltiptext {
     padding: 10px 20px;
