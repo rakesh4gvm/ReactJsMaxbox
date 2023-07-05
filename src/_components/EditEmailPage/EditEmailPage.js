@@ -68,6 +68,7 @@ export default function EditEmailPage(props) {
 
       EditEmailConfiguration(AccountID)
     }
+    LoaderHide()
   }
 
   const GetClientID = () => {

@@ -106,7 +106,7 @@ export default function EditClientPage(props) {
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
         imageUploadRemoteUrls: false,
-        key : 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
     }
     const HandleModelChange = (Model) => {
         SetSignature({
@@ -121,7 +121,7 @@ export default function EditClientPage(props) {
     // Check Client Exists
     const CheckExistClient = async (ClientName) => {
 
-        var Data = { Name: ClientName, ClientID: ClientIDDetails[0].ClientID }
+        var Data = { Name: ClientName, ClientID: ClientIDDetails[0].ClientID, UserID: UserID }
 
         const ResponseApi = await Axios({
             url: CommonConstants.MOL_APIURL + "/client/ClientExists",
@@ -246,11 +246,11 @@ export default function EditClientPage(props) {
                             <h5 onClick={CancelEditCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Client</h5>
                         </Col>
                         <Col>
-                        <Link to="/ProfileSetting">
-                            <div className='profilebox'>
-                            <img src={Usericon} />
-                            </div>
-                        </Link>
+                            <Link to="/ProfileSetting">
+                                <div className='profilebox'>
+                                    <img src={Usericon} />
+                                </div>
+                            </Link>
                         </Col>
                     </Row>
                 </div>
