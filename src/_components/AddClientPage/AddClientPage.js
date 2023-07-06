@@ -90,7 +90,7 @@ export default function AddClientPage({ children }) {
 
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -125,12 +125,12 @@ export default function AddClientPage({ children }) {
     var ClientName = document.getElementById("name").value;
 
     if (ClientName === "") {
-      SetClientNameError("Please Enter Client Name")
+      SetClientNameError("Please enter client name")
       Isvalid = false
     }
 
     if (Signature.Data === "") {
-      SetSignatureError("Please Enter Signature Body")
+      SetSignatureError("Please enter signature body")
       Isvalid = false
     }
 
@@ -215,7 +215,7 @@ export default function AddClientPage({ children }) {
           })
         }
         else {
-          SetClientNameError("ClientName Already Exists, Please Add Another Name")
+          SetClientNameError("Client name already exists, please add another name")
           LoaderHide()
         }
       }
@@ -243,7 +243,7 @@ export default function AddClientPage({ children }) {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add Client</h5>
+              <h5 onClick={CancelAddCLient} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Add client</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">
@@ -283,7 +283,7 @@ export default function AddClientPage({ children }) {
                 </Row>
                 <Row className='input-boxbg mt-5'>
                   <Col sm={4}>
-                    <label>Email Signature Text  :</label>
+                    <label>Email signature text  :</label>
                   </Col>
                   <Col sm={8}>
                   </Col>

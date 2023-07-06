@@ -53,7 +53,7 @@ export default function ForgetpasswordPage() {
     const Valid = ValidateEmail(Email)
 
     if (Email == "") {
-      SetEmailError("Please Enter Email!")
+      SetEmailError("Please enter email!")
     } else {
       if (Valid) {
         var Data = {

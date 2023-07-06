@@ -333,7 +333,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
         var BCCEmail = true
 
         if (EmailResponse == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
-            toast.error("All Fields are Mandatory!");
+            toast.error("All fields are mandatory!");
         } else if (!CCEmail) {
             toast.error("Please enter valid CC email");
         }
@@ -531,7 +531,7 @@ export default function AllSentEmailsComposePage({ GetAllSent }) {
     });
     const config = {
         quickInsertEnabled: false,
-        placeholderText: 'Edit Your Content Here!',
+        placeholderText: 'Edit your content here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",

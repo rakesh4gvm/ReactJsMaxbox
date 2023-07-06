@@ -82,7 +82,7 @@ export default function ConfirmpasswordPage() {
       SetErrorMessage("Token Expired!")
     } else {
       if (Password == "" || ConfirmPassword == "") {
-        SetErrorMessage("All Fields are Mandatory!")
+        SetErrorMessage("All fields are mandatory!")
       } else {
         var IsValidPassword = validatePassword(Password);
         if (Password === ConfirmPassword && IsValidPassword) {

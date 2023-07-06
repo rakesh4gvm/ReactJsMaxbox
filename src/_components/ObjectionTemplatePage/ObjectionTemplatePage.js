@@ -237,7 +237,7 @@ export default function ObjectionTemplateListPage() {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You want to Delete Templates ?
+              You want to delete templates ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>
@@ -286,7 +286,7 @@ export default function ObjectionTemplateListPage() {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 className='my-0'>Objection Template</h5>
+              <h5 className='my-0'>Objection template</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">
@@ -305,7 +305,7 @@ export default function ObjectionTemplateListPage() {
                 {
                   ClientID != "" ?
                     <Button className='btnaccount' onClick={AddObjectionTemplate}>
-                      <AddIcon /> Create Objection Template
+                      <AddIcon /> Create objection template
                     </Button> : ""
                 }
               </Col>

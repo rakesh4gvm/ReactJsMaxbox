@@ -105,7 +105,7 @@ export default function DraftComposePage({ GetDraftList }) {
         const ValidToEmail = ValidateEmail(ToEmail)
 
         if (EmailResponse == "" || Subject == "" || DraftSignature.Data == "") {
-            toast.error("All Fields are Mandatory!");
+            toast.error("All fields are mandatory!");
         }
         else {
             LoaderShow()
@@ -192,7 +192,7 @@ export default function DraftComposePage({ GetDraftList }) {
     });
     const config = {
         quickInsertEnabled: false,
-        placeholderText: 'Edit Your Content Here!',
+        placeholderText: 'Edit your content here!',
         charCounterCount: false,
         toolbarButtons: [['Save', 'AddDrfatSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteDraft']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",

@@ -114,7 +114,7 @@ export default function CreateObjectionTemplatePage({ children }) {
   //set editor buttons (config)
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -127,12 +127,12 @@ export default function CreateObjectionTemplatePage({ children }) {
     var Subject = document.getElementById("subject").value;
 
     if (Subject === "") {
-      SetSubjectError("Please Enter Subject")
+      SetSubjectError("Please enter subject")
       Isvalid = false
     }
 
     if (Body.Data === "") {
-      SetSignatureError("Please Enter Body")
+      SetSignatureError("Please enter body")
       Isvalid = false
     }
 
@@ -224,7 +224,7 @@ export default function CreateObjectionTemplatePage({ children }) {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 onClick={CancelAddObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Objection Template</h5>
+              <h5 onClick={CancelAddObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Objection template</h5>
             </Col> 
             <Col>
               <Link to="/ProfileSetting">

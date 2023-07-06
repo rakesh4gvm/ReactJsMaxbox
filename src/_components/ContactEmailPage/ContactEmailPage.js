@@ -394,7 +394,7 @@ export default function ContactEmailPage() {
                     displayEmpty
                     renderValue={(selected) => {
                       if (selected.length === 0) {
-                        return <>Select Authed Email</>;
+                        return <>Select authed email</>;
                       }
                       return selected.join(', ');
                     }}
@@ -438,7 +438,7 @@ export default function ContactEmailPage() {
                     <TableHead>
                       <TableRow>
                         <TableCell>Email</TableCell>
-                        <TableCell>Contact Email</TableCell>
+                        <TableCell>Contact email</TableCell>
                         <TableCell align="right">Action</TableCell>
                       </TableRow>
                     </TableHead>

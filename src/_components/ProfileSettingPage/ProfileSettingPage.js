@@ -357,7 +357,7 @@ export default function ProfileSettingPage() {
         <div className='px-3'>
           <Row className='bodsetting px-4 indexone'>
             <Col className='py-3'>
-              <h5 className="my-0">Profile Setting</h5>
+              <h5 className="my-0">Profile setting</h5>
             </Col>
           </Row>
         </div>
@@ -365,7 +365,7 @@ export default function ProfileSettingPage() {
         <div className='container px-0 MxWidth-100'>
           <Row className='bodsetting bgdarkprim mx-0'>
             <Col className='text-center py-5' style={{ minHeight: '230px' }}>
-              <h4>Profile Setting</h4>
+              <h4>Profile setting</h4>
             </Col>
           </Row>
 
