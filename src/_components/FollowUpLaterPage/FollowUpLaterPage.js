@@ -1841,7 +1841,7 @@ export default function FollowUpLater(props) {
                               <label><b>BCC</b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                           }
                           <label><b>Subject</b>{OpenMessage.Subject}</label>
-                          <label><b>Follow Up <br />Later Date</b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}</label>
+                          <label><b>Follow Up Later Date &nbsp; &nbsp; &nbsp; &nbsp;</b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}</label>
                         </div>
                     }
                   </Col>
