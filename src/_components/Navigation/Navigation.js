@@ -1306,7 +1306,7 @@ export default function Navigation(props) {
                   <List component="div">
                     <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2" + item._id, 1)} key={"2" + item._id}>
                       {OutBoxID == "2" + item._id ? <ExpandMore /> : <ExpandDown />}
-                      OutBox
+                      Outbox
                     </ListItemButton>
                   </List>
                   <Collapse in={OutBoxID == "2" + item._id} timeout="auto" unmountOnExit>
