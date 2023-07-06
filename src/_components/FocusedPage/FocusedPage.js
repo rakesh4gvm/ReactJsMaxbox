@@ -259,7 +259,7 @@ export default function UnansweredResponsesPage(props) {
         },
         {
           element: '#two-step',
-          title: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="mail"> <g> <polyline fill="none" points="4 8.2 12 14.1 20 8.2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline> <rect fill="none" height="14" rx="2" ry="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="18" x="3" y="6.5"></rect> </g> </g> </g> </g></svg>  Email configure',
+          title: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="mail"> <g> <polyline fill="none" points="4 8.2 12 14.1 20 8.2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline> <rect fill="none" height="14" rx="2" ry="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="18" x="3" y="6.5"></rect> </g> </g> </g> </g></svg>  Email setting',
           intro: 'Click on add account, you can configure your email for client here',
           tooltipClass: 'tooltipmaxbox',
           highlightClass: 'bgwhiter',
@@ -1146,7 +1146,7 @@ export default function UnansweredResponsesPage(props) {
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
     if (Body == "" || EmailResponse == "") {
-      toast.error("All Fields are Mandatory!");
+      toast.error("All fields are mandatory!");
     } else {
       LoaderShow()
       var Data = {
@@ -1356,7 +1356,7 @@ export default function UnansweredResponsesPage(props) {
   });
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions', 'Chat'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -1556,7 +1556,7 @@ export default function UnansweredResponsesPage(props) {
   });
   const forwardconfig = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -1740,7 +1740,7 @@ export default function UnansweredResponsesPage(props) {
         }
       });
     } else {
-      toast.error("Please checked email.")
+      toast.error("Please select email")
     }
 
   }
@@ -1965,7 +1965,7 @@ export default function UnansweredResponsesPage(props) {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to move this E-mail into Other Inbox ?
+              you want to move this e-mail into other inbox ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>

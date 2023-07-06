@@ -834,7 +834,7 @@ export default function OtherInboxPage(props) {
     var Body = Signature?.Data
 
     if (Body == "" || EmailResponse == "") {
-      toast.error("All Fields are Mandatory!");
+      toast.error("All fields are mandatory!");
     } else {
       LoaderShow()
       var Data = {
@@ -1047,7 +1047,7 @@ export default function OtherInboxPage(props) {
   });
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions', 'Chat'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -1292,7 +1292,7 @@ export default function OtherInboxPage(props) {
   });
   const forwardconfig = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -1410,7 +1410,7 @@ export default function OtherInboxPage(props) {
         }
       });
     } else {
-      toast.error("Please checked email.")
+      toast.error("Please select email")
     }
 
   }
@@ -1600,7 +1600,7 @@ export default function OtherInboxPage(props) {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to move this E-mail into Other Inbox ?
+              you want to move this e-mail into other inbox ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>

@@ -202,7 +202,7 @@ export default function AddContactEmailPage(props) {
           }
         });
       } else {
-        SetEmailError("Contact Email Already Exists, Please Add Another Email")
+        SetEmailError("Contact email already exists, please add another email")
         LoaderHide()
       }
 
@@ -241,7 +241,7 @@ export default function AddContactEmailPage(props) {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add Email Contacts</h5>
+              <h5 onClick={CancelContact} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a>Add email contacts</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">
@@ -287,7 +287,7 @@ export default function AddContactEmailPage(props) {
             <Row className='mt-5'>
               <Col sm={6}>
                 <div className='input-box'>
-                  <input type='email' placeholder='Contact Email' id='contactemail' onChange={handleChange} />
+                  <input type='email' placeholder='Contact email' id='contactemail' onChange={handleChange} />
                   {EmailError && <p style={{ color: "red" }}>{EmailError}</p>}
                 </div>
               </Col>

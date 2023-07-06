@@ -113,7 +113,7 @@ export default function CreateTemplatesPage({ children }) {
   //set editor buttons (config)
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -222,7 +222,7 @@ export default function CreateTemplatesPage({ children }) {
         <div className='px-3'>
           <Row className='bodsetting'>
             <Col className='py-3'>
-              <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create Templates</h5>
+              <h5 onClick={CancelAddTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Create templates</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">

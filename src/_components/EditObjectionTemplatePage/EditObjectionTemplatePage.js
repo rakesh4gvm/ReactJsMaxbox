@@ -93,7 +93,7 @@ export default function EditObjectionTemplatePage(props) {
 
     const config = {
         quickInsertEnabled: false,
-        placeholderText: 'Edit Your Content Here!',
+        placeholderText: 'Edit your content here!',
         charCounterCount: false,
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html'],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -171,12 +171,12 @@ export default function EditObjectionTemplatePage(props) {
         var Subject = document.getElementById("subject").value;
 
         if (Subject === "") {
-            SetSubjectError("Please Enter Subject")
+            SetSubjectError("Please enter subject")
             Isvalid = false
         }
 
         if (Body.Data === "") {
-            SetSignatureError("Please Enter Body")
+            SetSignatureError("Please enter body")
             Isvalid = false
         }
 
@@ -197,7 +197,7 @@ export default function EditObjectionTemplatePage(props) {
                 <div className='px-3'>
                     <Row className='bodsetting px-4'>
                         <Col className='py-3'>
-                            <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit Objection Template</h5>
+                            <h5 onClick={CancelEditObjectionTemplate} className='my-0'><a className='mr-2 iconwhite'><ArrowBackIcon /></a> Edit objection template</h5>
                         </Col>
                         <Col>
                         <Link to="/ProfileSetting">

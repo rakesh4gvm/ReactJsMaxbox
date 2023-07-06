@@ -790,7 +790,7 @@ export default function AllSentEmailsPage(props) {
     var Body = Signature?.Data
 
     if (Body == "" || EmailResponse == "") {
-      toast.error("All Fields are Mandatory!");
+      toast.error("All fields are mandatory!");
     } else {
       LoaderShow()
       var Data = {
@@ -1013,7 +1013,7 @@ export default function AllSentEmailsPage(props) {
   });
   const config = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['SendReply', 'ReplySendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOptions', 'Chat'], ['DeleteReply']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -1262,7 +1262,7 @@ export default function AllSentEmailsPage(props) {
   });
   const forwardconfig = {
     quickInsertEnabled: false,
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Edit your content here!',
     charCounterCount: false,
     toolbarButtons: [['ForwardReply', 'ForwardSendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink'], ['DeleteForward']],
     imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",

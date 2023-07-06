@@ -201,7 +201,7 @@ export default function ClientListPage() {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You want to Delete Client ?
+              You want to delete client ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>
@@ -241,7 +241,7 @@ export default function ClientListPage() {
             <Row className='mb-5'>
               <Col align="right">
                 <Button className='btnaccount' onClick={AddClient}>
-                  <AddIcon /> Add Client
+                  <AddIcon /> Add client
                 </Button>
               </Col>
             </Row>

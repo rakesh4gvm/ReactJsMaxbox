@@ -242,7 +242,7 @@ export default function TemplatesListPage() {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You want to Delete Templates ?
+              You want to delete templates ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>
@@ -309,7 +309,7 @@ export default function TemplatesListPage() {
                 {
                   ClientID != "" ?
                     <Button className='btnaccount' onClick={AddTemplate}>
-                      <AddIcon /> Create Templates
+                      <AddIcon /> Create templates
                     </Button> : ""
                 }
               </Col>

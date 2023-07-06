@@ -106,7 +106,7 @@ export default function EditTemplatesPage(props) {
 
     const config = {
         quickInsertEnabled: false,
-        placeholderText: 'Edit Your Content Here!',
+        placeholderText: 'Edit your content here!',
         charCounterCount: false,
         toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html'],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
@@ -193,12 +193,12 @@ export default function EditTemplatesPage(props) {
         var Subject = document.getElementById("subject").value;
 
         if (Subject === "") {
-            SetSubjectError("Please Enter Subject")
+            SetSubjectError("Please enter subject")
             Isvalid = false
         }
 
         if (Body.Data === "") {
-            SetSignatureError("Please Enter Body")
+            SetSignatureError("Please enter body")
             Isvalid = false
         }
 

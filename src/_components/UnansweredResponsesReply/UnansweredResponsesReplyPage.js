@@ -318,7 +318,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         }
 
         if (ToEmail == "" || Subject == "" || Signature.Data == "" || SelectedUser == undefined) {
-            toast.error("All Fields are Mandatory!");
+            toast.error("All fields are mandatory!");
         } else if (!ValidToEmail) {
             toast.error("Please enter valid email");
         } else if (!CCEmail) {
@@ -513,7 +513,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     });
     const config = {
         quickInsertEnabled: false,
-        placeholderText: 'Edit Your Content Here!',
+        placeholderText: 'Edit your content here!',
         charCounterCount: false,
         toolbarButtons: [['Send', 'Sendoption', 'fontSize', 'insertFile', 'insertImage', 'insertLink', 'TemplatesOption'], ['Delete']],
         imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
