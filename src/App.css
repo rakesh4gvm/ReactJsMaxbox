@@ -819,15 +819,17 @@ ul.d-flex.flexlist {
 .subcompose .input-clend::after {
     display: none;
 }
-
+.tablelister tr .Mui-checked svg {
+    color: #e49273 !important;
+}
 .subcompose h6 {
-    font-weight: 400;
+    font-weight: 600;
     font-size: 0.8rem;
-    color: #242424;
+    color: #222;
     margin: 0 auto;
     line-height: 37px;
+    letter-spacing: -0.2px;
 }
-
 button.lable-btn {
     font-weight: 400;
     font-size: 0.8rem;
@@ -3222,7 +3224,7 @@ tr.selected-row {
 }
 
 #UserComposeReply .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before {
-    content: "Send Reply";
+    content: "Send reply";
     position: absolute;
     background: #e49273;
     display: table;
@@ -3234,9 +3236,10 @@ tr.selected-row {
     left: 50%;
     transform: translate(-50%, 0%);
     white-space: nowrap;
+    font-size: 16px;
 }
 #UserComposeForward .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child::before {
-    content: "Forward Reply";
+    content: "Forward reply";
     position: absolute;
     background: #e49273;
     display: table;
@@ -3248,6 +3251,7 @@ tr.selected-row {
     left: 50%;
     transform: translate(-50%, 0%);
     white-space: nowrap;
+    font-size: 16px;
 }
 #UserComposeForward .FroalaEditor .fr-toolbar .fr-btn-grp:first-child .fr-command.fr-btn:first-child:hover::before { 
     background: #c67254 !important;  
