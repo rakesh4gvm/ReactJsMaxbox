@@ -261,93 +261,94 @@ export default function Navigation(props) {
     var Details = GetUserDetails();
     FromEmailList(Details.ClientID, Details.UserID);
 
-    if (msg[1] == "inboxnotification") {
-      toast.error(msg[0] + " : You have new email for inbox", {
-        className: 'toast-message emailicon',
-      });
-    } else if (msg[1] == "spamnotification") {
-      toast.error(msg[0] + " : You have new email for spam");
-    }
-
-
-    if (SelectedID != "" && SelectedID != null && SelectedID != "undefined") {
-      if (msg[1] == "inboxnotification" && msg[2] == SelectedID) {
-        // toast.error(msg[0] + " : You have new email for inbox", {
-        //   className: 'toast-message emailicon',
-        // });
-
-        var element = document.getElementById("AllInoxRefreshpanel");
-        var SelectedClientID = document.getElementById("selectedclientid").textContent
-
-        if (SelectedClientID == msg[0]) {
-          element.classList.add("roundgreenemail");
-        }
-        else {
-          element.classList.remove("roundgreenemail");
-        }
-
-        var element = document.getElementById("AllInoxRefreshpanel")
-        element.style.display = "block";
-      }
-      else if (msg[1] == "spamnotification" && msg[2] == SelectedID) {
-        // toast.error(msg[0] + " : You have new email for spam");
-        var element = document.getElementById("AllSpamRefreshpanel", {
-          className: 'toast-message emailicon'
-        });
-
-        var element = document.getElementById("AllSpamRefreshpanel");
-        var SelectedClientID = document.getElementById("selectedclientid").textContent
-
-
-        if (SelectedClientID == msg[0]) {
-          element.classList.add("roundgreenemail");
-        }
-        else {
-          element.classList.remove("roundgreenemail");
-        }
-
-        element.style.display = "block";
-      }
-    } else {
+    var LoginData = localStorage.getItem("LoginData")
+    if(LoginData != null){
       if (msg[1] == "inboxnotification") {
-        // toast.error(msg[0] + " : You have new email for inbox", {
-        //   className: 'toast-message emailicon',
-        // });
-
-        var element = document.getElementById("AllInoxRefreshpanel");
-        var SelectedClientID = document.getElementById("selectedclientid").textContent
-
-        if (SelectedClientID == msg[0]) {
-          element.classList.add("roundgreenemail");
-        }
-        else {
-          element.classList.remove("roundgreenemail");
-        }
-
-        var element = document.getElementById("AllInoxRefreshpanel")
-        element.style.display = "block";
-      }
-      else if (msg[1] == "spamnotification") {
-        // toast.error(msg[0] + " : You have new email for spam");
-        var element = document.getElementById("AllSpamRefreshpanel", {
-          className: 'toast-message emailicon'
+        toast.error(msg[0] + " : You have new email for inbox", {
+          className: 'toast-message emailicon',
         });
+      } else if (msg[1] == "spamnotification") {
+        toast.error(msg[0] + " : You have new email for spam");
+      }
 
-        var element = document.getElementById("AllSpamRefreshpanel");
-        var SelectedClientID = document.getElementById("selectedclientid").textContent
+      if (SelectedID != "" && SelectedID != null && SelectedID != "undefined") {
+        if (msg[1] == "inboxnotification" && msg[2] == SelectedID) {
+          // toast.error(msg[0] + " : You have new email for inbox", {
+          //   className: 'toast-message emailicon',
+          // });
 
+          var element = document.getElementById("AllInoxRefreshpanel");
+          var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-        if (SelectedClientID == msg[0]) {
-          element.classList.add("roundgreenemail");
+          if (SelectedClientID == msg[0]) {
+            element.classList.add("roundgreenemail");
+          }
+          else {
+            element.classList.remove("roundgreenemail");
+          }
+
+          var element = document.getElementById("AllInoxRefreshpanel")
+          element.style.display = "block";
         }
-        else {
-          element.classList.remove("roundgreenemail");
-        }
+        else if (msg[1] == "spamnotification" && msg[2] == SelectedID) {
+          // toast.error(msg[0] + " : You have new email for spam");
+          var element = document.getElementById("AllSpamRefreshpanel", {
+            className: 'toast-message emailicon'
+          });
 
-        element.style.display = "block";
+          var element = document.getElementById("AllSpamRefreshpanel");
+          var SelectedClientID = document.getElementById("selectedclientid").textContent
+
+
+          if (SelectedClientID == msg[0]) {
+            element.classList.add("roundgreenemail");
+          }
+          else {
+            element.classList.remove("roundgreenemail");
+          }
+
+          element.style.display = "block";
+        }
+      } else {
+        if (msg[1] == "inboxnotification") {
+          // toast.error(msg[0] + " : You have new email for inbox", {
+          //   className: 'toast-message emailicon',
+          // });
+
+          var element = document.getElementById("AllInoxRefreshpanel");
+          var SelectedClientID = document.getElementById("selectedclientid").textContent
+
+          if (SelectedClientID == msg[0]) {
+            element.classList.add("roundgreenemail");
+          }
+          else {
+            element.classList.remove("roundgreenemail");
+          }
+
+          var element = document.getElementById("AllInoxRefreshpanel")
+          element.style.display = "block";
+        }
+        else if (msg[1] == "spamnotification") {
+          // toast.error(msg[0] + " : You have new email for spam");
+          var element = document.getElementById("AllSpamRefreshpanel", {
+            className: 'toast-message emailicon'
+          });
+
+          var element = document.getElementById("AllSpamRefreshpanel");
+          var SelectedClientID = document.getElementById("selectedclientid").textContent
+
+
+          if (SelectedClientID == msg[0]) {
+            element.classList.add("roundgreenemail");
+          }
+          else {
+            element.classList.remove("roundgreenemail");
+          }
+
+          element.style.display = "block";
+        }
       }
     }
-
 
   }
 
@@ -1305,7 +1306,7 @@ export default function Navigation(props) {
                   <List component="div">
                     <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2" + item._id, 1)} key={"2" + item._id}>
                       {OutBoxID == "2" + item._id ? <ExpandMore /> : <ExpandDown />}
-                      OutBox
+                      Outbox
                     </ListItemButton>
                   </List>
                   <Collapse in={OutBoxID == "2" + item._id} timeout="auto" unmountOnExit>

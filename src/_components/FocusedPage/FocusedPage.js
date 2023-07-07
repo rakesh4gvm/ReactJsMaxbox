@@ -226,16 +226,21 @@ export default function UnansweredResponsesPage(props) {
   }, [SearchInbox, state])
 
   const wizard = (ID) => {
-    const intro = IntroJs();
-    document.getElementById("OpenNavigation").classList.add("show");
 
-    intro.onafterchange(function (targetElement) {
-      const currentStepIndex = intro._currentStep;
-      if (currentStepIndex === 0) {
-        const element = document.getElementById("OpenNavigation");
-        element.classList.add("show");
-      }
-    });
+    const intro = IntroJs();
+
+    if (ID == undefined || ID == "") {
+      document.getElementById("OpenNavigation").classList.add("show");
+
+      intro.onafterchange(function (targetElement) {
+        const currentStepIndex = intro._currentStep;
+        if (currentStepIndex === 0) {
+          const element = document.getElementById("OpenNavigation");
+          element.classList.add("show");
+        }
+      });
+    }
+
 
     intro.setOptions({
       steps: [
@@ -285,17 +290,19 @@ export default function UnansweredResponsesPage(props) {
 
     });
 
-    intro.oncomplete(function () {
-      intro.exit();
-      const element = document.getElementById("OpenNavigation");
-      element.classList.remove("show");
-    });
+    if (ID == undefined || ID == "") {
+      intro.oncomplete(function () {
+        intro.exit();
+        const element = document.getElementById("OpenNavigation");
+        element.classList.remove("show");
+      });
 
-    intro.onbeforeexit(function () {
-      intro.exit();
-      const element = document.getElementById("OpenNavigation");
-      element.classList.remove("show");
-    });
+      intro.onbeforeexit(function () {
+        intro.exit();
+        const element = document.getElementById("OpenNavigation");
+        element.classList.remove("show");
+      });
+    }
 
     if (ID == undefined || ID == "") {
       intro.start();
