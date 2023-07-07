@@ -1642,7 +1642,7 @@ export default function AllUnansweredRepliesPage(props) {
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
             <Row>
-              <Col><h4>Reply Message</h4></Col>
+              <Col><h4>Reply message</h4></Col>
               <Col className='col text-right'>
                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                   <Button onClick={mincomposeonReply} className="minicon">
@@ -1805,7 +1805,7 @@ export default function AllUnansweredRepliesPage(props) {
         <div className="usercompose userdefual" id="UserComposeForward">
           <div className='hcompose px-3'>
             <Row>
-              <Col><h4>Forward Message</h4></Col>
+              <Col><h4>Forward message</h4></Col>
               <Col className='col text-right'>
                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                   <Button onClick={mincomposeonForward} className="minicon">

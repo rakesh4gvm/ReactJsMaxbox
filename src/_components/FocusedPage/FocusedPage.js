@@ -1901,11 +1901,11 @@ export default function UnansweredResponsesPage(props) {
             {
               OpenMessage?.IsStarred === false ?
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  you want to Star an email ?
+                  you want to star an email ?
                 </Typography>
                 :
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  you want to UnStar an email ?
+                  you want to unstar an email ?
                 </Typography>
             }
           </div>
@@ -2189,7 +2189,7 @@ export default function UnansweredResponsesPage(props) {
         <div className="usercompose userdefual" id="UserComposeReply">
           <div className='hcompose px-3'>
             <Row>
-              <Col><h4>Reply Message</h4></Col>
+              <Col><h4>Reply message</h4></Col>
               <Col className='col text-right'>
                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                   <Button onClick={mincomposeonReply} className="minicon">
@@ -2352,7 +2352,7 @@ export default function UnansweredResponsesPage(props) {
         <div className="usercompose userdefual" id="UserComposeForward">
           <div className='hcompose px-3'>
             <Row>
-              <Col><h4>Forward Message</h4></Col>
+              <Col><h4>Forward message</h4></Col>
               <Col className='col text-right'>
                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                   <Button onClick={mincomposeonForward} className="minicon">

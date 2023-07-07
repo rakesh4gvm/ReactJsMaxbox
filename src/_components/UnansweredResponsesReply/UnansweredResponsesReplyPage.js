@@ -564,7 +564,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
 
             <div className='hcompose px-3'>
                 <Row>
-                    <Col><h4>Reply Message</h4></Col>
+                    <Col><h4>Reply message</h4></Col>
                     <Col className='col text-right'>
                         <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                             <Button onClick={mincomposeonReply} className="minicon">
