@@ -126,12 +126,12 @@ export default function CreateTemplatesPage({ children }) {
     var Subject = document.getElementById("subject").value;
 
     if (Subject === "") {
-      SetSubjectError("Please Enter Subject")
+      SetSubjectError("Please enter Subject")
       Isvalid = false
     }
 
     if (Body.Data === "") {
-      SetSignatureError("Please Enter Body")
+      SetSignatureError("Please enter Body")
       Isvalid = false
     }
 
