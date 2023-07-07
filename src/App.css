@@ -2749,12 +2749,16 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     width: 100%;
     float: none;
     margin-bottom: 0;
+    padding-left: 108px;
 }
 
 .lablebox label b {
-    min-width: 78px;
+    min-width: 108px;
     float: left;
     font-weight: 600;
+    position: absolute;
+    left: 0;
+    text-align: right;
 }
 
 .iconsboxcd button.btn.btn-primary,
@@ -3085,7 +3089,7 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 
 .listclick .MuiListItemButton-gutters b {
     font-weight: 600; 
-    color: #666 !important;
+    color: #222 !important;
 }
 
 .listclick svg.MuiSvgIcon-root {
