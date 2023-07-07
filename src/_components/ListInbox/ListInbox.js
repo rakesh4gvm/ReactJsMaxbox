@@ -271,12 +271,12 @@ export default function ListInbox() {
                 <Col sm={6}>
                   <div className='lablebox'>
                     <label>
-                      <b>From</b>
+                      <b>From : </b>
                       {/* <strong>{OpenMessage.FromName}</strong> */}
                       {OpenMessage.FromEmail}
                     </label>
-                    <label><b>To</b>{OpenMessage.ToEmail}</label>
-                    <label><b>Subject</b>{OpenMessage.Subject}</label>
+                    <label><b>To : </b>{OpenMessage.ToEmail}</label>
+                    <label><b>Subject : </b>{OpenMessage.Subject}</label>
                   </div>
                 </Col>
                 <Col sm={6}>

@@ -982,8 +982,8 @@ export default function OtherInboxPage(props) {
                     {
                       OpenMessage == 0 ? "" :
                         <div className='lablebox'>
-                          <label><b>To</b>{OpenMessage.MailTo}</label>
-                          <label><b>Subject</b>{OpenMessage.Subject}</label>
+                          <label><b>To : </b>{OpenMessage.MailTo}</label>
+                          <label><b>Subject : </b>{OpenMessage.Subject}</label>
                         </div>
                     }
                   </Col>

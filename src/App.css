@@ -3713,6 +3713,9 @@ div.bgwhiter {
 .subcompose + .subcompose .px-0.col-2 {
     max-width: 13%;
 } 
+.modal-pre {
+    z-index: 9999;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

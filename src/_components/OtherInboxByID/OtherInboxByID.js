@@ -1832,19 +1832,19 @@ export default function OtherInboxByID(props) {
                                             OpenMessage == 0 ? '' :
                                                 <div className='lablebox'>
                                                     <label>
-                                                        <b>From</b>
+                                                        <b>From : </b>
                                                         {OpenMessage.FromEmail}
                                                     </label>
-                                                    <label><b>To</b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                                                    <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
                                                     {
                                                         OpenMessage?.CcNameEmail?.length > 0 ?
-                                                            <label><b>CC</b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                                                            <label><b>CC : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                     }
                                                     {
                                                         OpenMessage?.BccNameEmail?.length > 0 ?
-                                                            <label><b>BCC</b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                                                            <label><b>BCC : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                     }
-                                                    <label><b>Subject</b>{OpenMessage.Subject}</label>
+                                                    <label><b>Subject : </b>{OpenMessage.Subject}</label>
                                                 </div>
                                         }
                                     </Col>
