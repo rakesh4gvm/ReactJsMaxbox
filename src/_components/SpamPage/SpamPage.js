@@ -1860,11 +1860,11 @@ export default function SpamPage(props) {
                           <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
-                              <label><b>CC : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                           }
                           {
                             OpenMessage?.BccNameEmail?.length > 0 ?
-                              <label><b>BCC : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                           }
                           <label><b>Subject : </b>{OpenMessage.Subject}</label>
                         </div>
