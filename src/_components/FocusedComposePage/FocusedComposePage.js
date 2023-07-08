@@ -243,7 +243,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
         else {
             if (EmailAccountUsers.length > 0) {
                 SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-                SetSignature({ Data: ClientData })
+                SetSignature({ Data: "<br/>" + ClientData })
                 SetClientSignatureData(ClientData)
             } else {
                 SetSelectedEmailAccountUser(0);
