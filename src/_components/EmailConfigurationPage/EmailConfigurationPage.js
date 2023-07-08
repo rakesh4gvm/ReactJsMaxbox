@@ -229,7 +229,11 @@ export default function EmailConfigurationPage() {
             SetIsProcess(false)
           }
           if (Result?.data?.PageData[i]?.IsInboxProcessWeb == false && Result?.data?.PageData[i]?.IsSentProcessWeb == false && Result?.data?.PageData[i]?.IsSpamProcessWeb == false) {
-            counter = counter + 1
+            counter = counter + 1;
+            // check existing mails for inbox and sent
+            var AccountID = Result.data.PageData[i].AccountID
+            var ClientID = Result.data.PageData[i].ClientID
+            CheckExistReceiveRecordInboxSent(AccountID, ClientID);
           }
           if (Result.data.TotalCount != counter) {
             var AccountID = Result.data.PageData[i] != null ? Result.data.PageData[i].AccountID : "";
@@ -253,6 +257,21 @@ export default function EmailConfigurationPage() {
     });
   };
 
+  const CheckExistReceiveRecordInboxSent = (AID, CID) => {
+    let Data
+    Data = {
+      AccountID: AID,
+      ClientID: CID,
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/CheckExistReceiveRecordInboxSent",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+
+    });
+  };
 
 
 
