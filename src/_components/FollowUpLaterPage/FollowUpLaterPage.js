@@ -824,7 +824,7 @@ export default function FollowUpLater(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
-        SetSignature({ Data: Result?.data?.Data })
+        SetSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1154,7 +1154,7 @@ export default function FollowUpLater(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetForwardSignature({ Data: Result?.data?.Data })
+        SetForwardSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
       }

@@ -293,14 +293,14 @@ export default function UnansweredResponsesPage(props) {
     if (ID == undefined || ID == "") {
       intro.oncomplete(function () {
         intro.exit();
-        const element = document.getElementById("OpenNavigation");
-        element.classList.remove("show");
+        // const element = document.getElementById("OpenNavigation");
+        // element.classList.remove("show");
       });
 
       intro.onbeforeexit(function () {
         intro.exit();
-        const element = document.getElementById("OpenNavigation");
-        element.classList.remove("show");
+        // const element = document.getElementById("OpenNavigation");
+        // element.classList.remove("show");
       });
     }
 
@@ -1026,7 +1026,7 @@ export default function UnansweredResponsesPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
-        SetSignature({ Data: Result?.data?.Data })
+        SetSignature({ Data: Result?.data?.Data + ClientData  })
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1402,7 +1402,7 @@ export default function UnansweredResponsesPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetForwardSignature({ Data: Result?.data?.Data })
+        SetForwardSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
       }
