@@ -423,7 +423,7 @@ export default function EmailConfigurationPage() {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 className='my-0'>Email Configuration</h5>
+              <h5 className='my-0'>Email account</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">

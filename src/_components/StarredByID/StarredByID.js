@@ -1202,7 +1202,7 @@ export default function StarredByID(props) {
         var Body = ForwardSignature.Data
 
         if (Body == "" || EmailResponse == "") {
-            toast.error("Please Enter Body");
+            toast.error("Please Enter body");
         }
         else {
             LoaderShow()

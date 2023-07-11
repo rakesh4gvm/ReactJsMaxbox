@@ -418,7 +418,7 @@ export default function Header() {
                                 </NavDropdown>
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
                                     <NavDropdown.Item onClick={() => OpenPage("/EmailConfiguration")} >
-                                        <img src={Emails} />Email Configuration
+                                        <img src={Emails} />Email configuration
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => OpenPage("/ClientList")}>
                                         <img src={Users} />Client

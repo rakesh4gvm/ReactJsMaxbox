@@ -1080,7 +1080,7 @@ export default function Navigation(props) {
 
               <div id="two-step"><li><a href="/EmailConfiguration">
                 <img src={EmailSettings} width={24} />
-                Email Settings</a></li></div>
+                Email account</a></li></div>
 
               <div className="one-step"><li>
                 <a id="one-step" href="/ClientList">

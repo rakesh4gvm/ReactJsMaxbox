@@ -231,7 +231,7 @@ export default function LoginPage() {
       });
       // }
     }
-    // LoaderHide()
+    LoaderHide()
   }
 
   const PasswordValue = () => {

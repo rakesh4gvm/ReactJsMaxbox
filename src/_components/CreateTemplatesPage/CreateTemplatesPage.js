@@ -131,7 +131,7 @@ export default function CreateTemplatesPage({ children }) {
     }
 
     if (Body.Data === "") {
-      SetSignatureError("Please enter Body")
+      SetSignatureError("Please enter body")
       Isvalid = false
     }
 
@@ -182,7 +182,7 @@ export default function CreateTemplatesPage({ children }) {
         })
       }
       else {
-        SetSubjectError("Subject Already Exists, Please Add Another Subject")
+        SetSubjectError("Subject already exists, please add another subject")
         LoaderHide()
       }
     }

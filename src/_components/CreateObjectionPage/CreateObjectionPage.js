@@ -184,7 +184,7 @@ export default function CreateObjectionTemplatePage({ children }) {
         })
       }
       else {
-        SetSubjectError("Subject Already Exists, Please Add Another Subject")
+        SetSubjectError("Subject already exists, please add another subject")
         LoaderHide()
       }
     }
