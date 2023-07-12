@@ -36,6 +36,7 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import Emailcall from '../../images/email_call_img.png';
 import iconsarrow1 from '../../images/icons_arrow_1.svg';
 import iconsarrow2 from '../../images/icons_arrow_2.svg';
+import icons_replyall from '../../images/icons_replyall.svg';
 import icondelete from '../../images/icon_delete.svg';
 import iconmenu from '../../images/icon_menu.svg';
 import Chatgpt from '../../images/icons/chatgpt-icon.svg';
@@ -177,6 +178,8 @@ export default function AllSentEmailByID(props) {
     const [ToEmailValue, SetToEmailValue] = React.useState([]);
     const [CCEmailValue, SetCCEmailValue] = React.useState([]);
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
+    const [CCMessages, SetCCMessages] = React.useState([])
+    const [BCCMessages, SetBCCMessages] = React.useState([])
     const [ValueMail, SetValueMail] = useState()
     const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
     const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
@@ -530,6 +533,10 @@ export default function AllSentEmailByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetOpenMessageDetails(Result.data.Data[0]);
+                        SetCCMessages(Result.data.Data[0]?.CcNameEmail);
+                        SetBCCMessages(Result.data.Data[0]?.BccNameEmail);
+                        localStorage.setItem("CCMessage", JSON.stringify(Result.data.Data[0]?.CcNameEmail))
+                        localStorage.setItem("BCCMessage", JSON.stringify(Result.data.Data[0]?.BccNameEmail))
                         SetActive(ID);
                         SetToEmailValue(Result.data.Data)
                         SetValueMail(Result.data.Data[0]?.FromEmail)
@@ -726,6 +733,10 @@ export default function AllSentEmailByID(props) {
         }
         else {
             element.classList.add("show");
+            document.getElementById("CcReply").style.display = 'none'
+            document.getElementById("BccReply").style.display = 'none'
+            SetCCMessages([])
+            SetBCCMessages([])
         }
 
         const elementreply = document.getElementById("UserCompose")
@@ -734,6 +745,45 @@ export default function AllSentEmailByID(props) {
         // elementreplytwo.classList.remove("show");
     };
     // end replay code
+
+    const OpenReplyAll = () => {
+        const element = document.getElementById("UserComposeReply")
+
+        var CC = localStorage.getItem("CCMessage")
+        var BCC = localStorage.getItem("BCCMessage")
+
+        SetCCMessages(JSON.parse(CC))
+        SetBCCMessages(JSON.parse(BCC))
+
+        if (element.classList.contains("show")) {
+            element.classList.remove("show");
+        }
+        else {
+            element.classList.add("show");
+        }
+
+        const Data = {
+            ID: OpenMessage?._id,
+        }
+        Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+            method: "POST",
+            data: Data,
+        }).then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                SetGetReplyMessageDetails(Result?.data?.Data)
+                SetSignature({ Data: Result?.data?.Data + ClientData })
+            } else {
+                toast.error(Result?.data?.Message);
+            }
+        })
+
+        document.getElementById("CcReply").style.display = 'block'
+        document.getElementById("BccReply").style.display = 'block'
+
+        const elementreply = document.getElementById("UserCompose")
+        elementreply.classList.remove("show");
+    }
 
     /* start navcode */
     const mincomposeonReply = () => {
@@ -768,7 +818,7 @@ export default function AllSentEmailByID(props) {
     // Sent Mail Starts
     const ReplySendMail = async () => {
 
-        var Response
+        var Response, Response2, Response3
 
         if (ToEmailValue.length > 1) {
             var r = ToEmailValue[0]?.FromEmail
@@ -779,6 +829,49 @@ export default function AllSentEmailByID(props) {
             Response = ToEmailValue
         } else {
             Response = [ToEmailValue[0].FromEmail]
+        }
+
+
+        if (CCMessages.length > 1) {
+            var r = CCMessages[0]?.Email
+            var s = CCMessages.shift()
+            var sr = CCMessages.concat(r)
+
+            Response2 = sr.map(item => {
+                if (typeof item === 'string') {
+                    return item;
+                } else if (item.Email) {
+                    return item.Email;
+                }
+            })
+
+        } else if (typeof CCMessages[0] == "string") {
+            Response2 = CCMessages
+        } else if (CCMessages.length == 0) {
+            Response2 = ""
+        } else {
+            Response2 = [CCMessages[0].Email]
+        }
+
+        if (BCCMessages.length > 1) {
+            var r = BCCMessages[0]?.Email
+            var s = BCCMessages.shift()
+            var sr = BCCMessages.concat(r)
+
+            Response3 = sr.map(item => {
+                if (typeof item === 'string') {
+                    return item;
+                } else if (item.Email) {
+                    return item.Email;
+                }
+            })
+
+        } else if (typeof BCCMessages[0] == "string") {
+            Response3 = BCCMessages
+        } else if (BCCMessages.length == 0) {
+            Response3 = ""
+        } else {
+            Response3 = [BCCMessages[0].Email]
         }
 
         let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -799,8 +892,8 @@ export default function AllSentEmailByID(props) {
             LoaderShow()
             var Data = {
                 ToEmail: EmailResponse.toString(),
-                CC: CCResponse.toString(),
-                BCC: BCCResponse.toString(),
+                CC: Response2.toString(),
+                BCC: Response3.toString(),
                 ToName: ToName,
                 FromEmail: FromEmail,
                 FromName: FromName,
@@ -1643,6 +1736,9 @@ export default function AllSentEmailByID(props) {
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
                                                     <Button>
+                                                        <a><img src={icons_replyall} onClick={OpenReplyAll} title={"ReplyAll"} /></a>
+                                                    </Button>
+                                                    <Button>
                                                         <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                                                     </Button>
                                                     {<Button onClick={OpenDeletePopModel}>
@@ -1745,6 +1841,42 @@ export default function AllSentEmailByID(props) {
                                 <div className='multibox-filter'>
                                     <Autocomplete
                                         multiple
+                                        id="Cc"
+                                        value={CCMessages}
+                                        options={top100Films.map((option) => option.title)}
+                                        onChange={(event, newValue) => {
+                                            SetCCMessages(newValue);
+                                        }}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                            value.map((option, index) => {
+                                                var ValidEmail = false
+                                                if (option?.Email != undefined && option?.Email != "") {
+                                                    ValidEmail = ValidateEmail(option?.Email)
+                                                } else {
+                                                    ValidEmail = ValidateEmail(option)
+                                                }
+                                                if (ValidEmail) {
+                                                    if (option?.Email != undefined && option?.Email != "") {
+                                                        return (<Chip variant="outlined" label={option?.Email} {...getTagProps({ index })} />)
+                                                    } else {
+                                                        return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                    }
+                                                }
+                                            }
+                                            )
+                                        }
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
+                                        )}
+                                    />
+                                    {/* <Autocomplete
+                                        multiple
                                         id="CC"
                                         value={CCEmailValue}
                                         options={top100Films.map((option) => option.title)}
@@ -1769,7 +1901,7 @@ export default function AllSentEmailByID(props) {
                                                 placeholder=" "
                                             />
                                         )}
-                                    />
+                                    /> */}
                                 </div>
                             </Col>
                         </Row>
@@ -1783,6 +1915,42 @@ export default function AllSentEmailByID(props) {
                                 {/* <Input className='input-clend' id='BCC' name='Bcc' /> */}
                                 <div className='multibox-filter'>
                                     <Autocomplete
+                                        multiple
+                                        id="BCC"
+                                        value={BCCMessages}
+                                        options={top100Films.map((option) => option.title)}
+                                        onChange={(event, newValue) => {
+                                            SetBCCMessages(newValue);
+                                        }}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                            value.map((option, index) => {
+                                                var ValidEmail = false
+                                                if (option?.Email != undefined && option?.Email != "") {
+                                                    ValidEmail = ValidateEmail(option?.Email)
+                                                } else {
+                                                    ValidEmail = ValidateEmail(option)
+                                                }
+                                                if (ValidEmail) {
+                                                    if (option?.Email != undefined && option?.Email != "") {
+                                                        return (<Chip variant="outlined" label={option?.Email} {...getTagProps({ index })} />)
+                                                    } else {
+                                                        return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                    }
+                                                }
+                                            }
+                                            )
+                                        }
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
+                                        )}
+                                    />
+                                    {/* <Autocomplete
                                         multiple
                                         id="BCC"
                                         value={BCCEmailValue}
@@ -1810,7 +1978,7 @@ export default function AllSentEmailByID(props) {
                                                 placeholder=" "
                                             />
                                         )}
-                                    />
+                                    /> */}
                                 </div>
                             </Col>
                         </Row>
