@@ -1790,8 +1790,8 @@ export default function OtherInboxPage(props) {
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                       <TableCell component="th" className='px-0 w-0'></TableCell>
-                      <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">Date</TableCell>
                     </TableRow>
                   </TableHead>
@@ -1811,9 +1811,9 @@ export default function OtherInboxPage(props) {
                           }
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY h:mm a")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

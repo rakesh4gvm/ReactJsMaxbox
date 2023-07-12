@@ -1637,8 +1637,8 @@ export default function AllUnansweredRepliesPage(props) {
                     <TableRow>
                       <TableCell component="th" width={'30px'} align="center"></TableCell>
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                      <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">From Email</TableCell>
+                      <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">Date</TableCell>
                     </TableRow>
                   </TableHead>
@@ -1657,9 +1657,9 @@ export default function AllUnansweredRepliesPage(props) {
                           </ToggleButton>
                         </TableCell>
                         {/* <TableCell width={'35px'}></TableCell> */}
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                         <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item.Subject} </TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{item.FromEmail}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY")}</TableCell>
+                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY h:mm a")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

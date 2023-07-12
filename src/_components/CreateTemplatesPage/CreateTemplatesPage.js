@@ -126,7 +126,7 @@ export default function CreateTemplatesPage({ children }) {
     var Subject = document.getElementById("subject").value;
 
     if (Subject === "") {
-      SetSubjectError("Please enter Subject")
+      SetSubjectError("Please enter subject")
       Isvalid = false
     }
 
