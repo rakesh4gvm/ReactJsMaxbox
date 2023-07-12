@@ -343,7 +343,7 @@ export default function LoginPage() {
                 </FormGroup>
               </Col>
               <Col sm={3}>
-                <a href='/Forgetpassword'>Forgot Password?</a>
+                <a href='/Forgetpassword'>Forgot password?</a>
               </Col>
             </Row>
           </div>

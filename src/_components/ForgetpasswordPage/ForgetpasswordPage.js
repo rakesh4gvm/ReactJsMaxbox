@@ -91,7 +91,7 @@ export default function ForgetpasswordPage() {
           <img className='bgsigner' src={BgSign} />
 
           <div className='sm-container pt-5'>
-            <h2 class="pt-5">Forgot Password?</h2>
+            <h2 class="pt-5">Forgot password?</h2>
             <p>Enter your email to reset your password</p> 
             <Row>
               <Col sm={4}>
