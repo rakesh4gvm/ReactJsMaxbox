@@ -251,8 +251,10 @@ export default function EditTemplatesPage(props) {
                                         <label>Body  :</label>
                                     </Col>
 
-                                    <Col sm={8}><FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} /></Col>
-                                    {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                                    <Col sm={8}>
+                                        <FroalaEditor tag='textarea' id="body" config={config} onModelChange={HandleModelChange} model={Body.Data} />
+                                         {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                                    </Col>
                                 </Row>
                             </Col>
                         </Row>

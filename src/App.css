@@ -2600,7 +2600,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 }
 
 .tablelister tr th {
-    border-right: 1px solid rgba(224, 224, 224, 1);
+    border-right: 0px solid rgba(224, 224, 224, 1);
     padding: 2px 5px;
     font-size: 14px;
 }
