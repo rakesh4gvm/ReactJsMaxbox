@@ -3716,6 +3716,25 @@ div.bgwhiter {
 .modal-pre {
     z-index: 9999;
 }
+.btn.btnemail, .btnemail.btn:focus {
+    padding: 0; 
+    width: 30px; 
+    outline: 0;
+    box-shadow: none;
+    height: 18px;
+}
+.popupemails .MuiPopover-paper {
+    max-width: 560px;
+    padding: 7px;
+    font-size: 0.8rem;
+    box-shadow: 0 0 2px 0 #fcf2ee;
+    border: 1px solid #e7dad5;
+    background: #fcfcfc;
+}
+.btn.btnemail svg {
+    height: 22px;
+    margin: -13px 0 0px;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

@@ -72,6 +72,8 @@ import IntroJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { IntroJsReact } from 'react-intro.js';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleAltOutlined';
+import Popover from '@mui/material/Popover'; 
+import { ArrowDropDown } from '@material-ui/icons';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -222,6 +224,40 @@ export default function UnansweredResponsesPage(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
+
+  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [ccanchorEl, setCCAnchorEl] = React.useState(null);
+  const [bccanchorEl, setBCCAnchorEl] = React.useState(null);
+
+  const tohandleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }; 
+  const tohandleClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const cchandleClick = (event) => {
+    setCCAnchorEl(event.currentTarget);
+  }; 
+  const cchandleClose = () => {
+    setCCAnchorEl(null);
+  };
+
+  const bcchandleClick = (event) => {
+    setBCCAnchorEl(event.currentTarget);
+  }; 
+  const bcchandleClose = () => {
+    setBCCAnchorEl(null);
+  }; 
+
+  const toopen = Boolean(anchorEl);
+  const ccopen = Boolean(ccanchorEl);
+  const bccopen = Boolean(bccanchorEl);
+  const idto = toopen ? 'simple-popover' : undefined;
+  const idcc = ccopen ? 'simple-popover' : undefined;
+  const idbcc = bccopen ? 'simple-popover' : undefined;
+
 
   useEffect(() => {
     document.title = 'Focused | MAXBOX';
@@ -2220,14 +2256,86 @@ export default function UnansweredResponsesPage(props) {
                             <b>From : </b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                          {/* <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label> */}
+                          <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                              <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
+                              <ArrowDropDown />
+                              </Button>
+                              <Popover className='popupemails'
+                              id={idto}
+                              open={toopen}
+                              anchorEl={anchorEl}
+                              onClose={tohandleClose}
+                              anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'center',
+                              }}
+                              transformOrigin={{
+                                  vertical: 'top',
+                                  horizontal: 'center',
+                              }}
+                              > 
+                              { OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
+                              </Popover> 
+                          </label>  
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
-                              <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              // <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              <label>
+                                
+                                <b>CC : </b> 
+                                {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                              
+                               <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
+                                  <ArrowDropDown />
+                                </Button>
+
+                                <Popover className='popupemails'
+                                  id={idcc}
+                                  open={ccopen}
+                                  anchorEl={ccanchorEl}
+                                  onClose={cchandleClose}
+                                  anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                  }}
+                                >
+                                  {OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                </Popover>  
+                              </label> : ""
                           }
                           {
                             OpenMessage?.BccNameEmail?.length > 0 ?
-                              <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              // <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
+                              <label>
+                                <b>BCC : </b>
+                              {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}                              
+                              <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
+                                  <ArrowDropDown />
+                                </Button>
+
+                                <Popover className='popupemails'
+                                  id={idbcc}
+                                  open={bccopen}
+                                  anchorEl={bccanchorEl}
+                                  onClose={bcchandleClose}
+                                  anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                  }}
+                                > 
+                                  {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                </Popover> 
+                              
+                              </label> : ""
                           }
                           <label><b>Subject : </b>{OpenMessage.Subject}</label>
                         </div>
