@@ -2043,7 +2043,7 @@ export default function UnansweredResponsesPage(props) {
           </div>
           <div className='d-flex btn-50'>
             <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
-              Ok
+              OK
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
               Cancel
@@ -2251,10 +2251,10 @@ export default function UnansweredResponsesPage(props) {
                             </ToggleButton>
                           </Button>
                           <Button onClick={OpenFollowupPopModel}>
-                            <img src={icontimer} title={"Follow Up Later"} />
+                            <img src={icontimer} title={"Follow up later"} />
                           </Button>
                           <Button onClick={OpenOtherInboxPopModel}>
-                            <img src={inbox} title={"Other Inbox"} />
+                            <img src={inbox} title={"Other inbox"} />
                           </Button>
                           <Button>
                             <a><img src={iconsarrow2} onClick={OpenComposeReply} title={"Reply"} /></a>
