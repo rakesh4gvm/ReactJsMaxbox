@@ -851,8 +851,8 @@ export default function SpamPage(props) {
     }
     else {
       element.classList.add("show");
-      document.getElementById("CcReply").style.display = 'none'
-      document.getElementById("BccReply").style.display = 'none'
+      // document.getElementById("CcReply").style.display = 'none'
+      // document.getElementById("BccReply").style.display = 'none'
       SetCCMessages([])
       SetBCCMessages([])
     }
@@ -896,8 +896,14 @@ export default function SpamPage(props) {
       }
     })
 
-    document.getElementById("CcReply").style.display = 'block'
-    document.getElementById("BccReply").style.display = 'block'
+    // document.getElementById("CcReply").style.display = 'block'
+    // document.getElementById("BccReply").style.display = 'block'
+
+    var elementcc = document.getElementById("CcReply");
+    elementcc.classList.add("showcc");
+
+    var elementbcc = document.getElementById("BccReply");
+    elementbcc.classList.add("showbcc");
 
     const elementreply = document.getElementById("UserCompose")
     elementreply.classList.remove("show");
@@ -1328,27 +1334,18 @@ export default function SpamPage(props) {
 
   // Open CC
   const OpenCcReply = () => {
-    if (CcReplyflag == false) {
-      document.getElementById("CcReply").style.display = 'block'
-      SetCcReplyflag(true);
-    }
-    else {
-      document.getElementById("CcReply").style.display = 'none'
-      SetCcReplyflag(false);
+    var element = document.getElementById("CcReply");
+    if (element) {
+      element.classList.toggle("showcc");
     }
   };
 
   // Open BCC
   const OpenBccReply = () => {
-    if (BccReplyflag == false) {
-      document.getElementById("BccReply").style.display = 'block'
-      SetBccReplyflag(true);
+    var element = document.getElementById("BccReply");
+    if (element) {
+        element.classList.toggle("showbcc");
     }
-    else {
-      document.getElementById("BccReply").style.display = 'none'
-      SetBccReplyflag(false);
-    }
-
   };
 
   // Forward Send Mail Starts
@@ -1988,7 +1985,7 @@ export default function SpamPage(props) {
                             <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={icons_replyall} onClick={OpenReplyAll} title={"ReplyAll"} /></a>
+                            <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
                           </Button>
                           <Button>
                             <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
@@ -2081,7 +2078,7 @@ export default function SpamPage(props) {
               </Col>
             </Row>
           </div>
-          <div className='subcompose cc px-3' id='CcReply'>
+          <div className='subcompose cc px-3 hidecc' id='CcReply'>
             <Row className='px-3'>
               <Col xs={1} className="px-0">
                 <h6>Cc :</h6>
@@ -2156,7 +2153,7 @@ export default function SpamPage(props) {
               </Col>
             </Row>
           </div>
-          <div className='subcompose bcc px-3' id='BccReply'>
+          <div className='subcompose bcc px-3 hidebcc' id='BccReply'>
             <Row className='px-3'>
               <Col xs={1} className="px-0">
                 <h6>Bcc :</h6>

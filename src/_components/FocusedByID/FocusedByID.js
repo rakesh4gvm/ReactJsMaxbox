@@ -68,7 +68,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useParams } from 'react-router-dom';
-import Popover from '@mui/material/Popover'; 
+import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 
 const top100Films = [
@@ -221,38 +221,38 @@ export default function FocusedByID(props) {
     const handleTemOpen = () => setTemOpen(true);
     const handleTemClose = () => setTemOpen(false);
 
-    
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [ccanchorEl, setCCAnchorEl] = React.useState(null);
-  const [bccanchorEl, setBCCAnchorEl] = React.useState(null);
 
-  const tohandleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  }; 
-  const tohandleClose = () => {
-    setAnchorEl(null);
-  };
-  
-  const cchandleClick = (event) => {
-    setCCAnchorEl(event.currentTarget);
-  }; 
-  const cchandleClose = () => {
-    setCCAnchorEl(null);
-  };
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [ccanchorEl, setCCAnchorEl] = React.useState(null);
+    const [bccanchorEl, setBCCAnchorEl] = React.useState(null);
 
-  const bcchandleClick = (event) => {
-    setBCCAnchorEl(event.currentTarget);
-  }; 
-  const bcchandleClose = () => {
-    setBCCAnchorEl(null);
-  }; 
+    const tohandleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const tohandleClose = () => {
+        setAnchorEl(null);
+    };
 
-  const toopen = Boolean(anchorEl);
-  const ccopen = Boolean(ccanchorEl);
-  const bccopen = Boolean(bccanchorEl);
-  const idto = toopen ? 'simple-popover' : undefined;
-  const idcc = ccopen ? 'simple-popover' : undefined;
-  const idbcc = bccopen ? 'simple-popover' : undefined;
+    const cchandleClick = (event) => {
+        setCCAnchorEl(event.currentTarget);
+    };
+    const cchandleClose = () => {
+        setCCAnchorEl(null);
+    };
+
+    const bcchandleClick = (event) => {
+        setBCCAnchorEl(event.currentTarget);
+    };
+    const bcchandleClose = () => {
+        setBCCAnchorEl(null);
+    };
+
+    const toopen = Boolean(anchorEl);
+    const ccopen = Boolean(ccanchorEl);
+    const bccopen = Boolean(bccanchorEl);
+    const idto = toopen ? 'simple-popover' : undefined;
+    const idcc = ccopen ? 'simple-popover' : undefined;
+    const idbcc = bccopen ? 'simple-popover' : undefined;
 
     const { id } = useParams();
 
@@ -996,8 +996,8 @@ export default function FocusedByID(props) {
         }
         else {
             element.classList.add("show");
-            document.getElementById("CcReply").style.display = 'none'
-            document.getElementById("BccReply").style.display = 'none'
+            // document.getElementById("CcReply").style.display = 'none'
+            // document.getElementById("BccReply").style.display = 'none'
             SetCCMessages([])
             SetBCCMessages([])
         }
@@ -1040,8 +1040,14 @@ export default function FocusedByID(props) {
             }
         })
 
-        document.getElementById("CcReply").style.display = 'block'
-        document.getElementById("BccReply").style.display = 'block'
+        // document.getElementById("CcReply").style.display = 'block'
+        // document.getElementById("BccReply").style.display = 'block'
+
+        var elementcc = document.getElementById("CcReply");
+        elementcc.classList.add("showcc");
+
+        var elementbcc = document.getElementById("BccReply");
+        elementbcc.classList.add("showbcc");
 
         const elementreply = document.getElementById("UserCompose")
         elementreply.classList.remove("show");
@@ -1099,27 +1105,18 @@ export default function FocusedByID(props) {
 
     // Open CC
     const OpenCcReply = () => {
-        if (CcReplyflag == false) {
-            document.getElementById("CcReply").style.display = 'block'
-            SetCcReplyflag(true);
-        }
-        else {
-            document.getElementById("CcReply").style.display = 'none'
-            SetCcReplyflag(false);
+        var element = document.getElementById("CcReply");
+        if (element) {
+            element.classList.toggle("showcc");
         }
     };
 
     // Open BCC
     const OpenBccReply = () => {
-        if (BccReplyflag == false) {
-            document.getElementById("BccReply").style.display = 'block'
-            SetBccReplyflag(true);
+        var element = document.getElementById("BccReply");
+        if (element) {
+            element.classList.toggle("showbcc");
         }
-        else {
-            document.getElementById("BccReply").style.display = 'none'
-            SetBccReplyflag(false);
-        }
-
     };
 
     // Close Compose
@@ -2169,57 +2166,57 @@ export default function FocusedByID(props) {
                                                         <b>From : </b>
                                                         {OpenMessage.FromEmail}
                                                     </label>
-                                                   
+
                                                     {/* <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label> */}
                                                     <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
                                                         <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
-                                                        <ArrowDropDown />
+                                                            <ArrowDropDown />
                                                         </Button>
                                                         <Popover className='popupemails'
-                                                        id={idto}
-                                                        open={toopen}
-                                                        anchorEl={anchorEl}
-                                                        onClose={tohandleClose}
-                                                        anchorOrigin={{
-                                                            vertical: 'bottom',
-                                                            horizontal: 'center',
-                                                        }}
-                                                        transformOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'center',
-                                                        }}
-                                                        > 
-                                                        { OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                                        </Popover> 
-                                                    </label>  
+                                                            id={idto}
+                                                            open={toopen}
+                                                            anchorEl={anchorEl}
+                                                            onClose={tohandleClose}
+                                                            anchorOrigin={{
+                                                                vertical: 'bottom',
+                                                                horizontal: 'center',
+                                                            }}
+                                                            transformOrigin={{
+                                                                vertical: 'top',
+                                                                horizontal: 'center',
+                                                            }}
+                                                        >
+                                                            {OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                                        </Popover>
+                                                    </label>
 
                                                     {
                                                         OpenMessage?.CcNameEmail?.length > 0 ?
                                                             // <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
-                                                            <label> 
-                                                                <b>CC : </b> 
+                                                            <label>
+                                                                <b>CC : </b>
                                                                 {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                                                            
-                                                            <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
-                                                                <ArrowDropDown />
+
+                                                                <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
+                                                                    <ArrowDropDown />
                                                                 </Button>
 
                                                                 <Popover className='popupemails'
-                                                                id={idcc}
-                                                                open={ccopen}
-                                                                anchorEl={ccanchorEl}
-                                                                onClose={cchandleClose}
-                                                                anchorOrigin={{
-                                                                    vertical: 'bottom',
-                                                                    horizontal: 'center',
-                                                                }}
-                                                                transformOrigin={{
-                                                                    vertical: 'top',
-                                                                    horizontal: 'center',
-                                                                }}
+                                                                    id={idcc}
+                                                                    open={ccopen}
+                                                                    anchorEl={ccanchorEl}
+                                                                    onClose={cchandleClose}
+                                                                    anchorOrigin={{
+                                                                        vertical: 'bottom',
+                                                                        horizontal: 'center',
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: 'top',
+                                                                        horizontal: 'center',
+                                                                    }}
                                                                 >
-                                                                {OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                                                </Popover>  
+                                                                    {OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                                                </Popover>
                                                             </label> : ""
                                                     }
                                                     {
@@ -2227,28 +2224,28 @@ export default function FocusedByID(props) {
                                                             // <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                             <label>
                                                                 <b>BCC : </b>
-                                                            {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}                              
-                                                            <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
-                                                                <ArrowDropDown />
+                                                                {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                                                <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
+                                                                    <ArrowDropDown />
                                                                 </Button>
 
                                                                 <Popover className='popupemails'
-                                                                id={idbcc}
-                                                                open={bccopen}
-                                                                anchorEl={bccanchorEl}
-                                                                onClose={bcchandleClose}
-                                                                anchorOrigin={{
-                                                                    vertical: 'bottom',
-                                                                    horizontal: 'center',
-                                                                }}
-                                                                transformOrigin={{
-                                                                    vertical: 'top',
-                                                                    horizontal: 'center',
-                                                                }}
-                                                                > 
-                                                                {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                                                </Popover> 
-                                                            
+                                                                    id={idbcc}
+                                                                    open={bccopen}
+                                                                    anchorEl={bccanchorEl}
+                                                                    onClose={bcchandleClose}
+                                                                    anchorOrigin={{
+                                                                        vertical: 'bottom',
+                                                                        horizontal: 'center',
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: 'top',
+                                                                        horizontal: 'center',
+                                                                    }}
+                                                                >
+                                                                    {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                                                </Popover>
+
                                                             </label> : ""
                                                     }
                                                     <label><b>Subject : </b>{OpenMessage.Subject}</label>
@@ -2282,7 +2279,7 @@ export default function FocusedByID(props) {
                                                         <a><img src={iconsarrow2} onClick={OpenComposeReply} title={"Reply"} /></a>
                                                     </Button>
                                                     <Button>
-                                                        <a><img src={icons_replyall} onClick={OpenReplyAll} title={"ReplyAll"} /></a>
+                                                        <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
                                                     </Button>
                                                     <Button>
                                                         <a><img src={iconsarrow1} onClick={OpenComposeForward} title={"Forward"} /></a>
@@ -2374,7 +2371,7 @@ export default function FocusedByID(props) {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose cc px-3' id='CcReply'>
+                    <div className='subcompose cc px-3 hidecc' id='CcReply'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>
@@ -2449,7 +2446,7 @@ export default function FocusedByID(props) {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose bcc px-3' id='BccReply'>
+                    <div className='subcompose bcc px-3 hidebcc' id='BccReply'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Bcc :</h6>

@@ -766,6 +766,34 @@ ul.d-flex.flexlist {
     display: block;
 }
 
+
+
+.hidecc {
+    display: none;
+}
+
+.showcc,
+.showcc.hidecc {
+    display: block;
+}
+
+.showbcc,
+.showbcc.hidebcc {
+    display: block;
+}
+
+ 
+
+.mystyle {
+    width: 100%;
+    padding: 25px;
+    background-color: coral;
+    color: white;
+    font-size: 25px;
+    box-sizing: border-box;
+    display: none;
+}
+
 .draftCompose {
     background: #fff;
     box-shadow: 0px 4px 59px #C4C4C4;

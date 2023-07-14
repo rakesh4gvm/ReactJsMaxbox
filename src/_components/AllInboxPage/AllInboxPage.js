@@ -61,7 +61,7 @@ import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import Popover from '@mui/material/Popover'; 
+import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 
 
@@ -220,26 +220,26 @@ export default function OtherInboxPage(props) {
   }, [SearchInbox, state])
 
   const ContainerRef = useRef(null);
- 
 
- 
+
+
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  }; 
+  };
   const tohandleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const cchandleClick = (event) => {
     setCCAnchorEl(event.currentTarget);
-  }; 
+  };
   const cchandleClose = () => {
     setCCAnchorEl(null);
   };
 
   const bcchandleClick = (event) => {
     setBCCAnchorEl(event.currentTarget);
-  }; 
+  };
   const bcchandleClose = () => {
     setBCCAnchorEl(null);
   };
@@ -252,7 +252,7 @@ export default function OtherInboxPage(props) {
   const idto = toopen ? 'simple-popover' : undefined;
   const idcc = ccopen ? 'simple-popover' : undefined;
   const idbcc = bccopen ? 'simple-popover' : undefined;
-  
+
 
   const GetAccountDetailsusingSocket = (ID) => {
     var UserDetails = GetUserDetails();
@@ -762,8 +762,8 @@ export default function OtherInboxPage(props) {
     }
     else {
       element.classList.add("show");
-      document.getElementById("CcReply").style.display = 'none'
-      document.getElementById("BccReply").style.display = 'none'
+      // document.getElementById("CcReply").style.display = 'none'
+      // document.getElementById("BccReply").style.display = 'none'
       SetCCMessages([])
       SetBCCMessages([])
     }
@@ -807,8 +807,15 @@ export default function OtherInboxPage(props) {
       }
     })
 
-    document.getElementById("CcReply").style.display = 'block'
-    document.getElementById("BccReply").style.display = 'block'
+    // document.getElementById("CcReply").style.display = 'block'
+    // document.getElementById("BccReply").style.display = 'block'
+
+    var elementcc = document.getElementById("CcReply");
+    elementcc.classList.add("showcc");
+
+    var elementbcc = document.getElementById("BccReply");
+    elementbcc.classList.add("showbcc");
+
 
     const elementreply = document.getElementById("UserCompose")
     elementreply.classList.remove("show");
@@ -1242,27 +1249,18 @@ export default function OtherInboxPage(props) {
 
   // Open CC
   const OpenCcReply = () => {
-    if (CcReplyflag == false) {
-      document.getElementById("CcReply").style.display = 'block'
-      SetCcReplyflag(true);
-    }
-    else {
-      document.getElementById("CcReply").style.display = 'none'
-      SetCcReplyflag(false);
+    var element = document.getElementById("CcReply");
+    if (element) {
+      element.classList.toggle("showcc");
     }
   };
 
   // Open BCC
   const OpenBccReply = () => {
-    if (BccReplyflag == false) {
-      document.getElementById("BccReply").style.display = 'block'
-      SetBccReplyflag(true);
+    var element = document.getElementById("BccReply");
+    if (element) {
+      element.classList.toggle("showbcc");
     }
-    else {
-      document.getElementById("BccReply").style.display = 'none'
-      SetBccReplyflag(false);
-    }
-
   };
   // Forward Send Mail Starts
   const ForwardSendMail = () => {
@@ -1829,7 +1827,7 @@ export default function OtherInboxPage(props) {
                             <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
                               <ArrowDropDown />
                             </Button>
-                              <Popover className='popupemails'
+                            <Popover className='popupemails'
                               id={idto}
                               open={toopen}
                               anchorEl={anchorEl}
@@ -1842,19 +1840,19 @@ export default function OtherInboxPage(props) {
                                 vertical: 'top',
                                 horizontal: 'center',
                               }}
-                            > 
-                              { OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
-                            </Popover> 
-                          </label> 
-                           
+                            >
+                              {OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
+                            </Popover>
+                          </label>
+
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
                               <label>
-                                
-                                <b>CC : </b> 
+
+                                <b>CC : </b>
                                 {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                              
-                               <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
+
+                                <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
                                   <ArrowDropDown />
                                 </Button>
 
@@ -1873,17 +1871,17 @@ export default function OtherInboxPage(props) {
                                   }}
                                 >
                                   {OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                </Popover>  
+                                </Popover>
                               </label> : ""
                           }
                           {
                             OpenMessage?.BccNameEmail?.length > 0 ?
                               <label>
                                 <b>BCC : </b>
-                              {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                              {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
-                              
-                              <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
+                                {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
+
+                                <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
                                   <ArrowDropDown />
                                 </Button>
 
@@ -1900,10 +1898,10 @@ export default function OtherInboxPage(props) {
                                     vertical: 'top',
                                     horizontal: 'center',
                                   }}
-                                > 
+                                >
                                   {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                </Popover> 
-                              
+                                </Popover>
+
                               </label> : ""
                           }
                           <label><b>Subject : </b>{OpenMessage.Subject}</label>
@@ -1924,7 +1922,7 @@ export default function OtherInboxPage(props) {
                             <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                           </Button>
                           <Button>
-                            <a><img src={icons_replyall} onClick={OpenReplyAll} title={"ReplyAll"} /></a>
+                            <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
                           </Button>
                           <Button>
                             <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
@@ -2016,7 +2014,7 @@ export default function OtherInboxPage(props) {
               </Col>
             </Row>
           </div>
-          <div className='subcompose cc px-3' id='CcReply'>
+          <div className='subcompose cc px-3 hidecc' id='CcReply'>
             <Row className='px-3'>
               <Col xs={1} className="px-0">
                 <h6>Cc :</h6>
@@ -2091,7 +2089,7 @@ export default function OtherInboxPage(props) {
               </Col>
             </Row>
           </div>
-          <div className='subcompose bcc px-3' id='BccReply'>
+          <div className='subcompose bcc px-3 hidebcc' id='BccReply'>
             <Row className='px-3'>
               <Col xs={1} className="px-0">
                 <h6>Bcc :</h6>
