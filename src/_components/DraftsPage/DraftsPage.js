@@ -968,7 +968,7 @@ export default function OtherInboxPage(props) {
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell scope="row"> {item.Subject} </TableCell>
                         <TableCell>{item.MailTo}</TableCell>
-                        <TableCell>{Moment(item.CreatedDate).format("MM/DD/YYYY h:mm a")}</TableCell>
+                        <TableCell>{Moment(item.CreatedDate).format("MM/DD/YYYY hh:mm a")}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

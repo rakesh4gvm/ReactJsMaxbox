@@ -1663,7 +1663,7 @@ export default function UnansweredRepliesByID(props) {
                                                 {/* <TableCell width={'35px'}></TableCell> */}
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                 <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item.Subject} </TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY h:mm a")}</TableCell>
+                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
