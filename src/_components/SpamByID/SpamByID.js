@@ -706,15 +706,28 @@ export default function SpamByID(props) {
                     // if (props !== undefined) {
                     //   const ID = props.location.state;
                     var ID = decrypt(props.location.search.replace('?', ''))
-                    if (ID != "" && ID != null && ID != "undefined") {
-                        if (SpamPage.length - 1 == 0) {
-                            GetSpamList(ClientID, UserID, 1, ID, "", "");
+                    // if (ID != "" && ID != null && ID != "undefined") {
+                    //     if (SpamPage.length - 1 == 0) {
+                    //         GetSpamList(ClientID, UserID, 1, ID, "", "");
+                    //     } else {
+                    //         GetSpamList(ClientID, UserID, Page, ID, "", "");
+                    //     }
+                    // }
+                    // else {
+                    //     if (SpamPage.length - 1 == 0) {
+                    //         GetSpamList(ClientID, UserID, 1, 0, "", "")
+                    //     } else {
+                    //         GetSpamList(ClientID, UserID, Page, 0, "", "")
+                    //     }
+                    // }
+                    if (!state) {
+                        if (ID != "" && ID != null && ID != "undefined") {
+                            GetSpamList(ClientID, UserID, 1, ID, "", "SeenEmails");
                         } else {
-                            GetSpamList(ClientID, UserID, Page, ID, "", "");
+                            GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
                         }
-                    }
-                    else {
-                        if (SpamPage.length - 1 == 0) {
+                    } else {
+                        if (ID != "" && ID != null && ID != "undefined") {
                             GetSpamList(ClientID, UserID, 1, 0, "", "")
                         } else {
                             GetSpamList(ClientID, UserID, Page, 0, "", "")
