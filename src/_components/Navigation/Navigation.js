@@ -1125,7 +1125,7 @@ export default function Navigation(props) {
                 <em>Select Client</em>
               </MenuItem>
               {ClientDropdown?.map((row, index) => (
-                <MenuItem value={row?.ClientID} key={index}>{row?.Name}</MenuItem>
+                <MenuItem value={row?.ClientID} key={index}>{row?.Name} ({row?.InboxCounts})</MenuItem>
 
               ))}
             </Select>
