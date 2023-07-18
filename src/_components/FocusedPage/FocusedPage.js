@@ -448,7 +448,9 @@ export default function UnansweredResponsesPage(props) {
             //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
             // } else
             if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
-              total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+              var StarredFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+              var SeenStarredFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
+              total = StarredFocusedCount - SeenStarredFocusedCount;
             } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
             } else if (ShowEmails == "" && IsStarred == "") {
