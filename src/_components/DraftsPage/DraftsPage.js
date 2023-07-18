@@ -342,12 +342,12 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: "<br/>" + Data.Body + ClientData })
+        SetSignature({ Data: Data.Body + ClientData })
         SetToEmailValue([Data?.MailTo])
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
       } else {
-        SetSignature({ Data: "<br/>" + ClientData });
+        SetSignature({ Data: ClientData });
         SetMailChange({ To: "", Subject: "" })
       }
 
