@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt, Plain2HTML } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../FocusedComposePage/FocusedComposePage';
 
@@ -1009,6 +1009,10 @@ export default function FocusedByID(props) {
     };
 
     const OpenReplyAll = () => {
+        RemoveForwardPop()
+
+        SetSignature({ Data: "" })
+        
         const element = document.getElementById("UserComposeReply")
 
         var CC = localStorage.getItem("CCMessage")

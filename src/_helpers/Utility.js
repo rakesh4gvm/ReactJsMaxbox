@@ -116,7 +116,7 @@ export function ValidateEmail(Email) {
 
 export function LoaderShow() {
     var element = document.getElementById('hideloding');
-    
+
     if (element !== null) {
         element.style.display = "flex";
     }
@@ -138,4 +138,9 @@ export function IsGreaterDate(Date) {
 
 export function Plain2HTML(text) {
     return text = '<p>' + text.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+}
+
+export function RemoveForwardPop() {
+    const elementforward = document.getElementById("UserComposeForward")
+    return elementforward.classList.remove("show");
 }

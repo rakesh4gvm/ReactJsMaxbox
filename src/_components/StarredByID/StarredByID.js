@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import StarredComposePage from '../StarredComposePage/StarredComposePage';
 
@@ -825,6 +825,9 @@ export default function StarredByID(props) {
     // end replay code
 
     const OpenReplyAll = () => {
+        RemoveForwardPop()
+
+        SetSignature({ Data: "" })
         const element = document.getElementById("UserComposeReply")
 
         var CC = localStorage.getItem("CCMessage")
