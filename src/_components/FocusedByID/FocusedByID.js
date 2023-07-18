@@ -1994,7 +1994,7 @@ export default function FocusedByID(props) {
                     </div>
                     <div className='d-flex btn-50'>
                         <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateFollowupMessage(OpenMessage._id); }}>
-                            Ok
+                            OK
                         </Button>
                         <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseFollowupPopModel(); }}>
                             Cancel

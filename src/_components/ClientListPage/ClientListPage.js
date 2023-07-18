@@ -114,10 +114,12 @@ export default function ClientListPage() {
         SetCountPage(Result.data.PageCount);
         if (Result.data.PageData.length > 0 && str === "del") {
           UpdateUserDetails(Result.data.PageData[0]?.ClientID)
-          ClientChnage()
+          window.location.reload();
+          // ClientChnage()
         }
         if (Result.data.PageData.length === 0 && str === "del") {
-          ClientChnage()
+          window.location.reload();
+          // ClientChnage()
         }
         LoaderHide()
       }
@@ -225,7 +227,7 @@ export default function ClientListPage() {
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
               <h5 className='my-0'>Client</h5>
-            </Col> 
+            </Col>
             <Col>
               <Link to="/ProfileSetting">
                 <div className='profilebox'>
