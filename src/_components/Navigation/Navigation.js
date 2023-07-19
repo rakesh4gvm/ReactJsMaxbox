@@ -262,7 +262,7 @@ export default function Navigation(props) {
     FromEmailList(Details.ClientID, Details.UserID);
 
     var LoginData = localStorage.getItem("LoginData")
-    if(LoginData != null){
+    if (LoginData != null) {
       if (msg[1] == "inboxnotification") {
         toast.error(msg[0] + " : You have new email for inbox", {
           className: 'toast-message emailicon',
@@ -1125,7 +1125,7 @@ export default function Navigation(props) {
                 <em>Select Client</em>
               </MenuItem>
               {ClientDropdown?.map((row, index) => (
-                <MenuItem value={row?.ClientID} key={index}>{row?.Name.slice(0, 10)} ({row?.InboxCounts})</MenuItem>
+                <MenuItem value={row?.ClientID} key={index}>{row?.Name?.length > 10 ? row?.Name?.slice(0, 10) + '...' : row?.Name} ({row?.InboxCounts})</MenuItem>
 
               ))}
             </Select>
