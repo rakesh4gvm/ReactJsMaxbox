@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import SpamComposePage from '../SpamComposePage/SpamComposePage';
 
@@ -67,7 +67,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
-import Popover from '@mui/material/Popover'; 
+import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 
 const top100Films = [
@@ -220,32 +220,32 @@ export default function SpamPage(props) {
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
 
   const tohandleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    }; 
-    const tohandleClose = () => {
-      setAnchorEl(null);
-    };
-    
-    const cchandleClick = (event) => {
-      setCCAnchorEl(event.currentTarget);
-    }; 
-    const cchandleClose = () => {
-      setCCAnchorEl(null);
-    };
-  
-    const bcchandleClick = (event) => {
-      setBCCAnchorEl(event.currentTarget);
-    }; 
-    const bcchandleClose = () => {
-      setBCCAnchorEl(null);
-    }; 
-  
-    const toopen = Boolean(anchorEl);
-    const ccopen = Boolean(ccanchorEl);
-    const bccopen = Boolean(bccanchorEl);
-    const idto = toopen ? 'simple-popover' : undefined;
-    const idcc = ccopen ? 'simple-popover' : undefined;
-    const idbcc = bccopen ? 'simple-popover' : undefined;
+    setAnchorEl(event.currentTarget);
+  };
+  const tohandleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const cchandleClick = (event) => {
+    setCCAnchorEl(event.currentTarget);
+  };
+  const cchandleClose = () => {
+    setCCAnchorEl(null);
+  };
+
+  const bcchandleClick = (event) => {
+    setBCCAnchorEl(event.currentTarget);
+  };
+  const bcchandleClose = () => {
+    setBCCAnchorEl(null);
+  };
+
+  const toopen = Boolean(anchorEl);
+  const ccopen = Boolean(ccanchorEl);
+  const bccopen = Boolean(bccanchorEl);
+  const idto = toopen ? 'simple-popover' : undefined;
+  const idcc = ccopen ? 'simple-popover' : undefined;
+  const idbcc = bccopen ? 'simple-popover' : undefined;
 
 
   useEffect(() => {
@@ -920,8 +920,16 @@ export default function SpamPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    SetCCMessages(JSON.parse(CC))
-    SetBCCMessages(JSON.parse(BCC))
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
+
+    SetCCMessages(NewCCEmail)
+
+    if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
+      SetBCCMessages([])
+    } else {
+      SetBCCMessages(JSON.parse(BCC))
+    }
 
     if (element.classList.contains("show")) {
       element.classList.remove("show");
@@ -1999,32 +2007,32 @@ export default function SpamPage(props) {
                           <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
-                                 // <label>
-                                //     <b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                // </label> : "" 
-                                <label>
-                                  <b>CC : </b> 
-                                  {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}                                                
-                                  <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
+                              // <label>
+                              //     <b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
+                              // </label> : "" 
+                              <label>
+                                <b>CC : </b>
+                                {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
                                   <ArrowDropDown />
-                                  </Button> 
-                                  <Popover className='popupemails'
+                                </Button>
+                                <Popover className='popupemails'
                                   id={idcc}
                                   open={ccopen}
                                   anchorEl={ccanchorEl}
                                   onClose={cchandleClose}
                                   anchorOrigin={{
-                                      vertical: 'bottom',
-                                      horizontal: 'center',
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
                                   }}
                                   transformOrigin={{
-                                      vertical: 'top',
-                                      horizontal: 'center',
+                                    vertical: 'top',
+                                    horizontal: 'center',
                                   }}
-                                  >
+                                >
                                   {OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                  </Popover>  
-                              </label> : "" 
+                                </Popover>
+                              </label> : ""
                           }
                           {
                             OpenMessage?.BccNameEmail?.length > 0 ?
@@ -2033,28 +2041,28 @@ export default function SpamPage(props) {
                                 <b>BCC : </b>
                                 {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
                                 {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
-                                
-                                <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
-                                    <ArrowDropDown />
-                                    </Button>
 
-                                    <Popover className='popupemails'
-                                    id={idbcc}
-                                    open={bccopen}
-                                    anchorEl={bccanchorEl}
-                                    onClose={bcchandleClose}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    > 
-                                    {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
-                                    </Popover>  
-                            </label> : ""
+                                <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
+                                  <ArrowDropDown />
+                                </Button>
+
+                                <Popover className='popupemails'
+                                  id={idbcc}
+                                  open={bccopen}
+                                  anchorEl={bccanchorEl}
+                                  onClose={bcchandleClose}
+                                  anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                  }}
+                                >
+                                  {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                </Popover>
+                              </label> : ""
                           }
                           <label><b>Subject : </b>{OpenMessage.Subject}</label>
                         </div>

@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, EditorVariableNames, LoaderShow, IsGreaterDate, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import UnansweredResponsesComposePage from '../FocusedComposePage/FocusedComposePage';
 
@@ -1099,14 +1099,22 @@ export default function UnansweredResponsesPage(props) {
     RemoveForwardPop()
 
     SetSignature({ Data: "" })
-    
+
     const element = document.getElementById("UserComposeReply")
 
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    SetCCMessages(JSON.parse(CC))
-    SetBCCMessages(JSON.parse(BCC))
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
+
+    SetCCMessages(NewCCEmail)
+
+    if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
+      SetBCCMessages([])
+    } else {
+      SetBCCMessages(JSON.parse(BCC))
+    }
 
     if (element.classList.contains("show")) {
       element.classList.remove("show");
@@ -2259,7 +2267,7 @@ export default function UnansweredResponsesPage(props) {
                             <b>From : </b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label> 
+                          <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
                               // <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""

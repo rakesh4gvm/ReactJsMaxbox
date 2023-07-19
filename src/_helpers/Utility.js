@@ -144,3 +144,11 @@ export function RemoveForwardPop() {
     const elementforward = document.getElementById("UserComposeForward")
     return elementforward.classList.remove("show");
 }
+
+export function RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList) {
+    return OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.filter((e) => e != FromEmailDropdownList[0]?.Email)
+}
+
+export function RemoveCurrentEmailFromBCC(OpenMessage) {
+    return OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.toString()
+}

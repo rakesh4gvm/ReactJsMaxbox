@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 import TablePagination from '@mui/material/TablePagination';
@@ -788,8 +788,16 @@ export default function OtherInboxPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    SetCCMessages(JSON.parse(CC))
-    SetBCCMessages(JSON.parse(BCC))
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
+
+    SetCCMessages(NewCCEmail)
+
+    if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
+      SetBCCMessages([])
+    } else {
+      SetBCCMessages(JSON.parse(BCC))
+    }
 
     if (element.classList.contains("show")) {
       element.classList.remove("show");
@@ -1791,15 +1799,16 @@ export default function OtherInboxPage(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {AllInboxList.map((item, index) => (
+                    {AllInboxList?.map((item, index) => (
                       <TableRow
                         // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                         // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
-                        className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                        className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
                         key={item.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 
                       >
+
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell align='center'>

@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, IsGreaterDate, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import OtherInboxComposePage from '../OtherInboxComposePage/OtherInboxComposePage';
 
@@ -922,8 +922,16 @@ export default function OtherInboxByID(props) {
         var CC = localStorage.getItem("CCMessage")
         var BCC = localStorage.getItem("BCCMessage")
 
-        SetCCMessages(JSON.parse(CC))
-        SetBCCMessages(JSON.parse(BCC))
+        const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+        const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
+
+        SetCCMessages(NewCCEmail)
+
+        if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
+            SetBCCMessages([])
+        } else {
+            SetBCCMessages(JSON.parse(BCC))
+        }
 
         if (element.classList.contains("show")) {
             element.classList.remove("show");
