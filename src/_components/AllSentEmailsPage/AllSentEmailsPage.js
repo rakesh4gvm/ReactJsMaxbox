@@ -1741,7 +1741,36 @@ export default function AllSentEmailsPage(props) {
                             <b>From : </b>
                             {OpenMessage.FromEmail}
                           </label>
-                          <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label>
+                          {/* <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label> */}
+                          {
+                            OpenMessage?.ToNameEmail?.length > 0 ?
+                              <label>
+
+                                <b>To : </b>
+                                {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+
+                                <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
+                                  <ArrowDropDown />
+                                </Button>
+
+                                <Popover className='popupemails'
+                                  id={idto}
+                                  open={toopen}
+                                  anchorEl={anchorEl}
+                                  onClose={tohandleClose}
+                                  anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                  }}
+                                >
+                                  {OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}
+                                </Popover>
+                              </label> : ""
+                          }
                           {
                             OpenMessage?.CcNameEmail?.length > 0 ?
                               // <label>
