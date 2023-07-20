@@ -287,11 +287,11 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
     // Open CC
     const OpenCc = () => {
         if (Ccflag == false) {
-            document.getElementById("Cc").style.display = 'block'
+            document.getElementById("ComposeCC").style.display = 'block'
             SetCcflag(true);
         }
         else {
-            document.getElementById("Cc").style.display = 'none'
+            document.getElementById("ComposeCC").style.display = 'none'
             SetCcflag(false);
         }
     };
@@ -776,7 +776,7 @@ export default function UnansweredResponsesComposePage({ GetUnansweredResponcesL
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose cc px-3' id='Cc'>
+                    <div className='subcompose cc px-3' id='ComposeCC'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>

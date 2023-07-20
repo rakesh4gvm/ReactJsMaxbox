@@ -288,11 +288,11 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
     // Open CC
     const OpenCc = () => {
         if (Ccflag == false) {
-            document.getElementById("Cc").style.display = 'block'
+            document.getElementById("ComposeCC").style.display = 'block'
             SetCcflag(true);
         }
         else {
-            document.getElementById("Cc").style.display = 'none'
+            document.getElementById("ComposeCC").style.display = 'none'
             SetCcflag(false);
         }
     };
@@ -769,7 +769,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                             </Col>
                         </Row>
                     </div>
-                    <div className='subcompose cc px-3' id='Cc'>
+                    <div className='subcompose cc px-3' id='ComposeCC'>
                         <Row className='px-3'>
                             <Col xs={1} className="px-0">
                                 <h6>Cc :</h6>
@@ -779,7 +779,6 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <div className='multibox-filter'>
                                     <Autocomplete
                                         multiple
-                                        id="CC"
                                         value={CCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
