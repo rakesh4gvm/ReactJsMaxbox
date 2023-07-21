@@ -257,7 +257,12 @@ export default function ListInbox() {
                   >
                     <TableCell width={'35px'} align="center"><StarBorderIcon /></TableCell>
                     <TableCell width={'35px'}></TableCell>
-                    <TableCell>{item.Subject.split(' ').slice(0, 8).join(' ')}{item.Subject.split(' ').length > 8 ? '...' : ''}</TableCell>
+                    <TableCell> {item?.Subject ? (
+                            <>
+                              {item.Subject.split(' ').slice(0, 8).join(' ')}
+                              {item.Subject.split(' ').length > 8 ? '...' : ''}
+                            </>
+                          ) : null}</TableCell>
                     <TableCell>{item.FromEmail}</TableCell>
                     <TableCell>{Moment(item.FollowUpDate).format("DD/MM/YYYY")}</TableCell>
                   </TableRow>

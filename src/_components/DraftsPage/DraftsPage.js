@@ -966,7 +966,12 @@ export default function OtherInboxPage(props) {
                       >
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell> */}
                         {/* <TableCell width={'35px'}></TableCell> */} 
-                        <TableCell>{item.Subject.split(' ').slice(0, 8).join(' ')}{item.Subject.split(' ').length > 8 ? '...' : ''}</TableCell>
+                        <TableCell> {item?.Subject ? (
+                            <>
+                              {item.Subject.split(' ').slice(0, 8).join(' ')}
+                              {item.Subject.split(' ').length > 8 ? '...' : ''}
+                            </>
+                          ) : null}</TableCell>
                         <TableCell>{item.MailTo}</TableCell>
                         <TableCell>{Moment(item.CreatedDate).format("MM/DD/YYYY hh:mm a")}</TableCell>
                       </TableRow>

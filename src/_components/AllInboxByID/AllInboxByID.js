@@ -1797,7 +1797,12 @@ export default function AllInboxByID(props) {
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row">{item.Subject.split(' ').slice(0, 8).join(' ')}{item.Subject.split(' ').length > 8 ? '...' : ''}</TableCell>
+                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                            <>
+                              {item.Subject.split(' ').slice(0, 8).join(' ')}
+                              {item.Subject.split(' ').length > 8 ? '...' : ''}
+                            </>
+                          ) : null}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                             </TableRow>
                                         ))}
