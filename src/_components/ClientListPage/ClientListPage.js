@@ -114,11 +114,15 @@ export default function ClientListPage() {
         SetCountPage(Result.data.PageCount);
         if (Result.data.PageData.length > 0 && str === "del") {
           UpdateUserDetails(Result.data.PageData[0]?.ClientID)
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000)
           // ClientChnage()
         }
         if (Result.data.PageData.length === 0 && str === "del") {
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000)
           // ClientChnage()
         }
         LoaderHide()
