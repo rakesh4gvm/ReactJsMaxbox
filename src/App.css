@@ -2642,6 +2642,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     border-bottom: none;
     padding: 2px 5px;
     font-size: 0.8rem;
+    white-space: nowrap;
 }
 
 .tablelister tr svg {

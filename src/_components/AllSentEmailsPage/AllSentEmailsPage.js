@@ -1721,7 +1721,7 @@ export default function AllSentEmailsPage(props) {
                           </TableCell>
                           {/* <TableCell width={'35px'}></TableCell> */}
                           <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                          <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}> {item.Subject} </TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row">{item.Subject.split(' ').slice(0, 8).join(' ')}{item.Subject.split(' ').length > 8 ? '...' : ''}</TableCell>
                           <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                         </TableRow>
                       )
