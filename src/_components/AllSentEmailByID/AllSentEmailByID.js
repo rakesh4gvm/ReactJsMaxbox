@@ -195,6 +195,8 @@ export default function AllSentEmailByID(props) {
     const [AllSentTotalRecords, SetAllSentTotalRecords] = useState()
     const [SentEmailTotalRecords, SetSentEmailTotalRecords] = useState()
     const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+    const [MUIClass, SetMUIClass] = useState("Mui-selected")
+
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
     const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -591,10 +593,15 @@ export default function AllSentEmailByID(props) {
                         LoaderHide()
                     }
                     if (Result?.data?.Data[0]?.IsStarred == false) {
-                        element2[0].classList.remove("Mui-selected");
+                        SetMUIClass("")
+                        if (element2.length > 0) {
+                            element2[0].classList.remove("Mui-selected");
+                        }
                     }
                     else {
-                        element2[0].classList.add("Mui-selected")
+                        if (element2.length > 0) {
+                            element2[0].classList.add("Mui-selected")
+                        }
                     }
                 }
                 else {
@@ -707,10 +714,12 @@ export default function AllSentEmailByID(props) {
                     if (isStar) {
                         element.classList.remove("Mui-selected");
                         element2.classList.remove("Mui-selected");
+                        OpenMessageDetails(ID, "", "", "",)
                     }
                     else {
                         element.classList.add("Mui-selected");
                         element2.classList.add("Mui-selected");
+                        OpenMessageDetails(ID, "", "", "",)
                     }
 
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -1726,11 +1735,11 @@ export default function AllSentEmailByID(props) {
                                                     {/* <TableCell width={'35px'}></TableCell> */}
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
-                            <>
-                              {item.Subject.split(' ').slice(0, 8).join(' ')}
-                              {item.Subject.split(' ').length > 8 ? '...' : ''}
-                            </>
-                          ) : null}</TableCell>
+                                                        <>
+                                                            {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                            {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                        </>
+                                                    ) : null}</TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                 </TableRow>
                                             )
@@ -1855,7 +1864,7 @@ export default function AllSentEmailByID(props) {
                                                         <label>{MailNumber} / {AllSentList.length}</label>
                                                     </Button>
                                                     <Button>
-                                                        <ToggleButton className='startselct temp-class' title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                                                        <ToggleButton className={"startselct temp-class" + " " + MUIClass} title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
