@@ -173,7 +173,7 @@ export default function EmailConfigurationPage() {
           if (Result.data.TotalCount === counter) {
             SetIsProcess(false)
           }
-          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == false && Result?.data?.PageData[i]?.IsSentProcessWeb == false && Result?.data?.PageData[i]?.IsSpamProcessWeb == false) {
+          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == false && Result?.data?.PageData[i]?.IsSentProcessWeb == false && Result?.data?.PageData[i]?.IsSpamProcessWeb == false && Result?.data?.PageData[i]?.IsInboxReadAllMailFirstTimeCompleted == true && Result?.data?.PageData[i]?.IsSpamReadAllMailFirstTimeCompleted == true && Result?.data?.PageData[i]?.IsSentReadAllMailFirstTimeCompleted == true) {
             counter = counter + 1
           }
           if (Result.data.TotalCount != counter) {
@@ -228,7 +228,7 @@ export default function EmailConfigurationPage() {
           if (Result.data.TotalCount === counter) {
             SetIsProcess(false)
           }
-          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == false && Result?.data?.PageData[i]?.IsSentProcessWeb == false && Result?.data?.PageData[i]?.IsSpamProcessWeb == false) {
+          if (Result?.data?.PageData[i]?.IsInboxProcessWeb == false && Result?.data?.PageData[i]?.IsSentProcessWeb == false && Result?.data?.PageData[i]?.IsSpamProcessWeb == false && Result?.data?.PageData[i]?.IsInboxReadAllMailFirstTimeCompleted == true && Result?.data?.PageData[i]?.IsSpamReadAllMailFirstTimeCompleted == true && Result?.data?.PageData[i]?.IsSentReadAllMailFirstTimeCompleted == true) {
             counter = counter + 1;
             // check existing mails for inbox and sent
             var AccountID = Result.data.PageData[i].AccountID
@@ -480,7 +480,7 @@ export default function EmailConfigurationPage() {
 
                             <ButtonGroup className='table-btn w-100' variant="text" aria-label="text button group">
                               {/* {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? */}
-                              {(row?.IsInboxProcessWeb == false && row?.IsSentProcessWeb == false && row?.IsSpamProcessWeb == false) ?
+                              {(row?.IsInboxProcessWeb == false && row?.IsSentProcessWeb == false && row?.IsSpamProcessWeb == false && row?.IsInboxReadAllMailFirstTimeCompleted == false && row?.IsSpamReadAllMailFirstTimeCompleted == false && row?.IsSentReadAllMailFirstTimeCompleted == false) ?
                                 // <Button className='btn-success'> Process </Button>    
                                 <div className='barprogress successbar'>
                                   <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
