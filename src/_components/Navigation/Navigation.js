@@ -280,9 +280,7 @@ export default function Navigation(props) {
           var element = document.getElementById("AllInoxRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
-
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (SelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -301,9 +299,7 @@ export default function Navigation(props) {
           var element = document.getElementById("AllSpamRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
-
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (SelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -321,9 +317,7 @@ export default function Navigation(props) {
           var element = document.getElementById("AllInoxRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
-
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (SelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -342,9 +336,7 @@ export default function Navigation(props) {
           var element = document.getElementById("AllSpamRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
-
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (SelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
