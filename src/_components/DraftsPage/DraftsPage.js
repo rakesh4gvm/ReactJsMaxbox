@@ -327,7 +327,7 @@ export default function OtherInboxPage(props) {
       el.classList.remove("show");
       if (EmailAccountUsers.length > 0) {
         SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-        SetSignature({ Data: ClientData + Data.Body })
+        SetSignature({ Data: "<br/>" + ClientData + Data.Body })
         SetClientSignatureData(ClientData)
       } else {
         SetSelectedEmailAccountUser(0);
@@ -342,12 +342,12 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: Data.Body + ClientData })
+        SetSignature({ Data: "<br />" + Data.Body + ClientData })
         SetToEmailValue([Data?.MailTo])
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
       } else {
-        SetSignature({ Data: ClientData });
+        SetSignature({ Data: "<br />" + ClientData });
         SetMailChange({ To: "", Subject: "" })
       }
 
@@ -965,13 +965,13 @@ export default function OtherInboxPage(props) {
                         onClick={() => OpenMessageDetails(item._id, index, true)}
                       >
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell> */}
-                        {/* <TableCell width={'35px'}></TableCell> */} 
+                        {/* <TableCell width={'35px'}></TableCell> */}
                         <TableCell> {item?.Subject ? (
-                            <>
-                              {item.Subject.split(' ').slice(0, 8).join(' ')}
-                              {item.Subject.split(' ').length > 8 ? '...' : ''}
-                            </>
-                          ) : null}</TableCell>
+                          <>
+                            {item.Subject.split(' ').slice(0, 8).join(' ')}
+                            {item.Subject.split(' ').length > 8 ? '...' : ''}
+                          </>
+                        ) : null}</TableCell>
                         <TableCell>{item.MailTo}</TableCell>
                         <TableCell>{Moment(item.CreatedDate).format("MM/DD/YYYY hh:mm a")}</TableCell>
                       </TableRow>
