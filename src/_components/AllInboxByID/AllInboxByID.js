@@ -1149,6 +1149,8 @@ export default function AllInboxByID(props) {
     // Open Compose
     const OpenComposeForward = (e) => {
         document.getElementById("ToForward").value = ""
+        SetForwardSignature({ Data: "" })
+
         SetForwardToEmailValue([])
         SetForwardCCEmailValue([])
         SetForwardBCCEmailValue([])

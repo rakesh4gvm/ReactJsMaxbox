@@ -1218,6 +1218,8 @@ export default function StarredByID(props) {
     // Open Compose
     const OpenComposeForward = (e) => {
         document.getElementById("ToForward").value = ""
+        SetForwardSignature({ Data: "" })
+
         SetForwardToEmailValue([])
         SetForwardCCEmailValue([])
         SetForwardBCCEmailValue([])
