@@ -253,6 +253,7 @@ export default function Navigation(props) {
   }, []);
   // SSE code end
 
+
   const SendNotification = (data) => {
     var msg = data.message.split("_");
     const NavigationID = localStorage.getItem("NavigationID")
@@ -280,7 +281,9 @@ export default function Navigation(props) {
           var element = document.getElementById("AllInoxRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          if (SelectedClientID == msg[0]) {
+          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
+
+          if (RemoveCountsSelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -299,7 +302,9 @@ export default function Navigation(props) {
           var element = document.getElementById("AllSpamRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          if (SelectedClientID == msg[0]) {
+          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
+
+          if (RemoveCountsSelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -317,7 +322,9 @@ export default function Navigation(props) {
           var element = document.getElementById("AllInoxRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          if (SelectedClientID == msg[0]) {
+          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
+
+          if (RemoveCountsSelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -336,7 +343,9 @@ export default function Navigation(props) {
           var element = document.getElementById("AllSpamRefreshpanel");
           var SelectedClientID = document.getElementById("selectedclientid").textContent
 
-          if (SelectedClientID == msg[0]) {
+          const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
+
+          if (RemoveCountsSelectedClientID == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -360,17 +369,17 @@ export default function Navigation(props) {
         toast.error(msg[0] + " : You have new email for inbox", {
           className: 'toast-message emailicon',
         });
-
+ 
         var element = document.getElementById("AllInoxRefreshpanel");
         var SelectedClientID = document.getElementById("selectedclientid").textContent
-
+ 
         if (SelectedClientID == msg[0]) {
           element.classList.add("roundgreenemail");
         }
         else {
           element.classList.remove("roundgreenemail");
         }
-
+ 
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "block";
       }
@@ -1123,8 +1132,7 @@ export default function Navigation(props) {
                 <em>Select Client</em>
               </MenuItem>
               {ClientDropdown?.map((row, index) => (
-                <MenuItem value={row?.ClientID} key={index}>{row?.Name?.length > 10 ? row?.Name?.slice(0, 10) + '...' : row?.Name} ({row?.InboxCounts})</MenuItem>
-
+                <MenuItem id='hello' value={row?.ClientID} key={index}>{row?.Name} ({row?.InboxCounts})</MenuItem>
               ))}
             </Select>
           </FormControl>
