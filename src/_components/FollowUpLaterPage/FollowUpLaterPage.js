@@ -1016,11 +1016,11 @@ export default function FollowUpLater(props) {
 
 
     if (CCMessages.length > 1) {
-      var r = CCMessages[0]?.Email
-      var s = CCMessages.shift()
-      var sr = CCMessages.concat(r)
+      // var r = CCMessages[0]?.Email
+      // var s = CCMessages.shift()
+      // var sr = CCMessages.concat(r)
 
-      Response2 = sr.map(item => {
+      Response2 = CCMessages.map(item => {
         if (typeof item === 'string') {
           return item;
         } else if (item.Email) {
@@ -1037,11 +1037,11 @@ export default function FollowUpLater(props) {
     }
 
     if (BCCMessages.length > 1) {
-      var r = BCCMessages[0]?.Email
-      var s = BCCMessages.shift()
-      var sr = BCCMessages.concat(r)
+      // var r = BCCMessages[0]?.Email
+      // var s = BCCMessages.shift()
+      // var sr = BCCMessages.concat(r)
 
-      Response3 = sr.map(item => {
+      Response3 = BCCMessages.map(item => {
         if (typeof item === 'string') {
           return item;
         } else if (item.Email) {

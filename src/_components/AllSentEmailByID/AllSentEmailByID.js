@@ -820,7 +820,7 @@ export default function AllSentEmailByID(props) {
             ID: OpenMessage?._id,
         }
         Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
+            url: CommonConstants.MOL_APIURL + "/sent_email_history/SentGetReplyMessageDetails",
             method: "POST",
             data: Data,
         }).then((Result) => {
@@ -893,11 +893,11 @@ export default function AllSentEmailByID(props) {
 
 
         if (CCMessages.length > 1) {
-            var r = CCMessages[0]?.Email
-            var s = CCMessages.shift()
-            var sr = CCMessages.concat(r)
+            // var r = CCMessages[0]?.Email
+            // var s = CCMessages.shift()
+            // var sr = CCMessages.concat(r)
 
-            Response2 = sr.map(item => {
+            Response2 = CCMessages.map(item => {
                 if (typeof item === 'string') {
                     return item;
                 } else if (item.Email) {
@@ -914,11 +914,11 @@ export default function AllSentEmailByID(props) {
         }
 
         if (BCCMessages.length > 1) {
-            var r = BCCMessages[0]?.Email
-            var s = BCCMessages.shift()
-            var sr = BCCMessages.concat(r)
+            // var r = BCCMessages[0]?.Email
+            // var s = BCCMessages.shift()
+            // var sr = BCCMessages.concat(r)
 
-            Response3 = sr.map(item => {
+            Response3 = BCCMessages.map(item => {
                 if (typeof item === 'string') {
                     return item;
                 } else if (item.Email) {
