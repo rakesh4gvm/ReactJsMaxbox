@@ -480,7 +480,7 @@ export default function EmailConfigurationPage() {
 
                             <ButtonGroup className='table-btn w-100' variant="text" aria-label="text button group">
                               {/* {(row.IsInboxMailReadFirstTime == true && row.IsSentMailReadFirstTime == true && row.IsSpamMailReadFirstTime == true) ? */}
-                              {(row?.IsInboxProcessWeb == false && row?.IsSentProcessWeb == false && row?.IsSpamProcessWeb == false && row?.IsInboxReadAllMailFirstTimeCompleted == false && row?.IsSpamReadAllMailFirstTimeCompleted == false && row?.IsSentReadAllMailFirstTimeCompleted == false) ?
+                              {(row?.IsInboxProcessWeb == false && row?.IsSentProcessWeb == false && row?.IsSpamProcessWeb == false && row?.IsInboxReadAllMailFirstTimeCompleted == true && row?.IsSpamReadAllMailFirstTimeCompleted == true && row?.IsSentReadAllMailFirstTimeCompleted == true) ?
                                 // <Button className='btn-success'> Process </Button>    
                                 <div className='barprogress successbar'>
                                   <CircularProgress variant="determinate" value={100} color="success" /> <label>Completed</label>
