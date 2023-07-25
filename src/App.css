@@ -1508,7 +1508,7 @@ Button.btntemplateround:hover {
     color: #909092;
 }
 
-.sign-main label .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+.sign-main label > span {
     padding: 0 9px;
 }
 
