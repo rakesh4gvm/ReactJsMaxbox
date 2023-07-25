@@ -166,7 +166,7 @@ export default function EditEmailPage(props) {
         <div className='px-3'>
           <Row className='bodsetting px-4'>
             <Col className='py-3'>
-              <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit email configuration</h5>
+              <h5 onClick={() => { Cancle() }} className='my-0'><a className='mr-2 iconwhite' ><ArrowBackIcon /></a> Edit email account</h5>
             </Col>
             <Col>
               <Link to="/ProfileSetting">
