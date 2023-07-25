@@ -1132,7 +1132,7 @@ export default function Navigation(props) {
                 <em>Select Client</em>
               </MenuItem>
               {ClientDropdown?.map((row, index) => (
-                <MenuItem id='hello' value={row?.ClientID} key={index}>{row?.Name} ({row?.InboxCounts})</MenuItem>
+                <MenuItem value={row?.ClientID} key={index}>{row?.Name} ({row?.InboxCounts})</MenuItem>
               ))}
             </Select>
           </FormControl>
