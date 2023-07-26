@@ -441,6 +441,17 @@ export default function OtherInboxPage(props) {
   const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+
+      let UpdatedList = StarredList.map(item => {
+        if (item._id == ID) {
+          return { ...item, IsSeen: true };
+        }
+        return item;
+      });
+      if (updatestr == "updatelist") {
+        SetStarredList(UpdatedList)
+      }
+
       var Data = {
         _id: ID,
       };
@@ -463,15 +474,15 @@ export default function OtherInboxPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
-            let UpdatedList = StarredList.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (updatestr == "updatelist") {
-              SetStarredList(UpdatedList)
-            }
+            // let UpdatedList = StarredList.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (updatestr == "updatelist") {
+            //   SetStarredList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetStarredList([])
@@ -481,6 +492,15 @@ export default function OtherInboxPage(props) {
           }
         }
         else {
+          let UpdatedList = StarredList.map(item => {
+            if (item._id == ID) {
+              return { ...item, IsSeen: false };
+            }
+            return item;
+          });
+          if (updatestr == "updatelist") {
+            SetStarredList(UpdatedList)
+          }
           SetOpenMessageDetails([]);
           LoaderHide()
         }

@@ -480,6 +480,17 @@ export default function AllInboxByID(props) {
     const OpenMessageDetails = (ID, index, str) => {
         if (ID != '') {
             SetMailNumber(index + 1)
+
+            let UpdatedList = AllInboxList.map(item => {
+                if (item._id == ID) {
+                    return { ...item, IsSeen: true };
+                }
+                return item;
+            });
+            if (str == "updatelist") {
+                SetAllInboxList(UpdatedList)
+            }
+
             var Data = {
                 _id: ID,
                 IsAllInboxPage: true
@@ -500,15 +511,15 @@ export default function AllInboxByID(props) {
                         localStorage.setItem("CCMessage", JSON.stringify(Result.data.Data[0]?.CcNameEmail))
                         localStorage.setItem("BCCMessage", JSON.stringify(Result.data.Data[0]?.BccNameEmail))
                         SetActive(ID);
-                        let UpdatedList = AllInboxList.map(item => {
-                            if (item._id == ID) {
-                                return { ...item, IsSeen: true };
-                            }
-                            return item;
-                        });
-                        if (str == "updatelist") {
-                            SetAllInboxList(UpdatedList)
-                        }
+                        // let UpdatedList = AllInboxList.map(item => {
+                        //     if (item._id == ID) {
+                        //         return { ...item, IsSeen: true };
+                        //     }
+                        //     return item;
+                        // });
+                        // if (str == "updatelist") {
+                        //     SetAllInboxList(UpdatedList)
+                        // }
                         LoaderHide()
                     } else {
                         SetAllInboxList([])
@@ -518,6 +529,15 @@ export default function AllInboxByID(props) {
                     }
                 }
                 else {
+                    let UpdatedList = AllInboxList.map(item => {
+                        if (item._id == ID) {
+                            return { ...item, IsSeen: false };
+                        }
+                        return item;
+                    });
+                    if (str == "updatelist") {
+                        SetAllInboxList(UpdatedList)
+                    }
                     SetOpenMessageDetails([]);
                     LoaderHide()
                 }
@@ -1800,11 +1820,11 @@ export default function AllInboxByID(props) {
                                                 </TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
-                            <>
-                              {item.Subject.split(' ').slice(0, 8).join(' ')}
-                              {item.Subject.split(' ').length > 8 ? '...' : ''}
-                            </>
-                          ) : null}</TableCell>
+                                                    <>
+                                                        {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                        {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                    </>
+                                                ) : null}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                             </TableRow>
                                         ))}

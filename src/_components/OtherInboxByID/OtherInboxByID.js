@@ -442,6 +442,17 @@ export default function OtherInboxByID(props) {
     const OpenMessageDetails = (ID, index, str, updatestr) => {
         if (ID != '') {
             SetMailNumber(index + 1)
+
+            let UpdatedList = FollowUpList.map(item => {
+                if (item._id == ID) {
+                    return { ...item, IsSeen: true };
+                }
+                return item;
+            });
+            if (updatestr == "updatelist") {
+                SetFollowUpList(UpdatedList)
+            }
+
             if (str == "showloader") {
                 LoaderShow()
             }
@@ -468,15 +479,15 @@ export default function OtherInboxByID(props) {
                         SetActive(ID);
                         SetToEmailValue(Result.data.Data)
                         SetValueMail(Result.data.Data[0]?.FromEmail)
-                        let UpdatedList = FollowUpList.map(item => {
-                            if (item._id == ID) {
-                                return { ...item, IsSeen: true };
-                            }
-                            return item;
-                        });
-                        if (updatestr == "updatelist") {
-                            SetFollowUpList(UpdatedList)
-                        }
+                        // let UpdatedList = FollowUpList.map(item => {
+                        //     if (item._id == ID) {
+                        //         return { ...item, IsSeen: true };
+                        //     }
+                        //     return item;
+                        // });
+                        // if (updatestr == "updatelist") {
+                        //     SetFollowUpList(UpdatedList)
+                        // }
                         LoaderHide()
                     } else {
                         SetFollowUpList([])
@@ -497,6 +508,15 @@ export default function OtherInboxByID(props) {
                     }
                 }
                 else {
+                    let UpdatedList = FollowUpList.map(item => {
+                        if (item._id == ID) {
+                            return { ...item, IsSeen: false };
+                        }
+                        return item;
+                    });
+                    if (updatestr == "updatelist") {
+                        SetFollowUpList(UpdatedList)
+                    }
                     SetOpenMessageDetails([]);
                     LoaderHide()
                 }

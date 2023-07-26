@@ -438,6 +438,17 @@ export default function SpamPage(props) {
   const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+
+      let UpdatedList = SpamPage.map(item => {
+        if (item._id == ID) {
+          return { ...item, IsSeen: true };
+        }
+        return item;
+      });
+      if (updatestr == "updatelist") {
+        SetSpamList(UpdatedList)
+      }
+
       if (str == "showloader") {
         LoaderShow()
       }
@@ -465,15 +476,15 @@ export default function SpamPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
-            let UpdatedList = SpamPage.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (updatestr == "updatelist") {
-              SetSpamList(UpdatedList)
-            }
+            // let UpdatedList = SpamPage.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (updatestr == "updatelist") {
+            //   SetSpamList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetSpamList([])
@@ -494,6 +505,15 @@ export default function SpamPage(props) {
           }
         }
         else {
+          let UpdatedList = SpamPage.map(item => {
+            if (item._id == ID) {
+              return { ...item, IsSeen: false };
+            }
+            return item;
+          });
+          if (updatestr == "updatelist") {
+            SetSpamList(UpdatedList)
+          }
           SetOpenMessageDetails([]);
           LoaderHide()
         }
