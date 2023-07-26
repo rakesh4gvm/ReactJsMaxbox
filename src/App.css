@@ -741,10 +741,17 @@ ul.d-flex.flexlist {
     background: #cb795a;
 }
 
-.composebody {
+/* .composebody {
     position: fixed;
     bottom: 0;
     right: 0;
+    padding: 12px;
+    z-index: 99999;
+} */
+.composebody {
+    position: fixed;
+    top: 50px;
+    left: 2px;
     padding: 12px;
     z-index: 99999;
 }
@@ -1938,7 +1945,7 @@ div.erorr-msg>*>* {
     opacity: 0.7;
 }
 
-.composebody button.btn.largbtn,
+/* .composebody button.btn.largbtn,
 .composebody button.btn.largbtn:focus,
 .composebody .btn-primary:not(:disabled):not(.disabled):active:focus {
     box-shadow: 0px 4px 14px 6px #e6c8bc;
@@ -1949,6 +1956,28 @@ div.erorr-msg>*>* {
     padding: 0;
     background: #e49273;
     line-height: 0;
+} */
+.composebody button.btn.largbtn, .composebody button.btn.largbtn:focus, 
+.composebody .btn-primary:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none;
+    width: 44px;
+    font-size: 50px;
+    height: 44px;
+    border-radius: 2p;
+    padding: 0;
+    background: #fff;
+    line-height: 0;
+    min-width: auto;
+}
+.composebody button.btn.largbtn img {
+    filter: brightness(1000%) grayscale(100%) opacity(0.1) 
+    drop-shadow(0 0 0 #e49273) 
+    drop-shadow(0 0 0 #e49273) 
+    drop-shadow(0 0 0 #e49273) 
+    drop-shadow(0 0 0 #e49273) 
+    drop-shadow(0 0 0 #e49273);
+    /* color: #e49273; */
+    width: 20px;
 }
 
 .composebody .hcompose button.btn {
