@@ -2674,6 +2674,11 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     white-space: nowrap;
 }
 
+.tablelister tr td { 
+    max-width: 400px;
+    overflow: hidden;
+}
+
 .tablelister tr svg {
     background-color: transparent;
     width: 18px;
