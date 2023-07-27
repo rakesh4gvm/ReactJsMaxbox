@@ -495,6 +495,7 @@ export default function SpamByID(props) {
                         LoaderHide()
                     }
                     if (Result?.data?.Data[0]?.IsStarred == false) {
+                        SetMUIClass("")
                         if (element2.length > 0) {
                             element2[0].classList.remove("Mui-selected");
                         }
@@ -1142,9 +1143,9 @@ export default function SpamByID(props) {
         var EmailSummary = document.getElementById("emailsummary").value
 
         //remove white space html code 
-    const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
-    var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-	
+        const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+        var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+
         if (VoiceOfTone.length > 0) {
             LoaderShow()
             var SubjectParamData = {
