@@ -193,6 +193,7 @@ export default function OtherInboxPage(props) {
   const [ObjectIDTemplateID, SetObjectIDTemplateID] = React.useState("");
   const [subject, setSubject] = useState()
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+  const [GetReplyMessageDetailsTextBody, SetGetReplyMessageDetailsTextBody] = useState()
   const [NewTemplateID, SetNewTemplateID] = useState([])
   const [NewObjectionID, SetNewObjectionID] = useState([])
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
@@ -509,6 +510,17 @@ export default function OtherInboxPage(props) {
   const OpenMessageDetails = (ID, index, str) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+
+      let UpdatedList = AllInboxList.map(item => {
+        if (item._id == ID) {
+          return { ...item, IsSeen: true };
+        }
+        return item;
+      });
+      if (str == "updatelist") {
+        SetAllInboxList(UpdatedList)
+      }
+
       var Data = {
         _id: ID,
         IsAllInboxPage: true
@@ -529,15 +541,15 @@ export default function OtherInboxPage(props) {
             localStorage.setItem("CCMessage", JSON.stringify(Result.data.Data[0]?.CcNameEmail))
             localStorage.setItem("BCCMessage", JSON.stringify(Result.data.Data[0]?.BccNameEmail))
             SetActive(ID);
-            let UpdatedList = AllInboxList.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (str == "updatelist") {
-              SetAllInboxList(UpdatedList)
-            }
+            // let UpdatedList = AllInboxList.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (str == "updatelist") {
+            //   SetAllInboxList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetAllInboxList([])
@@ -547,6 +559,16 @@ export default function OtherInboxPage(props) {
           }
         }
         else {
+          let UpdatedList = AllInboxList.map(item => {
+            if (item._id == ID) {
+              return { ...item, IsSeen: false };
+            }
+            return item;
+          });
+          if (str == "updatelist") {
+            SetAllInboxList(UpdatedList)
+          }
+
           SetOpenMessageDetails([]);
           LoaderHide()
         }
@@ -753,6 +775,7 @@ export default function OtherInboxPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
+        SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
@@ -816,6 +839,7 @@ export default function OtherInboxPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
+        SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
@@ -976,8 +1000,9 @@ export default function OtherInboxPage(props) {
   const ChatGPT = async () => {
     var VoiceOfTone = document.getElementById("tone").value
     var EmailSummary = document.getElementById("emailsummary").value
-
-    var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+    //remove white space html code 
+    const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+    var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
     if (VoiceOfTone.length > 0) {
       LoaderShow()
       var SubjectParamData = {

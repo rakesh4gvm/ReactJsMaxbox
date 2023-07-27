@@ -198,6 +198,7 @@ export default function OtherInboxPage(props) {
   const [NewTemplateID, SetNewTemplateID] = useState([])
   const [subject, setSubject] = useState()
   const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+  const [GetReplyMessageDetailsTextBody, SetGetReplyMessageDetailsTextBody] = useState()
   const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
   const [NewObjectionID, SetNewObjectionID] = useState([])
   const [CheckedID, SetCheckedID] = useState([])
@@ -439,6 +440,17 @@ export default function OtherInboxPage(props) {
   const OpenMessageDetails = (ID, index, str, updatestr) => {
     if (ID != '') {
       SetMailNumber(index + 1)
+
+      let UpdatedList = FollowUpList.map(item => {
+        if (item._id == ID) {
+          return { ...item, IsSeen: true };
+        }
+        return item;
+      });
+      if (updatestr == "updatelist") {
+        SetFollowUpList(UpdatedList)
+      }
+
       if (str == "showloader") {
         LoaderShow()
       }
@@ -465,15 +477,15 @@ export default function OtherInboxPage(props) {
             SetActive(ID);
             SetToEmailValue(Result.data.Data)
             SetValueMail(Result.data.Data[0]?.FromEmail)
-            let UpdatedList = FollowUpList.map(item => {
-              if (item._id == ID) {
-                return { ...item, IsSeen: true };
-              }
-              return item;
-            });
-            if (updatestr == "updatelist") {
-              SetFollowUpList(UpdatedList)
-            }
+            // let UpdatedList = FollowUpList.map(item => {
+            //   if (item._id == ID) {
+            //     return { ...item, IsSeen: true };
+            //   }
+            //   return item;
+            // });
+            // if (updatestr == "updatelist") {
+            //   SetFollowUpList(UpdatedList)
+            // }
             LoaderHide()
           } else {
             SetFollowUpList([])
@@ -494,6 +506,15 @@ export default function OtherInboxPage(props) {
           }
         }
         else {
+          let UpdatedList = FollowUpList.map(item => {
+            if (item._id == ID) {
+              return { ...item, IsSeen: false };
+            }
+            return item;
+          });
+          if (updatestr == "updatelist") {
+            SetFollowUpList(UpdatedList)
+          }
           SetOpenMessageDetails([]);
           LoaderHide()
         }
@@ -891,6 +912,7 @@ export default function OtherInboxPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
+        SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
@@ -953,6 +975,7 @@ export default function OtherInboxPage(props) {
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
+        SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
       } else {
         toast.error(Result?.data?.Message);
@@ -1111,10 +1134,13 @@ export default function OtherInboxPage(props) {
     var VoiceOfTone = document.getElementById("tone").value
     var EmailSummary = document.getElementById("emailsummary").value
 
-    var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+   //remove white space html code 
+   const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+   var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+ 
     if (VoiceOfTone.length > 0) {
       LoaderShow()
-      var GetReplyMessageDetailsData = GetReplyMessageDetails + " make reply happy and respectfull tone";
+      var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";
       var SubjectParamData = {
         prompt: GetReplyMessageDetailsData,
       };

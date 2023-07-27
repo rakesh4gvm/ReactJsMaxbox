@@ -205,6 +205,7 @@ export default function FocusedByID(props) {
     const [NewTemplateID, SetNewTemplateID] = useState([])
     const [subject, setSubject] = useState()
     const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+    const [GetReplyMessageDetailsTextBody, SetGetReplyMessageDetailsTextBody] = useState()
     const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
     const [NewObjectionID, SetNewObjectionID] = useState([])
     const [CheckedID, SetCheckedID] = useState([])
@@ -513,6 +514,17 @@ export default function FocusedByID(props) {
     const OpenMessageDetails = (ID, index, str, updatestr) => {
         if (ID != '') {
             SetMailNumber(index + 1)
+
+            let UpdatedList = FollowUpList.map(item => {
+                if (item._id == ID) {
+                    return { ...item, IsSeen: true };
+                }
+                return item;
+            });
+            if (updatestr == "updatelist") {
+                SetFollowUpList(UpdatedList)
+            }
+
             var Data = {
                 _id: ID,
                 IsFocusedPage: true,
@@ -540,15 +552,15 @@ export default function FocusedByID(props) {
                         localStorage.setItem("CCMessage", JSON.stringify(Result.data.Data[0]?.CcNameEmail))
                         localStorage.setItem("BCCMessage", JSON.stringify(Result.data.Data[0]?.BccNameEmail))
                         SetActive(ID);
-                        let UpdatedList = FollowUpList.map(item => {
-                            if (item._id == ID) {
-                                return { ...item, IsSeen: true };
-                            }
-                            return item;
-                        });
-                        if (updatestr == "updatelist") {
-                            SetFollowUpList(UpdatedList)
-                        }
+                        // let UpdatedList = FollowUpList.map(item => {
+                        //     if (item._id == ID) {
+                        //         return { ...item, IsSeen: true };
+                        //     }
+                        //     return item;
+                        // });
+                        // if (updatestr == "updatelist") {
+                        //     SetFollowUpList(UpdatedList)
+                        // }
                         LoaderHide()
                     } else {
                         SetFollowUpList([])
@@ -569,6 +581,16 @@ export default function FocusedByID(props) {
                     }
                 }
                 else {
+                    let UpdatedList = FollowUpList.map(item => {
+                        if (item._id == ID) {
+                            return { ...item, IsSeen: false };
+                        }
+                        return item;
+                    });
+                    if (updatestr == "updatelist") {
+                        SetFollowUpList(UpdatedList)
+                    }
+
                     SetOpenMessageDetails([]);
                     LoaderHide()
                 }
@@ -995,6 +1017,7 @@ export default function FocusedByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1057,6 +1080,7 @@ export default function FocusedByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1257,7 +1281,9 @@ export default function FocusedByID(props) {
 
         if (VoiceOfTone.length > 0) {
             LoaderShow()
-            var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+            //remove white space html code 
+            const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+            var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
             var SubjectParamData = {
                 prompt: GetReplyMessageDetailsData,
             };

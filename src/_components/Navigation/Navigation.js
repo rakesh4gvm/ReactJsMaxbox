@@ -254,7 +254,7 @@ export default function Navigation(props) {
   // SSE code end
 
 
-  const SendNotification = (data) => {
+  const SendNotification = async (data) => {
     var msg = data.message.split("_");
     const NavigationID = localStorage.getItem("NavigationID")
     var SelectedID = NavigationID
@@ -262,14 +262,31 @@ export default function Navigation(props) {
     var Details = GetUserDetails();
     FromEmailList(Details.ClientID, Details.UserID);
 
+    let ClientName
+
+    let Data = {
+      ID: Details.ClientID
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/ClientGetByID",
+      method: "POST",
+      data: Data,
+    });
+    await ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        ClientName = Result?.data?.Data[0]?.Name
+      }
+    });
+
     var LoginData = localStorage.getItem("LoginData")
     if (LoginData != null) {
       if (msg[1] == "inboxnotification") {
-        toast.error(msg[0] + " : You have new email for inbox", {
+        toast.error(msg[0]?.length > 10 ? msg[0]?.slice(0, 10) + '...' + ' : You have new email for inbox' : msg[0] + " : You have new email for inbox", {
           className: 'toast-message emailicon',
         });
       } else if (msg[1] == "spamnotification") {
-        toast.error(msg[0] + " : You have new email for spam");
+        toast.error(msg[1]?.length > 10 ? msg[1]?.slice(0, 10) + '...' + ' : You have new email for spam' : msg[1] + " : You have new email for spam");
       }
 
       if (SelectedID != "" && SelectedID != null && SelectedID != "undefined") {
@@ -283,7 +300,7 @@ export default function Navigation(props) {
 
           const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
 
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (ClientName == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -304,7 +321,7 @@ export default function Navigation(props) {
 
           const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
 
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (ClientName == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -324,7 +341,7 @@ export default function Navigation(props) {
 
           const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
 
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (ClientName == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -345,7 +362,7 @@ export default function Navigation(props) {
 
           const RemoveCountsSelectedClientID = SelectedClientID.replace(/\s*\(\d+\)/, '')
 
-          if (RemoveCountsSelectedClientID == msg[0]) {
+          if (ClientName == msg[0]) {
             element.classList.add("roundgreenemail");
           }
           else {
@@ -1132,7 +1149,7 @@ export default function Navigation(props) {
                 <em>Select Client</em>
               </MenuItem>
               {ClientDropdown?.map((row, index) => (
-                <MenuItem value={row?.ClientID} key={index}>{row?.Name} ({row?.InboxCounts})</MenuItem>
+                <MenuItem value={row?.ClientID} key={index}>{row?.Name?.length > 10 ? row?.Name?.slice(0, 10) + '...' : row?.Name} ({row?.InboxCounts})</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -1162,13 +1179,15 @@ export default function Navigation(props) {
                         component={Link}
                         selected={SelectMenuItem === "/AllInbox"}>
                         {/* {TotalCount?.ReceiveEmailHistoryData != undefined ? "All Inbox(" + TotalCount?.ReceiveEmailHistoryData?.map((e) => e.count)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */}
-                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
+                        {/* {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */}
+                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* display only unseen mail count */}
                       </ListItem>
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                         component={Link}
                         selected={SelectMenuItem === "/Focused"}>
                         {/* {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"} */}
-                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}
+                        {/* {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} */}
+                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}{/* display only unseen mail count */}
                       </ListItem>
 
                     </List>
@@ -1180,21 +1199,24 @@ export default function Navigation(props) {
                   component={Link}
                   selected={SelectMenuItem === "/Starred"}>
                   {/* {AllTotalRecords?.AllStarredCount != undefined ? "Starred(" + AllTotalRecords?.AllStarredCount + ")" : "Starred(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"}
+                  {/* {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"} */}
+                  {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount - e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"}{/* display only unseen mail count */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
                   component={Link}
                   selected={SelectMenuItem === "/Spam"}>
                   {/* {SpamTotalCount?.TotalCount != undefined ? "Spam(" + SpamTotalCount?.TotalCount + ")" : "Spam(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
+                  {/* {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"} */}
+                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount - e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}{/* display only unseen mail count */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
                   component={Link}
                   selected={SelectMenuItem === "/OtherInboxPage"}>
                   {/* {AllTotalRecords?.AllOtherInboxCount != undefined ? "Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")" : "Other Inbox(0)"} */}
-                  {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"}
+                  {/* {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"} */}
+                  {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount - e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"}{/* display only unseen mail count */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
@@ -1267,13 +1289,15 @@ export default function Navigation(props) {
                           component={Link}
                           selected={SelectMenuItem === "/AllInbox" + item._id}>
                           {/* {TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count != undefined ? `All Inbox (` + TotalCount?.ReceiveEmailHistoryData?.filter((e) => e._id == item.AccountID)[0]?.count + `)` : `All Inbox (` + 0 + `)`} */}
-                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? `All Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount + `)` : `All Inbox (` + 0 + `)`}
+                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? `All Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount + `)` : `All Inbox (` + 0 + `)`} */}
+                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count */}
                         </ListItem>
                         <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
                           component={Link}
                           selected={SelectMenuItem === "/Focused" + item._id}>
                           {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Focused(0)` : `Focused(` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`} */}
-                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? `Focused (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount + `)` : `Focused (` + 0 + `)`}
+                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? `Focused (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount + `)` : `Focused (` + 0 + `)`} */}
+                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}{/* display only unseen mail count */}
                         </ListItem>
 
                       </List>
@@ -1284,21 +1308,24 @@ export default function Navigation(props) {
                     component={Link}
                     selected={SelectMenuItem === "/Starred" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`} */}
-                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? `Starred (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount + `)` : `Starred (` + 0 + `)`}
+                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? `Starred (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount + `)` : `Starred (` + 0 + `)`} */}
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)"}{/* display only unseen mail count */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Spam", item._id)}
                     component={Link}
                     selected={SelectMenuItem === "/Spam" + item._id}>
                     {/* {SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`} */}
-                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? `Spam (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount + `)` : `Spam (` + 0 + `)`}
+                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? `Spam (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount + `)` : `Spam (` + 0 + `)`} */}
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)"}{/* display only unseen mail count */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage", item._id)}
                     component={Link}
                     selected={SelectMenuItem === "/OtherInboxPage" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`} */}
-                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? `Other Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount + `)` : `Other Inbox (` + 0 + `)`}
+                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? `Other Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount + `)` : `Other Inbox (` + 0 + `)`} */}
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)"}{/* display only unseen mail count */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/FollowUpLater", item._id)}

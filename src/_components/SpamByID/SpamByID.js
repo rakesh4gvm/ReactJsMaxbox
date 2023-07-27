@@ -200,6 +200,7 @@ export default function SpamByID(props) {
     const [NewTemplateID, SetNewTemplateID] = useState([])
     const [subject, setSubject] = useState()
     const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+    const [GetReplyMessageDetailsTextBody, SetGetReplyMessageDetailsTextBody] = useState()
     const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
     const [NewObjectionID, SetNewObjectionID] = useState([])
     const [CheckedID, SetCheckedID] = useState([])
@@ -439,6 +440,17 @@ export default function SpamByID(props) {
     const OpenMessageDetails = (ID, index, str, updatestr) => {
         if (ID != '') {
             SetMailNumber(index + 1)
+
+            let UpdatedList = SpamPage.map(item => {
+                if (item._id == ID) {
+                    return { ...item, IsSeen: true };
+                }
+                return item;
+            });
+            if (updatestr == "updatelist") {
+                SetSpamList(UpdatedList)
+            }
+
             if (str == "showloader") {
                 LoaderShow()
             }
@@ -466,15 +478,15 @@ export default function SpamByID(props) {
                         SetActive(ID);
                         SetToEmailValue(Result.data.Data)
                         SetValueMail(Result.data.Data[0]?.FromEmail)
-                        let UpdatedList = SpamPage.map(item => {
-                            if (item._id == ID) {
-                                return { ...item, IsSeen: true };
-                            }
-                            return item;
-                        });
-                        if (updatestr == "updatelist") {
-                            SetSpamList(UpdatedList)
-                        }
+                        // let UpdatedList = SpamPage.map(item => {
+                        //     if (item._id == ID) {
+                        //         return { ...item, IsSeen: true };
+                        //     }
+                        //     return item;
+                        // });
+                        // if (updatestr == "updatelist") {
+                        //     SetSpamList(UpdatedList)
+                        // }
                         LoaderHide()
                     } else {
                         SetSpamList([])
@@ -483,6 +495,7 @@ export default function SpamByID(props) {
                         LoaderHide()
                     }
                     if (Result?.data?.Data[0]?.IsStarred == false) {
+                        SetMUIClass("")
                         if (element2.length > 0) {
                             element2[0].classList.remove("Mui-selected");
                         }
@@ -494,6 +507,15 @@ export default function SpamByID(props) {
                     }
                 }
                 else {
+                    let UpdatedList = SpamPage.map(item => {
+                        if (item._id == ID) {
+                            return { ...item, IsSeen: false };
+                        }
+                        return item;
+                    });
+                    if (updatestr == "updatelist") {
+                        SetSpamList(UpdatedList)
+                    }
                     SetOpenMessageDetails([]);
                     LoaderHide()
                 }
@@ -898,6 +920,7 @@ export default function SpamByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -960,6 +983,7 @@ export default function SpamByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1118,7 +1142,10 @@ export default function SpamByID(props) {
         var VoiceOfTone = document.getElementById("tone").value
         var EmailSummary = document.getElementById("emailsummary").value
 
-        var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+        //remove white space html code 
+        const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+        var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+
         if (VoiceOfTone.length > 0) {
             LoaderShow()
             var SubjectParamData = {
