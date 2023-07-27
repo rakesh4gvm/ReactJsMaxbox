@@ -2193,7 +2193,7 @@ export default function FocusedByID(props) {
                                                 </TableCell>
                                                 {/* <TableCell width={'35px'}></TableCell> */}
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', "updatelist")} scope="row"> {item?.Subject ? (
                                                     <>
                                                         {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                         {item.Subject.split(' ').length > 8 ? '...' : ''}

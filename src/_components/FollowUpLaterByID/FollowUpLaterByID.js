@@ -1133,9 +1133,9 @@ export default function FollowUpLaterByID(props) {
         var VoiceOfTone = document.getElementById("tone").value
         var EmailSummary = document.getElementById("emailsummary").value
 
-       //remove white space html code 
-    const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
-    var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+        //remove white space html code 
+        const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+        var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
         if (VoiceOfTone.length > 0) {
             LoaderShow()
             var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";
@@ -1997,7 +1997,7 @@ export default function FollowUpLaterByID(props) {
                                                 </TableCell>
                                                 {/* <TableCell width={'35px'}></TableCell> */}
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', "updatelist")} scope="row"> {item?.Subject ? (
                                                     <>
                                                         {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                         {item.Subject.split(' ').length > 8 ? '...' : ''}

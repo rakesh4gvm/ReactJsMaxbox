@@ -1822,7 +1822,7 @@ export default function AllInboxByID(props) {
                                                     }
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                     <>
                                                         {item.Subject.split(' ').slice(0, 8).join(' ')}
