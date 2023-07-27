@@ -205,6 +205,7 @@ export default function FocusedByID(props) {
     const [NewTemplateID, SetNewTemplateID] = useState([])
     const [subject, setSubject] = useState()
     const [GetReplyMessageDetails, SetGetReplyMessageDetails] = useState()
+    const [GetReplyMessageDetailsTextBody, SetGetReplyMessageDetailsTextBody] = useState()
     const [ChatGPTMOdel, SetChatGPTModel] = useState(false)
     const [NewObjectionID, SetNewObjectionID] = useState([])
     const [CheckedID, SetCheckedID] = useState([])
@@ -1016,6 +1017,7 @@ export default function FocusedByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1078,6 +1080,7 @@ export default function FocusedByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
+                SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1278,7 +1281,9 @@ export default function FocusedByID(props) {
 
         if (VoiceOfTone.length > 0) {
             LoaderShow()
-            var GetReplyMessageDetailsData = GetReplyMessageDetails + ' ' + VoiceOfTone + ' ' + EmailSummary;
+            //remove white space html code 
+            const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/\s/g, '').replace(/[\n\t]/g, '');
+            var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
             var SubjectParamData = {
                 prompt: GetReplyMessageDetailsData,
             };
