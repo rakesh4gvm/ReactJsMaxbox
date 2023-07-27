@@ -1135,7 +1135,7 @@ export default function OtherInboxPage(props) {
     var EmailSummary = document.getElementById("emailsummary").value
 
    //remove white space html code 
-   const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/\s/g, '').replace(/[\n\t]/g, '');
+   const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
    var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
  
     if (VoiceOfTone.length > 0) {

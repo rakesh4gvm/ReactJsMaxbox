@@ -1282,7 +1282,7 @@ export default function FocusedByID(props) {
         if (VoiceOfTone.length > 0) {
             LoaderShow()
             //remove white space html code 
-            const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/\s/g, '').replace(/[\n\t]/g, '');
+            const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
             var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
             var SubjectParamData = {
                 prompt: GetReplyMessageDetailsData,
