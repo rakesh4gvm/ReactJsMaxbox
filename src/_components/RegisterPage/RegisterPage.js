@@ -294,7 +294,7 @@ export default function RegisterPage() {
               </Col>
 
               <Col sm={4}>
-                <div className='input-box'>
+                <div className='input-box none-pad'>
                   <FormControlLabel
                     control={
                       <Switch

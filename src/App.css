@@ -31,7 +31,9 @@ body *,
 table tr td {
     font-family: 'Arial', 'Poppins', sans-serif !important;
 }
-
+div .btn-primary, div .btn-primary:focus, div .btn-primary:active, div .btn-primary:hover { 
+    border-color: transparent;
+}
 body,
 html {
     padding: 0;
@@ -750,8 +752,8 @@ ul.d-flex.flexlist {
 } */
 .composebody {
     position: fixed;
-    top: 50px;
-    left: 2px;
+    bottom: 7px;
+    right: 73px;
     padding: 12px;
     z-index: 99999;
 }
@@ -1960,24 +1962,35 @@ div.erorr-msg>*>* {
 .composebody button.btn.largbtn, .composebody button.btn.largbtn:focus, 
 .composebody .btn-primary:not(:disabled):not(.disabled):active:focus {
     box-shadow: none;
-    width: 44px;
+    width: 48px;
     font-size: 50px;
-    height: 44px;
+    height: 48px;
     border-radius: 2p;
     padding: 0;
-    background: #fff;
+    background: #e49273;
     line-height: 0;
     min-width: auto;
 }
 .composebody button.btn.largbtn img {
     filter: brightness(1000%) grayscale(100%) opacity(0.1) 
-    drop-shadow(0 0 0 #e49273) 
-    drop-shadow(0 0 0 #e49273) 
-    drop-shadow(0 0 0 #e49273) 
-    drop-shadow(0 0 0 #e49273) 
-    drop-shadow(0 0 0 #e49273);
+    drop-shadow(0 0 0 #fff) 
+    drop-shadow(0 0 0 #fff) 
+    drop-shadow(0 0 0 #fff) 
+    drop-shadow(0 0 0 #fff) 
+    drop-shadow(0 0 0 #fff);
     /* color: #e49273; */
     width: 20px;
+}
+.composebody.draftinx {
+    right: 51px;
+    bottom: 5px;
+}
+.composebody.draftinx button.btn.largbtn, 
+.composebody.draftinx button.btn.largbtn:focus {
+    font-size: 12px !important;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 600;
 }
 
 .composebody .hcompose button.btn {
@@ -3797,6 +3810,9 @@ div.bgwhiter {
 .btn.btnemail svg {
     height: 22px;
     margin: -13px 0 0px;
+}
+.sign-main .none-pad label > span{
+    padding: 12px;
 }
 
 @media screen and (max-width:990px) {
