@@ -1141,7 +1141,7 @@ export default function SpamPage(props) {
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-	
+
     if (VoiceOfTone.length > 0) {
       LoaderShow()
       var SubjectParamData = {
@@ -1456,8 +1456,10 @@ export default function SpamPage(props) {
     var Subject = OpenMessage.Subject;
     var Body = ForwardSignature.Data
 
-    if (Body == "" || EmailResponse == "") {
-      toast.error("Please Enter body");
+    if (EmailResponse == "") {
+      toast.error("Please specify at least one recipient");
+    } else if (Body == "") {
+      toast.error("Please enter body");
     }
     else {
       LoaderShow()

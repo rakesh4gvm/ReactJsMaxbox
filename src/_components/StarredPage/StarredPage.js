@@ -1042,7 +1042,7 @@ export default function OtherInboxPage(props) {
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-	
+
 
     if (VoiceOfTone.length > 0) {
       LoaderShow()
@@ -1359,8 +1359,10 @@ export default function OtherInboxPage(props) {
     var Subject = OpenMessage.Subject;
     var Body = ForwardSignature.Data
 
-    if (Body == "" || EmailResponse == "") {
-      toast.error("Please Enter body");
+    if (EmailResponse == "") {
+      toast.error("Please specify at least one recipient");
+    } else if (Body == "") {
+      toast.error("Please enter body");
     }
     else {
       LoaderShow()
@@ -1883,11 +1885,11 @@ export default function OtherInboxPage(props) {
                         </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
-                            <>
-                              {item.Subject.split(' ').slice(0, 8).join(' ')}
-                              {item.Subject.split(' ').length > 8 ? '...' : ''}
-                            </>
-                          ) : null}</TableCell>
+                          <>
+                            {item.Subject.split(' ').slice(0, 8).join(' ')}
+                            {item.Subject.split(' ').length > 8 ? '...' : ''}
+                          </>
+                        ) : null}</TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                       </TableRow>
                     ))}

@@ -983,7 +983,7 @@ export default function AllUnansweredRepliesPage(props) {
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-	
+
 
     if (VoiceOfTone.length > 0) {
       LoaderShow()
@@ -1300,8 +1300,10 @@ export default function AllUnansweredRepliesPage(props) {
     var Subject = OpenMessage.Subject;
     var Body = ForwardSignature.Data
 
-    if (Body == "" || EmailResponse == "") {
-      toast.error("Please Enter body");
+    if (EmailResponse == "") {
+      toast.error("Please specify at least one recipient");
+    } else if (Body == "") {
+      toast.error("Please enter body");
     }
     else {
       LoaderShow()

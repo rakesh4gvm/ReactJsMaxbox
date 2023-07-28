@@ -1454,8 +1454,10 @@ export default function FollowUpLaterByID(props) {
         var Subject = OpenMessage.Subject;
         var Body = ForwardSignature.Data
 
-        if (Body == "" || EmailResponse == "") {
-            toast.error("Please Enter body");
+        if (EmailResponse == "") {
+            toast.error("Please specify at least one recipient");
+        } else if (Body == "") {
+            toast.error("Please enter body");
         }
         else {
             LoaderShow()

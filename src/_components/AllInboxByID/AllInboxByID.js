@@ -976,7 +976,7 @@ export default function AllInboxByID(props) {
     const ChatGPT = async () => {
         var VoiceOfTone = document.getElementById("tone").value
         var EmailSummary = document.getElementById("emailsummary").value
-       //remove white space html code 
+        //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
         var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
         if (VoiceOfTone.length > 0) {
@@ -1293,8 +1293,10 @@ export default function AllInboxByID(props) {
         var Subject = OpenMessage.Subject;
         var Body = ForwardSignature.Data
 
-        if (Body == "" || EmailResponse == "") {
-            toast.error("Please Enter body");
+        if (EmailResponse == "") {
+            toast.error("Please specify at least one recipient");
+        } else if (Body == "") {
+            toast.error("Please enter body");
         }
         else {
             LoaderShow()

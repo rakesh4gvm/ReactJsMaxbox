@@ -1312,13 +1312,15 @@ export default function OtherInboxPage(props) {
     var ForwardCCEmailResponse = ForwardCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
     var ForwardBCCEmailResponse = ForwardBCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
-    var ToEmail = document.getElementById("ToForward").value;
+    // var ToEmail = document.getElementById("ToForward").value;
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = ForwardSignature.Data
 
-    if (Body == "" || EmailResponse == "") {
-      toast.error("Please Enter body");
+    if (EmailResponse == "") {
+      toast.error("Please specify at least one recipient");
+    } else if (Body == "") {
+      toast.error("Please enter body");
     }
     else {
       LoaderShow()
