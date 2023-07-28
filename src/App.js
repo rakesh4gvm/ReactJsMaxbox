@@ -45,12 +45,14 @@ import FollowUpLaterByID from './_components/FollowUpLaterByID/FollowUpLaterByID
 import AllSentEmailByID from './_components/AllSentEmailByID/AllSentEmailByID';
 import UnansweredRepliesByID from './_components/UnansweredRepliesByID/UnansweredRepliesByID';
 import Navigation from './_components/Navigation/Navigation';
-
+import ChatbotComponent from "./_components/ChatbotComponent"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(CheckLocalStorage());
 
   var LoginData = localStorage.getItem("LoginData")
   let HideHeader = isLoggedIn ?  <div className='lefter'><Navigation /></div> : null
+  
+  let Chatbot = isLoggedIn ?   <ChatbotComponent /> : null
 
 
   
@@ -59,8 +61,9 @@ function App() {
       
       <Router history={history}>
       {HideHeader}
+      {Chatbot}
         <Switch>
-       
+        
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/Register" component={RegisterPage} />
           <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
