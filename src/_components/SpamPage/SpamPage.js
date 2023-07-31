@@ -545,7 +545,7 @@ export default function SpamPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID, str) => {
+  const UpdateStarMessage = (ID, str, index) => {
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -571,12 +571,12 @@ export default function SpamPage(props) {
           if (isStar) {
             element.classList.remove("Mui-selected");
             element2.classList.remove("Mui-selected");
-            OpenMessageDetails(ID, "", "", "",)
+            OpenMessageDetails(ID, index, "", "",)
           }
           else {
             element.classList.add("Mui-selected");
             element2.classList.add("Mui-selected");
-            OpenMessageDetails(ID, "", "", "",)
+            OpenMessageDetails(ID, index, "", "",)
           }
 
           // var ID = decrypt(props.location.search.replace('?', ''))
@@ -617,6 +617,7 @@ export default function SpamPage(props) {
   const UpdateFollowupMessage = (ID) => {
     const IsValidDate = Moment(FollowupDate).isValid()
     const IsGreater = IsGreaterDate(FollowupDate)
+    var StarID = ID
 
     if (ID != '') {
       if (FollowupDate != null) {
@@ -649,6 +650,16 @@ export default function SpamPage(props) {
               var ID = decrypt(props.location.search.replace('?', ''))
               // if (props !== undefined) {
               //   const ID = props.location.state;
+
+              var element = document.getElementById("star_" + StarID);
+
+              var className = element.className;
+              var isStar = className.includes("Mui-selected")
+
+              if (isStar) {
+                element.classList.remove("Mui-selected");
+              }
+
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
                   GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
@@ -688,6 +699,7 @@ export default function SpamPage(props) {
     SetOtherInboxPopModel(false);
   }
   const UpdateOtherInbox = (ID) => {
+    var StarID = ID
     if (ID != '') {
       var Data = {
         _id: ID,
@@ -709,6 +721,16 @@ export default function SpamPage(props) {
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
+
+          var element = document.getElementById("star_" + StarID);
+
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+          }
+
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
               GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
@@ -1843,7 +1865,7 @@ export default function SpamPage(props) {
             }
           </div>
           <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel", MailNumber - 1); }}>
               Yes
             </Button>
             <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -2022,7 +2044,7 @@ export default function SpamPage(props) {
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
                         <TableCell width={'35px'} align="center">
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
                             <StarBorderIcon className='starone' />
                             <StarIcon className='selectedstart startwo' />
                           </ToggleButton>

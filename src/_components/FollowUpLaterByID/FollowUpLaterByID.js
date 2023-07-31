@@ -553,7 +553,7 @@ export default function FollowUpLaterByID(props) {
     const CloseStarPopModel = () => {
         SetStarPopModel(false);
     }
-    const UpdateStarMessage = (ID, str) => {
+    const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
             var Data = {
                 _id: ID,
@@ -578,12 +578,12 @@ export default function FollowUpLaterByID(props) {
                     if (isStar) {
                         element.classList.remove("Mui-selected");
                         element2.classList.remove("Mui-selected");
-                        OpenMessageDetails(ID, "", "", "",)
+                        OpenMessageDetails(ID, index, "", "",)
                     }
                     else {
                         element.classList.add("Mui-selected");
                         element2.classList.add("Mui-selected");
-                        OpenMessageDetails(ID, "", "", "",)
+                        OpenMessageDetails(ID, index, "", "",)
                     }
 
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -668,6 +668,7 @@ export default function FollowUpLaterByID(props) {
 
     // New Update Other Inbox Api
     const UpdateOtherInbox = (ID) => {
+        var StarID = ID
         if (ID != '') {
             var IsStarred
             if (OpenMessage.IsStarred == true) {
@@ -696,6 +697,16 @@ export default function FollowUpLaterByID(props) {
                     //   const ID = props.location.state;
                     var ID = decrypt(props.location.search.replace('?', ''))
                     // if (ID !== undefined && ID!="") {
+
+                    var element = document.getElementById("star_" + StarID);
+
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                    }
+
                     if (!state) {
                         if (ID != "" && ID != null && ID != "undefined") {
                             SetMenuID(ID);
@@ -1841,7 +1852,7 @@ export default function FollowUpLaterByID(props) {
                         }
                     </div>
                     <div className='d-flex btn-50'>
-                        <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel"); }}>
+                        <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel", MailNumber - 1); }}>
                             Yes
                         </Button>
                         <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
@@ -1998,7 +2009,7 @@ export default function FollowUpLaterByID(props) {
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
                                                 <TableCell width={'35px'} align="center">
-                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
                                                         <StarBorderIcon className='starone' />
                                                         <StarIcon className='selectedstart startwo' />
                                                     </ToggleButton>
