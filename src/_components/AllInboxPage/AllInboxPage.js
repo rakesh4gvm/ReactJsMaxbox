@@ -902,6 +902,8 @@ export default function OtherInboxPage(props) {
       Response = ToEmailValue.concat(r)
     } else if (typeof ToEmailValue[0] == "string") {
       Response = ToEmailValue
+    } else if (ToEmailValue.length == 0) {
+      Response = ""
     } else {
       Response = [ToEmailValue[0].FromEmail]
     }
@@ -950,7 +952,7 @@ export default function OtherInboxPage(props) {
 
 
     let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var EmailResponse = Response.filter(e => e && e.toLowerCase().match(EmailRegex));
+    // var EmailResponse = Response.filter(e => e && e.toLowerCase().match(EmailRegex));
     var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
     var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
@@ -959,12 +961,16 @@ export default function OtherInboxPage(props) {
     var ID = OpenMessage._id
     var Subject = OpenMessage.Subject;
     var Body = Signature?.Data
-    if (Body == "" || EmailResponse == "") {
-      toast.error("All fields are mandatory!");
-    } else {
+    if (Response == "") {
+      toast.error("Please specify at least one recipient");
+    }
+    else if (Body == "") {
+      toast.error("Please enter body");
+    }
+    else {
       LoaderShow()
       var Data = {
-        ToEmail: EmailResponse.toString(),
+        ToEmail: Response.toString(),
         CC: Response2.toString(),
         BCC: Response3.toString(),
         ToName: ToName,

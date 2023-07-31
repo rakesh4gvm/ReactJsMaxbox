@@ -1043,6 +1043,8 @@ export default function OtherInboxByID(props) {
 
         } else if (typeof ToEmailValue[0] == "string") {
             Response = ToEmailValue
+        } else if (ToEmailValue.length == 0) {
+            Response = ""
         } else {
             Response = [ToEmailValue[0].FromEmail]
         }
@@ -1100,12 +1102,16 @@ export default function OtherInboxByID(props) {
         var Subject = OpenMessage.Subject;
         var Body = Signature?.Data
 
-        if (Body == "" || EmailResponse == "") {
-            toast.error("All fields are mandatory!");
-        } else {
+        if (Response == "") {
+            toast.error("Please specify at least one recipient");
+        }
+        else if (Body == "") {
+            toast.error("Please enter body");
+        }
+        else {
             LoaderShow()
             var Data = {
-                ToEmail: EmailResponse.toString(),
+                ToEmail: Response.toString(),
                 CC: Response2.toString(),
                 BCC: Response3.toString(),
                 ToName: ToName,
@@ -1468,7 +1474,7 @@ export default function OtherInboxByID(props) {
         var ID = OpenMessage._id
         var Subject = OpenMessage.Subject;
         var Body = ForwardSignature.Data
-        
+
         if (EmailResponse == "") {
             toast.error("Please specify at least one recipient");
         } else if (Body == "") {
