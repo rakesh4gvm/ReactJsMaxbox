@@ -57,6 +57,17 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
+    var script = document.querySelectorAll("flowise-chatbot")[0];
+      if(script!=null)
+      {
+        script.style.display="none"
+        script.onload = () => {
+        
+        };
+      }
+    }, []);
+
+  useEffect(() => {
     document.title = 'Login | MAXBOX';
     LoaderHide()
     const listener = event => {
