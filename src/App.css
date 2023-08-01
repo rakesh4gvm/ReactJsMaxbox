@@ -1205,8 +1205,15 @@ div.modal-prein {
     color: #616B77;
     padding: 9px 15px;
     text-decoration: none;
+    box-shadow: none;
+}
+.select-box>.MuiInputBase-root > div{ 
+    padding: 4px 0;
 }
 
+.select-box>.MuiInputBase-root fieldset{ 
+    border: none;
+}
 .select-box>.MuiInputBase-root::before {
     display: none;
 }
