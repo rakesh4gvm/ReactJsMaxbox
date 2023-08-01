@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Axios from "axios"
 
-import { Select } from '@material-ui/core';
+// import { Select } from '@material-ui/core';
+import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { MenuItem } from '@mui/material';
@@ -423,12 +424,25 @@ export default function ProfileSettingPage() {
               </Col>
               <Col sm={4}>
                 <div className='select-box'>
+                  <Select
+                    value={DropdownValue}
+                    onChange={SelectCountry}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    labelId='demo-simple-select-label'
+                    fullWidth
+                  >
+                    {Country?.map((row, index) => (
+                      <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>))}
+                  </Select>
+                </div>
+                {/* Remove this dropdown because its design should not match with client dropdown */}
+                {/* <div className='select-box'>
                   <Select labelId="demo-simple-select-label" fullWidth value={DropdownValue} onChange={SelectCountry}>
                     {Country?.map((row) => (
                       <MenuItem value={row?._id}>{row?.CountryName}</MenuItem>
                     ))}
                   </Select>
-                </div>
+                </div> */}
               </Col>
             </Row>
             <Row>
