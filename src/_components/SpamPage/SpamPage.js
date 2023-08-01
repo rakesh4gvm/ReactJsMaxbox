@@ -1148,6 +1148,13 @@ export default function SpamPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
+
+          if (!state) {
+            GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails");
+          } else {
+            GetSpamList(ClientID, UserID, Page, 0, "", "")
+          }
+
           OpenComposeReply();
           CloseComposeReply()
           SetToEmailValue([ValueMail])

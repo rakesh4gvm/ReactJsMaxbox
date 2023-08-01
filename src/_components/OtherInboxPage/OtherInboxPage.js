@@ -1134,6 +1134,13 @@ export default function OtherInboxPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
+
+          if (!state) {
+            GetOtherInboxList(ClientID, UserID, Page, 0, "", "SeenEmails");
+          } else {
+            GetOtherInboxList(ClientID, UserID, Page, 0, "", "")
+          }
+
           OpenComposeReply();
           CloseComposeReply()
           SetToEmailValue([ValueMail])

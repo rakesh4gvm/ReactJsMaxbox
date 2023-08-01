@@ -987,6 +987,32 @@ export default function OtherInboxPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
+          var ID = decrypt(props.location.search.replace('?', ''))
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+              }
+            } else {
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+              }
+            }
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+            } else {
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails")
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+              }
+            }
+          }
           OpenComposeReply();
           CloseComposeReply()
           LoaderHide()

@@ -1370,6 +1370,33 @@ export default function UnansweredResponsesPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply Mail sent successfully.</div>);
+          var ID = decrypt(props.location.search.replace('?', ''))
+          if (!state) {
+            if (ID != "" && ID != null && ID != "undefined") {
+              if (isstarActive) {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "IsStarredEmails");
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+              }
+            } else {
+              if (isstarActive) {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails")
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "")
+              }
+            }
+          } else {
+            if (ID != "" && ID != null && ID != "undefined") {
+              GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "", "");
+            } else {
+              if (isstarActive) {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "IsStarredEmails")
+              } else {
+                GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "", "")
+              }
+            }
+          }
+
           OpenComposeReply();
           CloseComposeReply()
           SetToEmailValue([ValueMail])

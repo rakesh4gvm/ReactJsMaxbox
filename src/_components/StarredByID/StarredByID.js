@@ -1032,6 +1032,13 @@ export default function StarredByID(props) {
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                     toast.success(<div>Reply mail sent successfully.</div>);
+                    
+                    if (!state) {
+                        GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+                    } else {
+                        GetStarredList(ClientID, UserID, Page, 0, "")
+                    }
+
                     OpenComposeReply();
                     CloseComposeReply()
                     SetToEmailValue([ValueMail])

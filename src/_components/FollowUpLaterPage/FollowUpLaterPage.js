@@ -1131,6 +1131,13 @@ export default function FollowUpLater(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
+
+          if (!state) {
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails");
+          } else {
+            GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "")
+          }
+
           OpenComposeReply();
           CloseComposeReply()
           SetToEmailValue([ValueMail])
