@@ -372,7 +372,6 @@ export default function OtherInboxPage(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
         if (Result.data.PageData.length > 0) {
 
           SetFromEmailDropdownList(Result.data.PageData);
@@ -404,16 +403,16 @@ export default function OtherInboxPage(props) {
 
             // }
             if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
-              var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
-              var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+              var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarPrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarPrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
               total = StarredCount - SeenStarredCount;
             }
             else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
             }
             else if (ShowEmails == "" && IsStarred == "") {
-              var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
-              var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
+              var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.PrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenPrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
               total = InboxCount - SeenInboxCount
             }
             SetTotalRecord(total);
@@ -435,6 +434,7 @@ export default function OtherInboxPage(props) {
 
   // Start Get Follow Up Later List
   const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred) => {
+    debugger;
     FromEmailList(CID, UID, ID, ShowEmails, IsStarred);
 
     let AccountIDs = []
@@ -471,7 +471,7 @@ export default function OtherInboxPage(props) {
       Search: SearchInbox,
       ClientID: CID,
       UserID: UID,
-      IsInbox: false,
+      IsInbox: true,
       IsStarred: false,
       IsFollowUp: false,
       IsSpam: false,
@@ -1710,7 +1710,7 @@ export default function OtherInboxPage(props) {
   const CloseStarPopModel = () => {
     SetStarPopModel(false);
   }
-  const UpdateStarMessage = (ID, str,index) => {
+  const UpdateStarMessage = (ID, str, index) => {
     if (ID != '') {
 
 
@@ -1736,13 +1736,23 @@ export default function OtherInboxPage(props) {
           var isStar = className.includes("Mui-selected")
           if (isStar) {
             element.classList.remove("Mui-selected");
-            element2.classList.remove("Mui-selected");
+            if (element2 != null) {
+              element2.classList.remove("Mui-selected");
+            }
+
           }
           else {
             element.classList.add("Mui-selected");
-            element2.classList.add("Mui-selected");
+            if (element2 != null) {
+              element2.classList.remove("Mui-selected");
+            }
+
           }
+          if (isstarActive) {
+            GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+        }
           OpenMessageDetails(ID, index, "", "",)
+
         }
       });
     }
@@ -1752,8 +1762,8 @@ export default function OtherInboxPage(props) {
   return (
 
     <>
-    
-  <Modal className="modal-pre"
+
+      <Modal className="modal-pre"
         open={StarPopModel}
         onClose={CloseStarPopModel}
         aria-labelledby="modal-modal-title"
@@ -1786,8 +1796,8 @@ export default function OtherInboxPage(props) {
           </div>
         </Box>
       </Modal>
-	  
-	  
+
+
       <Modal className="modal-lister max-767"
         open={ChatGPTMOdel}
         onClose={HanleChatGPTClose}
@@ -2016,8 +2026,8 @@ export default function OtherInboxPage(props) {
                           onChange={(e) => handleSelectAll(e)}
                         />
                       </TableCell>
-                      
-	   <TableCell component="th" width={'30px'} align="center"></TableCell>
+
+                      <TableCell component="th" width={'30px'} align="center"></TableCell>
                       <TableCell component="th">From Email</TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">Date</TableCell>

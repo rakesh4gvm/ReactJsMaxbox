@@ -335,27 +335,27 @@ export default function AllInboxByID(props) {
         });
         ResponseApi.then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
                 if (Result.data.PageData.length > 0) {
 
                     SetFromEmailDropdownList(Result.data.PageData);
-
+                    debugger
                     if (ID?.length > 0) {
+
                         var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
                         // if (ShowEmails == "SeenEmails" && IsStarred == "") {
                         //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
                         // } else 
                         if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
                             // total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-                            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-                            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+                            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount : 0
+                            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount : 0
                             total = StarredCount - SeenStarredCount;
                         } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
                             total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                         }
                         else if (ShowEmails == "" && IsStarred == "") {
-                            var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
-                            var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
+                            var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount : 0
+                            var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount : 0
                             total = InboxCount - SeenInboxCount;
                         }
 
@@ -442,7 +442,7 @@ export default function AllInboxByID(props) {
             Search: SearchInbox,
             ClientID: CID,
             UserID: UID,
-            IsInbox: false,
+            IsInbox: true,
             IsStarred: false,
             IsFollowUp: false,
             IsSpam: false,
@@ -505,9 +505,9 @@ export default function AllInboxByID(props) {
             });
             ResponseApi.then((Result) => {
                 var element2 = document.getElementsByClassName("temp-class")
-        if (element2.length > 0) {
-          element2[0].classList.remove('Mui-selected')
-        }
+                if (element2.length > 0) {
+                    element2[0].classList.remove('Mui-selected')
+                }
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetToEmailValue(Result.data.Data)
@@ -537,14 +537,14 @@ export default function AllInboxByID(props) {
                     if (Result?.data?.Data[0]?.IsStarred == false) {
                         SetMUIClass("")
                         if (element2.length > 0) {
-                          element2[0].classList.remove("Mui-selected");
+                            element2[0].classList.remove("Mui-selected");
                         }
-                      }
-                      else {
+                    }
+                    else {
                         if (element2.length > 0) {
-                          element2[0].classList.add("Mui-selected")
+                            element2[0].classList.add("Mui-selected")
                         }
-                      }
+                    }
                 }
                 else {
                     let UpdatedList = AllInboxList.map(item => {
@@ -1663,85 +1663,91 @@ export default function AllInboxByID(props) {
 
     const OpenStarPopModel = () => {
         SetStarPopModel(true);
-      }
-      const CloseStarPopModel = () => {
+    }
+    const CloseStarPopModel = () => {
         SetStarPopModel(false);
-      }
-      const UpdateStarMessage = (ID, str,index) => {
+    }
+    const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
-    
-    
-          var Data = {
-            _id: ID,
-            IsStarred: true,
-            LastUpdatedBy: -1
-          };
-          const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
-            method: "POST",
-            data: Data,
-          });
-          ResponseApi.then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-              if (str === "opnemodel") {
-                CloseStarPopModel();
-              }
-              var element = document.getElementById("star_" + ID);
-              var element2 = document.getElementById("starbelow_" + ID);
-    
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-                element2.classList.remove("Mui-selected");
-              }
-              else {
-                element.classList.add("Mui-selected");
-                element2.classList.add("Mui-selected");
-              }
-              OpenMessageDetails(ID, index, "", "",)
-            }
-          });
+            var Data = {
+                _id: ID,
+                IsStarred: true,
+                LastUpdatedBy: -1
+            };
+            const ResponseApi = Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+                method: "POST",
+                data: Data,
+            });
+            ResponseApi.then((Result) => {
+                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    if (str === "opnemodel") {
+                        CloseStarPopModel();
+                    }
+                    var element = document.getElementById("star_" + ID);
+                    var element2 = document.getElementById("starbelow_" + ID);
+
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                        if (element2 != null) {
+                            element2.classList.remove("Mui-selected");
+                        }
+
+                    }
+                    else {
+                        element.classList.add("Mui-selected");
+                        if (element2 != null) {
+                            element2.classList.add("Mui-selected");
+                        }
+                    }
+                    if (isstarActive) {
+                        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+                    }
+                    OpenMessageDetails(ID, index, "", "",)
+                }
+            });
         }
-      }
-      
+    }
+
 
     return (
 
         <>
-          <Modal className="modal-pre"
-        open={StarPopModel}
-        onClose={CloseStarPopModel}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={Style} className="modal-prein">
-          <div className='p-5 text-center'>
-            <img src={Emailinbox} width="130" className='mb-4' />
-            <Typography id="modal-modal-title" variant="b" component="h6">
-              Are you sure
-            </Typography>
-            {
-              OpenMessage?.IsStarred === false ?
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  you want to star an email ?
-                </Typography>
-                :
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  you want to unstar an email ?
-                </Typography>
-            }
-          </div>
-          <div className='d-flex btn-50'>
-            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel", MailNumber - 1); }}>
-              Yes
-            </Button>
-            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
-              No
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+            <Modal className="modal-pre"
+                open={StarPopModel}
+                onClose={CloseStarPopModel}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={Style} className="modal-prein">
+                    <div className='p-5 text-center'>
+                        <img src={Emailinbox} width="130" className='mb-4' />
+                        <Typography id="modal-modal-title" variant="b" component="h6">
+                            Are you sure
+                        </Typography>
+                        {
+                            OpenMessage?.IsStarred === false ?
+                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    you want to star an email ?
+                                </Typography>
+                                :
+                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    you want to unstar an email ?
+                                </Typography>
+                        }
+                    </div>
+                    <div className='d-flex btn-50'>
+                        <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel", MailNumber - 1); }}>
+                            Yes
+                        </Button>
+                        <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+                            No
+                        </Button>
+                    </div>
+                </Box>
+            </Modal>
             <Modal className="modal-lister max-767"
                 open={ChatGPTMOdel}
                 onClose={HanleChatGPTClose}
@@ -1995,11 +2001,11 @@ export default function AllInboxByID(props) {
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
                                                 <TableCell width={'35px'} align="center">
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                            <StarBorderIcon className='starone' />
-                            <StarIcon className='selectedstart startwo' />
-                          </ToggleButton>
-                        </TableCell>
+                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                                                        <StarBorderIcon className='starone' />
+                                                        <StarIcon className='selectedstart startwo' />
+                                                    </ToggleButton>
+                                                </TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                     <>
@@ -2123,11 +2129,11 @@ export default function AllInboxByID(props) {
                                                         <label>{MailNumber} / {AllInboxList.length}</label>
                                                     </Button>
                                                     <Button>
-                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
-                              <StarBorderIcon className='starone' />
-                              <StarIcon className='selectedstart startwo' />
-                            </ToggleButton>
-                          </Button>
+                                                        <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                                                            <StarBorderIcon className='starone' />
+                                                            <StarIcon className='selectedstart startwo' />
+                                                        </ToggleButton>
+                                                    </Button>
                                                     <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
