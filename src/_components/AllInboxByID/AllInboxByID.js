@@ -218,7 +218,8 @@ export default function AllInboxByID(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [ccanchorEl, setCCAnchorEl] = React.useState(null);
     const [bccanchorEl, setBCCAnchorEl] = React.useState(null);
-
+    const [MUIClass, SetMUIClass] = useState("Mui-selected")
+    const [StarPopModel, SetStarPopModel] = React.useState(false);
     const { id } = useParams();
 
     useEffect(() => {
@@ -503,6 +504,10 @@ export default function AllInboxByID(props) {
                 data: Data,
             });
             ResponseApi.then((Result) => {
+                var element2 = document.getElementsByClassName("temp-class")
+        if (element2.length > 0) {
+          element2[0].classList.remove('Mui-selected')
+        }
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     if (Result.data.Data.length > 0) {
                         SetToEmailValue(Result.data.Data)
@@ -529,6 +534,17 @@ export default function AllInboxByID(props) {
                         SetActive("");
                         LoaderHide()
                     }
+                    if (Result?.data?.Data[0]?.IsStarred == false) {
+                        SetMUIClass("")
+                        if (element2.length > 0) {
+                          element2[0].classList.remove("Mui-selected");
+                        }
+                      }
+                      else {
+                        if (element2.length > 0) {
+                          element2[0].classList.add("Mui-selected")
+                        }
+                      }
                 }
                 else {
                     let UpdatedList = AllInboxList.map(item => {
@@ -1645,11 +1661,87 @@ export default function AllInboxByID(props) {
 
     }
 
-
+    const OpenStarPopModel = () => {
+        SetStarPopModel(true);
+      }
+      const CloseStarPopModel = () => {
+        SetStarPopModel(false);
+      }
+      const UpdateStarMessage = (ID, str,index) => {
+        if (ID != '') {
+    
+    
+          var Data = {
+            _id: ID,
+            IsStarred: true,
+            LastUpdatedBy: -1
+          };
+          const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/ReceiveEmailHistoryUpdate",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+              if (str === "opnemodel") {
+                CloseStarPopModel();
+              }
+              var element = document.getElementById("star_" + ID);
+              var element2 = document.getElementById("starbelow_" + ID);
+    
+              var className = element.className;
+              var isStar = className.includes("Mui-selected")
+              if (isStar) {
+                element.classList.remove("Mui-selected");
+                element2.classList.remove("Mui-selected");
+              }
+              else {
+                element.classList.add("Mui-selected");
+                element2.classList.add("Mui-selected");
+              }
+              OpenMessageDetails(ID, index, "", "",)
+            }
+          });
+        }
+      }
+      
 
     return (
 
         <>
+          <Modal className="modal-pre"
+        open={StarPopModel}
+        onClose={CloseStarPopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={Style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <img src={Emailinbox} width="130" className='mb-4' />
+            <Typography id="modal-modal-title" variant="b" component="h6">
+              Are you sure
+            </Typography>
+            {
+              OpenMessage?.IsStarred === false ?
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to star an email ?
+                </Typography>
+                :
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  you want to unstar an email ?
+                </Typography>
+            }
+          </div>
+          <div className='d-flex btn-50'>
+            <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => { UpdateStarMessage(OpenMessage._id, "opnemodel", MailNumber - 1); }}>
+              Yes
+            </Button>
+            <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { CloseStarPopModel(); }}>
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
             <Modal className="modal-lister max-767"
                 open={ChatGPTMOdel}
                 onClose={HanleChatGPTClose}
@@ -1880,6 +1972,7 @@ export default function AllInboxByID(props) {
                                                     onChange={(e) => handleSelectAll(e)}
                                                 />
                                             </TableCell>
+                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
                                             <TableCell component="th">From Email</TableCell>
                                             <TableCell component="th">Subject</TableCell>
                                             <TableCell component="th">Date</TableCell>
@@ -1901,6 +1994,12 @@ export default function AllInboxByID(props) {
                                                     <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
+                                                <TableCell width={'35px'} align="center">
+                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                            <StarBorderIcon className='starone' />
+                            <StarIcon className='selectedstart startwo' />
+                          </ToggleButton>
+                        </TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                 <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                     <>
@@ -2023,6 +2122,12 @@ export default function AllInboxByID(props) {
                                                     <Button>
                                                         <label>{MailNumber} / {AllInboxList.length}</label>
                                                     </Button>
+                                                    <Button>
+                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </Button>
                                                     <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
