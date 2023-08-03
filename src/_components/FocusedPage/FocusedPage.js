@@ -74,6 +74,7 @@ import { IntroJsReact } from 'react-intro.js';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleAltOutlined';
 import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
+import Visibility from '@material-ui/icons/Visibility';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -1977,7 +1978,7 @@ export default function UnansweredResponsesPage(props) {
       var arr2Set = new Set(idsWithIsSeenTrue);
 
       FollowUpList.forEach(item => {
-        if (arr2Set.has(item._id)) {
+        if (CheckedID.includes(item._id)) {
           item.IsSeen = false;
         }
       });
@@ -1990,7 +1991,7 @@ export default function UnansweredResponsesPage(props) {
       SetCheckedID([])
 
       var Data = {
-        EmailsIds: IdsToUnread,
+        EmailsIds: CheckedID,
       };
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkUnreadEmails",
@@ -2023,7 +2024,59 @@ export default function UnansweredResponsesPage(props) {
   }
 
 
+  const MarkReadEmails = () => {
+    if (CheckedID.length > 0) {
+      var IdsToUnread
 
+      const idsWithIsSeenTrue = FollowUpList.filter(item => item.IsSeen == false).map(item => item._id);
+
+      if (!state) {
+        IdsToUnread = CheckedID
+      } else {
+        if (selectAllChecked) {
+          IdsToUnread = CheckedID
+        } else {
+          IdsToUnread = idsWithIsSeenTrue
+        }
+      }
+
+      var arr2Set = new Set(idsWithIsSeenTrue);
+
+      FollowUpList.forEach(item => {
+        if (CheckedID.includes(item._id)) {
+          item.IsSeen = true;
+        }
+      });
+
+      LoaderShow()
+      toast.success("Mails are read successfully.")
+      setSelectAllChecked(false)
+      LoaderHide()
+      SetFollowUpList(FollowUpList)
+      SetCheckedID([])
+
+      var Data = {
+        EmailsIds: CheckedID,
+      };
+
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkReadEmails",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          setIsChecked(false);
+          SetCheckedID([])
+        } else {
+          // LoaderHide()
+        }
+      });
+    } else {
+      toast.error("Please select email")
+
+    }
+  }
 
   return (
     <>
@@ -2311,7 +2364,12 @@ export default function UnansweredResponsesPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button>
+                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                  <VisibilityOffIcon />
+                </Button>
+                <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
+                  <Visibility />
+                </Button>
                 <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}

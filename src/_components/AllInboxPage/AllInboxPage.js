@@ -63,6 +63,7 @@ import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
+import Visibility from '@material-ui/icons/Visibility';
 
 
 const top100Films = [
@@ -1637,7 +1638,7 @@ export default function OtherInboxPage(props) {
       var arr2Set = new Set(idsWithIsSeenTrue);
 
       AllInboxList.forEach(item => {
-        if (arr2Set.has(item._id)) {
+        if (CheckedID.includes(item._id)) {
           item.IsSeen = false;
         }
       });
@@ -1650,7 +1651,7 @@ export default function OtherInboxPage(props) {
       SetCheckedID([])
 
       var Data = {
-        EmailsIds: IdsToUnread,
+        EmailsIds: CheckedID,
       };
 
       const ResponseApi = Axios({
@@ -1704,6 +1705,61 @@ export default function OtherInboxPage(props) {
     }
 
   }
+
+  const MarkReadEmails = () => {
+    if (CheckedID.length > 0) {
+      var IdsToUnread
+
+      const idsWithIsSeenTrue = AllInboxList.filter(item => item.IsSeen == false).map(item => item._id);
+
+      if (!state) {
+        IdsToUnread = CheckedID
+      } else {
+        if (selectAllChecked) {
+          IdsToUnread = CheckedID
+        } else {
+          IdsToUnread = idsWithIsSeenTrue
+        }
+      }
+
+      var arr2Set = new Set(idsWithIsSeenTrue);
+
+      AllInboxList.forEach(item => {
+        if (CheckedID.includes(item._id)) {
+          item.IsSeen = true;
+        }
+      });
+
+      LoaderShow()
+      toast.success("Mails are read successfully.")
+      setSelectAllChecked(false)
+      LoaderHide()
+      SetAllInboxList(AllInboxList)
+      SetCheckedID([])
+
+      var Data = {
+        EmailsIds: CheckedID,
+      };
+
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkReadEmails",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          setIsChecked(false);
+          SetCheckedID([])
+        } else {
+          // LoaderHide()
+        }
+      });
+    } else {
+      toast.error("Please select email")
+
+    }
+  }
+
   const OpenStarPopModel = () => {
     SetStarPopModel(true);
   }
@@ -1750,7 +1806,7 @@ export default function OtherInboxPage(props) {
           }
           if (isstarActive) {
             GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
-        }
+          }
           OpenMessageDetails(ID, index, "", "",)
 
         }
@@ -1985,7 +2041,13 @@ export default function OtherInboxPage(props) {
               <div className='orangbg-table'>
                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
-                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button>                 <div className='rigter-coller'>
+                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                  <VisibilityOffIcon />
+                </Button>
+                <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
+                  <Visibility />
+                </Button>
+                <div className='rigter-coller'>
                   <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                     className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
                     value="check" >  {/* Mui-selected */}
