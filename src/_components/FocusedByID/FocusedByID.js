@@ -213,6 +213,7 @@ export default function FocusedByID(props) {
     const [ShowCheckBox, SetShowCheckBox] = useState("")
     const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
     const [MUIClass, SetMUIClass] = useState("Mui-selected")
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
 
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -1862,12 +1863,52 @@ export default function FocusedByID(props) {
         }
     }
 
+    const handleSelectAll = (event) => {
+        const { checked } = event.target;
+        setSelectAllChecked(checked);
+
+        if (checked) {
+            const allIds = FollowUpList.map(item => item._id);
+            SetCheckedID(allIds);
+        } else {
+            SetCheckedID([]);
+        }
+    };
+
     const MarkUnreadEmails = () => {
 
         if (CheckedID.length > 0) {
+            var IdsToUnread
+
+            const idsWithIsSeenTrue = FollowUpList.filter(item => item.IsSeen).map(item => item._id);
+
+            if (!state) {
+                IdsToUnread = CheckedID
+            } else {
+                if (selectAllChecked) {
+                    IdsToUnread = CheckedID
+                } else {
+                    IdsToUnread = idsWithIsSeenTrue
+                }
+            }
+
+            var arr2Set = new Set(idsWithIsSeenTrue);
+
+            FollowUpList.forEach(item => {
+                if (arr2Set.has(item._id)) {
+                    item.IsSeen = false;
+                }
+            });
+
             LoaderShow()
+            toast.success("Mails are unread successfully.")
+            setSelectAllChecked(false)
+            LoaderHide()
+            SetFollowUpList(FollowUpList)
+            SetCheckedID([])
+
             var Data = {
-                EmailsIds: CheckedID,
+                EmailsIds: IdsToUnread,
             };
             const ResponseApi = Axios({
                 url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkUnreadEmails",
@@ -1876,21 +1917,21 @@ export default function FocusedByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                    LoaderHide()
                     SetCheckedID([])
-                    toast.success("Mails are unread successfully.")
-                    var ID = decrypt(props.location.search.replace('?', ''))
-                    if (ID != "" && ID != null && ID != "undefined") {
-                        GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
-                    } else {
-                        if (isstarActive) {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
-                        } else {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "");
-                        }
-                    }
+                    // LoaderHide()
+                    // toast.success("Mails are unread successfully.")
+                    // var ID = decrypt(props.location.search.replace('?', ''))
+                    // if (ID != "" && ID != null && ID != "undefined") {
+                    //     GetUnansweredResponcesList(ClientID, UserID, Page, ID, "", "SeenEmails", "");
+                    // } else {
+                    //     if (isstarActive) {
+                    //         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "IsStarredEmails");
+                    //     } else {
+                    //         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "", "SeenEmails", "");
+                    //     }
+                    // }
                 } else {
-                    LoaderHide()
+                    // LoaderHide()
                 }
             });
         } else {
@@ -2186,10 +2227,7 @@ export default function FocusedByID(props) {
                     >
                         <>
                             <div className='orangbg-table'>
-                                {
-                                    ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
-                                }
-
+                                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button>
                                 <div className='rigter-coller'>
                                     <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                                         className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -2219,7 +2257,14 @@ export default function FocusedByID(props) {
                                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell component="th" className='px-0 w-0'></TableCell>
+                                            <TableCell component="th" className='px-0 w-0'>
+                                                <Checkbox
+                                                    name="selectall"
+                                                    type="checkbox"
+                                                    checked={selectAllChecked}
+                                                    onChange={(e) => handleSelectAll(e)}
+                                                />
+                                            </TableCell>
                                             <TableCell component="th" width={'30px'} align="center"></TableCell>
                                             {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                                             <TableCell component="th">From Email</TableCell>
@@ -2236,9 +2281,7 @@ export default function FocusedByID(props) {
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
                                                 <TableCell align='center'>
-                                                    {
-                                                        ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
-                                                    }
+                                                    <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
                                                     {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                 </TableCell>
                                                 <TableCell width={'35px'} align="center">
