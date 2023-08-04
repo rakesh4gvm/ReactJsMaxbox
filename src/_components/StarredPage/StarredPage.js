@@ -1560,6 +1560,7 @@ export default function OtherInboxPage(props) {
     if (checked) {
       SetCheckedID([...CheckedID, ID])
     } else {
+      setSelectAllChecked(false)
       SetCheckedID(state => state.filter((el) => el !== ID));
     }
   }

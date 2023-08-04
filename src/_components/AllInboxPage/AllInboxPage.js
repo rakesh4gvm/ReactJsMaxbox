@@ -1487,9 +1487,9 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
-    
+
     setSelectAllChecked(false)
-    
+
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
@@ -1603,6 +1603,7 @@ export default function OtherInboxPage(props) {
     if (checked) {
       SetCheckedID([...CheckedID, ID])
     } else {
+      setSelectAllChecked(false)
       SetCheckedID(state => state.filter((el) => el !== ID));
     }
   }
