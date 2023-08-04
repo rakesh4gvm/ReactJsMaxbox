@@ -1729,9 +1729,12 @@ export default function AllInboxByID(props) {
     }
     const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
+
+
             var Data = {
                 _id: ID,
                 IsStarred: true,
+                IsFocusedPage: true,
                 LastUpdatedBy: -1
             };
             const ResponseApi = Axios({
@@ -1744,28 +1747,72 @@ export default function AllInboxByID(props) {
                     if (str === "opnemodel") {
                         CloseStarPopModel();
                     }
-                    var element = document.getElementById("star_" + ID);
-                    var element2 = document.getElementById("starbelow_" + ID);
 
-                    var className = element.className;
-                    var isStar = className.includes("Mui-selected")
-                    if (isStar) {
-                        element.classList.remove("Mui-selected");
-                        if (element2 != null) {
-                            element2.classList.remove("Mui-selected");
+                    if (!state) {
+                        if (isstarActive == true) {
+                        } else {
+                            var element = document.getElementById("star_" + ID);
+                            var element2 = document.getElementById("starbelow_" + ID);
+
+                            var className = element.className;
+                            var isStar = className.includes("Mui-selected")
+
+                            if (isStar) {
+                                element.classList.remove("Mui-selected");
+                                element2.classList.remove("Mui-selected");
+                            }
+                            else {
+                                element.classList.add("Mui-selected");
+                                element2.classList.add("Mui-selected");
+                            }
+                            OpenMessageDetails(ID, index, "", "",)
                         }
-
                     }
                     else {
-                        element.classList.add("Mui-selected");
-                        if (element2 != null) {
-                            element2.classList.add("Mui-selected");
+                        if (isstarActive == true) {
+                        } else {
+                            var element = document.getElementById("star_" + ID);
+                            var element2 = document.getElementById("starbelow_" + ID);
+
+                            var className = element.className;
+                            var isStar = className.includes("Mui-selected")
+
+                            if (isStar) {
+                                element.classList.remove("Mui-selected");
+                                element2.classList.remove("Mui-selected");
+                            }
+                            else {
+                                element.classList.add("Mui-selected");
+                                element2.classList.add("Mui-selected");
+                            }
                         }
+                        OpenMessageDetails(ID, index, "", "",)
                     }
-                    if (isstarActive) {
-                        GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
-                    }
+
+                    // var element = document.getElementById("star_" + ID);
+                    // var element2 = document.getElementById("starbelow_" + ID);
+
+                    // var className = element.className;
+                    // var isStar = className.includes("Mui-selected")
+                    // if (isStar) {
+                    //   element.classList.remove("Mui-selected");
+                    //   if (element2 != null) {
+                    //     element2.classList.remove("Mui-selected");
+                    //   }
+
+                    // }
+                    // else {
+                    //   element.classList.add("Mui-selected");
+                    //   if (element2 != null) {
+                    //     element2.classList.remove("Mui-selected");
+                    //   }
+
+                    // }
+                    // if (isstarActive) {
+                    //   GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+                    // }
                     OpenMessageDetails(ID, index, "", "",)
+
                 }
             });
         }
