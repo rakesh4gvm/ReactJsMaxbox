@@ -1832,6 +1832,8 @@ export default function UnansweredResponsesPage(props) {
     newPage,
   ) => {
 
+    setSelectAllChecked(false)
+
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
@@ -1952,10 +1954,18 @@ export default function UnansweredResponsesPage(props) {
 
     if (checked) {
       const allIds = FollowUpList.map(item => item._id);
-      SetCheckedID(allIds);
+      var tempCheckIds = []
+      if (CheckedID.length > 0) {
+        tempCheckIds = CheckedID
+        allIds.map((e) => tempCheckIds.push(e))
+        SetCheckedID(tempCheckIds);
+      } else {
+        SetCheckedID(allIds)
+      }
     } else {
       SetCheckedID([]);
     }
+
   };
 
   const MarkUnreadEmails = () => {

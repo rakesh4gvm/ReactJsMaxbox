@@ -435,7 +435,6 @@ export default function OtherInboxPage(props) {
 
   // Start Get Follow Up Later List
   const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred) => {
-    debugger;
     FromEmailList(CID, UID, ID, ShowEmails, IsStarred);
 
     let AccountIDs = []
@@ -1488,6 +1487,9 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
+    
+    setSelectAllChecked(false)
+    
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
@@ -1611,7 +1613,14 @@ export default function OtherInboxPage(props) {
 
     if (checked) {
       const allIds = AllInboxList.map(item => item._id);
-      SetCheckedID(allIds);
+      var tempCheckIds = []
+      if (CheckedID.length > 0) {
+        tempCheckIds = CheckedID
+        allIds.map((e) => tempCheckIds.push(e))
+        SetCheckedID(tempCheckIds);
+      } else {
+        SetCheckedID(allIds)
+      }
     } else {
       SetCheckedID([]);
     }

@@ -336,7 +336,6 @@ export default function AllInboxByID(props) {
                 if (Result.data.PageData.length > 0) {
 
                     SetFromEmailDropdownList(Result.data.PageData);
-                    debugger
                     if (ID?.length > 0) {
 
                         var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
@@ -1463,6 +1462,8 @@ export default function AllInboxByID(props) {
         newPage,
     ) => {
 
+        setSelectAllChecked(false)
+
         ContainerRef.current.scrollTop = 0;
         SetPage(newPage + 1);
 
@@ -1587,7 +1588,14 @@ export default function AllInboxByID(props) {
 
         if (checked) {
             const allIds = AllInboxList.map(item => item._id);
-            SetCheckedID(allIds);
+            var tempCheckIds = []
+            if (CheckedID.length > 0) {
+                tempCheckIds = CheckedID
+                allIds.map((e) => tempCheckIds.push(e))
+                SetCheckedID(tempCheckIds);
+            } else {
+                SetCheckedID(allIds)
+            }
         } else {
             SetCheckedID([]);
         }
