@@ -67,6 +67,7 @@ import Chip from '@mui/material/Chip';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
+import Visibility from '@material-ui/icons/Visibility';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -203,6 +204,7 @@ export default function OtherInboxPage(props) {
   const [isChecked, setIsChecked] = useState(false);
   const [ShowCheckBox, SetShowCheckBox] = useState("")
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -1493,6 +1495,9 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
+    
+    setSelectAllChecked(false)
+
 
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
@@ -1559,10 +1564,57 @@ export default function OtherInboxPage(props) {
     }
   }
 
+  const handleSelectAll = (event) => {
+    const { checked } = event.target;
+    setSelectAllChecked(checked);
+
+    if (checked) {
+      const allIds = StarredList.map(item => item._id);
+      var tempCheckIds = []
+      if (CheckedID.length > 0) {
+        tempCheckIds = CheckedID
+        allIds.map((e) => tempCheckIds.push(e))
+        SetCheckedID(tempCheckIds);
+      } else {
+        SetCheckedID(allIds)
+      }
+    } else {
+      SetCheckedID([]);
+    }
+  };
+
   const MarkUnreadEmails = () => {
 
     if (CheckedID.length > 0) {
+      var IdsToUnread
+
+      const idsWithIsSeenTrue = StarredList.filter(item => item.IsSeen).map(item => item._id);
+
+      if (!state) {
+        IdsToUnread = CheckedID
+      } else {
+        if (selectAllChecked) {
+          IdsToUnread = CheckedID
+        } else {
+          IdsToUnread = idsWithIsSeenTrue
+        }
+      }
+
+      var arr2Set = new Set(idsWithIsSeenTrue);
+
+      StarredList.forEach(item => {
+        if (CheckedID.includes(item._id)) {
+          item.IsSeen = false;
+        }
+      });
+
       LoaderShow()
+      toast.success("Mails are unread successfully.")
+      setSelectAllChecked(false)
+      LoaderHide()
+      SetStarredList(StarredList)
+      SetCheckedID([])
+
       var Data = {
         EmailsIds: CheckedID,
       };
@@ -1573,23 +1625,78 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          LoaderHide()
+          setIsChecked(false);
           SetCheckedID([])
-          toast.success("Mails are unread successfully.")
-          var ID = decrypt(props.location.search.replace('?', ''))
-          if (ID != "" && ID != null && ID != "undefined") {
-            GetStarredList(ClientID, UserID, Page, ID, "SeenEmails")
-          } else {
-            GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
-          }
+          // LoaderHide()
+          // toast.success("Mails are unread successfully.")
+          // var ID = decrypt(props.location.search.replace('?', ''))
+          // if (ID != "" && ID != null && ID != "undefined") {
+          //   GetStarredList(ClientID, UserID, Page, ID, "SeenEmails")
+          // } else {
+          //   GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
+          // }
         } else {
-          LoaderHide()
+          // LoaderHide()
         }
       });
     } else {
       toast.error("Please select email")
     }
 
+  }
+
+  const MarkReadEmails = () => {
+    if (CheckedID.length > 0) {
+      var IdsToUnread
+
+      const idsWithIsSeenTrue = StarredList.filter(item => item.IsSeen == false).map(item => item._id);
+
+      if (!state) {
+        IdsToUnread = CheckedID
+      } else {
+        if (selectAllChecked) {
+          IdsToUnread = CheckedID
+        } else {
+          IdsToUnread = idsWithIsSeenTrue
+        }
+      }
+
+      var arr2Set = new Set(idsWithIsSeenTrue);
+
+      StarredList.forEach(item => {
+        if (CheckedID.includes(item._id)) {
+          item.IsSeen = true;
+        }
+      });
+
+      LoaderShow()
+      toast.success("Mails are read successfully.")
+      setSelectAllChecked(false)
+      LoaderHide()
+      SetStarredList(StarredList)
+      SetCheckedID([])
+
+      var Data = {
+        EmailsIds: CheckedID,
+      };
+
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkReadEmails",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          setIsChecked(false);
+          SetCheckedID([])
+        } else {
+          // LoaderHide()
+        }
+      });
+    } else {
+      toast.error("Please select email")
+
+    }
   }
 
 
@@ -1847,9 +1954,12 @@ export default function OtherInboxPage(props) {
           >
             <>
               <div className='orangbg-table'>
-                {
-                  ShowCheckBox ? <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} > <VisibilityOffIcon /> </Button> : <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} disabled> <VisibilityOffIcon /> </Button>
-                }
+                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                  <VisibilityOffIcon />
+                </Button>
+                <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
+                  <Visibility />
+                </Button>
                 <div className='rigter-coller'>
                   <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
@@ -1874,7 +1984,14 @@ export default function OtherInboxPage(props) {
                     <TableRow>
                       {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                       {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                      <TableCell component="th" className='px-0 w-0'></TableCell>
+                      <TableCell component="th" className='px-0 w-0'>
+                        <Checkbox
+                          name="selectall"
+                          type="checkbox"
+                          checked={selectAllChecked}
+                          onChange={(e) => handleSelectAll(e)}
+                        />
+                      </TableCell>
                       <TableCell component="th">From Email</TableCell>
                       <TableCell component="th">Subject</TableCell>
                       <TableCell component="th">Date</TableCell>
@@ -1891,9 +2008,7 @@ export default function OtherInboxPage(props) {
                         {/* <TableCell width={'35px'}><StarBorderIcon /></TableCell>
                       <TableCell width={'35px'}></TableCell> */}
                         <TableCell align='center'>
-                          {
-                            ShowCheckBox ? <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} /> : ""
-                          }
+                          <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
                           {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                         </TableCell>
                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
