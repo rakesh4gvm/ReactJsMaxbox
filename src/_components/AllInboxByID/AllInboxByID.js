@@ -1734,7 +1734,7 @@ export default function AllInboxByID(props) {
             var Data = {
                 _id: ID,
                 IsStarred: true,
-                IsFocusedPage: true,
+                // IsFocusedPage: true,
                 LastUpdatedBy: -1
             };
             const ResponseApi = Axios({
