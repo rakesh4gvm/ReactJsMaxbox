@@ -1495,6 +1495,12 @@ export default function AllInboxByID(props) {
     const handleChange = (event) => {
         SetPage(1);
         setState(event.target.checked);
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
     };
 
 
@@ -1532,7 +1538,12 @@ export default function AllInboxByID(props) {
     };
 
     const HandleStarredChange = () => {
-
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         SetPage(1)
         var ID = decrypt(props.location.search.replace('?', ''))
 

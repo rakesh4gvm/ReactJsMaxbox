@@ -1661,6 +1661,12 @@ export default function FollowUpLater(props) {
   const handleChange = (event) => {
     SetPage(1);
     setState(event.target.checked);
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
   };
 
   const HandleCheckedID = (event, ID) => {

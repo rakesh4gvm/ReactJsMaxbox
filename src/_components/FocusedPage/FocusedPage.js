@@ -1894,6 +1894,12 @@ export default function UnansweredResponsesPage(props) {
   const handleChange = (event) => {
     SetPage(1);
     setState(event.target.checked);
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
   };
 
   const ToggleStartClass = () => {
@@ -1901,6 +1907,12 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const HandleStarredChange = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     SetPage(1);
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!isstarActive) {

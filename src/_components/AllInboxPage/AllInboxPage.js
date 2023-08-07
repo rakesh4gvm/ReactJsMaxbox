@@ -1488,7 +1488,6 @@ export default function OtherInboxPage(props) {
     newPage,
   ) => {
 
-    setSelectAllChecked(false)
 
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
@@ -1521,6 +1520,12 @@ export default function OtherInboxPage(props) {
   const handleChange = (event) => {
     SetPage(1);
     setState(event.target.checked);
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
   };
 
 
@@ -1558,6 +1563,12 @@ export default function OtherInboxPage(props) {
   };
 
   const HandleStarredChange = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
 
     SetPage(1)
     var ID = decrypt(props.location.search.replace('?', ''))
