@@ -422,6 +422,18 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetStarredList(Result.data.PageData)
+          var SelectedIDCount = 0
+          Result.data.PageData.map((e) => {
+            var SameID = CheckedID.find((s) => s === e._id)
+            if (SameID != undefined) {
+              SelectedIDCount++
+            }
+          })
+          if (49 > SelectedIDCount) {
+            setSelectAllChecked(false)
+          } else {
+            setSelectAllChecked(true)
+          }
           // SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)

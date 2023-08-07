@@ -418,6 +418,18 @@ export default function FollowUpLaterByID(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 if (Result.data.PageData.length > 0) {
                     SetFollowUpList(Result.data.PageData)
+                    var SelectedIDCount = 0
+                    Result.data.PageData.map((e) => {
+                        var SameID = CheckedID.find((s) => s === e._id)
+                        if (SameID != undefined) {
+                            SelectedIDCount++
+                        }
+                    })
+                    if (49 > SelectedIDCount) {
+                        setSelectAllChecked(false)
+                    } else {
+                        setSelectAllChecked(true)
+                    }
                     // SetTotalCount(Result.data.TotalCount)
                     if (!str == "hideloader") {
                         OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');

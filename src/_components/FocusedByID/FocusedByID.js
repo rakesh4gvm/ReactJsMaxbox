@@ -489,6 +489,18 @@ export default function FocusedByID(props) {
                 if (Result.data.PageData.length > 0) {
                     // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
                     SetFollowUpList(Result.data.PageData)
+                    var SelectedIDCount = 0
+                    Result.data.PageData.map((e) => {
+                        var SameID = CheckedID.find((s) => s === e._id)
+                        if (SameID != undefined) {
+                            SelectedIDCount++
+                        }
+                    })
+                    if (49 > SelectedIDCount) {
+                        setSelectAllChecked(false)
+                    } else {
+                        setSelectAllChecked(true)
+                    }
                     if (!str == "hideloader") {
                         OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
                     } else {
