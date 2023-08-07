@@ -397,7 +397,7 @@ export default function AllInboxByID(props) {
 
 
     // Start Get Follow Up Later List
-    const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred) => {
+    const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred, RefreshString) => {
 
         // FromEmailList(Cid, UID, props.location.state, ShowEmails, IsStarred);
         // console.log("before id=========", props.location.state)
@@ -469,6 +469,9 @@ export default function AllInboxByID(props) {
                         setSelectAllChecked(false)
                     } else {
                         setSelectAllChecked(true)
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
                     }
                     SetTotalCount(Result.data.TotalCount)
                     OpenMessageDetails(Result.data.PageData[0]._id);
@@ -1517,6 +1520,12 @@ export default function AllInboxByID(props) {
 
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "none";
@@ -1525,22 +1534,22 @@ export default function AllInboxByID(props) {
         if (!state) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
-                GetAllInboxList(ClientID, UserID, 1, ID, "SeenEmails", "");
+                GetAllInboxList(ClientID, UserID, 1, ID, "SeenEmails", "", "Refresh");
             } else {
                 if (isstarActive) {
                     setstarActive(false)
                 }
-                GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
+                GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
-                GetAllInboxList(ClientID, UserID, 1, ID, "", "");
+                GetAllInboxList(ClientID, UserID, 1, ID, "", "", "Refresh");
             } else {
                 if (isstarActive) {
                     setstarActive(false)
                 }
-                GetAllInboxList(ClientID, UserID, 1, 0, "", "")
+                GetAllInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
             }
         }
     }

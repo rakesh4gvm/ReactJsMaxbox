@@ -367,7 +367,7 @@ export default function FollowUpLater(props) {
   }
 
   // Start Get Follow Up Later List
-  const GetFollowUpLaterList = (CID, UID, PN, ID, str, ShowEmails) => {
+  const GetFollowUpLaterList = (CID, UID, PN, ID, str, ShowEmails, RefreshString) => {
     FromEmailList(CID, UID, ID, ShowEmails);
     let AccountIDs = []
     if (ID.length > 0) {
@@ -427,6 +427,9 @@ export default function FollowUpLater(props) {
             setSelectAllChecked(false)
           } else {
             setSelectAllChecked(true)
+          }
+          if (RefreshString == "Refresh") {
+            setSelectAllChecked(false)
           }
           // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
@@ -1649,23 +1652,29 @@ export default function FollowUpLater(props) {
   // Ends Pagination 
 
   const RefreshTable = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     ContainerRef.current.scrollTop = 0;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "SeenEmails");
+        GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "SeenEmails", "Refresh");
       } else {
-        GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "SeenEmails")
+        GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "SeenEmails", "Refresh")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "");
+        GetFollowUpLaterList(ClientID, UserID, 1, ID, "", "", "Refresh");
       } else {
-        GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "")
+        GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
   }

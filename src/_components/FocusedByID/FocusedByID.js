@@ -431,7 +431,7 @@ export default function FocusedByID(props) {
     }
 
     // Start Get Follow Up Later List
-    const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred) => {
+    const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred, RefreshString) => {
         FromEmailList(CID, UID, id, ShowEmails, IsStarred);
         let AccountIDs = [id]
         // if (ID.length > 0) {
@@ -500,6 +500,9 @@ export default function FocusedByID(props) {
                         setSelectAllChecked(false)
                     } else {
                         setSelectAllChecked(true)
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
                     }
                     if (!str == "hideloader") {
                         OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
@@ -1793,6 +1796,12 @@ export default function FocusedByID(props) {
     };
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var element = document.getElementById("AllInoxRefreshpanel")
         element.style.display = "none";
@@ -1801,23 +1810,23 @@ export default function FocusedByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
+                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "", "Refresh");
             } else {
                 if (isstarActive) {
                     setstarActive(false)
                 }
-                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
+                GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "", "Refresh");
             } else {
                 if (isstarActive) {
                     setstarActive(false)
                 }
-                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
+                GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "", "Refresh")
             }
         }
     }

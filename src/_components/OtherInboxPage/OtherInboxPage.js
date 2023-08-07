@@ -368,7 +368,7 @@ export default function OtherInboxPage(props) {
   }
 
   // Start Get Follow Up Later List
-  const GetOtherInboxList = (CID, UID, PN, ID, str, ShowEmails) => {
+  const GetOtherInboxList = (CID, UID, PN, ID, str, ShowEmails, RefreshString) => {
     FromEmailList(CID, UID, ID, ShowEmails);
     let AccountIDs = []
     if (ID.length > 0) {
@@ -427,6 +427,9 @@ export default function OtherInboxPage(props) {
             setSelectAllChecked(false)
           } else {
             setSelectAllChecked(true)
+          }
+          if (RefreshString == "Refresh") {
+            setSelectAllChecked(false)
           }
           // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {
@@ -1650,23 +1653,29 @@ export default function OtherInboxPage(props) {
   // Ends Pagination 
 
   const RefreshTable = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     ContainerRef.current.scrollTop = 0;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(ClientID, UserID, 1, ID, "", "SeenEmails");
+        GetOtherInboxList(ClientID, UserID, 1, ID, "", "SeenEmails", "Refresh");
       } else {
-        GetOtherInboxList(ClientID, UserID, 1, 0, "", "SeenEmails")
+        GetOtherInboxList(ClientID, UserID, 1, 0, "", "SeenEmails", "Refresh")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetOtherInboxList(ClientID, UserID, 1, ID, "", "");
+        GetOtherInboxList(ClientID, UserID, 1, ID, "", "", "Refresh");
       } else {
-        GetOtherInboxList(ClientID, UserID, 1, 0, "", "")
+        GetOtherInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
   }

@@ -374,7 +374,7 @@ export default function SpamByID(props) {
 
     }
     // Start Get Follow Up Later List
-    const GetSpamList = (CID, UID, PN, ID, str, ShowEmails) => {
+    const GetSpamList = (CID, UID, PN, ID, str, ShowEmails, RefreshString) => {
         FromEmailList(CID, UID, id, ShowEmails);
         let AccountIDs = [id]
         // if (ID.length > 0) {
@@ -427,6 +427,9 @@ export default function SpamByID(props) {
                         setSelectAllChecked(false)
                     } else {
                         setSelectAllChecked(true)
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
                     }
                     // SetTotalCount(Result.data.TotalCount)
                     if (!str == "hideloader") {
@@ -1664,6 +1667,12 @@ export default function SpamByID(props) {
     // Ends Pagination
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var element = document.getElementById("AllSpamRefreshpanel")
         element.style.display = "none";
@@ -1673,17 +1682,17 @@ export default function SpamByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails", "Refresh");
             } else {
-                GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "", "");
+                GetSpamList(ClientID, UserID, Page, ID, "", "", "Refresh");
             } else {
-                GetSpamList(ClientID, UserID, Page, 0, "", "")
+                GetSpamList(ClientID, UserID, Page, 0, "", "", "Refresh")
             }
         }
     }

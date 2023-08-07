@@ -380,7 +380,7 @@ export default function StarredByID(props) {
     }
 
     // Start Get Follow Up Later List
-    const GetStarredList = (CID, UID, PN, ID, ShowEmails) => {
+    const GetStarredList = (CID, UID, PN, ID, ShowEmails, RefreshString) => {
 
         FromEmailList(CID, UID, id, ShowEmails);
         let AccountIDs = [id]
@@ -437,6 +437,9 @@ export default function StarredByID(props) {
                         setSelectAllChecked(false)
                     } else {
                         setSelectAllChecked(true)
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
                     }
                     // SetTotalCount(Result.data.TotalCount)
                     OpenMessageDetails(Result.data.PageData[0]._id);
@@ -1543,23 +1546,29 @@ export default function StarredByID(props) {
     };
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var ID = decrypt(props.location.search.replace('?', ''))
         if (!state) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(ClientID, UserID, 1, ID, "SeenEmails");
+                GetStarredList(ClientID, UserID, 1, ID, "SeenEmails", "Refresh");
             } else {
-                GetStarredList(ClientID, UserID, 1, 0, "SeenEmails")
+                GetStarredList(ClientID, UserID, 1, 0, "SeenEmails", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(ClientID, UserID, 1, ID, "");
+                GetStarredList(ClientID, UserID, 1, ID, "", "Refresh");
             } else {
-                GetStarredList(ClientID, UserID, 1, 0, "")
+                GetStarredList(ClientID, UserID, 1, 0, "", "Refresh")
             }
         }
     }
