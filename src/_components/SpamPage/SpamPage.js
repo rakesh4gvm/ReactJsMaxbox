@@ -429,6 +429,13 @@ export default function SpamPage(props) {
           }
           if (RefreshString == "Refresh") {
             setSelectAllChecked(false)
+            const updatedArr = [...Result.data.PageData];
+
+            // Update the IsSeen property of the first element
+            updatedArr[0].IsSeen = true;
+
+            // Update the state with the modified array
+            SetSpamList(updatedArr)
           }
           // SetTotalCount(Result.data.TotalCount)
           if (!str == "hideloader") {

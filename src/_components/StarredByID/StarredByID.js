@@ -440,6 +440,13 @@ export default function StarredByID(props) {
                     }
                     if (RefreshString == "Refresh") {
                         setSelectAllChecked(false)
+                        const updatedArr = [...Result.data.PageData];
+
+                        // Update the IsSeen property of the first element
+                        updatedArr[0].IsSeen = true;
+
+                        // Update the state with the modified array
+                        SetStarredList(updatedArr)
                     }
                     // SetTotalCount(Result.data.TotalCount)
                     OpenMessageDetails(Result.data.PageData[0]._id);
