@@ -815,6 +815,58 @@ export default function FocusedByID(props) {
     }
     const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
+
+            if (!state) {
+                if (isstarActive == true) {
+                    GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+                } else {
+                    var element = document.getElementById("star_" + ID);
+                    var element2 = document.getElementById("starbelow_" + ID);
+
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                        if (element2) {
+                            element2.classList.remove("Mui-selected");
+                        }
+                    }
+                    else {
+                        element.classList.add("Mui-selected");
+                        if (element2) {
+                            element2.classList.add("Mui-selected");
+                        }
+                    }
+                    OpenMessageDetails(ID, index, "", "",)
+                }
+            }
+            else {
+                if (isstarActive == true) {
+                    GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+                } else {
+                    var element = document.getElementById("star_" + ID);
+                    var element2 = document.getElementById("starbelow_" + ID);
+
+                    var className = element.className;
+                    var isStar = className.includes("Mui-selected")
+
+                    if (isStar) {
+                        element.classList.remove("Mui-selected");
+                        if (element2) {
+                            element2.classList.remove("Mui-selected");
+                        }
+                    }
+                    else {
+                        element.classList.add("Mui-selected");
+                        if (element2) {
+                            element2.classList.add("Mui-selected");
+                        }
+                    }
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+
             var Data = {
                 _id: ID,
                 IsStarred: true,
@@ -831,48 +883,50 @@ export default function FocusedByID(props) {
                     if (str === "opnemodel") {
                         CloseStarPopModel();
                     }
-                    if (!state) {
-                        if (isstarActive == true) {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
-                        } else {
-                            var element = document.getElementById("star_" + ID);
-                            var element2 = document.getElementById("starbelow_" + ID);
 
-                            var className = element.className;
-                            var isStar = className.includes("Mui-selected")
+                    // if (!state) {
+                    //     if (isstarActive == true) {
+                    //         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+                    //     } else {
+                    //         var element = document.getElementById("star_" + ID);
+                    //         var element2 = document.getElementById("starbelow_" + ID);
 
-                            if (isStar) {
-                                element.classList.remove("Mui-selected");
-                                element2.classList.remove("Mui-selected");
-                            }
-                            else {
-                                element.classList.add("Mui-selected");
-                                element2.classList.add("Mui-selected");
-                            }
-                            OpenMessageDetails(ID, index, "", "",)
-                        }
-                    }
-                    else {
-                        if (isstarActive == true) {
-                            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
-                        } else {
-                            var element = document.getElementById("star_" + ID);
-                            var element2 = document.getElementById("starbelow_" + ID);
+                    //         var className = element.className;
+                    //         var isStar = className.includes("Mui-selected")
 
-                            var className = element.className;
-                            var isStar = className.includes("Mui-selected")
+                    //         if (isStar) {
+                    //             element.classList.remove("Mui-selected");
+                    //             element2.classList.remove("Mui-selected");
+                    //         }
+                    //         else {
+                    //             element.classList.add("Mui-selected");
+                    //             element2.classList.add("Mui-selected");
+                    //         }
+                    //         OpenMessageDetails(ID, index, "", "",)
+                    //     }
+                    // }
+                    // else {
+                    //     if (isstarActive == true) {
+                    //         GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+                    //     } else {
+                    //         var element = document.getElementById("star_" + ID);
+                    //         var element2 = document.getElementById("starbelow_" + ID);
 
-                            if (isStar) {
-                                element.classList.remove("Mui-selected");
-                                element2.classList.remove("Mui-selected");
-                            }
-                            else {
-                                element.classList.add("Mui-selected");
-                                element2.classList.add("Mui-selected");
-                            }
-                            OpenMessageDetails(ID, index, "", "",)
-                        }
-                    }
+                    //         var className = element.className;
+                    //         var isStar = className.includes("Mui-selected")
+
+                    //         if (isStar) {
+                    //             element.classList.remove("Mui-selected");
+                    //             element2.classList.remove("Mui-selected");
+                    //         }
+                    //         else {
+                    //             element.classList.add("Mui-selected");
+                    //             element2.classList.add("Mui-selected");
+                    //         }
+                    //         OpenMessageDetails(ID, index, "", "",)
+                    //     }
+                    // }
+                    
                 } else {
                     toast.error(Result?.data?.Message);
                 }

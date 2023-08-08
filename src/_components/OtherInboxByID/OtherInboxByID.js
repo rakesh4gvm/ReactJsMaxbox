@@ -583,7 +583,26 @@ export default function OtherInboxByID(props) {
     }
     const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
-            //setSelected(true);
+
+            var element = document.getElementById("star_" + ID);
+            var element2 = document.getElementById("starbelow_" + ID);
+            var className = element.className;
+            var isStar = className.includes("Mui-selected")
+            if (isStar) {
+                element.classList.remove("Mui-selected");
+                if (element2) {
+                    element2.classList.remove("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+            else {
+                element.classList.add("Mui-selected");
+                if (element2) {
+                    element2.classList.add("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+
             var Data = {
                 _id: ID,
                 IsStarred: true,
@@ -600,20 +619,20 @@ export default function OtherInboxByID(props) {
                         CloseStarPopModel();
                     }
 
-                    var element = document.getElementById("star_" + ID);
-                    var element2 = document.getElementById("starbelow_" + ID);
-                    var className = element.className;
-                    var isStar = className.includes("Mui-selected")
-                    if (isStar) {
-                        element.classList.remove("Mui-selected");
-                        element2.classList.remove("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
-                    else {
-                        element.classList.add("Mui-selected");
-                        element2.classList.add("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
+                    // var element = document.getElementById("star_" + ID);
+                    // var element2 = document.getElementById("starbelow_" + ID);
+                    // var className = element.className;
+                    // var isStar = className.includes("Mui-selected")
+                    // if (isStar) {
+                    //     element.classList.remove("Mui-selected");
+                    //     element2.classList.remove("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
+                    // else {
+                    //     element.classList.add("Mui-selected");
+                    //     element2.classList.add("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
 
                     // var ID = decrypt(props.location.search.replace('?', ''))
                     // if (!state) {
