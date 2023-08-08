@@ -427,10 +427,18 @@ export default function OtherInboxByID(props) {
                             SelectedIDCount++
                         }
                     })
-                    if (49 > SelectedIDCount) {
-                        setSelectAllChecked(false)
+                    if (!state) {
+                        if (49 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
                     } else {
-                        setSelectAllChecked(true)
+                        if (50 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
                     }
                     if (RefreshString == "Refresh") {
                         setSelectAllChecked(false)
