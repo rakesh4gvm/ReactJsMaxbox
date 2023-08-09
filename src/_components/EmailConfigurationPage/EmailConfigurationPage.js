@@ -90,7 +90,7 @@ export default function EmailConfigurationPage() {
       if (!IsProcees) {
         clearInterval(interval); // Stop the interval
       }
-    }, 5000)
+    }, 15000)
     return () => {
       clearInterval(interval); // Clean up the interval on component unmount
     };
