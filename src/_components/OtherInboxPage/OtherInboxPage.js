@@ -578,7 +578,23 @@ export default function OtherInboxPage(props) {
     SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID, str, index) => {
+    if (str === "opnemodel") {
+      CloseStarPopModel();
+    }
     if (ID != '') {
+
+      let UpdatedList = FollowUpList.map(item => {
+        if (item._id == ID) {
+          if (item.IsStarred) {
+            return { ...item, IsStarred: false };
+          } else {
+            return { ...item, IsStarred: true };
+          }
+        }
+        return item;
+      });
+
+      SetFollowUpList(UpdatedList)
 
       var element = document.getElementById("star_" + ID);
       var element2 = document.getElementById("starbelow_" + ID);
@@ -589,14 +605,14 @@ export default function OtherInboxPage(props) {
         if (element2) {
           element2.classList.remove("Mui-selected");
         }
-        OpenMessageDetails(ID, index, "", "",)
+        // OpenMessageDetails(ID, index, "", "",)
       }
       else {
         element.classList.add("Mui-selected");
         if (element2) {
           element2.classList.add("Mui-selected");
         }
-        OpenMessageDetails(ID, index, "", "",)
+        // OpenMessageDetails(ID, index, "", "",)
       }
 
       var Data = {
@@ -611,9 +627,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (str === "opnemodel") {
-            CloseStarPopModel();
-          }
+          
 
           // var element = document.getElementById("star_" + ID);
           // var element2 = document.getElementById("starbelow_" + ID);
@@ -2020,7 +2034,7 @@ export default function OtherInboxPage(props) {
               Are you sure
             </Typography>
             {
-              OpenMessage?.IsStarred === false ?
+              FollowUpList?.find((e) => e?._id === OpenMessage?._id)?.IsStarred === false ?
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                   you want to star an email ?
                 </Typography>
