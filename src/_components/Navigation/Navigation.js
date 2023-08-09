@@ -261,7 +261,7 @@ export default function Navigation(props) {
 
     var Details = GetUserDetails();
     FromEmailList(Details.ClientID, Details.UserID);
-
+    GetClientDropdown();
     let ClientName
 
     let Data = {
