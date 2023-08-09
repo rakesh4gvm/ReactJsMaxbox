@@ -372,7 +372,7 @@ export default function OtherInboxByID(props) {
     }
 
     // Start Get Follow Up Later List
-    const GetOtherInboxList = (CID, UID, PN, ID, str, ShowEmails) => {
+    const GetOtherInboxList = (CID, UID, PN, ID, str, ShowEmails, RefreshString) => {
         FromEmailList(CID, UID, id, ShowEmails);
         let AccountIDs = [id]
         // if (ID.length > 0) {
@@ -420,6 +420,36 @@ export default function OtherInboxByID(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 if (Result.data.PageData.length > 0) {
                     SetFollowUpList(Result.data.PageData)
+                    var SelectedIDCount = 0
+                    Result.data.PageData.map((e) => {
+                        var SameID = CheckedID.find((s) => s === e._id)
+                        if (SameID != undefined) {
+                            SelectedIDCount++
+                        }
+                    })
+                    if (!state) {
+                        if (49 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
+                    } else {
+                        if (50 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
+                        const updatedArr = [...Result.data.PageData];
+
+                        // Update the IsSeen property of the first element
+                        updatedArr[0].IsSeen = true;
+
+                        // Update the state with the modified array
+                        SetFollowUpList(updatedArr)
+                    }
                     // SetTotalCount(Result.data.TotalCount)
                     if (!str == "hideloader") {
                         OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
@@ -553,7 +583,26 @@ export default function OtherInboxByID(props) {
     }
     const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
-            //setSelected(true);
+
+            var element = document.getElementById("star_" + ID);
+            var element2 = document.getElementById("starbelow_" + ID);
+            var className = element.className;
+            var isStar = className.includes("Mui-selected")
+            if (isStar) {
+                element.classList.remove("Mui-selected");
+                if (element2) {
+                    element2.classList.remove("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+            else {
+                element.classList.add("Mui-selected");
+                if (element2) {
+                    element2.classList.add("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+
             var Data = {
                 _id: ID,
                 IsStarred: true,
@@ -570,20 +619,20 @@ export default function OtherInboxByID(props) {
                         CloseStarPopModel();
                     }
 
-                    var element = document.getElementById("star_" + ID);
-                    var element2 = document.getElementById("starbelow_" + ID);
-                    var className = element.className;
-                    var isStar = className.includes("Mui-selected")
-                    if (isStar) {
-                        element.classList.remove("Mui-selected");
-                        element2.classList.remove("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
-                    else {
-                        element.classList.add("Mui-selected");
-                        element2.classList.add("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
+                    // var element = document.getElementById("star_" + ID);
+                    // var element2 = document.getElementById("starbelow_" + ID);
+                    // var className = element.className;
+                    // var isStar = className.includes("Mui-selected")
+                    // if (isStar) {
+                    //     element.classList.remove("Mui-selected");
+                    //     element2.classList.remove("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
+                    // else {
+                    //     element.classList.add("Mui-selected");
+                    //     element2.classList.add("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
 
                     // var ID = decrypt(props.location.search.replace('?', ''))
                     // if (!state) {
@@ -1650,23 +1699,29 @@ export default function OtherInboxByID(props) {
     // Ends Pagination 
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var ID = decrypt(props.location.search.replace('?', ''))
         if (!state) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetOtherInboxList(ClientID, UserID, 1, ID, "", "SeenEmails");
+                GetOtherInboxList(ClientID, UserID, 1, ID, "", "SeenEmails", "Refresh");
             } else {
-                GetOtherInboxList(ClientID, UserID, 1, 0, "", "SeenEmails")
+                GetOtherInboxList(ClientID, UserID, 1, 0, "", "SeenEmails", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetOtherInboxList(ClientID, UserID, 1, ID, "", "");
+                GetOtherInboxList(ClientID, UserID, 1, ID, "", "", "Refresh");
             } else {
-                GetOtherInboxList(ClientID, UserID, 1, 0, "", "")
+                GetOtherInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
             }
         }
     }

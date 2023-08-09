@@ -374,7 +374,7 @@ export default function SpamByID(props) {
 
     }
     // Start Get Follow Up Later List
-    const GetSpamList = (CID, UID, PN, ID, str, ShowEmails) => {
+    const GetSpamList = (CID, UID, PN, ID, str, ShowEmails, RefreshString) => {
         FromEmailList(CID, UID, id, ShowEmails);
         let AccountIDs = [id]
         // if (ID.length > 0) {
@@ -416,6 +416,36 @@ export default function SpamByID(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 if (Result.data.PageData.length > 0) {
                     SetSpamList(Result.data.PageData)
+                    var SelectedIDCount = 0
+                    Result.data.PageData.map((e) => {
+                        var SameID = CheckedID.find((s) => s === e._id)
+                        if (SameID != undefined) {
+                            SelectedIDCount++
+                        }
+                    })
+                    if (!state) {
+                        if (49 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
+                    } else {
+                        if (50 > SelectedIDCount) {
+                            setSelectAllChecked(false)
+                        } else {
+                            setSelectAllChecked(true)
+                        }
+                    }
+                    if (RefreshString == "Refresh") {
+                        setSelectAllChecked(false)
+                        const updatedArr = [...Result.data.PageData];
+
+                        // Update the IsSeen property of the first element
+                        updatedArr[0].IsSeen = true;
+
+                        // Update the state with the modified array
+                        SetSpamList(updatedArr)
+                    }
                     // SetTotalCount(Result.data.TotalCount)
                     if (!str == "hideloader") {
                         OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
@@ -550,6 +580,26 @@ export default function SpamByID(props) {
     }
     const UpdateStarMessage = (ID, str, index) => {
         if (ID != '') {
+
+            var element = document.getElementById("star_" + ID);
+            var element2 = document.getElementById("starbelow_" + ID);
+            var className = element.className;
+
+            var isStar = className.includes("Mui-selected")
+            if (isStar) {
+                element.classList.remove("Mui-selected");
+                if (element2) {
+                    element2.classList.remove("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
+            else {
+                element.classList.add("Mui-selected");
+                if (element2) {
+                    element2.classList.add("Mui-selected");
+                }
+                OpenMessageDetails(ID, index, "", "",)
+            }
             var Data = {
                 _id: ID,
                 IsStarred: true,
@@ -567,20 +617,20 @@ export default function SpamByID(props) {
 
                     }
 
-                    var element = document.getElementById("star_" + ID);
-                    var element2 = document.getElementById("starbelow_" + ID);
-                    var className = element.className;
-                    var isStar = className.includes("Mui-selected")
-                    if (isStar) {
-                        element.classList.remove("Mui-selected");
-                        element2.classList.remove("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
-                    else {
-                        element.classList.add("Mui-selected");
-                        element2.classList.add("Mui-selected");
-                        OpenMessageDetails(ID, index, "", "",)
-                    }
+                    // var element = document.getElementById("star_" + ID);
+                    // var element2 = document.getElementById("starbelow_" + ID);
+                    // var className = element.className;
+                    // var isStar = className.includes("Mui-selected")
+                    // if (isStar) {
+                    //     element.classList.remove("Mui-selected");
+                    //     element2.classList.remove("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
+                    // else {
+                    //     element.classList.add("Mui-selected");
+                    //     element2.classList.add("Mui-selected");
+                    //     OpenMessageDetails(ID, index, "", "",)
+                    // }
 
                     // var ID = decrypt(props.location.search.replace('?', ''))
 
@@ -1652,6 +1702,12 @@ export default function SpamByID(props) {
     // Ends Pagination
 
     const RefreshTable = () => {
+        if (selectAllChecked) {
+            setSelectAllChecked(!selectAllChecked)
+            SetCheckedID([])
+        } else {
+            SetCheckedID([])
+        }
         ContainerRef.current.scrollTop = 0;
         var element = document.getElementById("AllSpamRefreshpanel")
         element.style.display = "none";
@@ -1661,17 +1717,17 @@ export default function SpamByID(props) {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails");
+                GetSpamList(ClientID, UserID, Page, ID, "", "SeenEmails", "Refresh");
             } else {
-                GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails")
+                GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails", "Refresh")
             }
         } else {
             LoaderShow()
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetSpamList(ClientID, UserID, Page, ID, "", "");
+                GetSpamList(ClientID, UserID, Page, ID, "", "", "Refresh");
             } else {
-                GetSpamList(ClientID, UserID, Page, 0, "", "")
+                GetSpamList(ClientID, UserID, Page, 0, "", "", "Refresh")
             }
         }
     }

@@ -434,7 +434,7 @@ export default function OtherInboxPage(props) {
   }
 
   // Start Get Follow Up Later List
-  const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred) => {
+  const GetAllInboxList = (CID, UID, PN, ID, ShowEmails, IsStarred, RefreshString) => {
     FromEmailList(CID, UID, ID, ShowEmails, IsStarred);
 
     let AccountIDs = []
@@ -490,6 +490,36 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetAllInboxList(Result.data.PageData)
+          var SelectedIDCount = 0
+          Result.data.PageData.map((e) => {
+            var SameID = CheckedID.find((s) => s === e._id)
+            if (SameID != undefined) {
+              SelectedIDCount++
+            }
+          })
+          if (!state) {
+            if (49 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          } else {
+            if (50 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          }
+          if (RefreshString == "Refresh") {
+            setSelectAllChecked(false)
+            const updatedArr = [...Result.data.PageData];
+
+            // Update the IsSeen property of the first element
+            updatedArr[0].IsSeen = true;
+
+            // Update the state with the modified array
+            SetAllInboxList(updatedArr)
+          }
           SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           // SetTotalRecord(Result.data.TotalCount);
@@ -1530,6 +1560,12 @@ export default function OtherInboxPage(props) {
 
 
   const RefreshTable = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     ContainerRef.current.scrollTop = 0;
     var element = document.getElementById("AllInoxRefreshpanel")
     element.style.display = "none";
@@ -1537,23 +1573,23 @@ export default function OtherInboxPage(props) {
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
-        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
+        GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "", "Refresh");
       } else {
         if (isstarActive) {
           setstarActive(false)
         }
-        GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "")
+        GetAllInboxList(ClientID, UserID, 1, 0, "SeenEmails", "", "Refresh")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
 
-        GetAllInboxList(ClientID, UserID, Page, ID, "", "");
+        GetAllInboxList(ClientID, UserID, Page, ID, "", "", "Refresh");
       } else {
         if (isstarActive) {
           setstarActive(false)
         }
-        GetAllInboxList(ClientID, UserID, 1, 0, "", "")
+        GetAllInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
   }
@@ -1790,11 +1826,58 @@ export default function OtherInboxPage(props) {
   const UpdateStarMessage = (ID, str, index) => {
     if (ID != '') {
 
+      if (!state) {
+        if (isstarActive == true) {
+        } else {
+          var element = document.getElementById("star_" + ID);
+          var element2 = document.getElementById("starbelow_" + ID);
+
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+            if (element2) {
+              element2.classList.remove("Mui-selected");
+            }
+          }
+          else {
+            element.classList.add("Mui-selected");
+            if (element2) {
+              element2.classList.add("Mui-selected");
+            }
+          }
+          OpenMessageDetails(ID, index, "", "",)
+        }
+      }
+      else {
+        if (isstarActive == true) {
+        } else {
+          var element = document.getElementById("star_" + ID);
+          var element2 = document.getElementById("starbelow_" + ID);
+
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+            if (element2) {
+              element2.classList.remove("Mui-selected");
+            }
+          }
+          else {
+            element.classList.add("Mui-selected");
+            if (element2) {
+              element2.classList.add("Mui-selected");
+            }
+          }
+        }
+        OpenMessageDetails(ID, index, "", "",)
+      }
 
       var Data = {
         _id: ID,
         IsStarred: true,
-        // IsFocusedPage: true,
         LastUpdatedBy: -1
       };
       const ResponseApi = Axios({
@@ -1808,46 +1891,46 @@ export default function OtherInboxPage(props) {
             CloseStarPopModel();
           }
 
-          if (!state) {
-            if (isstarActive == true) {
-            } else {
-              var element = document.getElementById("star_" + ID);
-              var element2 = document.getElementById("starbelow_" + ID);
+          // if (!state) {
+          //   if (isstarActive == true) {
+          //   } else {
+          //     var element = document.getElementById("star_" + ID);
+          //     var element2 = document.getElementById("starbelow_" + ID);
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+          //     var className = element.className;
+          //     var isStar = className.includes("Mui-selected")
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-                element2.classList.remove("Mui-selected");
-              }
-              else {
-                element.classList.add("Mui-selected");
-                element2.classList.add("Mui-selected");
-              }
-              OpenMessageDetails(ID, index, "", "",)
-            }
-          }
-          else {
-            if (isstarActive == true) {
-            } else {
-              var element = document.getElementById("star_" + ID);
-              var element2 = document.getElementById("starbelow_" + ID);
+          //     if (isStar) {
+          //       element.classList.remove("Mui-selected");
+          //       element2.classList.remove("Mui-selected");
+          //     }
+          //     else {
+          //       element.classList.add("Mui-selected");
+          //       element2.classList.add("Mui-selected");
+          //     }
+          //     OpenMessageDetails(ID, index, "", "",)
+          //   }
+          // }
+          // else {
+          //   if (isstarActive == true) {
+          //   } else {
+          //     var element = document.getElementById("star_" + ID);
+          //     var element2 = document.getElementById("starbelow_" + ID);
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+          //     var className = element.className;
+          //     var isStar = className.includes("Mui-selected")
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-                element2.classList.remove("Mui-selected");
-              }
-              else {
-                element.classList.add("Mui-selected");
-                element2.classList.add("Mui-selected");
-              }
-            }
-            OpenMessageDetails(ID, index, "", "",)
-          }
+          //     if (isStar) {
+          //       element.classList.remove("Mui-selected");
+          //       element2.classList.remove("Mui-selected");
+          //     }
+          //     else {
+          //       element.classList.add("Mui-selected");
+          //       element2.classList.add("Mui-selected");
+          //     }
+          //   }
+          //   OpenMessageDetails(ID, index, "", "",)
+          // }
 
           // var element = document.getElementById("star_" + ID);
           // var element2 = document.getElementById("starbelow_" + ID);

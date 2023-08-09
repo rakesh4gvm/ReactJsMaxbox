@@ -377,7 +377,7 @@ export default function OtherInboxPage(props) {
   }
 
   // Start Get Follow Up Later List
-  const GetStarredList = (CID, UID, PN, ID, ShowEmails) => {
+  const GetStarredList = (CID, UID, PN, ID, ShowEmails, RefreshString) => {
     FromEmailList(CID, UID, ID, ShowEmails);
     let AccountIDs = []
     if (ID.length > 0) {
@@ -422,6 +422,36 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetStarredList(Result.data.PageData)
+          var SelectedIDCount = 0
+          Result.data.PageData.map((e) => {
+            var SameID = CheckedID.find((s) => s === e._id)
+            if (SameID != undefined) {
+              SelectedIDCount++
+            }
+          })
+          if (!state) {
+            if (49 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          } else {
+            if (50 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          }
+          if (RefreshString == "Refresh") {
+            setSelectAllChecked(false)
+            const updatedArr = [...Result.data.PageData];
+
+            // Update the IsSeen property of the first element
+            updatedArr[0].IsSeen = true;
+
+            // Update the state with the modified array
+            SetStarredList(updatedArr)
+          }
           // SetTotalCount(Result.data.TotalCount)
           OpenMessageDetails(Result.data.PageData[0]._id);
           SetMailNumber(1)
@@ -1528,23 +1558,29 @@ export default function OtherInboxPage(props) {
   };
 
   const RefreshTable = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     ContainerRef.current.scrollTop = 0;
     var ID = decrypt(props.location.search.replace('?', ''))
     if (!state) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetStarredList(ClientID, UserID, 1, ID, "SeenEmails");
+        GetStarredList(ClientID, UserID, 1, ID, "SeenEmails", "Refresh");
       } else {
-        GetStarredList(ClientID, UserID, 1, 0, "SeenEmails")
+        GetStarredList(ClientID, UserID, 1, 0, "SeenEmails", "Refresh")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetStarredList(ClientID, UserID, 1, ID, "");
+        GetStarredList(ClientID, UserID, 1, ID, "", "Refresh");
       } else {
-        GetStarredList(ClientID, UserID, 1, 0, "")
+        GetStarredList(ClientID, UserID, 1, 0, "", "Refresh")
       }
     }
   }

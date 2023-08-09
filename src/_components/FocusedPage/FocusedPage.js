@@ -513,7 +513,7 @@ export default function UnansweredResponsesPage(props) {
 
 
   // Start Get Follow Up Later List
-  const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred) => {
+  const GetUnansweredResponcesList = (CID, UID, PN, ID, str, ShowEmails, IsStarred, RefreshString) => {
     FromEmailList(CID, UID, ID, ShowEmails, IsStarred);
     let AccountIDs = []
     if (ID.length > 0) {
@@ -571,6 +571,36 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.PageData.length > 0) {
           // SetFollowUpList([...FollowUpList, ...Result.data.PageData])
           SetFollowUpList(Result.data.PageData)
+          var SelectedIDCount = 0
+          Result.data.PageData.map((e) => {
+            var SameID = CheckedID.find((s) => s === e._id)
+            if (SameID != undefined) {
+              SelectedIDCount++
+            }
+          })
+          if (!state) {
+            if (49 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          } else {
+            if (50 > SelectedIDCount) {
+              setSelectAllChecked(false)
+            } else {
+              setSelectAllChecked(true)
+            }
+          }
+          if (RefreshString == "Refresh") {
+            setSelectAllChecked(false)
+            const updatedArr = [...Result.data.PageData];
+
+            // Update the IsSeen property of the first element
+            updatedArr[0].IsSeen = true;
+
+            // Update the state with the modified array
+            SetFollowUpList(updatedArr)
+          }
           if (!str == "hideloader") {
             OpenMessageDetails(Result.data.PageData[0]._id, '', 'showloader', '');
           } else {
@@ -868,6 +898,57 @@ export default function UnansweredResponsesPage(props) {
   const UpdateStarMessage = (ID, str, index) => {
     if (ID != '') {
 
+      if (!state) {
+        if (isstarActive == true) {
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+        } else {
+          var element = document.getElementById("star_" + ID);
+          var element2 = document.getElementById("starbelow_" + ID);
+
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+            if (element2) {
+              element2.classList.remove("Mui-selected");
+            }
+          }
+          else {
+            element.classList.add("Mui-selected");
+            if (element2) {
+              element2.classList.add("Mui-selected");
+            }
+          }
+          OpenMessageDetails(ID, index, "", "",)
+        }
+      }
+      else {
+        if (isstarActive == true) {
+          GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+        } else {
+          var element = document.getElementById("star_" + ID);
+          var element2 = document.getElementById("starbelow_" + ID);
+
+          var className = element.className;
+          var isStar = className.includes("Mui-selected")
+
+          if (isStar) {
+            element.classList.remove("Mui-selected");
+            if (element2) {
+              element2.classList.remove("Mui-selected");
+            }
+          }
+          else {
+            element.classList.add("Mui-selected");
+            if (element2) {
+              element2.classList.add("Mui-selected");
+            }
+          }
+        }
+        OpenMessageDetails(ID, index, "", "",)
+      }
+
       var Data = {
         _id: ID,
         IsStarred: true,
@@ -884,48 +965,50 @@ export default function UnansweredResponsesPage(props) {
           if (str === "opnemodel") {
             CloseStarPopModel();
           }
-          if (!state) {
-            if (isstarActive == true) {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
-            } else {
-              var element = document.getElementById("star_" + ID);
-              var element2 = document.getElementById("starbelow_" + ID);
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+          // if (!state) {
+          //   if (isstarActive == true) {
+          //     GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+          //   } else {
+          //     var element = document.getElementById("star_" + ID);
+          //     var element2 = document.getElementById("starbelow_" + ID);
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-                element2.classList.remove("Mui-selected");
-              }
-              else {
-                element.classList.add("Mui-selected");
-                element2.classList.add("Mui-selected");
-              }
-              OpenMessageDetails(ID, index, "", "",)
-            }
-          }
-          else {
-            if (isstarActive == true) {
-              GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
-            } else {
-              var element = document.getElementById("star_" + ID);
-              var element2 = document.getElementById("starbelow_" + ID);
+          //     var className = element.className;
+          //     var isStar = className.includes("Mui-selected")
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+          //     if (isStar) {
+          //       element.classList.remove("Mui-selected");
+          //       element2.classList.remove("Mui-selected");
+          //     }
+          //     else {
+          //       element.classList.add("Mui-selected");
+          //       element2.classList.add("Mui-selected");
+          //     }
+          //     OpenMessageDetails(ID, index, "", "",)
+          //   }
+          // }
+          // else {
+          //   if (isstarActive == true) {
+          //     GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+          //   } else {
+          //     var element = document.getElementById("star_" + ID);
+          //     var element2 = document.getElementById("starbelow_" + ID);
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-                element2.classList.remove("Mui-selected");
-              }
-              else {
-                element.classList.add("Mui-selected");
-                element2.classList.add("Mui-selected");
-              }
-            }
-            OpenMessageDetails(ID, index, "", "",)
-          }
+          //     var className = element.className;
+          //     var isStar = className.includes("Mui-selected")
+
+          //     if (isStar) {
+          //       element.classList.remove("Mui-selected");
+          //       element2.classList.remove("Mui-selected");
+          //     }
+          //     else {
+          //       element.classList.add("Mui-selected");
+          //       element2.classList.add("Mui-selected");
+          //     }
+          //   }
+          //   OpenMessageDetails(ID, index, "", "",)
+          // }
+
         } else {
           toast.error(Result?.data?.Message);
         }
@@ -1862,6 +1945,12 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const RefreshTable = () => {
+    if (selectAllChecked) {
+      setSelectAllChecked(!selectAllChecked)
+      SetCheckedID([])
+    } else {
+      SetCheckedID([])
+    }
     ContainerRef.current.scrollTop = 0;
     var element = document.getElementById("AllInoxRefreshpanel")
     element.style.display = "none";
@@ -1870,23 +1959,23 @@ export default function UnansweredResponsesPage(props) {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "");
+        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "SeenEmails", "", "Refresh");
       } else {
         if (isstarActive) {
           setstarActive(false)
         }
-        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "")
+        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "SeenEmails", "", "Refresh")
       }
     } else {
       LoaderShow()
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "");
+        GetUnansweredResponcesList(ClientID, UserID, 1, ID, "", "", "", "Refresh");
       } else {
         if (isstarActive) {
           setstarActive(false)
         }
-        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "")
+        GetUnansweredResponcesList(ClientID, UserID, 1, 0, "", "", "", "Refresh")
       }
     }
   }
