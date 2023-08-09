@@ -10,22 +10,9 @@ const ChatbotComponent = () => {
 
     script.onload = () => {
       window.Chatbot.init({
-        chatflowid: "247c18df-a8c0-4065-82cc-4d7005cdfdc3",
-        apiHost: "https://ai.saleshive.com",
-        theme: {
-          button: {
-            backgroundColor: "#d69679",
-          },
-          chatWindow: {
-            textInput: {
-              sendButtonColor: "#d69679",
-            },
-            userMessage: {
-              backgroundColor: "#f4e2da",
-              textColor: "#000",
-            },
-          },
-        },
+        chatflowConfig: {
+          pineconeNamespace: "c4dd2e95-76fc-4127-9fd5-fa124196c0fb"
+        }
       });
     };
 
