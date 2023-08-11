@@ -1863,7 +1863,6 @@ export default function OtherInboxPage(props) {
               element2.classList.add("Mui-selected");
             }
           }
-          // OpenMessageDetails(ID, index, "", "",)
         }
       }
       else {
@@ -1888,7 +1887,6 @@ export default function OtherInboxPage(props) {
             }
           }
         }
-        // OpenMessageDetails(ID, index, "", "",)
       }
 
       var Data = {
@@ -1901,73 +1899,57 @@ export default function OtherInboxPage(props) {
         method: "POST",
         data: Data,
       });
-      ResponseApi.then((Result) => {
+      ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-          // if (!state) {
-          //   if (isstarActive == true) {
-          //   } else {
-          //     var element = document.getElementById("star_" + ID);
-          //     var element2 = document.getElementById("starbelow_" + ID);
+          if (isstarActive) {
+            GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
+          }
 
-          //     var className = element.className;
-          //     var isStar = className.includes("Mui-selected")
+          var accessToken = Result.data.accessToken
+          var RFC822MessageID = Result.data.RFC822MessageID
+          var IsStarred_DB = Result.data.IsStarred_DB
 
-          //     if (isStar) {
-          //       element.classList.remove("Mui-selected");
-          //       element2.classList.remove("Mui-selected");
-          //     }
-          //     else {
-          //       element.classList.add("Mui-selected");
-          //       element2.classList.add("Mui-selected");
-          //     }
-          //     OpenMessageDetails(ID, index, "", "",)
-          //   }
-          // }
-          // else {
-          //   if (isstarActive == true) {
-          //   } else {
-          //     var element = document.getElementById("star_" + ID);
-          //     var element2 = document.getElementById("starbelow_" + ID);
+          if (accessToken != null && accessToken != '') {
+            const rfcEncode = encodeURIComponent(RFC822MessageID);
+            var Url = "https://www.googleapis.com/gmail/v1/users/me/messages" + "?q='rfc822msgid:" + rfcEncode + "&format=metadata&metadataHeaders=Subject&metadataHeaders=References&metadataHeaders=Message-ID" + "&includeSpamTrash=true";
+            Url = Url + "&format=raw";
 
-          //     var className = element.className;
-          //     var isStar = className.includes("Mui-selected")
+            const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken
+            }
 
-          //     if (isStar) {
-          //       element.classList.remove("Mui-selected");
-          //       element2.classList.remove("Mui-selected");
-          //     }
-          //     else {
-          //       element.classList.add("Mui-selected");
-          //       element2.classList.add("Mui-selected");
-          //     }
-          //   }
-          //   OpenMessageDetails(ID, index, "", "",)
-          // }
+            await Axios.get(Url, {
+              headers: headers
+            }).then((response) => {
+              if (response.data.resultSizeEstimate == 0) {
+                return Result;
+              }
+              var MessageID = response.data.messages[0].id
 
-          // var element = document.getElementById("star_" + ID);
-          // var element2 = document.getElementById("starbelow_" + ID);
+              var LabelUpdateUrl = "https://gmail.googleapis.com/gmail/v1/users/me/messages/" + MessageID + "/modify"
 
-          // var className = element.className;
-          // var isStar = className.includes("Mui-selected")
-          // if (isStar) {
-          //   element.classList.remove("Mui-selected");
-          //   if (element2 != null) {
-          //     element2.classList.remove("Mui-selected");
-          //   }
+              var StarredUpdateVaribleGmail
 
-          // }
-          // else {
-          //   element.classList.add("Mui-selected");
-          //   if (element2 != null) {
-          //     element2.classList.remove("Mui-selected");
-          //   }
+              if (IsStarred_DB) {
+                StarredUpdateVaribleGmail = '{"addLabelIds": ["STARRED"]}';
+              } else {
+                StarredUpdateVaribleGmail = '{"removeLabelIds": ["STARRED"]}';
+              }
 
-          // }
-          // if (isstarActive) {
-          //   GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
-          // }
-          // OpenMessageDetails(ID, index, "", "",)
+              // var LabelUpdatedData = '{"removeLabelIds": ["addLabelIds"]}';
+              // var LabelUpdatedData = '{"addLabelIds": ["STARRED"]}';
+
+              Axios.post(LabelUpdateUrl, StarredUpdateVaribleGmail, {
+                headers: headers
+              }).then(async (responseone) => {
+
+              })
+            })
+
+          }
+
 
         }
       });

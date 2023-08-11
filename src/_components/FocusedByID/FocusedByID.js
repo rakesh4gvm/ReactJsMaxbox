@@ -834,7 +834,6 @@ export default function FocusedByID(props) {
 
             if (!state) {
                 if (isstarActive == true) {
-                    GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
                 } else {
                     var element = document.getElementById("star_" + ID);
                     var element2 = document.getElementById("starbelow_" + ID);
@@ -859,7 +858,6 @@ export default function FocusedByID(props) {
             }
             else {
                 if (isstarActive == true) {
-                    GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
                 } else {
                     var element = document.getElementById("star_" + ID);
                     var element2 = document.getElementById("starbelow_" + ID);
@@ -894,9 +892,53 @@ export default function FocusedByID(props) {
                 method: "POST",
                 data: Data,
             });
-            ResponseApi.then((Result) => {
+            ResponseApi.then(async (Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
+                    if (isstarActive == true) {
+                        GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
+                    }
+
+                    var accessToken = Result.data.accessToken
+                    var RFC822MessageID = Result.data.RFC822MessageID
+                    var IsStarred_DB = Result.data.IsStarred_DB
+
+                    if (accessToken != null && accessToken != '') {
+                        const rfcEncode = encodeURIComponent(RFC822MessageID);
+                        var Url = "https://www.googleapis.com/gmail/v1/users/me/messages" + "?q='rfc822msgid:" + rfcEncode + "&format=metadata&metadataHeaders=Subject&metadataHeaders=References&metadataHeaders=Message-ID" + "&includeSpamTrash=true";
+                        Url = Url + "&format=raw";
+
+                        const headers = {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + accessToken
+                        }
+
+                        await Axios.get(Url, {
+                            headers: headers
+                        }).then((response) => {
+                            if (response.data.resultSizeEstimate == 0) {
+                                return Result;
+                            }
+                            var MessageID = response.data.messages[0].id
+
+                            var LabelUpdateUrl = "https://gmail.googleapis.com/gmail/v1/users/me/messages/" + MessageID + "/modify"
+
+                            var StarredUpdateVaribleGmail
+
+                            if (IsStarred_DB) {
+                                StarredUpdateVaribleGmail = '{"addLabelIds": ["STARRED"]}';
+                            } else {
+                                StarredUpdateVaribleGmail = '{"removeLabelIds": ["STARRED"]}';
+                            }
+
+                            Axios.post(LabelUpdateUrl, StarredUpdateVaribleGmail, {
+                                headers: headers
+                            }).then(async (responseone) => {
+
+                            })
+                        })
+
+                    }
 
                     // if (!state) {
                     //     if (isstarActive == true) {
