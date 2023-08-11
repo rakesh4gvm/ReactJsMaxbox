@@ -686,7 +686,44 @@ export default function AllSentEmailsPage(props) {
     SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID, str) => {
+    if (str === "opnemodel") {
+      CloseStarPopModel();
+    }
+
     if (ID != '') {
+
+      let UpdatedList = AllSentList.map(item => {
+        if (item._id == ID) {
+          if (item.IsStarred) {
+            return { ...item, IsStarred: false };
+          } else {
+            return { ...item, IsStarred: true };
+          }
+        }
+        return item;
+      });
+
+      SetAllSentList(UpdatedList)
+
+      var element = document.getElementById("star_" + ID);
+      var element2 = document.getElementById("starbelow_" + ID);
+      var className = element.className;
+      var isStar = className.includes("Mui-selected")
+
+      if (isStar) {
+        element.classList.remove("Mui-selected");
+        if (element2) {
+          element2.classList.remove("Mui-selected");
+        }
+      }
+
+      else {
+        element.classList.add("Mui-selected");
+        if (element2) {
+          element2.classList.add("Mui-selected");
+        }
+      }
+
       var Data = {
         _id: ID,
         IsStarred: true,
@@ -697,29 +734,52 @@ export default function AllSentEmailsPage(props) {
         method: "POST",
         data: Data,
       });
-      ResponseApi.then((Result) => {
+      ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          if (str === "opnemodel") {
-            CloseStarPopModel();
-            // OpenMessageDetails('', '', '')
-          }
 
-          var element = document.getElementById("star_" + ID);
-          var element2 = document.getElementById("starbelow_" + ID);
-          var className = element.className;
-          var isStar = className.includes("Mui-selected")
-          if (isStar) {
-            element.classList.remove("Mui-selected");
-            element2.classList.remove("Mui-selected");
-            OpenMessageDetails(ID, "", "", "",)
-          }
-          else {
-            element.classList.add("Mui-selected");
-            element2.classList.add("Mui-selected");
-            OpenMessageDetails(ID, "", "", "",)
-          }
+          var accessToken = Result.data.accessToken
+          var RFC822MessageID = Result.data.RFC822MessageID
+          var IsStarred = Result.data.IsStarred
 
-          OpenMessageDetails(ID, "", "", "",)
+          if (accessToken != null && accessToken != '') {
+            const rfcEncode = encodeURIComponent(RFC822MessageID);
+            var Url = "https://www.googleapis.com/gmail/v1/users/me/messages" + "?q='rfc822msgid:" + rfcEncode + "&format=metadata&metadataHeaders=Subject&metadataHeaders=References&metadataHeaders=Message-ID" + "&includeSpamTrash=true";
+            Url = Url + "&format=raw";
+
+            const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken
+            }
+
+            await Axios.get(Url, {
+              headers: headers
+            }).then((response) => {
+              if (response.data.resultSizeEstimate == 0) {
+                return Result;
+              }
+              var MessageID = response.data.messages[0].id
+
+              var LabelUpdateUrl = "https://gmail.googleapis.com/gmail/v1/users/me/messages/" + MessageID + "/modify"
+
+              var StarredUpdateVaribleGmail
+
+              if (IsStarred) {
+                StarredUpdateVaribleGmail = '{"addLabelIds": ["STARRED"]}';
+              } else {
+                StarredUpdateVaribleGmail = '{"removeLabelIds": ["STARRED"]}';
+              }
+
+              // var LabelUpdatedData = '{"removeLabelIds": ["addLabelIds"]}';
+              // var LabelUpdatedData = '{"addLabelIds": ["STARRED"]}';
+
+              Axios.post(LabelUpdateUrl, StarredUpdateVaribleGmail, {
+                headers: headers
+              }).then(async (responseone) => {
+
+              })
+            })
+
+          }
 
           // var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID != "" && ID != null && ID != "undefined") {
@@ -1623,7 +1683,7 @@ export default function AllSentEmailsPage(props) {
               Are you sure
             </Typography>
             {
-              OpenMessage?.IsStarred === false ?
+              AllSentList?.find((e) => e?._id === OpenMessage?._id)?.IsStarred === false ?
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                   you want to star an email ?
                 </Typography>
