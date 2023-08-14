@@ -3821,6 +3821,12 @@ div.bgwhiter {
 .sign-main .none-pad label > span{
     padding: 12px;
 }
+.selected {
+    background-color: lightgray; /* or any other highlight color */
+}
+:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

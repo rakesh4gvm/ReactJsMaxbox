@@ -207,6 +207,9 @@ export default function UnansweredRepliesByID(props) {
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
     const HanleChatGPTClose = () => SetChatGPTModel(false);
+    const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+    const tableRef = useRef(null);
+  
 
     const handleChange = (panel) => (event, isExpanded) => {
         console.log(panel);
@@ -1524,6 +1527,49 @@ export default function UnansweredRepliesByID(props) {
         }
     }
 
+    const handleKeyDown = (e, index) => {
+        console.log("e", e.key)
+        console.log("index", index)
+        if (e.key === 'ArrowUp') {
+          index--;
+          scrollToSelectedRow(index, 1)
+    
+          setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+          
+        } else if (e.key === 'ArrowDown') { 
+          index++;
+          scrollToSelectedRow(index, 1);
+          setSelectedRowIndex((prevIndex) =>
+            Math.min(prevIndex + 1, AllUnansweredRepliesList.length - 1)
+          );
+        }
+        if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+          if (index >= 0 && index < AllUnansweredRepliesList.length) {
+                  const selectedMessage = AllUnansweredRepliesList[index];
+                  console.log("Selected message _id:", selectedMessage._id);
+                  OpenMessageDetails(selectedMessage._id, index, "updatelist");
+            }
+        }   
+      };  
+    
+      const scrollToSelectedRow = (index) => {
+        const selectedRow = document.getElementById(`row-${index}`); 
+        if (!selectedRow) {
+          return;
+        }
+        const mainDiv = document.getElementById('eventselectedrow');
+        const targetScrollPosition = selectedRow.offsetTop - 70;
+        mainDiv.scrollTop = targetScrollPosition;
+      };
+    
+    
+      useEffect(() => {
+        // Focus on the table when the component mounts
+        if (tableRef.current){
+          tableRef.current.focus();
+        }  
+      }, []);
+
     return (
         <>
             <Modal className="modal-lister max-767"
@@ -1763,44 +1809,51 @@ export default function UnansweredRepliesByID(props) {
                                     }
                                 </div>
                             </div>
-                            <div className="simulationDiv" ref={ContainerRef}>
-                                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
-                                            {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                            <TableCell component="th">From Email</TableCell>
-                                            <TableCell component="th">Subject</TableCell>
-                                            <TableCell component="th">Date</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {AllUnansweredRepliesList?.map((item, index) => (
-                                            <TableRow
-                                                className={`${Active === item._id ? "selected-row" : ""}`}
-                                                key={item.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
-                                            >
-                                                <TableCell width={'35px'} align="center">
-                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
-                                                        <StarBorderIcon className='starone' />
-                                                        <StarIcon className='selectedstart startwo' />
-                                                    </ToggleButton>
-                                                </TableCell>
-                                                {/* <TableCell width={'35px'}></TableCell> */}
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
-                                                    <>
-                                                        {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                        {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                    </>
-                                                ) : null}</TableCell>
-                                                <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                            <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
+                                <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
+                                    <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                                                <TableCell component="th">From Email</TableCell>
+                                                <TableCell component="th">Subject</TableCell>
+                                                <TableCell component="th">Date</TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                                        </TableHead>
+                                        <TableBody>
+                                            {AllUnansweredRepliesList?.map((item, index) => (
+                                                <TableRow
+                                                    // className={`${Active === item._id ? "selected-row" : ""}`}
+                                                    // key={item.name}
+                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+
+                                                    key={item.name}
+                                                    className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
+                                                    onClick={() => setSelectedRowIndex(index)}
+                                                    id={"row-" + index}
+
+                                                >
+                                                    <TableCell width={'35px'} align="center">
+                                                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                            <StarBorderIcon className='starone' />
+                                                            <StarIcon className='selectedstart startwo' />
+                                                        </ToggleButton>
+                                                    </TableCell>
+                                                    {/* <TableCell width={'35px'}></TableCell> */}
+                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                    <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
+                                                        <>
+                                                            {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                            {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                        </>
+                                                    ) : null}</TableCell>
+                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
                             </div>
                         </>
                         <div className="statisticsDiv">

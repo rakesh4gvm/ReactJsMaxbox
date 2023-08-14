@@ -216,6 +216,8 @@ export default function OtherInboxPage(props) {
   const handleClose = () => setOpen(false);
   const handleTemOpen = () => setTemOpen(true);
   const handleTemClose = () => setTemOpen(false);
+  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const tableRef = useRef(null);
 
   useEffect(() => {
     document.title = 'All Inbox | MAXBOX';
@@ -1556,6 +1558,9 @@ export default function OtherInboxPage(props) {
     } else {
       SetCheckedID([])
     }
+    if (tableRef.current){
+      tableRef.current.focus();
+    }  
   };
 
 
@@ -1956,6 +1961,50 @@ export default function OtherInboxPage(props) {
     }
   }
 
+  
+
+  const handleKeyDown = (e, index) => {
+    console.log("e", e.key)
+    console.log("index", index)
+    if (e.key === 'ArrowUp') {
+      index--;
+      scrollToSelectedRow(index, 1)
+
+      setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+      
+    } else if (e.key === 'ArrowDown') { 
+      index++;
+      scrollToSelectedRow(index, 1);
+      setSelectedRowIndex((prevIndex) =>
+        Math.min(prevIndex + 1, AllInboxList.length - 1)
+      );
+    }
+    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+      if (index >= 0 && index < AllInboxList.length) {
+              const selectedMessage = AllInboxList[index];
+              console.log("Selected message _id:", selectedMessage._id);
+              OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        }
+    }   
+  };  
+
+  const scrollToSelectedRow = (index) => {
+    const selectedRow = document.getElementById(`row-${index}`); 
+    if (!selectedRow) {
+      return;
+    }
+    const mainDiv = document.getElementById('eventselectedrow');
+    const targetScrollPosition = selectedRow.offsetTop - 70;
+    mainDiv.scrollTop = targetScrollPosition;
+  };
+
+
+  useEffect(() => {
+    // Focus on the table when the component mounts
+    if (tableRef.current){
+      tableRef.current.focus();
+    }  
+  }, []);
 
   return (
 
@@ -2216,7 +2265,8 @@ export default function OtherInboxPage(props) {
               </div>
 
 
-              <div className="simulationDiv" ref={ContainerRef}>
+              <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
+                <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
@@ -2241,11 +2291,11 @@ export default function OtherInboxPage(props) {
                     {AllInboxList?.map((item, index) => (
                       <TableRow
                         // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
-                        // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
-                        className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                        // className={`${item.IsSeen ? "useen-email" : "seen-email"}`} 
                         key={item.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
+                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                        onClick={() => setSelectedRowIndex(index)}
+                        id={"row-" + index}
                       >
 
                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
@@ -2273,6 +2323,7 @@ export default function OtherInboxPage(props) {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             </>
             <div className="statisticsDiv">

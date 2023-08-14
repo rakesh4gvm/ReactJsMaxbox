@@ -227,6 +227,8 @@ export default function AllSentEmailsPage(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [ccanchorEl, setCCAnchorEl] = React.useState(null);
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
+  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const tableRef = useRef(null);
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -1538,6 +1540,52 @@ export default function AllSentEmailsPage(props) {
     }
   }
 
+
+  const handleKeyDown = (e, index) => {
+    console.log("e", e.key)
+    console.log("index", index)
+    if (e.key === 'ArrowUp') {
+      index--;
+      scrollToSelectedRow(index, 1)
+
+      setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+      
+    } else if (e.key === 'ArrowDown') { 
+      index++;
+      scrollToSelectedRow(index, 1);
+      setSelectedRowIndex((prevIndex) =>
+        Math.min(prevIndex + 1, AllSentList.length - 1)
+      );
+    }
+    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+      if (index >= 0 && index < AllSentList.length) {
+              const selectedMessage = AllSentList[index];
+              console.log("Selected message _id:", selectedMessage._id);
+              OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        }
+    }   
+  };  
+
+  const scrollToSelectedRow = (index) => {
+    const selectedRow = document.getElementById(`row-${index}`); 
+    if (!selectedRow) {
+      return;
+    }
+    const mainDiv = document.getElementById('eventselectedrow');
+    const targetScrollPosition = selectedRow.offsetTop - 70;
+    mainDiv.scrollTop = targetScrollPosition;
+  };
+
+
+  useEffect(() => {
+    // Focus on the table when the component mounts
+    if (tableRef.current){
+      tableRef.current.focus();
+    }  
+  }, []);
+
+
+
   return (
     <>
       <Modal className="modal-lister max-767"
@@ -1778,7 +1826,8 @@ export default function AllSentEmailsPage(props) {
                 </div>
               </div>
 
-              <div className="simulationDiv" ref={ContainerRef}>
+              <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
+                <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
                 <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
@@ -1793,9 +1842,13 @@ export default function AllSentEmailsPage(props) {
                     {AllSentList.map((item, index) => {
                       return (
                         <TableRow
-                          className={`${Active === item._id ? "selected-row" : ""}`}
+                          // className={`${Active === item._id ? "selected-row" : ""}`}
+                          // key={item.name}
+                          // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           key={item.name}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
+                          onClick={() => setSelectedRowIndex(index)}
+                          id={"row-" + index}
                         >
                           <TableCell width={'35px'} align="center">
                             <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
@@ -1817,6 +1870,7 @@ export default function AllSentEmailsPage(props) {
                     })}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             </>
             <div className="statisticsDiv">

@@ -221,6 +221,8 @@ export default function OtherInboxPage(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [ccanchorEl, setCCAnchorEl] = React.useState(null);
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
+  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const tableRef = useRef(null);
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -1739,6 +1741,9 @@ export default function OtherInboxPage(props) {
     } else {
       SetCheckedID([])
     }
+    if (tableRef.current){
+      tableRef.current.focus();
+    }
   };
 
 
@@ -1889,6 +1894,49 @@ export default function OtherInboxPage(props) {
 
     }
   }
+
+  const handleKeyDown = (e, index) => {
+    console.log("e", e.key)
+    console.log("index", index)
+    if (e.key === 'ArrowUp') {
+      index--;
+      scrollToSelectedRow(index, 1)
+
+      setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+      
+    } else if (e.key === 'ArrowDown') { 
+      index++;
+      scrollToSelectedRow(index, 1);
+      setSelectedRowIndex((prevIndex) =>
+        Math.min(prevIndex + 1, FollowUpList.length - 1)
+      );
+    }
+    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+      if (index >= 0 && index < FollowUpList.length) {
+              const selectedMessage = FollowUpList[index];
+              console.log("Selected message _id:", selectedMessage._id);
+              OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        }
+    }   
+  };  
+
+  const scrollToSelectedRow = (index) => {
+    const selectedRow = document.getElementById(`row-${index}`); 
+    if (!selectedRow) {
+      return;
+    }
+    const mainDiv = document.getElementById('eventselectedrow');
+    const targetScrollPosition = selectedRow.offsetTop - 70;
+    mainDiv.scrollTop = targetScrollPosition;
+  };
+
+
+  useEffect(() => {
+    // Focus on the table when the component mounts
+    if (tableRef.current){
+      tableRef.current.focus();
+    }  
+  }, []);
 
 
   return (
@@ -2174,7 +2222,8 @@ export default function OtherInboxPage(props) {
                   }
                 </div>
               </div>
-              <div className="simulationDiv" ref={ContainerRef}>
+              <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
+                <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
                 <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                   <TableHead>
                     <TableRow>
@@ -2197,9 +2246,13 @@ export default function OtherInboxPage(props) {
                     {FollowUpList.map((item, index) => (
                       <TableRow
                         // className={`${Active === item._id ? "selected-row" : ""}`}
-                        className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                        // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                        // key={item.name}
+                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         key={item.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                        onClick={() => setSelectedRowIndex(index)}
+                        id={"row-" + index}
                       >
                         <TableCell align='center'>
                           <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
@@ -2224,6 +2277,7 @@ export default function OtherInboxPage(props) {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             </>
             <div className="statisticsDiv">
