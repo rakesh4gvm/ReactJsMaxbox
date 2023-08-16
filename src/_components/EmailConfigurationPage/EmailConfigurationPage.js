@@ -182,7 +182,8 @@ export default function EmailConfigurationPage() {
             const elementSent = document.getElementById("Sent" + AccountID);
             const elementSpam = document.getElementById("Spam" + AccountID);
             if (elementInbox) {
-              document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].PrimaryMailCount - Result.data.PageData[i].SeenPrimaryMailCount)
+              // document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].PrimaryMailCount - Result.data.PageData[i].SeenPrimaryMailCount)
+              document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].InboxCount - Result.data.PageData[i].SeenInboxCount)
             }
             if (elementSent) {
               document.getElementById("Sent" + AccountID).innerText = Result.data.PageData[i].SentCount
@@ -241,7 +242,8 @@ export default function EmailConfigurationPage() {
             const elementSent = document.getElementById("Sent" + AccountID);
             const elementSpam = document.getElementById("Spam" + AccountID);
             if (elementInbox) {
-              document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].PrimaryMailCount - Result.data.PageData[i].SeenPrimaryMailCount)
+              // document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].PrimaryMailCount - Result.data.PageData[i].SeenPrimaryMailCount)
+              document.getElementById("Inbox" + AccountID).innerText = (Result.data.PageData[i].InboxCount - Result.data.PageData[i].SeenInboxCount)
             }
             if (elementSent) {
               document.getElementById("Sent" + AccountID).innerText = Result.data.PageData[i].SentCount

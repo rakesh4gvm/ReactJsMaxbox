@@ -346,15 +346,19 @@ export default function AllInboxByID(props) {
                         // } else 
                         if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
                             // total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-                            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount : 0
-                            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount : 0
+                            // var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount : 0
+                            // var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount : 0
+                            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+                            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                             total = StarredCount - SeenStarredCount;
                         } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
                             total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                         }
                         else if (ShowEmails == "" && IsStarred == "") {
-                            var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount : 0
-                            var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount : 0
+                            // var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount : 0
+                            // var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount : 0
+                            var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+                            var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
                             total = InboxCount - SeenInboxCount;
                         }
 
