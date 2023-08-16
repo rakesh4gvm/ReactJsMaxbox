@@ -145,8 +145,8 @@ export function RemoveForwardPop() {
     return elementforward.classList.remove("show");
 }
 
-export function RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList) {
-    return OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.filter((e) => e != FromEmailDropdownList[0]?.Email)
+export function RemoveCurrentEmailFromCC(OpenMessage) {
+    return OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.filter((e) => e != OpenMessage?.ToEmail)
 }
 
 export function RemoveCurrentEmailFromBCC(OpenMessage) {

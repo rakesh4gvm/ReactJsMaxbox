@@ -863,7 +863,7 @@ export default function AllSentEmailByID(props) {
         var CC = localStorage.getItem("CCMessage")
         var BCC = localStorage.getItem("BCCMessage")
 
-        const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+        const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
         const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
         SetCCMessages(NewCCEmail)
@@ -1547,44 +1547,44 @@ export default function AllSentEmailByID(props) {
         console.log("e", e.key)
         console.log("index", index)
         if (e.key === 'ArrowUp') {
-          index--;
-          scrollToSelectedRow(index, 1)
-    
-          setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-          
-        } else if (e.key === 'ArrowDown') { 
-          index++;
-          scrollToSelectedRow(index, 1);
-          setSelectedRowIndex((prevIndex) =>
-            Math.min(prevIndex + 1, AllSentList.length - 1)
-          );
+            index--;
+            scrollToSelectedRow(index, 1)
+
+            setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+
+        } else if (e.key === 'ArrowDown') {
+            index++;
+            scrollToSelectedRow(index, 1);
+            setSelectedRowIndex((prevIndex) =>
+                Math.min(prevIndex + 1, AllSentList.length - 1)
+            );
         }
-        if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
-          if (index >= 0 && index < AllSentList.length) {
-                  const selectedMessage = AllSentList[index];
-                  console.log("Selected message _id:", selectedMessage._id);
-                  OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            if (index >= 0 && index < AllSentList.length) {
+                const selectedMessage = AllSentList[index];
+                console.log("Selected message _id:", selectedMessage._id);
+                OpenMessageDetails(selectedMessage._id, index, "updatelist");
             }
-        }   
-      };  
-    
-      const scrollToSelectedRow = (index) => {
-        const selectedRow = document.getElementById(`row-${index}`); 
+        }
+    };
+
+    const scrollToSelectedRow = (index) => {
+        const selectedRow = document.getElementById(`row-${index}`);
         if (!selectedRow) {
-          return;
+            return;
         }
         const mainDiv = document.getElementById('eventselectedrow');
         const targetScrollPosition = selectedRow.offsetTop - 70;
         mainDiv.scrollTop = targetScrollPosition;
-      };
-    
-    
-      useEffect(() => {
+    };
+
+
+    useEffect(() => {
         // Focus on the table when the component mounts
-        if (tableRef.current){
-          tableRef.current.focus();
-        }  
-      }, []);
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
+    }, []);
 
     return (
         <>
@@ -1828,49 +1828,49 @@ export default function AllSentEmailByID(props) {
 
                             <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
                                 <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
-                                <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
-                                            {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                            <TableCell component="th">From Email</TableCell>
-                                            <TableCell component="th">Subject</TableCell>
-                                            <TableCell component="th">Date</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {AllSentList.map((item, index) => {
-                                            return (
-                                                <TableRow
-                                                    // className={`${Active === item._id ? "selected-row" : ""}`}
-                                                    // key={item.name}
-                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    key={item.name}
-                                                    className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                    onClick={() => setSelectedRowIndex(index)}
-                                                    id={"row-" + index}
+                                    <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                                                <TableCell component="th">From Email</TableCell>
+                                                <TableCell component="th">Subject</TableCell>
+                                                <TableCell component="th">Date</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {AllSentList.map((item, index) => {
+                                                return (
+                                                    <TableRow
+                                                        // className={`${Active === item._id ? "selected-row" : ""}`}
+                                                        // key={item.name}
+                                                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        key={item.name}
+                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                                                        onClick={() => setSelectedRowIndex(index)}
+                                                        id={"row-" + index}
 
-                                                >
-                                                    <TableCell width={'35px'} align="center">
-                                                        <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
-                                                            <StarBorderIcon className='starone' />
-                                                            <StarIcon className='selectedstart startwo' />
-                                                        </ToggleButton>
-                                                    </TableCell>
-                                                    {/* <TableCell width={'35px'}></TableCell> */}
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
-                                                        <>
-                                                            {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                            {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                        </>
-                                                    ) : null}</TableCell>
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                </TableRow>
-                                            )
-                                        })}
-                                    </TableBody>
-                                </Table>
+                                                    >
+                                                        <TableCell width={'35px'} align="center">
+                                                            <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                                <StarBorderIcon className='starone' />
+                                                                <StarIcon className='selectedstart startwo' />
+                                                            </ToggleButton>
+                                                        </TableCell>
+                                                        {/* <TableCell width={'35px'}></TableCell> */}
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                            <>
+                                                                {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                                {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                            </>
+                                                        ) : null}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                    </TableRow>
+                                                )
+                                            })}
+                                        </TableBody>
+                                    </Table>
                                 </div>
                             </div>
                         </>

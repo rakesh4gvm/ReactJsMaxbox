@@ -1024,7 +1024,7 @@ export default function FollowUpLaterByID(props) {
         var CC = localStorage.getItem("CCMessage")
         var BCC = localStorage.getItem("BCCMessage")
 
-        const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+        const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
         const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
         SetCCMessages(NewCCEmail)
@@ -1738,9 +1738,9 @@ export default function FollowUpLaterByID(props) {
         } else {
             SetCheckedID([])
         }
-        if (tableRef.current){
+        if (tableRef.current) {
             tableRef.current.focus();
-        }  
+        }
     };
 
     const HandleCheckedID = (event, ID) => {
@@ -1894,44 +1894,44 @@ export default function FollowUpLaterByID(props) {
         console.log("e", e.key)
         console.log("index", index)
         if (e.key === 'ArrowUp') {
-          index--;
-          scrollToSelectedRow(index, 1)
-    
-          setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-          
-        } else if (e.key === 'ArrowDown') { 
-          index++;
-          scrollToSelectedRow(index, 1);
-          setSelectedRowIndex((prevIndex) =>
-            Math.min(prevIndex + 1, FollowUpList.length - 1)
-          );
+            index--;
+            scrollToSelectedRow(index, 1)
+
+            setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+
+        } else if (e.key === 'ArrowDown') {
+            index++;
+            scrollToSelectedRow(index, 1);
+            setSelectedRowIndex((prevIndex) =>
+                Math.min(prevIndex + 1, FollowUpList.length - 1)
+            );
         }
-        if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
-          if (index >= 0 && index < FollowUpList.length) {
-                  const selectedMessage = FollowUpList[index];
-                  console.log("Selected message _id:", selectedMessage._id);
-                  OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            if (index >= 0 && index < FollowUpList.length) {
+                const selectedMessage = FollowUpList[index];
+                console.log("Selected message _id:", selectedMessage._id);
+                OpenMessageDetails(selectedMessage._id, index, "updatelist");
             }
-        }   
-      };  
-    
-      const scrollToSelectedRow = (index) => {
-        const selectedRow = document.getElementById(`row-${index}`); 
+        }
+    };
+
+    const scrollToSelectedRow = (index) => {
+        const selectedRow = document.getElementById(`row-${index}`);
         if (!selectedRow) {
-          return;
+            return;
         }
         const mainDiv = document.getElementById('eventselectedrow');
         const targetScrollPosition = selectedRow.offsetTop - 70;
         mainDiv.scrollTop = targetScrollPosition;
-      };
-    
-    
-      useEffect(() => {
+    };
+
+
+    useEffect(() => {
         // Focus on the table when the component mounts
-        if (tableRef.current){
-          tableRef.current.focus();
-        }  
-      }, []);
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
+    }, []);
 
     return (
         <>

@@ -843,7 +843,7 @@ export default function AllUnansweredRepliesPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
     const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
     SetCCMessages(NewCCEmail)
@@ -1521,25 +1521,25 @@ export default function AllUnansweredRepliesPage(props) {
       scrollToSelectedRow(index, 1)
 
       setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      
-    } else if (e.key === 'ArrowDown') { 
+
+    } else if (e.key === 'ArrowDown') {
       index++;
       scrollToSelectedRow(index, 1);
       setSelectedRowIndex((prevIndex) =>
         Math.min(prevIndex + 1, AllUnansweredRepliesList.length - 1)
       );
     }
-    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < AllUnansweredRepliesList.length) {
-              const selectedMessage = AllUnansweredRepliesList[index];
-              console.log("Selected message _id:", selectedMessage._id);
-              OpenMessageDetails(selectedMessage._id, index, "updatelist");
-        }
-    }   
-  };  
+        const selectedMessage = AllUnansweredRepliesList[index];
+        console.log("Selected message _id:", selectedMessage._id);
+        OpenMessageDetails(selectedMessage._id, index, "updatelist");
+      }
+    }
+  };
 
   const scrollToSelectedRow = (index) => {
-    const selectedRow = document.getElementById(`row-${index}`); 
+    const selectedRow = document.getElementById(`row-${index}`);
     if (!selectedRow) {
       return;
     }
@@ -1551,9 +1551,9 @@ export default function AllUnansweredRepliesPage(props) {
 
   useEffect(() => {
     // Focus on the table when the component mounts
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.focus();
-    }  
+    }
   }, []);
 
   return (
@@ -1813,10 +1813,10 @@ export default function AllUnansweredRepliesPage(props) {
                           // className={`${Active === item._id ? "selected-row" : ""}`}
                           // key={item.name}
                           // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            key={item.name}
-                            className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
-                            onClick={() => setSelectedRowIndex(index)}
-                            id={"row-" + index}
+                          key={item.name}
+                          className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
+                          onClick={() => setSelectedRowIndex(index)}
+                          id={"row-" + index}
                         >
                           <TableCell width={'35px'} align="center">
                             <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >

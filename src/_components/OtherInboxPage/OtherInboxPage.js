@@ -629,7 +629,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-          
+
 
           // var element = document.getElementById("star_" + ID);
           // var element2 = document.getElementById("starbelow_" + ID);
@@ -1027,7 +1027,7 @@ export default function OtherInboxPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
     const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
     SetCCMessages(NewCCEmail)
@@ -1741,7 +1741,7 @@ export default function OtherInboxPage(props) {
     } else {
       SetCheckedID([])
     }
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.focus();
     }
   };
@@ -1903,25 +1903,25 @@ export default function OtherInboxPage(props) {
       scrollToSelectedRow(index, 1)
 
       setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      
-    } else if (e.key === 'ArrowDown') { 
+
+    } else if (e.key === 'ArrowDown') {
       index++;
       scrollToSelectedRow(index, 1);
       setSelectedRowIndex((prevIndex) =>
         Math.min(prevIndex + 1, FollowUpList.length - 1)
       );
     }
-    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < FollowUpList.length) {
-              const selectedMessage = FollowUpList[index];
-              console.log("Selected message _id:", selectedMessage._id);
-              OpenMessageDetails(selectedMessage._id, index, "updatelist");
-        }
-    }   
-  };  
+        const selectedMessage = FollowUpList[index];
+        console.log("Selected message _id:", selectedMessage._id);
+        OpenMessageDetails(selectedMessage._id, index, "updatelist");
+      }
+    }
+  };
 
   const scrollToSelectedRow = (index) => {
-    const selectedRow = document.getElementById(`row-${index}`); 
+    const selectedRow = document.getElementById(`row-${index}`);
     if (!selectedRow) {
       return;
     }
@@ -1933,9 +1933,9 @@ export default function OtherInboxPage(props) {
 
   useEffect(() => {
     // Focus on the table when the component mounts
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.focus();
-    }  
+    }
   }, []);
 
 
@@ -2224,59 +2224,59 @@ export default function OtherInboxPage(props) {
               </div>
               <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
                 <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
-                <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell component="th" className='px-0 w-0'>
-                        <Checkbox
-                          name="selectall"
-                          type="checkbox"
-                          checked={selectAllChecked}
-                          onChange={(e) => handleSelectAll(e)}
-                        />
-                      </TableCell>
-                      <TableCell component="th" width={'30px'} align="center"></TableCell>
-                      {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                      <TableCell component="th">From Email</TableCell>
-                      <TableCell component="th">Subject</TableCell>
-                      <TableCell component="th">Date</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {FollowUpList.map((item, index) => (
-                      <TableRow
-                        // className={`${Active === item._id ? "selected-row" : ""}`}
-                        // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
-                        // key={item.name}
-                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        key={item.name}
-                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                        onClick={() => setSelectedRowIndex(index)}
-                        id={"row-" + index}
-                      >
-                        <TableCell align='center'>
-                          <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                          {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
+                  <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell component="th" className='px-0 w-0'>
+                          <Checkbox
+                            name="selectall"
+                            type="checkbox"
+                            checked={selectAllChecked}
+                            onChange={(e) => handleSelectAll(e)}
+                          />
                         </TableCell>
-                        <TableCell width={'35px'} align="center">
-                          <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                            <StarBorderIcon className='starone' />
-                            <StarIcon className='selectedstart startwo' />
-                          </ToggleButton>
-                        </TableCell>
-                        {/* <TableCell width={'35px'}></TableCell> */}
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
-                          <>
-                            {item.Subject.split(' ').slice(0, 8).join(' ')}
-                            {item.Subject.split(' ').length > 8 ? '...' : ''}
-                          </>
-                        ) : null}</TableCell>
-                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                        <TableCell component="th" width={'30px'} align="center"></TableCell>
+                        {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                        <TableCell component="th">From Email</TableCell>
+                        <TableCell component="th">Subject</TableCell>
+                        <TableCell component="th">Date</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {FollowUpList.map((item, index) => (
+                        <TableRow
+                          // className={`${Active === item._id ? "selected-row" : ""}`}
+                          // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                          // key={item.name}
+                          // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          key={item.name}
+                          className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                          onClick={() => setSelectedRowIndex(index)}
+                          id={"row-" + index}
+                        >
+                          <TableCell align='center'>
+                            <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                            {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
+                          </TableCell>
+                          <TableCell width={'35px'} align="center">
+                            <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                              <StarBorderIcon className='starone' />
+                              <StarIcon className='selectedstart startwo' />
+                            </ToggleButton>
+                          </TableCell>
+                          {/* <TableCell width={'35px'}></TableCell> */}
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
+                            <>
+                              {item.Subject.split(' ').slice(0, 8).join(' ')}
+                              {item.Subject.split(' ').length > 8 ? '...' : ''}
+                            </>
+                          ) : null}</TableCell>
+                          <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
             </>

@@ -246,7 +246,7 @@ export default function SpamPage(props) {
   const bcchandleClose = () => {
     setBCCAnchorEl(null);
   };
-  
+
 
   const toopen = Boolean(anchorEl);
   const ccopen = Boolean(ccanchorEl);
@@ -1044,7 +1044,7 @@ export default function SpamPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage, FromEmailDropdownList)
+    const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
     const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
     SetCCMessages(NewCCEmail)
@@ -1756,9 +1756,9 @@ export default function SpamPage(props) {
     } else {
       SetCheckedID([])
     }
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.focus();
-    }  
+    }
   };
 
   const HandleCheckedID = (event, ID) => {
@@ -1917,25 +1917,25 @@ export default function SpamPage(props) {
       scrollToSelectedRow(index, 1)
 
       setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      
-    } else if (e.key === 'ArrowDown') { 
+
+    } else if (e.key === 'ArrowDown') {
       index++;
       scrollToSelectedRow(index, 1);
       setSelectedRowIndex((prevIndex) =>
         Math.min(prevIndex + 1, SpamPage.length - 1)
       );
     }
-    if  (e.key === 'ArrowUp' || e.key === 'ArrowDown'){ 
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < SpamPage.length) {
-              const selectedMessage = SpamPage[index];
-              console.log("Selected message _id:", selectedMessage._id);
-              OpenMessageDetails(selectedMessage._id, index, "updatelist");
-        }
-    }   
-  };  
+        const selectedMessage = SpamPage[index];
+        console.log("Selected message _id:", selectedMessage._id);
+        OpenMessageDetails(selectedMessage._id, index, "updatelist");
+      }
+    }
+  };
 
   const scrollToSelectedRow = (index) => {
-    const selectedRow = document.getElementById(`row-${index}`); 
+    const selectedRow = document.getElementById(`row-${index}`);
     if (!selectedRow) {
       return;
     }
@@ -1947,9 +1947,9 @@ export default function SpamPage(props) {
 
   useEffect(() => {
     // Focus on the table when the component mounts
-    if (tableRef.current){
+    if (tableRef.current) {
       tableRef.current.focus();
-    }  
+    }
   }, []);
 
   return (
