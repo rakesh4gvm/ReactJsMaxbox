@@ -695,7 +695,8 @@ export default function SpamByID(props) {
             if (FollowupDate != null) {
                 if (IsValidDate && IsGreater) {
                     var IsStarred
-                    if (OpenMessage.IsStarred == true) {
+                    var IsStarMail = SpamPage?.find((e) => e._id === ID)?.IsStarred
+                    if (IsStarMail) {
                         IsStarred = true
                     } else {
                         IsStarred = false

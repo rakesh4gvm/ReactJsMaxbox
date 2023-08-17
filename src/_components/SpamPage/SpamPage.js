@@ -694,7 +694,8 @@ export default function SpamPage(props) {
       if (FollowupDate != null) {
         if (IsValidDate && IsGreater) {
           var IsStarred
-          if (OpenMessage.IsStarred == true) {
+          var IsStarMail = SpamPage?.find((e) => e._id === ID)?.IsStarred
+          if (IsStarMail) {
             IsStarred = true
           } else {
             IsStarred = false
@@ -1909,7 +1910,7 @@ export default function SpamPage(props) {
     }
   }
 
-  const handleKeyDown = (e, index) => { 
+  const handleKeyDown = (e, index) => {
     if (e.key === 'ArrowUp') {
       index--;
       scrollToSelectedRow(index, 1)
@@ -1925,7 +1926,7 @@ export default function SpamPage(props) {
     }
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < SpamPage.length) {
-        const selectedMessage = SpamPage[index]; 
+        const selectedMessage = SpamPage[index];
         OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
       }
     }
@@ -2281,7 +2282,7 @@ export default function SpamPage(props) {
                     </TableHead>
                     <TableBody>
                       {SpamPage.map((item, index) => (
-                        
+
                         <TableRow
                           // className={`${Active === item._id ? "selected-row" : ""}`}
                           // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
