@@ -46,6 +46,7 @@ import AllSentEmailByID from './_components/AllSentEmailByID/AllSentEmailByID';
 import UnansweredRepliesByID from './_components/UnansweredRepliesByID/UnansweredRepliesByID';
 import Navigation from './_components/Navigation/Navigation';
 import ChatbotComponent from "./_components/ChatbotComponent"
+import LabelByID from './_components/LabelByID/LabelByID';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(CheckLocalStorage());
 
@@ -105,6 +106,7 @@ function App() {
           <Route exact path="/AllInbox" component={AllInboxPage} />
           <Route path="/AllInboxByID/:id" component={AllInboxByID} />
           <Route exact path="/NewInbox" component={NewInboxPage} />
+          <Route path="/LabelByID/:id" component={LabelByID} />
          
 
         </Switch>
