@@ -739,7 +739,8 @@ export default function FocusedByID(props) {
             if (FollowupDate != null) {
                 if (IsValidDate & IsGreater) {
                     var IsStarred
-                    if (OpenMessage.IsStarred == true) {
+                    var IsStarMail = FollowUpList?.find((e) => e._id === ID)?.IsStarred
+                    if (IsStarMail) {
                         IsStarred = true
                     } else {
                         IsStarred = false
@@ -2184,7 +2185,7 @@ export default function FocusedByID(props) {
         }
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < FollowUpList.length) {
-                const selectedMessage = FollowUpList[index]; 
+                const selectedMessage = FollowUpList[index];
                 OpenMessageDetails(selectedMessage._id, index, "updatelist");
             }
         }
