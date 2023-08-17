@@ -1909,9 +1909,7 @@ export default function SpamPage(props) {
     }
   }
 
-  const handleKeyDown = (e, index) => {
-    console.log("e", e.key)
-    console.log("index", index)
+  const handleKeyDown = (e, index) => { 
     if (e.key === 'ArrowUp') {
       index--;
       scrollToSelectedRow(index, 1)
@@ -1927,9 +1925,8 @@ export default function SpamPage(props) {
     }
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < SpamPage.length) {
-        const selectedMessage = SpamPage[index];
-        console.log("Selected message _id:", selectedMessage._id);
-        OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        const selectedMessage = SpamPage[index]; 
+        OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
       }
     }
   };
@@ -2284,6 +2281,7 @@ export default function SpamPage(props) {
                     </TableHead>
                     <TableBody>
                       {SpamPage.map((item, index) => (
+                        
                         <TableRow
                           // className={`${Active === item._id ? "selected-row" : ""}`}
                           // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}

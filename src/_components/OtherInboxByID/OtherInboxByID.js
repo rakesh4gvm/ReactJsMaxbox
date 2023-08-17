@@ -1907,8 +1907,6 @@ export default function OtherInboxByID(props) {
     }
 
     const handleKeyDown = (e, index) => {
-        console.log("e", e.key)
-        console.log("index", index)
         if (e.key === 'ArrowUp') {
             index--;
             scrollToSelectedRow(index, 1)
@@ -1925,7 +1923,6 @@ export default function OtherInboxByID(props) {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < FollowUpList.length) {
                 const selectedMessage = FollowUpList[index];
-                console.log("Selected message _id:", selectedMessage._id);
                 OpenMessageDetails(selectedMessage._id, index, "updatelist");
             }
         }

@@ -1546,8 +1546,6 @@ export default function AllSentEmailsPage(props) {
 
 
   const handleKeyDown = (e, index) => {
-    console.log("e", e.key)
-    console.log("index", index)
     if (e.key === 'ArrowUp') {
       index--;
       scrollToSelectedRow(index, 1)
@@ -1563,8 +1561,7 @@ export default function AllSentEmailsPage(props) {
     }
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < AllSentList.length) {
-        const selectedMessage = AllSentList[index];
-        console.log("Selected message _id:", selectedMessage._id);
+        const selectedMessage = AllSentList[index]; 
         OpenMessageDetails(selectedMessage._id, index, "updatelist");
       }
     }

@@ -3825,7 +3825,7 @@ div.bgwhiter {
     background-color: lightgray; /* or any other highlight color */
 }
 :focus-visible {
-    outline: -webkit-focus-ring-color auto 0px;
+    outline: -webkit-focus-ring-color auto 0px !important;
 }
 
 @media screen and (max-width:990px) {
