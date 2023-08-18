@@ -342,9 +342,9 @@ export default function LabelByID(props) {
                         if (ShowEmails == "SeenEmails") {
                             var total = 0;
                             var obj = Result.data.PageData[0].LabelField;
-                            if(obj.length > 0){
-                                var lbl = obj.filter(c =>c.RecieverEmailLableID == ID)
-                                if(lbl.length > 0){
+                            if (obj.length > 0) {
+                                var lbl = obj.filter(c => c.RecieverEmailLableID == ID)
+                                if (lbl.length > 0) {
                                     total = lbl[0].TotalLableMailCount
                                 }
                             }
@@ -353,16 +353,16 @@ export default function LabelByID(props) {
                         else if (ShowEmails == "") {
                             var total = 0;
                             var obj = Result.data.PageData[0].LabelField;
-                            if(obj.length > 0){
-                                var lbl = obj.filter(c =>c.RecieverEmailLableID == ID)
-                                if(lbl.length > 0){
+                            if (obj.length > 0) {
+                                var lbl = obj.filter(c => c.RecieverEmailLableID == ID)
+                                if (lbl.length > 0) {
                                     total = lbl[0].TotalLableMailCount - lbl[0].TotalSeenLableMailCount;
                                 }
                             }
                             SetTotalRecord(total);
                         }
                     } else {
-                        
+
                     }
                 } else {
                     SetTotalRecord(0);
@@ -2392,9 +2392,10 @@ export default function LabelByID(props) {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className='emailbodybox'>
+                            {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-                            </div>
+                            </div> */}
+                            <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
                         </div>
                     </SplitPane>
                 </div>
