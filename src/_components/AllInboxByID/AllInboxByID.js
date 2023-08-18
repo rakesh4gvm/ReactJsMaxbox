@@ -1921,7 +1921,7 @@ export default function AllInboxByID(props) {
     const handleKeyDown = (e, index) => {
         if (e.key === 'ArrowUp') {
             index--;
-            scrollToSelectedRow(index, 1) 
+            scrollToSelectedRow(index, 1)
             setSelectedRowIndex((prevIndex) => Math.max(prevIndex - 1, 0));
 
         } else if (e.key === 'ArrowDown') {
@@ -1933,7 +1933,7 @@ export default function AllInboxByID(props) {
         }
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < AllInboxList.length) {
-                const selectedMessage = AllInboxList[index]; 
+                const selectedMessage = AllInboxList[index];
                 OpenMessageDetails(selectedMessage._id, index, "updatelist");
             }
         }
@@ -2408,9 +2408,10 @@ export default function AllInboxByID(props) {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className='emailbodybox'>
+                            {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-                            </div>
+                            </div> */}
+                            <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
                         </div>
                     </SplitPane>
                 </div>

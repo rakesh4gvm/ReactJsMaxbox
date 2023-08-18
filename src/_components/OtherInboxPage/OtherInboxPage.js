@@ -2419,9 +2419,10 @@ export default function OtherInboxPage(props) {
                 </Row>
               </div>
 
-              <div className='emailbodybox'>
+              {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-              </div>
+              </div> */}
+              <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
             </div>
           </SplitPane>
         </div>

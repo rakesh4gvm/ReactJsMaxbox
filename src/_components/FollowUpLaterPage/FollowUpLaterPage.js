@@ -1907,7 +1907,7 @@ export default function FollowUpLater(props) {
     }
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < FollowUpList.length) {
-        const selectedMessage = FollowUpList[index]; 
+        const selectedMessage = FollowUpList[index];
         OpenMessageDetails(selectedMessage._id, index, "updatelist");
       }
     }
@@ -2418,9 +2418,10 @@ export default function FollowUpLater(props) {
                 </Row>
               </div>
 
-              <div className='emailbodybox'>
+              {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-              </div>
+              </div> */}
+              <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
             </div>
           </SplitPane>
         </div>

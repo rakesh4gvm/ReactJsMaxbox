@@ -1984,7 +1984,7 @@ export default function OtherInboxPage(props) {
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < AllInboxList.length) {
         const selectedMessage = AllInboxList[index];
-        
+
         OpenMessageDetails(selectedMessage._id, index, "updatelist");
       }
     }
@@ -2465,9 +2465,10 @@ export default function OtherInboxPage(props) {
                   </Col>
                 </Row>
               </div>
-              <div className='emailbodybox'>
+              {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
-              </div>
+              </div> */}
+              <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
             </div>
           </SplitPane>
         </div>
