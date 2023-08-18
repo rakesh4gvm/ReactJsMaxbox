@@ -1370,18 +1370,20 @@ export default function Navigation(props) {
 
                   <List component="div">
                     <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("3" + item._id, 1)} key={"3" + item._id}>
-                      {OutBoxID == "2" + item._id ? <ExpandMore /> : <ExpandDown />}
+                      {OutBoxID == "3" + item._id ? <ExpandMore /> : <ExpandDown />}
                       Labels
                     </ListItemButton>
                   </List>
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {item.LabelField?.map((label, ind) => (
-                        <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/LabelByID", label.RecieverEmailLableID)}
-                          component={Link}
-                          selected={SelectMenuItem === "/LabelByID" + label.RecieverEmailLableID}>
-                            {label.TotalLableMailCount !== undefined ? `${label.LableName} (${label.TotalLableMailCount - label.TotalSeenLableMailCount})` : `${label.LableName} (0)`}
-                        </ListItemButton>
+                        label.LableName != "INBOX" && (
+                          <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/LabelByID", label.RecieverEmailLableID)}
+                            component={Link}
+                            selected={SelectMenuItem === "/LabelByID" + label.RecieverEmailLableID}>
+                              {label.TotalLableMailCount !== undefined ? `${label.LableName} (${label.TotalLableMailCount - label.TotalSeenLableMailCount})` : `${label.LableName} (0)`}
+                          </ListItemButton>
+                        )
                       ))}
                     </List>
                   </Collapse>

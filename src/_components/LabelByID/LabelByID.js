@@ -2166,12 +2166,12 @@ export default function LabelByID(props) {
                             <div className='orangbg-table'>
                                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
-                                {/* <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
                                     <VisibilityOffIcon />
                                 </Button>
                                 <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
                                     <Visibility />
-                                </Button> */}
+                                </Button>
                                 <div className='rigter-coller'>
                                     {/* <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                                         className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -2207,14 +2207,14 @@ export default function LabelByID(props) {
                                             <TableRow>
                                                 {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                                {/* <TableCell component="th" className='px-0 w-0'>
+                                                <TableCell component="th" className='px-0 w-0'>
                                                     <Checkbox
                                                         name="selectall"
                                                         type="checkbox"
                                                         checked={selectAllChecked}
                                                         onChange={(e) => handleSelectAll(e)}
                                                     />
-                                                </TableCell> */}
+                                                </TableCell>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
@@ -2237,9 +2237,9 @@ export default function LabelByID(props) {
                                                 >
                                                     {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                                                     {/* <TableCell width={'35px'}></TableCell> */}
-                                                    {/* <TableCell align='center'>
+                                                    <TableCell align='center'>
                                                         <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                    </TableCell> */}
+                                                    </TableCell>
                                                     <TableCell width={'35px'} align="center">
                                                         <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
                                                             <StarBorderIcon className='starone' />
@@ -2788,7 +2788,7 @@ export default function LabelByID(props) {
                     </div>
                 </div>
             </div>
-            {/* <AllInboxComposePage GetAllInboxList={GetAllInboxList} /> */}
+            <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
         </>
     );
 }
