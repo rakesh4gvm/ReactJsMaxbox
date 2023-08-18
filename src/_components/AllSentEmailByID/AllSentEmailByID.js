@@ -1560,7 +1560,7 @@ export default function AllSentEmailByID(props) {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < AllSentList.length) {
                 const selectedMessage = AllSentList[index];
-                OpenMessageDetails(selectedMessage._id, index, "updatelist");
+                OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
             }
         }
     };
