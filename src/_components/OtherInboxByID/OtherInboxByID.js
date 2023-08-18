@@ -1923,7 +1923,7 @@ export default function OtherInboxByID(props) {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < FollowUpList.length) {
                 const selectedMessage = FollowUpList[index];
-                OpenMessageDetails(selectedMessage._id, index, "updatelist");
+                OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
             }
         }
     };

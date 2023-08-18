@@ -1765,7 +1765,7 @@ export default function OtherInboxPage(props) {
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       if (index >= 0 && index < StarredList.length) {
         const selectedMessage = StarredList[index];
-        OpenMessageDetails(selectedMessage._id, index, "updatelist");
+        OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
       }
     }
   };
