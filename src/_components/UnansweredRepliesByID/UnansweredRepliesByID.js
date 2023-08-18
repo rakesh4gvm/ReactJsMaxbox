@@ -1819,35 +1819,41 @@ export default function UnansweredRepliesByID(props) {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {AllUnansweredRepliesList?.map((item, index) => (
-                                                <TableRow
-                                                    // className={`${Active === item._id ? "selected-row" : ""}`}
-                                                    // key={item.name}
-                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            {AllUnansweredRepliesList?.map((item, index) => {
+                                                var fullName = item.FromName;
+                                                var cleanedName = fullName.replace(/<[^>]+>/, "");
+                                                cleanedName.trim();
+                                                return (
+                                                    <TableRow
+                                                        // className={`${Active === item._id ? "selected-row" : ""}`}
+                                                        // key={item.name}
+                                                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 
-                                                    key={item.name}
-                                                    className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
-                                                    onClick={() => setSelectedRowIndex(index)}
-                                                    id={"row-" + index}
+                                                        key={item.name}
+                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''}`}
+                                                        onClick={() => setSelectedRowIndex(index)}
+                                                        id={"row-" + index}
 
-                                                >
-                                                    <TableCell width={'35px'} align="center">
-                                                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
-                                                            <StarBorderIcon className='starone' />
-                                                            <StarIcon className='selectedstart startwo' />
-                                                        </ToggleButton>
-                                                    </TableCell>
-                                                    {/* <TableCell width={'35px'}></TableCell> */}
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                    <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
-                                                        <>
-                                                            {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                            {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                        </>
-                                                    ) : null}</TableCell>
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                </TableRow>
-                                            ))}
+                                                    >
+                                                        <TableCell width={'35px'} align="center">
+                                                            <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
+                                                                <StarBorderIcon className='starone' />
+                                                                <StarIcon className='selectedstart startwo' />
+                                                            </ToggleButton>
+                                                        </TableCell>
+                                                        {/* <TableCell width={'35px'}></TableCell> */}
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
+                                                            <>
+                                                                {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                                {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                            </>
+                                                        ) : null}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                    </TableRow>
+                                                )
+                                            }
+                                            )}
                                         </TableBody>
                                     </Table>
                                 </div>

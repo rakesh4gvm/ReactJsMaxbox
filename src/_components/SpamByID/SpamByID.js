@@ -2282,38 +2282,44 @@ export default function SpamByID(props) {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {SpamPage.map((item, index) => (
-                                                <TableRow
-                                                    // className={`${Active === item._id ? "selected-row" : ""}`}
-                                                    // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
-                                                    // key={item.name}
-                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    key={item.name}
-                                                    className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                    onClick={() => setSelectedRowIndex(index)}
-                                                    id={"row-" + index}
-                                                >
-                                                    <TableCell align='center'>
-                                                        <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                        {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
-                                                    </TableCell>
-                                                    <TableCell width={'35px'} align="center">
-                                                        <ToggleButton title="Starred" className='startselct' value="check" id={"star_" + item._id} selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                                                            <StarBorderIcon className='starone' />
-                                                            <StarIcon className='selectedstart startwo' />
-                                                        </ToggleButton>
-                                                    </TableCell>
-                                                    {/* <TableCell width={'35px'}></TableCell> */}
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
-                                                        <>
-                                                            {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                            {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                        </>
-                                                    ) : null}</TableCell>
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                </TableRow>
-                                            ))}
+                                            {SpamPage.map((item, index) => {
+                                                var fullName = item.FromName;
+                                                var cleanedName = fullName.replace(/<[^>]+>/, "");
+                                                cleanedName.trim();
+                                                return (
+                                                    <TableRow
+                                                        // className={`${Active === item._id ? "selected-row" : ""}`}
+                                                        // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
+                                                        // key={item.name}
+                                                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        key={item.name}
+                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                                                        onClick={() => setSelectedRowIndex(index)}
+                                                        id={"row-" + index}
+                                                    >
+                                                        <TableCell align='center'>
+                                                            <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                                                            {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
+                                                        </TableCell>
+                                                        <TableCell width={'35px'} align="center">
+                                                            <ToggleButton title="Starred" className='startselct' value="check" id={"star_" + item._id} selected={item.IsStarred} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                                                                <StarBorderIcon className='starone' />
+                                                                <StarIcon className='selectedstart startwo' />
+                                                            </ToggleButton>
+                                                        </TableCell>
+                                                        {/* <TableCell width={'35px'}></TableCell> */}
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
+                                                            <>
+                                                                {item.Subject.split(' ').slice(0, 8).join(' ')}
+                                                                {item.Subject.split(' ').length > 8 ? '...' : ''}
+                                                            </>
+                                                        ) : null}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} >{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                    </TableRow>
+                                                )
+                                            }
+                                            )}
                                         </TableBody>
                                     </Table>
                                 </div>

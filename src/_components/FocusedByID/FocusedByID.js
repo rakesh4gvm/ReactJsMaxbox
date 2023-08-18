@@ -2185,7 +2185,7 @@ export default function FocusedByID(props) {
         }
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             if (index >= 0 && index < FollowUpList.length) {
-                const selectedMessage = FollowUpList[index]; 
+                const selectedMessage = FollowUpList[index];
                 OpenMessageDetails(selectedMessage._id, index, "", "updatelist");
             }
         }
@@ -2547,8 +2547,11 @@ export default function FocusedByID(props) {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {FollowUpList.map((item, index) => (
-                                                <TableRow
+                                            {FollowUpList.map((item, index) => {
+                                                var fullName = item.FromName;
+                                                var cleanedName = fullName.replace(/<[^>]+>/, "");
+                                                cleanedName.trim();
+                                                return (<TableRow
                                                     // className={`${Active === item._id ? "selected-row" : ""}`}
                                                     // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                                                     // key={item.name}
@@ -2569,7 +2572,7 @@ export default function FocusedByID(props) {
                                                         </ToggleButton>
                                                     </TableCell>
                                                     {/* <TableCell width={'35px'}></TableCell> */}
-                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, '', "updatelist")} scope="row"> {item?.Subject ? (
                                                         <>
                                                             {item.Subject.split(' ').slice(0, 8).join(' ')}
@@ -2577,8 +2580,9 @@ export default function FocusedByID(props) {
                                                         </>
                                                     ) : null}</TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                </TableRow>
-                                            ))}
+                                                </TableRow>)
+                                            }
+                                            )}
                                         </TableBody>
                                     </Table>
 
@@ -2736,7 +2740,7 @@ export default function FocusedByID(props) {
                             {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                             </div> */}
-                             <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
+                            <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
                         </div>
                     </SplitPane>
                 </div>

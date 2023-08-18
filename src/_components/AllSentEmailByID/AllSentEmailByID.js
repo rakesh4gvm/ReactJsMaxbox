@@ -1837,6 +1837,9 @@ export default function AllSentEmailByID(props) {
                                         </TableHead>
                                         <TableBody>
                                             {AllSentList.map((item, index) => {
+                                                var fullName = item.FromName;
+                                                var cleanedName = fullName.replace(/<[^>]+>/, "");
+                                                cleanedName.trim();
                                                 return (
                                                     <TableRow
                                                         // className={`${Active === item._id ? "selected-row" : ""}`}
@@ -1855,7 +1858,7 @@ export default function AllSentEmailByID(props) {
                                                             </ToggleButton>
                                                         </TableCell>
                                                         {/* <TableCell width={'35px'}></TableCell> */}
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
