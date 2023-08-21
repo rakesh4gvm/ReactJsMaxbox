@@ -1161,6 +1161,7 @@ div.modal-prein {
     line-height: normal;
     color: #616B77;
     min-height: 100px;
+    background-color: #fff;
 }
 
 .textarea-box>* fieldset {
@@ -1990,7 +1991,7 @@ div.erorr-msg>*>* {
 }
 .composebody.draftinx {
     right: 55px;
-    bottom: 5px;
+    bottom: 7px;
 }
 .composebody.draftinx button.btn.largbtn, 
 .composebody.draftinx button.btn.largbtn:focus {
@@ -2849,12 +2850,20 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .iconsboxcd button.btn.btn-primary,
 .iconsboxcd button.btn.btn-primary:focus {
     background-color: transparent;
-    border: none;
+    border: none !important;
     box-shadow: none;
     color: #222;
     font-size: 0.8rem;
     padding: 0 7px;
     box-shadow: none !important;
+    outline: 0;
+    box-shadow: none;
+}
+button.btn.btn-primary,
+button.btn.btn-primary:focus { 
+    outline: 0;
+    box-shadow: none;
+    border: none;
 }
 
 .iconsboxcd button.btn.btn-primary:hover {

@@ -54,6 +54,7 @@ import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { Edit, EditLocation } from '@material-ui/icons';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -1111,7 +1112,7 @@ export default function OtherInboxPage(props) {
       </Modal>
 
       <div className='composebody' id='maxcompose'>
-        <Button variant="contained btn btn-primary largbtn" onClick={() => OpenCompose("")}><img src={Plusion} /></Button>
+        <Button variant="contained btn btn-primary largbtn" onClick={() => OpenCompose("")}><Edit /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>

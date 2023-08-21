@@ -25,6 +25,7 @@ import Plusion from '../../images/icons/composeion.svg';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Edit } from '@material-ui/icons';
 
 toast.configure();
 
@@ -150,7 +151,7 @@ const maxcomposeon = () => {
   return (
     <>
       <div className='composebody' id='maxcompose'>
-      <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
+      <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><Edit /></Button>
         <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
           <div className='hcompose px-3'>
             <Row>
