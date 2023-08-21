@@ -844,12 +844,15 @@ ul.d-flex.flexlist {
     padding: 0;
     margin: 0;
 }
-
+.multibox-filter, .multibox-filter * {
+    height: 100%;
+}
 .subcompose .input-clend {
     width: 100%;
     color: #616B77;
     font-weight: 400;
     padding: 0 4px;
+    height: 100%;
 }
 
 .subcompose .input-clend::before,
@@ -3375,6 +3378,7 @@ div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag span {
     padding-right: 8px;
     font-size: 0.7rem;
     letter-spacing: 0.2px;
+    line-height: 26px;
 }
 
 div.multibox-filter .MuiFilledInput-root .MuiAutocomplete-tag .MuiChip-deleteIcon {
