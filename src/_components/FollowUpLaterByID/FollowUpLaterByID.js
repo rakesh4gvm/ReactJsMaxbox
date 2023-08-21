@@ -67,6 +67,8 @@ import { useParams } from 'react-router-dom';
 import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
+import Frame from 'react-frame-component';
+
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
