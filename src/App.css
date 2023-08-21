@@ -3436,6 +3436,7 @@ div.multibox-filter div input.MuiFilledInput-input {
     font-size: 0.8rem;
     margin: 4px auto;
     color: #242424;
+    line-height: 1.4375em;
 }
 
 .hcompose>.row .col.text-right {
