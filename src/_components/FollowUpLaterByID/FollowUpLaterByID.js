@@ -2432,7 +2432,8 @@ export default function FollowUpLaterByID(props) {
                             {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                             </div> */}
-                            <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
+                             {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
                         </div>
                     </SplitPane>
                 </div>

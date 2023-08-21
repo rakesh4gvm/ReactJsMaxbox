@@ -2916,11 +2916,13 @@ div.css-dhopo2 {
 
 .emailbodybox {
     background-color: #fff;
-    font-size: 0.8rem;
+    font-size: 0;
     padding: 10px;
     overflow-y: auto !important;
     height: calc(100% - 74px);
     min-height: calc(100% - 74px);
+    border: none;
+    outline: 0;
 }
 
 .emailbodybox>*:first-child {

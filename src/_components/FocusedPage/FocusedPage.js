@@ -75,6 +75,7 @@ import PeopleOutlineIcon from '@material-ui/icons/PeopleAltOutlined';
 import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
+import Frame from 'react-frame-component';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -2824,7 +2825,8 @@ export default function UnansweredResponsesPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-              <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div>
+               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>
