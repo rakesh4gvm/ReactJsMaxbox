@@ -2916,18 +2916,17 @@ div.css-dhopo2 {
 
 .emailbodybox {
     background-color: #fff;
-    font-size: 0;
-    padding: 10px;
+    padding: 0px;
     overflow-y: auto !important;
-    height: calc(100% - 74px);
-    min-height: calc(100% - 74px);
+    height: calc(100% - 36px);
+    min-height: calc(100% - 36px);
     border: none;
     outline: 0;
 }
 
 .emailbodybox>*:first-child {
-    overflow-y: auto;
-    height: auto;
+    height: 100%;
+    border: 0;
 }
 
 .Pane.horizontal.Pane2 {

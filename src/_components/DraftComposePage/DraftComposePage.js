@@ -648,7 +648,7 @@ export default function DraftComposePage({ GetDraftList }) {
             </Modal>
 
             <div className='composebody' id='maxcompose'>
-                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><Edit /></Button>
+                <Button variant="contained btn btn-primary largbtn" onClick={OpenCompose}><img src={Plusion} /></Button>
                 <div className="usercompose userdefual" id="UserCompose" ref={WrapperRef}>
                     <div className='hcompose px-3'>
                         <Row>
