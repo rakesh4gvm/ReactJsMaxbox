@@ -413,8 +413,13 @@ export default function OtherInboxPage(props) {
               total = StarredCount - SeenStarredCount;
             }
             else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
-              // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
-              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+              // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+              if (isstarActive) {
+                var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+                total = SeenStarredCount
+              } else {
+                total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+              }
             }
             else if (ShowEmails == "" && IsStarred == "") {
               // var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.PrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
@@ -707,7 +712,12 @@ export default function OtherInboxPage(props) {
             if (ID != "" && ID != null && ID != "undefined") {
               GetAllInboxList(ClientID, UserID, Page, ID, "", "");
             } else {
-              GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+              // GetAllInboxList(ClientID, UserID, Page, 0, "", "")
+              if (isstarActive) {
+                GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails");
+              } else {
+                GetAllInboxList(ClientID, UserID, Page, 0, "", "");
+              }
             }
           }
         } else {
@@ -2475,8 +2485,8 @@ export default function OtherInboxPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+              {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+              <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>
