@@ -1863,7 +1863,7 @@ export default function AllSentEmailsPage(props) {
                               </ToggleButton>
                             </TableCell>
                             {/* <TableCell width={'35px'}></TableCell> */}
-                            <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {"(" + item?.ToNameEmail[0]?.Email + ")"}</TableCell>
+                            <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                               <>
