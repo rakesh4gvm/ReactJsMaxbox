@@ -1877,7 +1877,9 @@ export default function AllInboxByID(props) {
             ResponseApi.then(async (Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-                    if (isstarActive == true) {
+                    if (isstarActive && state) {
+                        GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails")
+                    } else if (isstarActive) {
                         GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
                     }
 

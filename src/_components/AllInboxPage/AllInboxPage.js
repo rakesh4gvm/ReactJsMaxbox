@@ -1922,7 +1922,9 @@ export default function OtherInboxPage(props) {
       ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-          if (isstarActive) {
+          if (isstarActive && state) {
+            GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails")
+          } else if (isstarActive) {
             GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
           }
 

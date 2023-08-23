@@ -982,7 +982,9 @@ export default function UnansweredResponsesPage(props) {
       ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-          if (isstarActive == true) {
+          if (isstarActive && state) {
+            GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "", "IsStarredEmails")
+          } else if (isstarActive) {
             GetUnansweredResponcesList(ClientID, UserID, Page, 0, "hideloader", "SeenEmails", "IsStarredEmails")
           }
 
@@ -2825,8 +2827,8 @@ export default function UnansweredResponsesPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+              {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+              <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>
