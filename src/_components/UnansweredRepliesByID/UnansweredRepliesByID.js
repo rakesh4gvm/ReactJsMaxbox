@@ -1814,6 +1814,7 @@ export default function UnansweredRepliesByID(props) {
                                             <TableRow>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                                                <TableCell component="th">To Email</TableCell>
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">Date</TableCell>
@@ -1843,6 +1844,7 @@ export default function UnansweredRepliesByID(props) {
                                                             </ToggleButton>
                                                         </TableCell>
                                                         {/* <TableCell width={'35px'}></TableCell> */}
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {"(" + item?.ToNameEmail[0]?.Email + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
                                                             <>
@@ -2001,8 +2003,8 @@ export default function UnansweredRepliesByID(props) {
                             {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                             </div> */}
-                             {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+                            {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+                            <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
                         </div>
                     </SplitPane>
                 </div>
