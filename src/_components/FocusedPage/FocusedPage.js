@@ -76,6 +76,7 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
+import { useDispatch } from 'react-redux';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -237,6 +238,7 @@ export default function UnansweredResponsesPage(props) {
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const tableRef = useRef(null);
+  const dispatch = useDispatch();
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -452,6 +454,17 @@ export default function UnansweredResponsesPage(props) {
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+
+            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+            var startotal = StarredCount - SeenStarredCount;
+            dispatch({ type: 'unSeenStarredCount', payload: startotal });
+
+            var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+            var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+            var UnSeenFoucsedtotal = FocusedCount - SeenFocusedCount
+            dispatch({ type: 'unSeenFocusedCount', payload: UnSeenFoucsedtotal });
+
             // if (ShowEmails == "SeenEmails" && IsStarred == "") {
             //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
             // } else
@@ -459,21 +472,53 @@ export default function UnansweredResponsesPage(props) {
               var StarredFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
               var SeenStarredFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
               total = StarredFocusedCount - SeenStarredFocusedCount;
+
             } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
+              var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+              var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+              var startotal = StarredCount - SeenStarredCount;
+              dispatch({ type: 'unSeenStarredCount', payload: startotal });
+
             } else if (ShowEmails == "" && IsStarred == "") {
               var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
               var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
               total = FocusedCount - SeenFocusedCount;
+              dispatch({ type: 'unSeenFocusedCount', payload: total });
             }
 
 
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var startotal = StarredCount - SeenStarredCount;
+            dispatch({ type: 'unSeenStarredCount', payload: startotal });
+
+            var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenFoucsedtotal = FocusedCount - SeenFocusedCount
+            dispatch({ type: 'unSeenFocusedCount', payload: UnSeenFoucsedtotal });
+
+            var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenInboxCount = InboxCount - SeenInboxCount
+            dispatch({ type: 'unSeenInboxCount', payload: unSeenInboxCount });
+
+            var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenSpamtotal = SpamCount - SeenSpamCount;
+            dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
+
+            var OtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
+            dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
+            
             if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
               if (isstarActive) {
-                var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+                var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
                 var SeenStarredFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
                 total = StarredCount - SeenStarredFocusedCount
               } else {
@@ -492,11 +537,16 @@ export default function UnansweredResponsesPage(props) {
               } else {
                 total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
               }
+              var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+              var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+              var startotal = StarredCount - SeenStarredCount;
+              dispatch({ type: 'unSeenStarredCount', payload: startotal });
             }
             else if (ShowEmails == "" && IsStarred == "") {
               var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
               total = FocusedCount - SeenFocusedCount
+              dispatch({ type: 'unSeenFocusedCount', payload: total });
             }
             SetTotalRecord(total);
           }

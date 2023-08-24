@@ -67,6 +67,7 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
+import { useDispatch } from 'react-redux';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -222,6 +223,7 @@ export default function FollowUpLater(props) {
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const tableRef = useRef(null);
+  const dispatch = useDispatch();
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -330,11 +332,18 @@ export default function FollowUpLater(props) {
               var FollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount : 0
               var SeenFollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
               total = FollowUpLaterCount - SeenFollowUpLaterCount;
+              dispatch({ type: 'unSeenFollowUpLaterCount', payload: total });
             }
 
             SetTotalRecord(total);
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+
+            var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount
+            dispatch({ type: 'unSeenFollowUpLaterCount', payload: unSeenFollowUpLaterCount });
+
             // if (ShowEmails == "SeenEmails") {
             //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
 
@@ -344,6 +353,7 @@ export default function FollowUpLater(props) {
               var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
               total = FollowUpLaterCount - SeenFollowUpLaterCount
+              dispatch({ type: 'unSeenFollowUpLaterCount', payload: total });
             }
             // else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
             //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0

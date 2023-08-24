@@ -6,6 +6,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GetUserDetails, Logout } from '../src/_helpers/Utility'
+import { Provider } from 'react-redux';
+import store from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -37,8 +39,11 @@ Axios.interceptors.response.use(
 
 
 root.render(
-  // <React.StrictMode>
+  <Provider store={store}>
     <App />
+  </Provider>
+  // <React.StrictMode>
+  // <App />
   // </React.StrictMode>
 );
 

@@ -70,6 +70,7 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
+import { useDispatch, useSelector } from 'react-redux';
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -222,6 +223,8 @@ export default function StarredByID(props) {
     const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
     const [selectedRowIndex, setSelectedRowIndex] = useState(0);
     const tableRef = useRef(null);
+    const dispatch = useDispatch();
+    const emailAccounts = useSelector(state => state.emailAccounts);
 
     const tohandleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -329,6 +332,116 @@ export default function StarredByID(props) {
 
                     SetFromEmailDropdownList(Result.data.PageData);
                     if (ID?.length > 0) {
+
+                        var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+                        var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
+                        var UnSeenInboxCount = InboxCount - SeenInboxCount;
+
+                        var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+                        var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarreCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+                        var UnSeenStarredCount = StarredCount - SeenStarredCount;
+
+                        var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
+                        var SeenFocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFocusedCount : 0
+                        var UnSeenFocusedCount = FocusedCount - SeenFocusedCount;
+
+                        var SpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
+                        var SeenSpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
+                        var UnSeenSpamCount = SpamCount - SeenSpamCount;
+
+                        var OtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].OtherInboxCount : 0
+                        var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
+                        var UnSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount;
+
+                        var emailAcocuntsArray = emailAccounts || [];
+                        var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == ID) || [];
+                        var LabelArray = Result.data.PageData[0].LabelField;
+
+                        if (emailDataArray.length > 0) {
+                            // const updatedAccounts = emailAcocuntsArray.map(obj => {
+                            //     if (obj.AccountID === ID) {
+                            //         return {
+                            //             ...obj,
+                            //             UnSeenStarredCount: UnSeenStarredCount
+                            //         };
+                            //     }
+                            //     return obj;
+                            // });
+
+                            const updatedAccounts = emailAcocuntsArray.map(obj => {
+                                if (obj.AccountID === ID) {
+                                    if (obj.LabelsCounts && obj.LabelsCounts.length > 0) {
+                                        
+                                        obj.UnSeenStarredCount = UnSeenStarredCount;
+                                        obj.UnSeenInboxCount = UnSeenInboxCount;
+                                        obj.UnSeenFocusedCount = UnSeenFocusedCount;
+                                        obj.UnSeenSpamCount = UnSeenSpamCount;
+                                        obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+
+                                        LabelArray.forEach(lblobj => {
+                                            const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                            const labelIndex = obj.LabelsCounts.findIndex(label => label.LabelID === lblobj.RecieverEmailLableID);
+                                            
+                                            if (labelIndex !== -1) {
+                                                // Update the existing label count
+                                                obj.LabelsCounts[labelIndex].UnSeenLabelCounts = LabelUnseenCount;
+                                            } else {
+                                                // Add a new label count if label with given ID doesn't exist
+                                                obj.LabelsCounts.push({
+                                                    LabelID: lblobj.RecieverEmailLableID,
+                                                    UnSeenLabelCounts: LabelUnseenCount
+                                                });
+                                            }
+                                        });
+                                        
+                                    }
+                                    else{
+                                        var UpdateLableArray = [];
+                                        const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                                            total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                            UpdateLableArray.push({
+                                                LabelID: lblobj.RecieverEmailLableID,
+                                                UnSeenLabelCounts: total
+                                            });
+                                        });
+                                        obj.LabelsCounts = UpdateLableArray;
+                                    }
+                                }
+                                return obj;
+                            });
+                            
+                            dispatch({ type: "emailAccounts", payload: updatedAccounts });
+                        } else {
+                            // const newEmailData = {
+                            //     AccountID: ID,
+                            //     UnSeenStarredCount: UnSeenStarredCount
+                            // };
+                            
+                            // const updatedAccounts = [...emailAcocuntsArray, newEmailData];
+                            // dispatch({ type: "emailAccounts", payload: updatedAccounts });
+
+                            var UpdateLableArray = [];
+                            const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                                total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                UpdateLableArray.push({
+                                    LabelID: lblobj.RecieverEmailLableID,
+                                    UnSeenLabelCounts: total
+                                });
+                            });
+                            const newEmailData = {
+                                AccountID: ID,
+                                UnSeenInboxCount: UnSeenInboxCount,
+                                UnSeenStarredCount: UnSeenStarredCount,
+                                UnSeenFocusedCount: UnSeenFocusedCount,
+                                UnSeenSpamCount: UnSeenSpamCount,
+                                UnSeenOtherInboxCount: UnSeenOtherInboxCount,
+                                LabelsCounts: UpdateLableArray
+                            };
+                            
+                            const updatedAccounts = [...emailAcocuntsArray, newEmailData];
+                            dispatch({ type: "emailAccounts", payload: updatedAccounts });
+                        }
+
                         var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
                         // if (ShowEmails == "SeenEmails" ) {
                         //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0

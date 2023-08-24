@@ -71,6 +71,8 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
+import { useDispatch } from 'react-redux';
+
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
   { title: 'The Godfather', year: 1972 },
@@ -225,6 +227,7 @@ export default function SpamPage(props) {
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const tableRef = useRef(null);
+  const dispatch = useDispatch();
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -328,6 +331,10 @@ export default function SpamPage(props) {
           SetFromEmailDropdownList(Result.data.PageData);
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
+            var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenSpamtotal = SpamCount - SeenSpamCount;
+            dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
             // if (ShowEmails == "SeenEmails" ) {
             //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
             // }
@@ -336,6 +343,7 @@ export default function SpamPage(props) {
               var SpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SpamCount : 0
               var SeenSpamCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenSpamCount : 0
               total = SpamCount - SeenSpamCount;
+              dispatch({ type: 'unSeenSpamCount', payload: total });
             }
 
 
@@ -347,10 +355,36 @@ export default function SpamPage(props) {
 
             // }
             // else 
+            var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenSpamtotal = SpamCount - SeenSpamCount;
+            dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
+
+            var StarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenStarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenStarredtotal = StarredCount - SeenStarredCount;
+            dispatch({ type: 'unSeenStarredCount', payload: UnSeenStarredtotal });
+
+            var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenInboxCount = InboxCount - SeenInboxCount
+            dispatch({ type: 'unSeenInboxCount', payload: unSeenInboxCount });
+
+            var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenFoucsedtotal = FocusedCount - SeenFocusedCount
+            dispatch({ type: 'unSeenFocusedCount', payload: UnSeenFoucsedtotal });
+
+            var OtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
+            dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
+            
             if (ShowEmails == "") {
               var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
               total = SpamCount - SeenSpamCount
+              dispatch({ type: 'unSeenSpamCount', payload: total });
             }
             // else if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
             //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
