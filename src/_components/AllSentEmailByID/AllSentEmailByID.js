@@ -1831,8 +1831,8 @@ export default function AllSentEmailByID(props) {
                                             <TableRow>
                                                 {/* <TableCell component="th" width={'30px'} align="center"></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                                <TableCell component="th">To Email</TableCell>
-                                                <TableCell component="th">From Email</TableCell>
+                                                <TableCell component="th">To</TableCell>
+                                                <TableCell component="th">From</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">Date</TableCell>
                                             </TableRow>
@@ -1992,12 +1992,12 @@ export default function AllSentEmailByID(props) {
                                                     <Button>
                                                         <label>{MailNumber} / {AllSentList.length}</label>
                                                     </Button>
-                                                    <Button>
+                                                    {/* <Button>
                                                         <ToggleButton className={"startselct temp-class" + " " + MUIClass} title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
-                                                    </Button>
+                                                    </Button> */}
                                                     <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>

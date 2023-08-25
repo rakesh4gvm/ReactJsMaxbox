@@ -2553,12 +2553,12 @@ export default function SpamByID(props) {
                                                     <Button>
                                                         <label>{MailNumber} / {SpamPage.length}</label>
                                                     </Button>
-                                                    <Button>
+                                                    {/* <Button>
                                                         <ToggleButton className={"startselct temp-class" + " " + MUIClass} value="check" title={"Starred"} id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>
-                                                    </Button>
+                                                    </Button> */}
                                                     <Button onClick={OpenFollowupPopModel} title={"Follow Up Later"}>
                                                         <img src={icontimer} />
                                                     </Button>
