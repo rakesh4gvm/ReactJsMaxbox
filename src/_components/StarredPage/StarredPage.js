@@ -371,14 +371,12 @@ export default function OtherInboxPage(props) {
             var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
             dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
 
-            // if (ShowEmails == "SeenEmails") {
-            //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
-
-            // }
-            // else
-            if (ShowEmails == "") {
-              var StarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
-              var SeenStarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+            if (ShowEmails == "SeenEmails") {
+              total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            }
+            else if (ShowEmails == "") {
+              var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+              var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
               total = StarredCount - SeenStarredCount;
               dispatch({ type: 'unSeenStarredCount', payload: total });
             }
