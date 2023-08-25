@@ -367,7 +367,6 @@ export default function StarredByID(props) {
                             // });
 
                             const updatedAccounts = emailAcocuntsArray.map(obj => {
-                                debugger;
                                 if (obj.AccountID === ID) {
                                     if (obj.LabelsCounts && obj.LabelsCounts.length > 0) {
                                         
