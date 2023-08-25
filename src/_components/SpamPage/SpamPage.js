@@ -2307,7 +2307,7 @@ export default function SpamPage(props) {
                             onChange={(e) => handleSelectAll(e)}
                           />
                         </TableCell>
-                        <TableCell component="th" width={'30px'} align="center"></TableCell>
+                        {/* <TableCell component="th" width={'30px'} align="center"></TableCell> */}
                         {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                         <TableCell component="th">From Email</TableCell>
                         <TableCell component="th">Subject</TableCell>
@@ -2334,12 +2334,12 @@ export default function SpamPage(props) {
                               <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
                               {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                             </TableCell>
-                            <TableCell width={'35px'} align="center">
+                            {/* <TableCell width={'35px'} align="center">
                               <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
-                            </TableCell>
+                            </TableCell> */}
                             {/* <TableCell width={'35px'}></TableCell> */}
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (

@@ -329,16 +329,14 @@ export default function StarredByID(props) {
 
                 if (Result.data.PageData.length > 0) {
 
-
                     SetFromEmailDropdownList(Result.data.PageData);
                     if (ID?.length > 0) {
-
                         var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
                         var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
                         var UnSeenInboxCount = InboxCount - SeenInboxCount;
 
                         var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-                        var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarreCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+                        var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                         var UnSeenStarredCount = StarredCount - SeenStarredCount;
 
                         var FocusedCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FocusedCount : 0
@@ -369,6 +367,7 @@ export default function StarredByID(props) {
                             // });
 
                             const updatedAccounts = emailAcocuntsArray.map(obj => {
+                                debugger;
                                 if (obj.AccountID === ID) {
                                     if (obj.LabelsCounts && obj.LabelsCounts.length > 0) {
                                         
