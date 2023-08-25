@@ -1370,7 +1370,7 @@ export default function Navigation(props) {
                     component={Link}
                     selected={SelectMenuItem === "/FollowUpLater" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`} */}
-                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? `Follow Up Later (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount + `)` : `Follow Up Later (` + 0 + `)`}
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? `Follow Up Later(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount + `)` : `Follow Up Later(`+ 0 +`)`}
                   </ListItemButton>
 
 
@@ -1386,14 +1386,14 @@ export default function Navigation(props) {
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails", item._id)}
                         component={Link}
                         selected={SelectMenuItem === "/AllSentEmails" + item._id}>
-                        {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount != undefined ? `All Sent (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount + `)` : `All Sent (` + 0 + `)`}
+                        {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount != undefined ? `All Sent(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount + `)` : `All Sent(` + 0 + `)`}
                         {/* {SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`} */}
                       </ListItemButton>
 
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/UnansweredReplies", item._id)}
                         component={Link}
                         selected={SelectMenuItem === "/UnansweredReplies" + item._id}>
-                        {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].UnansweredRepliesCount != undefined ? `Unanswered (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].UnansweredRepliesCount + `)` : `Unanswered (` + 0 + `)`}
+                        {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].UnansweredRepliesCount != undefined ? `Unanswered(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].UnansweredRepliesCount + `)` : `Unanswered(` + 0 + `)`}
                         {/* {SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies == undefined ? `Unanswered(0)` : `Unanswered(` + SentEmailTotalRecords?.AllUnansweredRepliesCount.filter((e) => e._id === item.AccountID)[0]?.IsUnansweredReplies + `)`} */}
                       </ListItemButton>
 
