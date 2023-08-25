@@ -1829,7 +1829,7 @@ export default function AllSentEmailByID(props) {
                                     <Table id="pokemons-list" className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                {/* <TableCell component="th" width={'30px'} align="center"></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                                                 <TableCell component="th">To Email</TableCell>
                                                 <TableCell component="th">From Email</TableCell>
@@ -1853,12 +1853,12 @@ export default function AllSentEmailByID(props) {
                                                         id={"row-" + index}
 
                                                     >
-                                                        <TableCell width={'35px'} align="center">
+                                                        {/* <TableCell width={'35px'} align="center">
                                                             <ToggleButton title="Starred" className="startselct" value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "")} >
                                                                 <StarBorderIcon className='starone' />
                                                                 <StarIcon className='selectedstart startwo' />
                                                             </ToggleButton>
-                                                        </TableCell>
+                                                        </TableCell> */}
                                                         {/* <TableCell width={'35px'}></TableCell> */}
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
