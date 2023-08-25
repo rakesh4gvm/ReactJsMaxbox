@@ -775,7 +775,8 @@ export default function OtherInboxPage(props) {
       if (FollowupDate != null) {
         if (IsValidDate && IsGreater) {
           var IsStarred
-          if (OpenMessage.IsStarred == true) {
+          var IsStarMail = FollowUpList?.find((e) => e._id === ID)?.IsStarred
+          if (IsStarMail) {
             IsStarred = true
           } else {
             IsStarred = false
@@ -799,20 +800,21 @@ export default function OtherInboxPage(props) {
               toast.success(<div>Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
               OpenMessageDetails('')
+              setSelectedRowIndex(0)
               LoaderShow()
               // if (props !== undefined) {
               //   const ID = props.location.state;
               var ID = decrypt(props.location.search.replace('?', ''))
               // if (ID !== undefined && ID!="") {
 
-              var element = document.getElementById("star_" + StarID);
+              // var element = document.getElementById("star_" + StarID);
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+              // var className = element.className;
+              // var isStar = className.includes("Mui-selected")
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-              }
+              // if (isStar) {
+              //   element.classList.remove("Mui-selected");
+              // }
 
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
@@ -1735,6 +1737,7 @@ export default function OtherInboxPage(props) {
   // Ends Pagination 
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)
       SetCheckedID([])
@@ -2459,8 +2462,8 @@ export default function OtherInboxPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+              {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+              <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>

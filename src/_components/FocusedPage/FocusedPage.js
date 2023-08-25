@@ -897,21 +897,22 @@ export default function UnansweredResponsesPage(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
               toast.success(<div>Follow up later updated successfully.</div>);
               CloseFollowupPopModel();
-              OpenMessageDetails('')
+              setSelectedRowIndex(0)
+              // OpenMessageDetails('')
               LoaderShow()
               var ID = decrypt(props.location.search.replace('?', ''))
               // if (ID !== undefined && ID!="") {
               // if (props !== undefined) {
               //   const ID = props.location.state;
 
-              var element = document.getElementById("star_" + StarID);
+              // var element = document.getElementById("star_" + StarID);
 
-              var className = element.className;
-              var isStar = className.includes("Mui-selected")
+              // var className = element.className;
+              // var isStar = className.includes("Mui-selected")
 
-              if (isStar) {
-                element.classList.remove("Mui-selected");
-              }
+              // if (isStar) {
+              //   element.classList.remove("Mui-selected");
+              // }
 
               if (!state) {
                 if (ID != "" && ID != null && ID != "undefined") {
@@ -1155,21 +1156,22 @@ export default function UnansweredResponsesPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Other inbox updated successfully.</div>);
           CloseOtherInboxPopModel();
-          OpenMessageDetails('')
+          setSelectedRowIndex(0)
+          // OpenMessageDetails('')
           LoaderShow()
           var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID !== undefined && ID!="") {
           // if (props !== undefined) {
           //   const ID = props.location.state;
 
-          var element = document.getElementById("star_" + StarID);
+          // var element = document.getElementById("star_" + StarID);
 
-          var className = element.className;
-          var isStar = className.includes("Mui-selected")
+          // var className = element.className;
+          // var isStar = className.includes("Mui-selected")
 
-          if (isStar) {
-            element.classList.remove("Mui-selected");
-          }
+          // if (isStar) {
+          //   element.classList.remove("Mui-selected");
+          // }
 
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
@@ -2058,6 +2060,7 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)
       SetCheckedID([])

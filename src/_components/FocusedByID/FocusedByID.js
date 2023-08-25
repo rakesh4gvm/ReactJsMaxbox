@@ -402,7 +402,7 @@ export default function FocusedByID(props) {
                             const updatedAccounts = emailAcocuntsArray.map(obj => {
                                 if (obj.AccountID === ID) {
                                     if (obj.LabelsCounts && obj.LabelsCounts.length > 0) {
-                                        
+
                                         obj.UnSeenStarredCount = UnSeenStarredCount;
                                         obj.UnSeenInboxCount = UnSeenInboxCount;
                                         obj.UnSeenFocusedCount = UnSeenFocusedCount;
@@ -412,7 +412,7 @@ export default function FocusedByID(props) {
                                         LabelArray.forEach(lblobj => {
                                             const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                             const labelIndex = obj.LabelsCounts.findIndex(label => label.LabelID === lblobj.RecieverEmailLableID);
-                                            
+
                                             if (labelIndex !== -1) {
                                                 // Update the existing label count
                                                 obj.LabelsCounts[labelIndex].UnSeenLabelCounts = LabelUnseenCount;
@@ -424,11 +424,11 @@ export default function FocusedByID(props) {
                                                 });
                                             }
                                         });
-                                        
+
                                     }
-                                    else{
+                                    else {
                                         var UpdateLableArray = [];
-                                        const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                                        const updatedLabelsCounts = LabelArray.map(lblobj => {
                                             total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                             UpdateLableArray.push({
                                                 LabelID: lblobj.RecieverEmailLableID,
@@ -440,11 +440,11 @@ export default function FocusedByID(props) {
                                 }
                                 return obj;
                             });
-                            
+
                             dispatch({ type: "emailAccounts", payload: updatedAccounts });
                         } else {
                             var UpdateLableArray = [];
-                            const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                            const updatedLabelsCounts = LabelArray.map(lblobj => {
                                 total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                 UpdateLableArray.push({
                                     LabelID: lblobj.RecieverEmailLableID,
@@ -460,7 +460,7 @@ export default function FocusedByID(props) {
                                 UnSeenOtherInboxCount: UnSeenOtherInboxCount,
                                 LabelsCounts: UpdateLableArray
                             };
-                            
+
                             const updatedAccounts = [...emailAcocuntsArray, newEmailData];
                             dispatch({ type: "emailAccounts", payload: updatedAccounts });
                         }
@@ -874,21 +874,22 @@ export default function FocusedByID(props) {
                         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                             toast.success(<div>Follow up later updated successfully.</div>);
                             CloseFollowupPopModel();
-                            OpenMessageDetails('')
+                            // OpenMessageDetails('')
+                            setSelectedRowIndex(0)
                             LoaderShow()
                             var ID = decrypt(props.location.search.replace('?', ''))
                             // if (ID !== undefined && ID!="") {
                             // if (props !== undefined) {
                             //   const ID = props.location.state;
 
-                            var element = document.getElementById("star_" + StarID);
+                            // var element = document.getElementById("star_" + StarID);
 
-                            var className = element.className;
-                            var isStar = className.includes("Mui-selected")
+                            // var className = element.className;
+                            // var isStar = className.includes("Mui-selected")
 
-                            if (isStar) {
-                                element.classList.remove("Mui-selected");
-                            }
+                            // if (isStar) {
+                            //     element.classList.remove("Mui-selected");
+                            // }
 
                             if (!state) {
                                 if (ID != "" && ID != null && ID != "undefined") {
@@ -1133,21 +1134,22 @@ export default function FocusedByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     toast.success(<div>Other inbox updated successfully.</div>);
                     CloseOtherInboxPopModel();
-                    OpenMessageDetails('')
+                    // OpenMessageDetails('')
+                    setSelectedRowIndex(0)
                     LoaderShow()
                     var ID = decrypt(props.location.search.replace('?', ''))
                     // if (ID !== undefined && ID!="") {
                     // if (props !== undefined) {
                     //   const ID = props.location.state;
 
-                    var element = document.getElementById("star_" + StarID);
+                    // var element = document.getElementById("star_" + StarID);
 
-                    var className = element.className;
-                    var isStar = className.includes("Mui-selected")
+                    // var className = element.className;
+                    // var isStar = className.includes("Mui-selected")
 
-                    if (isStar) {
-                        element.classList.remove("Mui-selected");
-                    }
+                    // if (isStar) {
+                    //     element.classList.remove("Mui-selected");
+                    // }
 
 
                     if (!state) {
@@ -2038,6 +2040,7 @@ export default function FocusedByID(props) {
     };
 
     const RefreshTable = () => {
+        setSelectedRowIndex(0)
         if (selectAllChecked) {
             setSelectAllChecked(!selectAllChecked)
             SetCheckedID([])
