@@ -632,6 +632,7 @@ export default function AllUnansweredRepliesPage(props) {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
+    setSelectedRowIndex(0)
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -1502,6 +1503,7 @@ export default function AllUnansweredRepliesPage(props) {
   };
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     ContainerRef.current.scrollTop = 0;
     LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))

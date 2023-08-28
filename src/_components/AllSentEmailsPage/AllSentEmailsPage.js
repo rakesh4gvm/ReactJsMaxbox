@@ -640,6 +640,7 @@ export default function AllSentEmailsPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Mail deleted successfully.</div>);
+          setSelectedRowIndex(0)
           CloseDeletePopModel();
           OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
@@ -1533,6 +1534,7 @@ export default function AllSentEmailsPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     ContainerRef.current.scrollTop = 0;
     LoaderShow()
     var ID = decrypt(props.location.search.replace('?', ''))

@@ -810,6 +810,7 @@ export default function UnansweredResponsesPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
+          setSelectedRowIndex(0)
           CloseDeletePopModel();
           OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
@@ -1575,6 +1576,7 @@ export default function UnansweredResponsesPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply Mail sent successfully.</div>);
+          setSelectedRowIndex(0)
           var ID = decrypt(props.location.search.replace('?', ''))
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
@@ -2103,6 +2105,7 @@ export default function UnansweredResponsesPage(props) {
   }
 
   const handleChange = (event) => {
+    setSelectedRowIndex(0)
     SetPage(1);
     setState(event.target.checked);
     if (selectAllChecked) {
@@ -2117,6 +2120,7 @@ export default function UnansweredResponsesPage(props) {
   };
 
   const ToggleStartClass = () => {
+    setSelectedRowIndex(0)
     setstarActive(!isstarActive);
   };
 

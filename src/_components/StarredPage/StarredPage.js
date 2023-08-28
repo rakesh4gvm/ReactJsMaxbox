@@ -616,6 +616,7 @@ export default function OtherInboxPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
+          setSelectedRowIndex(0)
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -1095,7 +1096,7 @@ export default function OtherInboxPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
-
+          setSelectedRowIndex(0)
           if (!state) {
             GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
           } else {
@@ -1594,6 +1595,7 @@ export default function OtherInboxPage(props) {
   };
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)
       SetCheckedID([])
@@ -1623,6 +1625,7 @@ export default function OtherInboxPage(props) {
   }
 
   const handleChange = (event) => {
+    setSelectedRowIndex(0)
     SetPage(1);
     setState(event.target.checked);
     if (selectAllChecked) {
@@ -2300,8 +2303,8 @@ export default function OtherInboxPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+              {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+              <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>
