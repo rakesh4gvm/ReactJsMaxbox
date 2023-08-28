@@ -244,7 +244,7 @@ export default function Navigation(props) {
   }, []);
 
   useEffect(() => {
-    if(refreshClientDetails){
+    if (refreshClientDetails) {
       RefreshClientDropdown();
       dispatch({ type: "refreshClientDetails", payload: false });
     }
@@ -299,7 +299,7 @@ export default function Navigation(props) {
     var LoginData = localStorage.getItem("LoginData")
     if (LoginData != null) {
       if (msg[1] == "inboxnotification") {
-        toast.error(msg[0]?.length > 10 ? msg[0]?.slice(0, 10) + '...' + ' : You have new email for inbox' : msg[0] + " : You have new email for inbox", {
+        toast.error(msg[0]?.length > 10 ? 'Client :' + msg[0]?.slice(0, 10) + '...' + ' ' + 'Email :' + msg[4] + ' ' + 'Subject :' + msg[3] : 'Client :' + msg[0] + ' ' + 'Email :' + msg[4] + ' ' + 'Subject :' + msg[3], {
           className: 'toast-message emailicon',
         });
       } else if (msg[1] == "spamnotification") {
