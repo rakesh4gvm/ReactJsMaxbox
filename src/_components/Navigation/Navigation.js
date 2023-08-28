@@ -272,7 +272,7 @@ export default function Navigation(props) {
   // SSE code end
 
   const SendNotification = async (data) => {
-    var msg = data.message.split("_");
+    var msg = data.message.split("@@@");
     const NavigationID = localStorage.getItem("NavigationID")
     var SelectedID = NavigationID
 
