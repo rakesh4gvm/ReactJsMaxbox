@@ -299,9 +299,24 @@ export default function Navigation(props) {
     var LoginData = localStorage.getItem("LoginData")
     if (LoginData != null) {
       if (msg[1] == "inboxnotification") {
-        toast.error(msg[0]?.length > 10 ? 'Client :' + msg[0]?.slice(0, 10) + '...' + ' ' + '(' + msg[4] + ')'+ 'Subject :' + msg[3] : 'Client :' + msg[0] + ' ' + '(' + msg[4] + ')' + 'Subject :' + msg[3], {
-          className: 'toast-message emailicon',
-        });
+        // toast.error(msg[0]?.length > 10 ? 'Client :' + msg[0]?.slice(0, 10) + '...' + ' ' + '(' + msg[4] + ')'+ 'Subject :' + msg[3] : 'Client :' + msg[0] + ' ' + '(' + msg[4] + ')' + 'Subject :' + msg[3], {
+        //   className: 'toast-message emailicon',
+        // });
+        const clientName = `${msg[0]}`;
+        const subject = `${msg[3]}`;
+        const email = `(${msg[4]})`;
+        const maxClientNameLength = 10;
+        const maxSubjectLength = 30;
+
+        const truncatedClientName = msg[0]?.length > maxClientNameLength
+          ? `${clientName.slice(0, maxClientNameLength)}...`
+          : clientName;
+
+        const truncatedSubject = msg[3]?.length > maxSubjectLength
+        ? `${subject.slice(0, maxSubjectLength)}...`
+        : subject;
+
+        toast.error(<div>{truncatedClientName} {email} <br/>{truncatedSubject}</div>, {className: 'toast-message emailicon'});
       } else if (msg[1] == "spamnotification") {
         toast.error(msg[1]?.length > 10 ? msg[1]?.slice(0, 10) + '...' + ' : You have new email for spam' : msg[1] + " : You have new email for spam");
       }
