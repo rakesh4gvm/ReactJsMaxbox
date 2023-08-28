@@ -339,6 +339,31 @@ export default function FollowUpLater(props) {
           } else {
             var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
 
+            var OtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
+            dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
+
+            var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenStarredtotal = StarredCount - SeenStarredCount;
+            dispatch({ type: 'unSeenStarredCount', payload: UnSeenStarredtotal });
+
+            var InboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenInboxCount = InboxCount - SeenInboxCount
+            dispatch({ type: 'unSeenInboxCount', payload: unSeenInboxCount });
+
+            var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenFoucsedtotal = FocusedCount - SeenFocusedCount
+            dispatch({ type: 'unSeenFocusedCount', payload: UnSeenFoucsedtotal });
+
+            var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
+            var UnSeenSpamtotal = SpamCount - SeenSpamCount;
+            dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
+
             var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
             var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
             var unSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount
@@ -1740,6 +1765,7 @@ export default function FollowUpLater(props) {
         GetFollowUpLaterList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
+    dispatch({ type: "refreshClientDetails", payload: true });
   }
 
   const handleChange = (event) => {

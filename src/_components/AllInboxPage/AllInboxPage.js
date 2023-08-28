@@ -65,7 +65,7 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const top100Films = [
@@ -381,6 +381,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.PageData.length > 0) {
 
           SetFromEmailDropdownList(Result.data.PageData);
+
           if (ID?.length > 0) {
             var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
             // if (ShowEmails == "SeenEmails" && IsStarred == "") {
@@ -431,7 +432,12 @@ export default function OtherInboxPage(props) {
             var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
             var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
             dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
-            
+
+            var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount
+            dispatch({ type: 'unSeenFollowUpLaterCount', payload: unSeenFollowUpLaterCount });
+
             // if (ShowEmails == "SeenEmails" && IsStarred == "") {
             // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
 
@@ -1646,6 +1652,7 @@ export default function OtherInboxPage(props) {
         GetAllInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
+    dispatch({ type: "refreshClientDetails", payload: true });
   }
 
   const ToggleStartClass = () => {

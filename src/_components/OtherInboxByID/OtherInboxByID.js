@@ -350,24 +350,15 @@ export default function OtherInboxByID(props) {
                         var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
                         var UnSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount;
 
+                        var FollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount : 0
+                        var SeenFollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
+                        var UnSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount;
+
                         var emailAcocuntsArray = emailAccounts || [];
                         var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == ID) || [];
                         var LabelArray = Result.data.PageData[0].LabelField;
 
                         if (emailDataArray.length > 0) {
-                            // const updatedAccounts = emailAcocuntsArray.map(obj => {
-                            //     if (obj.AccountID === ID) {
-                            //         return {
-                            //             ...obj,
-                            //             UnSeenFocusedCount: UnSeenFocusedCount,
-                            //             UnSeenStarredCount: UnSeenStarredCount,
-                            //             UnSeenInboxCount: UnSeenInboxCount,
-                            //             UnSeenSpamCount: UnSeenSpamCount,
-                            //             UnSeenOtherInboxCount: UnSeenOtherInboxCount
-                            //         };
-                            //     }
-                            //     return obj;
-                            // });
 
                             const updatedAccounts = emailAcocuntsArray.map(obj => {
                                 if (obj.AccountID === ID) {
@@ -378,6 +369,7 @@ export default function OtherInboxByID(props) {
                                         obj.UnSeenFocusedCount = UnSeenFocusedCount;
                                         obj.UnSeenSpamCount = UnSeenSpamCount;
                                         obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+                                        obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
 
                                         LabelArray.forEach(lblobj => {
                                             const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
@@ -428,6 +420,7 @@ export default function OtherInboxByID(props) {
                                 UnSeenFocusedCount: UnSeenFocusedCount,
                                 UnSeenSpamCount: UnSeenSpamCount,
                                 UnSeenOtherInboxCount: UnSeenOtherInboxCount,
+                                UnSeenFollowUpLaterCount: UnSeenFollowUpLaterCount,
                                 LabelsCounts: UpdateLableArray
                             };
 
@@ -1854,6 +1847,7 @@ export default function OtherInboxByID(props) {
                 GetOtherInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
             }
         }
+        dispatch({ type: "refreshClientDetails", payload: true });
     }
 
 

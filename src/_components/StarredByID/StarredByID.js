@@ -351,6 +351,10 @@ export default function StarredByID(props) {
                         var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenOtherInboxCount : 0
                         var UnSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount;
 
+                        var FollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].FollowUpLaterCount : 0
+                        var SeenFollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenFollowUpLaterCount : 0
+                        var UnSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount;
+
                         var emailAcocuntsArray = emailAccounts || [];
                         var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == ID) || [];
                         var LabelArray = Result.data.PageData[0].LabelField;
@@ -375,6 +379,7 @@ export default function StarredByID(props) {
                                         obj.UnSeenFocusedCount = UnSeenFocusedCount;
                                         obj.UnSeenSpamCount = UnSeenSpamCount;
                                         obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+                                        obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
 
                                         LabelArray.forEach(lblobj => {
                                             const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
@@ -433,6 +438,7 @@ export default function StarredByID(props) {
                                 UnSeenFocusedCount: UnSeenFocusedCount,
                                 UnSeenSpamCount: UnSeenSpamCount,
                                 UnSeenOtherInboxCount: UnSeenOtherInboxCount,
+                                UnSeenFollowUpLaterCount: UnSeenFollowUpLaterCount,
                                 LabelsCounts: UpdateLableArray
                             };
                             
@@ -1700,6 +1706,7 @@ export default function StarredByID(props) {
                 GetStarredList(ClientID, UserID, 1, 0, "", "Refresh")
             }
         }
+        dispatch({ type: "refreshClientDetails", payload: true });
     }
 
     const handleChange = (event) => {

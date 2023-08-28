@@ -365,6 +365,11 @@ export default function OtherInboxPage(props) {
             var UnSeenSpamtotal = SpamCount - SeenSpamCount;
             dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
 
+            var FollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
+            var unSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount
+            dispatch({ type: 'unSeenFollowUpLaterCount', payload: unSeenFollowUpLaterCount });
+
             // if (ShowEmails == "SeenEmails") {
             //   total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
 
@@ -1763,6 +1768,7 @@ export default function OtherInboxPage(props) {
         GetOtherInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
       }
     }
+    dispatch({ type: "refreshClientDetails", payload: true });
   }
 
 

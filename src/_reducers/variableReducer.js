@@ -5,7 +5,8 @@ const initialState = {
     unSeenSpamCount: null,
     unSeenOtherInboxCount: null,
     unSeenFollowUpLaterCount: null,
-    emailAccounts: []
+    emailAccounts: [],
+    refreshClientDetails: false
 };
 
 const variableReducer = (state = initialState, action) => {
@@ -23,7 +24,9 @@ const variableReducer = (state = initialState, action) => {
         case 'unSeenFollowUpLaterCount':
             return { ...state, unSeenFollowUpLaterCount: action.payload };
         case 'emailAccounts':
-                return { ...state, emailAccounts: action.payload };
+            return { ...state, emailAccounts: action.payload };
+        case 'refreshClientDetails':
+            return { ...state, refreshClientDetails: action.payload };
         default:
             return state;
     }

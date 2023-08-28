@@ -374,6 +374,10 @@ export default function LabelByID(props) {
                                 var SeenOtherInboxCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenOtherInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenOtherInboxCount : 0
                                 var UnSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount;
 
+                                var FollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].FollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].FollowUpLaterCount : 0
+                                var SeenFollowUpLaterCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenFollowUpLaterCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenFollowUpLaterCount : 0
+                                var UnSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount;
+
                                 if (emailDataArray.length > 0) {
                                     var IsExistAccountId = false;
                                     const updatedAccounts = emailAcocuntsArray.map(obj => {
@@ -391,6 +395,7 @@ export default function LabelByID(props) {
                                                     obj.UnSeenFocusedCount = UnSeenFocusedCount;
                                                     obj.UnSeenSpamCount = UnSeenSpamCount;
                                                     obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+                                                    obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
                                                     obj.LabelsCounts[labelIndex].UnSeenLabelCounts = total;
                                                 } else {
                                                     // Add a new label count if label with given ID doesn't exist
@@ -399,6 +404,7 @@ export default function LabelByID(props) {
                                                     obj.UnSeenFocusedCount = UnSeenFocusedCount;
                                                     obj.UnSeenSpamCount = UnSeenSpamCount;
                                                     obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+                                                    obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
                                                     obj.LabelsCounts.push({
                                                         LabelID: ID,
                                                         UnSeenLabelCounts: total
@@ -411,6 +417,7 @@ export default function LabelByID(props) {
                                                 obj.UnSeenFocusedCount = UnSeenFocusedCount;
                                                 obj.UnSeenSpamCount = UnSeenSpamCount;
                                                 obj.UnSeenOtherInboxCount = UnSeenOtherInboxCount;
+                                                obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
                                                 obj.LabelsCounts = [{
                                                     LabelID: ID,
                                                     UnSeenLabelCounts: total
@@ -429,6 +436,7 @@ export default function LabelByID(props) {
                                             UnSeenFocusedCount: UnSeenFocusedCount,
                                             UnSeenSpamCount: UnSeenSpamCount,
                                             UnSeenOtherInboxCount: UnSeenOtherInboxCount,
+                                            UnSeenFollowUpLaterCount: UnSeenFollowUpLaterCount,
                                             LabelsCounts: [{
                                                 LabelID: ID,
                                                 UnSeenLabelCounts: total
@@ -450,6 +458,7 @@ export default function LabelByID(props) {
                                         UnSeenFocusedCount: UnSeenFocusedCount,
                                         UnSeenSpamCount: UnSeenSpamCount,
                                         UnSeenOtherInboxCount: UnSeenOtherInboxCount,
+                                        UnSeenFollowUpLaterCount: UnSeenFollowUpLaterCount,
                                         LabelsCounts: LabelCounts
                                     };
 
@@ -1783,6 +1792,7 @@ export default function LabelByID(props) {
                 GetAllInboxList(ClientID, UserID, 1, 0, "", "", "Refresh")
             }
         }
+        dispatch({ type: "refreshClientDetails", payload: true });
     }
 
     const ToggleStartClass = () => {

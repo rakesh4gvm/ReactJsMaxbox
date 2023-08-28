@@ -73,7 +73,7 @@ import { IntroJsReact } from 'react-intro.js';
 
 
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 toast.configure();
 
@@ -224,6 +224,7 @@ export default function Navigation(props) {
   const [count, setCount] = useState(0)
 
   const location = useLocation()
+  const dispatch = useDispatch();
 
   const unSeenInboxCount = useSelector(state => state.unSeenInboxCount);
   const unSeenFocusedCount = useSelector(state => state.unSeenFocusedCount);
@@ -232,7 +233,7 @@ export default function Navigation(props) {
   const unSeenOtherInboxCount = useSelector(state => state.unSeenOtherInboxCount);
   const unSeenFollowUpLaterCount = useSelector(state => state.unSeenFollowUpLaterCount);
   const emailAccounts = useSelector(state => state.emailAccounts);
-  // console.log(JSON.stringify(emailAccounts))
+  const refreshClientDetails = useSelector(state => state.refreshClientDetails);
 
   useEffect(() => {
     // var UserDetails = GetUserDetails();
@@ -241,6 +242,13 @@ export default function Navigation(props) {
     GetClientID()
     setCount(count + 1)
   }, []);
+
+  useEffect(() => {
+    if(refreshClientDetails){
+      RefreshClientDropdown();
+      dispatch({ type: "refreshClientDetails", payload: false });
+    }
+  });
 
   // Start SSE code 
   useEffect(() => {
@@ -878,6 +886,31 @@ export default function Navigation(props) {
 
   }
 
+  // Refresh Client Counts
+  const RefreshClientDropdown = () => {
+    var UserID
+    var Details = GetUserDetails();
+    if (Details != null) {
+      UserID = Details.UserID
+      SetUserImage(Details.UserImage)
+    }
+    var Data = {
+      UserID: UserID,
+    }
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/GetClientListForTopDropDown",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if (Result.data.Data.length > 0) {
+          SetClientDropdown(Result.data.Data);
+        }
+      }
+    });
+  }
+
   // Select Client
   const SelectClient = (e) => {
     SetSelectedClient(e.target.value)
@@ -1242,7 +1275,8 @@ export default function Navigation(props) {
                   selected={SelectMenuItem === "/FollowUpLater"}>
                   {/* {AllTotalRecords?.AllFollowUpLaterCount != undefined ? "Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")" : "Follow Up Later(0)"} */}
                   {/* {FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */}
-                  {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenFollowUpLaterCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"}
+                  {/* {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenFollowUpLaterCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */}
+                  {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount - e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"}{/* display only unseen mail count */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
@@ -1370,7 +1404,11 @@ export default function Navigation(props) {
                     component={Link}
                     selected={SelectMenuItem === "/FollowUpLater" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`} */}
-                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? `Follow Up Later(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount + `)` : `Follow Up Later(`+ 0 +`)`}
+                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? `Follow Up Later(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount + `)` : `Follow Up Later(`+ 0 +`)`} */}
+                    {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                      row.UnSeenFollowUpLaterCount != undefined ? "Follow Up Later(" + row.UnSeenFollowUpLaterCount + ")" :
+                        FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)" : "Follow Up Later(0)"
+                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)"}
                   </ListItemButton>
 
 
