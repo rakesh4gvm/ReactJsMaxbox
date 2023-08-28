@@ -1263,7 +1263,7 @@ export default function Navigation(props) {
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails")}
                         component={Link} to="/AllSentEmails"
                         selected={SelectMenuItem === "/AllSentEmails"}>
-                        {FromEmailDropdownList != undefined ? "All Sent(" + FromEmailDropdownList?.map((e, index) => e?.SentCount)?.reduce((a, b) => a + b, 0) + ")" : "All Sent(0)"}
+                        All Sent{/* {FromEmailDropdownList != undefined ? "All Sent(" + FromEmailDropdownList?.map((e, index) => e?.SentCount)?.reduce((a, b) => a + b, 0) + ")" : "All Sent(0)"} */}
                         {/* {AllSentTotalRecords?.AllSentEmailsCount != undefined ? "All Sent(" + AllSentTotalRecords?.AllSentEmailsCount + ")" : "All Sent(0)"} */}
                       </ListItemButton>
 
@@ -1386,7 +1386,7 @@ export default function Navigation(props) {
                       <ListItemButton sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllSentEmails", item._id)}
                         component={Link}
                         selected={SelectMenuItem === "/AllSentEmails" + item._id}>
-                        {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount != undefined ? `All Sent(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount + `)` : `All Sent(` + 0 + `)`}
+                        All Sent{/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount != undefined ? `All Sent(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SentCount + `)` : `All Sent(` + 0 + `)`} */}
                         {/* {SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent == undefined ? `All Sent (0)` : `All Sent (` + SentEmailTotalRecords?.AllSentEmailsCount.filter((e) => e._id === item.AccountID)[0]?.IsAllSent + `)`} */}
                       </ListItemButton>
 
