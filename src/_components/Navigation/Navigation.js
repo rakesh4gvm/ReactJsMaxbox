@@ -234,6 +234,7 @@ export default function Navigation(props) {
   const unSeenFollowUpLaterCount = useSelector(state => state.unSeenFollowUpLaterCount);
   const emailAccounts = useSelector(state => state.emailAccounts);
   const refreshClientDetails = useSelector(state => state.refreshClientDetails);
+  // console.log(JSON.stringify(emailAccounts));
 
   useEffect(() => {
     // var UserDetails = GetUserDetails();
@@ -246,6 +247,8 @@ export default function Navigation(props) {
   useEffect(() => {
     if (refreshClientDetails) {
       RefreshClientDropdown();
+      var Details = GetUserDetails();
+      FromEmailList(Details.ClientID, Details.UserID);
       dispatch({ type: "refreshClientDetails", payload: false });
     }
   });
@@ -1240,8 +1243,8 @@ export default function Navigation(props) {
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
                         component={Link}
                         selected={SelectMenuItem === "/AllInbox"}>
-                        {unSeenInboxCount != null ? "All Inbox(" + unSeenInboxCount + ")" : FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}
-                        {/* {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}*/}{/* display only unseen mail count */}
+                        {/* {unSeenInboxCount != null ? "All Inbox(" + unSeenInboxCount + ")" : FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* new code display fron email variable */}
+                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* display only unseen mail count */}
                         {/* {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.PrimaryMailCount - e?.SeenPrimaryMailCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}*/} {/*display only unseen mail count */}
                       </ListItem>
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
@@ -1249,8 +1252,8 @@ export default function Navigation(props) {
                         selected={SelectMenuItem === "/Focused"}>
                         {/* {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"} */}
                         {/* {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} */}
-                        {/*{FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}*/}{/* display only unseen mail count */}
-                        {unSeenFocusedCount != null ? "Focused(" + unSeenFocusedCount + ")" : FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}
+                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} {/* display only unseen mail count */}
+                        {/* {unSeenFocusedCount != null ? "Focused(" + unSeenFocusedCount + ")" : FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} */}{/* new code display fron email variable */}
                       </ListItem>
 
                     </List>
@@ -1263,8 +1266,8 @@ export default function Navigation(props) {
                   selected={SelectMenuItem === "/Starred"}>
                   {/* {AllTotalRecords?.AllStarredCount != undefined ? "Starred(" + AllTotalRecords?.AllStarredCount + ")" : "Starred(0)"} */}
                   {/* {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"} */}
-                  {/* {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount - e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"} */}{/* display only unseen mail count */}
-                  {unSeenStarredCount != null ? "Starred(" + unSeenStarredCount + ")" : FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount - e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"}
+                  {FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount - e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"} {/* display only unseen mail count */}
+                  {/* {unSeenStarredCount != null ? "Starred(" + unSeenStarredCount + ")" : FromEmailDropdownList != undefined ? "Starred(" + FromEmailDropdownList?.map((e, index) => e?.StarredCount - e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) + ")" : "Starred(0)"} */}{/* new code display fron email variable */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Spam")}
@@ -1272,8 +1275,8 @@ export default function Navigation(props) {
                   selected={SelectMenuItem === "/Spam"}>
                   {/* {SpamTotalCount?.TotalCount != undefined ? "Spam(" + SpamTotalCount?.TotalCount + ")" : "Spam(0)"} */}
                   {/* {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"} */}
-                  {/* {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount - e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"} */}{/* display only unseen mail count */}
-                  {unSeenSpamCount != null ? "Spam(" + unSeenSpamCount + ")" : FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount - e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"}
+                  {FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount - e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"} {/* display only unseen mail count */}
+                  {/* {unSeenSpamCount != null ? "Spam(" + unSeenSpamCount + ")" : FromEmailDropdownList != undefined ? "Spam(" + FromEmailDropdownList?.map((e, index) => e?.SpamCount - e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) + ")" : "Spam(0)"} */}{/* new code display fron email variable */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage")}
@@ -1281,8 +1284,8 @@ export default function Navigation(props) {
                   selected={SelectMenuItem === "/OtherInboxPage"}>
                   {/* {AllTotalRecords?.AllOtherInboxCount != undefined ? "Other Inbox(" + AllTotalRecords?.AllOtherInboxCount + ")" : "Other Inbox(0)"} */}
                   {/* {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"} */}
-                  {/* {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount - e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"} */}{/* display only unseen mail count */}
-                  {unSeenOtherInboxCount != null ? "Other Inbox(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount - e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"}{/* display only unseen mail count */}
+                  {FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount - e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"} {/* display only unseen mail count
+                  {/* {unSeenOtherInboxCount != null ? "Other Inbox(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Other Inbox(" + FromEmailDropdownList?.map((e, index) => e?.OtherInboxCount - e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "Other Inbox(0)"} */} {/* new code display fron email variable */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/FollowUpLater")}
@@ -1291,7 +1294,8 @@ export default function Navigation(props) {
                   {/* {AllTotalRecords?.AllFollowUpLaterCount != undefined ? "Follow Up Later(" + AllTotalRecords?.AllFollowUpLaterCount + ")" : "Follow Up Later(0)"} */}
                   {/* {FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */}
                   {/* {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenFollowUpLaterCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */}
-                  {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount - e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"}{/* display only unseen mail count */}
+                  {FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount - e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} {/* display only unseen mail count
+                  {/* {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount - e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */} {/* new code display fron email variable */}
                 </ListItemButton>
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
@@ -1356,11 +1360,12 @@ export default function Navigation(props) {
                         <ListItem button sx={{ pl: item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox", item._id)}
                           component={Link}
                           selected={SelectMenuItem === "/AllInbox" + item._id}>
-                          {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
-                            row.UnSeenInboxCount != undefined ? "All Inbox(" + row.UnSeenInboxCount + ")" :
-                              FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)" : "All Inbox(0)"
-                          )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}
-                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count
+
+                          {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                            row.UnSeenInboxCount != undefined ? "All Inbox1(" + row.UnSeenInboxCount + ")" :
+                              FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox2(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox3(0)" : "All Inbox4(0)" : "All Inbox5(0)"
+                          )) : FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox6(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox7(0)" : "All Inbox8(0)"} */}{/* new code display fron email variable */}
+                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count
                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}display only unseen mail count */}
                         </ListItem>
                         <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
@@ -1368,11 +1373,11 @@ export default function Navigation(props) {
                           selected={SelectMenuItem === "/Focused" + item._id}>
                           {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Focused(0)` : `Focused(` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`} */}
                           {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? `Focused (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount + `)` : `Focused (` + 0 + `)`} */}
-                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}{/* display only unseen mail count */}
-                          {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}{/* display only unseen mail count
+                          {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
                             row.UnSeenFocusedCount != undefined ? "Focused(" + row.UnSeenFocusedCount + ")" :
                               FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)" : "Focused(0)"
-                          )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}
+                          )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"} */}{/* new code display fron email variable */}
                         </ListItem>
 
                       </List>
@@ -1384,11 +1389,11 @@ export default function Navigation(props) {
                     selected={SelectMenuItem === "/Starred" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred == undefined ? `Starred (0)` : `Starred (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsStarred + `)`} */}
                     {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? `Starred (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount + `)` : `Starred (` + 0 + `)`} */}
-                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)"} */}{/* display only unseen mail count */}
-                    {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)"}{/* display only unseen mail count */}
+                    {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
                       row.UnSeenStarredCount != undefined ? "Starred(" + row.UnSeenStarredCount + ")" :
                         FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)" : "Starred(0)"
-                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)"}
+                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount != undefined ? "Starred(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].StarredCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenStarredCount) + ")" : "Starred(0)" : "Starred(0)"} */}{/* new code display fron email variable */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Spam", item._id)}
@@ -1396,11 +1401,11 @@ export default function Navigation(props) {
                     selected={SelectMenuItem === "/Spam" + item._id}>
                     {/* {SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam == undefined ? `Spam (0)` : `Spam (` + SpamEmailCount?.EmailSpamTotalRecordCount.filter((s) => s._id == item.AccountID)[0]?.IsSpam + `)`} */}
                     {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? `Spam (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount + `)` : `Spam (` + 0 + `)`} */}
-                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)"} */}{/* display only unseen mail count */}
-                    {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)"}{/* display only unseen mail count */}
+                    {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
                       row.UnSeenSpamCount != undefined ? "Spam(" + row.UnSeenSpamCount + ")" :
                         FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)" : "Spam(0)"
-                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)"}
+                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount != undefined ? "Spam(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SpamCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenSpamCount) + ")" : "Spam(0)" : "Spam(0)"} */}{/* new code display fron email variable */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/OtherInboxPage", item._id)}
@@ -1408,11 +1413,11 @@ export default function Navigation(props) {
                     selected={SelectMenuItem === "/OtherInboxPage" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox == undefined ? `Other Inbox (0)` : `Other Inbox (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsOtherInbox + `)`} */}
                     {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? `Other Inbox (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount + `)` : `Other Inbox (` + 0 + `)`} */}
-                    {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)"} */}{/* display only unseen mail count */}
-                    {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)"}{/* display only unseen mail count */}
+                    {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
                       row.UnSeenOtherInboxCount != undefined ? "Other Inbox(" + row.UnSeenOtherInboxCount + ")" :
                         FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)" : "Other Inbox(0)"
-                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)"}
+                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount != undefined ? "Other Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].OtherInboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenOtherInboxCount) + ")" : "Other Inbox(0)" : "Other Inbox(0)"} */}{/* new code display fron email variable */}
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/FollowUpLater", item._id)}
@@ -1420,10 +1425,11 @@ export default function Navigation(props) {
                     selected={SelectMenuItem === "/FollowUpLater" + item._id}>
                     {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp == undefined ? `Follow Up Later (0)` : `Follow Up Later (` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsFollowUp + `)`} */}
                     {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? `Follow Up Later(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount + `)` : `Follow Up Later(`+ 0 +`)`} */}
-                    {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
+                    {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)"}{/* display only unseen mail count */}
+                    {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
                       row.UnSeenFollowUpLaterCount != undefined ? "Follow Up Later(" + row.UnSeenFollowUpLaterCount + ")" :
                         FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)" : "Follow Up Later(0)"
-                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)"}
+                    )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)"} */}{/* new code display fron email variable */}
                   </ListItemButton>
 
 
