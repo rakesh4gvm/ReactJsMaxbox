@@ -379,7 +379,7 @@ export default function SpamPage(props) {
             var SeenOtherInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenOtherInboxCount)?.reduce((a, b) => a + b, 0) : 0
             var unSeenOtherInboxCount = OtherInboxCount - SeenOtherInboxCount
             dispatch({ type: 'unSeenOtherInboxCount', payload: unSeenOtherInboxCount });
-            
+
             if (ShowEmails == "") {
               var SpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SpamCount)?.reduce((a, b) => a + b, 0) : 0
               var SeenSpamCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenSpamCount)?.reduce((a, b) => a + b, 0) : 0
@@ -887,6 +887,7 @@ export default function SpamPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Spam mail deleted successfully.</div>);
+          setSelectedRowIndex(0)
           CloseDeletePopModel();
           OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
@@ -1254,7 +1255,7 @@ export default function SpamPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
-
+          setSelectedRowIndex(0)
           if (!state) {
             GetSpamList(ClientID, UserID, Page, 0, "", "SeenEmails");
           } else {
@@ -1752,6 +1753,7 @@ export default function SpamPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)
       SetCheckedID([])
@@ -1783,6 +1785,7 @@ export default function SpamPage(props) {
   }
 
   const handleChange = (event) => {
+    setSelectedRowIndex(0)
     SetPage(1);
     setState(event.target.checked);
     if (selectAllChecked) {
@@ -2506,8 +2509,8 @@ export default function SpamPage(props) {
               {/* <div className='emailbodybox'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
               </div> */}
-               {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+              {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+              <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
             </div>
           </SplitPane>
         </div>

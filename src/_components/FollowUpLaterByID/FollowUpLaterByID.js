@@ -930,6 +930,7 @@ export default function FollowUpLaterByID(props) {
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     toast.success(<div>Delete mail successfully.</div>);
+                    setSelectedRowIndex(0)
                     CloseDeletePopModel();
                     OpenMessageDetails('', '', 'showloader', '')
                     LoaderShow()
@@ -1306,7 +1307,7 @@ export default function FollowUpLaterByID(props) {
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                     toast.success(<div>Reply mail sent successfully.</div>);
-
+                    setSelectedRowIndex(0)
                     if (!state) {
                         GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "SeenEmails");
                     } else {
@@ -1809,6 +1810,7 @@ export default function FollowUpLaterByID(props) {
 
     const RefreshTable = () => {
         setSelectedRowIndex(0)
+        setSelectedRowIndex(0)
         if (selectAllChecked) {
             setSelectAllChecked(!selectAllChecked)
             SetCheckedID([])
@@ -1838,6 +1840,7 @@ export default function FollowUpLaterByID(props) {
     }
 
     const handleChange = (event) => {
+        setSelectedRowIndex(0)
         SetPage(1);
         setState(event.target.checked);
         if (selectAllChecked) {

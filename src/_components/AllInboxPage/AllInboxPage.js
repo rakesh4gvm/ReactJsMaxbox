@@ -714,6 +714,7 @@ export default function OtherInboxPage(props) {
       ResponseApi.then((Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           toast.success(<div>Delete mail successfully.</div>);
+          setSelectedRowIndex(0)
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
@@ -1091,6 +1092,7 @@ export default function OtherInboxPage(props) {
       }).then((Result) => {
         if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
           toast.success(<div>Reply mail sent successfully.</div>);
+          setSelectedRowIndex(0)
           var ID = decrypt(props.location.search.replace('?', ''))
           if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
@@ -1605,6 +1607,7 @@ export default function OtherInboxPage(props) {
 
 
   const handleChange = (event) => {
+    setSelectedRowIndex(0)
     SetPage(1);
     setState(event.target.checked);
     if (selectAllChecked) {
@@ -1620,6 +1623,7 @@ export default function OtherInboxPage(props) {
 
 
   const RefreshTable = () => {
+    setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)
       SetCheckedID([])
@@ -1656,6 +1660,7 @@ export default function OtherInboxPage(props) {
   }
 
   const ToggleStartClass = () => {
+    setSelectedRowIndex(0)
     setstarActive(!isstarActive);
   };
 

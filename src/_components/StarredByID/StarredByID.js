@@ -373,7 +373,7 @@ export default function StarredByID(props) {
                             const updatedAccounts = emailAcocuntsArray.map(obj => {
                                 if (obj.AccountID === ID) {
                                     if (obj.LabelsCounts && obj.LabelsCounts.length > 0) {
-                                        
+
                                         obj.UnSeenStarredCount = UnSeenStarredCount;
                                         obj.UnSeenInboxCount = UnSeenInboxCount;
                                         obj.UnSeenFocusedCount = UnSeenFocusedCount;
@@ -384,7 +384,7 @@ export default function StarredByID(props) {
                                         LabelArray.forEach(lblobj => {
                                             const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                             const labelIndex = obj.LabelsCounts.findIndex(label => label.LabelID === lblobj.RecieverEmailLableID);
-                                            
+
                                             if (labelIndex !== -1) {
                                                 // Update the existing label count
                                                 obj.LabelsCounts[labelIndex].UnSeenLabelCounts = LabelUnseenCount;
@@ -396,11 +396,11 @@ export default function StarredByID(props) {
                                                 });
                                             }
                                         });
-                                        
+
                                     }
-                                    else{
+                                    else {
                                         var UpdateLableArray = [];
-                                        const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                                        const updatedLabelsCounts = LabelArray.map(lblobj => {
                                             total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                             UpdateLableArray.push({
                                                 LabelID: lblobj.RecieverEmailLableID,
@@ -412,19 +412,19 @@ export default function StarredByID(props) {
                                 }
                                 return obj;
                             });
-                            
+
                             dispatch({ type: "emailAccounts", payload: updatedAccounts });
                         } else {
                             // const newEmailData = {
                             //     AccountID: ID,
                             //     UnSeenStarredCount: UnSeenStarredCount
                             // };
-                            
+
                             // const updatedAccounts = [...emailAcocuntsArray, newEmailData];
                             // dispatch({ type: "emailAccounts", payload: updatedAccounts });
 
                             var UpdateLableArray = [];
-                            const updatedLabelsCounts = LabelArray.map(lblobj => { 
+                            const updatedLabelsCounts = LabelArray.map(lblobj => {
                                 total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
                                 UpdateLableArray.push({
                                     LabelID: lblobj.RecieverEmailLableID,
@@ -441,7 +441,7 @@ export default function StarredByID(props) {
                                 UnSeenFollowUpLaterCount: UnSeenFollowUpLaterCount,
                                 LabelsCounts: UpdateLableArray
                             };
-                            
+
                             const updatedAccounts = [...emailAcocuntsArray, newEmailData];
                             dispatch({ type: "emailAccounts", payload: updatedAccounts });
                         }
@@ -704,6 +704,7 @@ export default function StarredByID(props) {
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     toast.success(<div>Delete mail successfully.</div>);
+                    setSelectedRowIndex(0)
                     CloseDeletePopModel();
                     OpenMessageDetails('')
                     LoaderShow()
@@ -1184,7 +1185,7 @@ export default function StarredByID(props) {
             }).then((Result) => {
                 if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
                     toast.success(<div>Reply mail sent successfully.</div>);
-
+                    setSelectedRowIndex(0)
                     if (!state) {
                         GetStarredList(ClientID, UserID, Page, 0, "SeenEmails")
                     } else {
@@ -1681,6 +1682,7 @@ export default function StarredByID(props) {
     };
 
     const RefreshTable = () => {
+        setSelectedRowIndex(0)
         if (selectAllChecked) {
             setSelectAllChecked(!selectAllChecked)
             SetCheckedID([])
@@ -1710,6 +1712,7 @@ export default function StarredByID(props) {
     }
 
     const handleChange = (event) => {
+        setSelectedRowIndex(0)
         SetPage(1);
         setState(event.target.checked);
         if (selectAllChecked) {
@@ -2387,8 +2390,8 @@ export default function StarredByID(props) {
                             {/* <div className='emailbodybox'>
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                             </div> */}
-                             {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div  dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+                            {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
+                            <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
                         </div>
                     </SplitPane>
                 </div>
