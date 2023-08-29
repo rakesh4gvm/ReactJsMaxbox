@@ -354,7 +354,8 @@ export default function FollowUpLaterByID(props) {
 
                         var emailAcocuntsArray = emailAccounts || [];
                         var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == ID) || [];
-                        var LabelArray = Result.data.PageData[0].LabelField;
+                        // var LabelArray = Result.data.PageData[0].LabelField;
+                        var LabelArray = Result.data.PageData.filter((e) => e.AccountID == ID)[0].LabelField;
 
                         if (emailDataArray.length > 0) {
 
@@ -370,18 +371,20 @@ export default function FollowUpLaterByID(props) {
                                         obj.UnSeenFollowUpLaterCount = UnSeenFollowUpLaterCount;
 
                                         LabelArray.forEach(lblobj => {
-                                            const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
-                                            const labelIndex = obj.LabelsCounts.findIndex(label => label.LabelID === lblobj.RecieverEmailLableID);
+                                            if(lblobj.LableName != "INBOX"){
+                                                const LabelUnseenCount = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                                const labelIndex = obj.LabelsCounts.findIndex(label => label.LabelID === lblobj.RecieverEmailLableID);
 
-                                            if (labelIndex !== -1) {
-                                                // Update the existing label count
-                                                obj.LabelsCounts[labelIndex].UnSeenLabelCounts = LabelUnseenCount;
-                                            } else {
-                                                // Add a new label count if label with given ID doesn't exist
-                                                obj.LabelsCounts.push({
-                                                    LabelID: lblobj.RecieverEmailLableID,
-                                                    UnSeenLabelCounts: LabelUnseenCount
-                                                });
+                                                if (labelIndex !== -1) {
+                                                    // Update the existing label count
+                                                    obj.LabelsCounts[labelIndex].UnSeenLabelCounts = LabelUnseenCount;
+                                                } else {
+                                                    // Add a new label count if label with given ID doesn't exist
+                                                    obj.LabelsCounts.push({
+                                                        LabelID: lblobj.RecieverEmailLableID,
+                                                        UnSeenLabelCounts: LabelUnseenCount
+                                                    });
+                                                }
                                             }
                                         });
 
@@ -389,11 +392,13 @@ export default function FollowUpLaterByID(props) {
                                     else {
                                         var UpdateLableArray = [];
                                         const updatedLabelsCounts = LabelArray.map(lblobj => {
-                                            total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
-                                            UpdateLableArray.push({
-                                                LabelID: lblobj.RecieverEmailLableID,
-                                                UnSeenLabelCounts: total
-                                            });
+                                            if(lblobj.LableName != "INBOX"){
+                                                total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                                UpdateLableArray.push({
+                                                    LabelID: lblobj.RecieverEmailLableID,
+                                                    UnSeenLabelCounts: total
+                                                });
+                                            }
                                         });
                                         obj.LabelsCounts = UpdateLableArray;
                                     }
@@ -405,11 +410,13 @@ export default function FollowUpLaterByID(props) {
                         } else {
                             var UpdateLableArray = [];
                             const updatedLabelsCounts = LabelArray.map(lblobj => {
-                                total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
-                                UpdateLableArray.push({
-                                    LabelID: lblobj.RecieverEmailLableID,
-                                    UnSeenLabelCounts: total
-                                });
+                                if(lblobj.LableName != "INBOX"){
+                                    total = lblobj.TotalLableMailCount - lblobj.TotalSeenLableMailCount;
+                                    UpdateLableArray.push({
+                                        LabelID: lblobj.RecieverEmailLableID,
+                                        UnSeenLabelCounts: total
+                                    });
+                                }
                             });
                             const newEmailData = {
                                 AccountID: ID,

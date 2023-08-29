@@ -1485,6 +1485,9 @@ export default function Navigation(props) {
                           const matchingLabel = matchingAccount.LabelsCounts?.find((row) => row.LabelID === labelId);
                           unseenLabelCount = matchingLabel ? matchingLabel.UnSeenLabelCounts : 0;
                         }
+                        else{
+                          unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
+                        }
 
                         // Calculate the label count for display
                         const displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
