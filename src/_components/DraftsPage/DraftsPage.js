@@ -1011,7 +1011,7 @@ export default function OtherInboxPage(props) {
                   </Col>
                 </Row>
               </div>
-              <div className='emailbodybox'>
+              <div className='emailbodybox p-1'>
                 {OpenMessage == 0 ? '' : parse(OpenMessage.Body)}
               </div>
             </div>
