@@ -521,7 +521,7 @@ export default function UnansweredResponsesPage(props) {
             var SeenFollowUpLaterCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) : 0
             var unSeenFollowUpLaterCount = FollowUpLaterCount - SeenFollowUpLaterCount
             dispatch({ type: 'unSeenFollowUpLaterCount', payload: unSeenFollowUpLaterCount });
-            
+
             if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
               if (isstarActive) {
                 var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
@@ -2935,6 +2935,19 @@ export default function UnansweredResponsesPage(props) {
                       SetToEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = false
@@ -3179,6 +3192,19 @@ export default function UnansweredResponsesPage(props) {
                       SetForwardToEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)

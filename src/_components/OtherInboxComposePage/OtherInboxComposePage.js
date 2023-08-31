@@ -724,7 +724,7 @@ export default function OtherInboxComposePage({ GetOtherInboxList }) {
                             <Col xs={8} className="px-0">
                                 {/* <Input className='input-clend' id='ToEmail' name='ToEmail' /> */}
                                 <div className='multibox-filter'>
-                                    <Autocomplete
+                                    {/* <Autocomplete
                                         multiple
                                         id="ToEmail"
                                         value={ToEmailValue}
@@ -733,6 +733,46 @@ export default function OtherInboxComposePage({ GetOtherInboxList }) {
                                             SetToEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                            value.map((option, index) => {
+                                                var ValidEmail = ValidateEmail(option)
+                                                if (ValidEmail) {
+                                                    return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                                                }
+                                            }
+                                            )
+                                        }
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="filled"
+                                                label=" "
+                                                placeholder=" "
+                                            />
+                                        )}
+                                    /> */}
+                                    <Autocomplete
+                                        multiple
+                                        freeSolo
+                                        clearOnBlur
+                                        id="ToEmail"
+                                        value={ToEmailValue}
+                                        options={top100Films.map((option) => option.title)}
+                                        onChange={(event, newValue) => {
+                                            SetToEmailValue(newValue);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.key === 'Tab') {
+                                                const newInputValue = event.target.value;
+                                                SetToEmailValue([...ToEmailValue, newInputValue]);
+                                            }
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetToEmailValue([...ToEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)

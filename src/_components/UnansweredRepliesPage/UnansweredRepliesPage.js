@@ -2034,6 +2034,19 @@ export default function AllUnansweredRepliesPage(props) {
                       SetToEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = false
@@ -2269,6 +2282,19 @@ export default function AllUnansweredRepliesPage(props) {
                       SetForwardToEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)

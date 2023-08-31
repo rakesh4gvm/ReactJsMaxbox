@@ -316,10 +316,10 @@ export default function Navigation(props) {
           : clientName;
 
         const truncatedSubject = msg[3]?.length > maxSubjectLength
-        ? `${subject.slice(0, maxSubjectLength)}...`
-        : subject;
+          ? `${subject.slice(0, maxSubjectLength)}...`
+          : subject;
 
-        toast.error(<div>{truncatedClientName} {email} <br/>{truncatedSubject}</div>, {className: 'toast-message emailicon'});
+        toast.error(<div>{truncatedClientName} {email} <br />{truncatedSubject == "undefined" || truncatedSubject == "" ? "" : truncatedSubject} </div>, { className: 'toast-message emailicon' });
       } else if (msg[1] == "spamnotification") {
         toast.error(msg[1]?.length > 10 ? msg[1]?.slice(0, 10) + '...' + ' : You have new email for spam' : msg[1] + " : You have new email for spam");
       }
@@ -1485,7 +1485,7 @@ export default function Navigation(props) {
                           const matchingLabel = matchingAccount.LabelsCounts?.find((row) => row.LabelID === labelId);
                           unseenLabelCount = matchingLabel ? matchingLabel.UnSeenLabelCounts : 0;
                         }
-                        else{
+                        else {
                           unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
                         }
 

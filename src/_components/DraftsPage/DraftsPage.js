@@ -1161,7 +1161,7 @@ export default function OtherInboxPage(props) {
               <Col xs={8} className="px-0">
                 {/* <Input className='input-clend' id='ComposeTo' name='To' value={MailChange.To} onChange={HandleMailChange} /> */}
                 <div className='multibox-filter'>
-                  <Autocomplete
+                  {/* <Autocomplete
                     multiple
                     id="ComposeTo"
                     value={ToEmailValue}
@@ -1170,6 +1170,46 @@ export default function OtherInboxPage(props) {
                       SetToEmailValue(newValue);
                     }}
                     freeSolo
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => {
+                        var ValidEmail = ValidateEmail(option)
+                        if (ValidEmail) {
+                          return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                        }
+                      }
+                      )
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label=" "
+                        placeholder=" "
+                      />
+                    )}
+                  /> */}
+                  <Autocomplete
+                    multiple
+                    freeSolo
+                    clearOnBlur
+                    id="ComposeTo"
+                    value={ToEmailValue}
+                    options={top100Films.map((option) => option.title)}
+                    onChange={(event, newValue) => {
+                      SetToEmailValue(newValue);
+                    }}
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetToEmailValue([...ToEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)
