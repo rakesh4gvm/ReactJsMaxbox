@@ -3027,6 +3027,19 @@ export default function UnansweredResponsesPage(props) {
                       SetCCMessages(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetCCMessages([...CCMessages, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetCCMessages([...CCMessages, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = false
@@ -3113,6 +3126,19 @@ export default function UnansweredResponsesPage(props) {
                       SetBCCMessages(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetBCCMessages([...BCCMessages, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetBCCMessages([...BCCMessages, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = false
@@ -3247,6 +3273,19 @@ export default function UnansweredResponsesPage(props) {
                       SetForwardCCEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)
@@ -3283,7 +3322,21 @@ export default function UnansweredResponsesPage(props) {
                     value={ForwardBCCEmailValue}
                     onChange={(event, newValue) => {
                       SetForwardBCCEmailValue(newValue);
-                    }} freeSolo
+                    }}
+                    freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)

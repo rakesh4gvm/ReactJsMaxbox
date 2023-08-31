@@ -1253,6 +1253,19 @@ export default function OtherInboxPage(props) {
                       SetCCEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetCCEmailValue([...CCEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetCCEmailValue([...CCEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)
@@ -1292,6 +1305,19 @@ export default function OtherInboxPage(props) {
                       SetBCCEmailValue(newValue);
                     }}
                     freeSolo
+                    clearOnBlur
+                    onKeyDown={(event, newValue) => {
+                      if (event.key === 'Tab') {
+                        const newInputValue = event.target.value;
+                        SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                      }
+                      if (event.keyCode === 188) {
+                        event.preventDefault();
+                        const newInputValue = event.target.value;
+                        SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                        event.target.value = '';
+                      }
+                    }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
                         var ValidEmail = ValidateEmail(option)
