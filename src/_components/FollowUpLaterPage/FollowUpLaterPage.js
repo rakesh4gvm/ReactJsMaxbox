@@ -187,7 +187,8 @@ export default function FollowUpLater(props) {
   const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
   const [CCMessages, SetCCMessages] = React.useState([])
   const [BCCMessages, SetBCCMessages] = React.useState([])
-  const [state, setState] = useState(true)
+  // const [state, setState] = useState(true)
+  const [state, setState] = useState(false)
   const [ValueMail, SetValueMail] = useState()
   const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
   const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
@@ -2249,7 +2250,8 @@ export default function FollowUpLater(props) {
                   <Visibility />
                 </Button>
                 <div className='rigter-coller'>
-                  <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
+                  {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
+                  <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
                   <a onClick={RefreshTable} className='Refreshbtn'><RefreshIcon /></a>
                   {
                     OpenMessage?.length == 0 ? "" :

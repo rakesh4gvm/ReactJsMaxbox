@@ -185,7 +185,8 @@ export default function AllInboxByID(props) {
     const [BCCEmailValue, SetBCCEmailValue] = React.useState([]);
     const [CCMessages, SetCCMessages] = React.useState([])
     const [BCCMessages, SetBCCMessages] = React.useState([])
-    const [state, setState] = useState(true)
+    // const [state, setState] = useState(true)
+    const [state, setState] = useState(false)
     const [ValueMail, SetValueMail] = useState()
     const [ForwardToEmailValue, SetForwardToEmailValue] = useState([])
     const [ForwardCCEmailValue, SetForwardCCEmailValue] = useState([])
@@ -299,9 +300,9 @@ export default function AllInboxByID(props) {
                 }
             } else {
                 if (isstarActive) {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "IsStarredEmails")
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, 0, "", "IsStarredEmails")
                 } else {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "", "")
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, 0, "", "")
                 }
             }
         }
@@ -2323,8 +2324,8 @@ export default function AllInboxByID(props) {
                                         <StarIcon className='selectedstart startwo' />
                                         Starred
                                     </ToggleButton>
-                                    <FormControlLabel className='check-unseen'
-                                        control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" />
+                                    {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
+                                    <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
 
                                     <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
