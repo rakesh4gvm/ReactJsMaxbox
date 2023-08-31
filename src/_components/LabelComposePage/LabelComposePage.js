@@ -820,12 +820,25 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <div className='multibox-filter'>
                                     <Autocomplete
                                         multiple
+                                        clearOnBlur
                                         value={CCEmailValue}
                                         options={top100Films.map((option) => option.title)}
                                         onChange={(event, newValue) => {
                                             SetCCEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.key === 'Tab') {
+                                                const newInputValue = event.target.value;
+                                                SetCCEmailValue([...CCEmailValue, newInputValue]);
+                                            }
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetCCEmailValue([...CCEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
@@ -861,6 +874,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                 <div className='multibox-filter'>
                                     <Autocomplete
                                         multiple
+                                        clearOnBlur
                                         id="BCC"
                                         value={BCCEmailValue}
                                         onChange={(event, newValue) => {
@@ -868,6 +882,18 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                         }}
                                         options={top100Films.map((option) => option.title)}
                                         freeSolo
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.key === 'Tab') {
+                                                const newInputValue = event.target.value;
+                                                SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                                            }
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
