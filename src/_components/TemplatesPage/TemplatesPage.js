@@ -327,8 +327,8 @@ export default function TemplatesListPage() {
                         <TableCell>Open</TableCell>
                         {/* <TableCell>Replies</TableCell> */}
                         <TableCell>Open %</TableCell>
-                        <TableCell>Replay</TableCell>
-                        <TableCell>Replay %</TableCell>
+                        <TableCell>Reply</TableCell>
+                        <TableCell>Reply %</TableCell>
                         {/* <TableCell>Replies %</TableCell> */}
                         <TableCell>Action</TableCell>
                       </TableRow>
