@@ -41,9 +41,10 @@ import ArrowRight from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Collapse } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom'; 
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
 
 import { history } from "../../_helpers";
 import TreeView from '@material-ui/lab/TreeView';
@@ -71,9 +72,23 @@ import IntroJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { IntroJsReact } from 'react-intro.js';
 
-
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Add } from '@material-ui/icons';
+
+import Emailinbox from '../../images/email_inbox_img.png';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};  
 
 toast.configure();
 
@@ -235,6 +250,15 @@ export default function Navigation(props) {
   const emailAccounts = useSelector(state => state.emailAccounts);
   const refreshClientDetails = useSelector(state => state.refreshClientDetails);
   // console.log(JSON.stringify(emailAccounts));
+ 
+  const [opento, setOpento] = React.useState(false);
+
+  const labelhandleOpen = () => {
+    setOpento(true);
+  };
+  const labelhandleClose = () => {
+    setOpento(false);
+  };
 
   useEffect(() => {
     // var UserDetails = GetUserDetails();
@@ -1464,7 +1488,39 @@ export default function Navigation(props) {
                     <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("3" + item._id, 1)} key={"3" + item._id}>
                       {OutBoxID == "3" + item._id ? <ExpandMore /> : <ExpandDown />}
                       Labels
-                    </ListItemButton>
+                      <Button className='btnplusright' onClick={labelhandleOpen}><Add /></Button>
+                    </ListItemButton> 
+
+                    <Modal
+                      open={opento}
+                      onClose={labelhandleClose}
+                      aria-labelledby="child-modal-title"
+                      aria-describedby="child-modal-description"
+                    > 
+                      <Box sx={style} className="modal-prein">
+                        <div className='px-5 py-4 text-center'>
+                          <Typography id="modal-modal-title" variant="b" component="h4">
+                            New label
+                          </Typography>
+
+                          <Typography component="p" sx={{ mt: 2 }} align='left'>
+                            Please enter a new label name:
+                          </Typography>
+                          <div className='input-box'>
+                            <input type='text' placeholder='Name' /> 
+                          </div>
+                        </div>
+                        <div className='d-flex btn-50'>
+                          <Button className='btn btn-pre greybtn' variant="contained" size="medium">
+                            Cancel
+                          </Button>
+                          <Button className='btn btn-darkpre' variant="contained" size="medium">
+                            Create
+                          </Button>
+                        </div>
+                      </Box>
+                    </Modal>
+
                   </List>
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>

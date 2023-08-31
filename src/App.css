@@ -1012,6 +1012,8 @@ button.btn-darkpre,
 button.btn-darkpre:hover {
     background-color: #cd7d5e;
     color: #fff;
+    box-shadow: none !important;
+    outline: 0;
 }
 
 .btn-50 button {
@@ -2593,7 +2595,7 @@ div#root {
     background-color: #E49273;
     height: 100%;
     width: 70px;
-    z-index: 9999;
+    z-index: 999;
     padding: 10px;
 }
 
@@ -2998,7 +3000,7 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     width: 42px;
     height: 41px;
     position: fixed;
-    z-index: 9999;
+    z-index: 999;
     right: 0;
     text-align: center;
     line-height: 41px;
@@ -3846,6 +3848,58 @@ div.bgwhiter {
 }
 :focus-visible {
     outline: -webkit-focus-ring-color auto 0px !important;
+}
+.filltermoveto{
+    max-width: 200px; 
+    position: absolute;
+    left: 70px;
+}
+.filltermoveto{ 
+    background-color: #fff;
+    position: absolute;
+    left: 70px;
+    font-size: 0.9rem;
+    padding: 7px 0; 
+    width: auto;
+    display: table;
+    z-index: 1;
+    box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
+}
+.filltermoveto h6{ 
+    font-size: 0.8rem;
+    padding-left: 10px;
+    margin-bottom: 0;
+}
+.filltermoveto .MuiOutlinedInput-root{
+    padding: 0;
+}
+.filltermoveto .MuiOutlinedInput-root fieldset {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAutocomplete-paper.css-9e5uuu-MuiPaper-root-MuiAutocomplete-paper {
+    font-size: 0.9rem;
+    box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
+}
+button.btn-pre.greybtn, button.btn-pre.greybtn:hover{
+    background-color: rgb(150 150 150);
+}
+button.btnplusright {
+    right: 15px;
+    color: #666;
+    position: absolute; 
+    width: 16px;
+    min-width: auto;
+    text-align: center;
+    padding: 1px;
+    min-height: auto;
+    height: 16px;
+}
+.listclick button.btnplusright svg {
+    position: relative;
+    margin-left: 0;
+    width: 0.9rem;
 }
 
 @media screen and (max-width:990px) {

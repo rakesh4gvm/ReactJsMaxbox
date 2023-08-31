@@ -54,8 +54,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from "react-toastify";
-
-import Autocomplete from '@mui/material/Autocomplete';
+ 
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -63,10 +62,13 @@ import Checkbox from '@mui/material/Checkbox';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useParams } from 'react-router-dom';
 import Popover from '@mui/material/Popover';
-import { ArrowDropDown } from '@material-ui/icons';
+import { ArrowDropDown, InsertDriveFileOutlined } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'; 
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -224,7 +226,24 @@ export default function AllInboxByID(props) {
     const [selectedRowIndex, setSelectedRowIndex] = useState(0);
     const tableRef = useRef(null);
     const { id } = useParams();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); 
+    const [boxVisible, setBoxVisible] = useState(false);
+    const boxRef = useRef(null);
+
+    useEffect(() => {
+        // Function to close box when clicking outside
+        const handleOutsideClick = (event) => {
+          if (boxRef.current && !boxRef.current.contains(event.target)) {
+            setBoxVisible(false);
+          }
+        };
+    
+        document.addEventListener('mousedown', handleOutsideClick);
+    
+        return () => {
+          document.removeEventListener('mousedown', handleOutsideClick);
+        };
+      }, []);
 
     const emailAccounts = useSelector(state => state.emailAccounts);
 
@@ -2086,6 +2105,13 @@ export default function AllInboxByID(props) {
         }
     }, []);
 
+    const defaultOption = top100Films[0]; 
+    const filterOptions = createFilterOptions({
+        matchFrom: 'start',
+        stringify: (option) => option.title,
+        open
+      });
+      
 
     return (
 
@@ -2316,6 +2342,36 @@ export default function AllInboxByID(props) {
                                 <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
                                     <Visibility />
                                 </Button>
+
+                                {/* <Autocomplete
+                                id="filter-demo"
+                                options={top100Films}
+                                getOptionLabel={(option) => option.title}
+                                filterOptions={filterOptions}
+                                sx={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Custom filter" />}
+                                /> */}
+
+                                <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
+                                    <DriveFileMoveIcon />
+                                </Button>  
+                                {boxVisible && (
+                                    <div className="box filltermoveto" ref={boxRef}> 
+                                     <h6>Move to :</h6>
+                                        <Autocomplete
+                                            id="filter-demo"
+                                            options={top100Films}
+                                            getOptionLabel={(option) => option.title}
+                                            filterOptions={filterOptions}
+                                            sx={{ width: 200 }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                            // value={defaultOption}  
+                                            open // Make sure the dropdown is open
+                                        /> 
+                                    </div>
+                                )} 
+
+
                                 <div className='rigter-coller'>
                                     <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                                         className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
