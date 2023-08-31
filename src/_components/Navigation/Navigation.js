@@ -1481,14 +1481,14 @@ export default function Navigation(props) {
 
                         // Calculate the unseen label count based on matching account and label ID
                         let unseenLabelCount = 0;
-                        if (matchingAccount) {
-                          const matchingLabel = matchingAccount.LabelsCounts?.find((row) => row.LabelID === labelId);
-                          unseenLabelCount = matchingLabel ? matchingLabel.UnSeenLabelCounts : 0;
-                        }
-                        else {
+                        // if (matchingAccount) {
+                        //   const matchingLabel = matchingAccount.LabelsCounts?.find((row) => row.LabelID === labelId);
+                        //   unseenLabelCount = matchingLabel ? matchingLabel.UnSeenLabelCounts : 0;
+                        // }
+                        // else {
                           unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
-                        }
-
+                        // }
+                        
                         // Calculate the label count for display
                         const displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
 

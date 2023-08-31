@@ -344,7 +344,18 @@ export default function LabelByID(props) {
                     SetFromEmailDropdownList(Result.data.PageData);
                     if (ID?.length > 0) {
                         var total = 0;
-                        var obj = Result.data.PageData[0].LabelField;
+                        // var obj = Result.data.PageData[0].LabelField;
+                        var obj;
+                        const foundPageData = Result.data.PageData.find(e =>
+                            e.LabelField.some(item => 
+                                item.RecieverEmailLableID === ID
+                            )
+                        );
+                        
+                        if (foundPageData) {
+                            obj = foundPageData.LabelField;
+                        }
+                        
                         if (obj.length > 0) {
                             var lbl = obj.filter(c => c.RecieverEmailLableID == ID)
                             if (lbl.length > 0) {
