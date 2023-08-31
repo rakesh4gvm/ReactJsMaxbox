@@ -10,6 +10,7 @@ import { ResponseMessage } from "../../_constants/response.message";
 import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
+import LabelComposePage from '../LabelComposePage/LabelComposePage'
 import TablePagination from '@mui/material/TablePagination';
 
 import Table from '@mui/material/Table';
@@ -347,15 +348,15 @@ export default function LabelByID(props) {
                         // var obj = Result.data.PageData[0].LabelField;
                         var obj;
                         const foundPageData = Result.data.PageData.find(e =>
-                            e.LabelField.some(item => 
+                            e.LabelField.some(item =>
                                 item.RecieverEmailLableID === ID
                             )
                         );
-                        
+
                         if (foundPageData) {
                             obj = foundPageData.LabelField;
                         }
-                        
+
                         if (obj.length > 0) {
                             var lbl = obj.filter(c => c.RecieverEmailLableID == ID)
                             if (lbl.length > 0) {
@@ -365,7 +366,7 @@ export default function LabelByID(props) {
                                 var emailAcocuntsArray = emailAccounts || [];
                                 var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == AccountID) || [];
                                 var LabelCounts = [];
-                                
+
                                 var StarredCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].StarredCount : 0
                                 var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenStarredCount : 0
                                 var UnSeenStarredCount = StarredCount - SeenStarredCount;
@@ -501,7 +502,7 @@ export default function LabelByID(props) {
                                     // var emailAcocuntsArray = emailAccounts || [];
                                     // var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == AccountID) || [];
                                     // var LabelCounts = [];
-                                    
+
                                     // var StarredCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].StarredCount : 0
                                     // var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].SeenStarredCount : 0
                                     // var UnSeenStarredCount = StarredCount - SeenStarredCount;
@@ -3038,7 +3039,7 @@ export default function LabelByID(props) {
                     </div>
                 </div>
             </div>
-            <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
+            <LabelComposePage GetAllInboxList={GetAllInboxList} />
         </>
     );
 }
