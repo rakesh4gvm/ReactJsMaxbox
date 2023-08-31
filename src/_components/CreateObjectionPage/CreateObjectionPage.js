@@ -243,10 +243,10 @@ export default function CreateObjectionTemplatePage({ children }) {
               <Col>
                 <Row className='input-boxbg'>
                   <Col sm={2}>
-                    <label>Subject  :</label>
+                    <label>Title  :</label>
                   </Col>
                   <Col sm={8}>
-                    <input type='text' placeholder='Subject ' name='subject' id='subject' onChange={HandleChange} />
+                    <input type='text' placeholder='Title ' name='subject' id='subject' onChange={HandleChange} />
                     {SubjectError && <p style={{ color: "red" }}>{SubjectError}</p>}
                   </Col>
                 </Row>
