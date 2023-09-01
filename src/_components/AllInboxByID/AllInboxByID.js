@@ -229,6 +229,7 @@ export default function AllInboxByID(props) {
     const dispatch = useDispatch(); 
     const [boxVisible, setBoxVisible] = useState(false);
     const boxRef = useRef(null);
+    const [labelsData, setLabelsData] = useState([])
 
     useEffect(() => {
         // Function to close box when clicking outside
@@ -364,7 +365,7 @@ export default function AllInboxByID(props) {
 
                     SetFromEmailDropdownList(Result.data.PageData);
                     if (ID?.length > 0) {
-
+                        setLabelsData(Result.data.PageData.filter((e) => e.AccountID == ID)[0].LabelField);
                         var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
                         var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                         var UnSeenStarredCount = StarredCount - SeenStarredCount;
@@ -1925,6 +1926,10 @@ export default function AllInboxByID(props) {
         }
     }
 
+    const MoveMailIntoLabel = () => {
+        debugger;
+    }
+
     const OpenStarPopModel = () => {
         SetStarPopModel(true);
     }
@@ -2109,7 +2114,7 @@ export default function AllInboxByID(props) {
     const defaultOption = top100Films[0]; 
     const filterOptions = createFilterOptions({
         matchFrom: 'start',
-        stringify: (option) => option.title,
+        stringify: (option) => option.LableName,
         open
       });
       
@@ -2361,8 +2366,8 @@ export default function AllInboxByID(props) {
                                      <h6>Move to :</h6>
                                         <Autocomplete
                                             id="filter-demo"
-                                            options={top100Films}
-                                            getOptionLabel={(option) => option.title}
+                                            options={labelsData}
+                                            getOptionLabel={(option) => option.LableName}
                                             filterOptions={filterOptions}
                                             sx={{ width: 200 }}
                                             renderInput={(params) => <TextField {...params} />}
