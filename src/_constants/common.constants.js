@@ -29,6 +29,8 @@ const LoginPage = "http://localhost:3001"
 // socket url
 const SSEIP = "http://localhost:3007"
 
+const PROMPT ="You are an email response writer. Please use the following 'Tone Of Voice' and 'Email Response Summary' to craft a response to the following Email Chain."
+
 export const CommonConstants = {
     MOL_APIURL: database,
     CLIENT_ID: CLIENT_ID,
@@ -40,7 +42,8 @@ export const CommonConstants = {
     Title: ' | MaxBox', //Title of page
     show_rows: [10, 20, 50, 100],  //For rows show in table
     FRONTENDURL: FRONTENDURL,
-    SSEIP: SSEIP
+    SSEIP: SSEIP,
+    PROMPT:PROMPT
     // SocketIP: SocketIP,
     // SocketPort: SocketPort,
 };
