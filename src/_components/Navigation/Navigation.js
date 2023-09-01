@@ -41,7 +41,7 @@ import ArrowRight from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -88,7 +88,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-};  
+};
 
 toast.configure();
 
@@ -237,6 +237,7 @@ export default function Navigation(props) {
   const [SpamTotalCount, SetSpamTotalCount] = useState()
   const [SpamEmailCount, SetSpamEmailTotalCount] = useState()
   const [count, setCount] = useState(0)
+  const [LabelNameError, SetLabelNameError] = useState("");
 
   const location = useLocation()
   const dispatch = useDispatch();
@@ -250,15 +251,59 @@ export default function Navigation(props) {
   const emailAccounts = useSelector(state => state.emailAccounts);
   const refreshClientDetails = useSelector(state => state.refreshClientDetails);
   // console.log(JSON.stringify(emailAccounts));
- 
   const [opento, setOpento] = React.useState(false);
+
 
   const labelhandleOpen = () => {
     setOpento(true);
+    SetLabelNameError("");
   };
   const labelhandleClose = () => {
     setOpento(false);
+    SetLabelNameError("");
   };
+
+  const FromValidation = () => {
+    var Isvalid = true;
+    var LabelName = document.getElementById("LabelId").value;
+
+    if (LabelName === "") {
+      SetLabelNameError("Please enter label name");
+      Isvalid = false
+    }
+
+    return Isvalid;
+  };
+
+  const AddNewLabel = (AccountID) => {
+    const Valid = FromValidation();
+    var LabelName = document.getElementById("LabelId").value;
+    if (Valid) {
+      var Data = {
+        AccountID: AccountID,
+        LabelName: LabelName
+      };
+      LoaderShow();
+      const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receiver_email_labels/ReceiverEmailLabelsAdd",
+        method: "POST",
+        data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          labelhandleClose();
+          LoaderHide();
+          toast.success(Result?.data?.Message);
+          var Details = GetUserDetails();
+          FromEmailList(Details.ClientID, Details.UserID);
+        } else {
+          LoaderHide();
+          labelhandleClose();
+          toast.error(Result?.data?.Message);
+        }
+      });
+    }
+  }
 
   useEffect(() => {
     // var UserDetails = GetUserDetails();
@@ -1489,14 +1534,14 @@ export default function Navigation(props) {
                       {OutBoxID == "3" + item._id ? <ExpandMore /> : <ExpandDown />}
                       Labels
                       <Button className='btnplusright' onClick={labelhandleOpen}><Add /></Button>
-                    </ListItemButton> 
+                    </ListItemButton>
 
                     <Modal className="labelbox"
                       open={opento}
                       onClose={labelhandleClose}
                       aria-labelledby="child-modal-title"
                       aria-describedby="child-modal-description"
-                    > 
+                    >
                       <Box sx={style} className="modal-prein">
                         <Close onClick={labelhandleClose} className='btnclose m-3' />
                         <div className='px-5 py-4 text-center'>
@@ -1508,14 +1553,15 @@ export default function Navigation(props) {
                             Please enter a new label name:
                           </Typography>
                           <div className='input-box'>
-                            <input type='text' placeholder='Name' /> 
+                            <input type='text' placeholder='Name' id="LabelId" />
+                            {LabelNameError && <p style={{ color: "red" }}>{LabelNameError}</p>}
                           </div>
                         </div>
                         <div className='d-flex btn-50'>
-                          <Button className='btn btn-pre greybtn' variant="contained" size="medium">
+                          <Button className='btn btn-pre greybtn' variant="contained" size="medium" onClick={() => { labelhandleClose(); }}>
                             Cancel
                           </Button>
-                          <Button className='btn btn-darkpre' variant="contained" size="medium">
+                          <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => { AddNewLabel(item.AccountID); }}>
                             Create
                           </Button>
                         </div>
@@ -1543,9 +1589,9 @@ export default function Navigation(props) {
                         //   unseenLabelCount = matchingLabel ? matchingLabel.UnSeenLabelCounts : 0;
                         // }
                         // else {
-                          unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
+                        unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
                         // }
-                        
+
                         // Calculate the label count for display
                         const displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
 
