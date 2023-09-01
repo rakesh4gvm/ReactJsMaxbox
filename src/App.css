@@ -876,7 +876,7 @@ button.lable-btn {
     line-height: 22px;
     color: #242424;
     text-transform: capitalize;
-    border-radius: 72px;
+    border-radius: 0;
 }
 
 .comse-select {
@@ -2599,6 +2599,12 @@ div#root {
     padding: 10px;
 }
 
+.orangbody + div {
+    position: relative;
+    z-index: 0;
+    width: auto;
+}
+
 .Settingsbd {
     font-size: 36px;
     color: #fff;
@@ -3902,6 +3908,13 @@ button.btnplusright {
     margin-left: 0;
     width: 0.9rem;
 }
+.multibox-filter .MuiAutocomplete-endAdornment{
+    top: 0;
+    transform: translate(0px, 0%);
+}
+.multibox-filter .MuiAutocomplete-endAdornment button{
+    border-radius: 0;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
@@ -3988,12 +4001,7 @@ button.btnplusright {
 
     .orangbody button.mobileshow {
         display: block;
-    }
-
-    .orangbody+div {
-        width: auto;
-    }
-
+    } 
     /* .orangbody + div > div{
         transform: translateX(-310px);
     } */
