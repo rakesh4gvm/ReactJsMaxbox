@@ -74,7 +74,7 @@ import { IntroJsReact } from 'react-intro.js';
 
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Add } from '@material-ui/icons';
+import { Add, Close } from '@material-ui/icons';
 
 import Emailinbox from '../../images/email_inbox_img.png';
 
@@ -1491,13 +1491,14 @@ export default function Navigation(props) {
                       <Button className='btnplusright' onClick={labelhandleOpen}><Add /></Button>
                     </ListItemButton> 
 
-                    <Modal
+                    <Modal className="labelbox"
                       open={opento}
                       onClose={labelhandleClose}
                       aria-labelledby="child-modal-title"
                       aria-describedby="child-modal-description"
                     > 
                       <Box sx={style} className="modal-prein">
+                        <Close onClick={labelhandleClose} className='btnclose m-3' />
                         <div className='px-5 py-4 text-center'>
                           <Typography id="modal-modal-title" variant="b" component="h4">
                             New label
