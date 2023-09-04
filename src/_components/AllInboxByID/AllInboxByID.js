@@ -54,7 +54,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import Froalaeditor from 'froala-editor';
 import FroalaEditor from 'react-froala-wysiwyg';
 import { toast } from "react-toastify";
- 
+
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -65,7 +65,7 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown, InsertDriveFileOutlined } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
-import { useDispatch, useSelector } from 'react-redux'; 
+import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 // import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
@@ -226,7 +226,7 @@ export default function AllInboxByID(props) {
     const [selectedRowIndex, setSelectedRowIndex] = useState(0);
     const tableRef = useRef(null);
     const { id } = useParams();
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
     const [boxVisible, setBoxVisible] = useState(false);
     const boxRef = useRef(null);
     const [labelsData, setLabelsData] = useState([])
@@ -234,17 +234,17 @@ export default function AllInboxByID(props) {
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
-          if (boxRef.current && !boxRef.current.contains(event.target)) {
-            setBoxVisible(false);
-          }
+            if (boxRef.current && !boxRef.current.contains(event.target)) {
+                setBoxVisible(false);
+            }
         };
-    
+
         document.addEventListener('mousedown', handleOutsideClick);
-    
+
         return () => {
-          document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener('mousedown', handleOutsideClick);
         };
-      }, []);
+    }, []);
 
     const emailAccounts = useSelector(state => state.emailAccounts);
 
@@ -470,7 +470,20 @@ export default function AllInboxByID(props) {
                             dispatch({ type: "emailAccounts", payload: updatedAccounts });
                         }
 
-                        var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+                        // var total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+
+                        var total = 0, totalInboxCount = 0, totalSeenInboxCount = 0;
+                        if (Result.data.PageData.length > 0) {
+                            for (var i = 0; i < Result.data.PageData.length; i++) {
+                                var item = Result.data.PageData[i];
+                                if(item.AccountID == ID){
+                                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                    totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
+                                }
+                            }
+                            total = totalInboxCount;
+                        }
+
                         // if (ShowEmails == "SeenEmails" && IsStarred == "") {
                         //   total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
                         // } else 
@@ -493,9 +506,22 @@ export default function AllInboxByID(props) {
                         else if (ShowEmails == "" && IsStarred == "") {
                             // var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].PrimaryMailCount : 0
                             // var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenPrimaryMailCount : 0
-                            var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
-                            var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
-                            total = InboxCount - SeenInboxCount;
+                            // var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
+                            // var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
+                            // total = InboxCount - SeenInboxCount;
+
+                            var total = 0, totalInboxCount = 0, totalSeenInboxCount = 0;
+                            if (Result.data.PageData.length > 0) {
+                                for (var i = 0; i < Result.data.PageData.length; i++) {
+                                    var item = Result.data.PageData[i];
+                                    if(item.AccountID == ID){
+                                        var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                        totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
+                                        totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount
+                                    }
+                                }
+                                total = totalInboxCount - totalSeenInboxCount;
+                            }
                         }
 
 
@@ -941,11 +967,11 @@ export default function AllInboxByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
-                var SenderDetails={
-                    SenderName : Result?.data?.SenderName,
-                    ReceiverName : Result?.data?.ReceiverName
-                 }
-                 SetSenderDetails(SenderDetails)
+                var SenderDetails = {
+                    SenderName: Result?.data?.SenderName,
+                    ReceiverName: Result?.data?.ReceiverName
+                }
+                SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1210,47 +1236,46 @@ export default function AllInboxByID(props) {
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
         //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-        var PROMPT= CommonConstants.PROMPT;
-        var objSenderDetails =SenderDetails;
-        if(objSenderDetails  !=null)
-        {
-          PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
-          PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+        var PROMPT = CommonConstants.PROMPT;
+        var objSenderDetails = SenderDetails;
+        if (objSenderDetails != null) {
+            PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+            PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
         PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
         PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-       var GetReplyMessageDetailsData = PROMPT;
+        var GetReplyMessageDetailsData = PROMPT;
         //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
         if (VoiceOfTone.length > 0) {
-          LoaderShow()
-          var SubjectParamData = {
-            prompt: GetReplyMessageDetailsData,
-          };
-          await Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-            method: "POST",
-            data: SubjectParamData,
-          }).then((Result) => {
-            if (Result.data.StatusMessage == "Success") {
-              var body = Result.data?.data;
-              setSubject(body)
-              var HTMLData = Plain2HTML(body)
-              SetSignature({ Data: HTMLData + Signature.Data })
-              LoaderHide()
-              HanleChatGPTClose()
-            } else {
-              toast.error("ChatGPT is not responding")
-              LoaderHide()
-            }
-          });
+            LoaderShow()
+            var SubjectParamData = {
+                prompt: GetReplyMessageDetailsData,
+            };
+            await Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+                method: "POST",
+                data: SubjectParamData,
+            }).then((Result) => {
+                if (Result.data.StatusMessage == "Success") {
+                    var body = Result.data?.data;
+                    setSubject(body)
+                    var HTMLData = Plain2HTML(body)
+                    SetSignature({ Data: HTMLData + Signature.Data })
+                    LoaderHide()
+                    HanleChatGPTClose()
+                } else {
+                    toast.error("ChatGPT is not responding")
+                    LoaderHide()
+                }
+            });
         } else {
-          toast.error("Please Add Tone of Voice.")
+            toast.error("Please Add Tone of Voice.")
         }
-      }
+    }
 
-   // Frola Editor Starts
+    // Frola Editor Starts
     Froalaeditor.RegisterCommand('SendReply', {
         colorsButtons: ["colorsBack", "|", "-"],
         callback: ReplySendMail
@@ -2128,13 +2153,13 @@ export default function AllInboxByID(props) {
         }
     }, []);
 
-    const defaultOption = top100Films[0]; 
+    const defaultOption = top100Films[0];
     const filterOptions = createFilterOptions({
         matchFrom: 'start',
         stringify: (option) => option.LableName,
         open
-      });
-      
+    });
+
 
     return (
 
@@ -2379,8 +2404,8 @@ export default function AllInboxByID(props) {
                                     <DriveFileMoveIcon />
                                 </Button>   */}
                                 {boxVisible && (
-                                    <div className="box filltermoveto" ref={boxRef}> 
-                                     <h6>Move to :</h6>
+                                    <div className="box filltermoveto" ref={boxRef}>
+                                        <h6>Move to :</h6>
                                         <Autocomplete
                                             id="filter-demo"
                                             options={labelsData}
@@ -2390,9 +2415,9 @@ export default function AllInboxByID(props) {
                                             renderInput={(params) => <TextField {...params} />}
                                             // value={defaultOption}  
                                             open // Make sure the dropdown is open
-                                        /> 
+                                        />
                                     </div>
-                                )} 
+                                )}
 
 
                                 <div className='rigter-coller'>
