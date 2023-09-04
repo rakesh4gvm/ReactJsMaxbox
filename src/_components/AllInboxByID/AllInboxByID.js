@@ -67,7 +67,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux'; 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+// import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
 
 const top100Films = [
@@ -230,7 +230,7 @@ export default function AllInboxByID(props) {
     const [boxVisible, setBoxVisible] = useState(false);
     const boxRef = useRef(null);
     const [labelsData, setLabelsData] = useState([])
-
+    const [SenderDetails, SetSenderDetails] = React.useState(null);
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
@@ -940,6 +940,11 @@ export default function AllInboxByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
+                var SenderDetails={
+                    SenderName : Result?.data?.SenderName,
+                    ReceiverName : Result?.data?.ReceiverName
+                 }
+                 SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1198,42 +1203,53 @@ export default function AllInboxByID(props) {
     // Sent Mail Ends
 
 
-
     const ChatGPT = async () => {
         var VoiceOfTone = document.getElementById("tone").value
         var EmailSummary = document.getElementById("emailsummary").value
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
-       // var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-        var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
-        if (VoiceOfTone.length > 0) {
-            LoaderShow()
-            var SubjectParamData = {
-                prompt: GetReplyMessageDetailsData,
-            };
-            await Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-                method: "POST",
-                data: SubjectParamData,
-            }).then((Result) => {
-                if (Result.data.StatusMessage == "Success") {
-                    var body = Result.data?.data;
-                    setSubject(body)
-                    var HTMLData = Plain2HTML(body)
-                    SetSignature({ Data: HTMLData + Signature.Data })
-                    LoaderHide()
-                    HanleChatGPTClose()
-                } else {
-                    toast.error("ChatGPT is not responding")
-                    LoaderHide()
-                }
-            });
-        } else {
-            toast.error("Please Add Tone of Voice.")
+        //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+        var PROMPT= CommonConstants.PROMPT;
+        var objSenderDetails =SenderDetails;
+        if(objSenderDetails  !=null)
+        {
+          PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+          PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
-    }
+        PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+       var GetReplyMessageDetailsData = PROMPT;
+        //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
+        if (VoiceOfTone.length > 0) {
+          LoaderShow()
+          var SubjectParamData = {
+            prompt: GetReplyMessageDetailsData,
+          };
+          await Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+            method: "POST",
+            data: SubjectParamData,
+          }).then((Result) => {
+            if (Result.data.StatusMessage == "Success") {
+              var body = Result.data?.data;
+              setSubject(body)
+              var HTMLData = Plain2HTML(body)
+              SetSignature({ Data: HTMLData + Signature.Data })
+              LoaderHide()
+              HanleChatGPTClose()
+            } else {
+              toast.error("ChatGPT is not responding")
+              LoaderHide()
+            }
+          });
+        } else {
+          toast.error("Please Add Tone of Voice.")
+        }
+      }
 
-    // Frola Editor Starts
+   // Frola Editor Starts
     Froalaeditor.RegisterCommand('SendReply', {
         colorsButtons: ["colorsBack", "|", "-"],
         callback: ReplySendMail
@@ -2358,9 +2374,9 @@ export default function AllInboxByID(props) {
                                 renderInput={(params) => <TextField {...params} label="Custom filter" />}
                                 /> */}
 
-                                <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
+                                {/* <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
                                     <DriveFileMoveIcon />
-                                </Button>  
+                                </Button>   */}
                                 {boxVisible && (
                                     <div className="box filltermoveto" ref={boxRef}> 
                                      <h6>Move to :</h6>

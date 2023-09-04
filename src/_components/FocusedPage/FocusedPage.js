@@ -236,7 +236,7 @@ export default function UnansweredResponsesPage(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [ccanchorEl, setCCAnchorEl] = React.useState(null);
   const [bccanchorEl, setBCCAnchorEl] = React.useState(null);
-
+  const [SenderDetails, SetSenderDetails] = React.useState(null);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const tableRef = useRef(null);
   const dispatch = useDispatch();
@@ -1328,6 +1328,11 @@ export default function UnansweredResponsesPage(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
+        var SenderDetails={
+          SenderName : Result?.data?.SenderName,
+          ReceiverName : Result?.data?.ReceiverName
+       }
+       SetSenderDetails(SenderDetails)
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1621,13 +1626,24 @@ export default function UnansweredResponsesPage(props) {
   const ChatGPT = async () => {
     var VoiceOfTone = document.getElementById("tone").value
     var EmailSummary = document.getElementById("emailsummary").value
-
+    //remove white space html code 
+    const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
+    //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+    var PROMPT= CommonConstants.PROMPT;
+    var objSenderDetails =SenderDetails;
+    if(objSenderDetails  !=null)
+    {
+      PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+      PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+    }
+    PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+    PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+    PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+    PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+   var GetReplyMessageDetailsData = PROMPT;
+    //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
     if (VoiceOfTone.length > 0) {
       LoaderShow()
-      //remove white space html code 
-      const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
-      //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-      var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
       var SubjectParamData = {
         prompt: GetReplyMessageDetailsData,
       };

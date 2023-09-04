@@ -223,6 +223,7 @@ export default function LabelByID(props) {
     const [MUIClass, SetMUIClass] = useState("Mui-selected")
     const [StarPopModel, SetStarPopModel] = React.useState(false);
     const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+    const [SenderDetails, SetSenderDetails] = React.useState(null);
     const tableRef = useRef(null);
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -1027,6 +1028,11 @@ export default function LabelByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
+                var SenderDetails={
+                    SenderName : Result?.data?.SenderName,
+                    ReceiverName : Result?.data?.ReceiverName
+                 }
+                 SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1291,33 +1297,45 @@ export default function LabelByID(props) {
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
         //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-        var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
-        if (VoiceOfTone.length > 0) {
-            LoaderShow()
-            var SubjectParamData = {
-                prompt: GetReplyMessageDetailsData,
-            };
-            await Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-                method: "POST",
-                data: SubjectParamData,
-            }).then((Result) => {
-                if (Result.data.StatusMessage == "Success") {
-                    var body = Result.data?.data;
-                    setSubject(body)
-                    var HTMLData = Plain2HTML(body)
-                    SetSignature({ Data: HTMLData + Signature.Data })
-                    LoaderHide()
-                    HanleChatGPTClose()
-                } else {
-                    toast.error("ChatGPT is not responding")
-                    LoaderHide()
-                }
-            });
-        } else {
-            toast.error("Please Add Tone of Voice.")
+        var PROMPT= CommonConstants.PROMPT;
+        var objSenderDetails =SenderDetails;
+        if(objSenderDetails  !=null)
+        {
+          PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+          PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
-    }
+        PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+       var GetReplyMessageDetailsData = PROMPT;
+        //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
+        if (VoiceOfTone.length > 0) {
+          LoaderShow()
+          var SubjectParamData = {
+            prompt: GetReplyMessageDetailsData,
+          };
+          await Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+            method: "POST",
+            data: SubjectParamData,
+          }).then((Result) => {
+            if (Result.data.StatusMessage == "Success") {
+              var body = Result.data?.data;
+              setSubject(body)
+              var HTMLData = Plain2HTML(body)
+              SetSignature({ Data: HTMLData + Signature.Data })
+              LoaderHide()
+              HanleChatGPTClose()
+            } else {
+              toast.error("ChatGPT is not responding")
+              LoaderHide()
+            }
+          });
+        } else {
+          toast.error("Please Add Tone of Voice.")
+        }
+      }
 
     // Frola Editor Starts
     Froalaeditor.RegisterCommand('SendReply', {

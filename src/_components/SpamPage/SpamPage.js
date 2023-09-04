@@ -180,6 +180,7 @@ export default function SpamPage(props) {
   const [Signature, SetSignature] = useState({
     Data: ""
   })
+  const [SenderDetails, SetSenderDetails] = React.useState(null);
   const [TotalCount, SetTotalCount] = useState(0)
   const [IsBottom, SetIsBottom] = useState(false)
   const [PageValue, SetPageValue] = React.useState(1)
@@ -1048,6 +1049,11 @@ export default function SpamPage(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
+        var SenderDetails={
+          SenderName : Result?.data?.SenderName,
+          ReceiverName : Result?.data?.ReceiverName
+       }
+       SetSenderDetails(SenderDetails)
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1280,12 +1286,22 @@ export default function SpamPage(props) {
   const ChatGPT = async () => {
     var VoiceOfTone = document.getElementById("tone").value
     var EmailSummary = document.getElementById("emailsummary").value
-
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-    var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
-
+    var PROMPT= CommonConstants.PROMPT;
+    var objSenderDetails =SenderDetails;
+    if(objSenderDetails  !=null)
+    {
+      PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+      PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+    }
+    PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+    PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+    PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+    PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+   var GetReplyMessageDetailsData = PROMPT;
+    //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
     if (VoiceOfTone.length > 0) {
       LoaderShow()
       var SubjectParamData = {

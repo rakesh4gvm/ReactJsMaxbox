@@ -208,6 +208,7 @@ export default function AllSentEmailByID(props) {
     const [bccanchorEl, setBCCAnchorEl] = React.useState(null)
     const [selectedRowIndex, setSelectedRowIndex] = useState(0);
     const tableRef = useRef(null);
+    const [SenderDetails, SetSenderDetails] = React.useState(null);
 
     const tohandleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -830,6 +831,11 @@ export default function AllSentEmailByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
+                var SenderDetails = {
+                    SenderName: Result?.data?.SenderName,
+                    ReceiverName: Result?.data?.ReceiverName
+                }
+                SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1066,7 +1072,18 @@ export default function AllSentEmailByID(props) {
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
         //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-        var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
+        // var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
+        var PROMPT = CommonConstants.PROMPT;
+        var objSenderDetails = SenderDetails;
+        if (objSenderDetails != null) {
+            PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+            PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+        }
+        PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+        var GetReplyMessageDetailsData = PROMPT;
         if (VoiceOfTone.length > 0) {
             LoaderShow()
             var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";

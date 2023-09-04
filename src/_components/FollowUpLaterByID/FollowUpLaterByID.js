@@ -210,7 +210,7 @@ export default function FollowUpLaterByID(props) {
     const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
     const [MUIClass, SetMUIClass] = useState("Mui-selected")
     const [selectAllChecked, setSelectAllChecked] = useState(false);
-
+    const [SenderDetails, SetSenderDetails] = React.useState(null);
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
     const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -1123,6 +1123,11 @@ export default function FollowUpLaterByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
+                var SenderDetails={
+                    SenderName : Result?.data?.SenderName,
+                    ReceiverName : Result?.data?.ReceiverName
+                 }
+                 SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1356,38 +1361,48 @@ export default function FollowUpLaterByID(props) {
     const ChatGPT = async () => {
         var VoiceOfTone = document.getElementById("tone").value
         var EmailSummary = document.getElementById("emailsummary").value
-
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
-       // var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-       var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
-        if (VoiceOfTone.length > 0) {
-            LoaderShow()
-            var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";
-            var SubjectParamData = {
-                prompt: GetReplyMessageDetailsData,
-            };
-            await Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-                method: "POST",
-                data: SubjectParamData,
-            }).then((Result) => {
-                if (Result.data.StatusMessage == "Success") {
-                    var body = Result.data?.data;
-                    setSubject(body)
-                    var HTMLData = Plain2HTML(body)
-                    SetSignature({ Data: HTMLData + Signature.Data })
-                    LoaderHide()
-                    HanleChatGPTClose()
-                } else {
-                    toast.error("ChatGPT is not responding")
-                    LoaderHide()
-                }
-            });
-        } else {
-            toast.error("Please Add Tone of Voice.")
+        //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
+        var PROMPT= CommonConstants.PROMPT;
+        var objSenderDetails =SenderDetails;
+        if(objSenderDetails  !=null)
+        {
+          PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+          PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
-    }
+        PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
+        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+        PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
+       var GetReplyMessageDetailsData = PROMPT;
+        //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
+        if (VoiceOfTone.length > 0) {
+          LoaderShow()
+          var SubjectParamData = {
+            prompt: GetReplyMessageDetailsData,
+          };
+          await Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+            method: "POST",
+            data: SubjectParamData,
+          }).then((Result) => {
+            if (Result.data.StatusMessage == "Success") {
+              var body = Result.data?.data;
+              setSubject(body)
+              var HTMLData = Plain2HTML(body)
+              SetSignature({ Data: HTMLData + Signature.Data })
+              LoaderHide()
+              HanleChatGPTClose()
+            } else {
+              toast.error("ChatGPT is not responding")
+              LoaderHide()
+            }
+          });
+        } else {
+          toast.error("Please Add Tone of Voice.")
+        }
+      }
 
     // Frola Editor Starts
     Froalaeditor.RegisterCommand('SendReply', {
