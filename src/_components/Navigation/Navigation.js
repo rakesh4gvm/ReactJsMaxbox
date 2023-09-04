@@ -1632,7 +1632,10 @@ export default function Navigation(props) {
                         // }
 
                         // Calculate the label count for display
-                        const displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
+                        var displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
+                        if(label.LableName == "Trash" || label.LableName == "Bin"){
+                          displayLabelCount = "";
+                        }
 
                         return (
                           <ListItemButton
