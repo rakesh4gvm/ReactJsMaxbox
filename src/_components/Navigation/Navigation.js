@@ -1300,7 +1300,6 @@ export default function Navigation(props) {
 
             <Collapse in={navopen} timeout="auto" unmountOnExit>
               <List component="div">
-
                 <List component="div">
                   <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickInOne}>
                     {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
@@ -1313,8 +1312,27 @@ export default function Navigation(props) {
                         component={Link}
                         selected={SelectMenuItem === "/AllInbox"}>
                         {/* {unSeenInboxCount != null ? "All Inbox(" + unSeenInboxCount + ")" : FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* new code display fron email variable */}
-                        {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* display only unseen mail count */}
+                        {/*{FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */} {/* display only unseen mail count */}
                         {/* {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.PrimaryMailCount - e?.SeenPrimaryMailCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}*/} {/*display only unseen mail count */}
+                        {
+                          FromEmailDropdownList
+                            ? (() => {
+                              let totalInboxCount = 0;
+
+                              FromEmailDropdownList.forEach((account) => {
+                                totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                                  if (label.LableName === "INBOX") {
+                                    return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                                  }
+                                  return acc;
+                                }, 0) || 0;
+                              });
+
+                              return `All Inbox(${totalInboxCount})`;
+                            })()
+                            : "All Inbox(0)"
+                        }
+
                       </ListItem>
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                         component={Link}
@@ -1434,8 +1452,29 @@ export default function Navigation(props) {
                             row.UnSeenInboxCount != undefined ? "All Inbox1(" + row.UnSeenInboxCount + ")" :
                               FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox2(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox3(0)" : "All Inbox4(0)" : "All Inbox5(0)"
                           )) : FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox6(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox7(0)" : "All Inbox8(0)"} */}{/* new code display fron email variable */}
-                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count
-                         {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}display only unseen mail count */}
+                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count */}
+                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}display only unseen mail count */}
+                          {
+                            FromEmailDropdownList
+                              ? (() => {
+                                let totalInboxCount = 0;
+
+                                FromEmailDropdownList.forEach((account) => {
+                                  if (account.AccountID == item.AccountID) {
+                                    totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                                      if (label.LableName === "INBOX") {
+                                        return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                                      }
+                                      return acc;
+                                    }, 0) || 0;
+                                  }
+                                });
+
+                                return `All Inbox(${totalInboxCount})`;
+                              })()
+                              : "All Inbox(0)"
+                          }
+
                         </ListItem>
                         <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
                           component={Link}

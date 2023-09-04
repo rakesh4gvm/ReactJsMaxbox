@@ -588,7 +588,8 @@ export default function AllInboxByID(props) {
             IsOtherInbox: false,
             AccountIDs: AccountIDs,
             UnseenEmails: UnseenEmails,
-            IsStarredEmails: IsStarredEmails
+            IsStarredEmails: IsStarredEmails,
+            IsAllInboxPage: true
         };
 
         const ResponseApi = Axios({

@@ -532,7 +532,8 @@ export default function OtherInboxPage(props) {
       IsOtherInbox: false,
       AccountIDs: AccountIDs,
       UnseenEmails: UnseenEmails,
-      IsStarredEmails: IsStarredEmails
+      IsStarredEmails: IsStarredEmails,
+      IsAllInboxPage: true
     };
 
     const ResponseApi = Axios({
