@@ -1531,7 +1531,7 @@ export default function AllSentEmailByID(props) {
         event,
         newPage,
     ) => {
-
+        setSelectedRowIndex(0)
         ContainerRef.current.scrollTop = 0;
         SetPage(newPage + 1);
 

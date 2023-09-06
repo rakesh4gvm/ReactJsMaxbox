@@ -1649,7 +1649,7 @@ export default function OtherInboxPage(props) {
     newPage,
   ) => {
 
-
+    setSelectedRowIndex(0)
     ContainerRef.current.scrollTop = 0;
     SetPage(newPage + 1);
 
@@ -2414,6 +2414,7 @@ export default function OtherInboxPage(props) {
                         </TableCell>
 
                         <TableCell component="th" width={'30px'} align="center"></TableCell>
+                        <TableCell component="th">To Email</TableCell>
                         <TableCell component="th">From Email</TableCell>
                         <TableCell component="th">Subject</TableCell>
                         <TableCell component="th">Date</TableCell>
@@ -2446,6 +2447,7 @@ export default function OtherInboxPage(props) {
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
                             </TableCell>
+                            <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row">  {item?.Subject ? (
                               <>
@@ -2579,7 +2581,7 @@ export default function OtherInboxPage(props) {
                             <label>{MailNumber} / {AllInboxList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => UpdateStarMessage(OpenMessage._id, "", MailNumber)}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>

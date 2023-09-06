@@ -1578,7 +1578,7 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
-
+    setSelectedRowIndex(0)
     setSelectAllChecked(false)
 
 

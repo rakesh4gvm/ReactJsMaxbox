@@ -237,7 +237,7 @@ export default function ObjectionTemplateListPage() {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You want to delete templates ?
+              You want to delete template ?
             </Typography>
           </div>
           <div className='d-flex btn-50'>

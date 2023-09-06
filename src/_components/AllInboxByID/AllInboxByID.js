@@ -1712,7 +1712,7 @@ export default function AllInboxByID(props) {
         event,
         newPage,
     ) => {
-
+        setSelectedRowIndex(0)
         setSelectAllChecked(false)
 
         ContainerRef.current.scrollTop = 0;
@@ -2493,6 +2493,7 @@ export default function AllInboxByID(props) {
                                                     />
                                                 </TableCell>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                <TableCell component="th">To Email</TableCell>
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">Date</TableCell>
@@ -2528,6 +2529,7 @@ export default function AllInboxByID(props) {
                                                                 <StarIcon className='selectedstart startwo' />
                                                             </ToggleButton>
                                                         </TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item.ToEmail}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
@@ -2654,7 +2656,7 @@ export default function AllInboxByID(props) {
                                                         <label>{MailNumber} / {AllInboxList.length}</label>
                                                     </Button>
                                                     <Button>
-                                                        <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                                                        <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => UpdateStarMessage(OpenMessage._id, "", MailNumber)}>
                                                             <StarBorderIcon className='starone' />
                                                             <StarIcon className='selectedstart startwo' />
                                                         </ToggleButton>

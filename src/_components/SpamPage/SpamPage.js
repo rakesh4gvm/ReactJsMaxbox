@@ -1738,7 +1738,7 @@ export default function SpamPage(props) {
     event,
     newPage,
   ) => {
-
+    setSelectedRowIndex(0)
     setSelectAllChecked(false)
 
     ContainerRef.current.scrollTop = 0;

@@ -1745,7 +1745,7 @@ export default function OtherInboxPage(props) {
     event,
     newPage,
   ) => {
-
+    setSelectedRowIndex(0)
     setSelectAllChecked(false)
 
     ContainerRef.current.scrollTop = 0;
@@ -2479,7 +2479,7 @@ export default function OtherInboxPage(props) {
                             <label>{MailNumber} / {FollowUpList.length}</label>
                           </Button>
                           <Button>
-                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => OpenStarPopModel()}>
+                            <ToggleButton className={"startselct temp-class" + " " + MUIClass} title={"Starred"} value="check" id={"starbelow_" + OpenMessage._id} selected={OpenMessage.IsStarred} onClick={() => UpdateStarMessage(OpenMessage._id, "", MailNumber)}>
                               <StarBorderIcon className='starone' />
                               <StarIcon className='selectedstart startwo' />
                             </ToggleButton>
