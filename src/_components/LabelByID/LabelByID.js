@@ -1028,11 +1028,11 @@ export default function LabelByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
-                var SenderDetails={
-                    SenderName : Result?.data?.SenderName,
-                    ReceiverName : Result?.data?.ReceiverName
-                 }
-                 SetSenderDetails(SenderDetails)
+                var SenderDetails = {
+                    SenderName: Result?.data?.SenderName,
+                    ReceiverName: Result?.data?.ReceiverName
+                }
+                SetSenderDetails(SenderDetails)
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1297,45 +1297,44 @@ export default function LabelByID(props) {
         //remove white space html code 
         const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
         //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-        var PROMPT= CommonConstants.PROMPT;
-        var objSenderDetails =SenderDetails;
-        if(objSenderDetails  !=null)
-        {
-          PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
-          PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+        var PROMPT = CommonConstants.PROMPT;
+        var objSenderDetails = SenderDetails;
+        if (objSenderDetails != null) {
+            PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+            PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
         PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
         PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-       var GetReplyMessageDetailsData = PROMPT;
+        var GetReplyMessageDetailsData = PROMPT;
         //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
         if (VoiceOfTone.length > 0) {
-          LoaderShow()
-          var SubjectParamData = {
-            prompt: GetReplyMessageDetailsData,
-          };
-          await Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-            method: "POST",
-            data: SubjectParamData,
-          }).then((Result) => {
-            if (Result.data.StatusMessage == "Success") {
-              var body = Result.data?.data;
-              setSubject(body)
-              var HTMLData = Plain2HTML(body)
-              SetSignature({ Data: HTMLData + Signature.Data })
-              LoaderHide()
-              HanleChatGPTClose()
-            } else {
-              toast.error("ChatGPT is not responding")
-              LoaderHide()
-            }
-          });
+            LoaderShow()
+            var SubjectParamData = {
+                prompt: GetReplyMessageDetailsData,
+            };
+            await Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+                method: "POST",
+                data: SubjectParamData,
+            }).then((Result) => {
+                if (Result.data.StatusMessage == "Success") {
+                    var body = Result.data?.data;
+                    setSubject(body)
+                    var HTMLData = Plain2HTML(body)
+                    SetSignature({ Data: HTMLData + Signature.Data })
+                    LoaderHide()
+                    HanleChatGPTClose()
+                } else {
+                    toast.error("ChatGPT is not responding")
+                    LoaderHide()
+                }
+            });
         } else {
-          toast.error("Please Add Tone of Voice.")
+            toast.error("Please Add Tone of Voice.")
         }
-      }
+    }
 
     // Frola Editor Starts
     Froalaeditor.RegisterCommand('SendReply', {
@@ -2434,12 +2433,17 @@ export default function LabelByID(props) {
                             <div className='orangbg-table'>
                                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
-                                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
-                                    <VisibilityOffIcon />
-                                </Button>
-                                <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
-                                    <Visibility />
-                                </Button>
+                                {
+                                    OpenMessage?.IsTrash ? "" :
+                                        <>
+                                            <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                                                <VisibilityOffIcon />
+                                            </Button>
+                                            <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
+                                                <Visibility />
+                                            </Button>
+                                        </>
+                                }
                                 <div className='rigter-coller'>
                                     {/* <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                                         className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
@@ -2449,8 +2453,10 @@ export default function LabelByID(props) {
                                         Starred
                                     </ToggleButton> */}
                                     {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
-                                    <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
-
+                                    {
+                                        OpenMessage?.IsTrash ? "" :
+                                            <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
+                                    }
                                     <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
                                         OpenMessage?.length == 0 ? "" :
@@ -2475,15 +2481,20 @@ export default function LabelByID(props) {
                                             <TableRow>
                                                 {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                                <TableCell component="th" className='px-0 w-0'>
-                                                    <Checkbox
-                                                        name="selectall"
-                                                        type="checkbox"
-                                                        checked={selectAllChecked}
-                                                        onChange={(e) => handleSelectAll(e)}
-                                                    />
-                                                </TableCell>
-                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                {
+                                                    OpenMessage?.IsTrash ? "" :
+                                                        <>
+                                                            <TableCell component="th" className='px-0 w-0'>
+                                                                <Checkbox
+                                                                    name="selectall"
+                                                                    type="checkbox"
+                                                                    checked={selectAllChecked}
+                                                                    onChange={(e) => handleSelectAll(e)}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                        </>
+                                                }
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">Date</TableCell>
@@ -2505,15 +2516,20 @@ export default function LabelByID(props) {
                                                 >
                                                     {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                                                     {/* <TableCell width={'35px'}></TableCell> */}
-                                                    <TableCell align='center'>
-                                                        <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                    </TableCell>
-                                                    <TableCell width={'35px'} align="center">
-                                                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                                                            <StarBorderIcon className='starone' />
-                                                            <StarIcon className='selectedstart startwo' />
-                                                        </ToggleButton>
-                                                    </TableCell>
+                                                    {
+                                                        OpenMessage?.IsTrash ? "" :
+                                                            <>
+                                                                <TableCell align='center'>
+                                                                    <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                                                                </TableCell>
+                                                                <TableCell width={'35px'} align="center">
+                                                                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                                                                        <StarBorderIcon className='starone' />
+                                                                        <StarIcon className='selectedstart startwo' />
+                                                                    </ToggleButton>
+                                                                </TableCell>
+                                                            </>
+                                                    }
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item.FromName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                         <>
@@ -2637,12 +2653,17 @@ export default function LabelByID(props) {
                                                     <Button>
                                                         <label>{MailNumber} / {AllInboxList.length}</label>
                                                     </Button>
-                                                    <Button>
-                                                        <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
-                                                            <StarBorderIcon className='starone' />
-                                                            <StarIcon className='selectedstart startwo' />
-                                                        </ToggleButton>
-                                                    </Button>
+                                                    {
+                                                        OpenMessage?.IsTrash ? ""
+                                                            :
+                                                            <Button>
+                                                                <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                                                                    <StarBorderIcon className='starone' />
+                                                                    <StarIcon className='selectedstart startwo' />
+                                                                </ToggleButton>
+                                                            </Button>
+                                                    }
+
                                                     {/* <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
@@ -2652,9 +2673,13 @@ export default function LabelByID(props) {
                                                     <Button>
                                                         <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
                                                     </Button> */}
-                                                    {<Button onClick={OpenDeletePopModel}>
-                                                        <img src={icondelete} title="Delete" />
-                                                    </Button>}
+                                                    {
+                                                        OpenMessage?.IsTrash ? "" :
+                                                            <Button onClick={OpenDeletePopModel}>
+                                                                <img src={icondelete} title="Delete" />
+                                                            </Button>
+                                                    }
+
                                                 </ButtonGroup>
                                         }
                                     </Col>
