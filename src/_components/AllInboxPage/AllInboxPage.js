@@ -2447,7 +2447,7 @@ export default function OtherInboxPage(props) {
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
                             </TableCell>
-                            <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
+                            <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToEmail}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row">  {item?.Subject ? (
                               <>
