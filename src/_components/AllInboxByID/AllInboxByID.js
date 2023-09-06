@@ -476,7 +476,7 @@ export default function AllInboxByID(props) {
                         if (Result.data.PageData.length > 0) {
                             for (var i = 0; i < Result.data.PageData.length; i++) {
                                 var item = Result.data.PageData[i];
-                                if(item.AccountID == ID){
+                                if (item.AccountID == ID) {
                                     var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
                                     totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
                                 }
@@ -491,16 +491,45 @@ export default function AllInboxByID(props) {
                             // total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
                             // var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarPrimaryMailCount : 0
                             // var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarPrimaryMailCount : 0
-                            var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-                            var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
-                            total = StarredCount - SeenStarredCount;
+
+                            // var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
+                            // var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
+                            // total = StarredCount - SeenStarredCount;
+                            var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+                            if (Result.data.PageData.length > 0) {
+                                for (var i = 0; i < Result.data.PageData.length; i++) {
+                                    var item = Result.data.PageData[i];
+                                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                    totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                    totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                }
+                                total = totalStarredInboxCount - totalSeenStarredInboxCount;
+                            }
                         } else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
                             // total = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
                             if (isstarActive) {
-                                var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
-                                total = SeenStarredCount
+                                // var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+                                // total = SeenStarredCount
+                                var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+                                if (Result.data.PageData.length > 0) {
+                                    for (var i = 0; i < Result.data.PageData.length; i++) {
+                                        var item = Result.data.PageData[i];
+                                        var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                        totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                    }
+                                    total = totalSeenStarredInboxCount;
+                                }
                             } else {
-                                total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+                                // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+                                var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+                                if (Result.data.PageData.length > 0) {
+                                    for (var i = 0; i < Result.data.PageData.length; i++) {
+                                        var item = Result.data.PageData[i];
+                                        var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                        totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                    }
+                                    total = totalStarredInboxCount;
+                                }
                             }
                         }
                         else if (ShowEmails == "" && IsStarred == "") {
@@ -514,7 +543,7 @@ export default function AllInboxByID(props) {
                             if (Result.data.PageData.length > 0) {
                                 for (var i = 0; i < Result.data.PageData.length; i++) {
                                     var item = Result.data.PageData[i];
-                                    if(item.AccountID == ID){
+                                    if (item.AccountID == ID) {
                                         var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
                                         totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
                                         totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount

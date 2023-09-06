@@ -719,6 +719,7 @@ export default function OtherInboxPage(props) {
             ID: ID,
             IsFollowUp: true,
             FollowupDate: FollowupDate,
+            IsStarred: true,
             IsOtherInbox: false,
             LastUpdatedBy: -1
           };

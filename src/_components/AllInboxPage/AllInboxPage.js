@@ -212,7 +212,7 @@ export default function OtherInboxPage(props) {
   const [MUIClass, SetMUIClass] = useState("Mui-selected")
   const [StarPopModel, SetStarPopModel] = React.useState(false);
   const [SenderDetails, SetSenderDetails] = React.useState(null);
-  
+
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
   const HanleChatGPTClose = () => SetChatGPTModel(false);
@@ -409,17 +409,14 @@ export default function OtherInboxPage(props) {
             SetTotalRecord(total);
           } else {
             // var total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.InboxCount)?.reduce((a, b) => a + b, 0) : 0
-            var total = 0, totalInboxCount= 0, totalSeenInboxCount=0;
-            if(Result.data.PageData.length  > 0)
-            {
-              for(var i=0;i < Result.data.PageData.length;i++)
-              {
-                var item=Result.data.PageData[i];
-                var LabelFieldDetails=item.LabelField.filter(c=>c.LableName=="INBOX");
+            var total = 0, totalInboxCount = 0, totalSeenInboxCount = 0;
+            if (Result.data.PageData.length > 0) {
+              for (var i = 0; i < Result.data.PageData.length; i++) {
+                var item = Result.data.PageData[i];
+                var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
                 totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
               }
-              total= totalInboxCount;
-              
+              total = totalInboxCount;
             }
 
             var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
@@ -457,23 +454,51 @@ export default function OtherInboxPage(props) {
 
             // }
 
-
             if (ShowEmails == "" && IsStarred == "IsStarredEmails") {
               // var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarPrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
               // var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarPrimaryMailCount)?.reduce((a, b) => a + b, 0) : 0
-              var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
-              var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
-              total = StarredCount - SeenStarredCount;
+
+              // var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+              // var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+              // total = StarredCount - SeenStarredCount;
+              var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+              if (Result.data.PageData.length > 0) {
+                for (var i = 0; i < Result.data.PageData.length; i++) {
+                  var item = Result.data.PageData[i];
+                  var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                  totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                  totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                }
+                total = totalStarredInboxCount - totalSeenStarredInboxCount;
+              }
               dispatch({ type: 'unSeenStarredCount', payload: total });
             }
             else if (ShowEmails == "SeenEmails" && IsStarred == "IsStarredEmails") {
               // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
               if (isstarActive) {
-                var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
-                total = SeenStarredCount
-                // dispatch({ type: 'unSeenStarredCount', payload: total });
+                // var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+                // total = SeenStarredCount
+                // // dispatch({ type: 'unSeenStarredCount', payload: total });
+                var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+                if (Result.data.PageData.length > 0) {
+                  for (var i = 0; i < Result.data.PageData.length; i++) {
+                    var item = Result.data.PageData[i];
+                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                    totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                  }
+                  total = totalSeenStarredInboxCount;
+                }
               } else {
-                total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+                // total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+                var total = 0, totalStarredInboxCount = 0, totalSeenStarredInboxCount = 0;
+                if (Result.data.PageData.length > 0) {
+                  for (var i = 0; i < Result.data.PageData.length; i++) {
+                    var item = Result.data.PageData[i];
+                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                    totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                  }
+                  total = totalStarredInboxCount;
+                }
               }
             }
             else if (ShowEmails == "" && IsStarred == "") {
@@ -483,17 +508,15 @@ export default function OtherInboxPage(props) {
               // var SeenInboxCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) : 0
               // total = InboxCount - SeenInboxCount
 
-              var total = 0, totalInboxCount= 0, totalSeenInboxCount=0;
-              if(Result.data.PageData.length  > 0)
-              {
-                for(var i=0;i < Result.data.PageData.length;i++)
-                {
-                  var item=Result.data.PageData[i];
-                  var LabelFieldDetails=item.LabelField.filter(c=>c.LableName=="INBOX");
+              var total = 0, totalInboxCount = 0, totalSeenInboxCount = 0;
+              if (Result.data.PageData.length > 0) {
+                for (var i = 0; i < Result.data.PageData.length; i++) {
+                  var item = Result.data.PageData[i];
+                  var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
                   totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
                   totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount
                 }
-                total= totalInboxCount - totalSeenInboxCount
+                total = totalInboxCount - totalSeenInboxCount
               }
               SetTotalRecord(total);
 
@@ -914,9 +937,9 @@ export default function OtherInboxPage(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
-        var SenderDetails={
-           SenderName : Result?.data?.SenderName,
-           ReceiverName : Result?.data?.ReceiverName
+        var SenderDetails = {
+          SenderName: Result?.data?.SenderName,
+          ReceiverName: Result?.data?.ReceiverName
         }
         SetSenderDetails(SenderDetails)
       } else {
@@ -1178,10 +1201,9 @@ export default function OtherInboxPage(props) {
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-    var PROMPT= CommonConstants.PROMPT;
-    var objSenderDetails =SenderDetails;
-    if(objSenderDetails  !=null)
-    {
+    var PROMPT = CommonConstants.PROMPT;
+    var objSenderDetails = SenderDetails;
+    if (objSenderDetails != null) {
       PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
       PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
     }
@@ -1189,7 +1211,7 @@ export default function OtherInboxPage(props) {
     PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
     PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
     PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-   var GetReplyMessageDetailsData = PROMPT;
+    var GetReplyMessageDetailsData = PROMPT;
     //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
     if (VoiceOfTone.length > 0) {
       LoaderShow()

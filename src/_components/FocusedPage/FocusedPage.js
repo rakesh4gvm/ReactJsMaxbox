@@ -543,10 +543,10 @@ export default function UnansweredResponsesPage(props) {
               } else {
                 total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredFocusedCount)?.reduce((a, b) => a + b, 0) : 0
               }
-              var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredCount : 0
-              var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredCount : 0
-              var startotal = StarredCount - SeenStarredCount;
-              dispatch({ type: 'unSeenStarredCount', payload: startotal });
+              // var StarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].StarredFocusedCount : 0
+              // var SeenStarredCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenStarredFocusedCount : 0
+              // var startotal = StarredCount - SeenStarredCount;
+              // dispatch({ type: 'unSeenStarredCount', payload: startotal });
             }
             else if (ShowEmails == "" && IsStarred == "") {
               var FocusedCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) : 0
