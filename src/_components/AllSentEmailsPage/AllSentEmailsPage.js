@@ -830,8 +830,8 @@ export default function AllSentEmailsPage(props) {
         var SenderDetails = {
           SenderName: Result?.data?.SenderName,
           ReceiverName: Result?.data?.ReceiverName
-      }
-      SetSenderDetails(SenderDetails)
+        }
+        SetSenderDetails(SenderDetails)
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1076,8 +1076,8 @@ export default function AllSentEmailsPage(props) {
     var PROMPT = CommonConstants.PROMPT;
     var objSenderDetails = SenderDetails;
     if (objSenderDetails != null) {
-        PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
-        PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
+      PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
+      PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
     }
     PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
     PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
@@ -1085,32 +1085,32 @@ export default function AllSentEmailsPage(props) {
     PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
     var GetReplyMessageDetailsData = PROMPT;
     if (VoiceOfTone.length > 0) {
-        LoaderShow()
-        var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";
-        var SubjectParamData = {
-            prompt: GetReplyMessageDetailsData,
-        };
-        await Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
-            method: "POST",
-            data: SubjectParamData,
-        }).then((Result) => {
-            if (Result.data.StatusMessage == "Success") {
-                var body = Result.data?.data;
-                setSubject(body)
-                var HTMLData = Plain2HTML(body)
-                SetSignature({ Data: HTMLData + Signature.Data })
-                LoaderHide()
-                HanleChatGPTClose()
-            } else {
-                toast.error("ChatGPT is not responding")
-                LoaderHide()
-            }
-        });
+      LoaderShow()
+      var GetReplyMessageDetailsData = plaiTextBody + " make reply happy and respectfull tone";
+      var SubjectParamData = {
+        prompt: GetReplyMessageDetailsData,
+      };
+      await Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/GetChatGPTMessageResponse",
+        method: "POST",
+        data: SubjectParamData,
+      }).then((Result) => {
+        if (Result.data.StatusMessage == "Success") {
+          var body = Result.data?.data;
+          setSubject(body)
+          var HTMLData = Plain2HTML(body)
+          SetSignature({ Data: HTMLData + Signature.Data })
+          LoaderHide()
+          HanleChatGPTClose()
+        } else {
+          toast.error("ChatGPT is not responding")
+          LoaderHide()
+        }
+      });
     } else {
-        toast.error("Please Add Tone of Voice.")
+      toast.error("Please Add Tone of Voice.")
     }
-}
+  }
 
   Froalaeditor.RegisterCommand('Chat', {
     colorsButtons: ["colorsBack", "|", "-"],
@@ -2087,11 +2087,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetToEmailValue([...ToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetToEmailValue([...ToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetToEmailValue([...ToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2152,11 +2156,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetCCMessages([...CCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetCCMessages([...CCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetCCMessages([...CCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2240,11 +2248,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetBCCMessages([...BCCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetBCCMessages([...BCCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetBCCMessages([...BCCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2362,11 +2374,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2417,11 +2433,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2468,11 +2488,15 @@ export default function AllSentEmailsPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
