@@ -66,6 +66,7 @@ import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
+import { TurnLeft } from '@mui/icons-material';
 
 
 const top100Films = [
@@ -2414,6 +2415,7 @@ export default function OtherInboxPage(props) {
                         </TableCell>
 
                         <TableCell component="th" width={'30px'} align="center"></TableCell>
+                        <TableCell component="th" width={'30px'} align="center"></TableCell>
                         <TableCell component="th">To Email</TableCell>
                         <TableCell component="th">From Email</TableCell>
                         <TableCell component="th">Subject</TableCell>
@@ -2446,6 +2448,9 @@ export default function OtherInboxPage(props) {
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
+                            </TableCell>
+                            <TableCell width={'35px'} align="center">
+                                <TurnLeft  /> 
                             </TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToEmail}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
