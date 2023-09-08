@@ -2493,6 +2493,7 @@ export default function AllInboxByID(props) {
                                                     />
                                                 </TableCell>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">Date</TableCell>
