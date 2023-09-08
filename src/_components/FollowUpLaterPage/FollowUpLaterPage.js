@@ -2551,11 +2551,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetToEmailValue([...ToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetToEmailValue([...ToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetToEmailValue([...ToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2617,11 +2621,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetCCMessages([...CCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetCCMessages([...CCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetCCMessages([...CCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2705,11 +2713,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetBCCMessages([...BCCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetBCCMessages([...BCCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetBCCMessages([...BCCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2827,11 +2839,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2883,11 +2899,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2934,11 +2954,15 @@ export default function FollowUpLater(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;

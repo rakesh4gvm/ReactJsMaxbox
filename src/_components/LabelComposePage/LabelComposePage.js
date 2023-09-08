@@ -772,11 +772,15 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                         onChange={(event, newValue) => {
                                             SetToEmailValue(newValue);
                                         }}
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetToEmailValue([...ToEmailValue, newInputValue]);
+                                        }}
                                         onKeyDown={(event, newValue) => {
-                                            if (event.key === 'Tab') {
-                                                const newInputValue = event.target.value;
-                                                SetToEmailValue([...ToEmailValue, newInputValue]);
-                                            }
+                                            // if (event.key === 'Tab') {
+                                            //     const newInputValue = event.target.value;
+                                            //     SetToEmailValue([...ToEmailValue, newInputValue]);
+                                            // }
                                             if (event.keyCode === 188) {
                                                 event.preventDefault();
                                                 const newInputValue = event.target.value;
@@ -827,11 +831,15 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                             SetCCEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetCCEmailValue([...CCEmailValue, newInputValue]);
+                                        }}
                                         onKeyDown={(event, newValue) => {
-                                            if (event.key === 'Tab') {
-                                                const newInputValue = event.target.value;
-                                                SetCCEmailValue([...CCEmailValue, newInputValue]);
-                                            }
+                                            // if (event.key === 'Tab') {
+                                            //     const newInputValue = event.target.value;
+                                            //     SetCCEmailValue([...CCEmailValue, newInputValue]);
+                                            // }
                                             if (event.keyCode === 188) {
                                                 event.preventDefault();
                                                 const newInputValue = event.target.value;
@@ -882,11 +890,15 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
                                         }}
                                         options={top100Films.map((option) => option.title)}
                                         freeSolo
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                                        }}
                                         onKeyDown={(event, newValue) => {
-                                            if (event.key === 'Tab') {
-                                                const newInputValue = event.target.value;
-                                                SetBCCEmailValue([...BCCEmailValue, newInputValue]);
-                                            }
+                                            // if (event.key === 'Tab') {
+                                            //     const newInputValue = event.target.value;
+                                            //     SetBCCEmailValue([...BCCEmailValue, newInputValue]);
+                                            // }
                                             if (event.keyCode === 188) {
                                                 event.preventDefault();
                                                 const newInputValue = event.target.value;

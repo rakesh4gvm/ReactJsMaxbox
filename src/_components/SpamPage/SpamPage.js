@@ -1049,11 +1049,11 @@ export default function SpamPage(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         SetSignature({ Data: Result?.data?.Data + ClientData })
-        var SenderDetails={
-          SenderName : Result?.data?.SenderName,
-          ReceiverName : Result?.data?.ReceiverName
-       }
-       SetSenderDetails(SenderDetails)
+        var SenderDetails = {
+          SenderName: Result?.data?.SenderName,
+          ReceiverName: Result?.data?.ReceiverName
+        }
+        SetSenderDetails(SenderDetails)
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1289,10 +1289,9 @@ export default function SpamPage(props) {
     //remove white space html code 
     const plaiTextBody = GetReplyMessageDetailsTextBody.replace(/&\w+;/g, '').replace(/[\n\t]/g, '');
     //var GetReplyMessageDetailsData = plaiTextBody + ' \n\n' + VoiceOfTone + '  \n\n' + EmailSummary;
-    var PROMPT= CommonConstants.PROMPT;
-    var objSenderDetails =SenderDetails;
-    if(objSenderDetails  !=null)
-    {
+    var PROMPT = CommonConstants.PROMPT;
+    var objSenderDetails = SenderDetails;
+    if (objSenderDetails != null) {
       PROMPT = PROMPT.replace("{Sender Name}", objSenderDetails.SenderName);
       PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
     }
@@ -1300,7 +1299,7 @@ export default function SpamPage(props) {
     PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
     PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
     PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-   var GetReplyMessageDetailsData = PROMPT;
+    var GetReplyMessageDetailsData = PROMPT;
     //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
     if (VoiceOfTone.length > 0) {
       LoaderShow()
@@ -2572,11 +2571,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetToEmailValue([...ToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetToEmailValue([...ToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetToEmailValue([...ToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2637,11 +2640,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetCCMessages([...CCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetCCMessages([...CCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetCCMessages([...CCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2725,11 +2732,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetBCCMessages([...BCCMessages, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetBCCMessages([...BCCMessages, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetBCCMessages([...BCCMessages, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2847,11 +2858,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2903,11 +2918,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
@@ -2954,11 +2973,15 @@ export default function SpamPage(props) {
                     }}
                     freeSolo
                     clearOnBlur
+                    onClose={(event, newValue) => {
+                      const newInputValue = event.target.value;
+                      SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                    }}
                     onKeyDown={(event, newValue) => {
-                      if (event.key === 'Tab') {
-                        const newInputValue = event.target.value;
-                        SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
-                      }
+                      // if (event.key === 'Tab') {
+                      //   const newInputValue = event.target.value;
+                      //   SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                      // }
                       if (event.keyCode === 188) {
                         event.preventDefault();
                         const newInputValue = event.target.value;
