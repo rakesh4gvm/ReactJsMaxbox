@@ -18,6 +18,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FooterBottom from '../Footer/footer';
+import Switch from '@mui/material/Switch';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
@@ -70,7 +71,7 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(false);
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   const [IsProcees, SetIsProcess] = useState(true)
-
+  const [checkedStates, setCheckedStates] = useState({});
 
   useEffect(() => {
     document.title = 'Email Settings | MAXBOX';
@@ -95,6 +96,48 @@ export default function EmailConfigurationPage() {
       clearInterval(interval); // Clean up the interval on component unmount
     };
   }, [IsProcees])
+
+  // Function to make the API call
+  const updateDataOnServer = async (isChecked, ID) => {
+
+    let Data = {
+      ID: ID,
+      shrink: isChecked
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/UpdateShrink",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+
+    });
+
+  };
+
+
+  const handleChange = async (event, accountId) => {
+    const isChecked = event.target.checked;
+   
+    setCheckedStates((prevState) => ({
+      ...prevState,
+      [accountId]: isChecked,
+    }));
+
+    const itemIndex = EmailAccountList.findIndex((item) => item.AccountID === accountId);
+
+    if (itemIndex !== -1) {
+      
+      const updatedList = [...EmailAccountList];
+     
+      updatedList[itemIndex].IsWorking = isChecked;
+
+     
+      SetEmailAccountList(updatedList);
+    }
+    await updateDataOnServer(isChecked, accountId);
+  };
 
   const CheckAccountAuthonicate = () => {
 
@@ -465,6 +508,7 @@ export default function EmailConfigurationPage() {
                         <TableCell onClick={() => { SortData("LastName") }}>Last Name</TableCell>
                         <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
                         <TableCell >Process</TableCell>
+                        <TableCell >Is Do Not Shrink</TableCell>
                         <TableCell align="right">Authentication Status</TableCell>
                         <TableCell align="right"></TableCell>
                         <TableCell align="center">Action</TableCell>
@@ -505,6 +549,13 @@ export default function EmailConfigurationPage() {
 
                               }
                             </ButtonGroup>
+                          </TableCell>
+                          <TableCell scope="row">
+                            <Switch
+                              checked={checkedStates[row.AccountID] || false}
+                              onChange={(event) => handleChange(event, row.AccountID)}
+                              inputProps={{ 'aria-label': 'controlled' }}
+                            />
                           </TableCell>
                           <TableCell align="right">
                             <ButtonGroup className='table-btn' variant="text" aria-label="text button group">
