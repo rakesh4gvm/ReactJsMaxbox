@@ -77,6 +77,7 @@ import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch } from 'react-redux';
+import { TurnLeft } from '@mui/icons-material';
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -2709,6 +2710,7 @@ export default function UnansweredResponsesPage(props) {
                         </TableCell>
                         <TableCell component="th" width={'30px'} align="center"></TableCell>
                         {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
+                        <TableCell component="th" width={'30px'} align="center"></TableCell>
                         <TableCell component="th">From Email</TableCell>
                         <TableCell component="th">Subject</TableCell>
                         <TableCell component="th">Date</TableCell>
@@ -2739,6 +2741,11 @@ export default function UnansweredResponsesPage(props) {
                                 <StarBorderIcon className='starone' />
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
+                            </TableCell>
+                            <TableCell width={'35px'} align="center">
+                              {
+                                item?.IsReplied ? <TurnLeft /> : ""
+                              }
                             </TableCell>
                             {/* <TableCell width={'35px'}></TableCell> */}
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>

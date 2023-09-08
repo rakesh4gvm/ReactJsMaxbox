@@ -2416,8 +2416,8 @@ export default function OtherInboxPage(props) {
 
                         <TableCell component="th" width={'30px'} align="center"></TableCell>
                         <TableCell component="th" width={'30px'} align="center"></TableCell>
-                        <TableCell component="th">To Email</TableCell>
                         <TableCell component="th">From Email</TableCell>
+                        <TableCell component="th">To Email</TableCell>
                         <TableCell component="th">Subject</TableCell>
                         <TableCell component="th">Date</TableCell>
                       </TableRow>
@@ -2450,10 +2450,12 @@ export default function OtherInboxPage(props) {
                               </ToggleButton>
                             </TableCell>
                             <TableCell width={'35px'} align="center">
-                                <TurnLeft  /> 
+                              {
+                                item?.IsReplied ? <TurnLeft /> : ""
+                              }
                             </TableCell>
-                            <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToEmail}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                            <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToEmail}</TableCell>
                             <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row">  {item?.Subject ? (
                               <>
                                 {item.Subject.split(' ').slice(0, 8).join(' ')}

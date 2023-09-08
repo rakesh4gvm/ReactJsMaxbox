@@ -68,7 +68,7 @@ import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 // import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-
+import { TurnLeft } from '@mui/icons-material';
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -2527,6 +2527,11 @@ export default function AllInboxByID(props) {
                                                                 <StarBorderIcon className='starone' />
                                                                 <StarIcon className='selectedstart startwo' />
                                                             </ToggleButton>
+                                                        </TableCell>
+                                                        <TableCell width={'35px'} align="center">
+                                                            {
+                                                                item?.IsReplied ? <TurnLeft /> : ""
+                                                            }
                                                         </TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
