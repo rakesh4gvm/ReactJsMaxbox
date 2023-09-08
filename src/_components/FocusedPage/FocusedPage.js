@@ -2868,7 +2868,14 @@ export default function UnansweredResponsesPage(props) {
 
                               </label> : ""
                           }
-                          <label><b>Subject : </b>{OpenMessage.Subject}</label>
+                          <label>
+                            <b>Subject : </b>{OpenMessage.Subject}
+                            {
+                              <p className='subject-label'>
+                                {OpenMessage.LabelField.map((e) => e.LableName).join(' ')}
+                              </p>
+                            }
+                          </label>
                         </div>
                     }
                   </Col>
