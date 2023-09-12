@@ -34,6 +34,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
 import CircularProgress from '@mui/material/CircularProgress';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Navigation from '../Navigation/Navigation';
 import Usericon from '../../images/icons/users.svg';
@@ -72,6 +73,7 @@ export default function EmailConfigurationPage() {
   const [IsEmailAuthExist, SetIsEmailAuthExist] = React.useState(false);
   const [IsProcees, SetIsProcess] = useState(true)
   const [checkedStates, setCheckedStates] = useState({});
+  const [Checked, SetChecked] = React.useState({});
 
   useEffect(() => {
     document.title = 'Email Settings | MAXBOX';
@@ -114,6 +116,31 @@ export default function EmailConfigurationPage() {
 
     });
 
+  };
+
+  // Handle Checked
+  const HandleChecked = async (event, ID) => {
+    
+    const isChecked = event.target.checked;
+
+    SetChecked((prevState) => ({
+      ...prevState,
+      [ID]: isChecked,
+    }));
+
+    const itemIndex = EmailAccountList.findIndex((item) => item.AccountID === ID);
+
+    if (itemIndex !== -1) {
+      const updatedList = [...EmailAccountList];
+
+      // Update the IsWorking property in the corresponding email account
+      updatedList[itemIndex].IsWorking = isChecked;
+
+      // Update the EmailAccountList state with the updated list
+      SetEmailAccountList(updatedList);
+    }
+
+    await updateDataOnServer(isChecked, ID);
   };
 
 
@@ -551,10 +578,18 @@ export default function EmailConfigurationPage() {
                             </ButtonGroup>
                           </TableCell>
                           <TableCell scope="row">
-                            <Switch
+                            {/* <Switch
                               checked={checkedStates[row.AccountID] || false}
                               onChange={(event) => handleChange(event, row.AccountID)}
                               inputProps={{ 'aria-label': 'controlled' }}
+                            /> */}
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={Checked[row?.AccountID] || row?.IsDoNotShrink}
+                                  onChange={(event) => HandleChecked(event, row.AccountID)}
+                                />
+                              }
                             />
                           </TableCell>
                           <TableCell align="right">
