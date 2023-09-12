@@ -113,7 +113,7 @@ export default function EmailConfigurationPage() {
       data: Data,
     });
     ResponseApi.then((Result) => {
-
+      GetEmailAccountList(Result?.data?.Data?.ClientID, Result?.data?.Data?.UserID, Page)
     });
 
   };
