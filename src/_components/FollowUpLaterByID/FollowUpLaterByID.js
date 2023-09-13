@@ -2546,7 +2546,18 @@ export default function FollowUpLaterByID(props) {
                                                             <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                     } */}
                                                     <label><b>Subject : </b>{OpenMessage.Subject}</label>
-                                                    <label><b>Follow up later : </b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}</label>
+                                                    <label>
+                                                        <b>Follow up later : </b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}
+                                                        {
+                                                            <p className='subject-label'>
+                                                                {
+                                                                    OpenMessage.LabelField.map((e, index) => (
+                                                                        <span key={index}>{e.LableName}</span>
+                                                                    ))
+                                                                }
+                                                            </p>
+                                                        }
+                                                    </label>
                                                 </div>
                                         }
                                     </Col>

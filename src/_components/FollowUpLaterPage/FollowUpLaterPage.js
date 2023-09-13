@@ -2467,7 +2467,18 @@ export default function FollowUpLater(props) {
                               </label> : ""
                           }
                           <label><b>Subject : </b>{OpenMessage.Subject}</label>
-                          <label><b>Follow up later : </b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}</label>
+                          <label>
+                            <b>Follow up later : </b>{Moment(OpenMessage.FollowUpDate).format("MM/DD/YYYY hh:mm A")}
+                            {
+                              <p className='subject-label'>
+                                {
+                                  OpenMessage.LabelField.map((e, index) => (
+                                    <span key={index}>{e.LableName}</span>
+                                  ))
+                                }
+                              </p>
+                            }
+                          </label>
                         </div>
                     }
                   </Col>

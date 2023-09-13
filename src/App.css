@@ -12,6 +12,15 @@
 .App-link {
     color: #61dafb;
 }
+.subject-label span {
+    display: inline-block;
+    background: #e49273;
+    border-radius: 5px;
+    margin: 0 4px 4px 0;
+    color: #fff;
+    padding: 3px;
+    line-height: normal;
+}
 
 @keyframes App-logo-spin {
     from {

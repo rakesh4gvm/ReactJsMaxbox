@@ -2383,7 +2383,11 @@ export default function StarredByID(props) {
                                                         <b>Subject : </b>{OpenMessage.Subject}
                                                         {
                                                             <p className='subject-label'>
-                                                                {OpenMessage.LabelField.map((e) => e.LableName).join(' ')}
+                                                                {
+                                                                    OpenMessage.LabelField.map((e, index) => (
+                                                                        <span key={index}>{e.LableName}</span>
+                                                                    ))
+                                                                }
                                                             </p>
                                                         }
                                                     </label>
