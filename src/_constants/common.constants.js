@@ -10,7 +10,7 @@ const CLIENT_KEY = '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'
 //Google API Ends
 
 //Google Scope Start
-const SCOPE = "https://mail.google.com https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.other.readonly"
+const SCOPE = "https://mail.google.com https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/contacts.other.readonly "
 //Google Scope End
 
 // redirect url start
@@ -18,7 +18,7 @@ const REDIRECT_URL = "http://localhost:3000/email_account/AuthCallback"
 // redirect url end
 
 // redirect url start
-const HomePage = "http://localhost:3001/Focused"
+const HomePage = "http://localhost:3001/AllInbox"
 const LoginPage = "http://localhost:3001"
 // redirect url end
 
