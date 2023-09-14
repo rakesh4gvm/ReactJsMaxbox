@@ -1610,7 +1610,7 @@ export default function Navigation(props) {
                   </List>
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {item.LabelField?.map((label) => {
+                      {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label) => {
                         if (label.LableName === "INBOX") {
                           return null; // Skip rendering INBOX label
                         }
@@ -1645,7 +1645,7 @@ export default function Navigation(props) {
                             component={Link}
                             selected={selected}
                           >
-                            {label.LableName + displayLabelCount}
+                            {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
                           </ListItemButton>
                         );
                       })}

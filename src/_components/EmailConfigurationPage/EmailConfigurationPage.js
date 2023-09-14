@@ -128,17 +128,17 @@ export default function EmailConfigurationPage() {
       [ID]: isChecked,
     }));
 
-    const itemIndex = EmailAccountList.findIndex((item) => item.AccountID === ID);
+    // const itemIndex = EmailAccountList.findIndex((item) => item.AccountID === ID);
 
-    if (itemIndex !== -1) {
-      const updatedList = [...EmailAccountList];
+    // if (itemIndex !== -1) {
+    //   const updatedList = [...EmailAccountList];
 
-      // Update the IsWorking property in the corresponding email account
-      updatedList[itemIndex].IsWorking = isChecked;
+    //   // Update the IsWorking property in the corresponding email account
+    //   // updatedList[itemIndex].IsWorking = isChecked;
 
-      // Update the EmailAccountList state with the updated list
-      SetEmailAccountList(updatedList);
-    }
+    //   // Update the EmailAccountList state with the updated list
+    //   SetEmailAccountList(updatedList);
+    // }
 
     await updateDataOnServer(isChecked, ID);
   };
