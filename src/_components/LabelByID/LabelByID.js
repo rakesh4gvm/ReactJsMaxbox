@@ -68,6 +68,7 @@ import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -229,10 +230,53 @@ export default function LabelByID(props) {
     const dispatch = useDispatch();
     const emailAccounts = useSelector(state => state.emailAccounts);
 
+    const [boxVisible, setBoxVisible] = useState(false);
+    const boxRef = useRef(null);
+    const [labelsData, setLabelsData] = useState([])
+    useEffect(() => {
+        // Function to close box when clicking outside
+        const handleOutsideClick = (event) => {
+            if (boxRef.current && !boxRef.current.contains(event.target)) {
+                setBoxVisible(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, []);
+
     useEffect(() => {
         document.title = 'Label | MAXBOX';
         GetClientID();
     }, [SearchInbox, state, id])
+
+    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
+
+    const HandleLabelID = (event, newValue) => {
+        SetSelectedLabelValue(newValue);
+        var Data = {
+            RecieverEmailLableID: newValue?.RecieverEmailLableID,
+            MessageIDs: CheckedID
+        };
+        LoaderShow();
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/MoveMailsToLabel",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                setBoxVisible(false);
+                toast.success(Result?.data?.Message);
+                GetClientID(id);
+                LoaderHide();
+                SetCheckedID([]);
+            }
+        })
+    }
 
     const ContainerRef = useRef(null);
 
@@ -364,6 +408,7 @@ export default function LabelByID(props) {
                                 total = lbl[0].TotalLableMailCount - lbl[0].TotalSeenLableMailCount;
 
                                 const AccountID = Result.data.PageData[0].AccountID;
+                                setLabelsData(Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].LabelField);
                                 var emailAcocuntsArray = emailAccounts || [];
                                 var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == AccountID) || [];
                                 var LabelCounts = [];
@@ -2442,6 +2487,24 @@ export default function LabelByID(props) {
                                             <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
                                                 <Visibility />
                                             </Button>
+                                            <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
+                                                <DriveFileMoveIcon />
+                                            </Button>
+                                            {boxVisible && (
+                                                <div className="box filltermoveto">
+                                                    <h6>Move to :</h6>
+                                                    <Autocomplete
+                                                        open
+                                                        id="filter-demo"
+                                                        options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
+                                                        getOptionLabel={(option) => option.LableName}
+                                                        sx={{ width: 300 }}
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                        value={SelectedLabelValue}
+                                                        onChange={HandleLabelID}
+                                                    />
+                                                </div>
+                                            )}
                                         </>
                                 }
                                 <div className='rigter-coller'>

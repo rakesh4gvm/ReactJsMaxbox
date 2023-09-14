@@ -253,6 +253,34 @@ export default function AllInboxByID(props) {
         GetClientID();
     }, [SearchInbox, state, id])
 
+    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
+
+    const HandleLabelID = (event, newValue) => {
+        SetSelectedLabelValue(newValue);
+
+        var Data = {
+            RecieverEmailLableID: newValue?.RecieverEmailLableID,
+            MessageIDs: CheckedID
+        };
+        LoaderShow();
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/MoveMailsToLabel",
+            method: "POST",
+            data: Data,
+          });
+          ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                setBoxVisible(false);
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
+            }
+        })
+
+
+    }
+
     const ContainerRef = useRef(null);
 
 
@@ -1997,10 +2025,6 @@ export default function AllInboxByID(props) {
         }
     }
 
-    const MoveMailIntoLabel = () => {
-        debugger;
-    }
-
     const OpenStarPopModel = () => {
         SetStarPopModel(true);
     }
@@ -2429,21 +2453,21 @@ export default function AllInboxByID(props) {
                                 renderInput={(params) => <TextField {...params} label="Custom filter" />}
                                 /> */}
 
-                                {/* <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
+                                <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
                                     <DriveFileMoveIcon />
-                                </Button>   */}
+                                </Button>
                                 {boxVisible && (
-                                    <div className="box filltermoveto" ref={boxRef}>
+                                    <div className="box filltermoveto">
                                         <h6>Move to :</h6>
                                         <Autocomplete
+                                            open
                                             id="filter-demo"
-                                            options={labelsData}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
-                                            filterOptions={filterOptions}
-                                            sx={{ width: 200 }}
+                                            sx={{ width: 300 }}
                                             renderInput={(params) => <TextField {...params} />}
-                                            // value={defaultOption}  
-                                            open // Make sure the dropdown is open
+                                            value={SelectedLabelValue}
+                                            onChange={HandleLabelID}
                                         />
                                     </div>
                                 )}
