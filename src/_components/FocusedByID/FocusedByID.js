@@ -2697,7 +2697,7 @@ export default function FocusedByID(props) {
                                             getOptionLabel={(option) => option.LableName}
                                             sx={{ width: 300 }}
                                             renderInput={(params) => <TextField {...params} />}
-                                            value={SelectedLabelValue}
+                                            // value={SelectedLabelValue}
                                             onChange={HandleLabelID}
                                         />
                                     </div>
