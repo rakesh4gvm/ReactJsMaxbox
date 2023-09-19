@@ -415,7 +415,11 @@ export default function LabelByID(props) {
                                 total = lbl[0].TotalLableMailCount - lbl[0].TotalSeenLableMailCount;
 
                                 const AccountID = Result.data.PageData[0].AccountID;
-                                setLabelsData(Result.data.PageData.filter((e) => e.AccountID == AccountID)[0].LabelField);
+
+                                const IdToFind = ID
+                                const FoundData = Result.data.PageData.find(item => item.LabelField.some(label => label.RecieverEmailLableID === IdToFind));
+
+                                setLabelsData(FoundData.LabelField);
                                 var emailAcocuntsArray = emailAccounts || [];
                                 var emailDataArray = emailAcocuntsArray.filter((e) => e.AccountID == AccountID) || [];
                                 var LabelCounts = [];
