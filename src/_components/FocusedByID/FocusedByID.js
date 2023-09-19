@@ -297,25 +297,31 @@ export default function FocusedByID(props) {
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
 
-        var Data = {
-            RecieverEmailLableID: newValue?.RecieverEmailLableID,
-            MessageIDs: CheckedID
-        };
-        LoaderShow();
-        const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/MoveMailsToLabel",
-            method: "POST",
-            data: Data,
-          });
-          ResponseApi.then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                setBoxVisible(false);
-                toast.success(Result?.data?.Message);
-                // GetClientID();
-                LoaderHide();
-                SetCheckedID([]);
-            }
-        });
+        if (CheckedID.length > 0) {
+            var Data = {
+                RecieverEmailLableID: newValue?.RecieverEmailLableID,
+                MessageIDs: CheckedID
+            };
+            LoaderShow();
+            const ResponseApi = Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/MoveMailsToLabel",
+                method: "POST",
+                data: Data,
+            });
+            ResponseApi.then((Result) => {
+                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    setBoxVisible(false);
+                    toast.success(Result?.data?.Message);
+                    // GetClientID();
+                    LoaderHide();
+                    SetCheckedID([]);
+                }
+            });
+        } else {
+            setBoxVisible(false);
+            LoaderHide();
+            toast.error("Please select email");
+        }
     }
 
     const ContainerRef = useRef(null);
