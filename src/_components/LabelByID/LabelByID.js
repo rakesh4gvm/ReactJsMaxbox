@@ -69,6 +69,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+import { TurnLeft } from '@mui/icons-material';
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -2569,6 +2570,7 @@ export default function LabelByID(props) {
                                                             <TableCell component="th" width={'30px'} align="center"></TableCell>
                                                         </>
                                                 }
+                                                <TableCell component="th"></TableCell>
                                                 <TableCell component="th">Subject</TableCell>
                                                 <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Date</TableCell>
@@ -2604,6 +2606,11 @@ export default function LabelByID(props) {
                                                                 </TableCell>
                                                             </>
                                                     }
+                                                    <TableCell>
+                                                        {
+                                                            item.IsReplied ? <TurnLeft /> : ""
+                                                        }
+                                                    </TableCell>
                                                     <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                         <>
                                                             {item.Subject.split(' ').slice(0, 8).join(' ')}
