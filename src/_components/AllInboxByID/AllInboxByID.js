@@ -2523,8 +2523,8 @@ export default function AllInboxByID(props) {
                                                 </TableCell>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
                                                 <TableCell component="th" width={'30px'} align="center"></TableCell>
-                                                <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
+                                                <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Date</TableCell>
                                             </TableRow>
                                         </TableHead>
@@ -2563,13 +2563,13 @@ export default function AllInboxByID(props) {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }
                                                         </TableCell>
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )

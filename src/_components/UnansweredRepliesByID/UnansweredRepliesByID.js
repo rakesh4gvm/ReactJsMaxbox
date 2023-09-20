@@ -1830,9 +1830,9 @@ export default function UnansweredRepliesByID(props) {
                                             <TableRow>
                                                 {/* <TableCell component="th" width={'30px'} align="center"></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
-                                                <TableCell component="th">To Email</TableCell>
-                                                <TableCell component="th">From Email</TableCell>
                                                 <TableCell component="th">Subject</TableCell>
+                                                <TableCell component="th">From Email</TableCell>
+                                                <TableCell component="th">To Email</TableCell>
                                                 <TableCell component="th">Date</TableCell>
                                             </TableRow>
                                         </TableHead>
@@ -1860,14 +1860,14 @@ export default function UnansweredRepliesByID(props) {
                                                             </ToggleButton>
                                                         </TableCell> */}
                                                         {/* <TableCell width={'35px'}></TableCell> */}
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell scope="row" onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} > {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.ToNameEmail[0]?.Email}</TableCell>
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MailSentDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
