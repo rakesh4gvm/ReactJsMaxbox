@@ -277,6 +277,7 @@ export default function LabelByID(props) {
                     GetClientID(id);
                     LoaderHide();
                     SetCheckedID([]);
+                    setSelectAllChecked(false)
                 }
             })
         } else {
@@ -319,6 +320,7 @@ export default function LabelByID(props) {
 
     // Get Client ID
     const GetClientID = (ID) => {
+        SetCheckedID([])
         var UserDetails = GetUserDetails();
         if (UserDetails != null) {
             SetClientID(UserDetails.ClientID);
