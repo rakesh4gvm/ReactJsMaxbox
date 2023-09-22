@@ -335,9 +335,9 @@ export default function OtherInboxPage(props) {
         }
       } else {
         if (isstarActive) {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "IsStarredEmails")
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "IsStarredEmails")
         } else {
-          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "", "")
+          GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "")
         }
       }
     }
