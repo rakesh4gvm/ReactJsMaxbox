@@ -278,7 +278,20 @@ export default function DraftComposePage({ GetDraftList }) {
                                         onChange={(event, newValue) => {
                                             SetToEmailValue(newValue);
                                         }}
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetToEmailValue([...ToEmailValue, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetToEmailValue([...ToEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         freeSolo
+                                        clearOnBlur
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
