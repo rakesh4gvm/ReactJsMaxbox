@@ -841,6 +841,7 @@ export default function SpamByID(props) {
                     ResponseApi.then((Result) => {
                         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                             toast.success(<div>Follow up later updated successfully.</div>);
+                            setSelectedRowIndex(0)
                             CloseFollowupPopModel();
                             OpenMessageDetails('')
                             LoaderShow()
@@ -912,6 +913,7 @@ export default function SpamByID(props) {
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     toast.success(<div>Other inbox updated successfully.</div>);
+                    setSelectedRowIndex(0)
                     CloseOtherInboxPopModel();
                     OpenMessageDetails('')
                     LoaderShow()
