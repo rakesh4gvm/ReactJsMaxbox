@@ -2691,7 +2691,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 
 .bodyview {
     width: 100%;
-    height: calc(100% - 48px);
+    height: calc(100% - 35px);
 }
 
 .bodyview .SplitPane {
@@ -2936,8 +2936,8 @@ div.css-dhopo2 {
     background-color: #fff;
     padding: 0px;
     overflow-y: auto !important;
-    height: calc(100% - 36px);
-    min-height: calc(100% - 36px);
+    height: calc(100% - 120px);
+    min-height: calc(100% - 120px);
     border: none;
     outline: 0;
     font-size: 0.9rem;
