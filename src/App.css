@@ -2691,7 +2691,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 
 .bodyview {
     width: 100%;
-    height: calc(100% - 35px);
+    height: calc(100% - 41.2px);
 }
 
 .bodyview .SplitPane {
@@ -2776,7 +2776,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .simulationDiv,
 .statisticsDiv {
     width: 100%;
-    height: calc(100% - 30px);
+    height: calc(100% - 0px);
 }
 
 .simulationDiv {
