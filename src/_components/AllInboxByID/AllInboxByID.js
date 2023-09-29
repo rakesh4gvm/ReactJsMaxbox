@@ -2227,7 +2227,20 @@ export default function AllInboxByID(props) {
         stringify: (option) => option.LableName,
         open
     });
-
+   
+    useEffect(() => { 
+        const frameDocument = document.querySelector('.emailbodybox').contentDocument; 
+        if (frameDocument) {
+            const links = frameDocument.querySelectorAll('a'); 
+            links.forEach(link => {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
+            });
+        }
+        }, [OpenMessage.HtmlBody]); 
+        const renderEmailBody = () => { 
+            return OpenMessage.HtmlBody;
+    }; 
 
     return (
 
@@ -2769,7 +2782,10 @@ export default function AllInboxByID(props) {
                                 {OpenMessage == 0 ? '' : parse(OpenMessage.HtmlBody)}
                             </div> */}
                             {/* <div className='emailbodybox' dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div> */}
-                            <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame>
+                            {/* <Frame className='emailbodybox' width="100%" ><div dangerouslySetInnerHTML={{ __html: OpenMessage.HtmlBody }}></div></Frame> */}
+                            <Frame className='emailbodybox' width="100%">
+                                <div dangerouslySetInnerHTML={{ __html: renderEmailBody() }}></div>
+                            </Frame>
                         </div>
                     </SplitPane>
                 </div>
@@ -3268,4 +3284,5 @@ export default function AllInboxByID(props) {
             <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
         </>
     );
+    
 }

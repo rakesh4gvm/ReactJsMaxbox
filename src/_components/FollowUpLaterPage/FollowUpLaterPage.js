@@ -2008,6 +2008,19 @@ export default function FollowUpLater(props) {
     }
   }, []);
 
+  useEffect(() => { 
+    const frameDocument = document.querySelector('.emailbodybox').contentDocument; 
+    if (frameDocument) {
+        const links = frameDocument.querySelectorAll('a'); 
+        links.forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
+        });
+    }
+    }, [OpenMessage.HtmlBody]); 
+    const renderEmailBody = () => { 
+        return OpenMessage.HtmlBody;
+    }; 
 
 
   return (
