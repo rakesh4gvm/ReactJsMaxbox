@@ -1300,7 +1300,7 @@ export default function Navigation(props) {
 
             <Collapse in={navopen} timeout="auto" unmountOnExit>
               <List component="div">
-                <List component="div">
+                {/* <List component="div">
                   <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickInOne}>
                     {navopenone ? <ExpandMore /> : <ExpandDown />} Inbox
                   </ListItemButton>
@@ -1311,9 +1311,6 @@ export default function Navigation(props) {
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
                         component={Link}
                         selected={SelectMenuItem === "/AllInbox"}>
-                        {/* {unSeenInboxCount != null ? "All Inbox(" + unSeenInboxCount + ")" : FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}{/* new code display fron email variable */}
-                        {/*{FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.InboxCount - e?.SeenInboxCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"} */} {/* display only unseen mail count */}
-                        {/* {FromEmailDropdownList != undefined ? "All Inbox(" + FromEmailDropdownList?.map((e, index) => e?.PrimaryMailCount - e?.SeenPrimaryMailCount)?.reduce((a, b) => a + b, 0) + ")" : "All Inbox(0)"}*/} {/*display only unseen mail count */}
                         {
                           FromEmailDropdownList
                             ? (() => {
@@ -1337,15 +1334,35 @@ export default function Navigation(props) {
                       <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused")}
                         component={Link}
                         selected={SelectMenuItem === "/Focused"}>
-                        {/* {AllTotalRecords?.AllStarredCount != undefined ? "Focused(" + AllTotalRecords?.AllUnansweredResponsesCount + ")" : "Focused(0)"} */}
-                        {/* {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} */}
-                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} {/* display only unseen mail count */}
-                        {/* {unSeenFocusedCount != null ? "Focused(" + unSeenFocusedCount + ")" : FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"} */}{/* new code display fron email variable */}
+                        {FromEmailDropdownList != undefined ? "Focused(" + FromEmailDropdownList?.map((e, index) => e?.FocusedCount - e?.SeenFocusedCount)?.reduce((a, b) => a + b, 0) + ")" : "Focused(0)"}
                       </ListItem>
 
                     </List>
                   </Collapse>
-                </List>
+                </List> */}
+
+                <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/AllInbox")}
+                  component={Link}
+                  selected={SelectMenuItem === "/AllInbox"}>
+                  {
+                    FromEmailDropdownList
+                      ? (() => {
+                        let totalInboxCount = 0;
+
+                        FromEmailDropdownList.forEach((account) => {
+                          totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                            if (label.LableName === "INBOX") {
+                              return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                            }
+                            return acc;
+                          }, 0) || 0;
+                        });
+
+                        return `Inbox(${totalInboxCount})`;
+                      })()
+                      : "Inbox(0)"
+                  }
+                </ListItemButton>
 
 
                 <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Starred")}
@@ -1436,7 +1453,7 @@ export default function Navigation(props) {
               <Collapse in={EID == "0" + item._id} timeout="auto" unmountOnExit>
                 <List component="div">
 
-                  <List component="div">
+                  {/* <List component="div">
                     <ListItemButton sx={{ pl: item._id }} onClick={() => handleOneClick("1" + item._id, 1)} key={"1" + item._id}>
                       {OpemID == "1" + item._id ? <ExpandMore /> : <ExpandDown />} Inbox
                     </ListItemButton>
@@ -1447,13 +1464,6 @@ export default function Navigation(props) {
                         <ListItem button sx={{ pl: item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox", item._id)}
                           component={Link}
                           selected={SelectMenuItem === "/AllInbox" + item._id}>
-
-                          {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
-                            row.UnSeenInboxCount != undefined ? "All Inbox1(" + row.UnSeenInboxCount + ")" :
-                              FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox2(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox3(0)" : "All Inbox4(0)" : "All Inbox5(0)"
-                          )) : FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox6(" + (FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID === item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox7(0)" : "All Inbox8(0)"} */}{/* new code display fron email variable */}
-                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenInboxCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}{/* display only unseen mail count */}
-                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount != undefined ? "All Inbox(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].PrimaryMailCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenPrimaryMailCount) + ")" : "All Inbox(0)" : "All Inbox(0)"}display only unseen mail count */}
                           {
                             FromEmailDropdownList
                               ? (() => {
@@ -1479,18 +1489,37 @@ export default function Navigation(props) {
                         <ListItem button sx={{ pl: 4 }} onClick={(event) => handleListItemClick(event, "/Focused", item._id)}
                           component={Link}
                           selected={SelectMenuItem === "/Focused" + item._id}>
-                          {/* {EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered == undefined ? `Focused(0)` : `Focused(` + EmailTotalRecords?.GetEmailTotalRecords.filter((s) => s._id == item.AccountID)[0]?.IsUnanswered + `)`} */}
-                          {/* {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? `Focused (` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount + `)` : `Focused (` + 0 + `)`} */}
-                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}{/* display only unseen mail count
-                          {/* {emailAccounts.length > 0 ? emailAccounts?.map((row, index) => (row.AccountID == item.AccountID ?
-                            row.UnSeenFocusedCount != undefined ? "Focused(" + row.UnSeenFocusedCount + ")" :
-                              FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)" : "Focused(0)"
-                          )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"} */}{/* new code display fron email variable */}
+                          {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount != undefined ? "Focused(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FocusedCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFocusedCount) + ")" : "Focused(0)" : "Focused(0)"}                          
                         </ListItem>
 
                       </List>
                     </Collapse>
-                  </List>
+                  </List> */}
+
+                  <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/AllInbox", item._id)}
+                    component={Link}
+                    selected={SelectMenuItem === "/AllInbox" + item._id}>
+                    {
+                      FromEmailDropdownList
+                        ? (() => {
+                          let totalInboxCount = 0;
+
+                          FromEmailDropdownList.forEach((account) => {
+                            if (account.AccountID == item.AccountID) {
+                              totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                                if (label.LableName === "INBOX") {
+                                  return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                                }
+                                return acc;
+                              }, 0) || 0;
+                            }
+                          });
+
+                          return `Inbox(${totalInboxCount})`;
+                        })()
+                        : "Inbox(0)"
+                    }                    
+                  </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Starred", item._id)}
                     component={Link}
