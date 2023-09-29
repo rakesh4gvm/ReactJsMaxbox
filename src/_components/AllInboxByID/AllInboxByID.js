@@ -238,6 +238,9 @@ export default function AllInboxByID(props) {
     const boxRef = useRef(null);
     const [labelsData, setLabelsData] = useState([])
     const [SenderDetails, SetSenderDetails] = React.useState(null);
+    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
+    const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null)
+
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
@@ -261,7 +264,7 @@ export default function AllInboxByID(props) {
         GetClientID();
     }, [SearchInbox, state, id])
 
-    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
+
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -294,6 +297,31 @@ export default function AllInboxByID(props) {
             LoaderHide();
             toast.error("Please select email");
         }
+    }
+
+    const HandleMultipleLabelID = (event, newValue) => {
+        SetSelectedMultipleLabelValue(newValue)
+    }
+
+    const Apply = () => {
+        
+        var AccountID = SelectedMultipleLabelValue[0]?.AccountID
+        var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
+
+        const Data = {
+            AccountID: AccountID,
+            RecieverEmailLableIDs: RecieverEmailLableIDs,
+            MessageIDs: CheckedID,
+        }
+
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            console.log("Result=====", Result)
+        })
     }
 
     const ContainerRef = useRef(null);
@@ -2494,32 +2522,33 @@ export default function AllInboxByID(props) {
                                 </Button>
                                 {LabelboxVisible && (
                                     <div className="box filltermoveto labelmove" ref={boxRef}>
-                                        <h6>Label as :</h6> 
+                                        <h6>Label as :</h6>
                                         <Autocomplete
                                             open
                                             multiple
-                                            disablePortal 
+                                            disablePortal
                                             id="checkboxes-tags-demo"
                                             style={{ width: 300 }}
-                                            options={top100Films} 
-                                            getOptionLabel={(option) => option.title}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                            getOptionLabel={(option) => option.LableName}
                                             renderTags={() => []}
                                             renderOption={(props, option, { selected }) => (
                                                 <li {...props} className="oragechecked">
-                                                <Checkbox 
-                                                    icon={icon}
-                                                    checkedIcon={checkedIcon}
-                                                    style={{ marginRight: 8 }}
-                                                    checked={selected}
-                                                />
-                                                {option.title}
+                                                    <Checkbox
+                                                        icon={icon}
+                                                        checkedIcon={checkedIcon}
+                                                        style={{ marginRight: 8 }}
+                                                        checked={selected}
+                                                    />
+                                                    {option.LableName}
                                                 </li>
-                                            )} 
+                                            )}
                                             renderInput={(params) => (
                                                 <TextField {...params} placeholder="Search" />
                                             )}
+                                            onChange={HandleMultipleLabelID}
                                         />
-                                        <Button className="btnapply">Apply</Button>
+                                        <Button className="btnapply" onClick={Apply}>Apply</Button>
                                     </div>
                                 )}
 
