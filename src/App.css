@@ -3886,6 +3886,31 @@ div.bgwhiter {
     display: table;
     z-index: 1;
     box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
+    z-index: 999;
+}
+.filltermoveto .MuiAutocomplete-popper { 
+    position: relative !important;
+    transform: none !important;
+}
+.filltermoveto .MuiAutocomplete-popper > div {
+    background-color: transparent;
+    box-shadow: none !important;
+}
+.filltermoveto .MuiAutocomplete-popper div ul{
+    margin: 0 auto;
+}
+.filltermoveto .MuiAutocomplete-popper div ul li{ 
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 35px;
+}
+.filltermoveto.labelmove .MuiAutocomplete-popper div ul li{  
+    padding-left: 5px; 
+}
+.filltermoveto.labelmove{ 
+    left: 107px;
 }
 .filltermoveto h6{ 
     font-size: 0.8rem;
@@ -3949,6 +3974,9 @@ button.btnplusright {
 .labelbox p {
     color: #8d8d8d;
     font-size: 0.9rem;
+} 
+.oragechecked .Mui-checked  svg{ 
+    color: #e49273;
 }
 
 @media screen and (max-width:990px) {

@@ -68,7 +68,13 @@ import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-import { TurnLeft } from '@mui/icons-material';
+import { TurnLeft } from '@mui/icons-material'; 
+import LabelIcon from '@material-ui/icons/Label'; 
+
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox'; 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -228,6 +234,7 @@ export default function AllInboxByID(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [boxVisible, setBoxVisible] = useState(false);
+    const [LabelboxVisible, setLabelBoxVisible] = useState(false);
     const boxRef = useRef(null);
     const [labelsData, setLabelsData] = useState([])
     const [SenderDetails, SetSenderDetails] = React.useState(null);
@@ -236,6 +243,7 @@ export default function AllInboxByID(props) {
         const handleOutsideClick = (event) => {
             if (boxRef.current && !boxRef.current.contains(event.target)) {
                 setBoxVisible(false);
+                setLabelBoxVisible(false);
             }
         };
 
@@ -244,7 +252,7 @@ export default function AllInboxByID(props) {
         return () => {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
-    }, []);
+    }, []); 
 
     const emailAccounts = useSelector(state => state.emailAccounts);
 
@@ -273,6 +281,7 @@ export default function AllInboxByID(props) {
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setBoxVisible(false);
+                    setLabelBoxVisible(false);
                     toast.success(Result?.data?.Message);
                     GetClientID();
                     LoaderHide();
@@ -281,6 +290,7 @@ export default function AllInboxByID(props) {
             })
         } else {
             setBoxVisible(false);
+            setLabelBoxVisible(false);
             LoaderHide();
             toast.error("Please select email");
         }
@@ -2462,14 +2472,15 @@ export default function AllInboxByID(props) {
                                     <DriveFileMoveIcon />
                                 </Button>
                                 {boxVisible && (
-                                    <div className="box filltermoveto">
+                                    <div className="box filltermoveto" ref={boxRef}>
                                         <h6>Move to :</h6>
                                         <Autocomplete
                                             open
+                                            disablePortal
                                             id="filter-demo"
                                             options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
-                                            sx={{ width: 300 }}
+                                            style={{ width: 300 }}
                                             renderInput={(params) => <TextField {...params} />}
                                             // value={SelectedLabelValue}
                                             onChange={HandleLabelID}
@@ -2477,6 +2488,39 @@ export default function AllInboxByID(props) {
                                     </div>
                                 )}
 
+
+                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                    <LabelIcon />
+                                </Button>
+                                {LabelboxVisible && (
+                                    <div className="box filltermoveto labelmove" ref={boxRef}>
+                                        <h6>Label as :</h6> 
+                                        <Autocomplete
+                                            open
+                                            multiple
+                                            disablePortal 
+                                            id="checkboxes-tags-demo"
+                                            style={{ width: 300 }}
+                                            options={top100Films} 
+                                            getOptionLabel={(option) => option.title}
+                                            renderTags={() => []}
+                                            renderOption={(props, option, { selected }) => (
+                                                <li {...props} className="oragechecked">
+                                                <Checkbox 
+                                                    icon={icon}
+                                                    checkedIcon={checkedIcon}
+                                                    style={{ marginRight: 8 }}
+                                                    checked={selected}
+                                                />
+                                                {option.title}
+                                                </li>
+                                            )} 
+                                            renderInput={(params) => (
+                                                <TextField {...params} placeholder="Search" />
+                                            )}
+                                        />
+                                    </div>
+                                )}
 
                                 <div className='rigter-coller'>
                                     <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
