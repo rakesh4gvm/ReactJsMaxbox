@@ -249,6 +249,7 @@ export default function LabelByID(props) {
         const handleOutsideClick = (event) => {
             if (boxRef.current && !boxRef.current.contains(event.target)) {
                 setBoxVisible(false);
+                setLabelBoxVisible(false);
             }
         };
 
@@ -307,14 +308,26 @@ export default function LabelByID(props) {
             RecieverEmailLableIDs: RecieverEmailLableIDs,
             MessageIDs: CheckedID,
         }
-
+        LoaderShow();
         const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
             method: "POST",
             data: Data,
         });
         ResponseApi.then((Result) => {
-            console.log("Result=====", Result)
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                setLabelBoxVisible(false)
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
+            }
+            else{
+                setLabelBoxVisible(false);
+                setLabelBoxVisible(false);
+                LoaderHide();
+                // toast.error("Please select email");
+            }
         })
     }
 
@@ -2574,7 +2587,7 @@ export default function LabelByID(props) {
                                     <div className="box filltermoveto labelmove" ref={boxRef}>
                                         <h6>Label as :</h6>
                                         <Autocomplete
-                                            open
+                                            open 
                                             multiple
                                             disablePortal
                                             id="checkboxes-tags-demo"
