@@ -68,11 +68,11 @@ import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-import { TurnLeft } from '@mui/icons-material'; 
-import LabelIcon from '@material-ui/icons/Label'; 
+import { TurnLeft } from '@mui/icons-material';
+import LabelIcon from '@material-ui/icons/Label';
 
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox'; 
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -255,7 +255,7 @@ export default function AllInboxByID(props) {
         return () => {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
-    }, []); 
+    }, []);
 
     const emailAccounts = useSelector(state => state.emailAccounts);
 
@@ -304,12 +304,10 @@ export default function AllInboxByID(props) {
     }
 
     const Apply = () => {
-        
-        var AccountID = SelectedMultipleLabelValue[0]?.AccountID
+
         var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
 
         const Data = {
-            AccountID: AccountID,
             RecieverEmailLableIDs: RecieverEmailLableIDs,
             MessageIDs: CheckedID,
         }
@@ -2529,7 +2527,7 @@ export default function AllInboxByID(props) {
                                             disablePortal
                                             id="checkboxes-tags-demo"
                                             style={{ width: 300 }}
-                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                            options={labelsData.filter(option => option.LableName)}
                                             getOptionLabel={(option) => option.LableName}
                                             renderTags={() => []}
                                             renderOption={(props, option, { selected }) => (
