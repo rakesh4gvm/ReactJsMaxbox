@@ -2481,7 +2481,7 @@ export default function AllInboxByID(props) {
                                             options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             style={{ width: 300 }}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField placeholder="Search" {...params} />}
                                             // value={SelectedLabelValue}
                                             onChange={HandleLabelID}
                                         />
