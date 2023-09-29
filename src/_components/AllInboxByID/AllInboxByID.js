@@ -239,8 +239,8 @@ export default function AllInboxByID(props) {
     const [labelsData, setLabelsData] = useState([])
     const [SenderDetails, SetSenderDetails] = React.useState(null);
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
-    const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null)
-
+    const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
+ 
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
@@ -311,14 +311,26 @@ export default function AllInboxByID(props) {
             RecieverEmailLableIDs: RecieverEmailLableIDs,
             MessageIDs: CheckedID,
         }
-
+        LoaderShow();
         const ResponseApi = Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
             method: "POST",
             data: Data,
         });
         ResponseApi.then((Result) => {
-            console.log("Result=====", Result)
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                setLabelBoxVisible(false)
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
+            }
+            else{
+                setLabelBoxVisible(false);
+                setLabelBoxVisible(false);
+                LoaderHide();
+                // toast.error("Please select email");
+            }
         })
     }
 
@@ -2535,12 +2547,12 @@ export default function AllInboxByID(props) {
                                     <div className="box filltermoveto labelmove" ref={boxRef}>
                                         <h6>Label as :</h6>
                                         <Autocomplete
-                                            open
+                                            open 
                                             multiple
                                             disablePortal
                                             id="checkboxes-tags-demo"
                                             style={{ width: 300 }}
-                                            options={labelsData.filter(option => option.LableName)}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             renderTags={() => []}
                                             renderOption={(props, option, { selected }) => (
