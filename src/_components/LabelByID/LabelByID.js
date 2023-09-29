@@ -70,6 +70,12 @@ import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import { TurnLeft } from '@mui/icons-material';
+import LabelIcon from '@material-ui/icons/Label';
+
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -234,6 +240,10 @@ export default function LabelByID(props) {
     const [boxVisible, setBoxVisible] = useState(false);
     const boxRef = useRef(null);
     const [labelsData, setLabelsData] = useState([])
+    const [LabelboxVisible, setLabelBoxVisible] = useState(false);
+    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
+    const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null)
+
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
@@ -253,8 +263,6 @@ export default function LabelByID(props) {
         document.title = 'Label | MAXBOX';
         GetClientID();
     }, [SearchInbox, state, id])
-
-    const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -287,8 +295,30 @@ export default function LabelByID(props) {
         }
     }
 
-    const ContainerRef = useRef(null);
+    const HandleMultipleLabelID = (event, newValue) => {
+        SetSelectedMultipleLabelValue(newValue)
+    }
 
+    const Apply = () => {
+
+        var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
+
+        const Data = {
+            RecieverEmailLableIDs: RecieverEmailLableIDs,
+            MessageIDs: CheckedID,
+        }
+
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            console.log("Result=====", Result)
+        })
+    }
+
+    const ContainerRef = useRef(null);
 
     const tohandleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -2268,20 +2298,20 @@ export default function LabelByID(props) {
         }
     }, []);
 
-    
-  useEffect(() => { 
-    const frameDocument = document.querySelector('.emailbodybox').contentDocument; 
-    if (frameDocument) {
-        const links = frameDocument.querySelectorAll('a'); 
-        links.forEach(link => {
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
-        });
-    }
-    }, [OpenMessage.HtmlBody]); 
-    const renderEmailBody = () => { 
+
+    useEffect(() => {
+        const frameDocument = document.querySelector('.emailbodybox').contentDocument;
+        if (frameDocument) {
+            const links = frameDocument.querySelectorAll('a');
+            links.forEach(link => {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
+            });
+        }
+    }, [OpenMessage.HtmlBody]);
+    const renderEmailBody = () => {
         return OpenMessage.HtmlBody;
-    }; 
+    };
 
 
     return (
@@ -2536,6 +2566,42 @@ export default function LabelByID(props) {
                                             )}
                                         </>
                                 }
+
+                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                    <LabelIcon />
+                                </Button>
+                                {LabelboxVisible && (
+                                    <div className="box filltermoveto labelmove" ref={boxRef}>
+                                        <h6>Label as :</h6>
+                                        <Autocomplete
+                                            open
+                                            multiple
+                                            disablePortal
+                                            id="checkboxes-tags-demo"
+                                            style={{ width: 300 }}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                            getOptionLabel={(option) => option.LableName}
+                                            renderTags={() => []}
+                                            renderOption={(props, option, { selected }) => (
+                                                <li {...props} className="oragechecked">
+                                                    <Checkbox
+                                                        icon={icon}
+                                                        checkedIcon={checkedIcon}
+                                                        style={{ marginRight: 8 }}
+                                                        checked={selected}
+                                                    />
+                                                    {option.LableName}
+                                                </li>
+                                            )}
+                                            renderInput={(params) => (
+                                                <TextField {...params} placeholder="Search" />
+                                            )}
+                                            onChange={HandleMultipleLabelID}
+                                        />
+                                        <Button className="btnapply" onClick={Apply}>Apply</Button>
+                                    </div>
+                                )}
+
                                 <div className='rigter-coller'>
                                     {/* <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
                                         className={`starfilter startselct ${isstarActive ? "Mui-selected" : "null"}`}
