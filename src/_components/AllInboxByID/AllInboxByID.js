@@ -2519,6 +2519,7 @@ export default function AllInboxByID(props) {
                                                 <TextField {...params} placeholder="Search" />
                                             )}
                                         />
+                                        <Button className="btnapply">Apply</Button>
                                     </div>
                                 )}
 

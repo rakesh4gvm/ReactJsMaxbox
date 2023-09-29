@@ -3881,7 +3881,7 @@ div.bgwhiter {
     position: absolute;
     left: 70px;
     font-size: 0.9rem;
-    padding: 7px 0; 
+    padding: 7px 0 0; 
     width: auto;
     display: table;
     z-index: 1;
@@ -3977,6 +3977,19 @@ button.btnplusright {
 } 
 .oragechecked .Mui-checked  svg{ 
     color: #e49273;
+}
+.btn.btn-primary.btnapply{
+    width:100%;
+    border-radius:0px;  
+    background: #f8eae4;  
+    color: #4e4e4e;
+    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+    padding: 10px;
+    font-weight: 600;
+}
+.btn.btn-primary.btnapply:hover{ 
+    background: #f0d8cd; 
 }
 
 @media screen and (max-width:990px) {
