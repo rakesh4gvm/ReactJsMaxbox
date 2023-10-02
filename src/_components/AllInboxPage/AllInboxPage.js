@@ -2505,7 +2505,11 @@ export default function OtherInboxPage(props) {
                               <label>
 
                                 <b>To : </b>
-                                {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                {/* {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+
+                                {OpenMessage?.ToNameEmail?.length > 1 ?
+                                  OpenMessage?.ToNameEmail?.map((e, index) => e.Email )?.join(', ').split(', ')[0]
+                                  : OpenMessage?.ToNameEmail?.map((e) => e.Email)}
 
                                 <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
                                   <ArrowDropDown />
@@ -2534,7 +2538,11 @@ export default function OtherInboxPage(props) {
                               <label>
 
                                 <b>CC : </b>
-                                {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                {/* {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+
+                                {OpenMessage?.CcNameEmail?.length > 1 ?
+                                  OpenMessage?.CcNameEmail?.map((e, index) => e.Email )?.join(', ').split(', ')[0]
+                                  : OpenMessage?.CcNameEmail?.map((e) => e.Email)}
 
                                 <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
                                   <ArrowDropDown />
@@ -2562,8 +2570,11 @@ export default function OtherInboxPage(props) {
                             OpenMessage?.BccNameEmail?.length > 0 ?
                               <label>
                                 <b>BCC : </b>
-                                {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
+                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+
+                                {OpenMessage?.BccNameEmail?.length > 1 ?
+                                  OpenMessage?.BccNameEmail?.map((e, index) => e.Email )?.join(', ').split(', ')[0]
+                                  : OpenMessage?.BccNameEmail?.map((e) => e.Email)}
 
                                 <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
                                   <ArrowDropDown />

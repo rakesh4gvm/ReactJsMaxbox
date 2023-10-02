@@ -2502,8 +2502,10 @@ export default function SpamByID(props) {
                                                             <label>
 
                                                                 <b>To : </b>
-                                                                {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-
+                                                                {/* {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                                {OpenMessage?.ToNameEmail?.length > 1 ?
+                                                                    OpenMessage?.ToNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                                    : OpenMessage?.ToNameEmail?.map((e) => e.Email)}
                                                                 <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
                                                                     <ArrowDropDown />
                                                                 </Button>
@@ -2531,7 +2533,10 @@ export default function SpamByID(props) {
                                                             // <label><b>Cc : </b>{OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                             <label>
                                                                 <b>CC : </b>
-                                                                {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                                                {/* {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                                {OpenMessage?.CcNameEmail?.length > 1 ?
+                                                                    OpenMessage?.CcNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                                    : OpenMessage?.CcNameEmail?.map((e) => e.Email)}
                                                                 <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
                                                                     <ArrowDropDown />
                                                                 </Button>
@@ -2558,9 +2563,10 @@ export default function SpamByID(props) {
                                                             // <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                             <label>
                                                                 <b>BCC : </b>
-                                                                {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                                                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
-
+                                                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                                {OpenMessage?.BccNameEmail?.length > 1 ?
+                                                                    OpenMessage?.BccNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                                    : OpenMessage?.BccNameEmail?.map((e) => e.Email)}
                                                                 <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
                                                                     <ArrowDropDown />
                                                                 </Button>

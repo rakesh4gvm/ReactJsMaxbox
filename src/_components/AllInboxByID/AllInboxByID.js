@@ -240,7 +240,7 @@ export default function AllInboxByID(props) {
     const [SenderDetails, SetSenderDetails] = React.useState(null);
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
     const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
- 
+
     useEffect(() => {
         // Function to close box when clicking outside
         const handleOutsideClick = (event) => {
@@ -325,14 +325,14 @@ export default function AllInboxByID(props) {
                     LoaderHide();
                     SetCheckedID([]);
                 }
-                else{
+                else {
                     setLabelBoxVisible(false);
                     LoaderHide();
                     toast.error(Result?.data?.Message);
                 }
             });
         }
-        else{
+        else {
             setLabelBoxVisible(false);
             LoaderHide();
             toast.error("Please select email");
@@ -2270,20 +2270,20 @@ export default function AllInboxByID(props) {
         stringify: (option) => option.LableName,
         open
     });
-   
-    useEffect(() => { 
-        const frameDocument = document.querySelector('.emailbodybox').contentDocument; 
+
+    useEffect(() => {
+        const frameDocument = document.querySelector('.emailbodybox').contentDocument;
         if (frameDocument) {
-            const links = frameDocument.querySelectorAll('a'); 
+            const links = frameDocument.querySelectorAll('a');
             links.forEach(link => {
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer'); // Adding security measure
             });
         }
-        }, [OpenMessage.HtmlBody]); 
-        const renderEmailBody = () => { 
-            return OpenMessage.HtmlBody;
-    }; 
+    }, [OpenMessage.HtmlBody]);
+    const renderEmailBody = () => {
+        return OpenMessage.HtmlBody;
+    };
 
     return (
 
@@ -2552,7 +2552,7 @@ export default function AllInboxByID(props) {
                                     <div className="box filltermoveto labelmove" ref={boxRef}>
                                         <h6>Label as :</h6>
                                         <Autocomplete
-                                            open 
+                                            open
                                             multiple
                                             disablePortal
                                             id="checkboxes-tags-demo"
@@ -2695,7 +2695,11 @@ export default function AllInboxByID(props) {
                                                     </label>
 
                                                     {/* <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Email)?.join(", ")}</label> */}
-                                                    <label><b>To : </b>{OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                                    <label><b>To : </b>
+                                                        {/* {OpenMessage?.ToNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                        {OpenMessage?.ToNameEmail?.length > 1 ?
+                                                            OpenMessage?.ToNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                            : OpenMessage?.ToNameEmail?.map((e) => e.Email)}
                                                         <Button className='btnemail' aria-describedby={idto} variant="contained" onClick={tohandleClick}>
                                                             <ArrowDropDown />
                                                         </Button>
@@ -2724,7 +2728,10 @@ export default function AllInboxByID(props) {
                                                             // </label> : "" 
                                                             <label>
                                                                 <b>CC : </b>
-                                                                {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
+                                                                {/* {OpenMessage?.CcNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                                {OpenMessage?.CcNameEmail?.length > 1 ?
+                                                                    OpenMessage?.CcNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                                    : OpenMessage?.CcNameEmail?.map((e) => e.Email)}
                                                                 <Button className='btnemail' aria-describedby={idcc} variant="contained" onClick={cchandleClick}>
                                                                     <ArrowDropDown />
                                                                 </Button>
@@ -2751,9 +2758,10 @@ export default function AllInboxByID(props) {
                                                             // <label><b>Bcc : </b>{OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")}</label> : ""
                                                             <label>
                                                                 <b>BCC : </b>
-                                                                {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')}
-                                                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.join(", ")} */}
-
+                                                                {/* {OpenMessage?.BccNameEmail?.map((e) => e?.Name ? e.Name.split(' ')[0] : e.Email.split('@')[0])?.join(', ')} */}
+                                                                {OpenMessage?.BccNameEmail?.length > 1 ?
+                                                                    OpenMessage?.BccNameEmail?.map((e, index) => e.Email)?.join(', ').split(', ')[0]
+                                                                    : OpenMessage?.BccNameEmail?.map((e) => e.Email)}
                                                                 <Button className='btnemail' aria-describedby={idbcc} variant="contained" onClick={bcchandleClick}>
                                                                     <ArrowDropDown />
                                                                 </Button>
@@ -3328,5 +3336,5 @@ export default function AllInboxByID(props) {
             <AllInboxComposePage GetAllInboxList={GetAllInboxList} />
         </>
     );
-    
+
 }
