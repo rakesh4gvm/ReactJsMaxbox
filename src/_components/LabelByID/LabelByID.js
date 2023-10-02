@@ -303,37 +303,32 @@ export default function LabelByID(props) {
     const Apply = () => {
 
         var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
-        if (CheckedID.length > 0) {
-            const Data = {
-                RecieverEmailLableIDs: RecieverEmailLableIDs,
-                MessageIDs: CheckedID,
+
+        const Data = {
+            RecieverEmailLableIDs: RecieverEmailLableIDs,
+            MessageIDs: CheckedID,
+        }
+        LoaderShow();
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                setLabelBoxVisible(false)
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
             }
-            LoaderShow();
-            const ResponseApi = Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
-                method: "POST",
-                data: Data,
-            });
-            ResponseApi.then((Result) => {
-                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                    setLabelBoxVisible(false)
-                    toast.success(Result?.data?.Message);
-                    GetClientID();
-                    LoaderHide();
-                    SetCheckedID([]);
-                }
-                else{
-                    setLabelBoxVisible(false);
-                    LoaderHide();
-                    toast.error(Result?.data?.Message);
-                }
-            });
-        }
-        else{
-            setLabelBoxVisible(false);
-            LoaderHide();
-            toast.error("Please select email");
-        }
+            else {
+                setLabelBoxVisible(false);
+                setLabelBoxVisible(false);
+                LoaderHide();
+                // toast.error("Please select email");
+            }
+        })
     }
 
     const ContainerRef = useRef(null);
@@ -1114,7 +1109,7 @@ export default function LabelByID(props) {
 
     // start replay code
     // Open Compose
-    const OpenComposeReply = (e) => {
+    const OpenComposeReply =  (e) => {
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
         // SetToEmailValue([])
@@ -1136,7 +1131,7 @@ export default function LabelByID(props) {
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
                 var SenderDetails = {
-                    SenderName: Result?.data?.SenderName,
+                     SenderName: Result?.data?.SenderName,
                     ReceiverName: Result?.data?.ReceiverName
                 }
                 SetSenderDetails(SenderDetails)
@@ -1144,7 +1139,7 @@ export default function LabelByID(props) {
                 toast.error(Result?.data?.Message);
             }
         })
-        const element = document.getElementById("UserComposeReply")
+         const element = document.getElementById("UserComposeReply")
 
         if (element.classList.contains("show")) {
             element.classList.remove("show");
@@ -1153,7 +1148,7 @@ export default function LabelByID(props) {
             element.classList.add("show");
             // document.getElementById("CcReply").style.display = 'none'
             // document.getElementById("BccReply").style.display = 'none'
-            SetCCMessages([])
+             SetCCMessages([])
             SetBCCMessages([])
         }
 
@@ -1164,14 +1159,14 @@ export default function LabelByID(props) {
         setShowNotification(true);
         setTimeout(() => {
             // setShowNotification(false);
-        }, 5000);
+         }, 5000);
     };
     // end replay code
 
     const OpenReplyAll = () => {
         RemoveForwardPop()
 
-        SetSignature({ Data: "" })
+         SetSignature({ Data: "" })
 
         const element = document.getElementById("UserComposeReply")
 
@@ -1181,14 +1176,14 @@ export default function LabelByID(props) {
         const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
         const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
-        SetCCMessages(NewCCEmail)
+         SetCCMessages(NewCCEmail)
 
         if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
             SetBCCMessages([])
         } else {
             SetBCCMessages(JSON.parse(BCC))
         }
-        if (element.classList.contains("show")) {
+         if (element.classList.contains("show")) {
             element.classList.remove("show");
         }
         else {
@@ -1198,7 +1193,7 @@ export default function LabelByID(props) {
         const Data = {
             ID: OpenMessage?._id,
         }
-        Axios({
+         Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
             method: "POST",
             data: Data,
@@ -1221,10 +1216,10 @@ export default function LabelByID(props) {
         var elementcc = document.getElementById("CcReply");
         elementcc.classList.add("showcc");
 
-        var elementbcc = document.getElementById("BccReply");
+         var elementbcc = document.getElementById("BccReply");
         elementbcc.classList.add("showbcc");
 
-        const elementreply = document.getElementById("UserCompose")
+         const elementreply = document.getElementById("UserCompose")
         elementreply.classList.remove("show");
     }
 
@@ -1237,7 +1232,7 @@ export default function LabelByID(props) {
             element.classList.remove("minmusbox");
         }
         else {
-            element.classList.add("minmusbox");
+             element.classList.add("minmusbox");
             element.classList.remove("largebox");
         }
     }
@@ -1249,14 +1244,14 @@ export default function LabelByID(props) {
         }
         else {
             element.classList.add("largebox");
-            element.classList.remove("minmusbox");
+             element.classList.remove("minmusbox");
         }
     }
     /* end code*/
 
     // Close Compose
     const CloseComposeReply = () => {
-        const element = document.getElementById("UserComposeReply")
+         const element = document.getElementById("UserComposeReply")
         element.classList.remove("show");
     }
 
@@ -1320,14 +1315,14 @@ export default function LabelByID(props) {
             Response3 = [BCCMessages[0].Email]
         }
 
-        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         // var EmailResponse = Response.filter(e => e && e.toLowerCase().match(EmailRegex));
         var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
         var ToEmail = OpenMessage.FromEmail;
         var ToName = OpenMessage.FromName
-        var ID = OpenMessage._id
+         var ID = OpenMessage._id
         var Subject = OpenMessage.Subject;
         var Body = Signature?.Data
         if (Response == "") {
@@ -1337,10 +1332,10 @@ export default function LabelByID(props) {
             toast.error("Please enter body");
         }
         else {
-            LoaderShow()
+             LoaderShow()
             var Data = {
                 ToEmail: Response.toString(),
-                CC: Response2.toString(),
+                 CC: Response2.toString(),
                 BCC: Response3.toString(),
                 ToName: ToName,
                 ID: ID,
@@ -1350,7 +1345,7 @@ export default function LabelByID(props) {
                 ObjectIDTemplateID: NewObjectionID
             };
             Axios({
-                url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
                 method: "POST",
                 data: Data,
             }).then((Result) => {
@@ -1411,10 +1406,10 @@ export default function LabelByID(props) {
             PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
         PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
-        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+         PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-        var GetReplyMessageDetailsData = PROMPT;
+         var GetReplyMessageDetailsData = PROMPT;
         //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
         if (VoiceOfTone.length > 0) {
             LoaderShow()
@@ -1428,7 +1423,7 @@ export default function LabelByID(props) {
             }).then((Result) => {
                 if (Result.data.StatusMessage == "Success") {
                     var body = Result.data?.data;
-                    setSubject(body)
+                     setSubject(body)
                     var HTMLData = Plain2HTML(body)
                     SetSignature({ Data: HTMLData + Signature.Data })
                     LoaderHide()
@@ -1612,7 +1607,7 @@ export default function LabelByID(props) {
         document.getElementById("ToForward").value = ""
         SetForwardSignature({ Data: "" })
 
-        SetForwardToEmailValue([])
+         SetForwardToEmailValue([])
         SetForwardCCEmailValue([])
         SetForwardBCCEmailValue([])
 
@@ -1624,7 +1619,7 @@ export default function LabelByID(props) {
             method: "POST",
             data: Data,
         }).then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetForwardSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1636,7 +1631,7 @@ export default function LabelByID(props) {
         if (element.classList.contains("show")) {
             element.classList.remove("show");
         }
-        else {
+         else {
             element.classList.add("show");
         }
 
@@ -1644,19 +1639,19 @@ export default function LabelByID(props) {
         elementforward.classList.remove("show");
 
         const elementforwardtwo = document.getElementById("UserComposeReply")
-        elementforwardtwo.classList.remove("show");
+         elementforwardtwo.classList.remove("show");
     };
 
     // Close Compose
     const CloseComposeForward = () => {
         const element = document.getElementById("UserComposeForward")
-        element.classList.remove("show");
+         element.classList.remove("show");
     }
 
     /* start navcode */
     const mincomposeonForward = () => {
         const element = document.getElementById("maxcomposeForward")
-        if (element.classList.contains("minmusbox")) {
+         if (element.classList.contains("minmusbox")) {
             element.classList.remove("minmusbox");
         }
         else {
@@ -1679,7 +1674,7 @@ export default function LabelByID(props) {
 
     // Open CC
     const OpenCcForward = () => {
-        if (Ccflag == false) {
+         if (Ccflag == false) {
             document.getElementById("CcForward").style.display = 'block'
             SetCcflag(true);
         }
@@ -1691,7 +1686,7 @@ export default function LabelByID(props) {
 
     // Open BCC
     const OpenBccForward = () => {
-        if (Bccflag == false) {
+         if (Bccflag == false) {
             document.getElementById("BccForward").style.display = 'block'
             SetBccflag(true);
         }
@@ -1704,7 +1699,7 @@ export default function LabelByID(props) {
 
     // Open CC
     const OpenCcReply = () => {
-        var element = document.getElementById("CcReply");
+         var element = document.getElementById("CcReply");
         if (element) {
             element.classList.toggle("showcc");
         }
@@ -1720,18 +1715,18 @@ export default function LabelByID(props) {
     // Forward Send Mail Starts
     const ForwardSendMail = () => {
 
-        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var EmailResponse = ForwardToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var ForwardCCEmailResponse = ForwardCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var ForwardBCCEmailResponse = ForwardBCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
-        var ToEmail = document.getElementById("ToForward").value;
+         var ToEmail = document.getElementById("ToForward").value;
         var ID = OpenMessage._id
         var Subject = OpenMessage.Subject;
         var Body = ForwardSignature.Data
 
         if (EmailResponse == "") {
-            toast.error("Please specify at least one recipient");
+             toast.error("Please specify at least one recipient");
         } else if (Body == "") {
             toast.error("Please enter body");
         }
@@ -1753,7 +1748,7 @@ export default function LabelByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                    toast.success(<div>Forward mail sent successfully.</div>);
+                     toast.success(<div>Forward mail sent successfully.</div>);
                     CloseComposeForward()
                     SetForwardSignature({ Data: "" })
                     LoaderHide()
@@ -1784,7 +1779,7 @@ export default function LabelByID(props) {
     });
     Froalaeditor.RegisterCommand('ForwardSendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
-        title: '',
+         title: '',
         type: 'dropdown',
         focus: false,
         undo: false,
@@ -1809,7 +1804,7 @@ export default function LabelByID(props) {
         title: '',
         type: 'dropdown',
         focus: false,
-        undo: false,
+         undo: false,
         refreshAfterCallback: true,
         options: EditorVariableNames(),
         callback: function (cmd, val) {
@@ -1825,7 +1820,7 @@ export default function LabelByID(props) {
 
         }
     });
-    const forwardconfig = {
+     const forwardconfig = {
         quickInsertEnabled: false,
         placeholderText: 'Edit your content here!',
         charCounterCount: false,
@@ -2592,7 +2587,7 @@ export default function LabelByID(props) {
                                     <div className="box filltermoveto labelmove" ref={boxRef}>
                                         <h6>Label as :</h6>
                                         <Autocomplete
-                                            open 
+                                            open
                                             multiple
                                             disablePortal
                                             id="checkboxes-tags-demo"
@@ -2856,7 +2851,24 @@ export default function LabelByID(props) {
                                                                 </ToggleButton>
                                                             </Button>
                                                     }
-
+                                                    {
+                                                        OpenMessage?.IsTrash ? "" :
+                                                        <Button>
+                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
+                                                       </Button>
+                                                    }
+                                                   {
+                                                     OpenMessage?.IsTrash ? "" :
+                                                     <Button>
+                                                      <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
+                                                    </Button>
+                                                   }
+                                                   {
+                                                     OpenMessage?.IsTrash ? "" :
+                                                    <Button>
+                                                        <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
+                                                    </Button>
+                                                   }
                                                     {/* <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
@@ -2924,6 +2936,19 @@ export default function LabelByID(props) {
                                             SetToEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetToEmailValue([...ToEmailValue, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetToEmailValue([...ToEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = false
@@ -2976,6 +3001,19 @@ export default function LabelByID(props) {
                                             SetCCMessages(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetCCMessages([...CCMessages, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetCCMessages([...CCMessages, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = false
@@ -3051,6 +3089,19 @@ export default function LabelByID(props) {
                                             SetBCCMessages(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetBCCMessages([...BCCMessages, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetBCCMessages([...BCCMessages, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = false
@@ -3164,6 +3215,19 @@ export default function LabelByID(props) {
                                             SetForwardToEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetForwardToEmailValue([...ForwardToEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
@@ -3206,6 +3270,19 @@ export default function LabelByID(props) {
                                             SetForwardCCEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetForwardCCEmailValue([...ForwardCCEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
@@ -3244,6 +3321,19 @@ export default function LabelByID(props) {
                                             SetForwardBCCEmailValue(newValue);
                                         }}
                                         freeSolo
+                                        clearOnBlur
+                                        onClose={(event, newValue) => {
+                                            const newInputValue = event.target.value;
+                                            SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                                        }}
+                                        onKeyDown={(event, newValue) => {
+                                            if (event.keyCode === 188) {
+                                                event.preventDefault();
+                                                const newInputValue = event.target.value;
+                                                SetForwardBCCEmailValue([...ForwardBCCEmailValue, newInputValue]);
+                                                event.target.value = '';
+                                            }
+                                        }}
                                         renderTags={(value, getTagProps) =>
                                             value.map((option, index) => {
                                                 var ValidEmail = ValidateEmail(option)
