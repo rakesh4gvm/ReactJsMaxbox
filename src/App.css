@@ -3934,7 +3934,7 @@ button.btn-pre.greybtn, button.btn-pre.greybtn:hover{
     color: #fff;
 }
 button.btnplusright {
-    right: 15px;
+    right: 4px;
     color: #666;
     position: absolute; 
     width: 16px;
@@ -3991,6 +3991,58 @@ button.btnplusright {
 .btn.btn-primary.btnapply:hover{ 
     background: #f0d8cd; 
 }
+button.labelinside, button.labelinside:focus, button.labelinside:hover {
+    right: 4px;
+    color: #666;
+    position: absolute;
+    width: 16px;
+    min-width: auto;
+    text-align: center;
+    padding: 1px;
+    min-height: auto;
+    height: 16px;
+    background: none;
+    box-shadow: none;
+    transform: translate(0px, -20px);
+}
+button.labelinside:hover { 
+    background: #ccc; 
+}
+button.labelinside svg.MuiSvgIcon-root {
+    margin-left: 0px;
+    width: 0.6em;
+}
+.labelcolorbox {
+    width: 15px;
+    height: 15px;
+    -webkit-mask: url(images/label_gm_grey_24dp.png) center/contain; 
+    mask: url(images/label_gm_grey_24dp.png) center/contain;
+    float: left;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
+    box-shadow: 0 0px 3px 0px rgb(0 0 0 / 2%); 
+    width: 100%;
+    padding: 10px
+}
+.colorpaletlist{
+    display: inline-block;
+    width: 100%;
+}
+.colorpaletlist button{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 3px solid #ddd;
+    display: inline-block;
+}
+.colorboxmain {
+    max-width: 254px;
+    width: 100%; 
+}
+
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

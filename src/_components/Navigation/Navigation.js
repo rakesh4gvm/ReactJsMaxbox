@@ -75,8 +75,11 @@ import { IntroJsReact } from 'react-intro.js';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Add, Close } from '@material-ui/icons';
+import MoreVertIcon from '@material-ui/icons/MoreVert'; 
+import Popover from '@mui/material/Popover';
 
-import Emailinbox from '../../images/email_inbox_img.png';
+import Emailinbox from '../../images/email_inbox_img.png'; 
+import { HexColorPicker } from "react-colorful";
 
 const style = {
   position: 'absolute',
@@ -252,7 +255,25 @@ export default function Navigation(props) {
   const refreshClientDetails = useSelector(state => state.refreshClientDetails);
   // console.log(JSON.stringify(emailAccounts));
   const [opento, setOpento] = React.useState(false);
+ 
+  const [color, setColor] = useState("#b32aa9");
 
+  const colorhandleChange = (e) => {
+    setColor(e.target.value);
+  };
+
+  const [dotanchorEl, setdotAnchorEl] = React.useState(null);
+
+  const dothandleClick = (event) => {
+    setdotAnchorEl(event.currentTarget);
+  };
+
+  const dothandleClose = () => {
+    setdotAnchorEl(null);
+  };
+
+  const dotopen = Boolean(dotanchorEl);
+  const id = dotopen ? 'simple-popover' : undefined; 
 
   const labelhandleOpen = () => {
     setOpento(true);
@@ -1667,6 +1688,7 @@ export default function Navigation(props) {
                         }
 
                         return (
+                          <>
                           <ListItemButton
                             key={labelId}
                             sx={{ pl: 4 }}
@@ -1674,8 +1696,32 @@ export default function Navigation(props) {
                             component={Link}
                             selected={selected}
                           >
-                            {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+                             <div style={{ background: color }} className="labelcolorbox"></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
                           </ListItemButton>
+                          
+                          <Button className='labelinside' aria-describedby={id} variant="contained" onClick={dothandleClick}>  <MoreVertIcon /></Button>
+                          <Popover className="colorboxmain"  id={id}
+                            open={dotopen}
+                            anchorEl={dotanchorEl}
+                            onClose={dothandleClose}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            }} > 
+                                <Typography sx={{ pb: 1 }}>Label Color</Typography>  
+                                <div className="colorpaletlist">
+                                  <button style={{ background: "#ff6961" }} onClick={() => setColor("#ff6961")}></button>
+                                  <button style={{ background: "#ffb480" }} onClick={() => setColor("#ffb480")}></button>
+                                  <button style={{ background: "#f8f38d" }} onClick={() => setColor("#f8f38d")}></button>
+                                  <button style={{ background: "#42d6a4" }} onClick={() => setColor("#42d6a4")}></button>
+                                  <button style={{ background: "#08cad1" }} onClick={() => setColor("#08cad1")}></button>
+                                  <button style={{ background: "#59adf6" }} onClick={() => setColor("#59adf6")}></button>
+                                  <button style={{ background: "#9d94ff" }} onClick={() => setColor("#9d94ff")}></button>
+                                  <button style={{ background: "#c780e8" }} onClick={() => setColor("#c780e8")}></button> 
+                                </div> 
+
+                          </Popover> 
+                         </>
                         );
                       })}
                     </List>
