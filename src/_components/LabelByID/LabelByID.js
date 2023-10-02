@@ -303,32 +303,37 @@ export default function LabelByID(props) {
     const Apply = () => {
 
         var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
-
-        const Data = {
-            RecieverEmailLableIDs: RecieverEmailLableIDs,
-            MessageIDs: CheckedID,
+        if (CheckedID.length > 0) {
+            const Data = {
+                RecieverEmailLableIDs: RecieverEmailLableIDs,
+                MessageIDs: CheckedID,
+            }
+            LoaderShow();
+            const ResponseApi = Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+                method: "POST",
+                data: Data,
+            });
+            ResponseApi.then((Result) => {
+                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    setLabelBoxVisible(false)
+                    toast.success(Result?.data?.Message);
+                    GetClientID();
+                    LoaderHide();
+                    SetCheckedID([]);
+                }
+                else{
+                    setLabelBoxVisible(false);
+                    LoaderHide();
+                    toast.error(Result?.data?.Message);
+                }
+            });
         }
-        LoaderShow();
-        const ResponseApi = Axios({
-            url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
-            method: "POST",
-            data: Data,
-        });
-        ResponseApi.then((Result) => {
-            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                setLabelBoxVisible(false)
-                toast.success(Result?.data?.Message);
-                GetClientID();
-                LoaderHide();
-                SetCheckedID([]);
-            }
-            else{
-                setLabelBoxVisible(false);
-                setLabelBoxVisible(false);
-                LoaderHide();
-                // toast.error("Please select email");
-            }
-        })
+        else{
+            setLabelBoxVisible(false);
+            LoaderHide();
+            toast.error("Please select email");
+        }
     }
 
     const ContainerRef = useRef(null);
