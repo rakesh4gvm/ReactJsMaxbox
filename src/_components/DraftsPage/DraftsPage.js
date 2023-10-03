@@ -199,15 +199,20 @@ export default function OtherInboxPage(props) {
 
   // Selected Email Account User
   const SelectEmailAccountUser = (e) => {
+
+    var EventValue = e.target.value
+    var SelectedEmailValue = EmailAccountUsers.find((e) => e.AccountID == EventValue)
     SetSelectedEmailAccountUser(e.target.value)
     const str = "<br>"
-    if (ClientSignatureData == "") {
-      SetClientSignatureData(ClientData)
-      SetSignature({ Data: Signature.Data + str + ClientData })
-    } else {
-      Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
-      SetSignature({ Data: Signature.Data })
-    }
+    SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature })
+
+    // if (ClientSignatureData == "") {
+    //   SetClientSignatureData(ClientData)
+    //   SetSignature({ Data: Signature.Data + str + ClientData })
+    // } else {
+    //   Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
+    //   SetSignature({ Data: Signature.Data })
+    // }
   }
 
   useEffect(() => {
@@ -328,7 +333,8 @@ export default function OtherInboxPage(props) {
       el.classList.remove("show");
       if (EmailAccountUsers.length > 0) {
         SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-        SetSignature({ Data: "<br/>" + ClientData + Data.Body })
+        // SetSignature({ Data: "<br/>" + ClientData + Data.Body })
+        SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
         SetClientSignatureData(ClientData)
       } else {
         SetSelectedEmailAccountUser(0);
@@ -343,12 +349,14 @@ export default function OtherInboxPage(props) {
       document.getElementById("ComposeCC").value = ""
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
-        SetSignature({ Data: "<br />" + Data.Body + ClientData })
+        // SetSignature({ Data: "<br />" + Data.Body + ClientData })
+        SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
         SetToEmailValue([Data?.MailTo])
         document.getElementById("ComposeSubject").value = Data.Subject
         // SetMailChange({ To: "", Subject: "" })
       } else {
-        SetSignature({ Data: "<br />" + ClientData });
+        // SetSignature({ Data: "<br />" + ClientData });
+        SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
         SetMailChange({ To: "", Subject: "" })
       }
 
