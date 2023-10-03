@@ -255,17 +255,41 @@ export default function Navigation(props) {
   const refreshClientDetails = useSelector(state => state.refreshClientDetails);
   // console.log(JSON.stringify(emailAccounts));
   const [opento, setOpento] = React.useState(false);
- 
-  const [color, setColor] = useState("#b32aa9");
+  const [labelID, setLabelId] = useState("");
+  const [color, setColor] = useState("#000");
+  const [dotanchorEl, setdotAnchorEl] = React.useState(null);
+  const [isLabelVisible, setIsLabelVisible] = useState(false);
+  const [labelContentVisibility, setLabelContentVisibility] = useState({});
 
-  const colorhandleChange = (e) => {
-    setColor(e.target.value);
+  const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
+    setLabelId(labelId);
+    setColor(labelColorCode);
+    var Data = {
+      AccountID: AccountID,
+      RecieverEmailLableID: labelId,
+      LabelColorCode: labelColorCode
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receiver_email_labels/ReceiverEmailLabelsAddColor",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        dothandleClose();
+        toast.success(Result?.data?.Message);
+      } else {
+        dothandleClose();
+        toast.error(Result?.data?.Message);
+      }
+    });
   };
 
-  const [dotanchorEl, setdotAnchorEl] = React.useState(null);
-
-  const dothandleClick = (event) => {
-    setdotAnchorEl(event.currentTarget);
+  const toggleLabelContentVisibility = (index) => {
+    setLabelContentVisibility({
+      ...labelContentVisibility,
+      [index]: !labelContentVisibility[index],
+    });
   };
 
   const dothandleClose = () => {
@@ -1660,7 +1684,7 @@ export default function Navigation(props) {
                   </List>
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label) => {
+                      {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => {
                         if (label.LableName === "INBOX") {
                           return null; // Skip rendering INBOX label
                         }
@@ -1686,6 +1710,7 @@ export default function Navigation(props) {
                         if(label.LableName == "Trash" || label.LableName == "Bin"){
                           displayLabelCount = "";
                         }
+                        const isLabelVisible = labelContentVisibility[index];
 
                         return (
                           <>
@@ -1696,11 +1721,19 @@ export default function Navigation(props) {
                             component={Link}
                             selected={selected}
                           >
-                             <div style={{ background: color }} className="labelcolorbox"></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+                          <div style={{ background: labelID == labelId ? color : label.LabelColorCode ? label.LabelColorCode : color }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
                           </ListItemButton>
-                          
-                          <Button className='labelinside' aria-describedby={id} variant="contained" onClick={dothandleClick}>  <MoreVertIcon /></Button>
-                          <Popover className="colorboxmain"  id={id}
+                          {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
+                          <Button
+                            className='labelinside'
+                            aria-describedby={`${labelId}-${index}`}
+                            variant="contained"
+                            onClick={() => toggleLabelContentVisibility(index)}
+                          >
+                            <MoreVertIcon />
+                          </Button>
+                          {isLabelVisible && (
+                          <div className="colorboxmain" id={`${labelId}-${index}`}
                             open={dotopen}
                             anchorEl={dotanchorEl}
                             onClose={dothandleClose}
@@ -1708,28 +1741,24 @@ export default function Navigation(props) {
                               vertical: 'bottom',
                               horizontal: 'left',
                             }} > 
-                                <Typography sx={{ pb: 1 }}>Label Color</Typography>  
-                                <div className="colorpaletlist">
-                                  <button style={{ background: "#ff6961" }} onClick={() => setColor("#ff6961")}></button>
-                                  <button style={{ background: "#ffb480" }} onClick={() => setColor("#ffb480")}></button>
-                                  <button style={{ background: "#f8f38d" }} onClick={() => setColor("#f8f38d")}></button>
-                                  <button style={{ background: "#42d6a4" }} onClick={() => setColor("#42d6a4")}></button>
-                                  <button style={{ background: "#08cad1" }} onClick={() => setColor("#08cad1")}></button>
-                                  <button style={{ background: "#59adf6" }} onClick={() => setColor("#59adf6")}></button>
-                                  <button style={{ background: "#9d94ff" }} onClick={() => setColor("#9d94ff")}></button>
-                                  <button style={{ background: "#c780e8" }} onClick={() => setColor("#c780e8")}></button> 
-                                </div> 
-
-                          </Popover> 
+                            <Typography sx={{ pb: 1 }}>Label Color</Typography>  
+                            <div className="colorpaletlist">
+                              <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
+                              <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
+                              <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
+                              <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
+                              <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
+                              <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
+                              <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
+                              <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button> 
+                            </div>
+                          </div> 
+                          )}
                          </>
                         );
                       })}
                     </List>
-
                   </Collapse>
-
-
-
                 </List>
               </Collapse>
             </List>
