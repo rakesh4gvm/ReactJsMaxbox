@@ -1685,7 +1685,6 @@ export default function Navigation(props) {
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => {
-                        console.log(index)
                         if (label.LableName === "INBOX") {
                           return null; // Skip rendering INBOX label
                         }
