@@ -10,13 +10,13 @@ import BgProfile from '../../images/bg-profile.png';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LoaderCircle from '../../images/icons/icon_loader_circle.svg';
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
-
-
+import Froalaeditor from 'froala-editor';
+import FroalaEditor from 'react-froala-wysiwyg';
 
 import { history } from "../../_helpers";
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames } from "../../_helpers/Utility";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,6 +36,10 @@ export default function EditEmailPage(props) {
   const [Refreshtoken, SetRefreshtoken] = React.useState();
   const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(0);
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(0);
+  const [SignatureError, SetSignatureError] = React.useState("");
+  const [Signature, SetSignature] = React.useState({
+    Data: ""
+  })
 
   var Isworking = false;
   useEffect(() => {
@@ -115,6 +119,7 @@ export default function EditEmailPage(props) {
       Email: Email,
       NewRefereshToken: Refreshtoken,
       IsWorking: true,
+      EmailSignature: Signature.Data,
     }
     LoaderShow()
     Axios({
@@ -149,6 +154,48 @@ export default function EditEmailPage(props) {
     window.location.href = Url;
   }
   // end ReAuthenticate email
+
+  // Frola Editor Starts
+  Froalaeditor.RegisterCommand('Variable', {
+    title: 'Variable',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: EditorVariableNames(),
+    callback: function (cmd, val) {
+      var editorInstance = this;
+      editorInstance.html.insert("{" + val + "}");
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+
+    }
+
+  });
+
+  const config = {
+    quickInsertEnabled: false,
+    placeholderText: 'Edit your content here!',
+    charCounterCount: false,
+    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'insertImage', 'html', 'Variable'],
+    imageUploadURL: CommonConstants.MOL_APIURL + "/client/upload_image",
+    imageUploadRemoteUrls: false,
+    key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+  }
+  const HandleModelChange = (Model) => {
+    SetSignature({
+      Data: Model
+    });
+    if (Model != "") {
+      SetSignatureError("")
+    }
+  }
+  // Frola Editor Ends
 
   return (
     <>
@@ -211,7 +258,15 @@ export default function EditEmailPage(props) {
                       <Button className='btnauthenticate mt-4' onClick={() => { ReAuthenticate(EditEmailConfigurationDetails); }} ><img src={LoaderCircle} className="mr-1" ></img> Re Authenticate</Button> : ''}
                   </Col>
                 </Row>
-
+                <Row className='input-boxbg mt-5'>
+                  <Col sm={4}>
+                    <label>Email signature text  :</label>
+                  </Col>
+                  <Col sm={8}>
+                  </Col>
+                  <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                  {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
+                </Row>
               </Col>
             </Row>
             <Row>

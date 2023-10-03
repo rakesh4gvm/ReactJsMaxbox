@@ -141,10 +141,10 @@ export default function EditClientPage(props) {
             Isvalid = false
         }
 
-        if (Signature.Data === "") {
-            SetSignatureError("Please enter signature body")
-            Isvalid = false
-        }
+        // if (Signature.Data === "") {
+        //     SetSignatureError("Please enter signature body")
+        //     Isvalid = false
+        // }
         return Isvalid;
     };
 
@@ -194,7 +194,7 @@ export default function EditClientPage(props) {
                     ID: ClientIDDetails[0]._id,
                     Name: ClientName,
                     BccEmail: BccEmail,
-                    SignatureText: Signature.Data,
+                    SignatureText: "",
                 }
 
                 var ExistsClient = await CheckExistClient(ClientName)
@@ -282,7 +282,7 @@ export default function EditClientPage(props) {
                                         {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
                                     </Col>
                                 </Row>
-                                <Row className='input-boxbg mt-5'>
+                                {/* <Row className='input-boxbg mt-5'>
                                     <Col sm={4}>
                                         <label>Email signature text  :</label>
                                     </Col>
@@ -290,7 +290,7 @@ export default function EditClientPage(props) {
                                     </Col>
                                     <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
                                     {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                                </Row>
+                                </Row> */}
                             </Col>
                         </Row>
                         <Row>

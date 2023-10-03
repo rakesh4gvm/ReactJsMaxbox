@@ -129,10 +129,10 @@ export default function AddClientPage({ children }) {
       Isvalid = false
     }
 
-    if (Signature.Data === "") {
-      SetSignatureError("Please enter signature body")
-      Isvalid = false
-    }
+    // if (Signature.Data === "") {
+    //   SetSignatureError("Please enter signature body")
+    //   Isvalid = false
+    // }
 
     return Isvalid;
   };
@@ -184,7 +184,7 @@ export default function AddClientPage({ children }) {
         const Data = {
           Name: ClientName,
           BccEmail: BccEmail,
-          SignatureText: Signature.Data,
+          SignatureText: "",
           UserID: UserID
         }
 
@@ -281,7 +281,7 @@ export default function AddClientPage({ children }) {
                     {BCCEmailError && <p style={{ color: "red" }}>{BCCEmailError}</p>}
                   </Col>
                 </Row>
-                <Row className='input-boxbg mt-5'>
+                {/* <Row className='input-boxbg mt-5'>
                   <Col sm={4}>
                     <label>Email signature text  :</label>
                   </Col>
@@ -290,9 +290,8 @@ export default function AddClientPage({ children }) {
                   <Col sm={12} className="vardroper">
                     <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
                     {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
-                    {/* <FroalaEditor config={config} /> */}
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
             </Row>
             <Row>
