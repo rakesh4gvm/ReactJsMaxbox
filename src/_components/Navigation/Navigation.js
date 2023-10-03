@@ -217,6 +217,8 @@ export default function Navigation(props) {
   const [navopenone, setNavOneOpen] = React.useState(true);
   const [navopenonenew, setNavOneOpenNew] = React.useState(true);
   const [openstarred, setopenstarredNew] = React.useState(true);
+  const [navopenlabelsone, setNavOneLabelOpen] = React.useState(true);
+  const [openAlllabels, setopenAllLabels] = React.useState(true);
   const [ClientID, SetClientID] = React.useState(0);
   const [UserID, SetUserID] = React.useState(0);
   const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
@@ -256,39 +258,17 @@ export default function Navigation(props) {
   // console.log(JSON.stringify(emailAccounts));
   const [opento, setOpento] = React.useState(false);
   const [labelID, setLabelId] = useState("");
-  const [color, setColor] = useState("#000");
+  const [bgColor, setBgColor] = useState("");
+  const [defaultBgColor, setDefaultBgColor] = useState("#000");  
   const [dotanchorEl, setdotAnchorEl] = React.useState(null);
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [labelContentVisibility, setLabelContentVisibility] = useState({});
+  const [AllEmailLabelsData, SetAllEmailLabelsData] = useState([]);
 
-  // const toggleLabelContentVisibility = (index) => {
-  //   setLabelContentVisibility({
-  //     ...labelContentVisibility,
-  //     [index]: !labelContentVisibility[index],
-  //   });
-  // };
-  // const toggleLabelContentVisibility = (index) => {
-  //   setLabelContentVisibility({
-  //         ...labelContentVisibility,
-  //         [index]: !labelContentVisibility[index],
-  //       });
-  // };
- 
-    // const [isLabelVisible, setIsLabelVisible] = useState(false);
-    // const isLabelVisibleRef = useRef(null);
-
-    const toggleLabelContentVisibility = (index) => {
-      setLabelContentVisibility({
-        ...labelContentVisibility,
-        [index]: !labelContentVisibility[index],
-      });
-    };
-   
-    
-  
-    const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
+  const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
     setLabelId(labelId);
-    setColor(labelColorCode);
+    setBgColor(labelColorCode);
+    setLabelContentVisibility({});
     var Data = {
       AccountID: AccountID,
       RecieverEmailLableID: labelId,
@@ -303,10 +283,30 @@ export default function Navigation(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         dothandleClose();
         toast.success(Result?.data?.Message);
+        let AccountData = FromEmailDropdownList.filter(function (data) {
+          return data.AccountID == AccountID;
+        });
+        if(AccountData.length > 0){
+          if(AccountData[0].LabelField.length > 0){
+            let LabelData = AccountData[0].LabelField.filter(function (lbl) {
+              return lbl.RecieverEmailLableID == labelId;
+            });
+            if(LabelData.length > 0){
+              LabelData[0].LabelColorCode = labelColorCode;
+            }
+          }
+        }
       } else {
         dothandleClose();
         toast.error(Result?.data?.Message);
       }
+    });
+  };
+
+  const toggleLabelContentVisibility = (index) => {
+    setLabelContentVisibility({
+      ...labelContentVisibility,
+      [index]: !labelContentVisibility[index],
     });
   };
 
@@ -722,6 +722,8 @@ export default function Navigation(props) {
       setNavOpen(true);
       setNavOneOpen(true);
       setopenstarredNew(false);
+      setNavOneOpenNew(false);
+      setopenAllLabels(true);
     } else {
       if (SelectedID == "") {
         SetSelectMenuItem(SelectedPage)
@@ -1107,6 +1109,11 @@ export default function Navigation(props) {
     setNavOneOpen(!navopenone);
   };
 
+  const OnehandleClickAllLabels = () => {
+    setopenAllLabels(!openAlllabels);
+    setNavOneLabelOpen(!navopenlabelsone);
+  };
+
   const OnehandleClickOutBox = (ids, cnt) => {
     if (cnt == 0) {
       SetOutBoxID(ids)
@@ -1132,7 +1139,17 @@ export default function Navigation(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.PageData.length > 0) {
           SetFromEmailDropdownList(Result.data.PageData);
-
+          var labelArray = [];
+          var EmailData = Result.data.PageData;
+          for (var i = 0; i < EmailData.length; i++) {
+            var EmailLabelData = EmailData[i].LabelField
+            if (EmailLabelData.length > 0) {
+              for (var j = 0; j < EmailLabelData.length; j++) {
+                labelArray.push(EmailLabelData[j]);
+              }
+            }
+          }
+          SetAllEmailLabelsData(labelArray);
         } else {
           // toast.error(<div>Please add email configuration.</div>)
         }
@@ -1498,6 +1515,50 @@ export default function Navigation(props) {
                   </Collapse>
                 </List>
 
+                <List component="div">
+                  <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickAllLabels}>
+                    {openAlllabels ? <ExpandMore /> : <ExpandDown />}
+                    Labels
+                  </ListItemButton>
+
+                  <Collapse in={openAlllabels} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {/* {[...AllEmailLabelsData.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => { */}
+                      {AllEmailLabelsData?.map((label, index) => {
+                        if (label.LableName === "INBOX") {
+                          return null; // Skip rendering INBOX label
+                        }
+
+                        const labelId = label.RecieverEmailLableID;
+                        const selected = SelectMenuItem === `/LabelByID${labelId}`;
+
+                        // Calculate the unseen label count based on matching account and label ID
+                        let unseenLabelCount = 0;
+                        unseenLabelCount = label.TotalLableMailCount - label.TotalSeenLableMailCount;
+
+                        // Calculate the label count for display
+                        var displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
+                        if (label.LableName == "Trash" || label.LableName == "Bin") {
+                          displayLabelCount = "";
+                        }
+                        return (
+                          <>
+                            <ListItemButton
+                              key={labelId}
+                              sx={{ pl: 4 }}
+                              onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
+                              component={Link}
+                              selected={selected}
+                            >
+                            {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+                            </ListItemButton>
+                          </>
+                        );
+                      })}
+                    </List>
+                  </Collapse>
+                </List>
+
               </List>
             </Collapse>
           </List>
@@ -1732,48 +1793,47 @@ export default function Navigation(props) {
 
                         return (
                           <>
-                          <ListItemButton
-                            key={labelId}
-                            sx={{ pl: 4 }}
-                            onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
-                            component={Link}
-                            selected={selected}
-                          >
-                          <div style={{ background: labelID == labelId ? color : label.LabelColorCode ? label.LabelColorCode : color }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
-                          </ListItemButton>
-                          {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
-                          <Button
-                            className='labelinside'
-                            aria-describedby={`${labelId}-${index}`}
-                            variant="contained"
-                            onClick={() => toggleLabelContentVisibility(index)}
-                          >
-                            <MoreVertIcon />
-                          </Button>
-                          {isLabelVisible && (
-                          <div className="colorboxmain" id={`${labelId}-${index}`}
-                            open={dotopen}
-                            anchorEl={dotanchorEl}
-                            onClose={dothandleClose}
-                            anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'left',
-                            }}  
-                            > 
-                            <Typography sx={{ pb: 1 }}>Label Color</Typography>  
-                            <div className="colorpaletlist">
-                              <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
-                              <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
-                              <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
-                              <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
-                              <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
-                              <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
-                              <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
-                              <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button> 
-                            </div>
-                          </div> 
-                          )}
-                         </>
+                            <ListItemButton
+                              key={labelId}
+                              sx={{ pl: 4 }}
+                              onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
+                              component={Link}
+                              selected={selected}
+                            >
+                              <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+                            </ListItemButton>
+                            {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
+                            <Button
+                              className='labelinside'
+                              aria-describedby={`${labelId}-${index}`}
+                              variant="contained"
+                              onClick={() => toggleLabelContentVisibility(index)}
+                            >
+                              <MoreVertIcon />
+                            </Button>
+                            {isLabelVisible && (
+                              <div className="colorboxmain" id={`${labelId}-${index}`}
+                                open={dotopen}
+                                anchorEl={dotanchorEl}
+                                onClose={dothandleClose}
+                                anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'left',
+                                }} >
+                                <Typography sx={{ pb: 1 }}>Label Color</Typography>
+                                <div className="colorpaletlist">
+                                  <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
+                                  <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
+                                  <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
+                                  <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
+                                  <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
+                                  <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
+                                  <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
+                                  <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button>
+                                </div>
+                              </div>
+                            )}
+                          </>
                         );
                       })}
                     </List>
