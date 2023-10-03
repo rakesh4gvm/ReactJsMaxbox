@@ -4040,10 +4040,14 @@ button.labelinside svg.MuiSvgIcon-root {
     display: inline-block;
 }
 .colorboxmain {
-    max-width: 254px;
-    width: 100%; 
+    max-width: 194px;
+    width: 180px;
+    background: #fff;
+    z-index: 9999;
+    position: absolute;
+    box-shadow: 0 0 8px 2px #ccc;
+    padding: 10px 0 10px 10px;
 }
-
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

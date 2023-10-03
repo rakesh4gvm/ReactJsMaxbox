@@ -201,7 +201,7 @@ const addNavClick = () => {
 // const socket = io("http://localhost:3006", { transports: ['websocket', 'polling', 'flashsocket'] });
 
 export default function Navigation(props) {
-  const { window } = props;
+  const { index, window } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -261,7 +261,32 @@ export default function Navigation(props) {
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [labelContentVisibility, setLabelContentVisibility] = useState({});
 
-  const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
+  // const toggleLabelContentVisibility = (index) => {
+  //   setLabelContentVisibility({
+  //     ...labelContentVisibility,
+  //     [index]: !labelContentVisibility[index],
+  //   });
+  // };
+  // const toggleLabelContentVisibility = (index) => {
+  //   setLabelContentVisibility({
+  //         ...labelContentVisibility,
+  //         [index]: !labelContentVisibility[index],
+  //       });
+  // };
+ 
+    // const [isLabelVisible, setIsLabelVisible] = useState(false);
+    // const isLabelVisibleRef = useRef(null);
+
+    const toggleLabelContentVisibility = (index) => {
+      setLabelContentVisibility({
+        ...labelContentVisibility,
+        [index]: !labelContentVisibility[index],
+      });
+    };
+   
+    
+  
+    const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
     setLabelId(labelId);
     setColor(labelColorCode);
     var Data = {
@@ -282,13 +307,6 @@ export default function Navigation(props) {
         dothandleClose();
         toast.error(Result?.data?.Message);
       }
-    });
-  };
-
-  const toggleLabelContentVisibility = (index) => {
-    setLabelContentVisibility({
-      ...labelContentVisibility,
-      [index]: !labelContentVisibility[index],
     });
   };
 
@@ -1740,7 +1758,8 @@ export default function Navigation(props) {
                             anchorOrigin={{
                               vertical: 'bottom',
                               horizontal: 'left',
-                            }} > 
+                            }}  
+                            > 
                             <Typography sx={{ pb: 1 }}>Label Color</Typography>  
                             <div className="colorpaletlist">
                               <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
