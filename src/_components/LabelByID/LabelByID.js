@@ -281,6 +281,7 @@ export default function LabelByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    setSelectedRowIndex(0)
                     setBoxVisible(false);
                     toast.success(Result?.data?.Message);
                     GetClientID(id);
@@ -316,6 +317,7 @@ export default function LabelByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    setSelectedRowIndex(0)
                     setLabelBoxVisible(false)
                     toast.success(Result?.data?.Message);
                     GetClientID();
@@ -1898,6 +1900,7 @@ export default function LabelByID(props) {
 
 
     const RefreshTable = () => {
+        setSelectedRowIndex(0)
         if (selectAllChecked) {
             setSelectAllChecked(!selectAllChecked)
             SetCheckedID([])
@@ -2574,7 +2577,7 @@ export default function LabelByID(props) {
                                                         open
                                                         id="filter-demo"
                                                         options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
-                                                        getOptionLabel={(option) => option.LableName}
+                                                        getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                         sx={{ width: 300 }}
                                                         renderInput={(params) => <TextField {...params} />}
                                                         // value={SelectedLabelValue}
@@ -2608,7 +2611,7 @@ export default function LabelByID(props) {
                                                         style={{ marginRight: 8 }}
                                                         checked={selected}
                                                     />
-                                                    {option.LableName}
+                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                 </li>
                                             )}
                                             renderInput={(params) => (
@@ -2707,7 +2710,7 @@ export default function LabelByID(props) {
                                                                 </TableCell>
                                                             </>
                                                     }
-                                                    <TableCell>
+                                                    <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>
                                                         {
                                                             item.IsReplied ? <TurnLeft /> : ""
                                                         }
