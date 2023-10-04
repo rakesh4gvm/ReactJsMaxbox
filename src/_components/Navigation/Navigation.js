@@ -291,12 +291,12 @@ export default function Navigation(props) {
         let AccountData = FromEmailDropdownList.filter(function (data) {
           return data.AccountID == AccountID;
         });
-        if(AccountData.length > 0){
-          if(AccountData[0].LabelField.length > 0){
+        if (AccountData.length > 0) {
+          if (AccountData[0].LabelField.length > 0) {
             let LabelData = AccountData[0].LabelField.filter(function (lbl) {
               return lbl.RecieverEmailLableID == labelId;
             });
-            if(LabelData.length > 0){
+            if (LabelData.length > 0) {
               LabelData[0].LabelColorCode = labelColorCode;
             }
           }
@@ -320,7 +320,7 @@ export default function Navigation(props) {
   };
 
   const dotopen = Boolean(dotanchorEl);
-  const id = dotopen ? 'simple-popover' : undefined; 
+  const id = dotopen ? 'simple-popover' : undefined;
 
   const labelhandleOpen = () => {
     setOpento(true);
@@ -1533,6 +1533,7 @@ export default function Navigation(props) {
                         if (label.LableName === "INBOX") {
                           return null; // Skip rendering INBOX label
                         }
+                        var Result = FromEmailDropdownList.find((e) => e.AccountID == label.AccountID).Email
 
                         const labelId = label.RecieverEmailLableID;
                         const selected = SelectMenuItem === `/LabelByID${labelId}`;
@@ -1549,13 +1550,14 @@ export default function Navigation(props) {
                         return (
                           <>
                             <ListItemButton
+                              title={label.LableName + " " + Result}
                               key={labelId}
                               sx={{ pl: 4 }}
                               onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
                               component={Link}
                               selected={selected}
                             >
-                            {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+                              {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount + Result.slice(0, 15) + '...' : label.LableName + displayLabelCount + Result.slice(0, 15) + '...'}
                             </ListItemButton>
                           </>
                         );
@@ -1647,7 +1649,7 @@ export default function Navigation(props) {
                           return `Inbox(${totalInboxCount})`;
                         })()
                         : "Inbox(0)"
-                    }                    
+                    }
                   </ListItemButton>
 
                   <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/Starred", item._id)}
@@ -1791,7 +1793,7 @@ export default function Navigation(props) {
 
                         // Calculate the label count for display
                         var displayLabelCount = unseenLabelCount > 0 ? `(${unseenLabelCount})` : "(0)";
-                        if(label.LableName == "Trash" || label.LableName == "Bin"){
+                        if (label.LableName == "Trash" || label.LableName == "Bin") {
                           displayLabelCount = "";
                         }
                         const isLabelVisible = labelContentVisibility[index];
