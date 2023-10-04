@@ -97,6 +97,7 @@ export default function EditEmailPage(props) {
           Result.data.Data.IsWorking = Isworking;
         }
         SetEditEmailConfigurationDetails(Result.data.Data)
+        SetSignature({ Data: Result?.data?.Data?.EmailSignature })
       }
     });
   }
