@@ -2423,6 +2423,23 @@ export default function OtherInboxByID(props) {
                                                 var fullName = item.FromName;
                                                 var cleanedName = fullName.replace(/<[^>]+>/, "");
                                                 cleanedName.trim();
+                                                var defaultColor = CommonConstants.DEFAULTLABELCOLOR;
+                                                var labelColor = "";
+                                                if(item.LabelField?.length > 1){
+                                                    var data = item.LabelField?.[item.LabelField.length - 1]
+                                                    if(data.LableName == "INBOX"){
+                                                    data = item.LabelField?.[item.LabelField.length - 2]
+                                                    }
+                                                    if(data.LabelColorCode != undefined){
+                                                    labelColor = data.LabelColorCode;
+                                                    }
+                                                    console.log(data);
+                                                }
+                                                else if(item.LabelField?.length == 1){
+                                                    if(item.LabelField[0].LableName != "INBOX"){
+                                                    labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
+                                                    }
+                                                }
                                                 return (
                                                     <TableRow
                                                         // className={`${Active === item._id ? "selected-row" : ""}`}
@@ -2450,14 +2467,14 @@ export default function OtherInboxByID(props) {
                                                             }
                                                         </TableCell>
                                                         {/* <TableCell width={'35px'}></TableCell> */}
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             }
@@ -2580,7 +2597,8 @@ export default function OtherInboxByID(props) {
                                                             <p className='subject-label'>
                                                                 {
                                                                     OpenMessage.LabelField.map((e, index) => (
-                                                                        <span key={index}>{e.LableName}</span>
+                                                                        // <span key={index}>{e.LableName}</span>
+                                                                        <span key={index} style={{ background: e.LabelColorCode ? e.LabelColorCode : CommonConstants.DEFAULTLABELCOLOR }}>{e.LableName}</span>
                                                                     ))
                                                                 }
                                                             </p>

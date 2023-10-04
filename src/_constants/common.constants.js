@@ -18,7 +18,7 @@ const REDIRECT_URL = "http://localhost:3000/email_account/AuthCallback"
 // redirect url end
 
 // redirect url start
-const HomePage = "http://localhost:3001/Focused"
+const HomePage = "http://localhost:3001/AllInbox"
 const LoginPage = "http://localhost:3001"
 // redirect url end
 
@@ -30,6 +30,8 @@ const LoginPage = "http://localhost:3001"
 const SSEIP = "http://localhost:3007"
 
 const PROMPT ="You are an email response writer. Please use the following 'Tone Of Voice' and 'Email Response Summary' to craft a response to the following Email Chain. NOTE: Only respond with the email response. Do not add a email signature or subject line.\n------- Sender Name -------\n{Sender Name}\n------- To Name --------\n{Receiver Name}\n------- Tone of Voice -------\n{Tone Of Voice}\n------- Email Response Summary -------\n{Email Response Summary}\n------- Email Chain -------\n{Full Email Chain}"
+
+const DEFAULTLABELCOLOR = "#ddd"
 
 export const CommonConstants = {
     MOL_APIURL: database,
@@ -43,7 +45,8 @@ export const CommonConstants = {
     show_rows: [10, 20, 50, 100],  //For rows show in table
     FRONTENDURL: FRONTENDURL,
     SSEIP: SSEIP,
-    PROMPT:PROMPT
+    PROMPT:PROMPT,
+    DEFAULTLABELCOLOR: DEFAULTLABELCOLOR
     // SocketIP: SocketIP,
     // SocketPort: SocketPort,
 };

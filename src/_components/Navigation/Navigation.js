@@ -264,6 +264,11 @@ export default function Navigation(props) {
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [labelContentVisibility, setLabelContentVisibility] = useState({});
   const [AllEmailLabelsData, SetAllEmailLabelsData] = useState([]);
+  const [selectedColor, setSelectedColor] = useState("#000000");
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+  };
 
   const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
     setLabelId(labelId);
@@ -1812,24 +1817,48 @@ export default function Navigation(props) {
                               <MoreVertIcon />
                             </Button>
                             {isLabelVisible && (
-                              <div className="colorboxmain" id={`${labelId}-${index}`}
-                                open={dotopen}
-                                anchorEl={dotanchorEl}
-                                onClose={dothandleClose}
-                                anchorOrigin={{
-                                  vertical: 'bottom',
-                                  horizontal: 'left',
-                                }} >
+                              // <div className="colorboxmain" id={`${labelId}-${index}`}
+                              //   open={dotopen}
+                              //   anchorEl={dotanchorEl}
+                              //   onClose={dothandleClose}
+                              //   anchorOrigin={{
+                              //     vertical: 'bottom',
+                              //     horizontal: 'left',
+                              //   }} >
+                              //   <Typography sx={{ pb: 1 }}>Label Color</Typography>
+                              //   <div className="colorpaletlist">
+                              //     <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
+                              //     <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
+                              //     <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
+                              //     <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
+                              //     <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
+                              //     <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
+                              //     <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
+                              //     <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button>
+                              //   </div>
+                              // </div>
+
+                              <div>
                                 <Typography sx={{ pb: 1 }}>Label Color</Typography>
+                                <div style={{ marginBottom: '20px' }}>
+                                  <HexColorPicker color={selectedColor} onChange={handleColorChange} />
+                                </div>
+                                <Button
+                                  variant="contained"
+                                  style={{ backgroundColor: selectedColor, color: 'white' }}
+                                  onClick={() => colorhandleChange(index, item.AccountID, labelId, selectedColor)}
+                                >
+                                  Set Color
+                                </Button>
                                 <div className="colorpaletlist">
-                                  <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
-                                  <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
-                                  <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
-                                  <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
-                                  <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
-                                  <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
-                                  <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
-                                  <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button>
+                                  <button style={{ background: "#ff6961" }} onClick={() => handleColorChange("#ff6961")}></button>
+                                  <button style={{ background: "#ffb480" }} onClick={() => handleColorChange("#ffb480")}></button>
+                                  <button style={{ background: "#f8f38d" }} onClick={() => handleColorChange("#f8f38d")}></button>
+                                  <button style={{ background: "#42d6a4" }} onClick={() => handleColorChange("#42d6a4")}></button>
+                                  <button style={{ background: "#08cad1" }} onClick={() => handleColorChange("#08cad1")}></button>
+                                  <button style={{ background: "#59adf6" }} onClick={() => handleColorChange("#59adf6")}></button>
+                                  <button style={{ background: "#9d94ff" }} onClick={() => handleColorChange("#9d94ff")}></button>
+                                  <button style={{ background: "#c780e8" }} onClick={() => handleColorChange("#c780e8")}></button>
                                 </div>
                               </div>
                             )}
