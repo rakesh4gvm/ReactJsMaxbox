@@ -2585,43 +2585,43 @@ export default function LabelByID(props) {
                                                     />
                                                 </div>
                                             )}
-                                        </>
-                                }
 
-                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
-                                    <LabelIcon />
-                                </Button>
-                                {LabelboxVisible && (
-                                    <div className="box filltermoveto labelmove" ref={boxRef}>
-                                        <h6>Label as :</h6>
-                                        <Autocomplete
-                                            open
-                                            multiple
-                                            disablePortal
-                                            id="checkboxes-tags-demo"
-                                            style={{ width: 300 }}
-                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                            getOptionLabel={(option) => option.LableName}
-                                            renderTags={() => []}
-                                            renderOption={(props, option, { selected }) => (
-                                                <li {...props} className="oragechecked">
-                                                    <Checkbox
-                                                        icon={icon}
-                                                        checkedIcon={checkedIcon}
-                                                        style={{ marginRight: 8 }}
-                                                        checked={selected}
+                                            <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                                <LabelIcon />
+                                            </Button>
+                                            {LabelboxVisible && (
+                                                <div className="box filltermoveto labelmove" ref={boxRef}>
+                                                    <h6>Label as :</h6>
+                                                    <Autocomplete
+                                                        open
+                                                        multiple
+                                                        disablePortal
+                                                        id="checkboxes-tags-demo"
+                                                        style={{ width: 300 }}
+                                                        options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                        getOptionLabel={(option) => option.LableName}
+                                                        renderTags={() => []}
+                                                        renderOption={(props, option, { selected }) => (
+                                                            <li {...props} className="oragechecked">
+                                                                <Checkbox
+                                                                    icon={icon}
+                                                                    checkedIcon={checkedIcon}
+                                                                    style={{ marginRight: 8 }}
+                                                                    checked={selected}
+                                                                />
+                                                                {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
+                                                            </li>
+                                                        )}
+                                                        renderInput={(params) => (
+                                                            <TextField {...params} placeholder="Search" />
+                                                        )}
+                                                        onChange={HandleMultipleLabelID}
                                                     />
-                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
-                                                </li>
+                                                    <Button className="btnapply" onClick={Apply}>Apply</Button>
+                                                </div>
                                             )}
-                                            renderInput={(params) => (
-                                                <TextField {...params} placeholder="Search" />
-                                            )}
-                                            onChange={HandleMultipleLabelID}
-                                        />
-                                        <Button className="btnapply" onClick={Apply}>Apply</Button>
-                                    </div>
-                                )}
+                                        </>
+                                }                                
 
                                 <div className='rigter-coller'>
                                     {/* <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
@@ -2695,7 +2695,6 @@ export default function LabelByID(props) {
                                                     if(data.LabelColorCode != undefined){
                                                     labelColor = data.LabelColorCode;
                                                     }
-                                                    console.log(data);
                                                 }
                                                 else if(item.LabelField?.length == 1){
                                                     if(item.LabelField[0].LableName != "INBOX"){

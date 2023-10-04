@@ -1150,6 +1150,7 @@ export default function Navigation(props) {
             var EmailLabelData = EmailData[i].LabelField
             if (EmailLabelData.length > 0) {
               for (var j = 0; j < EmailLabelData.length; j++) {
+                EmailLabelData[j].Email = EmailData[i].Email;
                 labelArray.push(EmailLabelData[j]);
               }
             }
@@ -1533,7 +1534,6 @@ export default function Navigation(props) {
                         if (label.LableName === "INBOX") {
                           return null; // Skip rendering INBOX label
                         }
-                        var Result = FromEmailDropdownList.find((e) => e.AccountID == label.AccountID).Email
 
                         const labelId = label.RecieverEmailLableID;
                         const selected = SelectMenuItem === `/LabelByID${labelId}`;
@@ -1550,14 +1550,14 @@ export default function Navigation(props) {
                         return (
                           <>
                             <ListItemButton
-                              title={label.LableName + " " + Result}
+                              title={label.LableName + " (" + label.Email +")"}
                               key={labelId}
                               sx={{ pl: 4 }}
                               onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
                               component={Link}
                               selected={selected}
                             >
-                              {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount + Result.slice(0, 15) + '...' : label.LableName + displayLabelCount + Result.slice(0, 15) + '...'}
+                              {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount + " ("+label.Email.slice(0, 15) + '...)' : label.LableName + displayLabelCount + " ("+label.Email.slice(0, 15) + '...)'}
                             </ListItemButton>
                           </>
                         );

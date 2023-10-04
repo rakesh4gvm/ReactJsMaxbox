@@ -2422,7 +2422,6 @@ export default function FollowUpLaterByID(props) {
                                                     if(data.LabelColorCode != undefined){
                                                     labelColor = data.LabelColorCode;
                                                     }
-                                                    console.log(data);
                                                 }
                                                 else if(item.LabelField?.length == 1){
                                                     if(item.LabelField[0].LableName != "INBOX"){

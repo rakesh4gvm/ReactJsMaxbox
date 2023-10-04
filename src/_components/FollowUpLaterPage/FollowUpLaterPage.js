@@ -2350,7 +2350,6 @@ export default function FollowUpLater(props) {
                             if(data.LabelColorCode != undefined){
                             labelColor = data.LabelColorCode;
                             }
-                            console.log(data);
                         }
                         else if(item.LabelField?.length == 1){
                             if(item.LabelField[0].LableName != "INBOX"){
