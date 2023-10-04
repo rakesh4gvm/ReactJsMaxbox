@@ -259,7 +259,7 @@ export default function Navigation(props) {
   const [opento, setOpento] = React.useState(false);
   const [labelID, setLabelId] = useState("");
   const [bgColor, setBgColor] = useState("");
-  const [defaultBgColor, setDefaultBgColor] = useState("#000");  
+  const [defaultBgColor, setDefaultBgColor] = useState("#ddd");  
   const [dotanchorEl, setdotAnchorEl] = React.useState(null);
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [labelContentVisibility, setLabelContentVisibility] = useState({});
