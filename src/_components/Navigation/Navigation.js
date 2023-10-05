@@ -1838,21 +1838,23 @@ export default function Navigation(props) {
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
-            }}
-            style={{ height: "250px" }}
+            }} 
           >
-            <div className="colorboxmain" id="001" style={{ height: "250px" }}>
-              <Typography sx={{ pb: 1 }}>Label Color</Typography>
-              <div style={{ marginBottom: '20px' }}>
-                <HexColorPicker color={selectedColor} onChange={handleColorChange} />
-              </div>
-              <Button
+            <div className="colorboxmain" id="001">
+              <div className="btncolor">
+              <Typography className="btnleft">Label Color</Typography>  
+              <Button className="full-right"
                 variant="contained"
                 style={{ backgroundColor: selectedColor, color: 'white' }}
                 onClick={() => colorhandleChange(selectedAccountID, colorLabelId, selectedColor)}
               >
-                Set Color
+                Set
               </Button>
+              </div>
+
+              <div style={{ marginBottom: '10px' }}>
+                <HexColorPicker color={selectedColor} onChange={handleColorChange} />
+              </div>
               <div className="colorpaletlist">
                 <button style={{ background: "#ff6961" }} onClick={() => handleColorChange("#ff6961")}></button>
                 <button style={{ background: "#ffb480" }} onClick={() => handleColorChange("#ffb480")}></button>
