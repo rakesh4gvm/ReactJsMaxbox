@@ -213,6 +213,7 @@ export default function AllInboxByID(props) {
     const [ShowCheckBox, SetShowCheckBox] = useState("")
     const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [ReplyText, SetReplyText] = useState("Reply")
 
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -1062,6 +1063,7 @@ export default function AllInboxByID(props) {
     // start replay code
     // Open Compose
     const OpenComposeReply = (e) => {
+        SetReplyText("Reply")
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
         // SetToEmailValue([])
@@ -1116,6 +1118,7 @@ export default function AllInboxByID(props) {
     // end replay code
 
     const OpenReplyAll = () => {
+        SetReplyText("Reply All")
         RemoveForwardPop()
 
         SetSignature({ Data: "" })
@@ -2463,7 +2466,7 @@ export default function AllInboxByID(props) {
                             Are you sure
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            you want to delete a email ?
+                            you want to delete this email?
                         </Typography>
                     </div>
                     <div className='d-flex btn-50'>
@@ -2637,18 +2640,18 @@ export default function AllInboxByID(props) {
                                                 cleanedName.trim();
                                                 var defaultColor = CommonConstants.DEFAULTLABELCOLOR;
                                                 var labelColor = "";
-                                                if(item.LabelField?.length > 1){
+                                                if (item.LabelField?.length > 1) {
                                                     var data = item.LabelField?.[item.LabelField.length - 1]
-                                                    if(data.LableName == "INBOX"){
-                                                    data = item.LabelField?.[item.LabelField.length - 2]
+                                                    if (data.LableName == "INBOX") {
+                                                        data = item.LabelField?.[item.LabelField.length - 2]
                                                     }
-                                                    if(data.LabelColorCode != undefined){
-                                                    labelColor = data.LabelColorCode;
+                                                    if (data.LabelColorCode != undefined) {
+                                                        labelColor = data.LabelColorCode;
                                                     }
                                                 }
-                                                else if(item.LabelField?.length == 1){
-                                                    if(item.LabelField[0].LableName != "INBOX"){
-                                                    labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
+                                                else if (item.LabelField?.length == 1) {
+                                                    if (item.LabelField[0].LableName != "INBOX") {
+                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
                                                     }
                                                 }
                                                 return (
@@ -2681,14 +2684,14 @@ export default function AllInboxByID(props) {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }
                                                         </TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             }
@@ -2833,7 +2836,7 @@ export default function AllInboxByID(props) {
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>
                                                     <Button>
-                                                        <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
+                                                        <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply All"} /></a>
                                                     </Button>
                                                     <Button>
                                                         <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
@@ -2862,7 +2865,7 @@ export default function AllInboxByID(props) {
                 <div className="usercompose userdefual" id="UserComposeReply">
                     <div className='hcompose px-3'>
                         <Row>
-                            <Col><h4>Reply message</h4></Col>
+                            <Col><h4>{ReplyText}</h4></Col>
                             <Col className='col text-right'>
                                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                                     <Button onClick={mincomposeonReply} className="minicon">
@@ -3153,7 +3156,7 @@ export default function AllInboxByID(props) {
                 <div className="usercompose userdefual" id="UserComposeForward">
                     <div className='hcompose px-3'>
                         <Row>
-                            <Col><h4>Forward message</h4></Col>
+                            <Col><h4>Forward </h4></Col>
                             <Col className='col text-right'>
                                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                                     <Button onClick={mincomposeonForward} className="minicon">
