@@ -75,11 +75,12 @@ import { IntroJsReact } from 'react-intro.js';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Add, Close } from '@material-ui/icons';
-import MoreVertIcon from '@material-ui/icons/MoreVert'; 
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from '@mui/material/Popover';
 
-import Emailinbox from '../../images/email_inbox_img.png'; 
+import Emailinbox from '../../images/email_inbox_img.png';
 import { HexColorPicker } from "react-colorful";
+import { Height } from '@mui/icons-material';
 
 const style = {
   position: 'absolute',
@@ -259,21 +260,37 @@ export default function Navigation(props) {
   const [opento, setOpento] = React.useState(false);
   const [labelID, setLabelId] = useState("");
   const [bgColor, setBgColor] = useState("");
-  const [defaultBgColor, setDefaultBgColor] = useState("#ddd");  
+  const [defaultBgColor, setDefaultBgColor] = useState("#ddd");
   const [dotanchorEl, setdotAnchorEl] = React.useState(null);
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [labelContentVisibility, setLabelContentVisibility] = useState({});
   const [AllEmailLabelsData, SetAllEmailLabelsData] = useState([]);
   const [selectedColor, setSelectedColor] = useState("#000000");
+  const [colorLabelId, setcolorLabelId] = useState("");
+  const [selectedAccountID, setSelectedAccountID] = useState("");
+  const [IsColorSet, setIsColorSet] = useState(false);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleColorClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setcolorLabelId(event.currentTarget.getAttribute('labelid'));
+    setSelectedColor(event.currentTarget.getAttribute('labelcolorcode'));
+    setSelectedAccountID(event.currentTarget.getAttribute('accountid'));
+  };
+
+  const handleColorClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
   };
 
-  const colorhandleChange = (index, AccountID, labelId, labelColorCode) => {
+  const colorhandleChange = (AccountID, labelId, labelColorCode) => {
     setLabelId(labelId);
     setBgColor(labelColorCode);
-    setLabelContentVisibility({});
+    setAnchorEl(null);
     var Data = {
       AccountID: AccountID,
       RecieverEmailLableID: labelId,
@@ -286,41 +303,13 @@ export default function Navigation(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        dothandleClose();
         toast.success(Result?.data?.Message);
-        let AccountData = FromEmailDropdownList.filter(function (data) {
-          return data.AccountID == AccountID;
-        });
-        if (AccountData.length > 0) {
-          if (AccountData[0].LabelField.length > 0) {
-            let LabelData = AccountData[0].LabelField.filter(function (lbl) {
-              return lbl.RecieverEmailLableID == labelId;
-            });
-            if (LabelData.length > 0) {
-              LabelData[0].LabelColorCode = labelColorCode;
-            }
-          }
-        }
+        setIsColorSet(true);
       } else {
-        dothandleClose();
         toast.error(Result?.data?.Message);
       }
     });
   };
-
-  const toggleLabelContentVisibility = (index) => {
-    setLabelContentVisibility({
-      ...labelContentVisibility,
-      [index]: !labelContentVisibility[index],
-    });
-  };
-
-  const dothandleClose = () => {
-    setdotAnchorEl(null);
-  };
-
-  const dotopen = Boolean(dotanchorEl);
-  const id = dotopen ? 'simple-popover' : undefined;
 
   const labelhandleOpen = () => {
     setOpento(true);
@@ -380,6 +369,14 @@ export default function Navigation(props) {
     GetClientID()
     setCount(count + 1)
   }, []);
+
+  useEffect(() => {
+    if(IsColorSet){
+      var Details = GetUserDetails();
+      FromEmailList(Details.ClientID, Details.UserID);
+      setIsColorSet(false);
+    }
+  }, [IsColorSet]);
 
   useEffect(() => {
     if (refreshClientDetails) {
@@ -1550,14 +1547,14 @@ export default function Navigation(props) {
                         return (
                           <>
                             <ListItemButton
-                              title={label.LableName + " (" + label.Email +")"}
+                              title={label.LableName + " (" + label.Email + ")"}
                               key={labelId}
                               sx={{ pl: 4 }}
                               onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
                               component={Link}
                               selected={selected}
                             >
-                              {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount + " ("+label.Email.slice(0, 15) + '...)' : label.LableName + displayLabelCount + " ("+label.Email.slice(0, 15) + '...)'}
+                              {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount + " (" + label.Email.slice(0, 15) + '...)' : label.LableName + displayLabelCount + " (" + label.Email.slice(0, 15) + '...)'}
                             </ListItemButton>
                           </>
                         );
@@ -1796,7 +1793,6 @@ export default function Navigation(props) {
                         if (label.LableName == "Trash" || label.LableName == "Bin") {
                           displayLabelCount = "";
                         }
-                        const isLabelVisible = labelContentVisibility[index];
 
                         return (
                           <>
@@ -1812,67 +1808,65 @@ export default function Navigation(props) {
                             {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
                             <Button
                               className='labelinside'
-                              aria-describedby={`${labelId}-${index}`}
+                              aria-describedby="001"
                               variant="contained"
-                              onClick={() => toggleLabelContentVisibility(index)}
+                              index={index}
+                              labelid={labelId}
+                              labelcolorcode={label.LabelColorCode}
+                              accountid={item.AccountID}
+                              onClick={handleColorClick}
                             >
                               <MoreVertIcon />
                             </Button>
-                            {isLabelVisible && (
-                              // <div className="colorboxmain" id={`${labelId}-${index}`}
-                              //   open={dotopen}
-                              //   anchorEl={dotanchorEl}
-                              //   onClose={dothandleClose}
-                              //   anchorOrigin={{
-                              //     vertical: 'bottom',
-                              //     horizontal: 'left',
-                              //   }} >
-                              //   <Typography sx={{ pb: 1 }}>Label Color</Typography>
-                              //   <div className="colorpaletlist">
-                              //     <button style={{ background: "#ff6961" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ff6961")}></button>
-                              //     <button style={{ background: "#ffb480" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#ffb480")}></button>
-                              //     <button style={{ background: "#f8f38d" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#f8f38d")}></button>
-                              //     <button style={{ background: "#42d6a4" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#42d6a4")}></button>
-                              //     <button style={{ background: "#08cad1" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#08cad1")}></button>
-                              //     <button style={{ background: "#59adf6" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#59adf6")}></button>
-                              //     <button style={{ background: "#9d94ff" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#9d94ff")}></button>
-                              //     <button style={{ background: "#c780e8" }} onClick={() => colorhandleChange(index, item.AccountID, labelId, "#c780e8")}></button>
-                              //   </div>
-                              // </div>
 
-                              <div>
-                                <Typography sx={{ pb: 1 }}>Label Color</Typography>
-                                <div style={{ marginBottom: '20px' }}>
-                                  <HexColorPicker color={selectedColor} onChange={handleColorChange} />
-                                </div>
-                                <Button
-                                  variant="contained"
-                                  style={{ backgroundColor: selectedColor, color: 'white' }}
-                                  onClick={() => colorhandleChange(index, item.AccountID, labelId, selectedColor)}
-                                >
-                                  Set Color
-                                </Button>
-                                <div className="colorpaletlist">
-                                  <button style={{ background: "#ff6961" }} onClick={() => handleColorChange("#ff6961")}></button>
-                                  <button style={{ background: "#ffb480" }} onClick={() => handleColorChange("#ffb480")}></button>
-                                  <button style={{ background: "#f8f38d" }} onClick={() => handleColorChange("#f8f38d")}></button>
-                                  <button style={{ background: "#42d6a4" }} onClick={() => handleColorChange("#42d6a4")}></button>
-                                  <button style={{ background: "#08cad1" }} onClick={() => handleColorChange("#08cad1")}></button>
-                                  <button style={{ background: "#59adf6" }} onClick={() => handleColorChange("#59adf6")}></button>
-                                  <button style={{ background: "#9d94ff" }} onClick={() => handleColorChange("#9d94ff")}></button>
-                                  <button style={{ background: "#c780e8" }} onClick={() => handleColorChange("#c780e8")}></button>
-                                </div>
-                              </div>
-                            )}
                           </>
                         );
                       })}
                     </List>
+
                   </Collapse>
                 </List>
               </Collapse>
             </List>
           ))}
+
+          <Popover
+            id="001"
+            open={anchorEl}
+            anchorEl={anchorEl ? anchorEl : 'simple-popover'}
+            onClose={handleColorClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            style={{ height: "250px" }}
+          >
+            <div className="colorboxmain" id="001" style={{ height: "250px" }}>
+              <Typography sx={{ pb: 1 }}>Label Color</Typography>
+              <div style={{ marginBottom: '20px' }}>
+                <HexColorPicker color={selectedColor} onChange={handleColorChange} />
+              </div>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: selectedColor, color: 'white' }}
+                onClick={() => colorhandleChange(selectedAccountID, colorLabelId, selectedColor)}
+              >
+                Set Color
+              </Button>
+              <div className="colorpaletlist">
+                <button style={{ background: "#ff6961" }} onClick={() => handleColorChange("#ff6961")}></button>
+                <button style={{ background: "#ffb480" }} onClick={() => handleColorChange("#ffb480")}></button>
+                <button style={{ background: "#f8f38d" }} onClick={() => handleColorChange("#f8f38d")}></button>
+                <button style={{ background: "#42d6a4" }} onClick={() => handleColorChange("#42d6a4")}></button>
+                <button style={{ background: "#08cad1" }} onClick={() => handleColorChange("#08cad1")}></button>
+                <button style={{ background: "#59adf6" }} onClick={() => handleColorChange("#59adf6")}></button>
+                <button style={{ background: "#9d94ff" }} onClick={() => handleColorChange("#9d94ff")}></button>
+                <button style={{ background: "#c780e8" }} onClick={() => handleColorChange("#c780e8")}></button>
+              </div>
+            </div>
+          </Popover>
+
+
 
           {/* 
       <ListItem button >
