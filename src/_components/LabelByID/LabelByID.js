@@ -214,6 +214,7 @@ export default function LabelByID(props) {
     const [ShowCheckBox, SetShowCheckBox] = useState("")
     const [FromEmailDropdownList, SetFromEmailDropdownList] = useState([]);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [ReplyText, SetReplyText] = useState("Reply")
 
     const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -1117,6 +1118,7 @@ export default function LabelByID(props) {
     // start replay code
     // Open Compose
     const OpenComposeReply =  (e) => {
+        SetReplyText("Reply")
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
         // SetToEmailValue([])
@@ -1171,6 +1173,7 @@ export default function LabelByID(props) {
     // end replay code
 
     const OpenReplyAll = () => {
+        SetReplyText("Reply All")
         RemoveForwardPop()
 
          SetSignature({ Data: "" })
@@ -2513,7 +2516,7 @@ export default function LabelByID(props) {
                             Are you sure
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            you want to delete a email ?
+                        you want to delete this email?
                         </Typography>
                     </div>
                     <div className='d-flex btn-50'>
@@ -2898,7 +2901,7 @@ export default function LabelByID(props) {
                                                    {
                                                      OpenMessage?.IsTrash ? "" :
                                                      <Button>
-                                                      <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply all"} /></a>
+                                                      <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply All"} /></a>
                                                     </Button>
                                                    }
                                                    {
@@ -2941,7 +2944,7 @@ export default function LabelByID(props) {
                 <div className="usercompose userdefual" id="UserComposeReply">
                     <div className='hcompose px-3'>
                         <Row>
-                            <Col><h4>Reply message</h4></Col>
+                            <Col><h4>{ReplyText}</h4></Col>
                             <Col className='col text-right'>
                                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                                     <Button onClick={mincomposeonReply} className="minicon">
@@ -3220,7 +3223,7 @@ export default function LabelByID(props) {
                 <div className="usercompose userdefual" id="UserComposeForward">
                     <div className='hcompose px-3'>
                         <Row>
-                            <Col><h4>Forward message</h4></Col>
+                            <Col><h4>Forward </h4></Col>
                             <Col className='col text-right'>
                                 <ButtonGroup className='composeion' variant="text" aria-label="text button group">
                                     <Button onClick={mincomposeonForward} className="minicon">
