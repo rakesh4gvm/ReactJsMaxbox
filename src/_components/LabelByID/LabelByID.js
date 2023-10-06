@@ -305,7 +305,7 @@ export default function LabelByID(props) {
     const Apply = () => {
 
         var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
-        if(CheckedID.length > 0){
+        if (CheckedID.length > 0) {
             const Data = {
                 RecieverEmailLableIDs: RecieverEmailLableIDs,
                 MessageIDs: CheckedID,
@@ -332,7 +332,7 @@ export default function LabelByID(props) {
                 }
             })
         }
-        else{
+        else {
             setBoxVisible(false);
             LoaderHide();
             toast.error("Please select email");
@@ -1117,7 +1117,7 @@ export default function LabelByID(props) {
 
     // start replay code
     // Open Compose
-    const OpenComposeReply =  (e) => {
+    const OpenComposeReply = (e) => {
         SetReplyText("Reply")
         const elementforward = document.getElementById("UserComposeForward")
         elementforward.classList.remove("show");
@@ -1140,7 +1140,7 @@ export default function LabelByID(props) {
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 SetSignature({ Data: Result?.data?.Data + ClientData })
                 var SenderDetails = {
-                     SenderName: Result?.data?.SenderName,
+                    SenderName: Result?.data?.SenderName,
                     ReceiverName: Result?.data?.ReceiverName
                 }
                 SetSenderDetails(SenderDetails)
@@ -1148,7 +1148,7 @@ export default function LabelByID(props) {
                 toast.error(Result?.data?.Message);
             }
         })
-         const element = document.getElementById("UserComposeReply")
+        const element = document.getElementById("UserComposeReply")
 
         if (element.classList.contains("show")) {
             element.classList.remove("show");
@@ -1157,7 +1157,7 @@ export default function LabelByID(props) {
             element.classList.add("show");
             // document.getElementById("CcReply").style.display = 'none'
             // document.getElementById("BccReply").style.display = 'none'
-             SetCCMessages([])
+            SetCCMessages([])
             SetBCCMessages([])
         }
 
@@ -1168,7 +1168,7 @@ export default function LabelByID(props) {
         setShowNotification(true);
         setTimeout(() => {
             // setShowNotification(false);
-         }, 5000);
+        }, 5000);
     };
     // end replay code
 
@@ -1176,7 +1176,7 @@ export default function LabelByID(props) {
         SetReplyText("Reply All")
         RemoveForwardPop()
 
-         SetSignature({ Data: "" })
+        SetSignature({ Data: "" })
 
         const element = document.getElementById("UserComposeReply")
 
@@ -1186,14 +1186,14 @@ export default function LabelByID(props) {
         const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
         const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
-         SetCCMessages(NewCCEmail)
+        SetCCMessages(NewCCEmail)
 
         if (JSON.parse(BCC)[0]?.Email == NewBCCEmail) {
             SetBCCMessages([])
         } else {
             SetBCCMessages(JSON.parse(BCC))
         }
-         if (element.classList.contains("show")) {
+        if (element.classList.contains("show")) {
             element.classList.remove("show");
         }
         else {
@@ -1203,7 +1203,7 @@ export default function LabelByID(props) {
         const Data = {
             ID: OpenMessage?._id,
         }
-         Axios({
+        Axios({
             url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
             method: "POST",
             data: Data,
@@ -1226,10 +1226,10 @@ export default function LabelByID(props) {
         var elementcc = document.getElementById("CcReply");
         elementcc.classList.add("showcc");
 
-         var elementbcc = document.getElementById("BccReply");
+        var elementbcc = document.getElementById("BccReply");
         elementbcc.classList.add("showbcc");
 
-         const elementreply = document.getElementById("UserCompose")
+        const elementreply = document.getElementById("UserCompose")
         elementreply.classList.remove("show");
     }
 
@@ -1242,7 +1242,7 @@ export default function LabelByID(props) {
             element.classList.remove("minmusbox");
         }
         else {
-             element.classList.add("minmusbox");
+            element.classList.add("minmusbox");
             element.classList.remove("largebox");
         }
     }
@@ -1254,14 +1254,14 @@ export default function LabelByID(props) {
         }
         else {
             element.classList.add("largebox");
-             element.classList.remove("minmusbox");
+            element.classList.remove("minmusbox");
         }
     }
     /* end code*/
 
     // Close Compose
     const CloseComposeReply = () => {
-         const element = document.getElementById("UserComposeReply")
+        const element = document.getElementById("UserComposeReply")
         element.classList.remove("show");
     }
 
@@ -1325,14 +1325,14 @@ export default function LabelByID(props) {
             Response3 = [BCCMessages[0].Email]
         }
 
-         let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         // var EmailResponse = Response.filter(e => e && e.toLowerCase().match(EmailRegex));
         var CCResponse = CCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var BCCResponse = BCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
         var ToEmail = OpenMessage.FromEmail;
         var ToName = OpenMessage.FromName
-         var ID = OpenMessage._id
+        var ID = OpenMessage._id
         var Subject = OpenMessage.Subject;
         var Body = Signature?.Data
         if (Response == "") {
@@ -1342,10 +1342,10 @@ export default function LabelByID(props) {
             toast.error("Please enter body");
         }
         else {
-             LoaderShow()
+            LoaderShow()
             var Data = {
                 ToEmail: Response.toString(),
-                 CC: Response2.toString(),
+                CC: Response2.toString(),
                 BCC: Response3.toString(),
                 ToName: ToName,
                 ID: ID,
@@ -1355,7 +1355,7 @@ export default function LabelByID(props) {
                 ObjectIDTemplateID: NewObjectionID
             };
             Axios({
-                 url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/SentReplyMessage",
                 method: "POST",
                 data: Data,
             }).then((Result) => {
@@ -1416,10 +1416,10 @@ export default function LabelByID(props) {
             PROMPT = PROMPT.replace("{Receiver Name}", objSenderDetails.ReceiverName);
         }
         PROMPT = PROMPT.replace("{Tone Of Voice}", VoiceOfTone);
-         PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
+        PROMPT = PROMPT.replace("{Email Response Summary}", EmailSummary);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
         PROMPT = PROMPT.replace("{Full Email Chain}", plaiTextBody);
-         var GetReplyMessageDetailsData = PROMPT;
+        var GetReplyMessageDetailsData = PROMPT;
         //var GetReplyMessageDetailsData = CommonConstants.PROMPT + '\n\n' + VoiceOfTone + '\n\n' + EmailSummary + '\n\n' + plaiTextBody;
         if (VoiceOfTone.length > 0) {
             LoaderShow()
@@ -1433,7 +1433,7 @@ export default function LabelByID(props) {
             }).then((Result) => {
                 if (Result.data.StatusMessage == "Success") {
                     var body = Result.data?.data;
-                     setSubject(body)
+                    setSubject(body)
                     var HTMLData = Plain2HTML(body)
                     SetSignature({ Data: HTMLData + Signature.Data })
                     LoaderHide()
@@ -1617,7 +1617,7 @@ export default function LabelByID(props) {
         document.getElementById("ToForward").value = ""
         SetForwardSignature({ Data: "" })
 
-         SetForwardToEmailValue([])
+        SetForwardToEmailValue([])
         SetForwardCCEmailValue([])
         SetForwardBCCEmailValue([])
 
@@ -1629,7 +1629,7 @@ export default function LabelByID(props) {
             method: "POST",
             data: Data,
         }).then((Result) => {
-             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetForwardSignature({ Data: Result?.data?.Data + ClientData })
             } else {
                 toast.error(Result?.data?.Message);
@@ -1641,7 +1641,7 @@ export default function LabelByID(props) {
         if (element.classList.contains("show")) {
             element.classList.remove("show");
         }
-         else {
+        else {
             element.classList.add("show");
         }
 
@@ -1649,19 +1649,19 @@ export default function LabelByID(props) {
         elementforward.classList.remove("show");
 
         const elementforwardtwo = document.getElementById("UserComposeReply")
-         elementforwardtwo.classList.remove("show");
+        elementforwardtwo.classList.remove("show");
     };
 
     // Close Compose
     const CloseComposeForward = () => {
         const element = document.getElementById("UserComposeForward")
-         element.classList.remove("show");
+        element.classList.remove("show");
     }
 
     /* start navcode */
     const mincomposeonForward = () => {
         const element = document.getElementById("maxcomposeForward")
-         if (element.classList.contains("minmusbox")) {
+        if (element.classList.contains("minmusbox")) {
             element.classList.remove("minmusbox");
         }
         else {
@@ -1684,7 +1684,7 @@ export default function LabelByID(props) {
 
     // Open CC
     const OpenCcForward = () => {
-         if (Ccflag == false) {
+        if (Ccflag == false) {
             document.getElementById("CcForward").style.display = 'block'
             SetCcflag(true);
         }
@@ -1696,7 +1696,7 @@ export default function LabelByID(props) {
 
     // Open BCC
     const OpenBccForward = () => {
-         if (Bccflag == false) {
+        if (Bccflag == false) {
             document.getElementById("BccForward").style.display = 'block'
             SetBccflag(true);
         }
@@ -1709,7 +1709,7 @@ export default function LabelByID(props) {
 
     // Open CC
     const OpenCcReply = () => {
-         var element = document.getElementById("CcReply");
+        var element = document.getElementById("CcReply");
         if (element) {
             element.classList.toggle("showcc");
         }
@@ -1725,18 +1725,18 @@ export default function LabelByID(props) {
     // Forward Send Mail Starts
     const ForwardSendMail = () => {
 
-         let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var EmailResponse = ForwardToEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var ForwardCCEmailResponse = ForwardCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
         var ForwardBCCEmailResponse = ForwardBCCEmailValue.filter(e => e && e.toLowerCase().match(EmailRegex));
 
-         var ToEmail = document.getElementById("ToForward").value;
+        var ToEmail = document.getElementById("ToForward").value;
         var ID = OpenMessage._id
         var Subject = OpenMessage.Subject;
         var Body = ForwardSignature.Data
 
         if (EmailResponse == "") {
-             toast.error("Please specify at least one recipient");
+            toast.error("Please specify at least one recipient");
         } else if (Body == "") {
             toast.error("Please enter body");
         }
@@ -1758,7 +1758,7 @@ export default function LabelByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                     toast.success(<div>Forward mail sent successfully.</div>);
+                    toast.success(<div>Forward mail sent successfully.</div>);
                     CloseComposeForward()
                     SetForwardSignature({ Data: "" })
                     LoaderHide()
@@ -1789,7 +1789,7 @@ export default function LabelByID(props) {
     });
     Froalaeditor.RegisterCommand('ForwardSendoption', {
         colorsButtons: ["colorsBack", "|", "-"],
-         title: '',
+        title: '',
         type: 'dropdown',
         focus: false,
         undo: false,
@@ -1814,7 +1814,7 @@ export default function LabelByID(props) {
         title: '',
         type: 'dropdown',
         focus: false,
-         undo: false,
+        undo: false,
         refreshAfterCallback: true,
         options: EditorVariableNames(),
         callback: function (cmd, val) {
@@ -1830,7 +1830,7 @@ export default function LabelByID(props) {
 
         }
     });
-     const forwardconfig = {
+    const forwardconfig = {
         quickInsertEnabled: false,
         placeholderText: 'Edit your content here!',
         charCounterCount: false,
@@ -2516,7 +2516,7 @@ export default function LabelByID(props) {
                             Are you sure
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        you want to delete this email?
+                            you want to delete this email?
                         </Typography>
                     </div>
                     <div className='d-flex btn-50'>
@@ -2562,69 +2562,70 @@ export default function LabelByID(props) {
                                 {/* <FormControlLabel className='check-mark'
                   control={<Checkbox defaultChecked />} label="Mark" /> */}
                                 {
-                                    OpenMessage?.IsTrash ? "" :
-                                        <>
-                                            <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
-                                                <VisibilityOffIcon />
-                                            </Button>
-                                            <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
-                                                <Visibility />
-                                            </Button>
-                                            <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
-                                                <DriveFileMoveIcon />
-                                            </Button>
-                                            {boxVisible && (
-                                                <div className="box filltermoveto">
-                                                    <h6>Move to :</h6>
-                                                    <Autocomplete
-                                                        open
-                                                        id="filter-demo"
-                                                        options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
-                                                        getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
-                                                        sx={{ width: 300 }}
-                                                        renderInput={(params) => <TextField {...params} />}
-                                                        // value={SelectedLabelValue}
-                                                        onChange={HandleLabelID}
-                                                    />
-                                                </div>
-                                            )}
+                                    OpenMessage?.length == 0 ? "" :
+                                        OpenMessage?.IsTrash ? "" :
+                                            <>
+                                                <Button className='btn-mark' title='Mark as unread' onClick={MarkUnreadEmails} >
+                                                    <VisibilityOffIcon />
+                                                </Button>
+                                                <Button className='btn-mark' title='Mark as read' onClick={MarkReadEmails} >
+                                                    <Visibility />
+                                                </Button>
+                                                <Button className='btn-mark' title='Move to' onClick={() => setBoxVisible(!boxVisible)} >
+                                                    <DriveFileMoveIcon />
+                                                </Button>
+                                                {boxVisible && (
+                                                    <div className="box filltermoveto">
+                                                        <h6>Move to :</h6>
+                                                        <Autocomplete
+                                                            open
+                                                            id="filter-demo"
+                                                            options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
+                                                            getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
+                                                            sx={{ width: 300 }}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            // value={SelectedLabelValue}
+                                                            onChange={HandleLabelID}
+                                                        />
+                                                    </div>
+                                                )}
 
-                                            <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
-                                                <LabelIcon />
-                                            </Button>
-                                            {LabelboxVisible && (
-                                                <div className="box filltermoveto labelmove" ref={boxRef}>
-                                                    <h6>Label as :</h6>
-                                                    <Autocomplete
-                                                        open
-                                                        multiple
-                                                        disablePortal
-                                                        id="checkboxes-tags-demo"
-                                                        style={{ width: 300 }}
-                                                        options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                                        getOptionLabel={(option) => option.LableName}
-                                                        renderTags={() => []}
-                                                        renderOption={(props, option, { selected }) => (
-                                                            <li {...props} className="oragechecked">
-                                                                <Checkbox
-                                                                    icon={icon}
-                                                                    checkedIcon={checkedIcon}
-                                                                    style={{ marginRight: 8 }}
-                                                                    checked={selected}
-                                                                />
-                                                                {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
-                                                            </li>
-                                                        )}
-                                                        renderInput={(params) => (
-                                                            <TextField {...params} placeholder="Search" />
-                                                        )}
-                                                        onChange={HandleMultipleLabelID}
-                                                    />
-                                                    <Button className="btnapply" onClick={Apply}>Apply</Button>
-                                                </div>
-                                            )}
-                                        </>
-                                }                                
+                                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                                    <LabelIcon />
+                                                </Button>
+                                                {LabelboxVisible && (
+                                                    <div className="box filltermoveto labelmove" ref={boxRef}>
+                                                        <h6>Label as :</h6>
+                                                        <Autocomplete
+                                                            open
+                                                            multiple
+                                                            disablePortal
+                                                            id="checkboxes-tags-demo"
+                                                            style={{ width: 300 }}
+                                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                            getOptionLabel={(option) => option.LableName}
+                                                            renderTags={() => []}
+                                                            renderOption={(props, option, { selected }) => (
+                                                                <li {...props} className="oragechecked">
+                                                                    <Checkbox
+                                                                        icon={icon}
+                                                                        checkedIcon={checkedIcon}
+                                                                        style={{ marginRight: 8 }}
+                                                                        checked={selected}
+                                                                    />
+                                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
+                                                                </li>
+                                                            )}
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} placeholder="Search" />
+                                                            )}
+                                                            onChange={HandleMultipleLabelID}
+                                                        />
+                                                        <Button className="btnapply" onClick={Apply}>Apply</Button>
+                                                    </div>
+                                                )}
+                                            </>
+                                }
 
                                 <div className='rigter-coller'>
                                     {/* <ToggleButton title="Starred" onChange={HandleStarredChange} onClick={ToggleStartClass}
@@ -2636,8 +2637,9 @@ export default function LabelByID(props) {
                                     </ToggleButton> */}
                                     {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
                                     {
-                                        OpenMessage?.IsTrash ? "" :
-                                            <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
+                                        OpenMessage?.length == 0 ? "" :
+                                            OpenMessage?.IsTrash ? "" :
+                                                <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
                                     }
                                     <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
@@ -2661,21 +2663,23 @@ export default function LabelByID(props) {
                                     <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                                         <TableHead>
                                             <TableRow>
+                                                {console.log(" OpenMessage?.IsTrash ========", OpenMessage)}
                                                 {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                                                 {
-                                                    OpenMessage?.IsTrash ? "" :
-                                                        <>
-                                                            <TableCell component="th" className='px-0 w-0'>
-                                                                <Checkbox
-                                                                    name="selectall"
-                                                                    type="checkbox"
-                                                                    checked={selectAllChecked}
-                                                                    onChange={(e) => handleSelectAll(e)}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
-                                                        </>
+                                                    OpenMessage?.length == 0 ? "" :
+                                                        OpenMessage?.IsTrash ? "" :
+                                                            <>
+                                                                <TableCell component="th" className='px-0 w-0'>
+                                                                    <Checkbox
+                                                                        name="selectall"
+                                                                        type="checkbox"
+                                                                        checked={selectAllChecked}
+                                                                        onChange={(e) => handleSelectAll(e)}
+                                                                    />
+                                                                </TableCell>
+                                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                            </>
                                                 }
                                                 <TableCell component="th"></TableCell>
                                                 <TableCell component="th">Subject</TableCell>
@@ -2690,18 +2694,18 @@ export default function LabelByID(props) {
                                                 cleanedName.trim();
                                                 var defaultColor = CommonConstants.DEFAULTLABELCOLOR;
                                                 var labelColor = "";
-                                                if(item.LabelField?.length > 1){
+                                                if (item.LabelField?.length > 1) {
                                                     var data = item.LabelField?.[item.LabelField.length - 1]
-                                                    if(data.LableName == "INBOX"){
-                                                    data = item.LabelField?.[item.LabelField.length - 2]
+                                                    if (data.LableName == "INBOX") {
+                                                        data = item.LabelField?.[item.LabelField.length - 2]
                                                     }
-                                                    if(data.LabelColorCode != undefined){
-                                                    labelColor = data.LabelColorCode;
+                                                    if (data.LabelColorCode != undefined) {
+                                                        labelColor = data.LabelColorCode;
                                                     }
                                                 }
-                                                else if(item.LabelField?.length == 1){
-                                                    if(item.LabelField[0].LableName != "INBOX"){
-                                                    labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
+                                                else if (item.LabelField?.length == 1) {
+                                                    if (item.LabelField[0].LableName != "INBOX") {
+                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
                                                     }
                                                 }
                                                 return (
@@ -2720,32 +2724,33 @@ export default function LabelByID(props) {
                                                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                                                         {/* <TableCell width={'35px'}></TableCell> */}
                                                         {
-                                                            OpenMessage?.IsTrash ? "" :
-                                                                <>
-                                                                    <TableCell align='center'>
-                                                                        <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                                    </TableCell>
-                                                                    <TableCell width={'35px'} align="center">
-                                                                        <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                                                                            <StarBorderIcon className='starone' />
-                                                                            <StarIcon className='selectedstart startwo' />
-                                                                        </ToggleButton>
-                                                                    </TableCell>
-                                                                </>
+                                                            OpenMessage?.length == 0 ? "" :
+                                                                OpenMessage?.IsTrash ? "" :
+                                                                    <>
+                                                                        <TableCell align='center'>
+                                                                            <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                                                                        </TableCell>
+                                                                        <TableCell width={'35px'} align="center">
+                                                                            <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                                                                                <StarBorderIcon className='starone' />
+                                                                                <StarIcon className='selectedstart startwo' />
+                                                                            </ToggleButton>
+                                                                        </TableCell>
+                                                                    </>
                                                         }
                                                         <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>
                                                             {
                                                                 item.IsReplied ? <TurnLeft /> : ""
                                                             }
                                                         </TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             })}
@@ -2894,22 +2899,22 @@ export default function LabelByID(props) {
                                                     }
                                                     {
                                                         OpenMessage?.IsTrash ? "" :
-                                                        <Button>
-                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
-                                                       </Button>
+                                                            <Button>
+                                                                <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
+                                                            </Button>
                                                     }
-                                                   {
-                                                     OpenMessage?.IsTrash ? "" :
-                                                     <Button>
-                                                      <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply All"} /></a>
-                                                    </Button>
-                                                   }
-                                                   {
-                                                     OpenMessage?.IsTrash ? "" :
-                                                    <Button>
-                                                        <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
-                                                    </Button>
-                                                   }
+                                                    {
+                                                        OpenMessage?.IsTrash ? "" :
+                                                            <Button>
+                                                                <a><img src={icons_replyall} onClick={OpenReplyAll} title={"Reply All"} /></a>
+                                                            </Button>
+                                                    }
+                                                    {
+                                                        OpenMessage?.IsTrash ? "" :
+                                                            <Button>
+                                                                <a><img src={iconsarrow1} title={"Forward"} onClick={OpenComposeForward} /></a>
+                                                            </Button>
+                                                    }
                                                     {/* <Button>
                                                         <a><img src={iconsarrow2} title={"Reply"} onClick={OpenComposeReply} /></a>
                                                     </Button>

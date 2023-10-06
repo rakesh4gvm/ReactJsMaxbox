@@ -620,7 +620,21 @@ export default function OtherInboxPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        SetEmailAccountUsers(Result.data.PageData)
+        const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+        const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+        if (FirstIsSendDefaultTrue) {
+          // Move the first item with IsSendDefault true to the beginning of the array
+          UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+          UpdatedData.unshift(FirstIsSendDefaultTrue);
+        }
+
+        if (UpdatedData[0]?.IsSendDefault) {
+          SetEmailAccountUsers(UpdatedData)
+        } else {
+          SetEmailAccountUsers(Result.data.PageData)
+        }
       } else {
         toast.error(Result?.data?.Message);
       }

@@ -74,6 +74,7 @@ export default function EmailConfigurationPage() {
   const [IsProcees, SetIsProcess] = useState(true)
   const [checkedStates, setCheckedStates] = useState({});
   const [Checked, SetChecked] = React.useState({});
+  const [CheckedSendDefault, SetCheckedSendDefault] = React.useState({});
 
   useEffect(() => {
     document.title = 'Email Settings | MAXBOX';
@@ -142,6 +143,39 @@ export default function EmailConfigurationPage() {
 
     await updateDataOnServer(isChecked, ID);
   };
+
+  const UpdateSendDefault = async (isChecked, ID, ClientID) => {
+
+    let Data = {
+      ID: ID,
+      ClientID: ClientID,
+      SendDefaultValue: isChecked
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/UpdateSendDefault",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      GetEmailAccountList(Result?.data?.Data?.ClientID, Result?.data?.Data?.UserID, Page)
+    });
+  }
+
+  // Handle Checked
+  const HandleSendDefaultChecked = async (event, ID, ClientID) => {
+
+    const isChecked = event.target.checked;
+
+
+    SetCheckedSendDefault((prevState) => ({
+      ...prevState,
+      [ID]: isChecked,
+    }));
+
+    await UpdateSendDefault(isChecked, ID, ClientID);
+  };
+
 
 
   const handleChange = async (event, accountId) => {
@@ -536,6 +570,7 @@ export default function EmailConfigurationPage() {
                         <TableCell onClick={() => { SortData("Email") }} >Email</TableCell>
                         <TableCell >Process</TableCell>
                         <TableCell >Don't Sync</TableCell>
+                        <TableCell >Is Send Default</TableCell>
                         <TableCell align="right">Authentication Status</TableCell>
                         <TableCell align="right"></TableCell>
                         <TableCell align="center">Action</TableCell>
@@ -588,6 +623,16 @@ export default function EmailConfigurationPage() {
                                 <Switch
                                   checked={Checked[row?.AccountID] || row?.IsDoNotShrink}
                                   onChange={(event) => HandleChecked(event, row.AccountID)}
+                                />
+                              }
+                            />
+                          </TableCell>
+                          <TableCell scope="row">
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={row?.IsSendDefault}
+                                  onChange={(event) => HandleSendDefaultChecked(event, row.AccountID, row.ClientID)}
                                 />
                               }
                             />
