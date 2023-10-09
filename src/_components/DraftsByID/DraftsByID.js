@@ -345,29 +345,31 @@ export default function DraftsPageByID(props) {
       if (Data?._id?.length > 0) {
         // SetSignature({ Data: "<br />" + Data.Body + ClientData })
         SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
-        if(!Array.isArray(Data?.MailTo)){
+        if(Data?.MailTo != null && !Array.isArray(Data?.MailTo)){
           var MailToArray = Data?.MailTo.split(',');
           Data.MailTo = MailToArray;
         }
         SetToEmailValue(Data?.MailTo)
-        if(!Array.isArray(Data?.MailCc)){
+        SetCCEmailValue([])
+        if(Data?.MailCc != null && !Array.isArray(Data?.MailCc)){
           var MailCcArray = Data?.MailCc.split(',');
           Data.MailCc = MailCcArray;
+          SetCCEmailValue(Data?.MailCc)
         }
-        SetCCEmailValue(Data?.MailCc)
-        if(Data?.MailCc != ""){
+        if(Data?.MailCc != null && Data?.MailCc != ""){
           document.getElementById("FlagCC").style.display = 'block'
           SetCcflag(true);
         }
 
-        if(!Array.isArray(Data?.MailBcc)){
+        SetBCCEmailValue([]);
+        if(Data?.MailBcc != null && !Array.isArray(Data?.MailBcc)){
           var MailCcArray = Data?.MailBcc.split(',');
           Data.MailBcc = MailCcArray;
+          SetBCCEmailValue(Data?.MailBcc)
         }
-        SetBCCEmailValue(Data?.MailBcc)
-        if(Data?.MailBcc != ""){
+        if(Data?.MailBcc != null && Data?.MailBcc != ""){
           document.getElementById("FlagBCC").style.display = 'block'
-          SetCcflag(true);
+          SetBccflag(true);
         }
 
         SetSelectedEmailAccountUser(Data?.AccountID);
