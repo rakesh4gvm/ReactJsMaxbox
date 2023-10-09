@@ -241,6 +241,7 @@ export default function AllInboxByID(props) {
     const [SenderDetails, SetSenderDetails] = React.useState(null);
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
     const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
+    const editorRef = useRef(null);
 
     useEffect(() => {
         // Function to close box when clicking outside
@@ -1175,7 +1176,17 @@ export default function AllInboxByID(props) {
         elementbcc.classList.add("showbcc");
 
         const elementreply = document.getElementById("UserCompose")
-        elementreply.classList.remove("show");
+        elementreply.classList.remove("show"); 
+        
+        if (editorRef.current) {
+        const editorInstance = editorRef.current.editor;
+    
+        if (editorInstance) { 
+            const editorContent = editorInstance.html.get(); 
+            // editorInstance.html.set('<span></span>' + editorContent); 
+            editorInstance.events.focus(true);
+        }
+        }
     }
 
 
@@ -1784,7 +1795,12 @@ export default function AllInboxByID(props) {
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
-        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
+        events: { 
+          'contentChanged': function () { 
+           this.events.focus(true);
+         } 
+        }
     }
     const ForwardHandleModelChange = (Model) => {
         SetForwardSignature({
@@ -3140,7 +3156,7 @@ export default function AllInboxByID(props) {
                         <Row className='pt-2'>
                             <Col>
                                 <div className='FroalaEditor'>
-                                    <FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
+                                    <FroalaEditor ref={editorRef} tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} />
                                     {showNotification && (
                                         <div className="notificationchatgpt">
                                             This is a ChatGPT. You can access ChatGPT!
@@ -3345,7 +3361,7 @@ export default function AllInboxByID(props) {
                         <Row className='pt-2'>
                             <Col>
                                 <div className='FroalaEditor'>
-                                    <FroalaEditor tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
+                                    <FroalaEditor ref={editorRef} tag='textarea' id="signature" config={forwardconfig} onModelChange={ForwardHandleModelChange} model={ForwardSignature.Data} />
                                 </div>
                             </Col>
                         </Row>

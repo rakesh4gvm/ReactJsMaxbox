@@ -1272,7 +1272,12 @@ export default function AllSentEmailByID(props) {
         fileUploadURL: CommonConstants.MOL_APIURL + "/client/upload_file",
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
-        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
+        key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
+        events: { 
+          'contentChanged': function () { 
+           this.events.focus(true);
+         } 
+        }
     }
     const HandleModelChange = (Model) => {
         SetSignature({
