@@ -683,6 +683,11 @@ export default function Navigation(props) {
         history.push("/LabelByID/" + ID);
       }
     }
+    if (PageName == "/DraftsByID") {
+      if (ID != "" && ID != null) {
+        history.push("/DraftsByID/" + ID);
+      }
+    }
     // if (PageName == "AllInbox") {
     //   if (ID != "" && ID != null) {
     //     if (history.location.pathname === "/AllInbox") {
@@ -1485,11 +1490,11 @@ export default function Navigation(props) {
                   {/* {unSeenFollowUpLaterCount != null ? "Follow Up Later(" + unSeenOtherInboxCount + ")" : FromEmailDropdownList != undefined ? "Follow Up Later(" + FromEmailDropdownList?.map((e, index) => e?.FollowUpLaterCount - e?.SeenFollowUpLaterCount)?.reduce((a, b) => a + b, 0) + ")" : "Follow Up Later(0)"} */} {/* new code display fron email variable */}
                 </ListItemButton>
 
-                <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
+                {/* <ListItemButton sx={{ pl: 2 }} onClick={(event) => handleListItemClick(event, "/Drafts")}
                   component={Link}
                   selected={SelectMenuItem === "/Drafts"}>
                   {DraftTotalCount?.TotalCount != undefined ? "Drafts(" + DraftTotalCount?.TotalCount + ")" : "Drafts(0)"}
-                </ListItemButton>
+                </ListItemButton> */}
 
                 <List component="div">
                   <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickStarred}>
@@ -1571,7 +1576,29 @@ export default function Navigation(props) {
             <List sx={{ pl: item._id }} className='listclick' key={index}>
               <ListItemButton onClick={() => handleClick("0" + item._id, 1)} key={"0" + item._id}>
                 {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
-                <b>{item.Email}</b>
+                {/* <b>{item.Email} ()</b> */}
+                <b>
+                {
+                  FromEmailDropdownList
+                    ? (() => {
+                      let totalInboxCount = 0;
+
+                      FromEmailDropdownList.forEach((account) => {
+                        if (account.AccountID == item.AccountID) {
+                          totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                            if (label.LableName === "INBOX") {
+                              return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                            }
+                            return acc;
+                          }, 0) || 0;
+                        }
+                      });
+
+                      return `${item.Email}(${totalInboxCount})`;
+                    })()
+                    : `${item.Email}(0)`
+                }
+                </b>
                 {/* <b>
                 {item.Email}
                 {FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount != undefined ? `(` + FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].InboxCount + `)` : `(` + 0 + `)`}
@@ -1697,6 +1724,11 @@ export default function Navigation(props) {
                     )) : FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount != undefined ? FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount != undefined ? "Follow Up Later(" + (FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].FollowUpLaterCount - FromEmailDropdownList.filter((e) => e.AccountID == item.AccountID)[0].SeenFollowUpLaterCount) + ")" : "Follow Up Later(0)" : "Follow Up Later(0)"} */}{/* new code display fron email variable */}
                   </ListItemButton>
 
+                  <ListItemButton sx={{ pl: "2" + item._id }} onClick={(event) => handleListItemClick(event, "/DraftsByID", item._id)}
+                    component={Link}
+                    selected={SelectMenuItem === "/DraftsByID" + item._id}>
+                    Drafts
+                  </ListItemButton>
 
                   <List component="div">
                     <ListItemButton sx={{ pl: 2 }} onClick={() => OnehandleClickOutBox("2" + item._id, 1)} key={"2" + item._id}>

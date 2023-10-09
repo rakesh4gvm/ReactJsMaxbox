@@ -27,6 +27,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import { useParams } from 'react-router-dom';
 
 const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -46,22 +47,26 @@ function useOutsideAlerter(ref) {
 export default function DraftComposePage({ GetDraftList }) {
     const [ClientID, SetClientID] = React.useState(0);
     const [UserID, SetUserID] = React.useState(0);
+    const [AccountID, SetAccountID] = React.useState(0);
     const [SelectedEmailAccountUser, SetSelectedEmailAccountUser] = useState([])
     const [DraftSignature, SetDraftSignature] = useState({
         Data: ""
     })
     const [ToEmailValue, SetToEmailValue] = React.useState([]);
+    const { id } = useParams();
 
     useEffect(() => {
         GetClientID()
-    }, [])
+    }, [id])
 
     // Get Client ID
-    const GetClientID = () => {
+    const GetClientID = (ID) => {
+        var ID = id;
         var UserDetails = GetUserDetails();
         if (UserDetails != null) {
             SetClientID(UserDetails.ClientID);
             SetUserID(UserDetails.UserID);
+            SetAccountID(ID);
         }
     }
 
@@ -115,6 +120,7 @@ export default function DraftComposePage({ GetDraftList }) {
                 Body: DraftSignature.Data,
                 UserID: UserID,
                 ClientID: ClientID,
+                AccountID: AccountID,
                 CreatedBy: UserID
             }
             Axios({
@@ -126,7 +132,7 @@ export default function DraftComposePage({ GetDraftList }) {
                     toast.success(<div>Draft added successfully.</div>)
                     CloseDraftCompose()
                     LoaderHide()
-                    GetDraftList(ClientID, UserID, 1, "")
+                    GetDraftList(AccountID,ClientID, UserID, 1, "")
                     document.getElementById("ToEmail").value = ""
                     document.getElementById("DraftSubject").value = ""
                 } else {
