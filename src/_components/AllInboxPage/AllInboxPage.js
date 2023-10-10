@@ -67,7 +67,16 @@ import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { TurnLeft } from '@mui/icons-material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import LabelIcon from '@material-ui/icons/Label';  
+import InfoSharpIcon from '@mui/icons-material/InfoSharp';
 
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -233,9 +242,7 @@ export default function OtherInboxPage(props) {
 
   }, [SearchInbox, state])
 
-  const ContainerRef = useRef(null);
-
-
+  const ContainerRef = useRef(null); 
 
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -257,8 +264,36 @@ export default function OtherInboxPage(props) {
   const bcchandleClose = () => {
     setBCCAnchorEl(null);
   };
-
-
+ 
+  const [contextMenu, setContextMenu] = React.useState(null);
+  const [isSubMenuOpen, setSubMenuOpen] = React.useState(false);
+  
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+    setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
+      mouseX: event.clientX + 2,
+      mouseY: event.clientY - 6,
+    }));
+  };
+  
+  const texthandleClose = (event) => {
+    event.preventDefault();
+    setContextMenu(null);
+    setSubMenuOpen(false); // Close the submenu when the main menu is closed
+  };
+  
+  const handleSubMenuOpen = (event) => {
+    event.preventDefault();
+    setSubMenuOpen(true);
+    // setContextMenu({
+    //   mouseX: event.clientX + 0, // Adjust the position as needed
+    //   mouseY: event.clientY - 1,
+    // });
+  };
+  
+  const handleSubMenuClose = () => {
+    setSubMenuOpen(false);
+  };
 
   const toopen = Boolean(anchorEl);
   const ccopen = Boolean(ccanchorEl);
@@ -2429,6 +2464,21 @@ export default function OtherInboxPage(props) {
               </div>
 
 
+              {/* <Autocomplete
+                                          multiple
+                                          limitTags={2}
+                                          id="multiple-limit-tags"
+                                          options={top100Films}
+                                          getOptionLabel={(option) => option.title}
+                                          defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
+                                          renderInput={(params) => (
+                                            <TextField {...params} label="limitTags" placeholder="Favorites" />
+                                          )}
+                                          sx={{ width: '500px' }}
+                                        /> */}
+                                        
+
+
               <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
                 <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
                   <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -2454,6 +2504,58 @@ export default function OtherInboxPage(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
+
+                    <Menu className="menurighter"
+                      open={contextMenu !== null}
+                      onClose={texthandleClose}
+                      onContextMenu={texthandleClose}
+                      anchorReference="anchorPosition"
+                      anchorPosition={
+                        contextMenu !== null
+                          ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                          : undefined
+                      }
+                    > 
+                      <MenuItem onClick={handleClose}><Visibility /> Mark as read</MenuItem>
+                      <MenuItem onClick={handleClose}><VisibilityOffIcon /> Mark as unread</MenuItem>
+                      <Divider sx={{ my: 0.3 }} /> 
+                      <MenuItem onClick={handleClose}><img src={iconsarrow2} /> Reply</MenuItem>
+                      <MenuItem onClick={handleClose}><img src={icons_replyall} /> Reply All</MenuItem> 
+                      <MenuItem onClick={handleClose}><img src={iconsarrow1} /> Forward</MenuItem>
+                      <Divider sx={{ my: 0.3 }} /> 
+
+                      <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
+
+                        <Menu
+                          open={isSubMenuOpen}
+                          onClose={handleSubMenuClose}
+                          anchorReference="anchorPosition"
+                          anchorPosition={
+                            isSubMenuOpen
+                              ? { top: contextMenu.mouseY + 200, left: contextMenu.mouseX + 200 } // Adjust the position as needed
+                              : undefined
+                          }
+                        >
+                          {/* Submenu items for label editing */}
+                          <MenuItem >Label 1
+                            <div 
+                            //ref={boxRef}
+                            >
+                                        <h6>Label as :</h6>
+                                       
+                                        <Button className="btnapply" //onClick={Apply}
+                                        >Apply</Button>
+                                    </div> 
+                              </MenuItem> 
+                          {/* Add more label items as needed */}
+                        </Menu>
+
+                      <MenuItem onClick={handleClose}><img src={icondelete} />Delete</MenuItem> 
+                      <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
+                      <MenuItem onClick={handleClose}><StarBorderIcon /> Starred</MenuItem>
+                      <MenuItem onClick={handleClose}><StarIcon /> Unstarred</MenuItem>
+                    </Menu>
+
                       {AllInboxList?.map((item, index) => {
                         var fullName = item.FromName;
                         var cleanedName = fullName.replace(/<[^>]+>/, "");
@@ -2476,7 +2578,7 @@ export default function OtherInboxPage(props) {
                         }
 
                         return (
-                          <TableRow
+                          <TableRow onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                             // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                             // className={`${item.IsSeen ? "useen-email" : "seen-email"}`} 
                             key={item.name}

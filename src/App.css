@@ -3238,7 +3238,7 @@ div.iconsboxcd .show>.btn-primary.dropdown-toggle:focus {
 }
 
 tr.selected-row {
-    background: #faecec;
+    background: #FCF1EE;
 }
 
 .orangbg-table {
@@ -4048,6 +4048,31 @@ button.labelinside svg.MuiSvgIcon-root {
     float: right;
     padding: 4px; 
 }
+.menurighter{
+    padding: 0; 
+}
+.menurighter .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded ul{
+    padding: 0;
+    width: 190px;
+    height: auto;
+    max-height: inherit;
+}
+.menurighter .MuiPaper-root ul li > svg,
+.menurighter .MuiPaper-root ul li > img{ 
+    width: 18px;
+    color: #616b77;
+    filter: opacity(1);
+    margin-right: 15px;
+}
+.menurighter .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded ul li:hover,
+.menurighter .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded ul li:focus{
+    background: #faecec;
+    color: #616b77;
+}
+
+
+
+
 @media screen and (max-width:990px) {
     .col.rightinbox {
         width: 100%;
