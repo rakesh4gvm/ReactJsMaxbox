@@ -2705,7 +2705,7 @@ export default function LabelByID(props) {
                                                 }
                                                 else if (item.LabelField?.length == 1) {
                                                     if (item.LabelField[0].LableName != "INBOX") {
-                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
+                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : ""; //defaultColor;
                                                     }
                                                 }
                                                 return (
@@ -2743,14 +2743,14 @@ export default function LabelByID(props) {
                                                                 item.IsReplied ? <TurnLeft /> : ""
                                                             }
                                                         </TableCell>
-                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{ color: labelColor }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             })}
