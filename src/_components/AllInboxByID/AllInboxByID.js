@@ -2675,7 +2675,7 @@ export default function AllInboxByID(props) {
                                                 }
                                                 else if (item.LabelField?.length == 1) {
                                                     if (item.LabelField[0].LableName != "INBOX") {
-                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : defaultColor;
+                                                        labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : ""; // defaultColor;
                                                     }
                                                 }
                                                 return (
