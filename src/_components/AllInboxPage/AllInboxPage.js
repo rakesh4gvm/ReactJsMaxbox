@@ -2461,23 +2461,7 @@ export default function OtherInboxPage(props) {
                       </div>
                   }
                 </div>
-              </div>
-
-
-              {/* <Autocomplete
-                                          multiple
-                                          limitTags={2}
-                                          id="multiple-limit-tags"
-                                          options={top100Films}
-                                          getOptionLabel={(option) => option.title}
-                                          defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
-                                          renderInput={(params) => (
-                                            <TextField {...params} label="limitTags" placeholder="Favorites" />
-                                          )}
-                                          sx={{ width: '500px' }}
-                                        /> */}
-                                        
-
+              </div> 
 
               <div id="eventselectedrow" className="simulationDiv" ref={ContainerRef}>
                 <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e, selectedRowIndex)} ref={tableRef}>
@@ -2526,7 +2510,7 @@ export default function OtherInboxPage(props) {
 
                       <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
 
-                        <Menu
+                        {/* <Menu
                           open={isSubMenuOpen}
                           onClose={handleSubMenuClose}
                           anchorReference="anchorPosition"
@@ -2536,7 +2520,6 @@ export default function OtherInboxPage(props) {
                               : undefined
                           }
                         >
-                          {/* Submenu items for label editing */}
                           <MenuItem >Label 1
                             <div 
                             //ref={boxRef}
@@ -2547,8 +2530,7 @@ export default function OtherInboxPage(props) {
                                         >Apply</Button>
                                     </div> 
                               </MenuItem> 
-                          {/* Add more label items as needed */}
-                        </Menu>
+                         </Menu> */}
 
                       <MenuItem onClick={handleClose}><img src={icondelete} />Delete</MenuItem> 
                       <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>

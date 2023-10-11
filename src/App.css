@@ -4069,9 +4069,33 @@ button.labelinside svg.MuiSvgIcon-root {
     background: #faecec;
     color: #616b77;
 }
+.labelrighter h6 {
+    font-size: 0.8rem;
+    padding-left: 10px;
+    margin-bottom: 0;
+}
+.labelrighter {
+    padding: 0;
+}
+.rightlabelul + div {
+    position: relative !important;
+    transform: none !important;
+    box-shadow: none;
+    overflow: hidden;
+}
 
-
-
+.rightlabelul .MuiOutlinedInput-root{
+    padding: 0;
+}
+.rightlabelul .MuiOutlinedInput-root fieldset {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+}
+.labelrighter .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded ul.MuiMenu-list {
+    max-height: inherit; 
+    padding: 10px 0 0;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
