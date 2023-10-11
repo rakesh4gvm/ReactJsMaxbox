@@ -199,6 +199,7 @@ export default function AllSentEmailsPage(props) {
   const [MUIClass, SetMUIClass] = useState("Mui-selected")
   const [SenderDetails, SetSenderDetails] = React.useState(null);
   const [ReplyText, SetReplyText] = useState("Reply")
+  const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -366,6 +367,7 @@ export default function AllSentEmailsPage(props) {
       SetUserID(UserDetails.UserID);
     }
     GetClientList(UserDetails.ClientID)
+    GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
@@ -398,6 +400,40 @@ export default function AllSentEmailsPage(props) {
       }
     });
   };
+
+  const GetEmailAccountUsers = (CID, UID) => {
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+
+        const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+        const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+        if (FirstIsSendDefaultTrue) {
+          // Move the first item with IsSendDefault true to the beginning of the array
+          UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+          UpdatedData.unshift(FirstIsSendDefaultTrue);
+        }
+
+        if (UpdatedData[0]?.IsSendDefault) {
+          SetEmailAccountUsers(UpdatedData)
+        } else {
+          SetEmailAccountUsers(Result.data.PageData)
+        }
+
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+  }
 
   //  comment this api because we retrieve counts from email collection that's have no use for this api ~Shubham
   // Get All Sent Emails Total Count
@@ -829,7 +865,7 @@ export default function AllSentEmailsPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-        SetSignature({ Data: Result?.data?.Data + ClientData })
+        SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
         var SenderDetails = {
           SenderName: Result?.data?.SenderName,
           ReceiverName: Result?.data?.ReceiverName
@@ -871,10 +907,6 @@ export default function AllSentEmailsPage(props) {
     var CC = localStorage.getItem("CCMessage")
     var BCC = localStorage.getItem("BCCMessage")
 
-    console.log("OpenMessage======", OpenMessage.ToEmail)
-    console.log("OpenMessage?.CcNameEmail======", OpenMessage?.CcNameEmail)
-    console.log("======", OpenMessage?.CcNameEmail?.map((e) => e?.Email)?.filter((e) => e != OpenMessage?.ToEmail))
-
     const NewCCEmail = RemoveCurrentEmailFromCC(OpenMessage)
     const NewBCCEmail = RemoveCurrentEmailFromBCC(OpenMessage)
 
@@ -904,7 +936,7 @@ export default function AllSentEmailsPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-        SetSignature({ Data: Result?.data?.Data + ClientData })
+        SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
       } else {
         toast.error(Result?.data?.Message);
       }

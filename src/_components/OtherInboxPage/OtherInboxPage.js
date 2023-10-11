@@ -214,6 +214,7 @@ export default function OtherInboxPage(props) {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [SenderDetails, SetSenderDetails] = React.useState(null);
   const [ReplyText, SetReplyText] = useState("Reply")
+  const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
 
   const OpenChatGPTModel = () => SetChatGPTModel(true)
 
@@ -274,6 +275,7 @@ export default function OtherInboxPage(props) {
       SetUserID(UserDetails.UserID);
     }
     GetClientList(UserDetails.ClientID)
+    GetEmailAccountUsers(UserDetails.ClientID, UserDetails.UserID)
     // if (props !== undefined) {
     //   const ID = props.location.state;
     var ID = decrypt(props.location.search.replace('?', ''))
@@ -313,6 +315,41 @@ export default function OtherInboxPage(props) {
       }
     });
   };
+
+  const GetEmailAccountUsers = (CID, UID) => {
+    const Data = {
+      ClientID: CID,
+      UserID: UID,
+    }
+    Axios({
+      url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+      method: "POST",
+      data: Data,
+    }).then((Result) => {
+      if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+
+        const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+        const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+        if (FirstIsSendDefaultTrue) {
+          // Move the first item with IsSendDefault true to the beginning of the array
+          UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+          UpdatedData.unshift(FirstIsSendDefaultTrue);
+        }
+
+        if (UpdatedData[0]?.IsSendDefault) {
+          SetEmailAccountUsers(UpdatedData)
+        } else {
+          SetEmailAccountUsers(Result.data.PageData)
+        }
+
+      } else {
+        toast.error(Result?.data?.Message);
+      }
+    })
+  }
+
   const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
     var Data = {
       ClientID: CID,
@@ -1056,7 +1093,7 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-        SetSignature({ Data: Result?.data?.Data + ClientData })
+        SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
         var SenderDetails = {
           SenderName: Result?.data?.SenderName,
           ReceiverName: Result?.data?.ReceiverName
@@ -1125,7 +1162,7 @@ export default function OtherInboxPage(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-        SetSignature({ Data: Result?.data?.Data + ClientData })
+        SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
       } else {
         toast.error(Result?.data?.Message);
       }
