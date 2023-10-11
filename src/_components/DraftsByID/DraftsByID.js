@@ -223,7 +223,7 @@ export default function DraftsPageByID(props) {
   }, [SearchInbox, id])
 
   // Get Client ID
-  const GetClientID = () => {   
+  const GetClientID = () => {
     var UserDetails = GetUserDetails();
     if (UserDetails != null) {
       SetClientID(UserDetails.ClientID);
@@ -345,29 +345,29 @@ export default function DraftsPageByID(props) {
       if (Data?._id?.length > 0) {
         // SetSignature({ Data: "<br />" + Data.Body + ClientData })
         SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
-        if(Data?.MailTo != null && !Array.isArray(Data?.MailTo)){
+        if (Data?.MailTo != null && !Array.isArray(Data?.MailTo)) {
           var MailToArray = Data?.MailTo.split(',');
           Data.MailTo = MailToArray;
         }
         SetToEmailValue(Data?.MailTo)
         SetCCEmailValue([])
-        if(Data?.MailCc != null && !Array.isArray(Data?.MailCc)){
+        if (Data?.MailCc != null && !Array.isArray(Data?.MailCc)) {
           var MailCcArray = Data?.MailCc.split(',');
           Data.MailCc = MailCcArray;
           SetCCEmailValue(Data?.MailCc)
         }
-        if(Data?.MailCc != null && Data?.MailCc != ""){
+        if (Data?.MailCc != null && Data?.MailCc != "") {
           document.getElementById("FlagCC").style.display = 'block'
           SetCcflag(true);
         }
 
         SetBCCEmailValue([]);
-        if(Data?.MailBcc != null && !Array.isArray(Data?.MailBcc)){
+        if (Data?.MailBcc != null && !Array.isArray(Data?.MailBcc)) {
           var MailCcArray = Data?.MailBcc.split(',');
           Data.MailBcc = MailCcArray;
           SetBCCEmailValue(Data?.MailBcc)
         }
-        if(Data?.MailBcc != null && Data?.MailBcc != ""){
+        if (Data?.MailBcc != null && Data?.MailBcc != "") {
           document.getElementById("FlagBCC").style.display = 'block'
           SetBccflag(true);
         }
@@ -641,7 +641,21 @@ export default function DraftsPageByID(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-        SetEmailAccountUsers(Result.data.PageData)
+        const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+        const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+        if (FirstIsSendDefaultTrue) {
+          // Move the first item with IsSendDefault true to the beginning of the array
+          UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+          UpdatedData.unshift(FirstIsSendDefaultTrue);
+        }
+
+        if (UpdatedData[0]?.IsSendDefault) {
+          SetEmailAccountUsers(UpdatedData)
+        } else {
+          SetEmailAccountUsers(Result.data.PageData)
+        }
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1254,16 +1268,16 @@ export default function DraftsPageByID(props) {
                       value.map((option, index) => {
                         var ValidEmail = false
                         if (option?.Email != undefined && option?.Email != "") {
-                            ValidEmail = ValidateEmail(option?.Email)
+                          ValidEmail = ValidateEmail(option?.Email)
                         } else {
-                            ValidEmail = ValidateEmail(option)
+                          ValidEmail = ValidateEmail(option)
                         }
                         if (ValidEmail) {
-                            if (option?.Email != undefined && option?.Email != "") {
-                                return (<Chip variant="outlined" label={option?.Email} {...getTagProps({ index })} />)
-                            } else {
-                                return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
-                            }
+                          if (option?.Email != undefined && option?.Email != "") {
+                            return (<Chip variant="outlined" label={option?.Email} {...getTagProps({ index })} />)
+                          } else {
+                            return (<Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                          }
                         }
                       }
                       )
