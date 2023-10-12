@@ -70,8 +70,18 @@ import Popover from '@mui/material/Popover';
 import { ArrowDropDown } from '@material-ui/icons';
 import Visibility from '@material-ui/icons/Visibility';
 import Frame from 'react-frame-component';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TurnLeft } from '@mui/icons-material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import LabelIcon from '@material-ui/icons/Label';  
+import InfoSharpIcon from '@mui/icons-material/InfoSharp';
+
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
@@ -232,6 +242,18 @@ export default function OtherInboxPage(props) {
   const tableRef = useRef(null);
   const dispatch = useDispatch();
 
+  const [labelsData, setLabelsData] = useState([])
+  const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
+  const [contextMenu, setContextMenu] = React.useState(null);
+  const [isSubMenuOpen, setSubMenuOpen] = React.useState(false);
+  const [MessageId, SetMessageId] = useState();
+  const [MessageIsSeen, SetMessageIsSeen] = useState();
+  const [MessageIsStarred, SetMessageIsStarred] = useState();
+  const ContainerRef = useRef(null); 
+
+  const HandleMultipleLabelID = (event, newValue) => {
+    SetSelectedMultipleLabelValue(newValue)
+  }
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -252,6 +274,44 @@ export default function OtherInboxPage(props) {
   const bcchandleClose = () => {
     setBCCAnchorEl(null);
   };
+  
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+    var msgId = event.currentTarget.getAttribute('messageid');
+    var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
+    var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
+    SetCheckedID([...CheckedID, msgId]);
+    SetMessageId(msgId);
+    SetMessageIsSeen(isSeen);
+    SetMessageIsStarred(isStarred);
+    setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
+      mouseX: event.clientX + 2,
+      mouseY: event.clientY - 6,
+    }));
+  };
+  
+  const texthandleClose = (event) => {
+    event.preventDefault();
+    SetCheckedID([]);
+    SetMessageId("");
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false); // Close the submenu when the main menu is closed
+  };
+  
+  const handleSubMenuOpen = (event) => {
+    event.preventDefault();
+    setSubMenuOpen(true);
+    // setContextMenu({
+    //   mouseX: event.clientX + 0, // Adjust the position as needed
+    //   mouseY: event.clientY - 1,
+    // });
+  };
+  
+  const handleSubMenuClose = () => {
+    setSubMenuOpen(false);
+  };
 
   const toopen = Boolean(anchorEl);
   const ccopen = Boolean(ccanchorEl);
@@ -264,8 +324,6 @@ export default function OtherInboxPage(props) {
     document.title = 'Other Inbox | MAXBOX';
     GetClientID();
   }, [SearchInbox, state])
-
-  const ContainerRef = useRef(null);
 
   // Get Client ID
   const GetClientID = () => {
@@ -657,6 +715,12 @@ export default function OtherInboxPage(props) {
     SetStarPopModel(false);
   }
   const UpdateStarMessage = (ID, str, index) => {
+    SetCheckedID([]);
+    SetMessageId("");
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
     if (str === "opnemodel") {
       CloseStarPopModel();
     }
@@ -919,6 +983,12 @@ export default function OtherInboxPage(props) {
     SetDeletePopModel(false);
   }
   const DeleteMessage = (ID) => {
+    SetCheckedID([]);
+    SetMessageId("");
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
     if (ID != '') {
       var DeleteArray = []
       DeleteArray.push(ID)
@@ -1082,8 +1152,14 @@ export default function OtherInboxPage(props) {
     SetCCEmailValue([])
     SetBCCEmailValue([])
 
+    SetCheckedID([]);
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
+
     const Data = {
-      ID: OpenMessage?._id,
+      ID: MessageId != "" ? MessageId : OpenMessage?._id,
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
@@ -1103,6 +1179,7 @@ export default function OtherInboxPage(props) {
         toast.error(Result?.data?.Message);
       }
     })
+    SetMessageId("");
     const element = document.getElementById("UserComposeReply")
 
     if (element.classList.contains("show")) {
@@ -1126,6 +1203,12 @@ export default function OtherInboxPage(props) {
   const OpenReplyAll = () => {
     SetReplyText("Reply All")
     RemoveForwardPop()
+
+    SetCheckedID([]);
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
 
     SetSignature({ Data: "" })
     const element = document.getElementById("UserComposeReply")
@@ -1152,7 +1235,7 @@ export default function OtherInboxPage(props) {
     }
 
     const Data = {
-      ID: OpenMessage?._id,
+      ID: MessageId != "" ? MessageId : OpenMessage?._id,
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetReplyMessageDetails",
@@ -1167,6 +1250,7 @@ export default function OtherInboxPage(props) {
         toast.error(Result?.data?.Message);
       }
     })
+    SetMessageId("");
 
     // document.getElementById("CcReply").style.display = 'block'
     // document.getElementById("BccReply").style.display = 'block'
@@ -1594,8 +1678,14 @@ export default function OtherInboxPage(props) {
     SetForwardCCEmailValue([])
     SetForwardBCCEmailValue([])
 
+    SetCheckedID([]);
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
+
     const Data = {
-      ID: OpenMessage?._id,
+      ID: MessageId != "" ? MessageId : OpenMessage?._id,
     }
     Axios({
       url: CommonConstants.MOL_APIURL + "/receive_email_history/GetForwardMssageDetails",
@@ -1608,6 +1698,7 @@ export default function OtherInboxPage(props) {
         toast.error(Result?.data?.Message);
       }
     })
+    SetMessageId("");
 
     const element = document.getElementById("UserComposeForward")
 
@@ -1942,6 +2033,12 @@ export default function OtherInboxPage(props) {
       SetFollowUpList(FollowUpList)
       SetCheckedID([])
 
+      SetMessageId("");
+      SetMessageIsSeen("");
+      SetMessageIsStarred("");
+      setContextMenu(null);
+      setSubMenuOpen(false);
+
       var Data = {
         EmailsIds: CheckedID,
       };
@@ -2002,7 +2099,13 @@ export default function OtherInboxPage(props) {
       setSelectAllChecked(false)
       LoaderHide()
       SetFollowUpList(FollowUpList)
-      SetCheckedID([])
+      // SetCheckedID([])
+
+      SetMessageId("");
+      SetMessageIsSeen("");
+      SetMessageIsStarred("");
+      setContextMenu(null);
+      setSubMenuOpen(false);
 
       var Data = {
         EmailsIds: CheckedID,
@@ -2387,6 +2490,85 @@ export default function OtherInboxPage(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
+
+                      <Menu className="menurighter"
+                        open={contextMenu !== null}
+                        onClose={texthandleClose}
+                        onContextMenu={texthandleClose}
+                        anchorReference="anchorPosition"
+                        anchorPosition={
+                            contextMenu !== null
+                            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                            : undefined
+                        }
+                        > 
+                        {
+                            MessageIsSeen ? 
+                            <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem> 
+                            :
+                            <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
+                            
+                        }
+                        <Divider sx={{ my: 0.3 }} /> 
+                        <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
+                        <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem> 
+                        <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
+                        <Divider sx={{ my: 0.3 }} /> 
+
+                        <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
+
+                            <Menu className="labelrighter"
+                            open={isSubMenuOpen}
+                            onClose={handleSubMenuClose}
+                            anchorReference="anchorPosition"
+                            anchorPosition={
+                                isSubMenuOpen
+                                ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                                : undefined
+                            }
+                            > 
+                                        <div >
+                                            <h6>Label as a:</h6>
+                                            <Autocomplete className="rightlabelul"
+                                                open
+                                                multiple
+                                                disablePortal
+                                                id="checkboxes-tags-demo"
+                                                style={{ width: 180 }}
+                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                getOptionLabel={(option) => option.LableName}
+                                                renderTags={() => []}
+                                                renderOption={(props, option, { selected }) => (
+                                                    <li {...props} className="oragechecked">
+                                                        <Checkbox
+                                                            icon={icon}
+                                                            checkedIcon={checkedIcon}
+                                                            style={{ marginRight: 8 }}
+                                                            checked={selected}
+                                                        />
+                                                        {option.LableName}
+                                                    </li>
+                                                )}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} placeholder="Search" />
+                                                )}
+                                                onChange={HandleMultipleLabelID}
+                                            />
+                                            <Button className="btnapply" //onClick={Apply}
+                                            >Apply</Button>
+                                        </div>  
+                            </Menu>
+
+                        <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
+                        <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
+                        {
+                            MessageIsStarred ? 
+                            <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
+                            :
+                            <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
+                            
+                        }
+                      </Menu>
                       {FollowUpList.map((item, index) => {
                         var fullName = item.FromName;
                         var cleanedName = fullName.replace(/<[^>]+>/, "");
@@ -2408,7 +2590,7 @@ export default function OtherInboxPage(props) {
                             }
                         }
                         return (
-                          <TableRow
+                          <TableRow messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                             // className={`${Active === item._id ? "selected-row" : ""}`}
                             // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                             // key={item.name}

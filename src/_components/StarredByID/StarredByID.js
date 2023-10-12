@@ -2056,7 +2056,13 @@ export default function StarredByID(props) {
             ResponseApi.then(async (Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
 
-                    GetStarredList(ClientID, UserID, 1, ID, "SeenEmails", "Refresh");
+                    // GetStarredList(ClientID, UserID, 1, ID, "SeenEmails", "Refresh");
+                    if (!state) {
+                        GetStarredList(ClientID, UserID, 1, ID, "SeenEmails", "Refresh");
+                      }
+                      else{
+                        GetStarredList(ClientID, UserID, 1, ID, "", "Refresh");
+                      }
 
                     var accessToken = Result.data.accessToken
                     var RFC822MessageID = Result.data.RFC822MessageID
@@ -2576,14 +2582,14 @@ export default function StarredByID(props) {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }
                                                         </TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             }

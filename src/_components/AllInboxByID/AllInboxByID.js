@@ -2790,84 +2790,84 @@ export default function AllInboxByID(props) {
                                         </TableHead>
                                         <TableBody>
 
-                                        <Menu className="menurighter"
-                                            open={contextMenu !== null}
-                                            onClose={texthandleClose}
-                                            onContextMenu={texthandleClose}
-                                            anchorReference="anchorPosition"
-                                            anchorPosition={
-                                                contextMenu !== null
-                                                ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                                                : undefined
-                                            }
-                                            > 
-                                            {
-                                                MessageIsSeen ? 
-                                                <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem> 
-                                                :
-                                                <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
-                                                
-                                            }
-                                            <Divider sx={{ my: 0.3 }} /> 
-                                            <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
-                                            <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem> 
-                                            <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
-                                            <Divider sx={{ my: 0.3 }} /> 
-
-                                            <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
-
-                                                <Menu className="labelrighter"
-                                                open={isSubMenuOpen}
-                                                onClose={handleSubMenuClose}
+                                            <Menu className="menurighter"
+                                                open={contextMenu !== null}
+                                                onClose={texthandleClose}
+                                                onContextMenu={texthandleClose}
                                                 anchorReference="anchorPosition"
                                                 anchorPosition={
-                                                    isSubMenuOpen
-                                                    ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                                                    contextMenu !== null
+                                                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
                                                     : undefined
                                                 }
                                                 > 
-                                                            <div >
-                                                                <h6>Label as a:</h6>
-                                                                <Autocomplete className="rightlabelul"
-                                                                    open
-                                                                    multiple
-                                                                    disablePortal
-                                                                    id="checkboxes-tags-demo"
-                                                                    style={{ width: 180 }}
-                                                                    options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                                                    getOptionLabel={(option) => option.LableName}
-                                                                    renderTags={() => []}
-                                                                    renderOption={(props, option, { selected }) => (
-                                                                        <li {...props} className="oragechecked">
-                                                                            <Checkbox
-                                                                                icon={icon}
-                                                                                checkedIcon={checkedIcon}
-                                                                                style={{ marginRight: 8 }}
-                                                                                checked={selected}
-                                                                            />
-                                                                            {option.LableName}
-                                                                        </li>
-                                                                    )}
-                                                                    renderInput={(params) => (
-                                                                        <TextField {...params} placeholder="Search" />
-                                                                    )}
-                                                                    onChange={HandleMultipleLabelID}
-                                                                />
-                                                                <Button className="btnapply" //onClick={Apply}
-                                                                >Apply</Button>
-                                                            </div>  
-                                                </Menu>
+                                                {
+                                                    MessageIsSeen ? 
+                                                    <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem> 
+                                                    :
+                                                    <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
+                                                    
+                                                }
+                                                <Divider sx={{ my: 0.3 }} /> 
+                                                <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
+                                                <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem> 
+                                                <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
+                                                <Divider sx={{ my: 0.3 }} /> 
 
-                                            <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
-                                            <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
-                                            {
-                                                MessageIsStarred ? 
-                                                <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
-                                                :
-                                                <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
-                                                
-                                            }
-                                        </Menu>
+                                                <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
+
+                                                    <Menu className="labelrighter"
+                                                    open={isSubMenuOpen}
+                                                    onClose={handleSubMenuClose}
+                                                    anchorReference="anchorPosition"
+                                                    anchorPosition={
+                                                        isSubMenuOpen
+                                                        ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                                                        : undefined
+                                                    }
+                                                    > 
+                                                                <div >
+                                                                    <h6>Label as a:</h6>
+                                                                    <Autocomplete className="rightlabelul"
+                                                                        open
+                                                                        multiple
+                                                                        disablePortal
+                                                                        id="checkboxes-tags-demo"
+                                                                        style={{ width: 180 }}
+                                                                        options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                                        getOptionLabel={(option) => option.LableName}
+                                                                        renderTags={() => []}
+                                                                        renderOption={(props, option, { selected }) => (
+                                                                            <li {...props} className="oragechecked">
+                                                                                <Checkbox
+                                                                                    icon={icon}
+                                                                                    checkedIcon={checkedIcon}
+                                                                                    style={{ marginRight: 8 }}
+                                                                                    checked={selected}
+                                                                                />
+                                                                                {option.LableName}
+                                                                            </li>
+                                                                        )}
+                                                                        renderInput={(params) => (
+                                                                            <TextField {...params} placeholder="Search" />
+                                                                        )}
+                                                                        onChange={HandleMultipleLabelID}
+                                                                    />
+                                                                    <Button className="btnapply" //onClick={Apply}
+                                                                    >Apply</Button>
+                                                                </div>  
+                                                    </Menu>
+
+                                                <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
+                                                <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
+                                                {
+                                                    MessageIsStarred ? 
+                                                    <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
+                                                    :
+                                                    <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
+                                                    
+                                                }
+                                            </Menu>
 
                                             {AllInboxList?.map((item, index) => {
                                                 var fullName = item.FromName;
