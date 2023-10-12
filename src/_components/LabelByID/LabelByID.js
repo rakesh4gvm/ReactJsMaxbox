@@ -2049,6 +2049,9 @@ export default function LabelByID(props) {
             }
         }
         dispatch({ type: "refreshClientDetails", payload: true });
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
     }
 
     const ToggleStartClass = () => {

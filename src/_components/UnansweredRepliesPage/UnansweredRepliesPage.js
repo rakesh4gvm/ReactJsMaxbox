@@ -1578,6 +1578,9 @@ export default function AllUnansweredRepliesPage(props) {
     else {
       GetAllUnansweredRepliesList(ClientID, UserID, 1, 0, "")
     }
+    if (tableRef.current) {
+      tableRef.current.focus();
+    }
   }
 
   const handleKeyDown = (e, index) => {

@@ -1942,6 +1942,9 @@ export default function SpamByID(props) {
                 GetSpamList(ClientID, UserID, Page, 0, "", "", "Refresh")
             }
         }
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
     }
 
     const handleChange = (event) => {

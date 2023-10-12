@@ -1611,6 +1611,9 @@ export default function AllSentEmailsPage(props) {
     else {
       GetAllSent(ClientID, UserID, 1, 0, "")
     }
+    if (tableRef.current) {
+      tableRef.current.focus();
+    }
   }
 
 

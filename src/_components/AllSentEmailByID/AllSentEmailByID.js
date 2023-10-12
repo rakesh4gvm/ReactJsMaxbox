@@ -1613,6 +1613,9 @@ export default function AllSentEmailByID(props) {
         else {
             GetAllSent(ClientID, UserID, 1, 0, "")
         }
+        if (tableRef.current) {
+            tableRef.current.focus();
+          }
     }
 
     const handleKeyDown = (e, index) => {

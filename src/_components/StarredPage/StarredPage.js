@@ -1777,6 +1777,9 @@ export default function OtherInboxPage(props) {
       }
     }
     dispatch({ type: "refreshClientDetails", payload: true });
+    if (tableRef.current) {
+      tableRef.current.focus();
+    }
   }
 
   const handleChange = (event) => {

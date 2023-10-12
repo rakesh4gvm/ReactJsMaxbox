@@ -2020,6 +2020,9 @@ export default function AllInboxByID(props) {
             }
         }
         dispatch({ type: "refreshClientDetails", payload: true });
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
     }
 
     const ToggleStartClass = () => {

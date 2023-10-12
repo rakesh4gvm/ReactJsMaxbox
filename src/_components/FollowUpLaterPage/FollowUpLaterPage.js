@@ -1946,6 +1946,9 @@ export default function FollowUpLater(props) {
       }
     }
     dispatch({ type: "refreshClientDetails", payload: true });
+    if (tableRef.current) {
+      tableRef.current.focus();
+    }
   }
 
   const handleChange = (event) => {
