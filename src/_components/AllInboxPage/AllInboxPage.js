@@ -257,6 +257,47 @@ export default function OtherInboxPage(props) {
     SetSelectedMultipleLabelValue(newValue)
   }
 
+  const Apply = () => {
+    SetCheckedID([]);
+    SetMessageId("");
+    SetMessageIsSeen("");
+    SetMessageIsStarred("");
+    setContextMenu(null);
+    setSubMenuOpen(false);
+    var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
+    if (CheckedID.length > 0) {
+        const Data = {
+            RecieverEmailLableIDs: RecieverEmailLableIDs,
+            MessageIDs: CheckedID,
+        }
+        LoaderShow();
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                // setLabelBoxVisible(false)
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
+            }
+            else {
+                // setLabelBoxVisible(false);
+                LoaderHide();
+                toast.error(Result?.data?.Message);
+            }
+        });
+    }
+    else {
+        // setLabelBoxVisible(false);
+        LoaderHide();
+        toast.error("Please select email");
+    }
+  }
+
   const tohandleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -283,6 +324,7 @@ export default function OtherInboxPage(props) {
     var msgId = event.currentTarget.getAttribute('messageid');
     var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
     var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
+    var accountId = event.currentTarget.getAttribute('accountid');
     SetCheckedID([...CheckedID, msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
@@ -291,11 +333,29 @@ export default function OtherInboxPage(props) {
       mouseX: event.clientX + 2,
       mouseY: event.clientY - 6,
     }));
+    // Get Label Details
+    let Data = {
+      AccountID: accountId
+    };
+
+    const ResponseApi = Axios({
+        url: CommonConstants.MOL_APIURL + "/receive_email_history/GetEmailAccountLabels",
+        method: "POST",
+        data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        if(Result.data.PageData.length > 0){
+            setLabelsData(Result.data.PageData);
+        }
+      }
+    });
   };
   
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
+    setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     SetMessageIsStarred("");
@@ -2620,47 +2680,47 @@ export default function OtherInboxPage(props) {
 
                         <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
 
-                            <Menu className="labelrighter"
-                            open={isSubMenuOpen}
-                            onClose={handleSubMenuClose}
-                            anchorReference="anchorPosition"
-                            anchorPosition={
-                                isSubMenuOpen
-                                ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
-                                : undefined
-                            }
-                            > 
-                                        <div >
-                                            <h6>Label as a:</h6>
-                                            <Autocomplete className="rightlabelul"
-                                                open
-                                                multiple
-                                                disablePortal
-                                                id="checkboxes-tags-demo"
-                                                style={{ width: 180 }}
-                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                                getOptionLabel={(option) => option.LableName}
-                                                renderTags={() => []}
-                                                renderOption={(props, option, { selected }) => (
-                                                    <li {...props} className="oragechecked">
-                                                        <Checkbox
-                                                            icon={icon}
-                                                            checkedIcon={checkedIcon}
-                                                            style={{ marginRight: 8 }}
-                                                            checked={selected}
-                                                        />
-                                                        {option.LableName}
-                                                    </li>
-                                                )}
-                                                renderInput={(params) => (
-                                                    <TextField {...params} placeholder="Search" />
-                                                )}
-                                                onChange={HandleMultipleLabelID}
+                          <Menu className="labelrighter"
+                          open={isSubMenuOpen}
+                          onClose={handleSubMenuClose}
+                          anchorReference="anchorPosition"
+                          anchorPosition={
+                              isSubMenuOpen
+                              ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                              : undefined
+                          }
+                          > 
+                            <div >
+                                <h6>Label as a:</h6>
+                                <Autocomplete className="rightlabelul"
+                                    open
+                                    multiple
+                                    disablePortal
+                                    id="checkboxes-tags-demo"
+                                    style={{ width: 180 }}
+                                    options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                    getOptionLabel={(option) => option.LableName}
+                                    renderTags={() => []}
+                                    renderOption={(props, option, { selected }) => (
+                                        <li {...props} className="oragechecked">
+                                            <Checkbox
+                                                icon={icon}
+                                                checkedIcon={checkedIcon}
+                                                style={{ marginRight: 8 }}
+                                                checked={selected}
                                             />
-                                            <Button className="btnapply" //onClick={Apply}
-                                            >Apply</Button>
-                                        </div>  
-                            </Menu>
+                                            {option.LableName}
+                                        </li>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField {...params} placeholder="Search" />
+                                    )}
+                                    onChange={HandleMultipleLabelID}
+                                />
+                                <Button className="btnapply" onClick={Apply}
+                                >Apply</Button>
+                            </div>  
+                          </Menu>
 
                         <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
                         <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
@@ -2695,7 +2755,7 @@ export default function OtherInboxPage(props) {
                         }
 
                         return (
-                          <TableRow messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
+                          <TableRow accountid={item?.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                             // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                             // className={`${item.IsSeen ? "useen-email" : "seen-email"}`} 
                             key={item.name}

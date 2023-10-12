@@ -273,6 +273,7 @@ export default function AllInboxByID(props) {
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
+    setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     SetMessageIsStarred("");
@@ -356,7 +357,12 @@ export default function AllInboxByID(props) {
     }
 
     const Apply = () => {
-
+        SetCheckedID([]);
+        SetMessageId("");
+        SetMessageIsSeen("");
+        SetMessageIsStarred("");
+        setContextMenu(null);
+        setSubMenuOpen(false);
         var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
         if (CheckedID.length > 0) {
             const Data = {
@@ -2829,36 +2835,36 @@ export default function AllInboxByID(props) {
                                                         : undefined
                                                     }
                                                     > 
-                                                                <div >
-                                                                    <h6>Label as a:</h6>
-                                                                    <Autocomplete className="rightlabelul"
-                                                                        open
-                                                                        multiple
-                                                                        disablePortal
-                                                                        id="checkboxes-tags-demo"
-                                                                        style={{ width: 180 }}
-                                                                        options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                                                        getOptionLabel={(option) => option.LableName}
-                                                                        renderTags={() => []}
-                                                                        renderOption={(props, option, { selected }) => (
-                                                                            <li {...props} className="oragechecked">
-                                                                                <Checkbox
-                                                                                    icon={icon}
-                                                                                    checkedIcon={checkedIcon}
-                                                                                    style={{ marginRight: 8 }}
-                                                                                    checked={selected}
-                                                                                />
-                                                                                {option.LableName}
-                                                                            </li>
-                                                                        )}
-                                                                        renderInput={(params) => (
-                                                                            <TextField {...params} placeholder="Search" />
-                                                                        )}
-                                                                        onChange={HandleMultipleLabelID}
-                                                                    />
-                                                                    <Button className="btnapply" //onClick={Apply}
-                                                                    >Apply</Button>
-                                                                </div>  
+                                                        <div >
+                                                            <h6>Label as a:</h6>
+                                                            <Autocomplete className="rightlabelul"
+                                                                open
+                                                                multiple
+                                                                disablePortal
+                                                                id="checkboxes-tags-demo"
+                                                                style={{ width: 180 }}
+                                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                                getOptionLabel={(option) => option.LableName}
+                                                                renderTags={() => []}
+                                                                renderOption={(props, option, { selected }) => (
+                                                                    <li {...props} className="oragechecked">
+                                                                        <Checkbox
+                                                                            icon={icon}
+                                                                            checkedIcon={checkedIcon}
+                                                                            style={{ marginRight: 8 }}
+                                                                            checked={selected}
+                                                                        />
+                                                                        {option.LableName}
+                                                                    </li>
+                                                                )}
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} placeholder="Search" />
+                                                                )}
+                                                                onChange={HandleMultipleLabelID}
+                                                            />
+                                                            <Button className="btnapply" onClick={Apply}
+                                                            >Apply</Button>
+                                                        </div>  
                                                     </Menu>
 
                                                 <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 

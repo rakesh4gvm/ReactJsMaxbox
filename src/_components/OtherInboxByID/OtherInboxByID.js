@@ -278,6 +278,7 @@ export default function OtherInboxByID(props) {
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
+    setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     SetMessageIsStarred("");
@@ -349,6 +350,47 @@ export default function OtherInboxByID(props) {
     }, [SearchInbox, state, id])
 
     const ContainerRef = useRef(null)
+
+    const Apply = () => {
+        SetCheckedID([]);
+        SetMessageId("");
+        SetMessageIsSeen("");
+        SetMessageIsStarred("");
+        setContextMenu(null);
+        setSubMenuOpen(false);
+        var RecieverEmailLableIDs = SelectedMultipleLabelValue.map((e) => e.RecieverEmailLableID)
+        if (CheckedID.length > 0) {
+            const Data = {
+                RecieverEmailLableIDs: RecieverEmailLableIDs,
+                MessageIDs: CheckedID,
+            }
+            LoaderShow();
+            const ResponseApi = Axios({
+                url: CommonConstants.MOL_APIURL + "/receive_email_history/AssignLabels",
+                method: "POST",
+                data: Data,
+            });
+            ResponseApi.then((Result) => {
+                if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    // setLabelBoxVisible(false)
+                    toast.success(Result?.data?.Message);
+                    GetClientID();
+                    LoaderHide();
+                    SetCheckedID([]);
+                }
+                else {
+                    // setLabelBoxVisible(false);
+                    LoaderHide();
+                    toast.error(Result?.data?.Message);
+                }
+            });
+        }
+        else {
+            // setLabelBoxVisible(false);
+            LoaderHide();
+            toast.error("Please select email");
+        }
+    }
 
     const HandleMultipleLabelID = (event, newValue) => {
         SetSelectedMultipleLabelValue(newValue)
@@ -452,7 +494,7 @@ export default function OtherInboxByID(props) {
                 if (Result.data.PageData.length > 0) {
                     SetFromEmailDropdownList(Result.data.PageData);
                     if (ID?.length > 0) {
-
+                        setLabelsData(Result.data.PageData.filter((e) => e.AccountID == ID)[0].LabelField);
                         var InboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].InboxCount : 0
                         var SeenInboxCount = Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount != undefined ? Result.data.PageData.filter((e) => e.AccountID == ID)[0].SeenInboxCount : 0
                         var UnSeenInboxCount = InboxCount - SeenInboxCount;
@@ -2637,36 +2679,36 @@ export default function OtherInboxByID(props) {
                                                         : undefined
                                                     }
                                                     > 
-                                                                <div >
-                                                                    <h6>Label as a:</h6>
-                                                                    <Autocomplete className="rightlabelul"
-                                                                        open
-                                                                        multiple
-                                                                        disablePortal
-                                                                        id="checkboxes-tags-demo"
-                                                                        style={{ width: 180 }}
-                                                                        options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                                                        getOptionLabel={(option) => option.LableName}
-                                                                        renderTags={() => []}
-                                                                        renderOption={(props, option, { selected }) => (
-                                                                            <li {...props} className="oragechecked">
-                                                                                <Checkbox
-                                                                                    icon={icon}
-                                                                                    checkedIcon={checkedIcon}
-                                                                                    style={{ marginRight: 8 }}
-                                                                                    checked={selected}
-                                                                                />
-                                                                                {option.LableName}
-                                                                            </li>
-                                                                        )}
-                                                                        renderInput={(params) => (
-                                                                            <TextField {...params} placeholder="Search" />
-                                                                        )}
-                                                                        onChange={HandleMultipleLabelID}
-                                                                    />
-                                                                    <Button className="btnapply" //onClick={Apply}
-                                                                    >Apply</Button>
-                                                                </div>  
+                                                        <div >
+                                                            <h6>Label as a:</h6>
+                                                            <Autocomplete className="rightlabelul"
+                                                                open
+                                                                multiple
+                                                                disablePortal
+                                                                id="checkboxes-tags-demo"
+                                                                style={{ width: 180 }}
+                                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                                getOptionLabel={(option) => option.LableName}
+                                                                renderTags={() => []}
+                                                                renderOption={(props, option, { selected }) => (
+                                                                    <li {...props} className="oragechecked">
+                                                                        <Checkbox
+                                                                            icon={icon}
+                                                                            checkedIcon={checkedIcon}
+                                                                            style={{ marginRight: 8 }}
+                                                                            checked={selected}
+                                                                        />
+                                                                        {option.LableName}
+                                                                    </li>
+                                                                )}
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} placeholder="Search" />
+                                                                )}
+                                                                onChange={HandleMultipleLabelID}
+                                                            />
+                                                            <Button className="btnapply" onClick={Apply}
+                                                            >Apply</Button>
+                                                        </div>  
                                                     </Menu>
 
                                                 <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
@@ -2727,14 +2769,14 @@ export default function OtherInboxByID(props) {
                                                             }
                                                         </TableCell>
                                                         {/* <TableCell width={'35px'}></TableCell> */}
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {item?.Subject ? (
                                                             <>
                                                                 {item.Subject.split(' ').slice(0, 8).join(' ')}
                                                                 {item.Subject.split(' ').length > 8 ? '...' : ''}
                                                             </>
                                                         ) : null}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{color : labelColor}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                                                        <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : ""}} onClick={() => OpenMessageDetails(item._id, index, '', 'updatelist')}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
                                                 )
                                             }
