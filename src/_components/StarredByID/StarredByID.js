@@ -910,6 +910,7 @@ export default function StarredByID(props) {
                         IsFollowUp: true,
                         FollowupDate: FollowupDate,
                         IsOtherInbox: false,
+                        IsStarred: true,
                         LastUpdatedBy: -1
                     };
                     const ResponseApi = Axios({
