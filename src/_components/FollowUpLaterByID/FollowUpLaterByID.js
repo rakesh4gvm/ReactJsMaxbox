@@ -253,16 +253,20 @@ export default function FollowUpLaterByID(props) {
     const editorRef = useRef(null); 
     const [contextMenu, setContextMenu] = React.useState(null);
     const [isSubMenuOpen, setSubMenuOpen] = React.useState(false);
-	const [MessageId, SetMessageId] = useState();
+	const [MessageId, SetMessageId] = useState("");
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
+    const [AccountId, SetAccountId] = useState();
     
   
   const handleContextMenu = (event) => {
     event.preventDefault();
+    SetAccountId("");
     var msgId = event.currentTarget.getAttribute('messageid');
     var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
     var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
+    var accountId = event.currentTarget.getAttribute('accountid');
+    SetAccountId(accountId);
     SetCheckedID([...CheckedID, msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
@@ -386,6 +390,38 @@ export default function FollowUpLaterByID(props) {
             LoaderHide();
             toast.error("Please select email");
         }
+    }
+
+    const MarkAsSpam = (MessageId, AccountId) => {
+        SetCheckedID([]);
+        SetMessageId("");
+        SetMessageIsSeen("");
+        SetMessageIsStarred("");
+        setContextMenu(null);
+        setSubMenuOpen(false);
+
+        const Data = {
+            AccountID: AccountId,
+            MessageID: MessageId,
+        }
+        LoaderShow();
+        const ResponseApi = Axios({
+            url: CommonConstants.MOL_APIURL + "/receive_email_history/MarkAsSpam",
+            method: "POST",
+            data: Data,
+        });
+        ResponseApi.then((Result) => {
+            if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                toast.success(Result?.data?.Message);
+                GetClientID();
+                LoaderHide();
+                SetCheckedID([]);
+            }
+            else {
+                LoaderHide();
+                toast.error(Result?.data?.Message);
+            }
+        });
     }
 
     const HandleMultipleLabelID = (event, newValue) => {
@@ -2700,7 +2736,7 @@ export default function FollowUpLaterByID(props) {
                                                     </Menu>
 
                                                 <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
-                                                <MenuItem onClick={handleClose}><InfoSharpIcon />Mark as Spam</MenuItem>
+                                                <MenuItem onClick={() => { MarkAsSpam(MessageId, AccountId); }}><InfoSharpIcon />Mark as Spam</MenuItem>
                                                 {
                                                     MessageIsStarred ? 
                                                     <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
@@ -2731,7 +2767,7 @@ export default function FollowUpLaterByID(props) {
                                                     }
                                                 }
                                                 return (
-                                                    <TableRow messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
+                                                    <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                                                         // className={`${Active === item._id ? "selected-row" : ""}`}
                                                         // className={`${Active === item._id ? "selected-row" : ""} ${item.IsSeen ? "useen-email" : "seen-email"}`}
                                                         // key={item.name}
