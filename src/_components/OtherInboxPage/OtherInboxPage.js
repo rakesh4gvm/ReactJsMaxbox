@@ -1787,7 +1787,7 @@ export default function OtherInboxPage(props) {
       data: Data,
     }).then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetForwardSignature({ Data: Result?.data?.Data + ClientData })
+        SetForwardSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
       } else {
         toast.error(Result?.data?.Message);
       }

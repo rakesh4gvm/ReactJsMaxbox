@@ -268,7 +268,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
 
             if (EmailAccountUsers.length > 0) {
                 SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-                SetSignature({ Data: "<br/>" + ClientData })
+                SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
                 SetClientSignatureData(ClientData)
             } else {
                 SetSelectedEmailAccountUser(0);
@@ -326,16 +326,23 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
 
     // Selected Email Account User
     const SelectEmailAccountUser = (e) => {
+
+        var EventValue = e.target.value
+        var SelectedEmailValue = EmailAccountUsers.find((e) => e.AccountID == EventValue)
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        if (ClientSignatureData == "") {
-            SetClientSignatureData(ClientData)
-            SetSignature({ Data: Signature.Data + str + ClientData })
-        } else {
+        SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature })
 
-            Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
-            SetSignature({ Data: Signature.Data })
-        }
+        // SetSelectedEmailAccountUser(e.target.value)
+        // const str = "<br>"
+        // if (ClientSignatureData == "") {
+        //     SetClientSignatureData(ClientData)
+        //     SetSignature({ Data: Signature.Data + str + ClientData })
+        // } else {
+
+        //     Signature.Data = Signature.Data.replace(ClientSignatureData, ClientData)
+        //     SetSignature({ Data: Signature.Data })
+        // }
     }
 
     // Selected User
