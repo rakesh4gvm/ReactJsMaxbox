@@ -290,6 +290,8 @@ export default function FocusedByID(props) {
     useEffect(() => {
         document.title = 'Focused | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);

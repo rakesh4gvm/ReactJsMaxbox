@@ -320,6 +320,8 @@ export default function AllInboxByID(props) {
     useEffect(() => {
         document.title = 'All Inbox | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
 

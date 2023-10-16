@@ -342,6 +342,8 @@ export default function StarredByID(props) {
     useEffect(() => {
         document.title = 'Starred | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
     const ContainerRef = useRef(null);

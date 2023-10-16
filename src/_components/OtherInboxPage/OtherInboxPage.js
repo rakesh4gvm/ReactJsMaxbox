@@ -419,6 +419,8 @@ export default function OtherInboxPage(props) {
   useEffect(() => {
     document.title = 'Other Inbox | MAXBOX';
     GetClientID();
+    SetCheckedID([]);
+    setSelectAllChecked(false);
   }, [SearchInbox, state])
 
   // Get Client ID

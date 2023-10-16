@@ -320,6 +320,8 @@ export default function LabelByID(props) {
     useEffect(() => {
         document.title = 'Label | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
     const HandleLabelID = (event, newValue) => {

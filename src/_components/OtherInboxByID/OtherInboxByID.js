@@ -353,6 +353,8 @@ export default function OtherInboxByID(props) {
     useEffect(() => {
         document.title = 'Other Inbox | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
     const ContainerRef = useRef(null)

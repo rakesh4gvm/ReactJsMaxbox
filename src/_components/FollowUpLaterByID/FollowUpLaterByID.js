@@ -349,6 +349,8 @@ export default function FollowUpLaterByID(props) {
     useEffect(() => {
         document.title = 'Follow Up Later | MAXBOX';
         GetClientID();
+        SetCheckedID([]);
+        setSelectAllChecked(false);
     }, [FollowUpDate, SearchInbox, state, id]);
 
     const ContainerRef = useRef(null)

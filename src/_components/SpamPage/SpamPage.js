@@ -266,6 +266,8 @@ export default function SpamPage(props) {
   useEffect(() => {
     document.title = 'Spam | MAXBOX';
     GetClientID();
+    SetCheckedID([]);
+    setSelectAllChecked(false);
   }, [SearchInbox, state])
 
   const ContainerRef = useRef(null);

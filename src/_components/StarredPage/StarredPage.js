@@ -417,6 +417,8 @@ export default function OtherInboxPage(props) {
   useEffect(() => {
     document.title = 'Starred | MAXBOX';
     GetClientID();
+    SetCheckedID([]);
+    setSelectAllChecked(false);
   }, [SearchInbox, state])
 
   const ContainerRef = useRef(null);

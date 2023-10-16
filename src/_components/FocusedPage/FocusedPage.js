@@ -274,6 +274,8 @@ export default function UnansweredResponsesPage(props) {
   useEffect(() => {
     document.title = 'Focused | MAXBOX';
     GetClientID();
+    SetCheckedID([]);
+    setSelectAllChecked(false);
   }, [SearchInbox, state])
 
   const wizard = (ID) => {
