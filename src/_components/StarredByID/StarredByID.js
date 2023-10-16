@@ -266,12 +266,30 @@ export default function StarredByID(props) {
       mouseX: event.clientX + 2,
       mouseY: event.clientY - 6,
     }));
+
+    // Get Label Details
+    let Data = {
+        AccountID: accountId
+      };
+  
+      const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/GetEmailAccountLabels",
+          method: "POST",
+          data: Data,
+      });
+      ResponseApi.then((Result) => {
+        if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+          if(Result.data.PageData.length > 0){
+              setLabelsData(Result.data.PageData);
+          }
+        }
+      });
   };
   
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
-    setLabelsData([]);
+    // setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     setContextMenu(null);
