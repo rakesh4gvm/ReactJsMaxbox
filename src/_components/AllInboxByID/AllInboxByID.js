@@ -279,7 +279,6 @@ export default function AllInboxByID(props) {
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
-    setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     SetMessageIsStarred("");

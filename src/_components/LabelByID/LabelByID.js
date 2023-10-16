@@ -281,7 +281,6 @@ export default function LabelByID(props) {
   const texthandleClose = (event) => {
     event.preventDefault();
     SetCheckedID([]);
-    setLabelsData([]);
     SetMessageId("");
     SetMessageIsSeen("");
     SetMessageIsStarred("");
