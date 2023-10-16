@@ -1748,7 +1748,9 @@ export default function AllInboxByID(props) {
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 // SetForwardSignature({ Data: Result?.data?.Data + ClientData })
-                SetForwardSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
+                var ResultData = Result?.data?.Data
+                var EmailSignature = EmailAccountUsers[0]?.EmailSignature
+                SetForwardSignature({ Data: "<br/>" + EmailSignature + ResultData })
             } else {
                 toast.error(Result?.data?.Message);
             }
