@@ -281,7 +281,9 @@ export default function FollowUpLater(props) {
     var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
     var accountId = event.currentTarget.getAttribute('accountid');
     SetAccountId(accountId);
-    SetCheckedID([...CheckedID, msgId]);
+    // SetCheckedID([...CheckedID, msgId]);
+    setSelectAllChecked(false);
+    SetCheckedID([msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
     SetMessageIsStarred(isStarred);

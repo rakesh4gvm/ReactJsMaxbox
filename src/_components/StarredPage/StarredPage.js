@@ -356,7 +356,8 @@ export default function OtherInboxPage(props) {
     var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
     var accountId = event.currentTarget.getAttribute('accountid');
     SetAccountId(accountId);
-    SetCheckedID([...CheckedID, msgId]);
+    // SetCheckedID([...CheckedID, msgId]);
+    SetCheckedID([msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
     setContextMenu((prevContextMenu) => (prevContextMenu ? null : {

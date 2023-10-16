@@ -263,7 +263,9 @@ export default function AllInboxByID(props) {
     var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
     var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
     var accountId = event.currentTarget.getAttribute('accountid');
-    SetCheckedID([...CheckedID, msgId]);
+    // SetCheckedID([...CheckedID, msgId]);
+    setSelectAllChecked(false);
+    SetCheckedID([msgId]);
     SetAccountId(accountId);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
@@ -2742,7 +2744,10 @@ export default function AllInboxByID(props) {
                                             options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             style={{ width: 300 }}
-                                            renderInput={(params) => <TextField placeholder="Search" {...params} />}
+                                            // renderInput={(params) => <TextField placeholder="Search" {...params} />}
+                                            renderInput={(params) => (
+                                                <TextField {...params} placeholder="Search" />
+                                            )}
                                             // value={SelectedLabelValue}
                                             onChange={HandleLabelID}
                                         />
@@ -2750,7 +2755,7 @@ export default function AllInboxByID(props) {
                                 )}
 
 
-                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                <Button className='btn-mark' title='Labels' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
                                     <LabelIcon />
                                 </Button>
                                 {LabelboxVisible && (

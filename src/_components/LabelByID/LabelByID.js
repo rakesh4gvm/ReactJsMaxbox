@@ -266,7 +266,9 @@ export default function LabelByID(props) {
     var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
     var accountId = event.currentTarget.getAttribute('accountid');
     SetAccountId(accountId);
-    SetCheckedID([...CheckedID, msgId]);
+    // SetCheckedID([...CheckedID, msgId]);
+    setSelectAllChecked(false);
+    SetCheckedID([msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);
     SetMessageIsStarred(isStarred);
@@ -2758,14 +2760,17 @@ export default function LabelByID(props) {
                                                             options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
                                                             getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                             sx={{ width: 300 }}
-                                                            renderInput={(params) => <TextField {...params} />}
+                                                            // renderInput={(params) => <TextField {...params} />}
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} placeholder="Search" />
+                                                            )}
                                                             // value={SelectedLabelValue}
                                                             onChange={HandleLabelID}
                                                         />
                                                     </div>
                                                 )}
 
-                                                <Button className='btn-mark' title='Move to' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
+                                                <Button className='btn-mark' title='Labels' onClick={() => setLabelBoxVisible(!LabelboxVisible)} >
                                                     <LabelIcon />
                                                 </Button>
                                                 {LabelboxVisible && (
