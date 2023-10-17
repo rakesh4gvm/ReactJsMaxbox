@@ -357,6 +357,7 @@ export default function OtherInboxPage(props) {
     var accountId = event.currentTarget.getAttribute('accountid');
     SetAccountId(accountId);
     // SetCheckedID([...CheckedID, msgId]);
+    setSelectAllChecked(false);
     SetCheckedID([msgId]);
     SetMessageId(msgId);
     SetMessageIsSeen(isSeen);

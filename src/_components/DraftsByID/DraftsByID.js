@@ -929,7 +929,7 @@ export default function DraftsPageByID(props) {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              you want to delete a email ?
+            you want to delete this email?
             </Typography>
           </div>
           <div className='d-flex btn-50'>
