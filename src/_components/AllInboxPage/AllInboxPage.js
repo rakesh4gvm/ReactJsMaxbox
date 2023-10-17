@@ -4,6 +4,9 @@ import Axios from "axios";
 import parse from "html-react-parser";
 import SplitPane from "react-split-pane";
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+ 
+import { Dustbin } from './Dustbin'
+import { Boxdrop } from './Boxdrop'
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
@@ -2606,6 +2609,19 @@ export default function OtherInboxPage(props) {
         {/* <Navigation menupage="/AllInbox" MenuID={MenuID} /> */}
       </div>
       <div className='righter'>
+    <div className="d-flex">
+      <div style={{ overflow: 'hidden', clear: 'both' }}>
+        <Dustbin allowedDropEffect="any" />
+        <Dustbin allowedDropEffect="any1" />
+        <Dustbin allowedDropEffect="copy" />
+        <Dustbin allowedDropEffect="move" />
+      </div>
+
+      <div style={{ overflow: 'hidden', clear: 'both' }}>
+        
+      </div>
+    </div>
+
         <header className='minisearchhed'>
           <Row>
             <Col sm={8}>
@@ -2670,6 +2686,7 @@ export default function OtherInboxPage(props) {
                   <Table className='tablelister' sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                       <TableRow>
+                      <TableRow className="w-100 d-contents">
                         {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                         {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                         <TableCell component="th" className='px-0 w-0'>
@@ -2687,6 +2704,7 @@ export default function OtherInboxPage(props) {
                         <TableCell component="th">From Email</TableCell>
                         <TableCell component="th">To Email</TableCell>
                         <TableCell component="th">Date</TableCell>
+                      </TableRow>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -2792,14 +2810,14 @@ export default function OtherInboxPage(props) {
                         }
 
                         return (
+                        <Boxdrop className="button" name={
                           <TableRow accountid={item?.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                             // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                             // className={`${item.IsSeen ? "useen-email" : "seen-email"}`} 
                             key={item.name}
-                            className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                            className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"} w-100 d-contents`}
                             onClick={() => setSelectedRowIndex(index)}
-                            id={"row-" + index}
-                          >
+                            id={"row-" + index} >
 
                             {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                             {/* <TableCell width={'35px'}></TableCell> */}
@@ -2830,6 +2848,8 @@ export default function OtherInboxPage(props) {
                             <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {item?.ToEmail}</TableCell>
                             <TableCell style={{color : labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                           </TableRow>
+                        }>
+                          </Boxdrop>
                         )
                       }
                       )}

@@ -4138,6 +4138,13 @@ button.labelinside svg.MuiSvgIcon-root {
     max-height: inherit; 
     padding: 10px 0 0;
 }
+div .d-contents {
+    display: contents;
+}
+.bgbox, .bgbox tr, .bgbox tr td{
+    background: #fff !important;
+    opacity: 1;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {

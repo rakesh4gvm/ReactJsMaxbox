@@ -7,6 +7,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GetUserDetails, Logout } from '../src/_helpers/Utility'
 import { Provider } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import store from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -39,9 +41,13 @@ Axios.interceptors.response.use(
 
 
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <DndProvider backend={HTML5Backend}> 
+    <Provider store={store}>
+      <App />
+    </Provider>
+        {/* <DraggableComponent name="Item 1" />
+        <DroppableComponent /> */} 
+    </DndProvider>
   // <React.StrictMode>
   // <App />
   // </React.StrictMode>
