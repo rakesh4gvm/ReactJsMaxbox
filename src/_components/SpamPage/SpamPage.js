@@ -402,8 +402,8 @@ export default function SpamPage(props) {
             var UnSeenSpamtotal = SpamCount - SeenSpamCount;
             dispatch({ type: 'unSeenSpamCount', payload: UnSeenSpamtotal });
 
-            var StarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
-            var SeenStarredCount = total = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var StarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.StarredCount)?.reduce((a, b) => a + b, 0) : 0
+            var SeenStarredCount = Result.data.PageData != undefined ? Result.data.PageData?.map((e) => e?.SeenStarredCount)?.reduce((a, b) => a + b, 0) : 0
             var UnSeenStarredtotal = StarredCount - SeenStarredCount;
             dispatch({ type: 'unSeenStarredCount', payload: UnSeenStarredtotal });
 
