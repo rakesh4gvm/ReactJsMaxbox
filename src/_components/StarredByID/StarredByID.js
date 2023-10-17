@@ -2615,7 +2615,7 @@ export default function StarredByID(props) {
                                                 }
                                                 > 
                                                     <div >
-                                                        <h6>Label as a:</h6>
+                                                        <h6>Label as:</h6>
                                                         <Autocomplete className="rightlabelul"
                                                             open
                                                             multiple
