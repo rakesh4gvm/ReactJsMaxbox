@@ -1546,7 +1546,8 @@ export default function Navigation(props) {
                         </Collapse>
                       </List>
 
-                      <List component="div">
+                      {/* All account label count */}
+                      {/* <List component="div">
                         <ListItemButton sx={{ pl: 2 }} onClick={OnehandleClickAllLabels}>
                           {openAlllabels ? <ExpandMore /> : <ExpandDown />}
                           Labels
@@ -1554,7 +1555,6 @@ export default function Navigation(props) {
 
                         <Collapse in={openAlllabels} timeout="auto" unmountOnExit>
                           <List component="div" disablePadding>
-                            {/* {[...AllEmailLabelsData.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => { */}
                             {AllEmailLabelsData?.map((label, index) => {
                               if (label.LableName === "INBOX") {
                                 return null; // Skip rendering INBOX label
@@ -1589,7 +1589,7 @@ export default function Navigation(props) {
                             })}
                           </List>
                         </Collapse>
-                      </List>
+                      </List> */}
 
                     </List>
                   </Collapse>
