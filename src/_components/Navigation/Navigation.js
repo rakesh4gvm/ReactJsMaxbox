@@ -1092,7 +1092,7 @@ export default function Navigation(props) {
     SetOutBoxID("0")
   }
 
-  const handleClick = (itemID, cnt) => {
+  const handleClick = (itemID, cnt, PageName) => {
     setNavOpen(false);
 
     if (cnt == 0) {
@@ -1101,7 +1101,29 @@ export default function Navigation(props) {
       SetEID(EID !== itemID ? itemID : "");
     }
 
+    var NewID = itemID.substring(1);
+    handleClick2(NewID,PageName)
+
   };
+
+  const handleClick2 = (NewID, PageName) => {
+    if (NewID != undefined && NewID != "") {
+      var pg = PageName + NewID
+      SetSelectMenuItem(pg);
+      localStorage.setItem("NavigationID", NewID)
+    } else {
+      SetSelectMenuItem(PageName);
+      localStorage.setItem("NavigationID", "")
+    }
+
+    if (PageName == "/AllInbox") {
+      if (NewID != "" && NewID != null) {
+        history.push("/AllInboxByID/" + NewID);
+      } else {
+        history.push("/AllInbox");
+      }
+    }
+  }
 
   const OnehandleClickInOne = () => {
     setNavOneOpen(!navopenone);
@@ -1575,8 +1597,12 @@ export default function Navigation(props) {
           }
 
           {FromEmailDropdownList?.map((item, index) => (
-            <List sx={{ pl: item._id }} className='listclick' key={index}>
-              <ListItemButton onClick={() => handleClick("0" + item._id, 1)} key={"0" + item._id}>
+            <List sx={{ pl: item._id }}className='listclick' key={index}>
+              <ListItemButton
+                onClick={() => handleClick("0" + item._id, 1, "/AllInbox")} key={"0" + item._id}
+                component={Link}
+                selected={SelectMenuItem === "/AllInbox" + item._id}
+              >
                 {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
                 {/* <b>{item.Email} ()</b> */}
                 <b>
