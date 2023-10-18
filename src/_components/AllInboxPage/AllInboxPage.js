@@ -285,6 +285,7 @@ export default function OtherInboxPage(props) {
                 GetClientID();
                 LoaderHide();
                 SetCheckedID([]);
+                dispatch({ type: "refreshClientDetails", payload: true });
             }
             else {
                 // setLabelBoxVisible(false);
@@ -324,6 +325,7 @@ export default function OtherInboxPage(props) {
             GetClientID();
             LoaderHide();
             SetCheckedID([]);
+            dispatch({ type: "refreshClientDetails", payload: true });
         }
         else {
             LoaderHide();
@@ -886,6 +888,7 @@ export default function OtherInboxPage(props) {
             // if (str == "updatelist") {
             //   SetAllInboxList(UpdatedList)
             // }
+            dispatch({ type: "refreshClientDetails", payload: true });
             LoaderHide()
           } else {
             SetAllInboxList([])
@@ -972,6 +975,7 @@ export default function OtherInboxPage(props) {
           CloseDeletePopModel();
           OpenMessageDetails('')
           LoaderShow()
+          dispatch({ type: "refreshClientDetails", payload: true });
           // var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID != "" && ID != null && ID != "undefined") {
           //   if (AllInboxList.length - 1 == 0) {
@@ -2105,6 +2109,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           setIsChecked(false);
           SetCheckedID([])
+          dispatch({ type: "refreshClientDetails", payload: true });
           // var ID = decrypt(props.location.search.replace('?', ''))
           // if (ID != "" && ID != null && ID != "undefined") {
           //   GetAllInboxList(ClientID, UserID, Page, ID, "SeenEmails", "");
@@ -2198,6 +2203,7 @@ export default function OtherInboxPage(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           setIsChecked(false);
           SetCheckedID([])
+          dispatch({ type: "refreshClientDetails", payload: true });
         } else {
           // LoaderHide()
         }
@@ -2298,7 +2304,7 @@ export default function OtherInboxPage(props) {
       });
       ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
+          dispatch({ type: "refreshClientDetails", payload: true });
           if (isstarActive && state) {
             GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails")
           } else if (isstarActive) {

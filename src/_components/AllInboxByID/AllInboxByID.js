@@ -324,8 +324,6 @@ export default function AllInboxByID(props) {
         setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
-
-
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
 
@@ -349,6 +347,7 @@ export default function AllInboxByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 }
             })
         } else {
@@ -389,6 +388,7 @@ export default function AllInboxByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 }
                 else {
                     setLabelBoxVisible(false);
@@ -428,6 +428,7 @@ export default function AllInboxByID(props) {
                 GetClientID();
                 LoaderHide();
                 SetCheckedID([]);
+                dispatch({ type: "refreshClientDetails", payload: true });
             }
             else {
                 LoaderHide();
@@ -564,7 +565,6 @@ export default function AllInboxByID(props) {
           }
         })
       }
-
 
     // Start From Email List
     const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
@@ -971,6 +971,7 @@ export default function AllInboxByID(props) {
                         // if (str == "updatelist") {
                         //     SetAllInboxList(UpdatedList)
                         // }
+                        dispatch({ type: "refreshClientDetails", payload: true });
                         LoaderHide()
                     } else {
                         SetAllInboxList([])
@@ -1056,6 +1057,7 @@ export default function AllInboxByID(props) {
                     CloseDeletePopModel();
                     OpenMessageDetails('')
                     LoaderShow()
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // var ID = decrypt(props.location.search.replace('?', ''))
                     // if (ID != "" && ID != null && ID != "undefined") {
                     //   if (AllInboxList.length - 1 == 0) {
@@ -2205,6 +2207,7 @@ export default function AllInboxByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // LoaderHide()
                     // toast.success("Mails are unread successfully.")
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -2277,6 +2280,7 @@ export default function AllInboxByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 } else {
                     // LoaderHide()
                 }
@@ -2379,7 +2383,7 @@ export default function AllInboxByID(props) {
             });
             ResponseApi.then(async (Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     if (isstarActive && state) {
                         GetAllInboxList(ClientID, UserID, Page, 0, "", "IsStarredEmails")
                     } else if (isstarActive) {

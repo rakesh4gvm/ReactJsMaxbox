@@ -685,6 +685,7 @@ export default function SpamByID(props) {
                         // if (updatestr == "updatelist") {
                         //     SetSpamList(UpdatedList)
                         // }
+                        dispatch({ type: "refreshClientDetails", payload: true });
                         LoaderHide()
                     } else {
                         SetSpamList([])
@@ -1024,6 +1025,7 @@ export default function SpamByID(props) {
                     CloseDeletePopModel();
                     OpenMessageDetails('', '', 'showloader', '')
                     LoaderShow()
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // if (props !== undefined) {
                     //   const ID = props.location.state;
                     var ID = decrypt(props.location.search.replace('?', ''))
@@ -2041,6 +2043,7 @@ export default function SpamByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // LoaderHide()
                     // toast.success("Mails are unread successfully.")
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -2104,6 +2107,7 @@ export default function SpamByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 } else {
                     // LoaderHide()
                 }

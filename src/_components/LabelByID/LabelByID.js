@@ -347,6 +347,7 @@ export default function LabelByID(props) {
                     LoaderHide();
                     SetCheckedID([]);
                     setSelectAllChecked(false)
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 }
             })
         } else {
@@ -387,6 +388,7 @@ export default function LabelByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 }
                 else {
                     setLabelBoxVisible(false);
@@ -426,6 +428,7 @@ export default function LabelByID(props) {
                 GetClientID();
                 LoaderHide();
                 SetCheckedID([]);
+                dispatch({ type: "refreshClientDetails", payload: true });
             }
             else {
                 LoaderHide();
@@ -1030,6 +1033,7 @@ export default function LabelByID(props) {
                         // if (str == "updatelist") {
                         //     SetAllInboxList(UpdatedList)
                         // }
+                        dispatch({ type: "refreshClientDetails", payload: true });
                         LoaderHide()
                     } else {
                         SetAllInboxList([])
@@ -1114,6 +1118,7 @@ export default function LabelByID(props) {
                     CloseDeletePopModel();
                     OpenMessageDetails('')
                     LoaderShow()
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // var ID = decrypt(props.location.search.replace('?', ''))
                     // if (ID != "" && ID != null && ID != "undefined") {
                     //   if (AllInboxList.length - 1 == 0) {
@@ -2229,6 +2234,7 @@ export default function LabelByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // LoaderHide()
                     // toast.success("Mails are unread successfully.")
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -2301,6 +2307,7 @@ export default function LabelByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 } else {
                     // LoaderHide()
                 }
@@ -2403,7 +2410,7 @@ export default function LabelByID(props) {
             });
             ResponseApi.then(async (Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     if (isstarActive == true) {
                         GetAllInboxList(ClientID, UserID, Page, 0, "SeenEmails", "IsStarredEmails")
                     }

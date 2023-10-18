@@ -374,6 +374,7 @@ export default function StarredByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 }
                 else {
                     // setLabelBoxVisible(false);
@@ -412,6 +413,7 @@ export default function StarredByID(props) {
                 GetClientID();
                 LoaderHide();
                 SetCheckedID([]);
+                dispatch({ type: "refreshClientDetails", payload: true });
             }
             else {
                 LoaderHide();
@@ -843,6 +845,7 @@ export default function StarredByID(props) {
                         // if (updatestr == "updatelist") {
                         //     SetStarredList(UpdatedList)
                         // }
+                        dispatch({ type: "refreshClientDetails", payload: true });
                         LoaderHide()
                     } else {
                         SetStarredList([])
@@ -916,6 +919,7 @@ export default function StarredByID(props) {
                     CloseDeletePopModel();
                     OpenMessageDetails('')
                     LoaderShow()
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     var ID = decrypt(props.location.search.replace('?', ''))
                     if (!state) {
                         if (ID != "" && ID != null && ID != "undefined") {
@@ -2068,6 +2072,7 @@ export default function StarredByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                     // LoaderHide()
                     // toast.success("Mails are unread successfully.")
                     // var ID = decrypt(props.location.search.replace('?', ''))
@@ -2135,6 +2140,7 @@ export default function StarredByID(props) {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                     setIsChecked(false);
                     SetCheckedID([])
+                    dispatch({ type: "refreshClientDetails", payload: true });
                 } else {
                     // LoaderHide()
                 }

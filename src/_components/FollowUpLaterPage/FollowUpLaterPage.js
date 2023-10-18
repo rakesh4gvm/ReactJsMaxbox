@@ -359,6 +359,7 @@ export default function FollowUpLater(props) {
                 GetClientID();
                 LoaderHide();
                 SetCheckedID([]);
+                dispatch({ type: "refreshClientDetails", payload: true });
             }
             else {
                 // setLabelBoxVisible(false);
@@ -398,6 +399,7 @@ export default function FollowUpLater(props) {
             GetClientID();
             LoaderHide();
             SetCheckedID([]);
+            dispatch({ type: "refreshClientDetails", payload: true });
         }
         else {
             LoaderHide();
@@ -755,6 +757,7 @@ export default function FollowUpLater(props) {
             // if (updatestr == "updatelist") {
             //   SetFollowUpList(UpdatedList)
             // }
+            dispatch({ type: "refreshClientDetails", payload: true });
             LoaderHide()
           } else {
             SetFollowUpList([])
@@ -875,7 +878,7 @@ export default function FollowUpLater(props) {
       });
       ResponseApi.then(async (Result) => {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-
+          dispatch({ type: "refreshClientDetails", payload: true });
           if (state) {
             GetFollowUpLaterList(ClientID, UserID, Page, 0, "", "", "")
           } else {
@@ -1091,6 +1094,7 @@ export default function FollowUpLater(props) {
           CloseDeletePopModel();
           OpenMessageDetails('', '', 'showloader', '')
           LoaderShow()
+          dispatch({ type: "refreshClientDetails", payload: true });
           // if (props !== undefined) {
           //   const ID = props.location.state;
           var ID = decrypt(props.location.search.replace('?', ''))
@@ -2148,6 +2152,7 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           setIsChecked(false);
           SetCheckedID([])
+          dispatch({ type: "refreshClientDetails", payload: true });
           // LoaderHide()
           // toast.success("Mails are unread successfully.")
           // var ID = decrypt(props.location.search.replace('?', ''))
@@ -2216,6 +2221,7 @@ export default function FollowUpLater(props) {
         if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
           setIsChecked(false);
           SetCheckedID([])
+          dispatch({ type: "refreshClientDetails", payload: true });
         } else {
           // LoaderHide()
         }
