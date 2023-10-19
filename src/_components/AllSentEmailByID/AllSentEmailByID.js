@@ -867,7 +867,8 @@ export default function AllSentEmailByID(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-                SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
+                var EmailAccountEmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
+                SetSignature({ Data: "<br/>" + EmailAccountEmailSignature + Result?.data?.Data })
                 var SenderDetails = {
                     SenderName: Result?.data?.SenderName,
                     ReceiverName: Result?.data?.ReceiverName
@@ -938,7 +939,8 @@ export default function AllSentEmailByID(props) {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
-                SetSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
+                var EmailAccountEmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
+                SetSignature({ Data: "<br/>" + EmailAccountEmailSignature + Result?.data?.Data })
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1345,7 +1347,8 @@ export default function AllSentEmailByID(props) {
             data: Data,
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-                SetForwardSignature({ Data: "<br/>" + EmailAccountUsers[0]?.EmailSignature + Result?.data?.Data })
+                var EmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
+                SetForwardSignature({ Data: "<br/>" + EmailSignature + Result?.data?.Data })
             } else {
                 toast.error(Result?.data?.Message);
             }
