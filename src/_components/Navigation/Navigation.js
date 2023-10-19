@@ -81,6 +81,7 @@ import Popover from '@mui/material/Popover';
 import Emailinbox from '../../images/email_inbox_img.png';
 import { HexColorPicker } from "react-colorful";
 import { Height } from '@mui/icons-material';
+import Menu from '@mui/material/Menu';
 
 const style = {
   position: 'absolute',
@@ -271,12 +272,24 @@ export default function Navigation(props) {
   const [IsColorSet, setIsColorSet] = useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+
+  const handleLabelMenuClick = (event) => {
+    setAnchorMenuEl(event.currentTarget);
+    setcolorLabelId(event.currentTarget.getAttribute('labelid'));
+    setSelectedColor(event.currentTarget.getAttribute('labelcolorcode'));
+    setSelectedAccountID(event.currentTarget.getAttribute('accountid'));
+  };
+  const handleLabelMenuClose = () => {
+    setAnchorMenuEl(null);
+  };
 
   const handleColorClick = (event) => {
     setAnchorEl(event.currentTarget);
     setcolorLabelId(event.currentTarget.getAttribute('labelid'));
     setSelectedColor(event.currentTarget.getAttribute('labelcolorcode'));
     setSelectedAccountID(event.currentTarget.getAttribute('accountid'));
+    setAnchorMenuEl(null);
   };
 
   const handleColorClose = () => {
@@ -291,6 +304,7 @@ export default function Navigation(props) {
     setLabelId(labelId);
     setBgColor(labelColorCode);
     setAnchorEl(null);
+    setAnchorMenuEl(null);
     var Data = {
       AccountID: AccountID,
       RecieverEmailLableID: labelId,
@@ -310,6 +324,32 @@ export default function Navigation(props) {
       }
     });
   };
+
+  const handleLabelRemove = (event) => {
+    var RecieverEmailLableID = event.currentTarget.getAttribute('labelid');
+    var AccountID = event.currentTarget.getAttribute('accountid');
+    var Data = {
+      AccountID: AccountID,
+      RecieverEmailLableID: RecieverEmailLableID
+    };
+    LoaderShow();
+    setAnchorMenuEl(null);
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receiver_email_labels/ReceiverEmailLabelRemove",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        LoaderHide();
+        toast.success(Result?.data?.Message);
+        dispatch({ type: "refreshClientDetails", payload: true });
+      } else {
+        LoaderHide();
+        toast.error(Result?.data?.Message);
+      }
+    });
+  }
 
   const labelhandleOpen = () => {
     setOpento(true);
@@ -371,7 +411,7 @@ export default function Navigation(props) {
   }, []);
 
   useEffect(() => {
-    if(IsColorSet){
+    if (IsColorSet) {
       var Details = GetUserDetails();
       FromEmailList(Details.ClientID, Details.UserID);
       setIsColorSet(false);
@@ -1102,7 +1142,7 @@ export default function Navigation(props) {
     }
 
     var NewID = itemID.substring(1);
-    handleClick2(NewID,PageName)
+    handleClick2(NewID, PageName)
 
   };
 
@@ -1597,7 +1637,7 @@ export default function Navigation(props) {
           }
 
           {FromEmailDropdownList?.map((item, index) => (
-            <List sx={{ pl: item._id }}className='listclick' key={index}>
+            <List sx={{ pl: item._id }} className='listclick' key={index}>
               <ListItemButton
                 onClick={() => handleClick("0" + item._id, 1, "/AllInbox")} key={"0" + item._id}
                 component={Link}
@@ -1606,26 +1646,26 @@ export default function Navigation(props) {
                 {EID == "0" + item._id ? <ExpandMore /> : <ExpandDown />}
                 {/* <b>{item.Email} ()</b> */}
                 <b>
-                {
-                  FromEmailDropdownList
-                    ? (() => {
-                      let totalInboxCount = 0;
+                  {
+                    FromEmailDropdownList
+                      ? (() => {
+                        let totalInboxCount = 0;
 
-                      FromEmailDropdownList.forEach((account) => {
-                        if (account.AccountID == item.AccountID) {
-                          totalInboxCount += account.LabelField?.reduce((acc, label) => {
-                            if (label.LableName === "INBOX") {
-                              return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
-                            }
-                            return acc;
-                          }, 0) || 0;
-                        }
-                      });
+                        FromEmailDropdownList.forEach((account) => {
+                          if (account.AccountID == item.AccountID) {
+                            totalInboxCount += account.LabelField?.reduce((acc, label) => {
+                              if (label.LableName === "INBOX") {
+                                return acc + (label?.TotalLableMailCount - label?.TotalSeenLableMailCount);
+                              }
+                              return acc;
+                            }, 0) || 0;
+                          }
+                        });
 
-                      return `${item.Email}(${totalInboxCount})`;
-                    })()
-                    : `${item.Email}(0)`
-                }
+                        return `${item.Email}(${totalInboxCount})`;
+                      })()
+                      : `${item.Email}(0)`
+                  }
                 </b>
                 {/* <b>
                 {item.Email}
@@ -1874,7 +1914,8 @@ export default function Navigation(props) {
                               labelid={labelId}
                               labelcolorcode={label.LabelColorCode}
                               accountid={item.AccountID}
-                              onClick={handleColorClick}
+                              // onClick={handleColorClick}
+                              onClick={handleLabelMenuClick}
                             >
                               <MoreVertIcon />
                             </Button>
@@ -1898,18 +1939,18 @@ export default function Navigation(props) {
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
-            }} 
+            }}
           >
             <div className="colorboxmain" id="001">
               <div className="btncolor">
-              <Typography className="btnleft">Label Color</Typography>  
-              <Button className="full-right"
-                variant="contained"
-                style={{ backgroundColor: selectedColor, color: 'white' }}
-                onClick={() => colorhandleChange(selectedAccountID, colorLabelId, selectedColor)}
-              >
-                Set
-              </Button>
+                <Typography className="btnleft">Label Color</Typography>
+                <Button className="full-right"
+                  variant="contained"
+                  style={{ backgroundColor: selectedColor, color: 'white' }}
+                  onClick={() => colorhandleChange(selectedAccountID, colorLabelId, selectedColor)}
+                >
+                  Set
+                </Button>
               </div>
 
               <div style={{ marginBottom: '10px' }}>
@@ -1928,6 +1969,24 @@ export default function Navigation(props) {
             </div>
           </Popover>
 
+          <Menu
+            id="001"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorMenuEl ? anchorMenuEl : 'simple-popover'}
+            open={anchorMenuEl}
+            onClose={handleLabelMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            sx={{ width: 320, maxWidth: '100%' }}
+          >
+            <Divider />
+            <MenuItem labelid={colorLabelId} labelcolorcode={selectedColor} accountid={selectedAccountID} onClick={handleColorClick}>Label Color</MenuItem>
+            <Divider />
+            <MenuItem labelid={colorLabelId} accountid={selectedAccountID} onClick={handleLabelRemove}>Remove Label</MenuItem>
+            <Divider />
+          </Menu>
 
 
           {/* 
