@@ -1234,6 +1234,10 @@ export default function StarredByID(props) {
         setContextMenu(null);
         setSubMenuOpen(false);
 
+        if (ToEmailValue.length == 0) {
+            SetToEmailValue([OpenMessage?.FromEmail])
+        }
+
         SetSignature({ Data: "" })
         const element = document.getElementById("UserComposeReply")
 

@@ -902,6 +902,9 @@ export default function AllSentEmailsPage(props) {
     SetReplyText("Reply All")
     RemoveForwardPop()
 
+    if (ToEmailValue.length == 0) {
+      SetToEmailValue([OpenMessage?.FromEmail])
+  }
     SetSignature({ Data: "" })
     const element = document.getElementById("UserComposeReply")
 
