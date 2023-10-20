@@ -2752,7 +2752,7 @@ export default function OtherInboxPage(props) {
                                     multiple
                                     disablePortal
                                     id="checkboxes-tags-demo"
-                                    style={{ width: 180 }}
+                                    style={{ width: 230 }}
                                     options={labelsData.filter(option => option.LableName !== "INBOX")}
                                     getOptionLabel={(option) => option.LableName}
                                     renderTags={() => []}

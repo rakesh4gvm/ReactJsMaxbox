@@ -1969,7 +1969,7 @@ export default function Navigation(props) {
             </div>
           </Popover>
 
-          <Menu
+          <Menu className="mindroplab"
             id="001"
             aria-labelledby="demo-positioned-button"
             anchorEl={anchorMenuEl ? anchorMenuEl : 'simple-popover'}
@@ -1979,13 +1979,12 @@ export default function Navigation(props) {
               vertical: 'bottom',
               horizontal: 'left',
             }}
-            sx={{ width: 320, maxWidth: '100%' }}
-          >
-            <Divider />
+            style={{ width: '190px', maxWidth: '100%', padding: '0 10px' }} 
+          > 
             <MenuItem labelid={colorLabelId} labelcolorcode={selectedColor} accountid={selectedAccountID} onClick={handleColorClick}>Label Color</MenuItem>
             <Divider />
             <MenuItem labelid={colorLabelId} accountid={selectedAccountID} onClick={handleLabelRemove}>Remove Label</MenuItem>
-            <Divider />
+       
           </Menu>
 
 

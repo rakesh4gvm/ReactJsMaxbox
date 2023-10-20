@@ -4138,6 +4138,9 @@ button.labelinside svg.MuiSvgIcon-root {
     max-height: inherit; 
     padding: 10px 0 0;
 }
+.mindroplab .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
+    width: 180px;
+}
 
 @media screen and (max-width:990px) {
     .col.rightinbox {
