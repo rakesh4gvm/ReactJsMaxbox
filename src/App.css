@@ -2787,9 +2787,17 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     overflow-y: auto;
 }
 
+.statisticsDiv{
+    display: flex;
+    flex-direction: column;
+}
+.statisticsDiv iframe{
+    flex: 0;
+}
 
-
-.statisticsDiv {}
+.statisticsDiv iframe{
+    flex: auto;
+}
 
 .Resizer {
     background: #000;
