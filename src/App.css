@@ -2791,7 +2791,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     display: flex;
     flex-direction: column;
 }
-.statisticsDiv iframe{
+.statisticsDiv .composehead {
     flex: 0;
 }
 
