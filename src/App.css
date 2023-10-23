@@ -2949,8 +2949,8 @@ div.css-dhopo2 {
     background-color: #fff;
     padding: 0px;
     overflow-y: auto !important;
-    height: calc(100% - 120px);
-    min-height: calc(100% - 120px);
+    /* height: calc(100% - 120px);
+    min-height: calc(100% - 120px); */
     border: none;
     outline: 0;
     font-size: 0.9rem;
