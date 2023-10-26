@@ -3080,9 +3080,9 @@ div .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected:hover {
     border-radius: 0;
 }
 
-.FroalaEditor * {
+/* .FroalaEditor * {
     word-break: break-all;
-}
+} */
 
 .listcardman {
     max-height: calc(100vh - 210px);
