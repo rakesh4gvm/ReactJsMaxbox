@@ -1438,8 +1438,8 @@ export default function Navigation(props) {
             </Select>
           </FormControl>
           {
-            FromEmailDropdownList?.length == 0 ? "" :
-              FromEmailDropdownList?.length == 1 ? "" :
+            FromEmailDropdownList.sort((a, b) => (a.Email > b.Email) ? 1 : ((b.Email > a.Email) ? -1 : 0))?.length == 0 ? "" :
+              FromEmailDropdownList.sort((a, b) => (a.Email > b.Email) ? 1 : ((b.Email > a.Email) ? -1 : 0))?.length == 1 ? "" :
                 <List sx={{ pl: 0 }} className='listclick'>
                   <ListItemButton onClick={OnehandleClick}>
                     {navopen ? <ExpandMore /> : <ExpandDown />}
@@ -1979,12 +1979,12 @@ export default function Navigation(props) {
               vertical: 'bottom',
               horizontal: 'left',
             }}
-            style={{ width: '190px', maxWidth: '100%', padding: '0 10px' }} 
-          > 
+            style={{ width: '190px', maxWidth: '100%', padding: '0 10px' }}
+          >
             <MenuItem labelid={colorLabelId} labelcolorcode={selectedColor} accountid={selectedAccountID} onClick={handleColorClick}>Label Color</MenuItem>
             <Divider />
             <MenuItem labelid={colorLabelId} accountid={selectedAccountID} onClick={handleLabelRemove}>Remove Label</MenuItem>
-       
+
           </Menu>
 
 
