@@ -273,6 +273,8 @@ export default function Navigation(props) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+  const [DeletePopModel, SetDeletePopModel] = useState(false);
+  const [SelectedLabelName, SetSelectedLabelName] = useState("")
 
   const handleLabelMenuClick = (event) => {
     setAnchorMenuEl(event.currentTarget);
@@ -342,13 +344,44 @@ export default function Navigation(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         LoaderHide();
+        CloseDeletePopModel();
+        setAnchorMenuEl(null);
         toast.success(Result?.data?.Message);
         dispatch({ type: "refreshClientDetails", payload: true });
       } else {
         LoaderHide();
+        CloseDeletePopModel()
         toast.error(Result?.data?.Message);
       }
     });
+  }
+
+
+
+  const OpenDeletePopModel = (event) => {
+    SetDeletePopModel(true);
+    var RecieverEmailLableID = event.currentTarget.getAttribute('labelid');
+    var AccountID = event.currentTarget.getAttribute('accountid');
+    var Data = {
+      AccountID: AccountID,
+      RecieverEmailLableID: RecieverEmailLableID
+    };
+    LoaderShow();
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receiver_email_labels/LabelGetById",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSelectedLabelName(Result.data.Data)
+      }
+    });
+  }
+  const CloseDeletePopModel = () => {
+    SetDeletePopModel(false);
+    LoaderHide()
+    setAnchorMenuEl(null);
   }
 
   const labelhandleOpen = () => {
@@ -1339,7 +1372,27 @@ export default function Navigation(props) {
 
   return (
     <>
-
+      <Modal className="modal-pre"
+        open={DeletePopModel}
+        onClose={CloseDeletePopModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="modal-prein">
+          <div className='p-5 text-center'>
+            <Typography id="modal-modal-title" className='mt-0' variant="b" component="h3">
+              Remove label
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Delete the label "{SelectedLabelName.LabelName}"
+            </Typography>
+          </div>
+          <div className='d-flex btn-50' >
+            <button type='button' className='btn btn-pre btn btn-contained btn-medium' labelid={colorLabelId} accountid={selectedAccountID} onClick={handleLabelRemove}>Delete</button>
+            <button type='button' className='btn btn-darkpre btn btn-contained btn-medium' onClick={() => { CloseDeletePopModel(); }}>Cancel</button>
+          </div>
+        </Box>
+      </Modal>
       <Box sx={{ display: 'flex' }}>
 
         {/* <Stack className='alertpostion' spacing={2}>
@@ -1983,7 +2036,7 @@ export default function Navigation(props) {
           >
             <MenuItem labelid={colorLabelId} labelcolorcode={selectedColor} accountid={selectedAccountID} onClick={handleColorClick}>Label Color</MenuItem>
             <Divider />
-            <MenuItem labelid={colorLabelId} accountid={selectedAccountID} onClick={handleLabelRemove}>Remove Label</MenuItem>
+            <MenuItem labelid={colorLabelId} accountid={selectedAccountID} onClick={OpenDeletePopModel}>Remove Label</MenuItem>
 
           </Menu>
 
