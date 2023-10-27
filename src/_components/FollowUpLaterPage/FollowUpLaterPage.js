@@ -1265,7 +1265,12 @@ export default function FollowUpLater(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         var EmailAccountEmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
-        SetSignature({ Data: "<br/>" + EmailAccountEmailSignature + Result?.data?.Data })
+        EmailAccountEmailSignature.sort(function (a, b) {
+          return b.IsDefault - a.IsDefault;
+      });
+
+      SetSignature({ Data: "<br/>" + EmailAccountEmailSignature[0]?.EmailSignature + Result?.data?.Data })
+
         var SenderDetails = {
           SenderName: Result?.data?.SenderName,
           ReceiverName: Result?.data?.ReceiverName
@@ -1346,7 +1351,12 @@ export default function FollowUpLater(props) {
         SetGetReplyMessageDetails(Result?.data?.Data)
         SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
         var EmailAccountEmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
-        SetSignature({ Data: "<br/>" + EmailAccountEmailSignature + Result?.data?.Data })
+        EmailAccountEmailSignature.sort(function (a, b) {
+          return b.IsDefault - a.IsDefault;
+      });
+
+      SetSignature({ Data: "<br/>" + EmailAccountEmailSignature[0]?.EmailSignature + Result?.data?.Data })
+
       } else {
         toast.error(Result?.data?.Message);
       }
@@ -1758,7 +1768,12 @@ export default function FollowUpLater(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         var ResultData = Result?.data?.Data
         var EmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
-        SetForwardSignature({ Data: "<br/>" + EmailSignature + ResultData })
+        EmailSignature.sort(function (a, b) {
+          return b.IsDefault - a.IsDefault;
+        });
+
+      SetForwardSignature({ Data: "<br/>" + EmailSignature[0]?.EmailSignature + ResultData })
+
       } else {
         toast.error(Result?.data?.Message);
       }
