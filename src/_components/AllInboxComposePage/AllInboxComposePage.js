@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow, SortEmailAccounts } from "../../_helpers/Utility";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -267,10 +267,11 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
             toast.error("Please add client.");
         }
         else {
+            SortEmailAccounts(EmailAccountUsers)
 
             if (EmailAccountUsers.length > 0) {
                 SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-                SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
+                SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature[0]?.EmailSignature })
                 SetClientSignatureData(ClientData)
             } else {
                 SetSelectedEmailAccountUser(0);
@@ -333,7 +334,7 @@ export default function AllInboxComposePage({ GetAllInboxList }) {
         var SelectedEmailValue = EmailAccountUsers.find((e) => e.AccountID == EventValue)
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature })
+        SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature[0].EmailSignature })
 
         // if (ClientSignatureData == "") {
         //     SetClientSignatureData(ClientData)

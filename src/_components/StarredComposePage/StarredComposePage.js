@@ -19,7 +19,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow, EditorVariableNames } from "../../_helpers/Utility";
+import { GetUserDetails, ValidateEmail, LoaderHide, LoaderShow, EditorVariableNames, SortEmailAccounts } from "../../_helpers/Utility";
 
 import Close from '../../images/icons/w-close.svg';
 import Maximize from '../../images/icons/w-maximize.svg';
@@ -256,9 +256,11 @@ export default function StarredComposePage({ GetStarredList }) {
             toast.error("Please add client.");
         }
         else {
+
+            SortEmailAccounts(EmailAccountUsers)
             if (EmailAccountUsers.length > 0) {
                 SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
-                SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
+                SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature[0]?.EmailSignature })
                 SetClientSignatureData(ClientData)
             } else {
                 SetSelectedEmailAccountUser(0);
@@ -324,7 +326,7 @@ export default function StarredComposePage({ GetStarredList }) {
         var SelectedEmailValue = EmailAccountUsers.find((e) => e.AccountID == EventValue)
         SetSelectedEmailAccountUser(e.target.value)
         const str = "<br>"
-        SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature })
+        SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature[0].EmailSignature })
 
         // if (ClientSignatureData == "") {
         //     SetClientSignatureData(ClientData)

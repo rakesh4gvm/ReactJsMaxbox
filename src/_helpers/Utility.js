@@ -152,3 +152,15 @@ export function RemoveCurrentEmailFromCC(OpenMessage) {
 export function RemoveCurrentEmailFromBCC(OpenMessage) {
     return OpenMessage?.BccNameEmail?.map((e) => e?.Email)?.toString()
 }
+
+export function SortEmailAccounts(EmailAccountUsers) {
+    return EmailAccountUsers.map(function (item) {
+        var emailSignatures = item.EmailSignature.slice();
+        emailSignatures.sort(function (a, b) {
+            // Sort by IsDefault in descending order
+            return b.IsDefault - a.IsDefault;
+        });
+        item.EmailSignature = emailSignatures;
+        return item;
+    });
+}
