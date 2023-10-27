@@ -25,6 +25,16 @@ import Navigation from '../Navigation/Navigation';
 import Usericon from '../../images/icons/users.svg';
 import { Link } from 'react-router-dom';
 
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+
 toast.configure();
 var atob = require('atob');
 
@@ -37,9 +47,13 @@ export default function EditEmailPage(props) {
   const [IsEmailAuthSucess, SetIsEmailAuthSucess] = React.useState(0);
   const [IsEmailAuthFail, SetIsEmailAuthFail] = React.useState(0);
   const [SignatureError, SetSignatureError] = React.useState("");
-  const [Signature, SetSignature] = React.useState({
-    Data: ""
-  })
+  const [Signature, SetSignature] = React.useState("")
+  const [TabValue, setTabValue] = React.useState('1');
+  const [IsGmail, setIsGmail] = React.useState(true);
+  const [DefaultGmailSignature, setDefaultGmailSignature] = React.useState(false);
+  const [DefaultMaxboxSignature, setDefaultMaxboxSignature] = React.useState(false);
+  const [GmailSignatureUpdate, setGmailSignatureUpdate] = React.useState(false);
+  const [MaxboxSignatureUpdate, setMaxboxSignatureUpdate] = React.useState(false);
 
   var Isworking = false;
   useEffect(() => {
@@ -53,7 +67,62 @@ export default function EditEmailPage(props) {
   }, []);
 
   useEffect(() => {
-  }, [ClientID, UserID, Isworking, Refreshtoken]);
+  }, [ClientID, UserID, Isworking, Refreshtoken, EditEmailConfigurationDetails, Signature, DefaultGmailSignature, DefaultMaxboxSignature, GmailSignatureUpdate, MaxboxSignatureUpdate]);
+
+  const handleChangeTabValue = (event, newValue, data) => {
+    setTabValue(newValue);
+    if(EditEmailConfigurationDetails?.length > 0){
+      data = EditEmailConfigurationDetails;
+    }
+    else{
+      if((EditEmailConfigurationDetails.AccountID != undefined)){
+        data = EditEmailConfigurationDetails;
+      }
+    }
+
+    if(newValue == '1'){
+      SetSignature(data.EmailSignature?.length > 0 ?
+        data.EmailSignature.find(option => option.IsGmail === true)?.EmailSignature || '' : "")
+      setDefaultGmailSignature(data?.EmailSignature?.some(
+          option => option.IsGmail === true && option.IsDefault === true) || false)
+      setGmailSignatureUpdate(true);
+      setMaxboxSignatureUpdate(false);
+      setIsGmail(true);
+    }
+    else{
+      SetSignature(data.EmailSignature?.length > 0 ?
+        data.EmailSignature.find(option => option.IsGmail === false)?.EmailSignature || '' : "")
+      setDefaultMaxboxSignature(data?.EmailSignature?.some(
+        option => option.IsGmail === false && option.IsDefault === true) || false)
+      setGmailSignatureUpdate(false);
+      setMaxboxSignatureUpdate(true);
+      setIsGmail(false);
+    }
+  };
+
+  const HandleGmailChecked = () => {
+    var igc = document.getElementById("isgmailchecked").checked ? true : false;
+    if(igc){
+      setDefaultGmailSignature(true);
+      setDefaultMaxboxSignature(false);
+    }
+    else{
+      setDefaultGmailSignature(false);
+      setDefaultMaxboxSignature(true);
+    }
+  };
+
+  const HandleMaxboxChecked = () => {
+    var imc = document.getElementById("ismaxboxchecked").checked ? true : false;
+    if(imc){
+      setDefaultGmailSignature(false);
+      setDefaultMaxboxSignature(true);
+    }
+    else{
+      setDefaultGmailSignature(true);
+      setDefaultMaxboxSignature(false);
+    }
+  };
 
   const CheckAccountAuthonicate = () => {
     var queryparamter = window.location.search.substring(1);
@@ -97,7 +166,10 @@ export default function EditEmailPage(props) {
           Result.data.Data.IsWorking = Isworking;
         }
         SetEditEmailConfigurationDetails(Result.data.Data)
-        SetSignature({ Data: Result?.data?.Data?.EmailSignature })
+        // SetSignature(Result?.data?.Data?.EmailSignature)
+        setTimeout(() => {
+          handleChangeTabValue('', '1', Result.data.Data);
+        }, 1000);
       }
     });
   }
@@ -120,7 +192,12 @@ export default function EditEmailPage(props) {
       Email: Email,
       NewRefereshToken: Refreshtoken,
       IsWorking: true,
-      EmailSignature: Signature.Data,
+      EmailSignature: Signature,
+      IsGmail: IsGmail,
+      DefaultGmailSignature: DefaultGmailSignature,
+      DefaultMaxboxSignature: DefaultMaxboxSignature,
+      IsGmailSignatureUpdate: GmailSignatureUpdate,
+      IsMaxboxSignatureUpdate: MaxboxSignatureUpdate
     }
     LoaderShow()
     Axios({
@@ -189,9 +266,10 @@ export default function EditEmailPage(props) {
     key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4=='
   }
   const HandleModelChange = (Model) => {
-    SetSignature({
-      Data: Model
-    });
+    // SetSignature({
+    //   Data: Model
+    // });
+    SetSignature(Model);
     if (Model != "") {
       SetSignatureError("")
     }
@@ -265,7 +343,63 @@ export default function EditEmailPage(props) {
                   </Col>
                   <Col sm={8}>
                   </Col>
-                  <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col>
+                  {/* <Col sm={12} className="vardroper"><FroalaEditor tag='textarea' id="signature" config={config} onModelChange={HandleModelChange} model={Signature.Data} /></Col> */}
+                  <Col sm={12} className="vardroper">
+                  <TabContext value={TabValue}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                      <TabList onChange={handleChangeTabValue}>
+                        <Tab label="Gmail Signature" value="1" />
+                        <Tab label="Maxbox Signature" value="2" />
+                      </TabList>
+                    </Box>
+                    <TabPanel value="1">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              id="isgmailchecked"
+                              checked={DefaultGmailSignature}
+                              onChange={(event) => HandleGmailChecked(event, '1')}
+                            />
+                          }
+                          label="Use as Default Signature"
+                        />
+                      </FormGroup>
+                      <FroalaEditor
+                        tag='textarea'
+                        id="signature1"
+                        config={config}
+                        onModelChange={HandleModelChange}
+                        model={
+                          Signature || ""
+                        }
+                      />
+                    </TabPanel>
+                    <TabPanel value="2">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                            id="ismaxboxchecked"
+                              checked={DefaultMaxboxSignature}
+                              onChange={(event) => HandleMaxboxChecked(event, '2')}
+                            />
+                          }
+                          label="Use as Default Signature"
+                        />
+                      </FormGroup>
+                      <FroalaEditor 
+                        tag='textarea' 
+                        id="signature2" 
+                        config={config} 
+                        onModelChange={HandleModelChange} 
+                        model={
+                          Signature || ""
+                        }
+                      />
+                    </TabPanel>
+                  </TabContext>
+                  </Col>
                   {SignatureError && <p style={{ color: "red" }}>{SignatureError}</p>}
                 </Row>
               </Col>
