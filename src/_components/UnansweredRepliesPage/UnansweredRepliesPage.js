@@ -851,8 +851,17 @@ export default function AllUnansweredRepliesPage(props) {
           return b.IsDefault - a.IsDefault;
       });
 
-      SetSignature({ Data: "<br/>" + EmailAccountEmailSignature[0]?.EmailSignature + Result?.data?.Data })
+      let NewEmailSignatureText
 
+      if (EmailAccountEmailSignature.length == 0) {
+          NewEmailSignatureText = ""
+      } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
+          NewEmailSignatureText = ""
+      } else {
+          NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
+      }
+
+      SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
         var SenderDetails = {
           SenderName: Result?.data?.SenderName,
           ReceiverName: Result?.data?.ReceiverName
@@ -932,7 +941,17 @@ export default function AllUnansweredRepliesPage(props) {
           return b.IsDefault - a.IsDefault;
       });
 
-      SetSignature({ Data: "<br/>" + EmailAccountEmailSignature[0]?.EmailSignature + Result?.data?.Data })
+      let NewEmailSignatureText
+
+      if (EmailAccountEmailSignature.length == 0) {
+          NewEmailSignatureText = ""
+      } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
+          NewEmailSignatureText = ""
+      } else {
+          NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
+      }
+
+      SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
 
       } else {
         toast.error(Result?.data?.Message);
@@ -1336,7 +1355,17 @@ export default function AllUnansweredRepliesPage(props) {
           return b.IsDefault - a.IsDefault;
         });
 
-      SetForwardSignature({ Data: "<br/>" + EmailSignature[0]?.EmailSignature + Result?.data?.Data })
+        let NewEmailSignatureText
+
+        if (EmailSignature.length == 0) {
+            NewEmailSignatureText = ""
+        } else if (EmailSignature[0]?.IsDefault == false) {
+            NewEmailSignatureText = ""
+        } else {
+            NewEmailSignatureText = EmailSignature[0]?.EmailSignature
+        }
+
+        SetForwardSignature({ Data: "<br/>" + NewEmailSignatureText + ResultData })
 
       } else {
         toast.error(Result?.data?.Message);
