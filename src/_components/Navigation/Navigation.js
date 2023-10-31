@@ -375,6 +375,14 @@ export default function Navigation(props) {
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetSelectedLabelName(Result.data.Data)
+        LoaderHide()
+        SetDeletePopModel(false);
+        setAnchorMenuEl(null);
+      } else {
+        toast.error("Error while delete label")
+        LoaderHide()
+        SetDeletePopModel(false);
+        setAnchorMenuEl(null);
       }
     });
   }
