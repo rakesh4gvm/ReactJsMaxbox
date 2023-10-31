@@ -376,10 +376,8 @@ export default function Navigation(props) {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         SetSelectedLabelName(Result.data.Data)
         LoaderHide()
-        SetDeletePopModel(false);
-        setAnchorMenuEl(null);
       } else {
-        toast.error("Error while delete label")
+        toast.error("Error while Removing Label, Please try again!")
         LoaderHide()
         SetDeletePopModel(false);
         setAnchorMenuEl(null);
