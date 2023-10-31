@@ -1365,6 +1365,7 @@ export default function UnansweredRepliesByID(props) {
             data: Data,
         }).then((Result) => {
             if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                var ResultData = Result?.data?.Data
                 var EmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
                 EmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
