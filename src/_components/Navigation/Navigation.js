@@ -1390,7 +1390,7 @@ export default function Navigation(props) {
               Remove label
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Delete the label "{SelectedLabelName.LabelName}"
+              Delete the label "{SelectedLabelName.LabelName}" ?
             </Typography>
           </div>
           <div className='d-flex btn-50' >

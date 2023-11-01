@@ -9,7 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, SortEmailAccounts } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import DraftComposePage from '../DraftComposePage/DraftComposePage';
 import AddDraftPage from "../AddDraftPage/AddDraftPage"
@@ -205,8 +205,19 @@ export default function DraftsPageByID(props) {
     var EventValue = e.target.value
     var SelectedEmailValue = EmailAccountUsers.find((e) => e.AccountID == EventValue)
     SetSelectedEmailAccountUser(e.target.value)
+    
+    let NewEmailSignatureText
+
+    if (SelectedEmailValue?.EmailSignature.length == 0) {
+      NewEmailSignatureText = ""
+    } else if (SelectedEmailValue?.EmailSignature[0]?.IsDefault == false) {
+      NewEmailSignatureText = ""
+    } else {
+      NewEmailSignatureText = SelectedEmailValue?.EmailSignature[0]?.EmailSignature
+    }
+
     const str = "<br>"
-    SetSignature({ Data: str + str + SelectedEmailValue.EmailSignature })
+    SetSignature({ Data: str + str + NewEmailSignatureText })
 
     // if (ClientSignatureData == "") {
     //   SetClientSignatureData(ClientData)
@@ -325,10 +336,25 @@ export default function DraftsPageByID(props) {
     else {
       const el = document.getElementById("DraftCompose")
       el.classList.remove("show");
+
+      SortEmailAccounts(EmailAccountUsers)
+
+      let NewEmailSignatureText
+
+      if (EmailAccountUsers[0]?.EmailSignature.length == 0) {
+        NewEmailSignatureText = ""
+      } else if (EmailAccountUsers[0]?.EmailSignature[0]?.IsDefault == false) {
+        NewEmailSignatureText = ""
+      } else {
+        NewEmailSignatureText = EmailAccountUsers[0]?.EmailSignature[0]?.EmailSignature
+      }
+
       if (EmailAccountUsers.length > 0) {
         SetSelectedEmailAccountUser(EmailAccountUsers[0]?._id);
         // SetSignature({ Data: "<br/>" + ClientData + Data.Body })
-        SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
+        // SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature[0]?.EmailSignature })
+
+        SetSignature({ Data: "<br/>" + "<br/>" + NewEmailSignatureText })
         SetClientSignatureData(ClientData)
       } else {
         SetSelectedEmailAccountUser(0);
@@ -344,7 +370,7 @@ export default function DraftsPageByID(props) {
       document.getElementById("ComposeBCC").value = ""
       if (Data?._id?.length > 0) {
         // SetSignature({ Data: "<br />" + Data.Body + ClientData })
-        SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
+        SetSignature({ Data: Data.Body + "<br/>" + "<br/>" + NewEmailSignatureText })
         if (Data?.MailTo != null && !Array.isArray(Data?.MailTo)) {
           var MailToArray = Data?.MailTo.split(',');
           Data.MailTo = MailToArray;
@@ -377,7 +403,7 @@ export default function DraftsPageByID(props) {
         // SetMailChange({ To: "", Subject: "" })
       } else {
         // SetSignature({ Data: "<br />" + ClientData });
-        SetSignature({ Data: "<br/>" + "<br/>" + EmailAccountUsers[0]?.EmailSignature })
+        SetSignature({ Data: "<br/>" + "<br/>" + NewEmailSignatureText })
         SetMailChange({ To: "", Subject: "" })
       }
 
@@ -929,7 +955,7 @@ export default function DraftsPageByID(props) {
               Are you sure
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            you want to delete this email?
+              you want to delete this email?
             </Typography>
           </div>
           <div className='d-flex btn-50'>
