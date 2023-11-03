@@ -577,7 +577,7 @@ export default function EmailConfigurationPage() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {EmailAccountList.map((row) => (
+                      {EmailAccountList.sort((a, b) => a.Email.localeCompare(b.Email)).map((row) => (
 
                         <TableRow>
                           <TableCell>{row.FirstName}</TableCell>
