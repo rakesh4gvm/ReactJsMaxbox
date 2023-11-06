@@ -474,7 +474,7 @@ export default function Navigation(props) {
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      SendNotification(data);
+      // SendNotification(data);
     };
 
     eventSource.onerror = (error) => {
