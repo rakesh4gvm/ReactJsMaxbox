@@ -442,16 +442,16 @@ export default function StarredByID(props) {
         if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "SeenEmails");
+                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "SeenEmails" , "Refresh");
             } else {
-                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails")
+                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails" ,"")
             }
         } else {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "");
+                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "","");
             } else {
-                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "","")
             }
         }
         // }

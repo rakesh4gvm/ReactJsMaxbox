@@ -287,16 +287,16 @@ export default function SpamPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails");
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "SeenEmails", "");
       } else {
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails")
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "Refresh")
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "");
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "");
       } else {
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "")
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
       }
     }
 

@@ -450,16 +450,16 @@ export default function FollowUpLaterByID(props) {
         if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "SeenEmails");
+                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "SeenEmails", "Refresh");
             } else {
-                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails")
+                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "SeenEmails", "")
             }
         } else {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "");
+                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "", "");
             } else {
-                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "")
+                GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
             }
         }
         // }

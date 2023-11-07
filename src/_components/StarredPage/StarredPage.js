@@ -442,16 +442,16 @@ export default function OtherInboxPage(props) {
     if (!state) {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails");
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails","");
       } else {
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails")
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "SeenEmails", "Refresh")
       }
     } else {
       if (ID != "" && ID != null && ID != "undefined") {
         SetMenuID(ID);
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "");
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "","");
       } else {
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "")
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "","")
       }
     }
     // }
