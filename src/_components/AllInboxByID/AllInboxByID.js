@@ -322,7 +322,7 @@ export default function AllInboxByID(props) {
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
-    }, [SearchInbox, state, id])
+    }, [SearchInbox, state, id, isstarActive])
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -2129,7 +2129,13 @@ export default function AllInboxByID(props) {
 
     const ToggleStartClass = () => {
         setSelectedRowIndex(0)
-        setstarActive(!isstarActive);
+        if(!isstarActive){
+            setstarActive(true);
+        }
+        else{
+            setstarActive(false);
+        }
+        // setstarActive(!isstarActive);
     };
 
     const HandleStarredChange = () => {
