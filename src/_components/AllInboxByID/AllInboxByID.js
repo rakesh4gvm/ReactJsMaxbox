@@ -322,7 +322,7 @@ export default function AllInboxByID(props) {
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
-    }, [SearchInbox, state, id, isstarActive])
+    }, [SearchInbox, state, id])
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -696,8 +696,11 @@ export default function AllInboxByID(props) {
                             for (var i = 0; i < Result.data.PageData.length; i++) {
                                 var item = Result.data.PageData[i];
                                 if (item.AccountID == ID) {
-                                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                    totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
+                                    var LabelFieldDetails = [];
+                                    LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                    if(LabelFieldDetails.length > 0){
+                                        totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
+                                    }
                                 }
                             }
                             total = totalInboxCount;
@@ -718,9 +721,14 @@ export default function AllInboxByID(props) {
                             if (Result.data.PageData.length > 0) {
                                 for (var i = 0; i < Result.data.PageData.length; i++) {
                                     var item = Result.data.PageData[i];
-                                    var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                    totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
-                                    totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                    if (item.AccountID == ID) {
+                                        var LabelFieldDetails = [];
+                                        LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                        if(LabelFieldDetails.length > 0){
+                                            totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                            totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                        }
+                                    }
                                 }
                                 total = totalStarredInboxCount - totalSeenStarredInboxCount;
                             }
@@ -733,8 +741,13 @@ export default function AllInboxByID(props) {
                                 if (Result.data.PageData.length > 0) {
                                     for (var i = 0; i < Result.data.PageData.length; i++) {
                                         var item = Result.data.PageData[i];
-                                        var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                        totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                        if (item.AccountID == ID) {
+                                            var LabelFieldDetails = [];
+                                            LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                            if(LabelFieldDetails.length > 0){
+                                                totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
+                                            }
+                                        }
                                     }
                                     total = totalSeenStarredInboxCount;
                                 }
@@ -744,8 +757,13 @@ export default function AllInboxByID(props) {
                                 if (Result.data.PageData.length > 0) {
                                     for (var i = 0; i < Result.data.PageData.length; i++) {
                                         var item = Result.data.PageData[i];
-                                        var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                        totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                        if (item.AccountID == ID) {
+                                            var LabelFieldDetails = [];
+                                            LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
+                                            if(LabelFieldDetails.length > 0){
+                                                totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                            }
+                                        }
                                     }
                                     total = totalStarredInboxCount;
                                 }
@@ -764,8 +782,10 @@ export default function AllInboxByID(props) {
                                     var item = Result.data.PageData[i];
                                     if (item.AccountID == ID) {
                                         var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                        totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
-                                        totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount
+                                        if(LabelFieldDetails.length > 0){
+                                            totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
+                                            totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount
+                                        }
                                     }
                                 }
                                 total = totalInboxCount - totalSeenInboxCount;
@@ -2129,13 +2149,13 @@ export default function AllInboxByID(props) {
 
     const ToggleStartClass = () => {
         setSelectedRowIndex(0)
-        if(!isstarActive){
-            setstarActive(true);
-        }
-        else{
-            setstarActive(false);
-        }
-        // setstarActive(!isstarActive);
+        // if(!isstarActive){
+        //     setstarActive(true);
+        // }
+        // else{
+        //     setstarActive(false);
+        // }
+        setstarActive(!isstarActive);
     };
 
     const HandleStarredChange = () => {
@@ -2805,7 +2825,7 @@ export default function AllInboxByID(props) {
                                             open
                                             disablePortal
                                             id="filter-demo"
-                                            options={labelsData.filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             style={{ width: 300 }}
                                             // renderInput={(params) => <TextField placeholder="Search" {...params} />}
@@ -2831,7 +2851,7 @@ export default function AllInboxByID(props) {
                                             disablePortal
                                             id="checkboxes-tags-demo"
                                             style={{ width: 300 }}
-                                            options={labelsData.filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
+                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             renderTags={() => []}
                                             renderOption={(props, option, { selected }) => (
@@ -2950,7 +2970,7 @@ export default function AllInboxByID(props) {
                                                                 disablePortal
                                                                 id="checkboxes-tags-demo"
                                                                 style={{ width: 230 }}
-                                                                options={labelsData.filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
+                                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
                                                                 getOptionLabel={(option) => option.LableName}
                                                                 renderTags={() => []}
                                                                 renderOption={(props, option, { selected }) => (
