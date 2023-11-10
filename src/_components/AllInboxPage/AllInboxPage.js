@@ -2833,7 +2833,7 @@ export default function OtherInboxPage(props) {
                                     disablePortal
                                     id="checkboxes-tags-demo"
                                     style={{ width: 230 }}
-                                    options={labelsData.filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
+                                    options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
                                     getOptionLabel={(option) => option.LableName}
                                     renderTags={() => []}
                                     renderOption={(props, option, { selected }) => (
@@ -2844,7 +2844,7 @@ export default function OtherInboxPage(props) {
                                                 style={{ marginRight: 8 }}
                                                 checked={selected}
                                             />
-                                            {option.LableName}
+                                            {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                         </li>
                                     )}
                                     renderInput={(params) => (
@@ -2911,7 +2911,7 @@ export default function OtherInboxPage(props) {
                                 <StarIcon className='selectedstart startwo' />
                               </ToggleButton>
                             </TableCell>
-                            <TableCell width={'35px'} align="center">
+                            <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} width={'35px'} align="center">
                               {
                                 item?.IsReplied ? <TurnLeft /> : ""
                               }

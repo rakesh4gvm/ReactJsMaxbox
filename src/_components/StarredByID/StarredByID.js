@@ -2691,7 +2691,7 @@ export default function StarredByID(props) {
                                                                         style={{ marginRight: 8 }}
                                                                         checked={selected}
                                                                     />
-                                                                    {option.LableName}
+                                                                    {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                                                 </li>
                                                             )}
                                                             renderInput={(params) => (
@@ -2745,7 +2745,7 @@ export default function StarredByID(props) {
                                                             <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
                                                             {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
                                                         </TableCell>
-                                                        <TableCell width={'35px'} align="center">
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index,"", "updatelist")} width={'35px'} align="center">
                                                             {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }

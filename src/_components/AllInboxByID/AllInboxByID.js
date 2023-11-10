@@ -2856,8 +2856,8 @@ export default function AllInboxByID(props) {
                                             open
                                             disablePortal
                                             id="filter-demo"
-                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
-                                            getOptionLabel={(option) => option.LableName}
+                                            options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
+                                            getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                             style={{ width: 300 }}
                                             // renderInput={(params) => <TextField placeholder="Search" {...params} />}
                                             renderInput={(params) => (
@@ -2882,7 +2882,7 @@ export default function AllInboxByID(props) {
                                             disablePortal
                                             id="checkboxes-tags-demo"
                                             style={{ width: 300 }}
-                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                            options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
                                             getOptionLabel={(option) => option.LableName}
                                             renderTags={() => []}
                                             renderOption={(props, option, { selected }) => (
@@ -2893,7 +2893,7 @@ export default function AllInboxByID(props) {
                                                         style={{ marginRight: 8 }}
                                                         checked={selected}
                                                     />
-                                                    {option.LableName}
+                                                    {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                                 </li>
                                             )}
                                             renderInput={(params) => (
@@ -3001,7 +3001,7 @@ export default function AllInboxByID(props) {
                                                                 disablePortal
                                                                 id="checkboxes-tags-demo"
                                                                 style={{ width: 230 }}
-                                                                options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                                options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
                                                                 getOptionLabel={(option) => option.LableName}
                                                                 renderTags={() => []}
                                                                 renderOption={(props, option, { selected }) => (
@@ -3012,7 +3012,7 @@ export default function AllInboxByID(props) {
                                                                             style={{ marginRight: 8 }}
                                                                             checked={selected}
                                                                         />
-                                                                        {option.LableName}
+                                                                        {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                                                     </li>
                                                                 )}
                                                                 renderInput={(params) => (
@@ -3082,7 +3082,7 @@ export default function AllInboxByID(props) {
                                                                 <StarIcon className='selectedstart startwo' />
                                                             </ToggleButton>
                                                         </TableCell>
-                                                        <TableCell width={'35px'} align="center">
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} width={'35px'} align="center">
                                                             {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }

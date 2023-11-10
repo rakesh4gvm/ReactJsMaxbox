@@ -2797,7 +2797,7 @@ export default function OtherInboxByID(props) {
                                                                             style={{ marginRight: 8 }}
                                                                             checked={selected}
                                                                         />
-                                                                        {option.LableName}
+                                                                        {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                                                     </li>
                                                                 )}
                                                                 renderInput={(params) => (
@@ -2862,7 +2862,7 @@ export default function OtherInboxByID(props) {
                                                                 <StarIcon className='selectedstart startwo' />
                                                             </ToggleButton>
                                                         </TableCell>
-                                                        <TableCell width={'35px'} align="center">
+                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index,"", "updatelist")} width={'35px'} align="center">
                                                             {
                                                                 item?.IsReplied ? <TurnLeft /> : ""
                                                             }
