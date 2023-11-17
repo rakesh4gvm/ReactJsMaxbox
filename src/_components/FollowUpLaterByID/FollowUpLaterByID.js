@@ -381,7 +381,10 @@ export default function FollowUpLaterByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
-                    dispatch({ type: "refreshClientDetails", payload: true });
+                    // dispatch({ type: "refreshClientDetails", payload: true });
+                    setTimeout(() => {
+                        dispatch({ type: "refreshClientDetails", payload: true });
+                    }, 500);
                 }
                 else {
                     // setLabelBoxVisible(false);
