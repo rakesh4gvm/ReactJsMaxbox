@@ -3216,7 +3216,7 @@ export default function LabelByID(props) {
                                                         OpenMessage?.IsTrash ? ""
                                                             :
                                                             <Button>
-                                                                <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => OpenStarPopModel()}>
+                                                                <ToggleButton className={"startselct temp-class" + " " + MUIClass} title="Starred" value="check" id={"starbelow_" + OpenMessage._id} onClick={() => UpdateStarMessage(OpenMessage._id, "", MailNumber)}>
                                                                     <StarBorderIcon className='starone' />
                                                                     <StarIcon className='selectedstart startwo' />
                                                                 </ToggleButton>
