@@ -2822,7 +2822,8 @@ export default function LabelByID(props) {
                                                         <Autocomplete
                                                             open
                                                             id="filter-demo"
-                                                            options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
+                                                            // options={labelsData.filter(option => option.RecieverEmailLableID !== id)}
+                                                            options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.RecieverEmailLableID !== id)}
                                                             getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                             sx={{ width: 300 }}
                                                             // renderInput={(params) => <TextField {...params} />}
@@ -2847,7 +2848,8 @@ export default function LabelByID(props) {
                                                             disablePortal
                                                             id="checkboxes-tags-demo"
                                                             style={{ width: 300 }}
-                                                            options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                            // options={labelsData.filter(option => option.LableName !== "INBOX")}
+                                                            options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
                                                             getOptionLabel={(option) => option.LableName}
                                                             renderTags={() => []}
                                                             renderOption={(props, option, { selected }) => (

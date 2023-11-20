@@ -369,6 +369,7 @@ export default function StarredByID(props) {
             });
             ResponseApi.then((Result) => {
                 if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+                    setSelectedRowIndex(0)
                     // setLabelBoxVisible(false)
                     toast.success(Result?.data?.Message);
                     GetClientID();
