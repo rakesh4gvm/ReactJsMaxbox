@@ -296,7 +296,7 @@ export default function SpamPage(props) {
         SetMenuID(ID);
         GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "");
       } else {
-        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
+        GetSpamList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "Refresh")
       }
     }
 

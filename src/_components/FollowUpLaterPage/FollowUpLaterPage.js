@@ -450,7 +450,7 @@ export default function FollowUpLater(props) {
         SetMenuID(ID);
         GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "");
       } else {
-        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
+        GetFollowUpLaterList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "Refresh")
       }
     }
     // }

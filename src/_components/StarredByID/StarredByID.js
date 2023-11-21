@@ -450,7 +450,7 @@ export default function StarredByID(props) {
         } else {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "","");
+                GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, id, "","Refresh");
             } else {
                 GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "","")
             }

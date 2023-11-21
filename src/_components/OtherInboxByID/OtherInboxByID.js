@@ -462,7 +462,7 @@ export default function OtherInboxByID(props) {
         } else {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
-                GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "", "");
+                GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "showloader", "", "Refresh");
             } else {
                 GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
             }

@@ -451,7 +451,7 @@ export default function OtherInboxPage(props) {
         SetMenuID(ID);
         GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "showloader", "", "");
       } else {
-        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "")
+        GetOtherInboxList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "showloader", "", "Refresh")
       }
     }
 

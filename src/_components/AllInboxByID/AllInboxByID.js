@@ -505,7 +505,7 @@ export default function AllInboxByID(props) {
                 if (isstarActive) {
                     GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails")
                 } else {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "")
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "","Refresh")
                 }
             } else {
                 if (isstarActive) {

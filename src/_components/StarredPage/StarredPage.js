@@ -452,7 +452,7 @@ export default function OtherInboxPage(props) {
         SetMenuID(ID);
         GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "","");
       } else {
-        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "","")
+        GetStarredList(UserDetails.ClientID, UserDetails.UserID, Page, 0, "","Refresh")
       }
     }
     // }
