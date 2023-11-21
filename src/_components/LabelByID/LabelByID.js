@@ -3036,7 +3036,8 @@ export default function LabelByID(props) {
                                                     }
                                                 }
                                                 return (
-                                                    <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
+                                                    <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={ OpenMessage?.length == 0 ? "" : OpenMessage?.IsTrash ? "" : handleContextMenu }
+                                                    style={{ cursor: 'context-menu' }}
                                                         // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                                                         // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
                                                         // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
