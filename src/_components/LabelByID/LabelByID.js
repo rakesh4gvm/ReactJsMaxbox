@@ -2991,7 +2991,7 @@ export default function LabelByID(props) {
                                                                         style={{ marginRight: 8 }}
                                                                         checked={selected}
                                                                     />
-                                                                    {option.LableName}
+                                                                    {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
                                                                 </li>
                                                             )}
                                                             renderInput={(params) => (
