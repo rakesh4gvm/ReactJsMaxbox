@@ -486,7 +486,7 @@ export default function LabelByID(props) {
                 if (isstarActive) {
                     GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "SeenEmails", "IsStarredEmails");
                 } else {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, 1, id, "SeenEmails", "");
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, 1, id, "SeenEmails", "", "Refresh");
                 }
             } else {
                 if (isstarActive) {
@@ -501,7 +501,7 @@ export default function LabelByID(props) {
                 if (isstarActive) {
                     GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails")
                 } else {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "")
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "", "Refresh")
                 }
             } else {
                 if (isstarActive) {
@@ -2817,7 +2817,7 @@ export default function LabelByID(props) {
                                                     <DriveFileMoveIcon />
                                                 </Button>
                                                 {boxVisible && (
-                                                    <div className="box filltermoveto">
+                                                    <div className="box filltermoveto"  ref={boxRef}>
                                                         <h6>Move to :</h6>
                                                         <Autocomplete
                                                             open
@@ -2884,7 +2884,7 @@ export default function LabelByID(props) {
                                     </ToggleButton> */}
                                     {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
                                     {
-                                        OpenMessage?.length == 0 ? "" :
+                                        // OpenMessage?.length == 0 ? "" :
                                             OpenMessage?.IsTrash ? "" :
                                                 <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
                                     }
@@ -2914,7 +2914,7 @@ export default function LabelByID(props) {
                                                 {/* <TableCell component="th" width={'30px'}><StarBorderIcon /></TableCell> */}
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                                                 {
-                                                    OpenMessage?.length == 0 ? "" :
+                                                    // OpenMessage?.length == 0 ? "" :
                                                         OpenMessage?.IsTrash ? "" :
                                                             <>
                                                                 <TableCell component="th" className='px-0 w-0'>
@@ -3052,7 +3052,7 @@ export default function LabelByID(props) {
                                                         {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
                                                         {/* <TableCell width={'35px'}></TableCell> */}
                                                         {
-                                                            OpenMessage?.length == 0 ? "" :
+                                                            // OpenMessage?.length == 0 ? "" :
                                                                 OpenMessage?.IsTrash ? "" :
                                                                     <>
                                                                         <TableCell align='center'>
