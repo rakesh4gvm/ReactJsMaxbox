@@ -767,6 +767,11 @@ export default function Navigation(props) {
         history.push("/DraftsByID/" + ID);
       }
     }
+    if (PageName == "/Trash") {
+      if (ID != "" && ID != null) {
+        history.push("/Trash/" + ID);
+      }
+    }
     // if (PageName == "AllInbox") {
     //   if (ID != "" && ID != null) {
     //     if (history.location.pathname === "/AllInbox") {
@@ -1927,7 +1932,8 @@ export default function Navigation(props) {
                   <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => {
-                        if (label.LableName === "INBOX") {
+                        
+                        if (label.LableName === "INBOX" || label.LableName === "Trash" ) {
                           return null; // Skip rendering INBOX label
                         }
 
@@ -1965,6 +1971,49 @@ export default function Navigation(props) {
                               <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
                             </ListItemButton>
                             {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
+                            <Button
+                              className='labelinside'
+                              aria-describedby="001"
+                              variant="contained"
+                              index={index}
+                              labelid={labelId}
+                              labelcolorcode={label.LabelColorCode}
+                              accountid={item.AccountID}
+                              // onClick={handleColorClick}
+                              onClick={handleLabelMenuClick}
+                            >
+                              <MoreVertIcon />
+                            </Button>
+
+                          </>
+                        );
+                      })}
+                    </List>
+
+                  </Collapse>
+
+                  <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+
+                      {[...item.LabelField].map((label, index) => {
+                        if (label.LableName != "Trash") {
+                          return null; // Skip rendering labels except trash
+                        }
+
+                        const labelId = label.RecieverEmailLableID;
+                        const selected = SelectMenuItem === `/Trash${labelId}`;
+
+                        return (
+                          <>
+                            <ListItemButton
+                              key={labelId}
+                              sx={{ pl: 4 }}
+                              onClick={(event) => handleListItemClick(event, "/Trash", labelId)}
+                              component={Link}
+                              selected={selected}
+                            >
+                              <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName}
+                            </ListItemButton>
                             <Button
                               className='labelinside'
                               aria-describedby="001"
