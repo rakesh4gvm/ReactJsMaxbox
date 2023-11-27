@@ -496,7 +496,7 @@ export default function Navigation(props) {
     FromEmailList(Details.ClientID, Details.UserID);
     GetClientDropdown();
     let ClientName
-
+    var IsNotificationOn = false;
     let Data = {
       ID: Details.ClientID
     };
@@ -509,6 +509,7 @@ export default function Navigation(props) {
     await ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         ClientName = Result?.data?.Data[0]?.Name
+        IsNotificationOn = Result?.data?.Data[0]?.IsNotificationOn;
       }
     });
 
@@ -533,8 +534,14 @@ export default function Navigation(props) {
           : subject;
 
         // toast.error(<div>{truncatedClientName} {email} <br />{truncatedSubject == "undefined" || truncatedSubject == "" ? "" : truncatedSubject} </div>, { className: 'toast-message emailicon' });
+        if (IsNotificationOn) {
+          toast.error(<div>{truncatedClientName} {email} <br />{truncatedSubject == "undefined" || truncatedSubject == "" ? "" : truncatedSubject} </div>, { className: 'toast-message emailicon' });
+        }
       } else if (msg[1] == "spamnotification") {
         // toast.error(msg[1]?.length > 10 ? msg[1]?.slice(0, 10) + '...' + ' : You have new email for spam' : msg[1] + " : You have new email for spam");
+        // if (IsNotificationOn) {
+          // toast.error(msg[1]?.length > 10 ? msg[1]?.slice(0, 10) + '...' + ' : You have new email for spam' : msg[1] + " : You have new email for spam");
+        // }
       }
 
       if (SelectedID != "" && SelectedID != null && SelectedID != "undefined") {
