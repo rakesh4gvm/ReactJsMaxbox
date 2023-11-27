@@ -1947,8 +1947,8 @@ export default function Navigation(props) {
                     <List component="div" disablePadding>
                       {[...item.LabelField].sort((a, b) => (isNaN(a.LableName) || isNaN(b.LableName)) ? a.LableName.localeCompare(b.LableName) : parseFloat(a.LableName) - parseFloat(b.LableName))?.map((label, index) => {
                         
-                        if (label.LableName === "INBOX" || label.LableName === "Trash" ) {
-                          return null; // Skip rendering INBOX label
+                        if (label.LableName === "INBOX" || label.LableName === "Trash" || label.LableName === "Bin") {
+                          return null; // Skip rendering INBOX, Trash and Bin labels
                         }
 
                         const labelId = label.RecieverEmailLableID;
@@ -2006,7 +2006,8 @@ export default function Navigation(props) {
 
                   </Collapse>
 
-                  <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
+                    {/* Created new trash file */}
+                  {/* <Collapse in={OutBoxID == "3" + item._id} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
 
                       {[...item.LabelField].map((label, index) => {
@@ -2047,7 +2048,7 @@ export default function Navigation(props) {
                       })}
                     </List>
 
-                  </Collapse>
+                  </Collapse> */}
                 </List>
               </Collapse>
             </List>
