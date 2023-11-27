@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-
+import Switch from '@mui/material/Switch';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '../../images/icons/icon_wh_delete.svg';
 import BgProfile from '../../images/bg-profile.png';
@@ -26,7 +26,7 @@ import { GetUserDetails, UpdateUserDetails, LoaderShow, LoaderHide, ClientChnage
 import EditIcon from '@material-ui/icons/Edit';
 import { Col, Row } from 'react-bootstrap';
 import FooterBottom from '../Footer/footer';
-
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
@@ -187,6 +187,30 @@ export default function ClientListPage() {
     history.push("/AddClient");
   }
 
+  const HandleIsNotificatiChecked = async (event, ClientID) => {
+
+    const IsNotificationOn = event.target.checked;
+    var Data = {
+      ClientID: ClientID,
+      IsNotificationOn:IsNotificationOn
+    };
+
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/client/ChangePushNotification",
+      method: "POST",
+      data: Data,
+    });
+    ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        GetClientList(ClientID, UserID, Page, "")
+      }
+      else {
+        GetClientList(ClientID, UserID, Page, "")
+      }
+    });
+  };
+
+
   return (
     <>
 
@@ -259,6 +283,7 @@ export default function ClientListPage() {
                       <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell>BCC Email</TableCell>
+                        <TableCell>Notification</TableCell>
                         <TableCell align="right">Action</TableCell>
                       </TableRow>
                     </TableHead>
@@ -267,6 +292,16 @@ export default function ClientListPage() {
                         <TableRow>
                           <TableCell>{row.Name}</TableCell>
                           <TableCell scope="row">{row.BccEmail}</TableCell>
+                          <TableCell scope="row">
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={row?.IsNotificationOn}
+                                  onChange={(event) => HandleIsNotificatiChecked(event, row._id)}
+                                />
+                              }
+                            />
+                          </TableCell>
 
                           <TableCell align="right">
                             <Button className='iconbtntable' onClick={() => OpenDeletePopModel(row._id)}>
