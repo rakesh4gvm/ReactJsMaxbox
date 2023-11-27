@@ -374,7 +374,7 @@ export default function Navigation(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-        SetSelectedLabelName(Result.data.Data)
+        SetSelectedLabelName(Result.data.Data.LabelName.length > 10 ? Result.data.Data.LabelName.slice(0,10) + '...' : Result.data.Data.LabelName)
         LoaderHide()
       } else {
         toast.error("Error while Removing Label, Please try again!")
@@ -1395,7 +1395,7 @@ export default function Navigation(props) {
               Remove label
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Delete the label "{SelectedLabelName.LabelName}" ?
+              Delete the label "{SelectedLabelName}" ?
             </Typography>
           </div>
           <div className='d-flex btn-50' >
