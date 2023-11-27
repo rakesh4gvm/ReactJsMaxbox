@@ -276,6 +276,13 @@ export default function Navigation(props) {
   const [DeletePopModel, SetDeletePopModel] = useState(false);
   const [SelectedLabelName, SetSelectedLabelName] = useState("")
 
+  // local
+  // var NotificationBackendUrl = CommonConstants.SSEIP
+  //dev
+  var NotificationBackendUrl = "https://databackend.maxbox.com:3006";
+  // live
+  // var NotificationBackendUrl = "https://appbackend.maxbox.com:3006";
+
   const handleLabelMenuClick = (event) => {
     setAnchorMenuEl(event.currentTarget);
     setcolorLabelId(event.currentTarget.getAttribute('labelid'));
@@ -470,7 +477,7 @@ export default function Navigation(props) {
   useEffect(() => {
     var UserDetails = GetUserDetails();
     var UserId = UserDetails.UserID;
-    const eventSource = new EventSource(`${CommonConstants.SSEIP}/see/${UserId}`);
+    const eventSource = new EventSource(`${NotificationBackendUrl}/see/${UserId}`);
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
