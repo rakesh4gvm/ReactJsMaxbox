@@ -1880,6 +1880,7 @@ export default function SpamPage(props) {
   // Ends Pagination
 
   const RefreshTable = () => {
+    SetPage(1)
     setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)

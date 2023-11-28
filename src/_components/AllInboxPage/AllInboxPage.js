@@ -2025,6 +2025,7 @@ export default function OtherInboxPage(props) {
 
 
   const RefreshTable = () => {
+    SetPage(1)
     setSelectedRowIndex(0)
     if (selectAllChecked) {
       setSelectAllChecked(!selectAllChecked)

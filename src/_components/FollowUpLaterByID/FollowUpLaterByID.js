@@ -2156,6 +2156,7 @@ export default function FollowUpLaterByID(props) {
     // Ends Pagination 
 
     const RefreshTable = () => {
+        SetPage(1)
         setSelectedRowIndex(0)
         setSelectedRowIndex(0)
         if (selectAllChecked) {
