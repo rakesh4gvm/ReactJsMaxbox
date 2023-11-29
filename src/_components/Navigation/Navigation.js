@@ -82,6 +82,9 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import { HexColorPicker } from "react-colorful";
 import { Height } from '@mui/icons-material';
 
+import { Dustbin } from '../DragAndDrop/Dustbin'
+import { Boxdrop } from '../DragAndDrop/Boxdrop'
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -1830,6 +1833,7 @@ export default function Navigation(props) {
 
                         return (
                           <>
+                            <Dustbin allowedDropEffect={label.LableName} accountId={item._id} isLabel="true" labelId={labelId}>
                             <ListItemButton
                               key={labelId}
                               sx={{ pl: 4 }}
@@ -1839,6 +1843,7 @@ export default function Navigation(props) {
                             >
                               <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
                             </ListItemButton>
+                            </Dustbin>
                             {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
                             <Button
                               className='labelinside'
