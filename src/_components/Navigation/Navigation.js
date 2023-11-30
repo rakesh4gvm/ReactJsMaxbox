@@ -367,6 +367,7 @@ export default function Navigation(props) {
 
   const OpenDeletePopModel = (event) => {
     SetDeletePopModel(true);
+    SetSelectedLabelName("")
     var RecieverEmailLableID = event.currentTarget.getAttribute('labelid');
     var AccountID = event.currentTarget.getAttribute('accountid');
     var Data = {
@@ -381,6 +382,7 @@ export default function Navigation(props) {
     });
     ResponseApi.then((Result) => {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        SetSelectedLabelName("")
         SetSelectedLabelName(Result.data.Data.LabelName.length > 10 ? Result.data.Data.LabelName.slice(0,10) + '...' : Result.data.Data.LabelName)
         LoaderHide()
       } else {
