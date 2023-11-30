@@ -76,6 +76,9 @@ import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import { TurnLeft } from '@mui/icons-material';
 import LabelIcon from '@material-ui/icons/Label';
 
+import { Dustbin } from '../DragAndDrop/Dustbin'
+import { Boxdrop } from '../DragAndDrop/Boxdrop'
+
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -320,6 +323,40 @@ export default function LabelByID(props) {
         document.title = 'Label | MAXBOX';
         GetClientID();
     }, [SearchInbox, state, id])
+
+    const refreshPageDetails = useSelector(state => state.refreshPageDetails);
+    useEffect(() => {
+        if (refreshPageDetails) {
+            var ID = id;
+            var UserDetails = GetUserDetails();
+            if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                }
+            } else {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "");
+                    }
+                }
+            }
+            dispatch({ type: "refreshPageDetails", payload: false });
+        }
+    });
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -2964,6 +3001,7 @@ export default function LabelByID(props) {
                                                     }
                                                 }
                                                 return (
+                                                    <Boxdrop className="button" accountid={item.AccountID} messageid={item._id} subject={item?.Subject} name={
                                                     <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
                                                         // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                                                         // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
@@ -2971,7 +3009,7 @@ export default function LabelByID(props) {
                                                         // key={item.name}
                                                         // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                         key={item.name}
-                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"} w-100 d-contents`}
                                                         onClick={() => setSelectedRowIndex(index)}
                                                         id={"row-" + index}
 
@@ -3007,6 +3045,7 @@ export default function LabelByID(props) {
                                                         <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
                                                         <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
                                                     </TableRow>
+                                                    }></Boxdrop>
                                                 )
                                             })}
                                         </TableBody>

@@ -1833,7 +1833,6 @@ export default function Navigation(props) {
 
                         return (
                           <>
-                            <Dustbin allowedDropEffect={label.LableName} accountId={item._id} isLabel="true" labelId={labelId}>
                             <ListItemButton
                               key={labelId}
                               sx={{ pl: 4 }}
@@ -1841,9 +1840,10 @@ export default function Navigation(props) {
                               component={Link}
                               selected={selected}
                             >
+                            <Dustbin allowedDropEffect={label.LableName} accountId={item._id} isLabel="true" labelId={labelId}>
                               <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
-                            </ListItemButton>
                             </Dustbin>
+                            </ListItemButton>
                             {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
                             <Button
                               className='labelinside'
