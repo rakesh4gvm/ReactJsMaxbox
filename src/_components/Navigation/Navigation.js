@@ -373,7 +373,7 @@ export default function Navigation(props) {
       AccountID: AccountID,
       RecieverEmailLableID: RecieverEmailLableID
     };
-    LoaderShow();
+    LoaderHide()
     const ResponseApi = Axios({
       url: CommonConstants.MOL_APIURL + "/receiver_email_labels/LabelGetById",
       method: "POST",
