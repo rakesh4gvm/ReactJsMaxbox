@@ -254,6 +254,13 @@ export default function AllInboxByID(props) {
 	const [MessageId, SetMessageId] = useState("");
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
+
+    useEffect(() => {
+        SetMessageIsStarred(false)
+        setstarActive(false)
+        setState(false)
+        SetMessageIsSeen(false)
+    },[id])
     
   
   const handleContextMenu = (event) => {
@@ -319,8 +326,6 @@ export default function AllInboxByID(props) {
 
     useEffect(() => {
         document.title = 'All Inbox | MAXBOX';
-        SetMessageIsStarred(false)
-        setstarActive(false)
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
