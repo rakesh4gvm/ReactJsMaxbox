@@ -258,8 +258,6 @@ export default function AllInboxByID(props) {
     useEffect(() => {
         SetMessageIsStarred(false)
         setstarActive(false)
-        setState(false)
-        SetMessageIsSeen(false)
     },[id])
     
   
