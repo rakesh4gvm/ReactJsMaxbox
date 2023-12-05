@@ -2870,6 +2870,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     float: none;
     margin-bottom: 0;
     padding-left: 108px;
+    min-height : 22px
 }
 
 .lablebox label b {
