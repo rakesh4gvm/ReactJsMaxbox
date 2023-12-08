@@ -82,6 +82,7 @@ import Emailinbox from '../../images/email_inbox_img.png';
 import { HexColorPicker } from "react-colorful";
 import { Height } from '@mui/icons-material';
 import Menu from '@mui/material/Menu';
+import { useDrop } from 'react-dnd';
 
 const style = {
   position: 'absolute',
@@ -1976,32 +1977,7 @@ export default function Navigation(props) {
                         }
 
                         return (
-                          <>
-                            <ListItemButton
-                              key={labelId}
-                              sx={{ pl: 4 }}
-                              onClick={(event) => handleListItemClick(event, "/LabelByID", labelId)}
-                              component={Link}
-                              selected={selected}
-                            >
-                              <div style={{ background: labelID == labelId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
-                            </ListItemButton>
-                            {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
-                            <Button
-                              className='labelinside'
-                              aria-describedby="001"
-                              variant="contained"
-                              index={index}
-                              labelid={labelId}
-                              labelcolorcode={label.LabelColorCode}
-                              accountid={item.AccountID}
-                              // onClick={handleColorClick}
-                              onClick={handleLabelMenuClick}
-                            >
-                              <MoreVertIcon />
-                            </Button>
-
-                          </>
+                          <LabelItem labelItemId={labelId} selected={selected} label={label} displayLabelCount={displayLabelCount} labelItemIndex={index} labelItem={item} />
                         );
                       })}
                     </List>
@@ -2137,6 +2113,63 @@ export default function Navigation(props) {
       </Box >
     </>
   );
+
+  function LabelItem({ labelItemId, selected, label, displayLabelCount, labelItemIndex, labelItem }) {
+    const [, drop] = useDrop({
+      accept: 'EMAIL',
+      drop: (itemTobeDrop) => {
+        //API CALL to send selected item tobe added inder label
+
+        var Data = {
+          AccountID: label.AccountID,
+          MessageID: itemTobeDrop.ids, // array
+          Islabel: true,
+          MoveInLabel: label?.LableName, // label name
+          IsOtherInbox: false,
+          IsFollowUpLater: false,
+          IsSpam: false
+        };
+
+        const ResponseApi = Axios({
+          url: CommonConstants.MOL_APIURL + "/receive_email_history/DragAndDropMail",
+          method: "POST",
+          data: Data,
+        });
+        ResponseApi.then((Result) => {
+          if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+            dispatch({ type: "refreshPageDetails", payload: true });
+            toast.success(Result?.data?.Message);
+          }
+        });
+      },
+    });
+
+    return <div ref={drop}>
+      <ListItemButton
+        key={labelItemId}
+        sx={{ pl: 4 }}
+        onClick={(event) => handleListItemClick(event, "/LabelByID", labelItemId)}
+        component={Link}
+        selected={selected}
+      >
+        <div style={{ background: labelID == labelItemId ? bgColor : label.LabelColorCode ? label.LabelColorCode : defaultBgColor }} className={`labelcolorbox label-color-${labelItemId}`}></div> {label.LableName.length > 10 ? label.LableName.slice(0, 10) + '...' + displayLabelCount : label.LableName + displayLabelCount}
+      </ListItemButton>
+      {/* <Button className='labelinside' aria-describedby={`${labelId}-${index}`} variant="contained" onClick={(event) => dothandleClick(event, index, labelId)}>  <MoreVertIcon /></Button> */}
+      <Button
+        className='labelinside'
+        aria-describedby="001"
+        variant="contained"
+        index={labelItemIndex}
+        labelid={labelItemId}
+        labelcolorcode={label.LabelColorCode}
+        accountid={labelItem.AccountID}
+        // onClick={handleColorClick}
+        onClick={handleLabelMenuClick}
+      >
+        <MoreVertIcon />
+      </Button>
+    </div>;
+  }
 }
 
 

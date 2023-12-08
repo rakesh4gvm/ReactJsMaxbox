@@ -8,6 +8,9 @@ import reportWebVitals from './reportWebVitals';
 import { GetUserDetails, Logout } from '../src/_helpers/Utility'
 import { Provider } from 'react-redux';
 import store from './store';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -40,7 +43,9 @@ Axios.interceptors.response.use(
 
 root.render(
   <Provider store={store}>
-    <App />
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>
   </Provider>
   // <React.StrictMode>
   // <App />

@@ -77,6 +77,8 @@ import LabelIcon from '@material-ui/icons/Label';
 
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { createDragPreview } from "react-dnd-text-dragpreview";
+import { useDrag, DragPreviewImage } from 'react-dnd';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -246,63 +248,66 @@ export default function AllInboxByID(props) {
     const [SenderDetails, SetSenderDetails] = React.useState(null);
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
     const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
-    const editorRef = useRef(null); 
+    const editorRef = useRef(null);
     const [contextMenu, setContextMenu] = React.useState(null);
     const [isSubMenuOpen, setSubMenuOpen] = React.useState(false);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
-	const [AccountId, SetAccountId] = useState();
-	const [MessageId, SetMessageId] = useState("");
+    const [AccountId, SetAccountId] = useState();
+    const [MessageId, SetMessageId] = useState("");
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
 
     useEffect(() => {
         SetMessageIsStarred(false)
         setstarActive(false)
-    },[id])
-    
-  
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    SetAccountId("");
-    var msgId = event.currentTarget.getAttribute('messageid');
-    var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
-    var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
-    var accountId = event.currentTarget.getAttribute('accountid');
-    // SetCheckedID([...CheckedID, msgId]);
-    setSelectAllChecked(false);
-    SetCheckedID([msgId]);
-    SetAccountId(accountId);
-    SetMessageId(msgId);
-    SetMessageIsSeen(isSeen);
-    SetMessageIsStarred(isStarred);
-    setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
-      mouseX: event.clientX + 2,
-      mouseY: event.clientY - 6,
-    }));
-  };
-  
-  const texthandleClose = (event) => {
-    event.preventDefault();
-    SetCheckedID([]);
-    SetMessageId("");
-    SetMessageIsSeen("");
-    SetMessageIsStarred("");
-    setContextMenu(null);
-    setSubMenuOpen(false); // Close the submenu when the main menu is closed
-  };
-  
-  const handleSubMenuOpen = (event) => {
-    event.preventDefault();
-    setSubMenuOpen(true);
-    // setContextMenu({
-    //   mouseX: event.clientX + 0, // Adjust the position as needed
-    //   mouseY: event.clientY - 1,
-    // });
-  };
-  
-  const handleSubMenuClose = () => {
-    setSubMenuOpen(false);
-  };
+    }, [id])
+
+
+
+
+
+    const handleContextMenu = (event) => {
+        event.preventDefault();
+        SetAccountId("");
+        var msgId = event.currentTarget.getAttribute('messageid');
+        var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
+        var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
+        var accountId = event.currentTarget.getAttribute('accountid');
+        // SetCheckedID([...CheckedID, msgId]);
+        setSelectAllChecked(false);
+        SetCheckedID([msgId]);
+        SetAccountId(accountId);
+        SetMessageId(msgId);
+        SetMessageIsSeen(isSeen);
+        SetMessageIsStarred(isStarred);
+        setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+        }));
+    };
+
+    const texthandleClose = (event) => {
+        event.preventDefault();
+        SetCheckedID([]);
+        SetMessageId("");
+        SetMessageIsSeen("");
+        SetMessageIsStarred("");
+        setContextMenu(null);
+        setSubMenuOpen(false); // Close the submenu when the main menu is closed
+    };
+
+    const handleSubMenuOpen = (event) => {
+        event.preventDefault();
+        setSubMenuOpen(true);
+        // setContextMenu({
+        //   mouseX: event.clientX + 0, // Adjust the position as needed
+        //   mouseY: event.clientY - 1,
+        // });
+    };
+
+    const handleSubMenuClose = () => {
+        setSubMenuOpen(false);
+    };
 
     useEffect(() => {
         // Function to close box when clicking outside
@@ -508,7 +513,7 @@ export default function AllInboxByID(props) {
                 if (isstarActive) {
                     GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails")
                 } else {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "","Refresh")
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "", "Refresh")
                 }
             } else {
                 if (isstarActive) {
@@ -541,37 +546,37 @@ export default function AllInboxByID(props) {
 
     const GetEmailAccountUsers = (CID, UID) => {
         const Data = {
-          ClientID: CID,
-          UserID: UID,
+            ClientID: CID,
+            UserID: UID,
         }
         Axios({
-          url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
-          method: "POST",
-          data: Data,
+            url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+            method: "POST",
+            data: Data,
         }).then((Result) => {
-          if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-    
-            const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
-    
-            const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
-    
-            if (FirstIsSendDefaultTrue) {
-              // Move the first item with IsSendDefault true to the beginning of the array
-              UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
-              UpdatedData.unshift(FirstIsSendDefaultTrue);
-            }
-    
-            if (UpdatedData[0]?.IsSendDefault) {
-              SetEmailAccountUsers(UpdatedData)
+            if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+
+                const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+                const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+                if (FirstIsSendDefaultTrue) {
+                    // Move the first item with IsSendDefault true to the beginning of the array
+                    UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+                    UpdatedData.unshift(FirstIsSendDefaultTrue);
+                }
+
+                if (UpdatedData[0]?.IsSendDefault) {
+                    SetEmailAccountUsers(UpdatedData)
+                } else {
+                    SetEmailAccountUsers(Result.data.PageData)
+                }
+
             } else {
-              SetEmailAccountUsers(Result.data.PageData)
+                toast.error(Result?.data?.Message);
             }
-    
-          } else {
-            toast.error(Result?.data?.Message);
-          }
         })
-      }
+    }
 
     // Start From Email List
     const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
@@ -705,7 +710,7 @@ export default function AllInboxByID(props) {
                                 if (item.AccountID == ID) {
                                     var LabelFieldDetails = [];
                                     LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                    if(LabelFieldDetails.length > 0){
+                                    if (LabelFieldDetails.length > 0) {
                                         totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
                                     }
                                 }
@@ -731,7 +736,7 @@ export default function AllInboxByID(props) {
                                     if (item.AccountID == ID) {
                                         var LabelFieldDetails = [];
                                         LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                        if(LabelFieldDetails.length > 0){
+                                        if (LabelFieldDetails.length > 0) {
                                             totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
                                             totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
                                         }
@@ -751,7 +756,7 @@ export default function AllInboxByID(props) {
                                         if (item.AccountID == ID) {
                                             var LabelFieldDetails = [];
                                             LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                            if(LabelFieldDetails.length > 0){
+                                            if (LabelFieldDetails.length > 0) {
                                                 totalSeenStarredInboxCount = totalSeenStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
                                             }
                                         }
@@ -767,7 +772,7 @@ export default function AllInboxByID(props) {
                                         if (item.AccountID == ID) {
                                             var LabelFieldDetails = [];
                                             LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                            if(LabelFieldDetails.length > 0){
+                                            if (LabelFieldDetails.length > 0) {
                                                 totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
                                             }
                                         }
@@ -789,7 +794,7 @@ export default function AllInboxByID(props) {
                                     var item = Result.data.PageData[i];
                                     if (item.AccountID == ID) {
                                         var LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
-                                        if(LabelFieldDetails.length > 0){
+                                        if (LabelFieldDetails.length > 0) {
                                             totalInboxCount = totalInboxCount + LabelFieldDetails[0].TotalLableMailCount
                                             totalSeenInboxCount = totalSeenInboxCount + LabelFieldDetails[0].TotalSeenLableMailCount
                                         }
@@ -1245,7 +1250,7 @@ export default function AllInboxByID(props) {
         SetMessageIsStarred("");
         setContextMenu(null);
         setSubMenuOpen(false);
-        
+
         const Data = {
             ID: MessageId != "" ? MessageId : OpenMessage?._id,
         }
@@ -1272,7 +1277,7 @@ export default function AllInboxByID(props) {
                 } else {
                     NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
                 }
-        
+
                 SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
                 var SenderDetails = {
                     SenderName: Result?.data?.SenderName,
@@ -1358,22 +1363,22 @@ export default function AllInboxByID(props) {
                 SetGetReplyMessageDetails(Result?.data?.Data)
                 SetGetReplyMessageDetailsTextBody(Result?.data?.TextBody)
                 var EmailAccountEmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
-                
+
                 EmailAccountEmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
                 });
 
                 let NewEmailSignatureText
 
-        if (EmailAccountEmailSignature.length == 0) {
-            NewEmailSignatureText = ""
-        } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
-            NewEmailSignatureText = ""
-        } else {
-            NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
-        }
+                if (EmailAccountEmailSignature.length == 0) {
+                    NewEmailSignatureText = ""
+                } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
+                    NewEmailSignatureText = ""
+                } else {
+                    NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
+                }
 
-        SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
+                SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1393,16 +1398,16 @@ export default function AllInboxByID(props) {
         elementbcc.classList.add("showbcc");
 
         const elementreply = document.getElementById("UserCompose")
-        elementreply.classList.remove("show"); 
-        
+        elementreply.classList.remove("show");
+
         if (editorRef.current) {
-        const editorInstance = editorRef.current.editor;
-    
-        if (editorInstance) { 
-            const editorContent = editorInstance.html.get(); 
-            // editorInstance.html.set('<span></span>' + editorContent); 
-            editorInstance.events.focus(true);
-        }
+            const editorInstance = editorRef.current.editor;
+
+            if (editorInstance) {
+                const editorContent = editorInstance.html.get();
+                // editorInstance.html.set('<span></span>' + editorContent); 
+                editorInstance.events.focus(true);
+            }
         }
     }
 
@@ -1773,10 +1778,10 @@ export default function AllInboxByID(props) {
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
         key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
-        events: { 
-          'contentChanged': function () { 
-           this.events.focus(true);
-         } 
+        events: {
+            'contentChanged': function () {
+                this.events.focus(true);
+            }
         }
     }
     const HandleModelChange = (Model) => {
@@ -1819,20 +1824,20 @@ export default function AllInboxByID(props) {
                 var EmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
                 EmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
-                  });
-          
-                  let NewEmailSignatureText
+                });
 
-                  if (EmailSignature.length == 0) {
-                      NewEmailSignatureText = ""
-                  } else if (EmailSignature[0]?.IsDefault == false) {
-                      NewEmailSignatureText = ""
-                  } else {
-                      NewEmailSignatureText = EmailSignature[0]?.EmailSignature
-                  }
-  
-                  SetForwardSignature({ Data: "<br/>" + NewEmailSignatureText + ResultData })
-           
+                let NewEmailSignatureText
+
+                if (EmailSignature.length == 0) {
+                    NewEmailSignatureText = ""
+                } else if (EmailSignature[0]?.IsDefault == false) {
+                    NewEmailSignatureText = ""
+                } else {
+                    NewEmailSignatureText = EmailSignature[0]?.EmailSignature
+                }
+
+                SetForwardSignature({ Data: "<br/>" + NewEmailSignatureText + ResultData })
+
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -2043,13 +2048,13 @@ export default function AllInboxByID(props) {
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
         key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
-        events: { 
-          'contentChanged': function () { 
-            const toForwardElement = document.getElementById('ToForward');
-            if (toForwardElement) {
-              toForwardElement.focus(); 
-            } 
-         }
+        events: {
+            'contentChanged': function () {
+                const toForwardElement = document.getElementById('ToForward');
+                if (toForwardElement) {
+                    toForwardElement.focus();
+                }
+            }
         }
     }
     const ForwardHandleModelChange = (Model) => {
@@ -2097,30 +2102,30 @@ export default function AllInboxByID(props) {
 
         if (!state) {
             if (ID != "" && ID != null && ID != "undefined") {
-              if (isstarActive) {
-                GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "IsStarredEmails");
-              } else {
-                GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "");
-              }
+                if (isstarActive) {
+                    GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "IsStarredEmails");
+                } else {
+                    GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "");
+                }
             } else {
-              if (isstarActive) {
-                GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "IsStarredEmails");
-              } else {
-                GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "");
-              }
+                if (isstarActive) {
+                    GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "IsStarredEmails");
+                } else {
+                    GetAllInboxList(ClientID, UserID, pn, ID, "SeenEmails", "");
+                }
             }
-          } else {
+        } else {
             if (ID != "" && ID != null && ID != "undefined") {
-              GetAllInboxList(ClientID, UserID, pn, ID, "", "");
+                GetAllInboxList(ClientID, UserID, pn, ID, "", "");
             } else {
-              // GetAllInboxList(ClientID, UserID, pn, 0, "", "")
-              if (isstarActive) {
-                GetAllInboxList(ClientID, UserID, pn, 0, "", "IsStarredEmails");
-              } else {
-                GetAllInboxList(ClientID, UserID, pn, 0, "", "");
-              }
+                // GetAllInboxList(ClientID, UserID, pn, 0, "", "")
+                if (isstarActive) {
+                    GetAllInboxList(ClientID, UserID, pn, 0, "", "IsStarredEmails");
+                } else {
+                    GetAllInboxList(ClientID, UserID, pn, 0, "", "");
+                }
             }
-          }
+        }
 
 
         // }
@@ -2864,7 +2869,7 @@ export default function AllInboxByID(props) {
                                             id="filter-demo"
                                             // options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
                                             options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
-                                            getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
+                                            getOptionLabel={(option) => option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                             style={{ width: 300 }}
                                             // renderInput={(params) => <TextField placeholder="Search" {...params} />}
                                             renderInput={(params) => (
@@ -2901,7 +2906,7 @@ export default function AllInboxByID(props) {
                                                         style={{ marginRight: 8 }}
                                                         checked={selected}
                                                     />
-                                                    {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
+                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                 </li>
                                             )}
                                             renderInput={(params) => (
@@ -3009,39 +3014,39 @@ export default function AllInboxByID(props) {
                                                                 disablePortal
                                                                 id="checkboxes-tags-demo"
                                                                 style={{ width: 230 }}
-                                                                // options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
-                                                                options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
-                                                                getOptionLabel={(option) => option.LableName}
-                                                                renderTags={() => []}
-                                                                renderOption={(props, option, { selected }) => (
-                                                                    <li {...props} className="oragechecked">
-                                                                        <Checkbox
-                                                                            icon={icon}
-                                                                            checkedIcon={checkedIcon}
-                                                                            style={{ marginRight: 8 }}
-                                                                            checked={selected}
-                                                                        />
-                                                                        {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
-                                                                    </li>
-                                                                )}
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} placeholder="Search" />
-                                                                )}
-                                                                onChange={HandleMultipleLabelID}
-                                                            />
-                                                            <Button className="btnapply" onClick={Apply}
-                                                            >Apply</Button>
-                                                        </div>  
-                                                    </Menu>
+                                                            // options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
+                                                            options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
+                                                            getOptionLabel={(option) => option.LableName}
+                                                            renderTags={() => []}
+                                                            renderOption={(props, option, { selected }) => (
+                                                                <li {...props} className="oragechecked">
+                                                                    <Checkbox
+                                                                        icon={icon}
+                                                                        checkedIcon={checkedIcon}
+                                                                        style={{ marginRight: 8 }}
+                                                                        checked={selected}
+                                                                    />
+                                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
+                                                                </li>
+                                                            )}
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} placeholder="Search" />
+                                                            )}
+                                                            onChange={HandleMultipleLabelID}
+                                                        />
+                                                        <Button className="btnapply" onClick={Apply}
+                                                        >Apply</Button>
+                                                    </div>
+                                                </Menu>
 
-                                                <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
+                                                <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem>
                                                 <MenuItem onClick={() => { MarkAsSpam(MessageId, AccountId); }}><InfoSharpIcon />Mark as Spam</MenuItem>
                                                 {
-                                                    MessageIsStarred ? 
-                                                    <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
-                                                    :
-                                                    <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
-                                                    
+                                                    MessageIsStarred ?
+                                                        <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
+                                                        :
+                                                        <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
+
                                                 }
                                             </Menu>
 
@@ -3067,45 +3072,7 @@ export default function AllInboxByID(props) {
                                                 }
 
                                                 return (
-                                                    <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}
-                                                        // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
-                                                        // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        // key={item.name}
-                                                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        key={item.name}
-                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        onClick={() => setSelectedRowIndex(index)}
-                                                        id={"row-" + index}
-
-                                                    >
-                                                        {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
-                                                        {/* <TableCell width={'35px'}></TableCell> */}
-                                                        <TableCell align='center'>
-                                                            <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                            {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
-                                                        </TableCell>
-                                                        <TableCell width={'35px'} align="center">
-                                                            <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                                                                <StarBorderIcon className='starone' />
-                                                                <StarIcon className='selectedstart startwo' />
-                                                            </ToggleButton>
-                                                        </TableCell>
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} width={'35px'} align="center">
-                                                            {
-                                                                item?.IsReplied ? <TurnLeft /> : ""
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
-                                                            <>
-                                                                {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                                {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                            </>
-                                                        ) : null}</TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                    </TableRow>
-                                                )
+                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} />)
                                             }
                                             )}
                                         </TableBody>
@@ -3768,4 +3735,85 @@ export default function AllInboxByID(props) {
         </>
     );
 
+}
+
+const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName }) => {
+    const [, drag, preview] = useDrag({
+        type: 'EMAIL',
+        item: { ids: CheckedID },
+    });
+
+    const [dragPreview, setDragPreview] = useState();
+
+    const dragPreviewStyle = {
+        backgroundColor: "rgb(68, 67, 67)",
+        borderColor: "#F96816",
+        color: "white",
+        fontSize: 15,
+        paddingTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20
+    };
+
+    const formatDragMessage = Id => {
+        return `Move ${Id.length} conversations`;
+    };
+
+    useEffect(() => {
+        setDragPreview(
+            createDragPreview(formatDragMessage(CheckedID), dragPreviewStyle)
+        );
+    }, [CheckedID]);
+
+    return (
+        <>
+            <DragPreviewImage
+                connect={preview}
+                src={dragPreview && dragPreview.src}
+            />
+            <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen?.toString()} isstarred={item?.IsStarred?.toString()} onContextMenu={handleContextMenu}
+                style={{
+                    padding: '8px',
+                    border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
+                    marginBottom: '4px',
+                    cursor: 'move',
+                }}
+                // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
+                // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
+                // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                // key={item.name}
+                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                key={item.name}
+                className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                onClick={() => setSelectedRowIndex(index)}
+                id={"row-" + index}
+            >
+
+                {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
+                {/* <TableCell width={'35px'}></TableCell> */}
+                <TableCell align='center'>
+                    <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                    {/* <Checkbox onChange={(e) => HandleCheckedID(e, item._id)} color="primary" /> */}
+                </TableCell>
+                <TableCell width={'35px'} align="center">
+                    <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)}>
+                        <StarBorderIcon className='starone' />
+                        <StarIcon className='selectedstart startwo' />
+                    </ToggleButton>
+                </TableCell>
+                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")} width={'35px'} align="center">
+                    {item?.IsReplied ? <TurnLeft /> : ""}
+                </TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                    <>
+                        {item.Subject.split(' ').slice(0, 8).join(' ')}
+                        {item.Subject.split(' ').length > 8 ? '...' : ''}
+                    </>
+                ) : null}</TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+            </TableRow>
+        </>
+    )
 }
