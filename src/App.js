@@ -55,7 +55,8 @@ function App() {
   var LoginData = localStorage.getItem("LoginData")
   let HideHeader = isLoggedIn ?  <div className='lefter'><Navigation /></div> : null
   
-  let Chatbot = isLoggedIn ?   <ChatbotComponent /> : null
+  // let Chatbot = isLoggedIn ?   <ChatbotComponent /> : null
+  let Chatbot = <ChatbotComponent />
 
 
   

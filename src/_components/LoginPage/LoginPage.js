@@ -60,7 +60,7 @@ export default function LoginPage() {
     var script = document.querySelectorAll("flowise-chatbot")[0];
       if(script!=null)
       {
-        script.style.display="none"
+        // script.style.display="none"
         script.onload = () => {
         
         };
