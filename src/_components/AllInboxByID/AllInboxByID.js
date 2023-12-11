@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC,DrawPreviewStyle, FormatDrawMessage } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 import TablePagination from '@mui/material/TablePagination';
@@ -3779,24 +3779,10 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
 
     const [dragPreview, setDragPreview] = useState();
 
-    const dragPreviewStyle = {
-        backgroundColor: "rgb(68, 67, 67)",
-        borderColor: "#F96816",
-        color: "white",
-        fontSize: 15,
-        paddingTop: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 20
-    };
-
-    const formatDragMessage = Id => {
-        return `Move ${Id.length} conversations`;
-    };
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(formatDragMessage(CheckedID), dragPreviewStyle)
+            createDragPreview(FormatDrawMessage(CheckedID), DrawPreviewStyle())
         );
     }, [CheckedID]);
 
