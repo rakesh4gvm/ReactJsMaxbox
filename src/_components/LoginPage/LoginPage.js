@@ -24,14 +24,37 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import MaxboxLoading from '../../images/Maxbox-Loading.svg';
+import Emailinbox from '../../images/email_inbox_img.png';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
 
-
+const Style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function LoginPage() {
   const [EmailError, setEmail] = useState("");
   const [PasswordError, setPassword] = useState("");
   const [UserPasswordError, setUserPassword] = useState("")
   const [PasswordValues, SetPasswordValues] = useState("")
+
+  const [PopModel, SetPopModel] = React.useState(false);
+
+  const OpenPopModel = () => {
+    SetPopModel(true);
+  }
+  const ClosePopModel = () => {
+    SetPopModel(false);
+  }
 
   const [values, setValues] = React.useState({
     amount: '',
@@ -73,7 +96,7 @@ export default function LoginPage() {
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
-        Login()
+        OpenPopModel()
         LoaderHide()
       }
     };
@@ -160,7 +183,7 @@ export default function LoginPage() {
     }
   }
   // Login method start
-  const Login = async () => {
+  const Login = async (IsDelete) => {
     LoaderShow()
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
@@ -196,7 +219,7 @@ export default function LoginPage() {
       // }
       // else {
 
-      const Data = { Email: Email, Password: Password }
+      const Data = { Email: Email, Password: Password, IsPreviousDelete: IsDelete }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
         method: "POST",
@@ -289,6 +312,30 @@ export default function LoginPage() {
   return (
     <>
 
+    <Modal className="modal-pre"
+      open={PopModel}
+      onClose={ClosePopModel}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={Style} className="modal-prein">
+        <div className='p-5 text-center'>
+          <img src={Emailinbox} width="130" className='mb-4' />
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            If you want to logout from other devices?
+          </Typography>
+        </div>
+        <div className='d-flex btn-50'>
+          <Button className='btn btn-pre' variant="contained" size="medium" onClick={() => Login(true)} >
+            Yes
+          </Button>
+          <Button className='btn btn-darkpre' variant="contained" size="medium" onClick={() => Login(false)}>
+            No
+          </Button>
+        </div>
+      </Box>
+    </Modal>
+
       <MainHeader />
       <div id="hideloding" className="loding-display">
         <img src={MaxboxLoading} />
@@ -368,7 +415,7 @@ export default function LoginPage() {
               <Col sm={4}>
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
-                    <Button variant="contained btn btn-primary smallbtn" onClick={Login}>Login</Button>
+                    <Button variant="contained btn btn-primary smallbtn" onClick={OpenPopModel}>Login</Button>
                   </ButtonGroup>
                 </div>
               </Col>
