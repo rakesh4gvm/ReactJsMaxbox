@@ -334,6 +334,40 @@ export default function AllInboxByID(props) {
         setSelectAllChecked(false);
     }, [SearchInbox, state, id])
 
+    const refreshPageDetails = useSelector(state => state.refreshPageDetails);
+    useEffect(() => {
+        if (refreshPageDetails) {
+            var ID = id;
+            var UserDetails = GetUserDetails();
+            if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                }
+            } else {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "");
+                    }
+                }
+            }
+            dispatch({ type: "refreshPageDetails", payload: false });
+        }
+    });
+
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
 

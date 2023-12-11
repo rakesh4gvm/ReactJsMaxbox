@@ -2119,9 +2119,8 @@ export default function Navigation(props) {
       accept: 'EMAIL',
       drop: (itemTobeDrop) => {
         //API CALL to send selected item tobe added inder label
-
         var Data = {
-          AccountID: label.AccountID,
+          AccountID: labelItem?.AccountID,
           MessageID: itemTobeDrop.ids, // array
           Islabel: true,
           MoveInLabel: label?.LableName, // label name
@@ -2129,7 +2128,7 @@ export default function Navigation(props) {
           IsFollowUpLater: false,
           IsSpam: false
         };
-
+        LoaderShow();
         const ResponseApi = Axios({
           url: CommonConstants.MOL_APIURL + "/receive_email_history/DragAndDropMail",
           method: "POST",
@@ -2139,6 +2138,9 @@ export default function Navigation(props) {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
             dispatch({ type: "refreshPageDetails", payload: true });
             toast.success(Result?.data?.Message);
+          }
+          else{
+            LoaderHide();
           }
         });
       },
