@@ -59,7 +59,7 @@ import { toast } from "react-toastify";
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider'; 
+import Divider from '@mui/material/Divider';
 import InfoSharpIcon from '@mui/icons-material/InfoSharp';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
@@ -251,58 +251,58 @@ export default function LabelByID(props) {
     const [LabelboxVisible, setLabelBoxVisible] = useState(false);
     const [SelectedLabelValue, SetSelectedLabelValue] = useState(null);
     const [SelectedMultipleLabelValue, SetSelectedMultipleLabelValue] = useState(null);
-    const editorRef = useRef(null); 
+    const editorRef = useRef(null);
     const [contextMenu, setContextMenu] = React.useState(null);
     const [isSubMenuOpen, setSubMenuOpen] = React.useState(false);
     const [EmailAccountUsers, SetEmailAccountUsers] = useState([])
-	const [MessageId, SetMessageId] = useState("");
+    const [MessageId, SetMessageId] = useState("");
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
     const [AccountId, SetAccountId] = useState();
-    
-  
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    SetAccountId("");
-    var msgId = event.currentTarget.getAttribute('messageid');
-    var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
-    var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
-    var accountId = event.currentTarget.getAttribute('accountid');
-    SetAccountId(accountId);
-    // SetCheckedID([...CheckedID, msgId]);
-    setSelectAllChecked(false);
-    SetCheckedID([msgId]);
-    SetMessageId(msgId);
-    SetMessageIsSeen(isSeen);
-    SetMessageIsStarred(isStarred);
-    setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
-      mouseX: event.clientX + 2,
-      mouseY: event.clientY - 6,
-    }));
-  };
-  
-  const texthandleClose = (event) => {
-    event.preventDefault();
-    SetCheckedID([]);
-    SetMessageId("");
-    SetMessageIsSeen("");
-    SetMessageIsStarred("");
-    setContextMenu(null);
-    setSubMenuOpen(false); // Close the submenu when the main menu is closed
-  };
-  
-  const handleSubMenuOpen = (event) => {
-    event.preventDefault();
-    setSubMenuOpen(true);
-    // setContextMenu({
-    //   mouseX: event.clientX + 0, // Adjust the position as needed
-    //   mouseY: event.clientY - 1,
-    // });
-  };
-  
-  const handleSubMenuClose = () => {
-    setSubMenuOpen(false);
-  };
+
+
+    const handleContextMenu = (event) => {
+        event.preventDefault();
+        SetAccountId("");
+        var msgId = event.currentTarget.getAttribute('messageid');
+        var isSeen = event.currentTarget.getAttribute('isseen') == "true" ? true : false;
+        var isStarred = event.currentTarget.getAttribute('isstarred') == "true" ? true : false;
+        var accountId = event.currentTarget.getAttribute('accountid');
+        SetAccountId(accountId);
+        // SetCheckedID([...CheckedID, msgId]);
+        setSelectAllChecked(false);
+        SetCheckedID([msgId]);
+        SetMessageId(msgId);
+        SetMessageIsSeen(isSeen);
+        SetMessageIsStarred(isStarred);
+        setContextMenu((prevContextMenu) => (prevContextMenu ? null : {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+        }));
+    };
+
+    const texthandleClose = (event) => {
+        event.preventDefault();
+        SetCheckedID([]);
+        SetMessageId("");
+        SetMessageIsSeen("");
+        SetMessageIsStarred("");
+        setContextMenu(null);
+        setSubMenuOpen(false); // Close the submenu when the main menu is closed
+    };
+
+    const handleSubMenuOpen = (event) => {
+        event.preventDefault();
+        setSubMenuOpen(true);
+        // setContextMenu({
+        //   mouseX: event.clientX + 0, // Adjust the position as needed
+        //   mouseY: event.clientY - 1,
+        // });
+    };
+
+    const handleSubMenuClose = () => {
+        setSubMenuOpen(false);
+    };
 
     useEffect(() => {
         // Function to close box when clicking outside
@@ -571,37 +571,37 @@ export default function LabelByID(props) {
 
     const GetEmailAccountUsers = (CID, UID) => {
         const Data = {
-          ClientID: CID,
-          UserID: UID,
+            ClientID: CID,
+            UserID: UID,
         }
         Axios({
-          url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
-          method: "POST",
-          data: Data,
+            url: CommonConstants.MOL_APIURL + "/email_account/EmailAccountGetUsers",
+            method: "POST",
+            data: Data,
         }).then((Result) => {
-          if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
-    
-            const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
-    
-            const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
-    
-            if (FirstIsSendDefaultTrue) {
-              // Move the first item with IsSendDefault true to the beginning of the array
-              UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
-              UpdatedData.unshift(FirstIsSendDefaultTrue);
-            }
-    
-            if (UpdatedData[0]?.IsSendDefault) {
-              SetEmailAccountUsers(UpdatedData)
+            if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
+
+                const UpdatedData = Result.data.PageData.slice(); // Create a shallow copy of the array
+
+                const FirstIsSendDefaultTrue = UpdatedData.find((item) => item.IsSendDefault);
+
+                if (FirstIsSendDefaultTrue) {
+                    // Move the first item with IsSendDefault true to the beginning of the array
+                    UpdatedData.splice(UpdatedData.indexOf(FirstIsSendDefaultTrue), 1);
+                    UpdatedData.unshift(FirstIsSendDefaultTrue);
+                }
+
+                if (UpdatedData[0]?.IsSendDefault) {
+                    SetEmailAccountUsers(UpdatedData)
+                } else {
+                    SetEmailAccountUsers(Result.data.PageData)
+                }
+
             } else {
-              SetEmailAccountUsers(Result.data.PageData)
+                toast.error(Result?.data?.Message);
             }
-    
-          } else {
-            toast.error(Result?.data?.Message);
-          }
         })
-      }
+    }
 
     // Start From Email List
     const FromEmailList = async (CID, UID, ID, ShowEmails, IsStarred) => {
@@ -1326,19 +1326,19 @@ export default function LabelByID(props) {
                 EmailAccountEmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
                 });
-        
+
                 let NewEmailSignatureText
 
-        if (EmailAccountEmailSignature.length == 0) {
-            NewEmailSignatureText = ""
-        } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
-            NewEmailSignatureText = ""
-        } else {
-            NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
-        }
+                if (EmailAccountEmailSignature.length == 0) {
+                    NewEmailSignatureText = ""
+                } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
+                    NewEmailSignatureText = ""
+                } else {
+                    NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
+                }
 
-        SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
-         
+                SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
+
                 var SenderDetails = {
                     SenderName: Result?.data?.SenderName,
                     ReceiverName: Result?.data?.ReceiverName
@@ -1426,19 +1426,19 @@ export default function LabelByID(props) {
                 EmailAccountEmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
                 });
-        
+
                 let NewEmailSignatureText
 
-        if (EmailAccountEmailSignature.length == 0) {
-            NewEmailSignatureText = ""
-        } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
-            NewEmailSignatureText = ""
-        } else {
-            NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
-        }
+                if (EmailAccountEmailSignature.length == 0) {
+                    NewEmailSignatureText = ""
+                } else if (EmailAccountEmailSignature[0]?.IsDefault == false) {
+                    NewEmailSignatureText = ""
+                } else {
+                    NewEmailSignatureText = EmailAccountEmailSignature[0]?.EmailSignature
+                }
 
-        SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
-         
+                SetSignature({ Data: "<br/>" + NewEmailSignatureText + Result?.data?.Data })
+
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -1828,10 +1828,10 @@ export default function LabelByID(props) {
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
         key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
-        events: { 
-            'contentChanged': function () { 
-             this.events.focus(true);
-           } 
+        events: {
+            'contentChanged': function () {
+                this.events.focus(true);
+            }
         }
     }
     const HandleModelChange = (Model) => {
@@ -1873,20 +1873,20 @@ export default function LabelByID(props) {
                 var EmailSignature = EmailAccountUsers?.find((e) => e?.AccountID == OpenMessage?.AccountID)?.EmailSignature
                 EmailSignature.sort(function (a, b) {
                     return b.IsDefault - a.IsDefault;
-                  });
-          
-                  let NewEmailSignatureText
+                });
 
-                  if (EmailSignature.length == 0) {
-                      NewEmailSignatureText = ""
-                  } else if (EmailSignature[0]?.IsDefault == false) {
-                      NewEmailSignatureText = ""
-                  } else {
-                      NewEmailSignatureText = EmailSignature[0]?.EmailSignature
-                  }
-  
-                  SetForwardSignature({ Data: "<br/>" + NewEmailSignatureText + ResultData })
- 
+                let NewEmailSignatureText
+
+                if (EmailSignature.length == 0) {
+                    NewEmailSignatureText = ""
+                } else if (EmailSignature[0]?.IsDefault == false) {
+                    NewEmailSignatureText = ""
+                } else {
+                    NewEmailSignatureText = EmailSignature[0]?.EmailSignature
+                }
+
+                SetForwardSignature({ Data: "<br/>" + NewEmailSignatureText + ResultData })
+
             } else {
                 toast.error(Result?.data?.Message);
             }
@@ -2097,14 +2097,14 @@ export default function LabelByID(props) {
         imageUploadRemoteUrls: false,
         imageEditButtons: false,
         key: 're1H1qB1A1A5C7E6F5D4iAa1Tb1YZNYAh1CUKUEQOHFVANUqD1G1F4C3B1C8E7D2B4B4==',
-        events: { 
-            'contentChanged': function () { 
-              const toForwardElement = document.getElementById('ToForward');
-              if (toForwardElement) {
-                toForwardElement.focus();
-              }
-           }
-        } 
+        events: {
+            'contentChanged': function () {
+                const toForwardElement = document.getElementById('ToForward');
+                if (toForwardElement) {
+                    toForwardElement.focus();
+                }
+            }
+        }
     }
     const ForwardHandleModelChange = (Model) => {
         SetForwardSignature({
@@ -2258,13 +2258,22 @@ export default function LabelByID(props) {
 
 
     const HandleCheckedID = (event, ID) => {
+        // const { checked } = event.target;
+
+        // if (checked) {
+        //     SetCheckedID([...CheckedID, ID])
+        // } else {
+        //     setSelectAllChecked(false)
+        //     SetCheckedID(state => state.filter((el) => el !== ID));
+        // }
+
         const { checked } = event.target;
 
         if (checked) {
-            SetCheckedID([...CheckedID, ID])
+            SetCheckedID((prevCheckedID) => [...prevCheckedID, ID]);
         } else {
-            setSelectAllChecked(false)
-            SetCheckedID(state => state.filter((el) => el !== ID));
+            setSelectAllChecked(false);
+            SetCheckedID((prevCheckedID) => prevCheckedID.filter((el) => el !== ID));
         }
     }
 
@@ -2863,7 +2872,7 @@ export default function LabelByID(props) {
                                                     <DriveFileMoveIcon />
                                                 </Button>
                                                 {boxVisible && (
-                                                    <div className="box filltermoveto"  ref={boxRef}>
+                                                    <div className="box filltermoveto" ref={boxRef}>
                                                         <h6>Move to :</h6>
                                                         <Autocomplete
                                                             open
@@ -2931,8 +2940,8 @@ export default function LabelByID(props) {
                                     {/* <FormControlLabel className='check-unseen' control={<Checkbox defaultChecked onChange={handleChange} />} label="Unread" /> */}
                                     {
                                         // OpenMessage?.length == 0 ? "" :
-                                            OpenMessage?.IsTrash ? "" :
-                                                <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
+                                        OpenMessage?.IsTrash ? "" :
+                                            <FormControlLabel className='check-unseen' control={<Checkbox onChange={handleChange} />} label="Unread" />
                                     }
                                     <a onClick={RefreshTable} className='Refreshbtn' ><RefreshIcon /><span id="AllInoxRefreshpanel" style={{ display: "none" }} className='roundgreenemail'  ></span></a>
                                     {
@@ -2961,18 +2970,18 @@ export default function LabelByID(props) {
                                                 {/* <TableCell component="th" width={'30px'}><AttachFileIcon /></TableCell> */}
                                                 {
                                                     // OpenMessage?.length == 0 ? "" :
-                                                        OpenMessage?.IsTrash ? "" :
-                                                            <>
-                                                                <TableCell component="th" className='px-0 w-0'>
-                                                                    <Checkbox
-                                                                        name="selectall"
-                                                                        type="checkbox"
-                                                                        checked={selectAllChecked}
-                                                                        onChange={(e) => handleSelectAll(e)}
-                                                                    />
-                                                                </TableCell>
-                                                                <TableCell component="th" width={'30px'} align="center"></TableCell>
-                                                            </>
+                                                    OpenMessage?.IsTrash ? "" :
+                                                        <>
+                                                            <TableCell component="th" className='px-0 w-0'>
+                                                                <Checkbox
+                                                                    name="selectall"
+                                                                    type="checkbox"
+                                                                    checked={selectAllChecked}
+                                                                    onChange={(e) => handleSelectAll(e)}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell component="th" width={'30px'} align="center"></TableCell>
+                                                        </>
                                                 }
                                                 <TableCell component="th"></TableCell>
                                                 <TableCell component="th">Subject</TableCell>
@@ -2982,42 +2991,42 @@ export default function LabelByID(props) {
                                         </TableHead>
                                         <TableBody>
 
-                                        <Menu className="menurighter"
-                                            open={contextMenu !== null}
-                                            onClose={texthandleClose}
-                                            onContextMenu={texthandleClose}
-                                            anchorReference="anchorPosition"
-                                            anchorPosition={
-                                                contextMenu !== null
-                                                ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                                                : undefined
-                                            }
-                                            > 
-                                            {
-                                                MessageIsSeen ? 
-                                                <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem> 
-                                                :
-                                                <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
-                                                
-                                            }
-                                            <Divider sx={{ my: 0.3 }} /> 
-                                            <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
-                                            <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem> 
-                                            <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
-                                            <Divider sx={{ my: 0.3 }} /> 
-
-                                            <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
-
-                                                <Menu className="labelrighter"
-                                                open={isSubMenuOpen}
-                                                onClose={handleSubMenuClose}
+                                            <Menu className="menurighter"
+                                                open={contextMenu !== null}
+                                                onClose={texthandleClose}
+                                                onContextMenu={texthandleClose}
                                                 anchorReference="anchorPosition"
                                                 anchorPosition={
-                                                    isSubMenuOpen
-                                                    ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
-                                                    : undefined
+                                                    contextMenu !== null
+                                                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                                                        : undefined
                                                 }
-                                                > 
+                                            >
+                                                {
+                                                    MessageIsSeen ?
+                                                        <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem>
+                                                        :
+                                                        <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
+
+                                                }
+                                                <Divider sx={{ my: 0.3 }} />
+                                                <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
+                                                <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem>
+                                                <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
+                                                <Divider sx={{ my: 0.3 }} />
+
+                                                <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
+
+                                                <Menu className="labelrighter"
+                                                    open={isSubMenuOpen}
+                                                    onClose={handleSubMenuClose}
+                                                    anchorReference="anchorPosition"
+                                                    anchorPosition={
+                                                        isSubMenuOpen
+                                                            ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                                                            : undefined
+                                                    }
+                                                >
                                                     <div >
                                                         <h6>Label as:</h6>
                                                         <Autocomplete className="rightlabelul"
@@ -3037,7 +3046,7 @@ export default function LabelByID(props) {
                                                                         style={{ marginRight: 8 }}
                                                                         checked={selected}
                                                                     />
-                                                                    {option.LableName.length > 10 ? option.LableName.slice(0,10) + '...' : option.LableName}
+                                                                    {option.LableName.length > 10 ? option.LableName.slice(0, 10) + '...' : option.LableName}
                                                                 </li>
                                                             )}
                                                             renderInput={(params) => (
@@ -3047,19 +3056,19 @@ export default function LabelByID(props) {
                                                         />
                                                         <Button className="btnapply" onClick={Apply}
                                                         >Apply</Button>
-                                                    </div>  
+                                                    </div>
                                                 </Menu>
 
-                                            <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem> 
-                                            <MenuItem onClick={() => { MarkAsSpam(MessageId, AccountId); }}><InfoSharpIcon />Mark as Spam</MenuItem>
-                                            {
-                                                MessageIsStarred ? 
-                                                <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
-                                                :
-                                                <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
-                                                
-                                            }
-                                        </Menu>
+                                                <MenuItem onClick={() => { DeleteMessage(MessageId); }}><img src={icondelete} />Delete</MenuItem>
+                                                <MenuItem onClick={() => { MarkAsSpam(MessageId, AccountId); }}><InfoSharpIcon />Mark as Spam</MenuItem>
+                                                {
+                                                    MessageIsStarred ?
+                                                        <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarIcon /> Unstarred</MenuItem>
+                                                        :
+                                                        <MenuItem onClick={() => UpdateStarMessage(MessageId, "", "")}><StarBorderIcon /> Starred</MenuItem>
+
+                                                }
+                                            </Menu>
 
                                             {AllInboxList?.map((item, index) => {
                                                 var fullName = item.FromName;

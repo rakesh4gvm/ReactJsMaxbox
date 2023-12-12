@@ -2281,13 +2281,22 @@ export default function AllInboxByID(props) {
 
 
     const HandleCheckedID = (event, ID) => {
-        const { checked } = event.target;
+        // const { checked } = event.target;
 
+        // if (checked) {
+        //     SetCheckedID([...CheckedID, ID])
+        // } else {
+        //     setSelectAllChecked(false)
+        //     SetCheckedID(state => state.filter((el) => el !== ID));
+        // }
+
+        const { checked } = event.target;
+    
         if (checked) {
-            SetCheckedID([...CheckedID, ID])
+            SetCheckedID((prevCheckedID) => [...prevCheckedID, ID]);
         } else {
-            setSelectAllChecked(false)
-            SetCheckedID(state => state.filter((el) => el !== ID));
+            setSelectAllChecked(false);
+            SetCheckedID((prevCheckedID) => prevCheckedID.filter((el) => el !== ID));
         }
     }
 

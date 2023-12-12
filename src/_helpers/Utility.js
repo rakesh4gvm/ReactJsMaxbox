@@ -179,5 +179,9 @@ export function DrawPreviewStyle() {
 }
 
 export function FormatDrawMessage(Id) {
-    return `Move ${Id.length} conversations`;
+    if (Id.length == 0) {
+        return `Move 1 conversations`;
+    } else {
+        return `Move ${Id.length} conversations`;
+    }
 }
