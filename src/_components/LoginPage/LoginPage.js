@@ -182,44 +182,34 @@ export default function LoginPage() {
       return ResponseApi?.data?.Data?.TwoWayFactor
     }
   }
-  // Login method start
-  const Login = async (IsDelete) => {
-    LoaderShow()
+
+  const CheckLoginValidation =async () => {
     const valid = FromValidation();
     var Email = document.getElementById("email").value;
     var Password = document.getElementById("password").value;
-
     const ValidEmail = validateEmail(Email);
     const ValidPassword = validatePassword(Password);
-
     if (valid && ValidEmail && ValidPassword) {
+      SetPopModel(true);
+    }
+  }
+
+  // Login method start
+  const Login =async (IsPrevSession) => {
+    SetPopModel(false);
+    LoaderShow()
+    // const valid = FromValidation();
+    var Email = document.getElementById("email").value;
+    var Password = document.getElementById("password").value;
+
+    // const ValidEmail = validateEmail(Email);
+    // const ValidPassword = validatePassword(Password);
+
+    // if (valid && ValidEmail && ValidPassword) {
 
       const IsTwoWayFactor = await GetDataByEmail()
 
-      // if (IsTwoWayFactor) {
-
-      //   const Data = {
-      //     ToEmail: Email,
-      //   }
-      //   const ResponseApi = Axios({
-      //     url: CommonConstants.MOL_APIURL + "/user_login/SendOTP",
-      //     method: "POST",
-      //     data: Data,
-      //   });
-      //   ResponseApi.then((Result) => {
-      //     if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
-      //       history.push({
-      //         pathname: '/OTPConfirm',
-      //         state: { Email: Email, Password: Password }
-      //       });
-
-      //     }
-      //   })
-      //   LoaderHide()
-      // }
-      // else {
-
-      const Data = { Email: Email, Password: Password, IsPreviousDelete: IsDelete }
+      const Data = { Email: Email, Password: Password, RemovePreviousSession: IsPrevSession }
       const ResponseApi = Axios({
         url: CommonConstants.MOL_APIURL + "/user_login/userlogin",
         method: "POST",
@@ -268,7 +258,7 @@ export default function LoginPage() {
         }
       });
       // }
-    }
+    // }
     LoaderHide()
   }
 
@@ -300,8 +290,6 @@ export default function LoginPage() {
       else {
         window.location.href = CommonConstants.HomePage;
       }
-
-
     });
   }
 
@@ -322,7 +310,7 @@ export default function LoginPage() {
         <div className='p-5 text-center'>
           <img src={Emailinbox} width="130" className='mb-4' />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            If you want to logout from other devices?
+            If you want to logout from other active sessions?
           </Typography>
         </div>
         <div className='d-flex btn-50'>
@@ -415,7 +403,7 @@ export default function LoginPage() {
               <Col sm={4}>
                 <div className='btnprofile left'>
                   <ButtonGroup variant="text" aria-label="text button group">
-                    <Button variant="contained btn btn-primary smallbtn" onClick={OpenPopModel}>Login</Button>
+                    <Button variant="contained btn btn-primary smallbtn" onClick={CheckLoginValidation}>Login</Button>
                   </ButtonGroup>
                 </div>
               </Col>
