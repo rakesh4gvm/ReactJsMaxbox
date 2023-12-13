@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -3780,20 +3780,34 @@ export default function AllInboxByID(props) {
 
 }
 
-const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName }) => {
+const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName }) => {
+
+    let IDToPass
+    if (CheckedID.length == 0) {
+        IDToPass = [item._id]
+    } else {
+        IDToPass = CheckedID
+    }
+   
     const [, drag, preview] = useDrag({
         type: 'EMAIL',
-        item: { ids: CheckedID },
+        item: { ids: IDToPass },
     });
+
+    // Memoize the row style to prevent unnecessary re-renders
+    const rowStyle = useMemo(() => ({
+        padding: '8px',
+        border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
+    }), [CheckedID, item._id]);
 
     const [dragPreview, setDragPreview] = useState();
 
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(CheckedID), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [CheckedID]);
+    }, [IDToPass]);
 
     return (
         <>
@@ -3802,12 +3816,7 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
                 src={dragPreview && dragPreview.src}
             />
             <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen?.toString()} isstarred={item?.IsStarred?.toString()} onContextMenu={handleContextMenu}
-                style={{
-                    padding: '8px',
-                    border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
-                    marginBottom: '4px',
-                    cursor: 'move',
-                }}
+                style={rowStyle}
                 // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                 // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
                 // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
@@ -3845,4 +3854,4 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
             </TableRow>
         </>
     )
-}
+})
