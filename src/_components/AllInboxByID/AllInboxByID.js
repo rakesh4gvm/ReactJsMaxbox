@@ -3805,21 +3805,27 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
             SetCheckedID(draggedIds);
         },
     });
+      
 
     // Memoize the row style to prevent unnecessary re-renders
-    const rowStyle = useMemo(() => ({
-        padding: '8px',
-        border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
-    }), [CheckedID, item._id]);
+    var styleObj = {};
+    styleObj.padding = '8px';
+    var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
+    if(bgcolor != ''){
+        styleObj.background = bgcolor;
+        styleObj.border = "2px solid #d7c4b7";
+        styleObj.cursor = 'grabbing';
+    }
+    const rowStyle = useMemo(() => (styleObj), [CheckedID]);
 
     const [dragPreview, setDragPreview] = useState();
 
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(CheckedID.length), DrawPreviewStyle())
         );
-    }, [CheckedID]);
+    }, [rowStyle]);
 
     return (
         <>
@@ -3828,7 +3834,8 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
                 src={dragPreview && dragPreview.src}
             />
             <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen?.toString()} isstarred={item?.IsStarred?.toString()} onContextMenu={handleContextMenu}
-                style={rowStyle}
+                style={CheckedID.includes(item._id) ? rowStyle : {}}
+                // style={rowStyle}
                 // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                 // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
                 // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -3764,13 +3764,24 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
         item: { ids: CheckedID },
     });
 
+    // Memoize the row style to prevent unnecessary re-renders
+    var styleObj = {};
+    styleObj.padding = '8px';
+    var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
+    if(bgcolor != ''){
+        styleObj.background = bgcolor;
+        styleObj.border = "2px solid #d7c4b7";
+        styleObj.cursor = 'grabbing';
+    }
+    const rowStyle = useMemo(() => (styleObj), [CheckedID]);
+
     const [dragPreview, setDragPreview] = useState();
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(CheckedID), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(CheckedID.length), DrawPreviewStyle())
         );
-    }, [CheckedID]);
+    }, [rowStyle]);
 
     return (
         <>
@@ -3779,12 +3790,13 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
                 src={dragPreview && dragPreview.src}
             />
             <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={OpenMessage?.length == 0 ? "" : OpenMessage?.IsTrash ? "" : handleContextMenu}
-                style={{
-                    padding: '8px',
-                    border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
-                    marginBottom: '4px',
-                    cursor: 'move',
-                }}
+                style={CheckedID.includes(item._id) ? rowStyle : {}}
+                // style={{
+                //     padding: '8px',
+                //     border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
+                //     marginBottom: '4px',
+                //     cursor: 'move',
+                // }}
                 // style={{ cursor: 'context-menu' }}
                 // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                 // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
