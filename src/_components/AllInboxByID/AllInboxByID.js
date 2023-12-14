@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC,DrawPreviewStyle, FormatDrawMessage } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC, DrawPreviewStyle, FormatDrawMessage } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 import TablePagination from '@mui/material/TablePagination';
@@ -57,7 +57,7 @@ import { toast } from "react-toastify";
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider'; 
+import Divider from '@mui/material/Divider';
 import InfoSharpIcon from '@mui/icons-material/InfoSharp';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
@@ -2291,7 +2291,7 @@ export default function AllInboxByID(props) {
         // }
 
         const { checked } = event.target;
-    
+
         if (checked) {
             SetCheckedID((prevCheckedID) => [...prevCheckedID, ID]);
         } else {
@@ -3020,43 +3020,43 @@ export default function AllInboxByID(props) {
                                                 anchorReference="anchorPosition"
                                                 anchorPosition={
                                                     contextMenu !== null
-                                                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                                                    : undefined
+                                                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                                                        : undefined
                                                 }
-                                                > 
+                                            >
                                                 {
-                                                    MessageIsSeen ? 
-                                                    <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem> 
-                                                    :
-                                                    <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
-                                                    
+                                                    MessageIsSeen ?
+                                                        <MenuItem onClick={MarkUnreadEmails}><VisibilityOffIcon /> Mark as unread</MenuItem>
+                                                        :
+                                                        <MenuItem onClick={MarkReadEmails}><Visibility /> Mark as read</MenuItem>
+
                                                 }
-                                                <Divider sx={{ my: 0.3 }} /> 
+                                                <Divider sx={{ my: 0.3 }} />
                                                 <MenuItem onClick={OpenComposeReply}><img src={iconsarrow2} /> Reply</MenuItem>
-                                                <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem> 
+                                                <MenuItem onClick={OpenReplyAll}><img src={icons_replyall} /> Reply All</MenuItem>
                                                 <MenuItem onClick={OpenComposeForward}><img src={iconsarrow1} /> Forward</MenuItem>
-                                                <Divider sx={{ my: 0.3 }} /> 
+                                                <Divider sx={{ my: 0.3 }} />
 
                                                 <MenuItem onClick={handleSubMenuOpen}><LabelIcon /> Edit Labels</MenuItem>
 
-                                                    <Menu className="labelrighter"
+                                                <Menu className="labelrighter"
                                                     open={isSubMenuOpen}
                                                     onClose={handleSubMenuClose}
                                                     anchorReference="anchorPosition"
                                                     anchorPosition={
                                                         isSubMenuOpen
-                                                        ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
-                                                        : undefined
+                                                            ? { top: contextMenu.mouseY + 191, left: contextMenu.mouseX + 193 } // Adjust the position as needed
+                                                            : undefined
                                                     }
-                                                    > 
-                                                        <div >
-                                                            <h6>Label as:</h6>
-                                                            <Autocomplete className="rightlabelul"
-                                                                open
-                                                                multiple
-                                                                disablePortal
-                                                                id="checkboxes-tags-demo"
-                                                                style={{ width: 230 }}
+                                                >
+                                                    <div >
+                                                        <h6>Label as:</h6>
+                                                        <Autocomplete className="rightlabelul"
+                                                            open
+                                                            multiple
+                                                            disablePortal
+                                                            id="checkboxes-tags-demo"
+                                                            style={{ width: 230 }}
                                                             // options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "INBOX")}
                                                             options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
                                                             getOptionLabel={(option) => option.LableName}
@@ -3790,28 +3790,30 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
     } else {
         IDToPass = CheckedID
     }
-   
-    const [, drag, preview] = useDrag({
-        type: 'EMAIL',
-        item: { ids: IDToPass },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-        end: (data, monitor) => {
 
-            const draggedIds = monitor.getItem().ids;
+    const [, drag, preview] = useDrag(
+        useMemo(() => ({
+            type: 'EMAIL',
+            item: () => {
+                SetCheckedID(IDToPass); // Update the state with the IDs of the dragged email
+                return { ids: IDToPass, }
+            },
+            collect: (monitor) => ({
+                isDragging: monitor.isDragging(),
+            }),
+            end: (data, monitor) => {
+                const draggedIds = monitor.getItem().ids;
+                SetCheckedID(draggedIds);
+            },
+        }), [SetCheckedID, CheckedID])
+    );
 
-            // Update the state with the IDs of the dragged email
-            SetCheckedID(draggedIds);
-        },
-    });
-      
 
     // Memoize the row style to prevent unnecessary re-renders
     var styleObj = {};
     styleObj.padding = '8px';
     var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
-    if(bgcolor != ''){
+    if (bgcolor != '') {
         styleObj.background = bgcolor;
         styleObj.border = "2px solid #d7c4b7";
         styleObj.cursor = 'grabbing';
@@ -3823,7 +3825,7 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(CheckedID.length), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
     }, [rowStyle]);
 
