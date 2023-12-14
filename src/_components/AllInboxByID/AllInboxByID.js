@@ -3115,7 +3115,7 @@ export default function AllInboxByID(props) {
                                                 }
 
                                                 return (
-                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} />)
+                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} SetCheckedID={SetCheckedID} />)
                                             }
                                             )}
                                         </TableBody>
@@ -3780,10 +3780,12 @@ export default function AllInboxByID(props) {
 
 }
 
-const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName }) => {
+const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, SetCheckedID }) => {
 
     let IDToPass
     if (CheckedID.length == 0) {
+        IDToPass = [item._id]
+    } else if (!CheckedID.includes(item._id)) {
         IDToPass = [item._id]
     } else {
         IDToPass = CheckedID
@@ -3792,6 +3794,16 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
     const [, drag, preview] = useDrag({
         type: 'EMAIL',
         item: { ids: IDToPass },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+        end: (data, monitor) => {
+
+            const draggedIds = monitor.getItem().ids;
+
+            // Update the state with the IDs of the dragged email
+            SetCheckedID(draggedIds);
+        },
     });
 
     // Memoize the row style to prevent unnecessary re-renders
@@ -3807,7 +3819,7 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [IDToPass]);
+    }, [CheckedID]);
 
     return (
         <>
