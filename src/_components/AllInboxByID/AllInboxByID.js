@@ -256,8 +256,17 @@ export default function AllInboxByID(props) {
     const [MessageId, SetMessageId] = useState("");
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
+    const [SelectedMessageStyle, SetSelectedMessageStyle] = useState({});
 
     useEffect(() => {
+        SetSelectedMessageStyle(
+            {    
+                padding: '8px',
+                background: '#f3d4be',
+                border: '2px solid #d7c4b7',
+                cursor: 'grabbing'
+            }
+        )
         SetMessageIsStarred(false)
         setstarActive(false)
     }, [id])
@@ -3113,9 +3122,8 @@ export default function AllInboxByID(props) {
                                                         labelColor = item.LabelField[0].LabelColorCode != undefined ? item.LabelField[0].LabelColorCode : ""; // defaultColor;
                                                     }
                                                 }
-
                                                 return (
-                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} SetCheckedID={SetCheckedID} />)
+                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} SetCheckedID={SetCheckedID} SelectedMessageStyle={SelectedMessageStyle} />)
                                             }
                                             )}
                                         </TableBody>
@@ -3780,8 +3788,7 @@ export default function AllInboxByID(props) {
 
 }
 
-const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, SetCheckedID }) => {
-
+const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, SetCheckedID, SelectedMessageStyle }) => {
     let IDToPass
     if (CheckedID.length == 0) {
         IDToPass = [item._id]
@@ -3801,24 +3808,23 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
             collect: (monitor) => ({
                 isDragging: monitor.isDragging(),
             }),
-            end: (data, monitor) => {
+            isDragging: (monitor) => {
                 const draggedIds = monitor.getItem().ids;
                 SetCheckedID(draggedIds);
             },
-        }), [SetCheckedID, CheckedID])
+        }))
     );
 
-
     // Memoize the row style to prevent unnecessary re-renders
-    var styleObj = {};
-    styleObj.padding = '8px';
-    var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
-    if (bgcolor != '') {
-        styleObj.background = bgcolor;
-        styleObj.border = "2px solid #d7c4b7";
-        styleObj.cursor = 'grabbing';
-    }
-    const rowStyle = useMemo(() => (styleObj), [CheckedID]);
+    // var styleObj = {};
+    // styleObj.padding = '8px';
+    // var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
+    // if (bgcolor != '') {
+    //     styleObj.background = bgcolor;
+    //     styleObj.border = "2px solid #d7c4b7";
+    //     styleObj.cursor = 'grabbing';
+    // }
+    // const rowStyle = useMemo(() => (styleObj), [CheckedID]);
 
     const [dragPreview, setDragPreview] = useState();
 
@@ -3827,7 +3833,7 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [rowStyle]);
+    }, []);
 
     return (
         <>
@@ -3836,7 +3842,7 @@ const DraggableItem = React.memo(({ item, handleContextMenu, selectedRowIndex, i
                 src={dragPreview && dragPreview.src}
             />
             <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen?.toString()} isstarred={item?.IsStarred?.toString()} onContextMenu={handleContextMenu}
-                style={CheckedID.includes(item._id) ? rowStyle : {}}
+                style={CheckedID.includes(item._id) ? SelectedMessageStyle : {}}
                 // style={rowStyle}
                 // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
                 // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
