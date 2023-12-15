@@ -269,7 +269,7 @@ export default function AllInboxByID(props) {
         )
         SetMessageIsStarred(false)
         setstarActive(false)
-    }, [id])
+    }, [id, CheckedID])
 
 
 
@@ -3831,9 +3831,9 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(CheckedID.length), DrawPreviewStyle())
         );
-    }, []);
+    }, [dragPreview]);
 
     return (
         <>
