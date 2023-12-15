@@ -264,7 +264,7 @@ export default function AllInboxByID(props) {
                 padding: '8px',
                 background: '#f3d4be',
                 border: '2px solid #d7c4b7',
-                cursor: 'grabbing'
+                // cursor: 'grabbing'
             }
         )
         SetMessageIsStarred(false)
@@ -3833,7 +3833,7 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [IDToPass, dragPreview]);
+    }, [dragPreview]);
 
     return (
         <>

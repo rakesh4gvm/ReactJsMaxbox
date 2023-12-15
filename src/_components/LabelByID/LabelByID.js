@@ -259,6 +259,7 @@ export default function LabelByID(props) {
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
     const [AccountId, SetAccountId] = useState();
+    const [SelectedMessageStyle, SetSelectedMessageStyle] = useState({});
 
 
     const handleContextMenu = (event) => {
@@ -325,6 +326,14 @@ export default function LabelByID(props) {
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
+        SetSelectedMessageStyle(
+            {    
+                padding: '8px',
+                background: '#f3d4be',
+                border: '2px solid #d7c4b7',
+                // cursor: 'grabbing'
+            }
+        )
     }, [SearchInbox, state, id])
 
     const refreshPageDetails = useSelector(state => state.refreshPageDetails);
@@ -3091,7 +3100,7 @@ export default function LabelByID(props) {
                                                     }
                                                 }
                                                 return (
-                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} OpenMessage={OpenMessage} SetCheckedID={SetCheckedID} />
+                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} OpenMessage={OpenMessage} SetCheckedID={SetCheckedID} SelectedMessageStyle={SelectedMessageStyle} />
                                                 )
                                             })}
                                         </TableBody>
@@ -3757,7 +3766,7 @@ export default function LabelByID(props) {
     );
 }
 
-const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, OpenMessage, SetCheckedID }) => {
+const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, OpenMessage, SetCheckedID, SelectedMessageStyle }) => {
 
     let IDToPass
     if (CheckedID.length == 0) {
@@ -3773,29 +3782,29 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
             type: 'EMAIL',
             item: () => {
                 SetCheckedID(IDToPass); // Update the state with the IDs of the dragged email
-                return { ids: IDToPass, }
+                return { ids: IDToPass }
             },
             collect: (monitor) => ({
                 isDragging: monitor.isDragging(),
             }),
-            end: (data, monitor) => {
+            isDragging: (monitor) => {
                 const draggedIds = monitor.getItem().ids;
                 SetCheckedID(draggedIds);
             },
-        }), [SetCheckedID, CheckedID])
+        }))
     );
 
 
     // Memoize the row style to prevent unnecessary re-renders
-    var styleObj = {};
-    styleObj.padding = '8px';
-    var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
-    if(bgcolor != ''){
-        styleObj.background = bgcolor;
-        styleObj.border = "2px solid #d7c4b7";
-        styleObj.cursor = 'grabbing';
-    }
-    const rowStyle = useMemo(() => (styleObj), [CheckedID]);
+    // var styleObj = {};
+    // styleObj.padding = '8px';
+    // var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
+    // if(bgcolor != ''){
+    //     styleObj.background = bgcolor;
+    //     styleObj.border = "2px solid #d7c4b7";
+    //     styleObj.cursor = 'grabbing';
+    // }
+    // const rowStyle = useMemo(() => (styleObj), [CheckedID]);
 
     const [dragPreview, setDragPreview] = useState();
 
@@ -3803,7 +3812,7 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [rowStyle]);
+    }, [dragPreview]);
 
     return (
         <>
@@ -3812,7 +3821,7 @@ const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSe
                 src={dragPreview && dragPreview.src}
             />
             <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={OpenMessage?.length == 0 ? "" : OpenMessage?.IsTrash ? "" : handleContextMenu}
-                style={CheckedID.includes(item._id) ? rowStyle : {}}
+                style={CheckedID.includes(item._id) ? SelectedMessageStyle : {}}
                 // style={{
                 //     padding: '8px',
                 //     border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
