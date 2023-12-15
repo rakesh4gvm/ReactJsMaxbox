@@ -3803,7 +3803,7 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
             type: 'EMAIL',
             item: () => {
                 SetCheckedID(IDToPass); // Update the state with the IDs of the dragged email
-                return { ids: IDToPass, }
+                return { ids: IDToPass }
             },
             collect: (monitor) => ({
                 isDragging: monitor.isDragging(),
@@ -3831,9 +3831,9 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
 
     useEffect(() => {
         setDragPreview(
-            createDragPreview(FormatDrawMessage(CheckedID.length), DrawPreviewStyle())
+            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [dragPreview]);
+    }, [IDToPass, dragPreview]);
 
     return (
         <>
