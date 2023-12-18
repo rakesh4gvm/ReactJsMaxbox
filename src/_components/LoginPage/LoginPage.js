@@ -208,6 +208,7 @@ export default function LoginPage() {
     // if (valid && ValidEmail && ValidPassword) {
 
       const IsTwoWayFactor = await GetDataByEmail()
+      LoaderShow()
 
       const Data = { Email: Email, Password: Password, RemovePreviousSession: IsPrevSession }
       const ResponseApi = Axios({
@@ -254,12 +255,13 @@ export default function LoginPage() {
           }
           else {
             setUserPassword("User does not exists")
+            LoaderHide()
           }
         }
       });
       // }
     // }
-    LoaderHide()
+    // LoaderHide()
   }
 
   const PasswordValue = () => {
