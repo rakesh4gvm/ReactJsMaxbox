@@ -259,17 +259,17 @@ export default function AllInboxByID(props) {
     const [SelectedMessageStyle, SetSelectedMessageStyle] = useState({});
 
     useEffect(() => {
-        SetSelectedMessageStyle(
-            {    
-                padding: '8px',
-                background: '#f3d4be',
-                border: '2px solid #d7c4b7',
-                // cursor: 'grabbing'
-            }
-        )
+        // SetSelectedMessageStyle(
+        //     {    
+        //         padding: '8px',
+        //         background: '#f3d4be',
+        //         border: '2px solid #d7c4b7',
+        //         // cursor: 'grabbing'
+        //     }
+        // )
         SetMessageIsStarred(false)
         setstarActive(false)
-    }, [id, CheckedID])
+    }, [id])
 
 
 
@@ -341,6 +341,14 @@ export default function AllInboxByID(props) {
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
+        SetSelectedMessageStyle(
+            {    
+                padding: '8px',
+                background: '#f3d4be',
+                border: '2px solid #d7c4b7',
+                // cursor: 'grabbing'
+            }
+        )
     }, [SearchInbox, state, id])
 
     const refreshPageDetails = useSelector(state => state.refreshPageDetails);
@@ -401,6 +409,7 @@ export default function AllInboxByID(props) {
                     GetClientID();
                     LoaderHide();
                     SetCheckedID([]);
+                    setSelectAllChecked(false)
                     dispatch({ type: "refreshClientDetails", payload: true });
                 }
             })
@@ -525,6 +534,7 @@ export default function AllInboxByID(props) {
 
     // Get Client ID
     const GetClientID = (ID) => {
+        SetCheckedID([])
         var UserDetails = GetUserDetails();
         if (UserDetails != null) {
             SetClientID(UserDetails.ClientID);
@@ -3833,7 +3843,7 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [dragPreview]);
+    }, [dragPreview, IDToPass]);
 
     return (
         <>
