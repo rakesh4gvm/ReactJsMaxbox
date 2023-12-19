@@ -3843,7 +3843,7 @@ const DraggableItem = (({ item, handleContextMenu, selectedRowIndex, index, setS
         setDragPreview(
             createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
         );
-    }, [dragPreview, IDToPass]);
+    }, [IDToPass.length]);
 
     return (
         <>
