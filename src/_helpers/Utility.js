@@ -164,3 +164,20 @@ export function SortEmailAccounts(EmailAccountUsers) {
         return item;
     });
 }
+
+export function DrawPreviewStyle() {
+    return {
+        backgroundColor: "rgb(68, 67, 67)",
+        borderColor: "#F96816",
+        color: "white",
+        fontSize: 15,
+        paddingTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20
+    };
+}
+
+export function FormatDrawMessage(Id) {
+    return `Move ${Id} conversations`;
+}

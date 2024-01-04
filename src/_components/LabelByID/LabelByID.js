@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Moment from "moment";
 import Axios from "axios";
 import parse from "html-react-parser";
@@ -7,7 +7,7 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 import { CommonConstants } from "../../_constants/common.constants";
 import { ResponseMessage } from "../../_constants/response.message";
-import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC } from "../../_helpers/Utility";
+import { GetUserDetails, LoaderHide, LoaderShow, EditorVariableNames, ValidateEmail, decrypt, Plain2HTML, RemoveForwardPop, RemoveCurrentEmailFromCC, RemoveCurrentEmailFromBCC, DrawPreviewStyle, FormatDrawMessage } from "../../_helpers/Utility";
 import Navigation from '../Navigation/Navigation';
 import AllInboxComposePage from '../AllInboxComposePage/AllInboxComposePage';
 import LabelComposePage from '../LabelComposePage/LabelComposePage'
@@ -78,6 +78,9 @@ import LabelIcon from '@material-ui/icons/Label';
 
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { createDragPreview } from "react-dnd-text-dragpreview";
+import { useDrag, DragPreviewImage } from 'react-dnd';
+
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -256,7 +259,7 @@ export default function LabelByID(props) {
     const [MessageIsSeen, SetMessageIsSeen] = useState();
     const [MessageIsStarred, SetMessageIsStarred] = useState();
     const [AccountId, SetAccountId] = useState();
-    
+    const [SelectedMessageStyle, SetSelectedMessageStyle] = useState({});
   
   const handleContextMenu = (event) => {
     event.preventDefault();
@@ -322,7 +325,49 @@ export default function LabelByID(props) {
         GetClientID();
         SetCheckedID([]);
         setSelectAllChecked(false);
+        SetSelectedMessageStyle(
+            {    
+                padding: '8px',
+                background: '#f3d4be',
+                border: '2px solid #d7c4b7',
+                // cursor: 'grabbing'
+            }
+        )
     }, [SearchInbox, state, id])
+
+    const refreshPageDetails = useSelector(state => state.refreshPageDetails);
+    useEffect(() => {
+        if (refreshPageDetails) {
+            var ID = id;
+            var UserDetails = GetUserDetails();
+            if (!state) {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "SeenEmails", "");
+                    }
+                }
+            } else {
+                if (ID != "" && ID != null && ID != "undefined") {
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, ID, "", "");
+                } else {
+                    if (isstarActive) {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "IsStarredEmails");
+                    } else {
+                        GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "", "");
+                    }
+                }
+            }
+            dispatch({ type: "refreshPageDetails", payload: false });
+        }
+    });
 
     const HandleLabelID = (event, newValue) => {
         SetSelectedLabelValue(newValue);
@@ -2221,32 +2266,57 @@ export default function LabelByID(props) {
 
 
     const HandleCheckedID = (event, ID) => {
+        debugger;
+        // const { checked } = event.target;
+
+        // if (checked) {
+        //     SetCheckedID([...CheckedID, ID])
+        // } else {
+        //     setSelectAllChecked(false)
+        //     SetCheckedID(state => state.filter((el) => el !== ID));
+        // }
+
         const { checked } = event.target;
 
         if (checked) {
-            SetCheckedID([...CheckedID, ID])
+            SetCheckedID((prevCheckedID) => [...prevCheckedID, ID]);
         } else {
-            setSelectAllChecked(false)
-            SetCheckedID(state => state.filter((el) => el !== ID));
+            setSelectAllChecked(false);
+            SetCheckedID((prevCheckedID) => prevCheckedID.filter((el) => el !== ID));
         }
     }
 
+    // const handleSelectAll = (event) => {
+    //     const { checked } = event.target;
+    //     setSelectAllChecked(checked);
+
+    //     if (checked) {
+    //         const allIds = AllInboxList.map(item => item._id);
+    //         var tempCheckIds = []
+    //         if (CheckedID.length > 0) {
+    //             tempCheckIds = CheckedID
+    //             allIds.map((e) => tempCheckIds.push(e))
+    //             SetCheckedID(tempCheckIds);
+    //         } else {
+    //             SetCheckedID(allIds)
+    //         }
+    //     } else {
+    //         SetCheckedID([]);
+    //     }
+    // };
+
+    // refactor above code
     const handleSelectAll = (event) => {
+        debugger;
         const { checked } = event.target;
         setSelectAllChecked(checked);
-
+      
         if (checked) {
-            const allIds = AllInboxList.map(item => item._id);
-            var tempCheckIds = []
-            if (CheckedID.length > 0) {
-                tempCheckIds = CheckedID
-                allIds.map((e) => tempCheckIds.push(e))
-                SetCheckedID(tempCheckIds);
-            } else {
-                SetCheckedID(allIds)
-            }
+          const allIds = AllInboxList.map(item => item._id);
+          const tempCheckIds = CheckedID.length > 0 ? [...CheckedID, ...allIds] : allIds;
+          SetCheckedID(tempCheckIds);
         } else {
-            SetCheckedID([]);
+          SetCheckedID([]);
         }
     };
 
@@ -2830,6 +2900,7 @@ export default function LabelByID(props) {
                                                         <h6>Move to :</h6>
                                                         <Autocomplete
                                                             open
+                                                            disablePortal
                                                             id="filter-demo"
                                                             // options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.RecieverEmailLableID !== id)}
                                                             options={labelsData.sort((a, b) => a.LableName.localeCompare(b.LableName)).filter(option => option.RecieverEmailLableID !== id && option.LableName !== "Trash" && option.LableName !== "INBOX" && option.LableName !== "Bin")}
@@ -3045,50 +3116,7 @@ export default function LabelByID(props) {
                                                     }
                                                 }
                                                 return (
-                                                    <TableRow accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={ OpenMessage?.length == 0 ? "" : OpenMessage?.IsTrash ? "" : handleContextMenu }
-                                                    style={{ cursor: 'context-menu' }}
-                                                        // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
-                                                        // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        // key={item.name}
-                                                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        key={item.name}
-                                                        className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
-                                                        onClick={() => setSelectedRowIndex(index)}
-                                                        id={"row-" + index}
-
-                                                    >
-                                                        {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
-                                                        {/* <TableCell width={'35px'}></TableCell> */}
-                                                        {
-                                                            // OpenMessage?.length == 0 ? "" :
-                                                                OpenMessage?.IsTrash ? "" :
-                                                                    <>
-                                                                        <TableCell align='center'>
-                                                                            <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
-                                                                        </TableCell>
-                                                                        <TableCell width={'35px'} align="center">
-                                                                            <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
-                                                                                <StarBorderIcon className='starone' />
-                                                                                <StarIcon className='selectedstart startwo' />
-                                                                            </ToggleButton>
-                                                                        </TableCell>
-                                                                    </>
-                                                        }
-                                                        <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>
-                                                            {
-                                                                item.IsReplied ? <TurnLeft /> : ""
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
-                                                            <>
-                                                                {item.Subject.split(' ').slice(0, 8).join(' ')}
-                                                                {item.Subject.split(' ').length > 8 ? '...' : ''}
-                                                            </>
-                                                        ) : null}</TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
-                                                        <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
-                                                    </TableRow>
+                                                    <DraggableItem key={item._id} item={item} handleContextMenu={handleContextMenu} selectedRowIndex={selectedRowIndex} index={index} setSelectedRowIndex={setSelectedRowIndex} CheckedID={CheckedID} HandleCheckedID={HandleCheckedID} UpdateStarMessage={UpdateStarMessage} OpenMessageDetails={OpenMessageDetails} labelColor={labelColor} cleanedName={cleanedName} OpenMessage={OpenMessage} SetCheckedID={SetCheckedID} SelectedMessageStyle={SelectedMessageStyle} />
                                                 )
                                             })}
                                         </TableBody>
@@ -3752,4 +3780,114 @@ export default function LabelByID(props) {
             <LabelComposePage GetAllInboxList={GetAllInboxList} />
         </>
     );
+}
+
+const DraggableItem = ({ item, handleContextMenu, selectedRowIndex, index, setSelectedRowIndex, CheckedID, HandleCheckedID, UpdateStarMessage, OpenMessageDetails, labelColor, cleanedName, OpenMessage, SetCheckedID, SelectedMessageStyle }) => {
+
+    let IDToPass
+    if (CheckedID.length == 0) {
+        IDToPass = [item._id]
+    } else if (!CheckedID.includes(item._id)) {
+        IDToPass = [item._id]
+    } else {
+        IDToPass = CheckedID
+    }
+
+    const [, drag, preview] = useDrag(
+        useMemo(() => ({
+            type: 'EMAIL',
+            item: () => {
+                SetCheckedID(IDToPass); // Update the state with the IDs of the dragged email
+                return { ids: IDToPass }
+            },
+            collect: (monitor) => ({
+                isDragging: monitor.isDragging(),
+            }),
+            isDragging: (monitor) => {
+                const draggedIds = monitor.getItem().ids;
+                SetCheckedID(draggedIds);
+            },
+        }))
+    );
+
+
+    // Memoize the row style to prevent unnecessary re-renders
+    // var styleObj = {};
+    // styleObj.padding = '8px';
+    // var bgcolor = CheckedID.includes(item._id) ? '#f3d4be' : '';
+    // if(bgcolor != ''){
+    //     styleObj.background = bgcolor;
+    //     styleObj.border = "2px solid #d7c4b7";
+    //     styleObj.cursor = 'grabbing';
+    // }
+    // const rowStyle = useMemo(() => (styleObj), [CheckedID]);
+
+    const [dragPreview, setDragPreview] = useState();
+
+    useEffect(() => {
+        setDragPreview(
+            createDragPreview(FormatDrawMessage(IDToPass.length), DrawPreviewStyle())
+        );
+    // }, [dragPreview]);
+    }, [IDToPass.length]);
+
+    return (
+        <>
+            <DragPreviewImage
+                connect={preview}
+                src={dragPreview && dragPreview.src}
+            />
+            <TableRow ref={drag} accountid={item.AccountID} messageid={item._id} isseen={item?.IsSeen.toString()} isstarred={item?.IsStarred.toString()} onContextMenu={OpenMessage?.length == 0 ? "" : OpenMessage?.IsTrash ? "" : handleContextMenu}
+                style={CheckedID.includes(item._id) ? SelectedMessageStyle : {}}
+                // style={{
+                //     padding: '8px',
+                //     border: CheckedID.includes(item._id) ? '2px solid #007bff' : '1px solid #ccc',
+                //     marginBottom: '4px',
+                //     cursor: 'move',
+                // }}
+                // style={{ cursor: 'context-menu' }}
+                // className={`${Active === item._id ? "selected-row" : ""} ${!IsSeenEmail ? "seen-email" : "useen-email"}`}
+                // className={`${item.IsSeen ? "useen-email" : "seen-email"}`}
+                // className={`${Active === item?._id ? "selected-row" : ""} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                // key={item.name}
+                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                key={item.name}
+                className={`${selectedRowIndex === index ? 'selected-row' : ''} ${item?.IsSeen ? "useen-email" : "seen-email"}`}
+                onClick={() => setSelectedRowIndex(index)}
+                id={"row-" + index}
+
+            >
+                {/* <TableCell width={'35px'} ><StarBorderIcon /></TableCell> */}
+                {/* <TableCell width={'35px'}></TableCell> */}
+                {
+                    // OpenMessage?.length == 0 ? "" :
+                    OpenMessage?.IsTrash ? "" :
+                        <>
+                            <TableCell align='center'>
+                                <Checkbox type="checkbox" className='my-checkbox' checked={CheckedID.includes(item._id)} onChange={(e) => HandleCheckedID(e, item._id)} />
+                            </TableCell>
+                            <TableCell width={'35px'} align="center">
+                                <ToggleButton title="Starred" className='startselct' value="check" selected={item.IsStarred} id={"star_" + item._id} onClick={() => UpdateStarMessage(item._id, "", index)} >
+                                    <StarBorderIcon className='starone' />
+                                    <StarIcon className='selectedstart startwo' />
+                                </ToggleButton>
+                            </TableCell>
+                        </>
+                }
+                <TableCell onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>
+                    {
+                        item.IsReplied ? <TurnLeft /> : ""
+                    }
+                </TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")} scope="row"> {item?.Subject ? (
+                    <>
+                        {item.Subject.split(' ').slice(0, 8).join(' ')}
+                        {item.Subject.split(' ').length > 8 ? '...' : ''}
+                    </>
+                ) : null}</TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, 'updatelist')} scope="row"> {cleanedName + " " + "(" + item.FromEmail + ")"}</TableCell>
+                <TableCell style={{ color: labelColor != CommonConstants.DEFAULTLABELCOLOR ? labelColor : "" }} onClick={() => OpenMessageDetails(item._id, index, "updatelist")}>{Moment(item.MessageDatetime).format("MM/DD/YYYY hh:mm a")}</TableCell>
+            </TableRow>
+        </>
+    )
 }
