@@ -2138,7 +2138,9 @@ export default function Navigation(props) {
           if (Result.data.StatusMessage === ResponseMessage.SUCCESS) {
             dispatch({ type: "refreshPageDetails", payload: true });
             dispatch({ type: "refreshClientDetails", payload: true });
-            toast.success(Result?.data?.Message);
+            if(Result?.data?.Message != ''){
+              toast.success(Result?.data?.Message);
+            }
           }
           else{
             LoaderHide();

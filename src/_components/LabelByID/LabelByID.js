@@ -2266,7 +2266,6 @@ export default function LabelByID(props) {
 
 
     const HandleCheckedID = (event, ID) => {
-        debugger;
         // const { checked } = event.target;
 
         // if (checked) {
@@ -2307,7 +2306,6 @@ export default function LabelByID(props) {
 
     // refactor above code
     const handleSelectAll = (event) => {
-        debugger;
         const { checked } = event.target;
         setSelectAllChecked(checked);
       

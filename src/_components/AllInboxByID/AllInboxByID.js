@@ -2289,7 +2289,6 @@ export default function AllInboxByID(props) {
 
 
     const HandleCheckedID = (event, ID) => {
-        debugger;
         // const { checked } = event.target;
 
         // if (checked) {
@@ -2330,7 +2329,6 @@ export default function AllInboxByID(props) {
     
     // refactor above code
     const handleSelectAll = (event) => {
-        debugger;
         const { checked } = event.target;
         setSelectAllChecked(checked);
       
