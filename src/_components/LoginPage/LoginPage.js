@@ -283,7 +283,12 @@ export default function LoginPage() {
       if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
         if (Result.data.Data.length > 0) {
           UpdateUserDetails((Result.data.Data[0].ClientID))
-          window.location.href = CommonConstants.HomePage;
+          var filteredData = Result.data.EmailAccountData.filter((e) => e.ClientID === Result.data.Data[0].ClientID)
+          if (filteredData.length === 1) {
+            window.location.href = CommonConstants.HomePageByID + "/" + Result.data.EmailAccountData[0].AccountID;
+          } else {
+            window.location.href = CommonConstants.HomePage;
+          }
         }
         else {
           window.location.href = CommonConstants.HomePage;

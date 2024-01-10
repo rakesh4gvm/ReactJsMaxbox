@@ -19,6 +19,7 @@ const REDIRECT_URL = "http://localhost:3000/email_account/AuthCallback"
 
 // redirect url start
 const HomePage = "http://localhost:3001/AllInbox"
+const HomePageByID = "http://localhost:3001/AllInboxByID"
 const LoginPage = "http://localhost:3001"
 // redirect url end
 
@@ -40,6 +41,7 @@ export const CommonConstants = {
     SCOPE: SCOPE,
     REDIRECT_URL: REDIRECT_URL,
     HomePage: HomePage,
+    HomePageByID: HomePageByID,
     LoginPage: LoginPage,
     Title: ' | MaxBox', //Title of page
     show_rows: [10, 20, 50, 100],  //For rows show in table
