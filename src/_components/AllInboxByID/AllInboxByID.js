@@ -538,7 +538,7 @@ export default function AllInboxByID(props) {
             if (ID != "" && ID != null && ID != "undefined") {
                 SetMenuID(ID);
                 if (isstarActive) {
-                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "SeenEmails", "");
+                    GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, Page, id, "SeenEmails", "IsStarredEmails");
                 } else {
                     GetAllInboxList(UserDetails.ClientID, UserDetails.UserID, 1, id, "SeenEmails", "", "Refresh");
                 }
