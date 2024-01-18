@@ -72,8 +72,12 @@ export function Locate(PageName, ID) {
     }
 }
 
-export function ClientChnage() {
-    window.location.href = CommonConstants.FRONTENDURL + "/AllInbox";
+export function ClientChnage(ClientDropdown) {
+    if (ClientDropdown.length === 1) {
+        window.location.href = CommonConstants.FRONTENDURL + "/AllInboxByID/" + ClientDropdown[0]?.AccountID;
+    } else {
+        window.location.href = CommonConstants.FRONTENDURL + "/AllInbox";
+    }
     // window.location.reload(true)
 }
 export function Logout() {

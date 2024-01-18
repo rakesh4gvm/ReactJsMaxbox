@@ -1172,10 +1172,26 @@ export default function Navigation(props) {
   }
 
   // Select Client
-  const SelectClient = (e) => {
+  const SelectClient = async (e) => {
     SetSelectedClient(e.target.value)
     UpdateUserDetails(e.target.value)
-    ClientChnage()
+
+    let Response
+    var Data = {
+      ClientID: e.target.value,
+      UserID: UserID
+    };
+    const ResponseApi = Axios({
+      url: CommonConstants.MOL_APIURL + "/receive_email_history/EmailAccountGet",
+      method: "POST",
+      data: Data,
+    });
+    await ResponseApi.then((Result) => {
+      if (Result.data.StatusMessage == ResponseMessage.SUCCESS) {
+        Response = Result.data.PageData
+      }
+    });
+    ClientChnage(Response)
   }
 
   const OnehandleClick = () => {
