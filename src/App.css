@@ -2780,7 +2780,7 @@ div .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
 .simulationDiv,
 .statisticsDiv {
     width: 100%;
-    height: calc(100% - 0px);
+    height: calc(100% - 28px);
 }
 
 .simulationDiv {

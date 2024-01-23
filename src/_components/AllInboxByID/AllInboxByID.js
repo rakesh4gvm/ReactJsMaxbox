@@ -815,7 +815,8 @@ export default function AllInboxByID(props) {
                                             var LabelFieldDetails = [];
                                             LabelFieldDetails = item.LabelField.filter(c => c.LableName == "INBOX");
                                             if(LabelFieldDetails.length > 0){
-                                                totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                                // totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalStarredLableMailCount
+                                                totalStarredInboxCount = totalStarredInboxCount + LabelFieldDetails[0].TotalSeenStarredLableMailCount
                                             }
                                         }
                                     }
