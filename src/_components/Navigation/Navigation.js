@@ -418,6 +418,11 @@ export default function Navigation(props) {
       Isvalid = false
     }
 
+    if (!LabelName.replace(/\s/g, '')) {
+      SetLabelNameError("Blank space not allowed");
+      Isvalid = false
+    }
+
     return Isvalid;
   };
 
