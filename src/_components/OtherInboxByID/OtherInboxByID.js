@@ -2102,6 +2102,7 @@ export default function OtherInboxByID(props) {
 
         }
     });
+    var ForwardOpen = true
     const forwardconfig = {
         quickInsertEnabled: false,
         placeholderText: 'Edit your content here!',
@@ -2115,9 +2116,10 @@ export default function OtherInboxByID(props) {
         events: { 
           'contentChanged': function () { 
             const toForwardElement = document.getElementById('ToForward');
-            if (toForwardElement) {
-              toForwardElement.focus();
-            }
+            if (ForwardOpen) {
+                toForwardElement.focus();
+                ForwardOpen = false
+            } 
          }
         } 
     }

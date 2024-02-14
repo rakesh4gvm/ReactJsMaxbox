@@ -1841,6 +1841,7 @@ export default function OtherInboxPage(props) {
 
     }
   });
+  var ForwardOpen = true
   const forwardconfig = {
     quickInsertEnabled: false,
     placeholderText: 'Edit your content here!',
@@ -1854,9 +1855,10 @@ export default function OtherInboxPage(props) {
     events: { 
       'contentChanged': function () { 
         const toForwardElement = document.getElementById('ToForward');
-        if (toForwardElement) {
+        if (ForwardOpen) {
           toForwardElement.focus();
-        }
+          ForwardOpen = false
+      } 
      }
     } 
   }
