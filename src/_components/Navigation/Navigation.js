@@ -276,6 +276,7 @@ export default function Navigation(props) {
   const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
   const [DeletePopModel, SetDeletePopModel] = useState(false);
   const [SelectedLabelName, SetSelectedLabelName] = useState("")
+  const [CheckedID, SetCheckedID] = useState([])
 
   // local
   // var NotificationBackendUrl = CommonConstants.SSEIP
@@ -2161,10 +2162,12 @@ export default function Navigation(props) {
             dispatch({ type: "refreshClientDetails", payload: true });
             if(Result?.data?.Message != ''){
               toast.success(Result?.data?.Message);
+              dispatch({ type: "emptyCheckedIdArray", payload: true });
             }
           }
           else{
             LoaderHide();
+            dispatch({ type: "emptyCheckedIdArray", payload: true });
           }
         });
       },

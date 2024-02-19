@@ -7,7 +7,8 @@ const initialState = {
     unSeenFollowUpLaterCount: null,
     emailAccounts: [],
     refreshClientDetails: false,
-    refreshPageDetails: false
+    refreshPageDetails: false,
+    emptyCheckedIdArray: false
 };
 
 const variableReducer = (state = initialState, action) => {
@@ -30,6 +31,8 @@ const variableReducer = (state = initialState, action) => {
             return { ...state, refreshClientDetails: action.payload };
         case 'refreshPageDetails':
             return { ...state, refreshPageDetails: action.payload };
+        case 'emptyCheckedIdArray':
+            return { ...state, emptyCheckedIdArray: action.payload };
         default:
             return state;
     }
