@@ -336,7 +336,12 @@ export default function LabelByID(props) {
     }, [SearchInbox, state, id])
 
     const refreshPageDetails = useSelector(state => state.refreshPageDetails);
+    const emptyCheckedIdArray = useSelector(state => state.emptyCheckedIdArray);
     useEffect(() => {
+        if(emptyCheckedIdArray){
+            SetCheckedID([]);
+            dispatch({ type: "emptyCheckedIdArray", payload: false });
+        }
         if (refreshPageDetails) {
             var ID = id;
             var UserDetails = GetUserDetails();
