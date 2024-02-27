@@ -49,6 +49,21 @@ import ChatbotComponent from "./_components/ChatbotComponent"
 import LabelByID from './_components/LabelByID/LabelByID';
 import DraftsByID from './_components/DraftsByID/DraftsByID';
 import Trash from './_components/Trash/Trash';
+
+// Define a private route component
+const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isLoggedIn ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(CheckLocalStorage());
 
@@ -70,7 +85,234 @@ function App() {
         
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/Register" component={RegisterPage} />
-          <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
+          <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
+
+          {/* Catch-all route for unmatched URLs */}
+          <PrivateRoute
+            exact
+            path="/Confirmpassword"
+            component={ConfirmpasswordPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AllInbox"
+            component={AllInboxPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AllInboxByID/:id"
+            component={AllInboxByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Starred"
+            component={StarredPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/StarredByID/:id"
+            component={StarredByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Spam"
+            component={SpamPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/SpamByID/:id"
+            component={SpamByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/OtherInboxPage"
+            component={OtherInboxPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/OtherInboxByID/:id"
+            component={OtherInboxByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/FollowUpLater"
+            component={FollowUpLaterPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/FollowUpLaterByID/:id"
+            component={FollowUpLaterByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Drafts"
+            component={DraftsPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/DraftsByID/:id"
+            component={DraftsByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AllSentEmails"
+            component={AllSentEmailsPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AllSentEmailsByID/:id"
+            component={AllSentEmailByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/UnansweredReplies"
+            component={UnansweredRepliesPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/UnansweredRepliesByID/:id"
+            component={UnansweredRepliesByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/LabelByID/:id"
+            component={LabelByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Focused"
+            component={FocusedPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/FocusedByID/:id"
+            component={FocusedByID}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/ProfileSetting"
+            component={ProfileSettingPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/OTPConfirm"
+            component={OTPConfirmPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/EmailConfiguration"
+            component={EmailConfigurationPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Templates"
+            component={TemplatesPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/ObjectionTemplate"
+            component={ObjectionTemplatePage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/SelectTemplates"
+            component={SelectTemplatesPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/CreateTemplates"
+            component={CreateTemplatesPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/CreateObjection"
+            component={CreateObjectionPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/EditObjectionTemplate"
+            component={EditObjectionTemplatePage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/EditEmail"
+            component={EditEmailPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/ClientList"
+            component={ClientListPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AddClient"
+            component={AddClientPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/EditClient"
+            component={EditClientPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/EditTemplates"
+            component={EditTemplatesPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/ContactEmail"
+            component={ContactEmailPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/AddContactEmail"
+            component={AddContactEmailPage}
+            isLoggedIn={isLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/Trash/:id"
+            component={Trash}
+            isLoggedIn={isLoggedIn}
+          />
+
+
+          {/* <Route exact path="/" render={() => ((<Redirect to="/login" />))} />
           <Route exact path="/OtherInboxPage" component={OtherInboxPage} />
           <Route path="/OtherInboxByID/:id" component={OtherInboxByID} />
           <Route exact path="/Focused" component={FocusedPage} />
@@ -111,9 +353,15 @@ function App() {
           <Route exact path="/NewInbox" component={NewInboxPage} />
           <Route path="/LabelByID/:id" component={LabelByID} />
           <Route path="/DraftsByID/:id" component={DraftsByID} />
-          <Route path="/Trash/:id" component={Trash} />
+          <Route path="/Trash/:id" component={Trash} /> */}
          
-
+          {/* Redirect to login page if route not found */}
+          {
+            isLoggedIn ?
+              <Redirect to="/AllInbox" />
+              :
+              <Redirect to="/login" />
+          }
         </Switch>
         {/* {(window.location.pathname == '/ClientList' || 
           window.location.pathname == '/AddClient' ||
