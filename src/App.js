@@ -86,14 +86,15 @@ function App() {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/Register" component={RegisterPage} />
           <Route exact path="/Forgetpassword" component={ForgetpasswordPage} />
+          <Route exact path="/Confirmpassword" component={ConfirmpasswordPage} />
 
           {/* Catch-all route for unmatched URLs */}
-          <PrivateRoute
+          {/* <PrivateRoute
             exact
             path="/Confirmpassword"
             component={ConfirmpasswordPage}
             isLoggedIn={isLoggedIn}
-          />
+          /> */}
           <PrivateRoute
             exact
             path="/AllInbox"
