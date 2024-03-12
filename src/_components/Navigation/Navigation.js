@@ -916,6 +916,11 @@ export default function Navigation(props) {
             OnehandleClickOutBox("2" + SelectedID, 0)
           }
         }
+        const PageName = output?.replace(/ByID/g, "")
+        if (SelectedID) {
+          // Set the selected page based on the retrieved information
+          SetSelectMenuItem(PageName + SelectedID);
+        }
       }
     }
   }
